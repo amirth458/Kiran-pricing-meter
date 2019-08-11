@@ -1,0 +1,13 @@
+<common-header *ngIf="routeconfig.showHeader" [class]="getCSS(router.url)"></common-header>
+
+<div class="flex">
+  <div class="main-menu hidden-xs hidden">
+    <common-extended-menu></common-extended-menu>
+  </div>
+  <div class="main-content w100">
+    <div class="">
+    </div>
+  </div>
+</div>
+
+<common-footer *ngIf="routeconfig.showFooter"></common-footer>
