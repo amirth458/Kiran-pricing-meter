@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="diligent-connect-website:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="diligent-connect-website-1.0.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="diligent-connect-website:war exploded" />
-    </root>
-  </artifact>
-</component>
