@@ -1,41 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { User } from '../model/user.model';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import {environment} from "../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
 
-  constructor(
-    private _http: HttpClient
-  ){
+  data: {};
+  url: string = environment.serviceurl + '/login';
 
-  }
-
-  data: Object;
-  private _url: string = environment.serviceurl + "/login";
+  constructor(private http: HttpClient) { }
 
 
-  login(user: string, password: string)
-  {
+  login(user: string, password: string) {
 
-    let userRequest = JSON.stringify(
-      { "userName": user, "password": password }
-    )
+    const userRequest = JSON.stringify({ userName: user, password });
 
-    let headers = new HttpHeaders();
+    const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
 
-    let options = { headers: headers };
+    const options = { headers };
 
-    return this._http.post(this._url,userRequest, options)
-      .catch(this.errorHandler);
+    return this.http.post(this.url, userRequest, options);
+    // .catch(this.errorHandler);
 
   }
 
@@ -51,19 +40,15 @@ export class AuthService {
     return this.getUser() !== null;
   }
 
-  errorHandler(error: Response){
+  errorHandler(error: Response) {
     console.error(error);
-    return Observable.throw(error || "Server Error");
+    return Observable.throw(error || 'Server Error');
   }
 
 
-  loginTest(){
-    return this._http.get(this._url)
-      .map((response:Response) => response.json())
-      .catch(this.errorHandler);
+  loginTest() {
+    return this.http.get(this.url);
+    // .map((response: Response) => response.json())
+    // .catch(this.errorHandler);
   }
 }
-
-export const AUTH_PROVIDERS: Array<any> = [
-  { provide: AuthService, useClass: AuthService }
-];
