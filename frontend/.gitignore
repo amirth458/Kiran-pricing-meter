@@ -1,5 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+3Diligent-Frontend.code-workspace
 # compiled output
 /dist
 /tmp
