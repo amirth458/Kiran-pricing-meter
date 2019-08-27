@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopMenuComponent implements OnInit {
 
+  userInfo = {
+    name: 'Cullen Hilkene',
+    img: 'assets/image/avatar3.png'
+  }
   constructor() { }
 
   ngOnInit() {
