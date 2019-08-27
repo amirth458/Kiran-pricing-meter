@@ -1,3 +1,19 @@
-<p>
-  side-menu works!
-</p>
+<nav id="sidebar" class="active">
+  <div (click)="toggleSideBar()" [className]="sidebarClosed? 'sidebar-header rotate':'sidebar-header'">
+    <span>
+      <i class="fas fa-arrow-left"></i>
+    </span>
+  </div>
+
+  <ul class="list-unstyled components">
+    <li *ngFor="let item of menus; let i = index" [className]=" item.route == selectedRoute? 'active': ''">
+      <a (click)="navigateTo(item.route)" [href]="item.route">
+        <span class="icon">
+          <i [class]="item.icon"></i>
+        </span>
+        <span class="menu-text">{{item.name}}</span>
+      </a>
+    </li>
+  </ul>
+
+</nav>
