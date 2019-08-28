@@ -18,7 +18,7 @@ export class SideMenuComponent implements OnInit {
 
   toggleSideBar() {
     document.querySelector('#sidebar').classList.toggle('active');
-    this.sidebarClosed = !document.querySelector('#sidebar').classList.contains('active')
+    this.sidebarClosed = !document.querySelector('#sidebar').classList.contains('active');
   }
   navigateTo(route: string) {
     this.selectedMenu = route;
