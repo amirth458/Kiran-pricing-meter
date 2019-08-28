@@ -1,6 +1,6 @@
 <div class="wrapper">
   <ul>
-    <li *ngFor="let menu of submenus" [class.active]="menu.route == selectedRoute">
+    <li *ngFor="let menu of submenus" [class.active]="menu.route == selectedMenu">
       <a [href]="menu.route" (click)="setSelectedRoute(menu.route)">
         {{menu.name}}
       </a>

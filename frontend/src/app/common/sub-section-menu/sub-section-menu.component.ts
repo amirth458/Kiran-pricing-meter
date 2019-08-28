@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sub-section-menu',
@@ -7,31 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubSectionMenuComponent implements OnInit {
 
-  submenus = [
-    {
-      name: 'Home',
-      route: '#home'
-    },
-    {
-      name: 'Vendor',
-      route: '#vendor'
-    },
-    {
-      name: 'Processes',
-      route: '#processes'
-    },
-    {
-      name: 'Post-Processes',
-      route: '#post-processes'
-    }
-  ];
-  selectedRoute = '#home';
+  @Input('submenus') submenus: [{ name: string, route: string }];
+  @Input('selectedMenu') selectedMenu: string;
   constructor() { }
 
   ngOnInit() {
   }
 
   setSelectedRoute(route) {
-    this.selectedRoute = route;
+    this.selectedMenu = route;
   }
 }

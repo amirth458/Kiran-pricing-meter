@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-side-menu',
@@ -7,40 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideMenuComponent implements OnInit {
 
-  selectedRoute: string;
+  @Input('selectedMenu') selectedMenu: string;
+  @Input('refreshSubmenu') refreshSubmenu;
+  @Input('menus') menus: [];
   sidebarClosed = false;
-  menus = [
-    {
-      name: 'Program',
-      route: '#program',
-      icon: 'far fa-file-alt'
-    },
-    {
-      name: 'Profile',
-      route: '#profile',
-      icon: 'far fa-user-circle'
-    },
-    {
-      name: 'Fleet Control',
-      route: '#fleet',
-      icon: 'fas fa-wrench'
-    },
-    {
-      name: 'Material Inventory',
-      route: '#material',
-      icon: 'fas fa-dolly-flatbed'
-    },
-    {
-      name: 'Insight',
-      route: '#insight',
-      icon: 'far fa-chart-bar'
-    },
-    {
-      name: 'Setting',
-      route: '#setting',
-      icon: 'fas fa-cogs'
-    }
-  ];
+
   constructor() { }
 
   ngOnInit() { }
@@ -50,6 +21,7 @@ export class SideMenuComponent implements OnInit {
     this.sidebarClosed = !document.querySelector('#sidebar').classList.contains('active')
   }
   navigateTo(route: string) {
-    this.selectedRoute = route;
+    this.selectedMenu = route;
+    this.refreshSubmenu();
   }
 }
