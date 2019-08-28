@@ -80,3 +80,9 @@
     margin-right: unset;
   }
 }
+
+@media (max-width: 375px) {
+  .navbar .logo {
+    margin-left: unset;
+  }
+}
