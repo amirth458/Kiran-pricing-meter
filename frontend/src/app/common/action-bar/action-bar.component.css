@@ -1,0 +1,34 @@
+.wrapper {
+  /* margin-left: 150px; */
+  height: 90px;
+  background: white;
+  color: var(--theme-dark-blue-opaque);
+  display: flex;
+  align-items: center;
+  padding: 0px 40px;
+}
+
+ul {
+  height: 50px;
+  list-style: none;
+  margin: unset;
+  padding: unset;
+}
+
+ul li {
+  /* font-weight: bold; */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 19px;
+  padding-left: 10px;
+  margin-right: 90px;
+  height: 100%;
+  border-left: 6px solid rgba(9, 40, 70, .36);
+}
+
+ul li .name.active,
+ul li .name:hover {
+  cursor: pointer;
+  color: var(--theme-light-green);
+}

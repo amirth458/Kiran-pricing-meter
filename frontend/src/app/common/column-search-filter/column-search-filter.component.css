@@ -1,0 +1,17 @@
+.wrapper {}
+
+.wrapper {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.playground {
+  background: #e0e0e080;
+  height: 100%;
+  padding: 20px 30px;
+  padding-left: 105px;
+}
+
+.playground.wide {
+  padding-left: 30px;
+}

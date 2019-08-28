@@ -10,7 +10,7 @@ export class SideMenuComponent implements OnInit {
   @Input('selectedMenu') selectedMenu: string;
   @Input('refreshSubmenu') refreshSubmenu;
   @Input('menus') menus: [];
-  sidebarClosed = false;
+  sidemenuClosed = false;
 
   constructor() { }
 
@@ -18,7 +18,7 @@ export class SideMenuComponent implements OnInit {
 
   toggleSideBar() {
     document.querySelector('#sidebar').classList.toggle('active');
-    this.sidebarClosed = !document.querySelector('#sidebar').classList.contains('active');
+    this.sidemenuClosed = !document.querySelector('#sidebar').classList.contains('active');
   }
   navigateTo(route: string) {
     this.selectedMenu = route;
