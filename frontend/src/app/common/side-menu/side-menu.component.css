@@ -12,10 +12,11 @@ a:hover {
   max-width: 75px;
   height: auto;
   z-index: 6;
+  user-select: none;
 }
 
 #sidebar .sidebar-header {
-  padding: 10px 27px;
+  padding: 0px 27px;
   text-align: center;
   font-size: 25px;
   transition: .5s ease;
@@ -98,16 +99,6 @@ a[aria-expanded="true"] {
   display: block;
   font-size: 1.4em;
   width: 100%;
-}
-
-@keyframes rotateToggleIcon {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(180deg);
-  }
 }
 
 @media (max-width: 768px) {
