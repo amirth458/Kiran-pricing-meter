@@ -13,5 +13,12 @@
 
 .bg-dark-blue {
   background: var(--theme-dark-blue);
+  display: flex;
   color: white;
+}
+
+a,
+a:hover {
+  color: unset;
+  text-decoration: unset
 }
