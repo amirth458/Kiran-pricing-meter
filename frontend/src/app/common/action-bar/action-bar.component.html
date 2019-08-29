@@ -1,9 +1,11 @@
 <div class="wrapper shadow">
   <ul>
     <li *ngFor="let menu of menus">
-      <div class="name" [class.active]="selectedTab == menu.name" (click)="selectTab(menu.name)">
-        {{menu.name}}
-        <!-- <span class="tooltiptext ">Tooltip text</span> -->
+      <div (click)="selectTab(menu.name)">
+        <span class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
+        <span class="icon" data-toggle="tooltip" data-placement="right" [title]="menu.tooltipMessage">
+          <i class="fas fa-question-circle"></i>
+        </span>
       </div>
     </li>
   </ul>

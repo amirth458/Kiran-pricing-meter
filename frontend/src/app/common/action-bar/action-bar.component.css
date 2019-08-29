@@ -27,8 +27,17 @@ ul li {
   border-left: 6px solid rgba(9, 40, 70, .36);
 }
 
+.name {
+  margin-right: 10px;
+}
+
 ul li .name.active,
 ul li .name:hover {
   cursor: pointer;
   color: var(--theme-light-green);
+}
+
+.icon {
+  font-size: 13px;
+  position: absolute;
 }
