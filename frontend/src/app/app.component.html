@@ -1,1 +1,9 @@
-<app-column-search-filter></app-column-search-filter>
+<div class="wrapper">
+
+  <app-top-menu></app-top-menu>
+
+  <app-side-menu [menus]="menus" [(selectedMenu)]="selectedMenu"></app-side-menu>
+
+  <router-outlet>  </router-outlet>
+
+</div>

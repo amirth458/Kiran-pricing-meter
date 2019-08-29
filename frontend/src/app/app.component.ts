@@ -8,4 +8,38 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
 
+  menus = [
+    {
+      name: 'Program',
+      route: '/program',
+      icon: 'far fa-file-alt'
+    },
+    {
+      name: 'Profile',
+      route: '/profile',
+      icon: 'far fa-user-circle'
+    },
+    {
+      name: 'Fleet Control',
+      route: '/fleet',
+      icon: 'fas fa-wrench'
+    },
+    {
+      name: 'Material Inventory',
+      route: '/material',
+      icon: 'fas fa-dolly-flatbed'
+    },
+    {
+      name: 'Insight',
+      route: '/insight',
+      icon: 'far fa-chart-bar'
+    },
+    {
+      name: 'Setting',
+      route: '/setting',
+      icon: 'fas fa-cogs'
+    }
+  ];
+  selectedMenu = '/profile';
+
 }
