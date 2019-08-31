@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +16,7 @@ import { TopMenuComponent } from './common/top-menu/top-menu.component';
 // Services
 import { AuthService } from './service/auth.service';
 import { UserService } from './service/user.service';
+import { BasicDetailsComponent } from './component/basic-details/basic-details.component';
 
 
 @NgModule({
@@ -25,11 +27,13 @@ import { UserService } from './service/user.service';
     SideMenuComponent,
     SubSectionMenuComponent,
     ProfileComponent,
-    TopMenuComponent
+    TopMenuComponent,
+    BasicDetailsComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [
     AuthService,

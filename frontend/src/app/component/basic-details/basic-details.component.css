@@ -1,0 +1,19 @@
+.wrapper {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+.form-row>.col,
+.form-row>[class*=col-] {
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}
