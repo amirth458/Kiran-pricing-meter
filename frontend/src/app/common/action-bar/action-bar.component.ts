@@ -12,7 +12,7 @@ export class ActionBarComponent implements OnInit {
 
   ngOnInit() {
     $(() => {
-      $('[data-toggle="tooltip"]').tooltip();
+      ($('[data-toggle="tooltip"]') as any).tooltip();
     });
 
   }
