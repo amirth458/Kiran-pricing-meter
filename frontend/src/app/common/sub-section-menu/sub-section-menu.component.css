@@ -2,6 +2,10 @@
   margin-left: 75px;
   background: var(--theme-secondary-blue);
   box-shadow: 0px 5px 5px 2px #0000001f;
+  position: fixed;
+  top: 67px;
+  width: 100%;
+  z-index: 5;
 }
 
 ul {

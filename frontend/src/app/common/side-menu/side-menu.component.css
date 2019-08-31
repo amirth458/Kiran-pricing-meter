@@ -13,6 +13,7 @@ a:hover {
   height: auto;
   z-index: 6;
   user-select: none;
+  padding-top: 67px
 }
 
 #sidebar .sidebar-header {
