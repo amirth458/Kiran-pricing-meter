@@ -46,7 +46,7 @@ a:hover {
 }
 
 button.theme {
-  background: var(--them-dark-blue-opaque);
+  background: var(--theme-secondary-blue);
   color: white;
   width: 100%;
   padding: 10px 8px;
