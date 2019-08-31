@@ -38,6 +38,12 @@ a:hover {
 
 }
 
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
+  color: white;
+  background: var(--theme-light-green);
+}
 
 button.theme {
   background: var(--them-dark-blue-opaque);
@@ -47,8 +53,29 @@ button.theme {
   border: unset;
 }
 
+button.theme.dim {
+  background: var(--theme-secondary-blue);
+}
+
+button.theme.white {
+  background: white;
+  color: var(--theme-secondary-blue);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+button.theme:active,
 button.theme:hover {
   background: var(--theme-light-green);
+}
+
+button.theme.dim:hover {
+  background: var(--theme-secondary-blue);
+  opacity: .9;
+}
+
+button.theme.white:hover {
+  color: var(--theme-dark-blue);
+  background: unset;
 }
 
 .button-section {
