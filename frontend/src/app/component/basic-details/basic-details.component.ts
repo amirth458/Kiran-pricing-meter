@@ -21,6 +21,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     certifications: '',
     confidentiality: '',
   };
+  internationalCode = internationalCode;
   certificationsOption = [];
   confidentialityOption = [];
   constructor() { }
