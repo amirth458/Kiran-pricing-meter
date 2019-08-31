@@ -1,8 +1,8 @@
 <div class="wrapper shadow">
   <ul>
     <li *ngFor="let menu of menus">
-      <div (click)="selectTab(menu.name)">
-        <span class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
+      <div>
+        <span (click)="selectTab(menu)" class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
         <span class="icon" data-toggle="tooltip" data-placement="right" [title]="menu.tooltipMessage">
           <i class="fas fa-question-circle"></i>
         </span>
@@ -10,9 +10,10 @@
     </li>
   </ul>
 
-  <div class="action-button">
-    <button type="submit" class="btn btn-primary theme dim" (submit)="save()">
-      Add Machine
+  <div class="action-button" *ngIf="menus[activeTabIndex].actions.length">
+    <button *ngFor="let item of menus[activeTabIndex].actions" type="submit" class="btn btn-primary theme dim"
+      (submit)="save()">
+      {{item}}
     </button>
     <!-- <button type="submit" class="btn btn-primary theme white" (submit)="save()">
       <i class="fas fa-chevron-left"></i>
