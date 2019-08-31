@@ -6,6 +6,7 @@
   --them-dark-blue-opaque: #092846;
   --theme-secondary-blue: #607181;
   --theme-light-green: #8FBE4C;
+  --theme-input-bg: rgba(196, 196, 196, .13);
 }
 
 * {
@@ -22,4 +23,34 @@ a,
 a:hover {
   color: unset;
   text-decoration: unset
+}
+
+.form-group.theme label {
+  color: var(--them-dark-blue-opaque);
+  font-weight: 500;
+}
+
+.form-group.theme input,
+.form-group.theme select {
+  font-size: 14px;
+  background: var(--theme-input-bg);
+  color: var(--theme-secondary-blue);
+
+}
+
+
+button.theme {
+  background: var(--them-dark-blue-opaque);
+  color: white;
+  width: 100%;
+  padding: 10px 8px;
+  border: unset;
+}
+
+button.theme:hover {
+  background: var(--theme-light-green);
+}
+
+.button-section {
+  margin-top: 30px;
 }
