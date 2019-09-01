@@ -9,6 +9,7 @@ import { ActionBarComponent } from './common/action-bar/action-bar.component';
 import { AppComponent } from './app.component';
 import { BasicDetailsComponent } from './component/basic-details/basic-details.component';
 import { ColumnSearchFilterComponent } from './common/column-search-filter/column-search-filter.component';
+import { FacilityItemComponent } from './component/facility-item/facility-item.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
@@ -26,11 +27,12 @@ import { UserService } from './service/user.service';
     AppComponent,
     BasicDetailsComponent,
     ColumnSearchFilterComponent,
+    FacilityItemComponent,
     PreferencesComponent,
     ProfileComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
-    TopMenuComponent
+    TopMenuComponent,
   ],
   imports: [
     AppRoutingModule,
