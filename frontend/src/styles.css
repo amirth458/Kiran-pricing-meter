@@ -4,7 +4,8 @@
 :root {
   --theme-dark-blue: #092846;
   --them-dark-blue-opaque: #092846;
-  --theme-secondary-blue: #607181;
+  --theme-secondary-blue: rgba(9, 40, 70, .74);
+  --theme-secondary-blue-solid: #607181;
   --theme-light-green: #8FBE4C;
   --theme-input-bg: rgba(196, 196, 196, .13);
 }
@@ -36,6 +37,11 @@ a:hover {
   background: var(--theme-input-bg);
   color: var(--theme-secondary-blue);
 
+}
+
+.form-group.theme input:focus {
+  border-color: #8FBE4C !important;
+  box-shadow: unset;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
