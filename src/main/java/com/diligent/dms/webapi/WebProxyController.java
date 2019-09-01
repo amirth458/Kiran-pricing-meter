@@ -1,4 +1,4 @@
-package io.diligent.dms.webapi;
+package com.diligent.dms.webapi;
 
 
 import org.eclipse.jetty.server.Request;

@@ -1,4 +1,4 @@
-package io.diligent.dms;
+package com.diligent.dms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package io.diligent.dms.common;
+package com.diligent.dms.common;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
