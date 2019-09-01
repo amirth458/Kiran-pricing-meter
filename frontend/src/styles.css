@@ -10,6 +10,8 @@
   --theme-secondary-blue-solid: #607181;
   --theme-light-green: #8FBE4C;
   --theme-input-bg: rgba(196, 196, 196, .13);
+
+  --theme-table-border: rgba(112, 112, 112, .39)
 }
 
 * {
@@ -89,3 +91,27 @@ button.theme.white:hover {
 .button-section {
   margin-top: 30px;
 }
+
+
+/* Overriding Ag-grid style */
+.theme-table .ag-theme-balham .ag-header-row {
+  background: var(--theme-secondary-blue-solid);
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.theme-table .ag-theme-balham .ag-row {
+  border-color: var(--theme-table-border);
+}
+
+.theme-table .ag-theme-balham .ag-header-icon .ag-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.theme-table .ag-theme-balham .ag-paging-panel {
+  justify-content: space-between;
+}
+
+/* End of Overriding Ag-grid style */
