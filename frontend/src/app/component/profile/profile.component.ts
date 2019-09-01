@@ -48,6 +48,123 @@ export class ProfileComponent implements OnInit {
   submenus;
   selectedSubmenu;
 
+
+  searchColumns = [
+    {
+      name: 'Equipment', checked: true, query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Process Profile Name', checked: false,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Layer Height', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Infill', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Tolerance Base', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+
+    {
+      name: 'Equipment', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Process Profile Name', checked: false,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Layer Height', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Infill', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+    {
+      name: 'Tolerance Base', checked: true,
+      query: {
+        type: null,
+        queryString: null,
+      }
+    },
+  ];
+  filterColumns = [
+    {
+      name: 'Equipment', checked: true
+    },
+    {
+      name: 'Process Profile Name', checked: false
+    },
+    {
+      name: 'Layer Height', checked: true
+    },
+    {
+      name: 'Infill', checked: true
+    },
+    {
+      name: 'Tolerance Base', checked: true
+    },
+
+    {
+      name: 'Equipment', checked: true
+    },
+    {
+      name: 'Process Profile Name', checked: false
+    },
+    {
+      name: 'Layer Height', checked: true
+    },
+    {
+      name: 'Infill', checked: true
+    },
+    {
+      name: 'Tolerance Base', checked: true
+    },
+  ];
+  activeColumns = [];
+  options = [
+    'is',
+    `isn't`,
+    `doesn't contain`,
+    'starts with',
+    'ends with',
+    'is empty',
+    'is not empty',
+  ];
+  type = ['search', 'filter'];
   constructor(private route: Router) {
     this.baseURL = this.route.url.split('#')[0];
   }
