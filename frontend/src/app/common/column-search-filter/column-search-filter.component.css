@@ -1,0 +1,81 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  background: white;
+}
+
+.tabs {
+  margin-bottom: 10px;
+  color: var(--theme-secondary-blue);
+  font-size: 19px;
+  text-align: center;
+}
+
+.tabs div {
+  padding: 5px;
+}
+
+.tabs div:hover {
+  cursor: pointer;
+}
+
+.tabs div.active {
+  background: var(--theme-secondary-blue);
+  color: white;
+}
+
+.input input {
+  font-size: 12px;
+  border-radius: 0px;
+  border-color: rgb(239, 239, 239);
+}
+
+.column-container {
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 20px
+}
+
+
+.column-container .column-name {
+  font-size: 14px;
+  color: var(--theme-secondary-blue);
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.column-container .icon {
+  color: var(--theme-secondary-blue);
+  font-size: 22px;
+  float: right;
+}
+
+.column-container .icon:hover {
+  cursor: pointer;
+}
+
+
+.search .column-container .column-name .name {
+  padding-top: 6px;
+}
+
+.search .column-container .options div {
+  margin-bottom: 5px;
+  width: 80%;
+}
+
+.search .column-container .options select {
+  font-size: 12px;
+}
+
+.search .column-container .query input {
+  font-size: 11px;
+}
+
+@media(max-width: 768px) {
+  .column-container .column-name {
+    font-size: 12px;
+  }
+}
