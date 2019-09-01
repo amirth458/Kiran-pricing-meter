@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
+import { AgGridModule } from 'ag-grid-angular';
 import { AppRoutingModule } from './app-routing.module';
 
 // Components
@@ -36,6 +37,7 @@ import { UserService } from './service/user.service';
   ],
   imports: [
     AppRoutingModule,
+    AgGridModule.withComponents([]),
     BrowserModule,
     FormsModule
   ],
