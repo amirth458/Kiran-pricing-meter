@@ -27,7 +27,7 @@ a:hover {
 }
 
 .form-group.theme label {
-  color: var(--them-dark-blue-opaque);
+  color: var(--theme-secondary-blue-solid);
   font-weight: 500;
 }
 
