@@ -166,7 +166,7 @@ export class ProfileComponent implements OnInit {
   ];
   type = ['search', 'filter'];
   constructor(private route: Router) {
-    this.baseURL = this.route.url.split('#')[0];
+    this.baseURL = this.route.url.split('/')[1];
   }
 
   ngOnInit() {
