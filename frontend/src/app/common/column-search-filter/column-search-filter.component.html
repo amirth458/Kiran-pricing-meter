@@ -1,4 +1,4 @@
-<div class=" wrapper shadow">
+<div class=" wrapper shadow" [style.width]="width">
 
   <div class="container">
 
@@ -20,7 +20,7 @@
 
       </div>
 
-      <div class="column-container">
+      <div class="column-container" [style.height]="height">
 
         <div class="row" *ngFor="let column of filterColumnsClone; let index=index">
           <div class="col-sm-2">
@@ -52,7 +52,7 @@
 
       </div>
 
-      <div class="column-container">
+      <div class="column-container" [style.height]="height">
 
         <div class="row" *ngFor="let column of searchColumnsClone; let index=index">
           <div class="col-sm-2">

@@ -8,6 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ColumnSearchFilterComponent implements OnInit {
 
   // Accept this from parent component
+  @Input('height') height: string;
+  @Input('width') width: string;
   @Input('options') options: [string];
   @Input('searchColumns') searchColumns: [{
     name: string,
