@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
-import * as internationalCode from '../../../assets/js/internationalCode';
+import * as internationalCode from '../../../assets/static/internationalCode';
 
 @Component({
   selector: 'app-basic-details',
