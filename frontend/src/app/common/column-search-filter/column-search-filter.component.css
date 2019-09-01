@@ -70,10 +70,12 @@
 
 .search .column-container .options select {
   font-size: 12px;
+  height: 25px;
 }
 
 .search .column-container .query input {
   font-size: 11px;
+  height: 25px;
 }
 
 @media(max-width: 768px) {
