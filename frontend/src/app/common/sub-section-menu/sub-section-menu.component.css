@@ -1,6 +1,6 @@
 .wrapper {
   margin-left: 75px;
-  background: var(--theme-secondary-blue);
+  background: var(--theme-secondary-blue-solid);
   box-shadow: 0px 5px 5px 2px #0000001f;
   position: fixed;
   top: 67px;
