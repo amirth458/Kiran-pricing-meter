@@ -10,21 +10,21 @@ export class ColumnSearchFilterComponent implements OnInit {
   // Accept this from parent component
   @Input('height') height: string;
   @Input('width') width: string;
-  @Input('options') options: [string];
-  @Input('searchColumns') searchColumns: [{
+  @Input('options') options: Array<string>;
+  @Input('searchColumns') searchColumns: Array<{
     name: string,
     checked: boolean,
     query: {
       type: string,
       queryString: string
     }
-  }];
-  @Input('filterColumns') filterColumns: [
+  }>;
+  @Input('filterColumns') filterColumns: Array<
     {
       name: string,
       checked: boolean,
-    }];
-  @Input('type') type: [string];
+    }>;
+  @Input('type') type: Array<string>
 
   // Visual
   searchColumnsClone = [];
@@ -87,9 +87,9 @@ export class ColumnSearchFilterComponent implements OnInit {
   search(event, type) {
     const query = event.target.value;
     if (type === 'search') {
-      this.searchColumnsClone = this.searchColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query));
+      this.searchColumnsClone = this.searchColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
     } else {
-      this.filterColumnsClone = this.filterColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query));
+      this.filterColumnsClone = this.filterColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
     }
   }
 }

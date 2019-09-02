@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FacilityComponent } from './facility.component';
+import { ColumnSearchFilterComponent } from 'src/app/common/column-search-filter/column-search-filter.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { FormsModule } from '@angular/forms';
 
 describe('FacilityComponent', () => {
   let component: FacilityComponent;
@@ -8,9 +11,13 @@ describe('FacilityComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FacilityComponent ]
+      declarations: [FacilityComponent, ColumnSearchFilterComponent],
+      imports: [
+        AgGridModule.withComponents([]),
+        FormsModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

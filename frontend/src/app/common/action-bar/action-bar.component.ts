@@ -1,13 +1,20 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
+import * as $ from 'jquery';
+
 @Component({
   selector: 'app-action-bar',
   templateUrl: './action-bar.component.html',
   styleUrls: ['./action-bar.component.css']
 })
 export class ActionBarComponent implements OnInit {
-  @Input('menus') menus: [{ name: string, route: string, actions: [] }];
+  @Input('menus') menus: Array<{
+    name: string,
+    tooltipMessage: string,
+    route: string,
+    actions: Array<string>
+  }>;
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;

@@ -9,7 +9,7 @@ export class SideMenuComponent implements OnInit {
 
   @Input('selectedMenu') selectedMenu: string;
   @Input('refreshSubmenu') refreshSubmenu;
-  @Input('menus') menus: [];
+  @Input('menus') menus: Array<{ name: string, route: string, icon: string }>;
   sidemenuClosed = false;
 
   constructor() { }

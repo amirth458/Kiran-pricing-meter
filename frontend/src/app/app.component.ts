@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
 
-  menus = [
+  menus: Array<{ name: string, route: string, icon: string }> = [
     {
       name: 'Program',
       route: '/program',
