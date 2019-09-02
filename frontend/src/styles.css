@@ -95,7 +95,7 @@ button.theme.white:hover {
 
 /* Overriding Ag-grid style */
 .theme-table .ag-theme-balham .ag-header-row {
-  background: var(--theme-secondary-blue-solid);
+  background: var(--theme-secondary-blue);
   color: white;
   font-size: 14px;
   font-weight: 300;
