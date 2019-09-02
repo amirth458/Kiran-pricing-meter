@@ -29,7 +29,7 @@
             </span>
 
             <span class="icon" *ngIf="!column.checked" (click)="toggleCheck(index, 'filter')">
-              <i class="far fa-check-square"></i>
+              <i class="far fa-square"></i>
             </span>
           </div>
 
@@ -61,7 +61,7 @@
             </span>
 
             <span class="icon" *ngIf="!column.checked" (click)="toggleCheck(index, 'search')">
-              <i class="far fa-check-square"></i>
+              <i class="far fa-square"></i>
             </span>
           </div>
 
@@ -84,7 +84,7 @@
                 <div class="form-group">
                   <input required type="text" class="form-control"
                     [(ngModel)]="searchColumns[column.id].query.queryString" id="search_query" name="search_query"
-                    placeholder="Columns">
+                    placeholder="">
                 </div>
               </span>
 

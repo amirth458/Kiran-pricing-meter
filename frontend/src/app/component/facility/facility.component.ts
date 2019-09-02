@@ -130,21 +130,22 @@ export class FacilityComponent implements OnInit, AfterViewInit {
 
 
   columnDefs = [
-    { headerName: 'Facility No', field: 'number', sortable: true, filter: true },
-    { headerName: 'Facility Name', field: 'name', sortable: true, filter: true },
-    { headerName: 'Email', field: 'email', sortable: true, filter: true },
-    // { headerName: 'Phone', field: 'phone', sortable: true, filter: true },
-    // { headerName: 'Address', field: 'address', sortable: true, filter: true },
-    { headerName: 'City', field: 'city', sortable: true, filter: true },
-    { headerName: 'State', field: 'state', sortable: true, filter: true },
-    { headerName: 'Country', field: 'country', sortable: true, filter: true },
+    { headerName: 'Facility No', field: 'number', sortable: true, filter: true, width: 150 },
+    { headerName: 'Facility Name', field: 'name', sortable: true, filter: true, width: 150 },
+    { headerName: 'Email', field: 'email', sortable: true, filter: true, width: 150 },
+    // { headerName: 'Phone', field: 'phone', sortable: true, filter: true, width: 150 },
+    // { headerName: 'Address', field: 'address', sortable: true, filter: true, width: 150 },
+    { headerName: 'City', field: 'city', sortable: true, filter: true, width: 150 },
+    { headerName: 'State', field: 'state', sortable: true, filter: true, width: 150 },
+    { headerName: 'Country', field: 'country', sortable: true, filter: true, width: 150 },
     // { headerName: 'Certification', field: 'certification', sortable: true, filter: true },
-    {headerName: 'Actions', }
+    { headerName: 'Actions', width: 102 }
   ];
   gridOptions: GridOptions = {
     columnDefs: this.columnDefs,
     pagination: true,
-    paginationPageSize: 10
+    paginationPageSize: 10,
+    enableColResize: true
   };
 
   rowData = [
@@ -162,6 +163,7 @@ export class FacilityComponent implements OnInit, AfterViewInit {
       Page Size:
       <select id="page-size">
         <option value="10" selected>10</option>
+        <option value="20">20</option>
         <option value="50">50</option>
         <option value="100">100</option>
         <option value="200">200</option>
