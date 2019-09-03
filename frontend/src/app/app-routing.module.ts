@@ -9,26 +9,34 @@ import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
 import { ProfileComponent } from './component/profile/profile.component';
+import { VendorComponent } from './components/vendor/vendor.component';
 
 const routes: Routes = [
 
   {
-    path: 'profile', component: ProfileComponent, children: [
-      { path: 'basics', component: BasicDetailsComponent },
-      { path: 'facilities', component: FacilityComponent },
-      { path: 'facilities/add', component: FacilityItemComponent },
-      { path: 'facilities/edit/:id', component: FacilityItemComponent },
-      { path: 'machines', component: MachinesComponent },
-      { path: 'machines/add', component: MachineItemComponent },
-      { path: 'machines/edit/:id', component: MachineItemComponent },
-      { path: 'preferences', component: PreferencesComponent },
-      { path: '', pathMatch: 'full', redirectTo: 'basics' },
-      { path: '**', pathMatch: 'full', redirectTo: 'basics' },
-    ]
+    path: 'profile', component: ProfileComponent,
+    children: [
+      {
+        path: 'vendor', component: VendorComponent,
+        children: [
+          { path: 'basics', component: BasicDetailsComponent },
+          { path: 'facilities', component: FacilityComponent },
+          { path: 'facilities/add', component: FacilityItemComponent },
+          { path: 'facilities/edit/:id', component: FacilityItemComponent },
+          { path: 'machines', component: MachinesComponent },
+          { path: 'machines/add', component: MachineItemComponent },
+          { path: 'machines/edit/:id', component: MachineItemComponent },
+          { path: 'preferences', component: PreferencesComponent },
+          { path: '', pathMatch: 'full', redirectTo: 'basics' },
+          { path: '**', pathMatch: 'full', redirectTo: 'basics' }
+        ]
+      },
+      { path: '', pathMatch: 'full', redirectTo: 'vendor' },
+      { path: '**', pathMatch: 'full', redirectTo: 'vendor' }
+    ],
   },
-  {
-    path: '**', redirectTo: 'profile'
-  }
+  { path: '', pathMatch: 'full', redirectTo: 'profile' },
+  { path: '**', pathMatch: 'full', redirectTo: 'profile' }
 ];
 
 @NgModule({

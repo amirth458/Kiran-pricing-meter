@@ -20,6 +20,7 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
+import { VendorComponent } from './components/vendor/vendor.component';
 
 // Services
 import { AuthService } from './service/auth.service';
@@ -36,12 +37,13 @@ import { UserService } from './service/user.service';
     FacilityComponent,
     FacilityItemComponent,
     MachinesComponent,
+    MachineItemComponent,
     PreferencesComponent,
     ProfileComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
-    MachineItemComponent,
+    VendorComponent,
   ],
   imports: [
     AppRoutingModule,

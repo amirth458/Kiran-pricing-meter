@@ -25,7 +25,7 @@ export class ActionBarComponent implements OnInit {
     });
 
     const routeArray = this.route.url.split('/');
-    this.baseURL = routeArray[1];
+    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
     if (routeArray.length > 2) {
       this.menus.map((x, index) => {
         if (x.route === routeArray[2]) {
@@ -59,9 +59,9 @@ export class ActionBarComponent implements OnInit {
   }
 
   backButton() {
-    let gotoURL = '/profile/basics';
+    let gotoURL = '/profile/vendor/basics';
     const urlArray = this.route.url.split('/');
-    gotoURL = `/${urlArray[1]}/${urlArray[2]}`;
+    gotoURL = `/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`;
     this.route.navigateByUrl(gotoURL);
   }
 
