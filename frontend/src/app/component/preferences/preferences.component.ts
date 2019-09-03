@@ -26,6 +26,8 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
+        } else {
+          this.save();
         }
         form.classList.add('was-validated');
       }, false);
