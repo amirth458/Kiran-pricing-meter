@@ -1,182 +1,231 @@
-import { Component, OnInit, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, AfterViewInit, AfterContentInit } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
 import * as facilities from '../../../assets/static/facilities';
+import { Router } from '@angular/router';
+import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 
 @Component({
   selector: 'app-facility',
   templateUrl: './facility.component.html',
   styleUrls: ['./facility.component.css']
 })
-export class FacilityComponent implements OnInit, AfterViewInit {
+export class FacilityComponent implements OnInit {
 
   searchColumns = [
     {
-      name: 'Equipment', checked: false, query: {
-        type: null,
-        queryString: null,
+      name: 'Facility No', checked: false, field: 'id', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Process Profile Name', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Facility Name', checked: false,
+      field: 'facilityName', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Layer Height', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Email', checked: false,
+      field: 'email', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Infill', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Phone', checked: false,
+      field: 'phone', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Tolerance Base', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Address', checked: false,
+      field: 'address', query: {
+        type: '',
+        filter: '',
       }
     },
 
     {
-      name: 'Equipment', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'City', checked: false,
+      field: 'city', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Process Profile Name', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'State', checked: false,
+      field: 'state', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Layer Height', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Country', checked: false,
+      field: 'country', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Infill', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Certifications', checked: false,
+      field: 'certifications', query: {
+        type: '',
+        filter: '',
       }
     },
     {
-      name: 'Tolerance Base', checked: false,
-      query: {
-        type: null,
-        queryString: null,
+      name: 'Actions', checked: false,
+      field: 'actions', query: {
+        type: '',
+        filter: '',
       }
     },
   ];
   filterColumns = [
     {
-      name: 'Equipment', checked: false
+      name: 'Facility No', checked: true, field: 'id'
     },
     {
-      name: 'Process Profile Name', checked: false
+      name: 'Facility Name', checked: true, field: 'facilityName'
     },
     {
-      name: 'Layer Height', checked: false
+      name: 'Email', checked: true, field: 'email'
     },
     {
-      name: 'Infill', checked: false
+      name: 'Phone', checked: false, field: 'phone'
     },
     {
-      name: 'Tolerance Base', checked: false
+      name: 'Address', checked: false, field: 'address'
     },
 
     {
-      name: 'Equipment', checked: false
+      name: 'City', checked: true, field: 'city'
     },
     {
-      name: 'Process Profile Name', checked: false
+      name: 'State', checked: true, field: 'state'
     },
     {
-      name: 'Layer Height', checked: false
+      name: 'Country', checked: false, field: 'country'
     },
     {
-      name: 'Infill', checked: false
+      name: 'Certifications', checked: true, field: 'certifications'
     },
     {
-      name: 'Tolerance Base', checked: false
+      name: 'Actions', checked: true, field: 'actions'
     },
   ];
   activeColumns = [];
-  options = [
-    'is',
-    `isn't`,
-    `doesn't contain`,
-    'starts with',
-    'ends with',
-    'is empty',
-    'is not empty',
-  ];
   type = ['search', 'filter'];
 
-
-  columnDefs = [
-    { headerName: 'Facility No', field: 'number', sortable: true, filter: true, width: 150 },
-    { headerName: 'Facility Name', field: 'name', sortable: true, filter: true, width: 150 },
-    { headerName: 'Email', field: 'email', sortable: true, filter: true, width: 150 },
-    // { headerName: 'Phone', field: 'phone', sortable: true, filter: true, width: 150 },
-    // { headerName: 'Address', field: 'address', sortable: true, filter: true, width: 150 },
-    { headerName: 'City', field: 'city', sortable: true, filter: true, width: 150 },
-    { headerName: 'State', field: 'state', sortable: true, filter: true, width: 150 },
-    { headerName: 'Country', field: 'country', sortable: true, filter: true, width: 150 },
-    // { headerName: 'Certification', field: 'certification', sortable: true, filter: true },
-    { headerName: 'Actions', width: 102 }
-  ];
-  gridOptions: GridOptions = {
-    columnDefs: this.columnDefs,
-    pagination: true,
-    paginationPageSize: 10,
-    enableColResize: true
+  frameworkComponents = {
+    actionCellRenderer: ActionCellRendererComponent,
   };
 
-  rowData = [
-    ...facilities
+  columnDefs = [
+    { headerName: 'Facility No', field: 'id', hide: false, sortable: true, filter: true },
+    { headerName: 'Facility Name', field: 'facilityName', hide: false, sortable: true, filter: true },
+    { headerName: 'Email', field: 'email', hide: false, sortable: true, filter: true },
+    { headerName: 'Phone', field: 'phone', hide: true, sortable: true, filter: true },
+    { headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true },
+    { headerName: 'City', field: 'city', hide: false, sortable: true, filter: true },
+    { headerName: 'State', field: 'state', hide: false, sortable: true, filter: true },
+    { headerName: 'Country', field: 'country', hide: false, sortable: true, filter: true },
+    { headerName: 'Certifications', field: 'certifications', hide: false, sortable: true, filter: true },
+    {
+      headerName: 'Actions',
+      width: 100,
+      cellRenderer: 'actionCellRenderer',
+      cellRendererParams: {
+        action: {
+          edit: (param) => this.editRow(param),
+          delete: (param) => this.deleteRow(param)
+        }
+      }
+    }
   ];
-  constructor() { }
+
+
+  gridOptions: GridOptions;
+
+  rowData;
+  pageSize = 10;
+  constructor(private route: Router) { }
 
   ngOnInit() {
+    this.rowData = facilities;
+    this.configureColumnDefs();
+    this.gridOptions = {
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs,
+      pagination: true,
+      paginationPageSize: 10,
+      enableColResize: true,
+      rowHeight: 35,
+      onRowClicked: (event) => {
+        // this.onRowClick(event);
+      }
+
+    };
+    setTimeout(() => {
+      this.gridOptions.api.sizeColumnsToFit();
+
+    }, 50);
   }
 
-  ngAfterViewInit(): void {
-    const temp = document.getElementsByClassName('ag-paging-panel')[0].innerHTML;
-    const optionHTML = `
-   <div class="page-size">
-      Page Size:
-      <select id="page-size">
-        <option value="10" selected>10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
-      </select>
-    </div>`;
-    document.getElementsByClassName('ag-paging-panel')[0].innerHTML = optionHTML + temp;
-    (document.getElementById('page-size') as any).addEventListener('change', ($event) => {
-      this.onPageSizeChanged($event.target.value);
+  configureColumnDefs() {
+    this.filterColumns.map(column => {
+      this.columnDefs.map(col => {
+        if (col.headerName === column.name) {
+          col.hide = !column.checked;
+        }
+      });
     });
   }
 
-  onPageSizeChanged(value) {
+  pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
+  editRow(event) {
+    this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
+  }
+
+  deleteRow(event) {
+    // tslint:disable-next-line:triple-equals
+    const filteredData = this.rowData.filter(x => x.id != event.data.id);
+    this.rowData = filteredData;
+    console.log(this.rowData);
+  }
+
+  searchColumnsChange(event) {
+    this.searchColumns.map(column => {
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
+      if (column.checked) {
+        columnInstance.setModel(column.query);
+      } else {
+        columnInstance.setModel({ type: '', filter: '' });
+      }
+      this.gridOptions.api.onFilterChanged();
+    });
+  }
+
+  filterColumnsChange(event) {
+    this.reconfigColumns();
+    this.searchColumnsChange({});
+  }
+
+  reconfigColumns() {
+    this.configureColumnDefs();
+    this.gridOptions.api.setColumnDefs([]);
+    this.gridOptions.api.setColumnDefs(this.columnDefs);
+    this.gridOptions.api.sizeColumnsToFit();
+  }
 }
+
+
+

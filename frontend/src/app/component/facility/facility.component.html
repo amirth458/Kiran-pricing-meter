@@ -1,13 +1,27 @@
 <div class="wrapper">
   <div class="table-control">
     <app-column-search-filter width="220px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
-      [(searchColumns)]="searchColumns" [(options)]="options">
+      (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
+      (searchColumnsChange)="searchColumnsChange($event)">
     </app-column-search-filter>
   </div>
   <div class="table theme-table">
 
+    <div class="page-size">
+      Page Size:
+      <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+        <option selected value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </div>
+
     <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
+
+
   </div>
 </div>

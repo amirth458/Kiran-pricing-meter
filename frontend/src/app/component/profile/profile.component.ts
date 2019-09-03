@@ -14,7 +14,7 @@ export class ProfileComponent implements OnInit {
     name: string,
     tooltipMessage: string,
     route: string,
-    actions: Array<string>
+    actions: Array<{ name: string, route: string }>
   }> = [
       {
         name: 'Basic Details',
@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
         name: 'Facilities',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'facilities',
-        actions: ['Add Facility']
+        actions: [{name: 'Add Facility', route: 'add'}]
       },
       {
         name: 'Preferences',
@@ -38,13 +38,13 @@ export class ProfileComponent implements OnInit {
         name: 'Machines',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'machines',
-        actions: ['Add Machine']
+        actions: [{name: 'Add Machine', route: 'add'}]
       },
       {
         name: 'Shipping',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'shipping',
-        actions: ['Add Carrier']
+        actions: [{ name: 'Add Carrier', route: 'add' }]
       }
     ];
   selectedTab = this.actionbarMenu[0].name;
@@ -57,35 +57,35 @@ export class ProfileComponent implements OnInit {
     {
       name: 'Equipment', checked: true, query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Process Profile Name', checked: false,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Layer Height', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Infill', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Tolerance Base', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
 
@@ -93,35 +93,35 @@ export class ProfileComponent implements OnInit {
       name: 'Equipment', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Process Profile Name', checked: false,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Layer Height', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Infill', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Tolerance Base', checked: true,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
   ];

@@ -103,6 +103,7 @@ button.theme.white:hover {
 
 .theme-table .ag-theme-balham .ag-row {
   border-color: var(--theme-table-border);
+  color: var(--theme-secondary-blue-solid)
 }
 
 .theme-table .ag-theme-balham .ag-header-icon .ag-icon {
@@ -112,6 +113,27 @@ button.theme.white:hover {
 
 .theme-table .ag-theme-balham .ag-paging-panel {
   justify-content: space-between;
+}
+
+.theme-table .ag-theme-balham .ag-cell {
+  font-size: 13px;
+}
+
+
+.theme-table .ag-theme-balham .action-column {
+  font-size: 14px;
+  /* display: flex; */
+  /* justify-content: fla; */
+
+}
+
+.theme-table .ag-theme-balham .action-column span:hover {
+  cursor: pointer;
+}
+
+.theme-table .ag-theme-balham .action-column .delete {
+  color: red !important;
+  margin-left: 10px;
 }
 
 /* End of Overriding Ag-grid style */

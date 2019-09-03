@@ -1,6 +1,10 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
+import * as facilities from '../../../assets/static/facilities';
 import * as internationalCode from '../../../assets/static/internationalCode';
+
+import { Router } from '@angular/router';
+import { Facility } from 'src/app/model/facility.model';
 
 
 @Component({
@@ -10,23 +14,40 @@ import * as internationalCode from '../../../assets/static/internationalCode';
 })
 export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
-  form = {
-    vendor_name: '',
-    vendor_type: '',
+  form: Facility = {
+    id: '',
+    venderInfoId: '',
+    facilityName: '',
     email: '',
     phone: '',
-    primary_address: '',
+    address: '',
     city: '',
     state: '',
     country: '',
     certifications: '',
-    confidentiality: '',
+    createdBy: '',
+    createdDate: '',
+    updatedDate: '',
   };
+
   internationalCode = internationalCode;
   certificationsOption = [];
-  constructor() { }
+  facilities = facilities;
+  createMode = true;
+  facilityId = null;
+
+  constructor(private route: Router) { }
 
   ngOnInit() {
+    if (this.route.url.includes('edit')) {
+      this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+      const facility = this.facilities.filter(x => x.id == this.facilityId);
+      if (facility.length > 0) {
+        this.createMode = false;
+        this.form = { ...this.form, ...facility[0] };
+      }
+      // Make API request
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -38,13 +59,18 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
+        } else {
+          this.save();
         }
         form.classList.add('was-validated');
       }, false);
     });
   }
   save() {
-    console.log(this.form);
+    let gotoURL = '/profile/basics';
+    const urlArray = this.route.url.split('/');
+    gotoURL = `/${urlArray[1]}/${urlArray[2]}`;
+    this.route.navigateByUrl(gotoURL);
   }
 
 }
