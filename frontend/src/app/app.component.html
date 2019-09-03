@@ -2,8 +2,11 @@
 
   <app-top-menu></app-top-menu>
 
-  <app-side-menu [menus]="menus" [(selectedMenu)]="selectedMenu"></app-side-menu>
+  <app-side-menu [menus]="menus" [(selectedMenu)]="selectedMenu" [(menuOpen)]="sideMenuOpen"
+    (toggleMenuStatus)="toggleMenuStatus($event)"></app-side-menu>
 
-  <router-outlet> </router-outlet>
+  <div class="page-body" [ngClass]="sideMenuOpen? 'expanded':'collapsed' ">
+    <router-outlet> </router-outlet>
+  </div>
 
 </div>

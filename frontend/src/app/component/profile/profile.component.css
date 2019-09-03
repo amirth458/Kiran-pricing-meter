@@ -1,7 +1,7 @@
 .playground {
   background: #e0e0e080;
   min-height: 100vh;
-  padding: 120px 30px 20px 105px;
+  padding: 120px 30px 20px 30px;
   z-index: 4;
 }
 
@@ -17,6 +17,6 @@
 
 @media(max-width: 768px) {
   .playground {
-    padding: 120px 20px 20px 95px;
+    padding: 120px 20px 20px 20px;
   }
 }

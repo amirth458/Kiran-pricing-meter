@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
 
   menus: Array<{ name: string, route: string, icon: string }> = [
@@ -41,5 +41,14 @@ export class AppComponent {
     }
   ];
   selectedMenu = '/profile';
+  sideMenuOpen = true;
 
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  toggleMenuStatus(value: boolean) {
+    this.sideMenuOpen = value;
+  }
 }

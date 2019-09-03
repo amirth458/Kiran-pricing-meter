@@ -13,6 +13,7 @@ ul {
   margin: unset;
   padding: unset;
   width: 90%;
+  display: inline-flex;
 }
 
 ul li {
@@ -26,7 +27,10 @@ ul li {
   border-left: 6px solid rgba(9, 40, 70, .36);
   user-select: none;
 }
-
+ ul li:first-child{
+   display: flex;
+   align-items: center;
+ }
 .name {
   margin-right: 10px;
 }
@@ -38,8 +42,9 @@ ul li .name:hover {
 }
 
 .icon {
-  font-size: 13px;
+  font-size: 12px;
   position: absolute;
+  margin-top: -8px;
 }
 
 
@@ -64,7 +69,7 @@ ul li .name:hover {
 
 @media(max-width: 1050px) {
   ul li {
-    margin-right: 35px;
+    margin-right: 28px;
   }
 }
 
@@ -88,7 +93,7 @@ ul li .name:hover {
     height: 50px;
     display: flex;
     justify-content: flex-start;
-    font-size: 17px
+    font-size: 14px
   }
 
   .action-button {
