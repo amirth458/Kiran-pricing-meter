@@ -29,6 +29,13 @@ ul li.active {
   color: var(--theme-light-green);
 }
 
+ul li span {
+  user-select: none;
+}
+
+ul li span:hover {
+  cursor: pointer;
+}
 
 @media(max-width: 768px) {
   .wrapper {

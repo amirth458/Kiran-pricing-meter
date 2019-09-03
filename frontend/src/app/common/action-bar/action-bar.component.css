@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   padding: 0px 40px;
+  margin-bottom: 20px;
 }
 
 ul {
@@ -27,10 +28,12 @@ ul li {
   border-left: 6px solid rgba(9, 40, 70, .36);
   user-select: none;
 }
- ul li:first-child{
-   display: flex;
-   align-items: center;
- }
+
+ul li:first-child {
+  display: flex;
+  align-items: center;
+}
+
 .name {
   margin-right: 10px;
 }
