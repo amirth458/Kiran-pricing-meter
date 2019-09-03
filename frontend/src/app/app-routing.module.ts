@@ -6,6 +6,7 @@ import { BasicDetailsComponent } from './component/basic-details/basic-details.c
 import { FacilityComponent } from './component/facility/facility.component';
 import { FacilityItemComponent } from './component/facility-item/facility-item.component';
 import { MachinesComponent } from './components/machines/machines.component';
+import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
 import { ProfileComponent } from './component/profile/profile.component';
 
@@ -18,6 +19,8 @@ const routes: Routes = [
       { path: 'facilities/add', component: FacilityItemComponent },
       { path: 'facilities/edit/:id', component: FacilityItemComponent },
       { path: 'machines', component: MachinesComponent },
+      { path: 'machines/add', component: MachineItemComponent },
+      { path: 'machines/edit/:id', component: MachineItemComponent },
       { path: 'preferences', component: PreferencesComponent },
       { path: '', pathMatch: 'full', redirectTo: 'basics' },
       { path: '**', pathMatch: 'full', redirectTo: 'basics' },

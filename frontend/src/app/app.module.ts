@@ -14,6 +14,7 @@ import { ColumnSearchFilterComponent } from './common/column-search-filter/colum
 import { FacilityComponent } from './component/facility/facility.component';
 import { FacilityItemComponent } from './component/facility-item/facility-item.component';
 import { MachinesComponent } from './components/machines/machines.component';
+import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
@@ -40,6 +41,7 @@ import { UserService } from './service/user.service';
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
+    MachineItemComponent,
   ],
   imports: [
     AppRoutingModule,
