@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BasicDetailsComponent } from './component/basic-details/basic-details.component';
 import { FacilityComponent } from './component/facility/facility.component';
 import { FacilityItemComponent } from './component/facility-item/facility-item.component';
+import { MachinesComponent } from './components/machines/machines.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
 import { ProfileComponent } from './component/profile/profile.component';
 
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'facilities', component: FacilityComponent },
       { path: 'facilities/add', component: FacilityItemComponent },
       { path: 'facilities/edit/:id', component: FacilityItemComponent },
+      { path: 'machines', component: MachinesComponent },
       { path: 'preferences', component: PreferencesComponent },
       { path: '', pathMatch: 'full', redirectTo: 'basics' },
       { path: '**', pathMatch: 'full', redirectTo: 'basics' },
