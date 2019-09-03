@@ -1,10 +1,10 @@
 export class VendorInformation {
     id: string;
     basicDetailId: string;
-    facilityId: [string];
+    facilityId: Array<string>;
     preferenceId: string;
-    machineId: [string];
-    shippingId: [string];
+    machineId: Array<string>;
+    shippingId: Array<string>;
     createdBy: string;
     createdDate: string;
     updatedDate: string;

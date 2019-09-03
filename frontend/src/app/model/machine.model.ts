@@ -4,7 +4,7 @@ export class Machine {
     machineName: string;
     serialNumber: string;
     equipment: string;
-    material: [string];
+    material: Array<string>;
     facilityId: string;
     createdBy: string;
     createdDate: string;
