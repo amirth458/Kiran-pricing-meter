@@ -16,6 +16,9 @@ import { FacilityItemComponent } from './component/facility-item/facility-item.c
 import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
+import { ProcessComponent } from './components/process/process.component';
+import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
+import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
@@ -39,6 +42,9 @@ import { UserService } from './service/user.service';
     MachinesComponent,
     MachineItemComponent,
     PreferencesComponent,
+    ProcessComponent,
+    ProcessProfileComponent,
+    ProcessProfileItemComponent,
     ProfileComponent,
     SideMenuComponent,
     SubSectionMenuComponent,

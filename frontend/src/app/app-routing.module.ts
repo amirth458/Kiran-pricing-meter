@@ -8,7 +8,10 @@ import { FacilityItemComponent } from './component/facility-item/facility-item.c
 import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './component/preferences/preferences.component';
+import { ProcessComponent } from './components/process/process.component';
 import { ProfileComponent } from './component/profile/profile.component';
+import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
+import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 
 const routes: Routes = [
@@ -31,12 +34,22 @@ const routes: Routes = [
           { path: '**', pathMatch: 'full', redirectTo: 'basics' }
         ]
       },
-      { path: '', pathMatch: 'full', redirectTo: 'vendor' },
-      { path: '**', pathMatch: 'full', redirectTo: 'vendor' }
+      {
+        path: 'processes', component: ProcessComponent,
+        children: [
+          { path: 'profile', component: ProcessProfileComponent },
+          { path: 'profile/add', component: ProcessProfileItemComponent },
+          { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
+          { path: '', redirectTo: 'profile', pathMatch: 'full' },
+          { path: '**', redirectTo: 'profile', pathMatch: 'full' }
+        ]
+      },
+      { path: '', redirectTo: 'vendor', pathMatch: 'full' },
+      { path: '**', redirectTo: 'vendor', pathMatch: 'full' }
     ],
   },
-  { path: '', pathMatch: 'full', redirectTo: 'profile' },
-  { path: '**', pathMatch: 'full', redirectTo: 'profile' }
+  { path: '', redirectTo: 'profile', pathMatch: 'full' },
+  { path: '**', redirectTo: 'profile', pathMatch: 'full' }
 ];
 
 @NgModule({
