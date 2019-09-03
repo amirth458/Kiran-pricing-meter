@@ -137,3 +137,15 @@ button.theme.white:hover {
 }
 
 /* End of Overriding Ag-grid style */
+
+/* NON Ag-grid table style */
+
+.page-size {
+  margin-top: -25px;
+  font-size: 13px;
+  float: right;
+  user-select: none;
+}
+
+
+/* NON Ag-grid table style */
