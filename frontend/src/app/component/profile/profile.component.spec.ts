@@ -2,14 +2,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileComponent } from './profile.component';
 import { ActionBarComponent } from 'src/app/common/action-bar/action-bar.component';
+import { ColumnSearchFilterComponent } from 'src/app/common/column-search-filter/column-search-filter.component';
 import { SubSectionMenuComponent } from 'src/app/common/sub-section-menu/sub-section-menu.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { BasicDetailsComponent } from '../basic-details/basic-details.component';
 import { FacilityComponent } from '../facility/facility.component';
+import { FacilityItemComponent } from '../facility-item/facility-item.component';
+import { MachinesComponent } from 'src/app/components/machines/machines.component';
+import { MachineItemComponent } from 'src/app/components/machine-item/machine-item.component';
 import { PreferencesComponent } from '../preferences/preferences.component';
 import { FormsModule } from '@angular/forms';
-import { ColumnSearchFilterComponent } from 'src/app/common/column-search-filter/column-search-filter.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { VendorComponent } from 'src/app/components/vendor/vendor.component';
+import { ProcessComponent } from 'src/app/components/process/process.component';
+import { ProcessProfileComponent } from 'src/app/components/process-profile/process-profile.component';
+import { ProcessProfileItemComponent } from 'src/app/components/process-profile-item/process-profile-item.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -23,8 +30,15 @@ describe('ProfileComponent', () => {
         BasicDetailsComponent,
         ColumnSearchFilterComponent,
         FacilityComponent,
+        FacilityItemComponent,
+        MachinesComponent,
+        MachineItemComponent,
         PreferencesComponent,
-        SubSectionMenuComponent
+        ProcessComponent,
+        ProcessProfileComponent,
+        ProcessProfileItemComponent,
+        SubSectionMenuComponent,
+        VendorComponent
       ],
       imports: [
         AppRoutingModule,

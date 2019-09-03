@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProcessProfileComponent } from './process-profile.component';
+import { ColumnSearchFilterComponent } from 'src/app/common/column-search-filter/column-search-filter.component';
+import { FormsModule } from '@angular/forms';
+import { AgGridModule } from 'ag-grid-angular';
+import { Router } from '@angular/router';
 
 describe('ProcessProfileComponent', () => {
   let component: ProcessProfileComponent;
@@ -8,9 +12,21 @@ describe('ProcessProfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProcessProfileComponent ]
+      declarations: [ProcessProfileComponent, ColumnSearchFilterComponent],
+      imports: [
+        FormsModule,
+        AgGridModule.withComponents([
+        ])],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            url: '/profile/processes/profile'
+          }
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

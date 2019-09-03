@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubSectionMenuComponent } from './sub-section-menu.component';
+import { Router } from '@angular/router';
 
 describe('SubSectionMenuComponent', () => {
   let component: SubSectionMenuComponent;
@@ -8,9 +9,17 @@ describe('SubSectionMenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubSectionMenuComponent ]
+      declarations: [SubSectionMenuComponent],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            url: '/profile/basic'
+          }
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

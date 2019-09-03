@@ -4,6 +4,7 @@ import { FacilityComponent } from './facility.component';
 import { ColumnSearchFilterComponent } from 'src/app/common/column-search-filter/column-search-filter.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 describe('FacilityComponent', () => {
   let component: FacilityComponent;
@@ -15,6 +16,14 @@ describe('FacilityComponent', () => {
       imports: [
         AgGridModule.withComponents([]),
         FormsModule
+      ],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            url: '/profile/facilities'
+          }
+        }
       ]
     })
       .compileComponents();

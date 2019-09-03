@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VendorComponent } from './vendor.component';
+import { ActionBarComponent } from 'src/app/common/action-bar/action-bar.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('VendorComponent', () => {
   let component: VendorComponent;
@@ -8,9 +10,10 @@ describe('VendorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VendorComponent ]
+      declarations: [VendorComponent, ActionBarComponent],
+      imports: [RouterTestingModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

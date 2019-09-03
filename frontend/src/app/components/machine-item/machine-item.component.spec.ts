@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MachineItemComponent } from './machine-item.component';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 describe('MachineItemComponent', () => {
   let component: MachineItemComponent;
@@ -8,9 +10,18 @@ describe('MachineItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MachineItemComponent ]
+      declarations: [MachineItemComponent],
+      imports: [FormsModule],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            url: '/profile/basic'
+          }
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

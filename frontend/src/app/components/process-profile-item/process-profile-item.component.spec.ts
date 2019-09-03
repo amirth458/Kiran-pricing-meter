@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProcessProfileItemComponent } from './process-profile-item.component';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 describe('ProcessProfileItemComponent', () => {
   let component: ProcessProfileItemComponent;
@@ -8,9 +10,19 @@ describe('ProcessProfileItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProcessProfileItemComponent ]
+      declarations: [ProcessProfileItemComponent],
+      imports: [FormsModule],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            url: '/profile/basic'
+          }
+        }
+      ]
+
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

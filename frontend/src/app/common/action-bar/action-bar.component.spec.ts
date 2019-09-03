@@ -7,11 +7,12 @@ describe('ActionBarComponent', () => {
   let component: ActionBarComponent;
   let fixture: ComponentFixture<ActionBarComponent>;
 
+
   const menus: Array<{
     name: string,
     tooltipMessage: string,
     route: string,
-    actions: Array<string>
+    actions: Array<{ name: string, route: string }>
   }> = [
       {
         name: 'Basic Details',
@@ -23,7 +24,7 @@ describe('ActionBarComponent', () => {
         name: 'Facilities',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'facilities',
-        actions: ['Add Facility']
+        actions: [{ name: 'Add Facility', route: 'add' }]
       },
       {
         name: 'Preferences',
@@ -35,13 +36,13 @@ describe('ActionBarComponent', () => {
         name: 'Machines',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'machines',
-        actions: ['Add Machine']
+        actions: [{ name: 'Add Machine', route: 'add' }]
       },
       {
         name: 'Shipping',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'shipping',
-        actions: ['Add Carrier']
+        actions: [{ name: 'Add Carrier', route: 'add' }]
       }
     ];
 

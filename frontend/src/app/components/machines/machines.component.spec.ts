@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MachinesComponent } from './machines.component';
+import { FormsModule } from '@angular/forms';
+import { AgGridModule } from 'ag-grid-angular';
+import { Router } from '@angular/router';
 
 describe('MachinesComponent', () => {
   let component: MachinesComponent;
@@ -8,9 +11,21 @@ describe('MachinesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MachinesComponent ]
+      declarations: [MachinesComponent],
+      imports: [FormsModule,
+        AgGridModule.withComponents([
+        ]),
+      ],
+      providers: [
+        {
+          provide: Router,
+          useValue: {
+            url: '/profile/basic'
+          }
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
