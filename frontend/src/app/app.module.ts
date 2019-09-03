@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Components
 import { ActionBarComponent } from './common/action-bar/action-bar.component';
+import { ActionCellRendererComponent } from './common/action-cell-renderer/action-cell-renderer.component';
 import { AppComponent } from './app.component';
 import { BasicDetailsComponent } from './component/basic-details/basic-details.component';
 import { ColumnSearchFilterComponent } from './common/column-search-filter/column-search-filter.component';
@@ -26,6 +27,7 @@ import { UserService } from './service/user.service';
 @NgModule({
   declarations: [
     ActionBarComponent,
+    ActionCellRendererComponent,
     AppComponent,
     BasicDetailsComponent,
     ColumnSearchFilterComponent,
@@ -39,7 +41,9 @@ import { UserService } from './service/user.service';
   ],
   imports: [
     AppRoutingModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([
+      ActionCellRendererComponent,
+    ]),
     BrowserModule,
     FormsModule
   ],
