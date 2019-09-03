@@ -11,35 +11,35 @@ describe('ColumnSearchFilterComponent', () => {
     {
       name: 'Equipment', checked: false, query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Process Profile Name', checked: false,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Layer Height', checked: false,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Infill', checked: false,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     },
     {
       name: 'Tolerance Base', checked: false,
       query: {
         type: null,
-        queryString: null,
+        filter: null,
       }
     }];
 

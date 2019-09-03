@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-column-search-filter',
@@ -7,16 +7,30 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ColumnSearchFilterComponent implements OnInit {
 
-  // Accept this from parent component
   @Input('height') height: string;
   @Input('width') width: string;
+
+  @Output() public searchColumnsChange: EventEmitter<Array<{
+    name: string,
+    checked: boolean,
+    query: {
+      type: string,
+      filter: string
+    }
+  }>> = new EventEmitter();
+  @Output() public filterColumnsChange: EventEmitter<Array<
+    {
+      name: string,
+      checked: boolean,
+    }>> = new EventEmitter();
+
   @Input('options') options: Array<string>;
   @Input('searchColumns') searchColumns: Array<{
     name: string,
     checked: boolean,
     query: {
       type: string,
-      queryString: string
+      filter: string
     }
   }>;
   @Input('filterColumns') filterColumns: Array<
@@ -24,7 +38,7 @@ export class ColumnSearchFilterComponent implements OnInit {
       name: string,
       checked: boolean,
     }>;
-  @Input('type') type: Array<string>
+  @Input('type') type: Array<string>;
 
   // Visual
   searchColumnsClone = [];
@@ -73,10 +87,12 @@ export class ColumnSearchFilterComponent implements OnInit {
     if (type === 'search') {
       this.searchColumns[index].checked = !this.searchColumns[index].checked;
       this.searchColumnsClone[index].checked = !this.searchColumnsClone[index].checked;
+      this.searchColumnsChange.emit(this.searchColumns);
     } else {
-
       this.filterColumns[index].checked = !this.filterColumns[index].checked;
       this.filterColumnsClone[index].checked = !this.filterColumnsClone[index].checked;
+      this.filterColumnsChange.emit(this.filterColumns);
+
     }
   }
 
@@ -87,9 +103,11 @@ export class ColumnSearchFilterComponent implements OnInit {
   search(event, type) {
     const query = event.target.value;
     if (type === 'search') {
-      this.searchColumnsClone = this.searchColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
+      this.searchColumnsClone =
+        this.searchColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
     } else {
-      this.filterColumnsClone = this.filterColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
+      this.filterColumnsClone =
+        this.filterColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
     }
   }
 }

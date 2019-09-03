@@ -72,18 +72,23 @@
               <span class="row options" *ngIf="column.checked">
 
                 <div class="form-group ">
-                  <select required id="option" [(ngModel)]="searchColumns[column.id].query.type" name="option"
-                    class="form-control">
-                    <option selected value="">Choose...</option>
-                    <option *ngFor="let option of options" [value]="option">{{option}}</option>
+                  <select required id="option" [(ngModel)]="searchColumns[column.id].query.type"
+                    (ngModelChange)="searchColumnsChange.emit(searchColumns)" name="option" class="form-control">
+                    <option value="">Choose...</option>
+                    <option value="contains">Contains</option>
+                    <option value="notContains">Not contains</option>
+                    <option value="equals">Equals</option>
+                    <option value="notEqual">Not equal</option>
+                    <option value="startsWith">Starts with</option>
+                    <option value="endsWith">Ends with</option>
                   </select>
                 </div>
               </span>
 
               <span class="row query" *ngIf="column.checked">
                 <div class="form-group">
-                  <input required type="text" class="form-control"
-                    [(ngModel)]="searchColumns[column.id].query.queryString" id="search_query" name="search_query"
+                  <input required type="text" class="form-control" [(ngModel)]="searchColumns[column.id].query.filter"
+                    (ngModelChange)="searchColumnsChange.emit(searchColumns)" id="search_query" name="search_query"
                     placeholder="">
                 </div>
               </span>
