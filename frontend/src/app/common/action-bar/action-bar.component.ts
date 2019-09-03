@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import * as $ from 'jquery';
-
+declare var $: any;
 @Component({
   selector: 'app-action-bar',
   templateUrl: './action-bar.component.html',
@@ -13,7 +12,7 @@ export class ActionBarComponent implements OnInit {
     name: string,
     tooltipMessage: string,
     route: string,
-    actions: Array<string>
+    actions: Array<{ name: string, route: string }>
   }>;
   @Input('selectedTab') selectedTab: string;
   baseURL;
@@ -22,8 +21,9 @@ export class ActionBarComponent implements OnInit {
 
   ngOnInit() {
     $(() => {
-      ($('[data-toggle="tooltip"]') as any).tooltip();
+      $('[data-toggle="tooltip"]').tooltip();
     });
+
     const routeArray = this.route.url.split('/');
     this.baseURL = routeArray[1];
     if (routeArray.length > 2) {
@@ -54,5 +54,15 @@ export class ActionBarComponent implements OnInit {
       });
   }
 
+  addButton(route) {
+    this.route.navigateByUrl(this.route.url + '/' + route);
+  }
+
+  backButton() {
+    let gotoURL = '/profile/basics';
+    const urlArray = this.route.url.split('/');
+    gotoURL = `/${urlArray[1]}/${urlArray[2]}`;
+    this.route.navigateByUrl(gotoURL);
+  }
 
 }
