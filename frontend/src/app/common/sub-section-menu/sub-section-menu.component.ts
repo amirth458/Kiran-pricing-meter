@@ -13,6 +13,10 @@ export class SubSectionMenuComponent implements OnInit {
   constructor(private route: Router) { }
 
   ngOnInit() {
+    const urlArray = this.route.url.split('/');
+    if (urlArray.length > 2) {
+      this.selectedMenu = `${urlArray[1]}/${urlArray[2]}`;
+    }
   }
 
   setSelectedRoute(route) {
