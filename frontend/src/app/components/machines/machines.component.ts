@@ -125,7 +125,7 @@ export class MachinesComponent implements OnInit {
     this.rowData = machines;
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
-    }
+     }
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -133,6 +133,7 @@ export class MachinesComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
+      headerHeight: 35,
       onRowClicked: (event) => {
         // this.onRowClick(event);
       }

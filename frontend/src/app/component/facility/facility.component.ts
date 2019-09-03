@@ -118,7 +118,6 @@ export class FacilityComponent implements OnInit {
       name: 'Actions', checked: true, field: 'actions'
     },
   ];
-  activeColumns = [];
   type = ['search', 'filter'];
 
   frameworkComponents = {
@@ -157,7 +156,9 @@ export class FacilityComponent implements OnInit {
 
   ngOnInit() {
     this.rowData = facilities;
-    this.configureColumnDefs();
+    if (this.type.includes('filter')) {
+      this.configureColumnDefs();
+    }
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -165,6 +166,7 @@ export class FacilityComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
+      headerHeight: 35,
       onRowClicked: (event) => {
         // this.onRowClick(event);
       }

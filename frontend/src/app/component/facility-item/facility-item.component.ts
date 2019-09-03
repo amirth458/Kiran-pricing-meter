@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
 import * as facilities from '../../../assets/static/facilities';
-import * as internationalCode from '../../../assets/static/internationalCode';
 
 import { Router } from '@angular/router';
 import { Facility } from 'src/app/model/facility.model';
@@ -30,10 +29,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     updatedDate: '',
   };
 
-  internationalCode = internationalCode;
   certificationsOption = [];
   facilities = facilities;
-  createMode = true;
   facilityId = null;
 
   constructor(private route: Router) { }
@@ -43,7 +40,6 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
       this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
       const facility = this.facilities.filter(x => x.id == this.facilityId);
       if (facility.length > 0) {
-        this.createMode = false;
         this.form = { ...this.form, ...facility[0] };
       }
       // Make API request
