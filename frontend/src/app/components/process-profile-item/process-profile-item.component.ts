@@ -23,9 +23,47 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     tensileStrength: '',
     tensileModulus: '',
     surfaceFinish: '',
+
+    pricingProfileName: '',
+    processDetails: [
+      { name: '', condition: '', value: '', unit: '' }
+    ],
+    processDimensionalProperties: [
+      { name: '', condition: '', value: '', unit: '' }
+    ],
+    processMaterialCharacteristics: [
+      { name: '', condition: '', value: '', unit: '' }
+    ]
   };
+  processDetails = {
+    conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
+    units: ['%', 'micron'],
+    conditionNames: [
+      'Layer Height',
+      'Infill',
+      'Tolerance Base',
+      'Tensile Strength',
+      'Tensile Modulus',
+      'Surface Finish',
+    ],
+  };
+
+  processDimensionalProperties = {
+    conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
+    units: ['inches'],
+    conditionNames: ['Base Tolerance', 'Tolerance Increment']
+  };
+
+  processMaterialCharacteristics = {
+    conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
+    units: ['MPa'],
+    conditionNames: ['Tensile Strength']
+  };
+
   processProfileId = null;
   processProfiles = processProfiles;
+
+  activeTab = 'Process Material Characteristics';
   constructor(private route: Router) { }
 
   ngOnInit() {
@@ -54,6 +92,27 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         form.classList.add('was-validated');
       }, false);
     });
+  }
+
+  addCondition(section) {
+    switch (section) {
+      case 'processDetails':
+        this.form.processDetails.push({ name: '', condition: '', value: '', unit: '' });
+        break;
+      case 'processDimensionalProperties':
+        this.form.processDimensionalProperties.push({ name: '', condition: '', value: '', unit: '' });
+        break;
+      case 'processMaterialCharacteristics':
+        this.form.processMaterialCharacteristics.push({ name: '', condition: '', value: '', unit: '' });
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  toggleTab(tabName) {
+    this.activeTab = tabName;
   }
   save() {
     console.log(this.form);

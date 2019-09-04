@@ -17,6 +17,76 @@
 
 }
 
+
+.card .card-header {
+  background: white;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  padding: 5px;
+  height: 50px;
+  margin-bottom: 20px
+}
+
+.card .card-header .menu-item {
+  display: inline-flex;
+  align-items: center;
+  margin: 0px 20px;
+}
+
+.card .card-header .menu-item:hover {
+  cursor: pointer;
+}
+
+.card .card-header .separator {
+  border-left: 6px solid rgba(9, 40, 70, .36);
+}
+
+
+.card .card-header .menu-item.active {
+  color: var(--theme-light-green);
+  border-bottom: 5px solid;
+}
+
+.form-group.conditionLabel {
+  height: 10px
+}
+
+.conditions {
+  margin: 0px 0px 20px 20px;
+  padding: 20px;
+  border: 2px solid var(--theme-table-border);
+  border-radius: 8px;
+}
+
+.conditions .info {
+  font-size: 13px;
+  margin-bottom: 20px;
+  color: var(--theme-secondary-blue)
+}
+
+.condition-wrapper {
+  display: flex;
+}
+
+.conditions .input-wrapper {
+  flex-grow: 1;
+}
+
+.conditions .add {
+  display: flex;
+  margin-top: 6px;
+  font-size: 16px;
+  color: var(--theme-light-green);
+  margin-left: 12px;
+  user-select: none;
+  height: fit-content;
+}
+
+.conditions .add:hover {
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
@@ -29,5 +99,24 @@
     padding-right: 5px;
     padding-left: 5px;
 
+  }
+
+  .conditions {
+    margin: unset;
+  }
+
+  .condition-wrapper {
+    flex-direction: column;
+  }
+
+  .conditions .input-wrapper>div {
+    border: 1px solid var(--theme-table-border);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .conditions .add {
+    justify-content: flex-end;
   }
 }

@@ -7,6 +7,7 @@
         <label for="processProfileName">Process Profile Name</label>
         <input required type="text" [(ngModel)]="form.processProfileName" class="form-control" id="processProfileName"
           name="processProfileName" placeholder="Process Profile Name">
+        <span class="footnote">* If left blank, we will auto-generate one for you.</span>
       </div>
 
       <div class="form-group theme col-md-6">
@@ -27,7 +28,176 @@
           <option *ngFor="let item of materials" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
+
     </div>
+
+
+    <!--  -->
+    <div class="tab-container card">
+
+      <div class="card-header">
+        <div class="menu-item" [class.active]="activeTab == 'Process Details'" (click)="toggleTab('Process Details')">
+          Process Details</div>
+        <span class="separator"></span>
+        <div class="menu-item" [class.active]="activeTab == 'Process Dimensional Properties'"
+          (click)="toggleTab('Process Dimensional Properties')">Process Dimensional Properties</div>
+        <span class=" separator"></span>
+        <div class="menu-item" [class.active]="activeTab == 'Process Material Characteristics'"
+          (click)="toggleTab('Process Material Characteristics')">
+          Process Material Characteristics</div>
+      </div>
+
+      <div id="conditionLabel" class="conditions">
+
+        <!-- Process Details -->
+        <div *ngIf="activeTab == 'Process Details'" class="condition-wrapper">
+          <span>
+            If
+          </span>
+
+          <div class="input-wrapper">
+
+            <div *ngFor="let item of form.processDetails; let index = index" class="form-row">
+
+              <div class="form-group theme col-md-3">
+                <select required id="name" name="name" [(ngModel)]="form.processDetails[index].name"
+                  class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processDetails.conditionNames" [value]="item">{{item}}</option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <select required id="condition" name="condition" [(ngModel)]="form.processDetails[index].condition"
+                  class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processDetails.conditions" [value]="item">{{item}}</option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="text" [(ngModel)]="form.processDetails[index].value" class="form-control"
+                  id="value" name="value" placeholder="Value">
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="text" [(ngModel)]="form.processDetails[index].unit" class="form-control" id="unit"
+                  name="unit" placeholder="Unit">
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="add" (click)="addCondition('processDetails')">
+            <i class="fas fa-plus"></i>
+          </span>
+
+        </div>
+        <!-- End of Process Details -->
+
+        <!-- Process Dimensional Properties -->
+        <div *ngIf="activeTab == 'Process Dimensional Properties'" class="condition-wrapper">
+          <span>
+            If
+          </span>
+
+          <div class="input-wrapper">
+
+            <div *ngFor="let item of form.processDimensionalProperties; let index = index" class="form-row">
+
+              <div class="form-group theme col-md-3">
+                <select required id="name" name="name" [(ngModel)]="form.processDimensionalProperties[index].name"
+                  class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processDimensionalProperties.conditionNames" [value]="item">{{item}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="form.processDimensionalProperties[index].condition" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processDetails.conditions" [value]="item">{{item}}</option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="text" [(ngModel)]="form.processDimensionalProperties[index].value"
+                  class="form-control" id="value" name="value" placeholder="Value">
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="text" [(ngModel)]="form.processDimensionalProperties[index].unit"
+                  class="form-control" id="unit" name="unit" placeholder="Unit">
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="add" (click)="addCondition('processDimensionalProperties')">
+            <i class="fas fa-plus"></i>
+          </span>
+
+        </div>
+        <!-- End of Process Dimensional Properties -->
+
+        <!-- Process Material Characteristics -->
+        <div *ngIf="activeTab == 'Process Material Characteristics'" class="condition-wrapper">
+          <span>
+            If
+          </span>
+
+          <div class="input-wrapper">
+
+            <div *ngFor="let item of form.processMaterialCharacteristics; let index = index" class="form-row">
+
+              <div class="form-group theme col-md-3">
+                <select required id="name" name="name" [(ngModel)]="form.processMaterialCharacteristics[index].name"
+                  class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processMaterialCharacteristics.conditionNames" [value]="item">{{item}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="form.processMaterialCharacteristics[index].condition" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processMaterialCharacteristics.conditionNames" [value]="item">{{item}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="text" [(ngModel)]="form.processMaterialCharacteristics[index].value"
+                  class="form-control" id="value" name="value" placeholder="Value">
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="text" [(ngModel)]="form.processMaterialCharacteristics[index].unit"
+                  class="form-control" id="unit" name="unit" placeholder="Unit">
+              </div>
+
+            </div>
+
+          </div>
+
+          <span class="add" (click)="addCondition('processMaterialCharacteristics')">
+            <i class="fas fa-plus"></i>
+          </span>
+
+        </div>
+        <!-- End of Process Material Characteristics -->
+
+
+      </div>
+
+    </div>
+    <!--  -->
 
 
     <div class="row button-section">

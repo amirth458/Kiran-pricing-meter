@@ -50,6 +50,7 @@
   color: var(--theme-light-green);
   margin-left: 12px;
   user-select: none;
+  height: fit-content;
 }
 
 .conditions .add:hover {
