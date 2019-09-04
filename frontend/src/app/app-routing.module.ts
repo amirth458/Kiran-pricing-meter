@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { BasicDetailsComponent } from './component/basic-details/basic-details.component';
-import { FacilityComponent } from './component/facility/facility.component';
-import { FacilityItemComponent } from './component/facility-item/facility-item.component';
+import { BasicDetailsComponent } from './components/basic-details/basic-details.component';
+import { FacilityComponent } from './components/facility/facility.component';
+import { FacilityItemComponent } from './components/facility-item/facility-item.component';
 import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
-import { PreferencesComponent } from './component/preferences/preferences.component';
+import { PreferencesComponent } from './components/preferences/preferences.component';
 import { ProcessComponent } from './components/process/process.component';
-import { ProfileComponent } from './component/profile/profile.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { VendorComponent } from './components/vendor/vendor.component';
