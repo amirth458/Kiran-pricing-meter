@@ -17,6 +17,7 @@ import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './components/preferences/preferences.component';
 import { ProcessComponent } from './components/process/process.component';
+import { ProcessPricingComponent } from './components/process-pricing/process-pricing.component';
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
@@ -43,6 +44,7 @@ import { UserService } from './service/user.service';
     MachineItemComponent,
     PreferencesComponent,
     ProcessComponent,
+    ProcessPricingComponent,
     ProcessProfileComponent,
     ProcessProfileItemComponent,
     ProfileComponent,
