@@ -13,6 +13,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProcessPricingComponent } from './components/process-pricing/process-pricing.component';
 import { ProcessPricingItemComponent } from './components/process-pricing-item/process-pricing-item.component';
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
+import { PostProcessComponent } from './components/post-process/post-process.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 
@@ -47,6 +48,12 @@ const routes: Routes = [
           { path: 'pricing/edit/:id', component: ProcessPricingItemComponent },
           { path: '', redirectTo: 'profile', pathMatch: 'full' },
           { path: '**', redirectTo: 'profile', pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'post-processes', component: PostProcessComponent,
+        children: [
+
         ]
       },
       { path: '', redirectTo: 'vendor', pathMatch: 'full' },

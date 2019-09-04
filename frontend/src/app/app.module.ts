@@ -18,9 +18,11 @@ import { MachineItemComponent } from './components/machine-item/machine-item.com
 import { PreferencesComponent } from './components/preferences/preferences.component';
 import { ProcessComponent } from './components/process/process.component';
 import { ProcessPricingComponent } from './components/process-pricing/process-pricing.component';
+import { ProcessPricingItemComponent } from './components/process-pricing-item/process-pricing-item.component';
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { PostProcessComponent } from './components/post-process/post-process.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
@@ -29,7 +31,6 @@ import { VendorComponent } from './components/vendor/vendor.component';
 // Services
 import { AuthService } from './service/auth.service';
 import { UserService } from './service/user.service';
-import { ProcessPricingItemComponent } from './components/process-pricing-item/process-pricing-item.component';
 
 
 @NgModule({
@@ -46,14 +47,15 @@ import { ProcessPricingItemComponent } from './components/process-pricing-item/p
     PreferencesComponent,
     ProcessComponent,
     ProcessPricingComponent,
+    ProcessPricingItemComponent,
     ProcessProfileComponent,
     ProcessProfileItemComponent,
     ProfileComponent,
+    PostProcessComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
     VendorComponent,
-    ProcessPricingItemComponent,
   ],
   imports: [
     AppRoutingModule,
