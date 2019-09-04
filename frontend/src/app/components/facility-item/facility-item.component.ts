@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
 import * as facilities from '../../../assets/static/facilities';
+import * as internationalCode from '../../../assets/static/internationalCode';
 
 import { Router } from '@angular/router';
 import { Facility } from 'src/app/model/facility.model';
@@ -31,6 +32,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
   certificationsOption = [];
   facilities = facilities;
+  internationalCode = internationalCode;
   facilityId = null;
 
   constructor(private route: Router) { }
