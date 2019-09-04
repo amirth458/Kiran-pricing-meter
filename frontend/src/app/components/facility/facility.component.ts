@@ -141,7 +141,10 @@ export class FacilityComponent implements OnInit {
       cellRendererParams: {
         action: {
           edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param)
+          delete: (param) => this.deleteRow(param),
+          canEdit: true,
+          canCopy: false,
+          canDelete: true,
         }
       }
     }

@@ -28,7 +28,7 @@ export class ActionBarComponent implements OnInit {
     this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
     if (routeArray.length > 2) {
       this.menus.map((x, index) => {
-        if (x.route === routeArray[2]) {
+        if (x.route === routeArray[3]) {
           this.activeTabIndex = index;
           this.selectedTab = x.name;
         }

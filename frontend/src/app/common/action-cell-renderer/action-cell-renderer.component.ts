@@ -22,6 +22,10 @@ export class ActionCellRendererComponent implements ICellRendererAngularComp {
     this.params.action.edit(this.params);
   }
 
+  onCopy(): void {
+    this.params.action.copy(this.params);
+  }
+
   onDelete(): void {
     this.params.action.delete(this.params);
   }

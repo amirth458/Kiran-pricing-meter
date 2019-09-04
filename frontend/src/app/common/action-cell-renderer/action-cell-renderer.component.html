@@ -1,4 +1,6 @@
 <div class="action-column">
-  <span #editIcon class="edit" (click)="onEdit()"><i class="fas fa-edit"></i></span>
-  <span #deleteIcon class="delete" (click)="onDelete()"><i class="fas fa-trash"></i></span>
+  <span #editIcon class="edit" (click)="onEdit()" *ngIf="params.action.canEdit"><i class="fas fa-edit"></i></span>
+  <span #copyIcon class="copy" (click)="onCopy()" *ngIf="params.action.canCopy"><i class="far fa-copy"></i></span>
+  <span #deleteIcon class="delete" (click)="onDelete()" *ngIf="params.action.canDelete"><i
+      class="fas fa-trash"></i></span>
 </div>`

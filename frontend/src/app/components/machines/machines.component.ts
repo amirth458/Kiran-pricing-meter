@@ -108,7 +108,10 @@ export class MachinesComponent implements OnInit {
       cellRendererParams: {
         action: {
           edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param)
+          delete: (param) => this.deleteRow(param),
+          canEdit: true,
+          canCopy: false,
+          canDelete: true,
         }
       }
     }
@@ -125,7 +128,7 @@ export class MachinesComponent implements OnInit {
     this.rowData = machines;
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
-     }
+    }
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,

@@ -137,12 +137,16 @@ export class ProcessProfileComponent implements OnInit {
     { headerName: 'Surface Finish', field: 'surfaceFinish', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
-      width: 100,
+      width: 140,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
           edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param)
+          copy: (param) => this.copyRow(param),
+          delete: (param) => this.deleteRow(param),
+          canEdit: true,
+          canCopy: true,
+          canDelete: true,
         }
       }
     }
@@ -198,11 +202,22 @@ export class ProcessProfileComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
+  copyRow(event) {
+    const startIndex = this.rowData.indexOf(event.data);
+    const frontSlice = this.rowData.slice(0, startIndex + 1);
+    const endSlice = this.rowData.slice(startIndex + 1);
+    this.rowData = frontSlice.concat([{ ...event.data, id: '-' }].concat(endSlice));
+    this.gridOptions.api.setRowData(this.rowData);
+
+    // API Request to save the copied row
+  }
+
   deleteRow(event) {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != event.data.id);
     this.rowData = filteredData;
-    console.log(this.rowData);
+    // API Request to delete the selected row
+
   }
 
   searchColumnsChange(event) {
