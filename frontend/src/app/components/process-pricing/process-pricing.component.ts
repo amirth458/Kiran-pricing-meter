@@ -23,7 +23,7 @@ export class ProcessPricingComponent implements OnInit {
     },
     {
       name: 'Pricing Profile', checked: false,
-      field: 'processPricing', query: {
+      field: 'pricingProfile', query: {
         type: '',
         filter: '',
       }
@@ -112,7 +112,7 @@ export class ProcessPricingComponent implements OnInit {
       name: 'No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Profile', checked: true, field: 'processPricing'
+      name: 'Pricing Profile', checked: true, field: 'pricingProfile'
     },
     {
       name: 'Process Profile', checked: true, field: 'processProfile'
