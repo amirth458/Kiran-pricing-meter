@@ -17,6 +17,8 @@ import { VendorComponent } from 'src/app/components/vendor/vendor.component';
 import { ProcessComponent } from 'src/app/components/process/process.component';
 import { ProcessProfileComponent } from 'src/app/components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from 'src/app/components/process-profile-item/process-profile-item.component';
+import { ProcessPricingComponent } from '../process-pricing/process-pricing.component';
+import { ProcessPricingItemComponent } from '../process-pricing-item/process-pricing-item.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -35,6 +37,8 @@ describe('ProfileComponent', () => {
         MachineItemComponent,
         PreferencesComponent,
         ProcessComponent,
+        ProcessPricingComponent,
+        ProcessPricingItemComponent,
         ProcessProfileComponent,
         ProcessProfileItemComponent,
         SubSectionMenuComponent,
