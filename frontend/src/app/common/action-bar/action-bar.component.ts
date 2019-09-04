@@ -47,9 +47,6 @@ export class ActionBarComponent implements OnInit {
               this.activeTabIndex = index;
             }
           });
-        } else {
-          this.activeTabIndex = 0;
-          this.selectedTab = this.menus[0].name;
         }
       });
   }
