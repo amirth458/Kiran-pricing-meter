@@ -11,6 +11,7 @@ import { PreferencesComponent } from './components/preferences/preferences.compo
 import { ProcessComponent } from './components/process/process.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProcessPricingComponent } from './components/process-pricing/process-pricing.component';
+import { ProcessPricingItemComponent } from './components/process-pricing-item/process-pricing-item.component';
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { VendorComponent } from './components/vendor/vendor.component';
@@ -42,8 +43,8 @@ const routes: Routes = [
           { path: 'profile/add', component: ProcessProfileItemComponent },
           { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
           { path: 'pricing', component: ProcessPricingComponent },
-          { path: 'profile/add', component: ProcessProfileItemComponent },
-          { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
+          { path: 'pricing/add', component: ProcessPricingItemComponent },
+          { path: 'pricing/edit/:id', component: ProcessPricingItemComponent },
           { path: '', redirectTo: 'profile', pathMatch: 'full' },
           { path: '**', redirectTo: 'profile', pathMatch: 'full' }
         ]

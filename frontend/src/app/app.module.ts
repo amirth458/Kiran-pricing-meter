@@ -29,6 +29,7 @@ import { VendorComponent } from './components/vendor/vendor.component';
 // Services
 import { AuthService } from './service/auth.service';
 import { UserService } from './service/user.service';
+import { ProcessPricingItemComponent } from './components/process-pricing-item/process-pricing-item.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { UserService } from './service/user.service';
     SubSectionMenuComponent,
     TopMenuComponent,
     VendorComponent,
+    ProcessPricingItemComponent,
   ],
   imports: [
     AppRoutingModule,
