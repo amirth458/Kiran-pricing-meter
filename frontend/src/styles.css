@@ -36,16 +36,27 @@ a:hover {
 }
 
 .form-group.theme input,
-.form-group.theme select {
+.form-group.theme select,
+.form-group.theme label {
   font-size: 14px;
   background: var(--theme-input-bg);
   color: var(--theme-secondary-blue);
 
 }
 
+.form-group.theme input,
+.form-group.theme select {
+  font-size: 13px;
+}
+
 .form-group.theme input:focus {
   border-color: #8FBE4C !important;
   box-shadow: unset;
+}
+
+.form-group.theme .footnote {
+  font-size: 12px;
+  color: var(--theme-secondary-blue);
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
