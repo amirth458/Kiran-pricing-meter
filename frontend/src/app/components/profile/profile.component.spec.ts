@@ -14,6 +14,8 @@ import { PreferencesComponent } from '../preferences/preferences.component';
 import { FormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
 import { VendorComponent } from 'src/app/components/vendor/vendor.component';
+import { PostProcessComponent } from '../post-process/post-process.component';
+import { PostProcessProfileComponent } from '../post-process-profile/post-process-profile.component';
 import { ProcessComponent } from 'src/app/components/process/process.component';
 import { ProcessProfileComponent } from 'src/app/components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from 'src/app/components/process-profile-item/process-profile-item.component';
@@ -35,6 +37,8 @@ describe('ProfileComponent', () => {
         FacilityItemComponent,
         MachinesComponent,
         MachineItemComponent,
+        PostProcessComponent,
+        PostProcessProfileComponent,
         PreferencesComponent,
         ProcessComponent,
         ProcessPricingComponent,

@@ -2,121 +2,93 @@ import { Component, OnInit } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
-import * as processProfiles from '../../../assets/static/processProfile';
+import * as postProcessProfile from '../../../assets/static/postProcessProfile';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 
 @Component({
-  selector: 'app-process-profile',
-  templateUrl: './process-profile.component.html',
-  styleUrls: ['./process-profile.component.css']
+  selector: 'app-post-process-profile',
+  templateUrl: './post-process-profile.component.html',
+  styleUrls: ['./post-process-profile.component.css']
 })
-export class ProcessProfileComponent implements OnInit {
+export class PostProcessProfileComponent implements OnInit {
+
 
   searchColumns = [
     {
-      name: 'Process Profile No', checked: false, field: 'id', query: {
+      name: 'Post-Process Profile No', checked: false, field: 'id', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Process Profile Name', checked: false,
-      field: 'processProfileName', query: {
+      name: 'Post-Process Profile Name', checked: false,
+      field: 'postProcessProfileName', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Equipment', checked: false,
-      field: 'equipment', query: {
+      name: 'Asset', checked: false,
+      field: 'asset', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Process Type', checked: false,
-      field: 'processType', query: {
+      name: 'Post-Process Profile Family', checked: false,
+      field: 'postProcessProfileFamily', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Layer Height', checked: false,
-      field: 'layerHeight', query: {
+      name: 'Post-Process Type', checked: false,
+      field: 'postProcessType', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
+      name: 'Material', checked: false,
+      field: 'material', query: {
         type: '',
         filter: '',
       }
     },
 
     {
-      name: 'Infill', checked: false,
-      field: 'infill', query: {
+      name: 'Tolerance Increment', checked: false,
+      field: 'toleranceIncrement', query: {
         type: '',
         filter: '',
       }
     },
-    {
-      name: 'Tolerance Base', checked: false,
-      field: 'toleranceBase', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Tensile Strength', checked: false,
-      field: 'tensileStrength', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Tensile Modulus', checked: false,
-      field: 'tensileModulus', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Surface Finish', checked: false,
-      field: 'surfaceFinish', query: {
-        type: '',
-        filter: '',
-      }
-    }
+
   ];
   filterColumns = [
     {
-      name: 'Process Profile No', checked: true, field: 'id'
+      name: 'Post-Process Profile No', checked: true, field: 'id'
     },
     {
-      name: 'Process Profile Name', checked: true, field: 'processProfileName'
+      name: 'Post-Process Profile Name', checked: true, field: 'postProcessProfileName'
     },
     {
-      name: 'Equipment', checked: true, field: 'equipment'
+      name: 'Asset', checked: true, field: 'asset'
     },
     {
-      name: 'Process Type', checked: false, field: 'processType'
+      name: 'Post-Process Profile Family', checked: true, field: 'postProcessProfileFamily'
     },
     {
-      name: 'Layer Height', checked: false, field: 'layerHeight'
+      name: 'Post-Process Type', checked: true, field: 'postProcessType'
+    },
+    {
+      name: 'Material', checked: false, field: 'material'
     },
 
     {
-      name: 'Infill', checked: false, field: 'infill'
-    },
-    {
-      name: 'Tolerance Base', checked: true, field: 'toleranceBase'
-    },
-    {
-      name: 'Tensile Strength', checked: false, field: 'tensileStrength'
-    },
-    {
-      name: 'Tensile Modulus', checked: true, field: 'tensileModulus'
-    },
-    {
-      name: 'Surface Finish', checked: true, field: 'surfaceFinish'
-    },
+      name: 'Tolerance Increment', checked: false, field: 'toleranceIncrement'
+    }
   ];
   type = ['search', 'filter'];
 
@@ -125,19 +97,16 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs = [
-    { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Process Profile Name', field: 'processProfileName', hide: false, sortable: true, filter: true },
-    { headerName: 'Equipment', field: 'equipment', hide: false, sortable: true, filter: true },
-    { headerName: 'Process Type', field: 'processType', hide: true, sortable: true, filter: true },
-    { headerName: 'Layer Height', field: 'layerHeight', hide: false, sortable: true, filter: true },
-    { headerName: 'Infill', field: 'infill', hide: false, sortable: true, filter: true },
-    { headerName: 'Tolerance Base', field: 'toleranceBase', hide: false, sortable: true, filter: true },
-    { headerName: 'Tensile Strength', field: 'tensileStrength', hide: false, sortable: true, filter: true },
-    { headerName: 'Tensile Modulus', field: 'tensileModulus', hide: false, sortable: true, filter: true },
-    { headerName: 'Surface Finish', field: 'surfaceFinish', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Profile Name', field: 'postProcessProfileName', hide: false, sortable: true, filter: true },
+    { headerName: 'Asset', field: 'asset', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Profile Family', field: 'postProcessProfileFamily', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: true },
+    { headerName: 'Material', field: 'material', hide: false, sortable: true, filter: true },
+    { headerName: 'Tolerance Increment', field: 'toleranceIncrement', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
-      width: 140,
+      width: 100,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
@@ -145,7 +114,7 @@ export class ProcessProfileComponent implements OnInit {
           copy: (param) => this.copyRow(param),
           delete: (param) => this.deleteRow(param),
           canEdit: true,
-          canCopy: true,
+          canCopy: false,
           canDelete: true,
         }
       }
@@ -160,7 +129,7 @@ export class ProcessProfileComponent implements OnInit {
   constructor(private route: Router) { }
 
   ngOnInit() {
-    this.rowData = processProfiles;
+    this.rowData = postProcessProfile;
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -244,3 +213,5 @@ export class ProcessProfileComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 }
+
+

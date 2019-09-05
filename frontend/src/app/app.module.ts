@@ -23,6 +23,7 @@ import { ProcessProfileComponent } from './components/process-profile/process-pr
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PostProcessComponent } from './components/post-process/post-process.component';
+import { PostProcessProfileComponent } from './components/post-process-profile/post-process-profile.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
@@ -52,6 +53,7 @@ import { UserService } from './service/user.service';
     ProcessProfileItemComponent,
     ProfileComponent,
     PostProcessComponent,
+    PostProcessProfileComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
