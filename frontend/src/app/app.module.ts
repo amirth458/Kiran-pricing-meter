@@ -17,13 +17,14 @@ import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PreferencesComponent } from './components/preferences/preferences.component';
 import { ProcessComponent } from './components/process/process.component';
+import { PostProcessComponent } from './components/post-process/post-process.component';
+import { PostProcessProfileComponent } from './components/post-process-profile/post-process-profile.component';
+import { PostProcessProfileItemComponent } from './components/post-process-profile-item/post-process-profile-item.component';
 import { ProcessPricingComponent } from './components/process-pricing/process-pricing.component';
 import { ProcessPricingItemComponent } from './components/process-pricing-item/process-pricing-item.component';
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { PostProcessComponent } from './components/post-process/post-process.component';
-import { PostProcessProfileComponent } from './components/post-process-profile/post-process-profile.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
@@ -46,14 +47,15 @@ import { UserService } from './service/user.service';
     MachinesComponent,
     MachineItemComponent,
     PreferencesComponent,
+    PostProcessComponent,
+    PostProcessProfileComponent,
+    PostProcessProfileItemComponent,
     ProcessComponent,
     ProcessPricingComponent,
     ProcessPricingItemComponent,
     ProcessProfileComponent,
     ProcessProfileItemComponent,
     ProfileComponent,
-    PostProcessComponent,
-    PostProcessProfileComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,

@@ -64,6 +64,13 @@ export class PostProcessProfileComponent implements OnInit {
         filter: '',
       }
     },
+    {
+      name: 'Surface Finish Increment', checked: false, field: 'surfaceFinishIncrement',
+      query: {
+        type: '',
+        filter: '',
+      }
+    }
 
   ];
   filterColumns = [
@@ -85,9 +92,11 @@ export class PostProcessProfileComponent implements OnInit {
     {
       name: 'Material', checked: false, field: 'material'
     },
-
     {
       name: 'Tolerance Increment', checked: false, field: 'toleranceIncrement'
+    },
+    {
+      name: 'Surface Finish Increment', checked: false, field: 'surfaceFinishIncrement'
     }
   ];
   type = ['search', 'filter'];
@@ -104,6 +113,7 @@ export class PostProcessProfileComponent implements OnInit {
     { headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: true },
     { headerName: 'Material', field: 'material', hide: false, sortable: true, filter: true },
     { headerName: 'Tolerance Increment', field: 'toleranceIncrement', hide: false, sortable: true, filter: true },
+    { headerName: 'Surface Finish Increment', field: 'surfaceFinishIncrement', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 100,

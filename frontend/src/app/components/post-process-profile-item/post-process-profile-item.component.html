@@ -1,0 +1,93 @@
+<div class="wrapper shadow">
+
+  <form novalidate class="needs-validation">
+    <div class="form-row">
+
+      <div class="form-group theme col">
+        <label for="postProcessProfileName">Post-Process Profile Name</label>
+        <input required type="text" [(ngModel)]="form.postProcessProfileName" class="form-control"
+          id="postProcessProfileName" name="postProcessProfileName" placeholder="Post-Process Profile Name">
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="asset">Asset</label>
+        <select required id="asset" name="asset" [(ngModel)]="form.asset" class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of assetOption" [value]="item">{{item}}</option>
+        </select>
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="material">Material</label>
+        <select required id="material" name="material" [(ngModel)]="form.material" class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of materialOption" [value]="item">{{item}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="postProcessType">Process Type</label>
+        <select required id="postProcessType" name="postProcessType" [(ngModel)]="form.postProcessType"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of processTypeOption" [value]="item">{{item}}</option>
+        </select>
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="postProcessProfileFamily">Process Family</label>
+        <select required id="postProcessProfileFamily" name="postProcessProfileFamily"
+          [(ngModel)]="form.postProcessProfileFamily" class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of processFamilyOption" [value]="item">{{item}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="conditions">
+
+      <div class="input-control">
+        <app-column-search-filter width="220px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
+          (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
+          (searchColumnsChange)="searchColumnsChange($event)">
+        </app-column-search-filter>
+      </div>
+
+      <div class="input-wrapper">
+
+        <div class="form-row">
+
+          <ng-container *ngFor="let input of displayedOptions">
+            <div *ngIf="input.checked" class="form-group theme col-md-6">
+              <label [for]="input.field">{{input.name}}</label>
+              <input required type="text" [(ngModel)]="form[input.field]" class="form-control" [id]="input.field"
+                [name]="input.field" [placeholder]="input.name">
+            </div>
+          </ng-container>
+
+
+        </div>
+
+      </div>
+
+    </div>
+    <div class="row button-section">
+
+      <div class="col-md-10 col-sm-8"></div>
+
+      <div class="form-group col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+
+    </div>
+  </form>
+</div>

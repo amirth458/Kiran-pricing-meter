@@ -6,6 +6,7 @@ module.exports = [{
     postProcessType: 'Surface Improvement',
     material: 'Titanium 64',
     toleranceIncrement: '.01”/hour',
+    surfaceFinishIncrement: ''
   },
   {
     id: 2,
@@ -15,6 +16,7 @@ module.exports = [{
     postProcessType: 'Surface Improvement',
     material: 'Stainless Steel 316L',
     toleranceIncrement: '.02”/hour',
+    surfaceFinishIncrement: ''
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ module.exports = [{
     postProcessType: 'Surface Improvement',
     material: '',
     toleranceIncrement: '',
+    surfaceFinishIncrement: ''
   },
   {
     id: 4,
@@ -33,6 +36,7 @@ module.exports = [{
     postProcessType: '',
     material: '',
     toleranceIncrement: '',
+    surfaceFinishIncrement: ''
   },
   {
     id: 5,
@@ -42,6 +46,7 @@ module.exports = [{
     postProcessType: 'Surface Improvement',
     material: '',
     toleranceIncrement: '',
+    surfaceFinishIncrement: ''
   },
   {
     id: 6,
@@ -50,6 +55,48 @@ module.exports = [{
     postProcessProfileFamily: 'Sanding',
     postProcessType: 'Surface Improvement',
     material: 'Stainless Steel 316L',
-    toleranceIncrement: '..02”/hourr',
+    toleranceIncrement: '..02”/hour',
+    surfaceFinishIncrement: ''
+  },
+  {
+
+    id: 7,
+    postProcessProfileName: 'Stainless Hand Sanding',
+    asset: 'Manual Labor',
+    postProcessProfileFamily: 'Sanding',
+    postProcessType: 'Surface Improvement',
+    material: 'Stainless Steel 316L',
+    toleranceIncrement: '..02”/hour',
+    surfaceFinishIncrement: ''
+  },
+  {
+    id: 8,
+    postProcessProfileName: 'Stainless Hand Sanding',
+    asset: 'Manual Labor',
+    postProcessProfileFamily: 'Sanding',
+    postProcessType: 'Surface Improvement',
+    material: 'Stainless Steel 316L',
+    toleranceIncrement: '..02”/hour',
+    surfaceFinishIncrement: ''
+  },
+  {
+    id: 9,
+    postProcessProfileName: 'Stainless Hand Sanding',
+    asset: 'Manual Labor',
+    postProcessProfileFamily: 'Sanding',
+    postProcessType: 'Surface Improvement',
+    material: 'Stainless Steel 316L',
+    toleranceIncrement: '..02”/hour',
+    surfaceFinishIncrement: ''
+  },
+  {
+    id: 10,
+    postProcessProfileName: 'Stainless Hand Sanding',
+    asset: 'Manual Labor',
+    postProcessProfileFamily: 'Sanding',
+    postProcessType: 'Surface Improvement',
+    material: 'Stainless Steel 316L',
+    toleranceIncrement: '..02”/hour',
+    surfaceFinishIncrement: ''
   },
 ]
