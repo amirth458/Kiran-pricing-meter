@@ -2,7 +2,7 @@
 
   <div class="container">
 
-    <div class="row tabs">
+    <div class="row tabs" *ngIf="showBothTab">
       <div *ngIf="activeTab == 'search' || showBothTab" class="col" (click)="toggleTab('search')"
         [class.active]="activeTab == 'search'"><i class="fas fa-filter"></i></div>
       <div *ngIf="activeTab == 'filter' || showBothTab" class="col" (click)="toggleTab('filter')"
