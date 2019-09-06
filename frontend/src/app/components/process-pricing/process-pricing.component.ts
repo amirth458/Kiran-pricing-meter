@@ -109,7 +109,7 @@ export class ProcessPricingComponent implements OnInit {
   ];
   filterColumns = [
     {
-      name: 'No', checked: true, field: 'id'
+      name: 'Pricing No', checked: true, field: 'id'
     },
     {
       name: 'Pricing Profile', checked: true, field: 'pricingProfile'
@@ -152,7 +152,7 @@ export class ProcessPricingComponent implements OnInit {
   };
 
   columnDefs = [
-    { headerName: 'No', field: 'id', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: true },
     { headerName: 'Pricing Profile', field: 'pricingProfile', hide: false, sortable: true, filter: true },
     { headerName: 'Process Profile', field: 'processProfile', hide: false, sortable: true, filter: true },
     { headerName: 'Equipment', field: 'equipment', hide: false, sortable: true, filter: true },

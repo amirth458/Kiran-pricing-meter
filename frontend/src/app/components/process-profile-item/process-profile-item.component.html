@@ -51,9 +51,9 @@
 
         <!-- Process Details -->
         <div *ngIf="activeTab == 'Process Details'" class="condition-wrapper">
-          <span>
+          <!-- <span>
             If
-          </span>
+          </span> -->
 
           <div class="input-wrapper">
 
@@ -98,9 +98,9 @@
 
         <!-- Process Dimensional Properties -->
         <div *ngIf="activeTab == 'Process Dimensional Properties'" class="condition-wrapper">
-          <span>
+          <!-- <span>
             If
-          </span>
+          </span> -->
 
           <div class="input-wrapper">
 
@@ -146,9 +146,9 @@
 
         <!-- Process Material Characteristics -->
         <div *ngIf="activeTab == 'Process Material Characteristics'" class="condition-wrapper">
-          <span>
+          <!-- <span>
             If
-          </span>
+          </span> -->
 
           <div class="input-wrapper">
 
@@ -167,7 +167,7 @@
                 <select required id="condition" name="condition"
                   [(ngModel)]="form.processMaterialCharacteristics[index].condition" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processMaterialCharacteristics.conditionNames" [value]="item">{{item}}
+                  <option *ngFor="let item of processMaterialCharacteristics.conditions" [value]="item">{{item}}
                   </option>
                 </select>
               </div>
