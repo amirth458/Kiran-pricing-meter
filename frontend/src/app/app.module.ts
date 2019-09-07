@@ -18,6 +18,7 @@ import { MachineItemComponent } from './components/machine-item/machine-item.com
 import { PreferencesComponent } from './components/preferences/preferences.component';
 import { ProcessComponent } from './components/process/process.component';
 import { PostProcessComponent } from './components/post-process/post-process.component';
+import { PostProcessPricingComponent } from './components/post-process-pricing/post-process-pricing.component';
 import { PostProcessProfileComponent } from './components/post-process-profile/post-process-profile.component';
 import { PostProcessProfileItemComponent } from './components/post-process-profile-item/post-process-profile-item.component';
 import { ProcessPricingComponent } from './components/process-pricing/process-pricing.component';
@@ -48,6 +49,7 @@ import { UserService } from './service/user.service';
     MachineItemComponent,
     PreferencesComponent,
     PostProcessComponent,
+    PostProcessPricingComponent,
     PostProcessProfileComponent,
     PostProcessProfileItemComponent,
     ProcessComponent,
