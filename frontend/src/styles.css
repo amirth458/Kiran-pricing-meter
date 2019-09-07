@@ -36,10 +36,14 @@ a:hover {
 }
 
 .form-group.theme input,
+.form-group.theme select {
+  background: var(--theme-input-bg);
+}
+
+.form-group.theme input,
 .form-group.theme select,
 .form-group.theme label {
   font-size: 14px;
-  background: var(--theme-input-bg);
   color: var(--theme-secondary-blue);
 
 }
