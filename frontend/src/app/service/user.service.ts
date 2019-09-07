@@ -1,25 +1,19 @@
-import {Injectable} from "@angular/core";
-import {ServiceBase} from "../base/service.base";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
 
-export class UserService extends ServiceBase {
+  constructor() { }
 
-  constructor(
-    public http: HttpClient
-  ){
-    super(http);
-  }
-
-  getHeader(userId:number = 0, roleId:number = 0):HttpHeaders {
-    let headers = new HttpHeaders()
-      .set('Content-type','application/json')
+  getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
+    const headers = new HttpHeaders()
+      .set('Content-type', 'application/json')
       .set('userID', userId.toString())
       .set('roleId', roleId.toString());
 
     return headers;
   }
-
-
 }

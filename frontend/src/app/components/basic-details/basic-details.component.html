@@ -1,0 +1,99 @@
+<div class="wrapper shadow">
+
+  <form novalidate class="needs-validation">
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="vendor_name">Vendor Name</label>
+        <input required type="text" [(ngModel)]="form.vendor_name" class="form-control" id="vendor_name"
+          name="vendor_name" placeholder="Vendor Name">
+      </div>
+
+
+      <div class="form-group theme col-md-6">
+        <label for="vendor_type">Vendor Type</label>
+        <input required type="text" [(ngModel)]="form.vendor_type" class="form-control" id="vendor_type"
+          name="vendor_type" placeholder="Vendor Type">
+      </div>
+
+    </div>
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="email">Email</label>
+        <input required type="email" [(ngModel)]="form.email" class="form-control" id="email" name="email"
+          placeholder="Email">
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="phone">Phone</label>
+        <input required type="tel" [(ngModel)]="form.phone" class="form-control" id="phone" name="phone"
+          placeholder="Phone">
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col">
+        <label for="primary_address">Primary Address</label>
+        <input required type="text" [(ngModel)]="form.primary_address" class="form-control" id="primary_address"
+          name="primary_address" placeholder="1234 Main St">
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col-md-4">
+        <label for="city">City</label>
+        <input required type="text" [(ngModel)]="form.city" class="form-control" id="city" name="city">
+      </div>
+
+      <div class="form-group theme col-md-4">
+        <label for="state">State</label>
+        <input required type="text" [(ngModel)]="form.state" class="form-control" id="state" name="state">
+      </div>
+
+      <div class="form-group theme col-md-4">
+        <label for="country">Country</label>
+        <select required id="country" name="country" [(ngModel)]="form.country" class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of internationalCode" [value]="item.name">{{item.name}}</option>
+        </select>
+      </div>
+
+    </div>
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="certifications">Certifications</label>
+        <select required id="certifications" name="certifications" [(ngModel)]="form.certifications"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of certificationsOption" [value]="item">{{item}}</option>
+        </select>
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="confidentiality">Confidentiality</label>
+        <select required id="confidentiality" name="confidentiality" [(ngModel)]="form.confidentiality"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of confidentialityOption" [value]="item">{{item}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row button-section">
+
+      <div class="col-md-10 col-sm-8"></div>
+
+      <div class="form-group col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+
+    </div>
+  </form>
+</div>

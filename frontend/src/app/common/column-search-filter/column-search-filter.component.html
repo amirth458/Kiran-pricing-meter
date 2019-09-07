@@ -1,0 +1,106 @@
+<div class=" wrapper shadow" [style.width]="width">
+
+  <div class="container">
+
+    <div class="row tabs" *ngIf="showBothTab">
+      <div *ngIf="activeTab == 'search' || showBothTab" class="col" (click)="toggleTab('search')"
+        [class.active]="activeTab == 'search'"><i class="fas fa-filter"></i></div>
+      <div *ngIf="activeTab == 'filter' || showBothTab" class="col" (click)="toggleTab('filter')"
+        [class.active]="activeTab == 'filter'"><i class="fas fa-columns"></i></div>
+    </div>
+
+    <!-- Column Filter -->
+    <div class="filter" *ngIf="activeTab == 'filter'">
+      <div class="form-row input">
+
+        <div class="form-group theme col">
+          <input required type="text" class="form-control shadow" id="search_query" name="search_query"
+            placeholder="Columns" (keyup)="search($event, 'filter')">
+        </div>
+
+      </div>
+
+      <div class="column-container" [style.height]="height">
+
+        <div class="row" *ngFor="let column of filterColumnsClone; let index=index">
+          <div class="col-sm-2">
+            <span class="icon" *ngIf="column.checked" (click)="toggleCheck(index, 'filter')">
+              <i class="fas fa-check-square"></i>
+            </span>
+
+            <span class="icon" *ngIf="!column.checked" (click)="toggleCheck(index, 'filter')">
+              <i class="far fa-square"></i>
+            </span>
+          </div>
+
+          <div class="col-sm-10 column-name">{{column.name}}</div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search" *ngIf="activeTab == 'search'">
+      <div class="form-row input">
+
+        <div class="form-group theme col">
+          <input required type="text" class="form-control shadow" id="search_query" name="search_query"
+            placeholder="Search" (keyup)="search($event, 'search')">
+        </div>
+
+      </div>
+
+      <div class="column-container" [style.height]="height">
+
+        <div class="row" *ngFor="let column of searchColumnsClone; let index=index">
+          <div class="col-sm-2">
+            <span class="icon" *ngIf="column.checked" (click)="toggleCheck(index, 'search')">
+              <i class="fas fa-check-square"></i>
+            </span>
+
+            <span class="icon" *ngIf="!column.checked" (click)="toggleCheck(index, 'search')">
+              <i class="far fa-square"></i>
+            </span>
+          </div>
+
+          <div class="col-sm-10 column-name">
+            <div class="container-fluid">
+
+              <span class="row name" (click)="toggleQueryField(index)">{{column.name}}</span>
+              <span class="row options" *ngIf="column.checked">
+
+                <div class="form-group ">
+                  <select required id="option" [(ngModel)]="searchColumns[column.id].query.type"
+                    (ngModelChange)="searchColumnsChange.emit(searchColumns)" name="option" class="form-control">
+                    <option value="">Choose...</option>
+                    <option value="contains">Contains</option>
+                    <option value="notContains">Not contains</option>
+                    <option value="equals">Equals</option>
+                    <option value="notEqual">Not equal</option>
+                    <option value="startsWith">Starts with</option>
+                    <option value="endsWith">Ends with</option>
+                  </select>
+                </div>
+              </span>
+
+              <span class="row query" *ngIf="column.checked">
+                <div class="form-group">
+                  <input required type="text" class="form-control" [(ngModel)]="searchColumns[column.id].query.filter"
+                    (ngModelChange)="searchColumnsChange.emit(searchColumns)" id="search_query" name="search_query"
+                    placeholder="">
+                </div>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </div>

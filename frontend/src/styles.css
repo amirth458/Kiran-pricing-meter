@@ -1,1 +1,165 @@
-/* You can add global styles to this file, and also import other style files */
+/* Ag-grid style */
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
+
+:root {
+  --theme-dark-blue: #092846;
+  --them-dark-blue-opaque: #092846;
+  --theme-secondary-blue: rgba(9, 40, 70, .74);
+  --theme-secondary-blue-solid: #607181;
+  --theme-light-green: #8FBE4C;
+  --theme-input-bg: rgba(196, 196, 196, .13);
+
+  --theme-table-border: rgba(112, 112, 112, .39)
+}
+
+* {
+  font-family: 'Heebo', sans-serif;
+}
+
+.bg-dark-blue {
+  background: var(--theme-dark-blue);
+  display: flex;
+  color: white;
+}
+
+a,
+a:hover {
+  color: unset;
+  text-decoration: unset
+}
+
+.form-group.theme label {
+  color: var(--theme-secondary-blue-solid);
+  font-weight: 500;
+}
+
+.form-group.theme input,
+.form-group.theme select,
+.form-group.theme label {
+  font-size: 14px;
+  background: var(--theme-input-bg);
+  color: var(--theme-secondary-blue);
+
+}
+
+.form-group.theme input,
+.form-group.theme select {
+  font-size: 13px;
+}
+
+.form-group.theme input:focus {
+  border-color: #8FBE4C !important;
+  box-shadow: unset;
+}
+
+.form-group.theme .footnote {
+  font-size: 12px;
+  color: var(--theme-secondary-blue);
+}
+
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
+  color: white;
+  background: var(--theme-light-green);
+}
+
+button.theme {
+  background: var(--theme-secondary-blue);
+  color: white;
+  width: 100%;
+  padding: 10px 8px;
+  border: unset;
+}
+
+button.theme.dim {
+  background: var(--theme-secondary-blue);
+}
+
+button.theme.white {
+  background: white;
+  color: var(--theme-secondary-blue);
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+button.theme:active,
+button.theme:hover {
+  background: var(--theme-light-green);
+}
+
+button.theme.dim:hover {
+  background: var(--theme-secondary-blue);
+  opacity: .9;
+}
+
+button.theme.white:hover {
+  color: var(--theme-dark-blue);
+  background: unset;
+}
+
+.button-section {
+  margin-top: 30px;
+}
+
+
+/* Overriding Ag-grid style */
+.theme-table .ag-theme-balham .ag-header-row {
+  background: var(--theme-secondary-blue);
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.theme-table .ag-theme-balham .ag-row {
+  border-color: var(--theme-table-border);
+  color: var(--theme-secondary-blue-solid)
+}
+
+.theme-table .ag-theme-balham .ag-header-icon .ag-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.theme-table .ag-theme-balham .ag-paging-panel {
+  justify-content: space-between;
+  color: var(--them-dark-blue-opaque);
+}
+
+.theme-table .ag-theme-balham .ag-paging-panel .ag-icon {
+  color: var(--them-dark-blue-opaque);
+}
+
+.theme-table .ag-theme-balham .ag-cell {
+  font-size: 13px;
+}
+
+
+.theme-table .ag-theme-balham .action-column {
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.theme-table .ag-theme-balham .action-column span:hover {
+  cursor: pointer;
+}
+
+.theme-table .ag-theme-balham .action-column .delete {
+  color: red !important;
+}
+
+/* End of Overriding Ag-grid style */
+
+/* NON Ag-grid table style */
+
+.page-size {
+  margin-top: -25px;
+  font-size: 13px;
+  float: right;
+  user-select: none;
+}
+
+
+/* NON Ag-grid table style */

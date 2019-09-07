@@ -1,0 +1,55 @@
+<div class="wrapper shadow">
+
+  <form novalidate class="needs-validation">
+
+    <div class="form-row">
+
+      <div class="form-group theme col">
+        <label for="core_competencies">Core Competencies</label>
+        <input required type="text" [(ngModel)]="form.core_competencies" class="form-control" id="core_competencies"
+          name="core_competencies">
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col">
+        <label for="adjacent_growth">Adjacent Growth</label>
+        <input required type="text" [(ngModel)]="form.adjacent_growth" class="form-control" id="adjacent_growth"
+          name="adjacent_growth">
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col">
+        <label for="RFQ_to_exclude">RFQ To Exclude</label>
+        <input required type="text" [(ngModel)]="form.RFQ_to_exclude" class="form-control" id="RFQ_to_exclude"
+          name="RFQ_to_exclude">
+      </div>
+
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group theme col">
+        <label for="companies_to_exclude">Companies to Exclude</label>
+        <input required type="text" [(ngModel)]="form.companies_to_exclude" class="form-control"
+          id="companies_to_exclude" name="companies_to_exclude">
+      </div>
+
+    </div>
+
+    <div class="row button-section">
+
+      <div class="col-md-10 col-sm-8"></div>
+
+      <div class="form-group col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+
+    </div>
+  </form>
+</div>
