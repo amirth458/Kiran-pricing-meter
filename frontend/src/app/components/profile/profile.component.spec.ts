@@ -16,6 +16,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { VendorComponent } from 'src/app/components/vendor/vendor.component';
 import { PostProcessComponent } from '../post-process/post-process.component';
 import { PostProcessPricingComponent } from '../post-process-pricing/post-process-pricing.component';
+import { PostProcessPricingItemComponent } from '../post-process-pricing-item/post-process-pricing-item.component';
 import { PostProcessProfileComponent } from '../post-process-profile/post-process-profile.component';
 import { PostProcessProfileItemComponent } from '../post-process-profile-item/post-process-profile-item.component';
 import { ProcessComponent } from 'src/app/components/process/process.component';
@@ -41,6 +42,7 @@ describe('ProfileComponent', () => {
         MachineItemComponent,
         PostProcessComponent,
         PostProcessPricingComponent,
+        PostProcessPricingItemComponent,
         PostProcessProfileComponent,
         PostProcessProfileItemComponent,
         PreferencesComponent,

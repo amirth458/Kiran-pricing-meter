@@ -25,7 +25,14 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       name: 'Post-Process Name', checked: false,
-      field: 'postProcessName', query: {
+      field: 'postProcessProfileName', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
+      name: 'Post-Process Pricing Name', checked: false,
+      field: 'postProcessPricingProfileName', query: {
         type: '',
         filter: '',
       }
@@ -72,7 +79,10 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Post-Process No', checked: true, field: 'id'
     },
     {
-      name: 'Post-Process Name', checked: true, field: 'postProcessName'
+      name: 'Post-Process Name', checked: true, field: 'postProcessProfileName'
+    },
+    {
+      name: 'Post-Process Pricing Name', checked: false, field: 'postProcessPricingProfileName'
     },
     {
       name: 'Condition 1', checked: true, field: 'condition1'
@@ -99,7 +109,8 @@ export class PostProcessPricingComponent implements OnInit {
 
   columnDefs = [
     { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Post-Process Name', field: 'postProcessName', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Name', field: 'postProcessProfileName', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Pricing Name', field: 'postProcessPricingProfileName', hide: false, sortable: true, filter: true },
     { headerName: 'Condition 1', field: 'condition1', hide: false, sortable: true, filter: true },
     { headerName: 'Condition 2', field: 'condition2', hide: false, sortable: true, filter: true },
     { headerName: 'Pricing Component 1', field: 'pricingComponent1', hide: false, sortable: true, filter: true },
@@ -201,3 +212,8 @@ export class PostProcessPricingComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 }
+
+
+// TODO:
+// Needs more work along with the post-process pricing item
+// Due to not having a complete model

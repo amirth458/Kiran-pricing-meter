@@ -9,6 +9,7 @@ import { MachinesComponent } from './components/machines/machines.component';
 import { MachineItemComponent } from './components/machine-item/machine-item.component';
 import { PostProcessComponent } from './components/post-process/post-process.component';
 import { PostProcessPricingComponent } from './components/post-process-pricing/post-process-pricing.component';
+import { PostProcessPricingItemComponent } from './components/post-process-pricing-item/post-process-pricing-item.component';
 import { PostProcessProfileComponent } from './components/post-process-profile/post-process-profile.component';
 import { PostProcessProfileItemComponent } from './components/post-process-profile-item/post-process-profile-item.component';
 import { PreferencesComponent } from './components/preferences/preferences.component';
@@ -60,6 +61,8 @@ const routes: Routes = [
           { path: 'profile/add', component: PostProcessProfileItemComponent },
           { path: 'profile/edit/:id', component: PostProcessProfileItemComponent },
           { path: 'pricing', component: PostProcessPricingComponent },
+          { path: 'pricing/add', component: PostProcessPricingItemComponent },
+          { path: 'pricing/edit/:id', component: PostProcessPricingItemComponent },
           { path: '', redirectTo: 'profile', pathMatch: 'full' },
           { path: '**', redirectTo: 'profile', pathMatch: 'full' }
         ]
