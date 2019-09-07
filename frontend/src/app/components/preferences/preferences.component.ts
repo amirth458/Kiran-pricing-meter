@@ -12,6 +12,9 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
     RFQ_to_exclude: '',
     companies_to_exclude: ''
   };
+  coreCompetencies = [];
+  adjacentGrowth = [];
+  RFQToExclude = [];
   constructor() { }
 
   ngOnInit() {

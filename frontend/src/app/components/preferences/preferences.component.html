@@ -2,12 +2,16 @@
 
   <form novalidate class="needs-validation">
 
+
     <div class="form-row">
 
       <div class="form-group theme col">
         <label for="core_competencies">Core Competencies</label>
-        <input required type="text" [(ngModel)]="form.core_competencies" class="form-control" id="core_competencies"
-          name="core_competencies">
+        <select required id="core_competencies" name="core_competencies" [(ngModel)]="form.core_competencies"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of coreCompetencies" [value]="item">{{item}}</option>
+        </select>
       </div>
 
     </div>
@@ -16,8 +20,11 @@
 
       <div class="form-group theme col">
         <label for="adjacent_growth">Adjacent Growth</label>
-        <input required type="text" [(ngModel)]="form.adjacent_growth" class="form-control" id="adjacent_growth"
-          name="adjacent_growth">
+        <select required id="adjacent_growth" name="adjacent_growth" [(ngModel)]="form.adjacent_growth"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of adjacentGrowth" [value]="item">{{item}}</option>
+        </select>
       </div>
 
     </div>
@@ -26,8 +33,11 @@
 
       <div class="form-group theme col">
         <label for="RFQ_to_exclude">RFQ To Exclude</label>
-        <input required type="text" [(ngModel)]="form.RFQ_to_exclude" class="form-control" id="RFQ_to_exclude"
-          name="RFQ_to_exclude">
+        <select required id="RFQ_to_exclude" name="RFQ_to_exclude" [(ngModel)]="form.RFQ_to_exclude"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of RFQToExclude" [value]="item">{{item}}</option>
+        </select>
       </div>
 
     </div>
@@ -36,8 +46,11 @@
 
       <div class="form-group theme col">
         <label for="companies_to_exclude">Companies to Exclude</label>
-        <input required type="text" [(ngModel)]="form.companies_to_exclude" class="form-control"
-          id="companies_to_exclude" name="companies_to_exclude">
+        <select required id="companies_to_exclude" name="companies_to_exclude" [(ngModel)]="form.companies_to_exclude"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of companiesToExclude" [value]="item">{{item}}</option>
+        </select>
       </div>
 
     </div>
