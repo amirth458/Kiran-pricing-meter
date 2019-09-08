@@ -36,6 +36,8 @@ export class SideMenuComponent implements OnInit {
     this.toggleMenuStatus.emit(this.menuOpen);
   }
   navigateTo(route: string) {
-    this.selectedMenu = route;
+    if (route.includes('profile')) {
+      this.selectedMenu = route;
+    }
   }
 }
