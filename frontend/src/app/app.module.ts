@@ -10,6 +10,7 @@ import { ActionBarComponent } from './common/action-bar/action-bar.component';
 import { ActionCellRendererComponent } from './common/action-cell-renderer/action-cell-renderer.component';
 import { AppComponent } from './app.component';
 import { BasicDetailsComponent } from './components/basic-details/basic-details.component';
+import { CarrierCellRendererComponent } from './common/carrier-cell-renderer/carrier-cell-renderer.component';
 import { ColumnSearchFilterComponent } from './common/column-search-filter/column-search-filter.component';
 import { FacilityComponent } from './components/facility/facility.component';
 import { FacilityItemComponent } from './components/facility-item/facility-item.component';
@@ -27,6 +28,7 @@ import { ProcessPricingItemComponent } from './components/process-pricing-item/p
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ShippingComponent } from './components/shipping/shipping.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
@@ -43,6 +45,7 @@ import { UserService } from './service/user.service';
     ActionCellRendererComponent,
     AppComponent,
     BasicDetailsComponent,
+    CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
     FacilityComponent,
     FacilityItemComponent,
@@ -60,6 +63,7 @@ import { UserService } from './service/user.service';
     ProcessProfileComponent,
     ProcessProfileItemComponent,
     ProfileComponent,
+    ShippingComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
@@ -69,6 +73,7 @@ import { UserService } from './service/user.service';
     AppRoutingModule,
     AgGridModule.withComponents([
       ActionCellRendererComponent,
+      CarrierCellRendererComponent
     ]),
     BrowserModule,
     FormsModule
