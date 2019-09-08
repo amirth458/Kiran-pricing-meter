@@ -20,6 +20,7 @@ import { ProcessPricingItemComponent } from './components/process-pricing-item/p
 import { ProcessProfileComponent } from './components/process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ShippingComponent } from './components/shipping/shipping.component';
+import { ShippingItemComponent } from './components/shipping-item/shipping-item.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 
 const routes: Routes = [
@@ -39,6 +40,8 @@ const routes: Routes = [
           { path: 'machines/edit/:id', component: MachineItemComponent },
           { path: 'preferences', component: PreferencesComponent },
           { path: 'shipping', component: ShippingComponent },
+          { path: 'shipping/add', component: ShippingItemComponent },
+          { path: 'shipping/edit/:id', component: ShippingItemComponent },
           { path: '', pathMatch: 'full', redirectTo: 'basics' },
           { path: '**', pathMatch: 'full', redirectTo: 'basics' }
         ]

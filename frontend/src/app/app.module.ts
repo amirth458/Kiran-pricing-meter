@@ -29,6 +29,7 @@ import { ProcessProfileComponent } from './components/process-profile/process-pr
 import { ProcessProfileItemComponent } from './components/process-profile-item/process-profile-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ShippingComponent } from './components/shipping/shipping.component';
+import { ShippingItemComponent } from './components/shipping-item/shipping-item.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
@@ -68,6 +69,7 @@ import { UserService } from './service/user.service';
     SubSectionMenuComponent,
     TopMenuComponent,
     VendorComponent,
+    ShippingItemComponent,
   ],
   imports: [
     AppRoutingModule,

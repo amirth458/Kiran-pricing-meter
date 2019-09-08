@@ -1,0 +1,47 @@
+<div class="wrapper shadow">
+
+  <form novalidate class="needs-validation">
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="carrier">Carrier</label>
+        <select required id="carrier" name="carrier" [(ngModel)]="form.carrier" class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of carriers" [value]="item.id">{{item.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="accountId">Account ID</label>
+        <input required type="accountId" [(ngModel)]="form.accountId" class="form-control" id="email" name="email"
+          placeholder="Account ID">
+      </div>
+
+    </div>
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="status">Status</label>
+        <select required id="status" name="status" [(ngModel)]="form.status" class="form-control">
+          <option selected value="">Choose...</option>
+          <option value="Active">Active</option>
+          <option value="InActive">InActive</option>
+
+        </select>
+      </div>
+
+
+    </div>
+
+
+    <div class="row button-section">
+
+      <div class="col-md-10 col-sm-8"></div>
+
+      <div class="form-group col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+
+    </div>
+  </form>
+</div>
