@@ -25,7 +25,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     surfaceFinish: '',
 
     pricingProfileName: '',
-    processDetails: [
+    processParameters: [
       { name: '', condition: '', value: '', unit: '' }
     ],
     processDimensionalProperties: [
@@ -35,7 +35,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       { name: '', condition: '', value: '', unit: '' }
     ]
   };
-  processDetails = {
+  processParameters = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
     units: ['%', 'micron'],
     conditionNames: [
@@ -63,7 +63,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   processProfileId = null;
   processProfiles = processProfiles;
 
-  activeTab = 'Process Material Characteristics';
+  activeTab = 'Process Parameters';
   constructor(private route: Router) { }
 
   ngOnInit() {
@@ -96,8 +96,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   addCondition(section) {
     switch (section) {
-      case 'processDetails':
-        this.form.processDetails.push({ name: '', condition: '', value: '', unit: '' });
+      case 'processParameters':
+        this.form.processParameters.push({ name: '', condition: '', value: '', unit: '' });
         break;
       case 'processDimensionalProperties':
         this.form.processDimensionalProperties.push({ name: '', condition: '', value: '', unit: '' });

@@ -158,6 +158,10 @@ button.theme.white:hover {
 
 /* NON Ag-grid table style */
 
+.table {
+  margin-bottom: 0px;
+}
+
 .page-size {
   margin-top: -25px;
   font-size: 13px;
