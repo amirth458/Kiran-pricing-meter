@@ -6,14 +6,16 @@
   </div>
 
   <ul class="list-unstyled components">
-    <li *ngFor="let item of menus; let i = index" [className]=" item.route == selectedMenu? 'active': ''">
-      <a (click)="navigateTo(item.route)">
-        <span class="icon">
-          <i [class]="item.icon"></i>
-        </span>
-        <span class="menu-text">{{item.name}}</span>
-      </a>
-    </li>
+    <ng-container *ngFor="let item of menus; let i = index">
+      <li *ngIf="item.visible" [className]=" item.route == selectedMenu? 'active': ''">
+        <a (click)="navigateTo(item.route, i)">
+          <span class="icon">
+            <i [class]="item.icon"></i>
+          </span>
+          <span class="menu-text">{{item.name}}</span>
+        </a>
+      </li>
+    </ng-container>
   </ul>
 
 </nav>

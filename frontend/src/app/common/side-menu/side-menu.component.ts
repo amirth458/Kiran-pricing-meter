@@ -9,7 +9,7 @@ export class SideMenuComponent implements OnInit {
 
   @Input('selectedMenu') selectedMenu: string;
   @Input('menuOpen') menuOpen;
-  @Input('menus') menus: Array<{ name: string, route: string, icon: string }>;
+  @Input('menus') menus: Array<{ name: string, route: string, icon: string, visible: boolean, active: boolean }>;
 
   @Output() public toggleMenuStatus: EventEmitter<boolean> = new EventEmitter();
 
@@ -35,8 +35,8 @@ export class SideMenuComponent implements OnInit {
     this.menuOpen = !this.sidemenuClosed;
     this.toggleMenuStatus.emit(this.menuOpen);
   }
-  navigateTo(route: string) {
-    if (route.includes('profile')) {
+  navigateTo(route: string, index: number) {
+    if (this.menus[index].active) {
       this.selectedMenu = route;
     }
   }
