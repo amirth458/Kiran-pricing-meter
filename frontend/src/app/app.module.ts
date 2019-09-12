@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AgGridModule } from 'ag-grid-angular';
 import { AppRoutingModule } from './app-routing.module';
@@ -35,12 +36,19 @@ import { SubSectionMenuComponent } from './common/sub-section-menu/sub-section-m
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 
-// Services
-import { AuthService } from './service/auth.service';
-import { UserService } from './service/user.service';
-
-
 @NgModule({
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AgGridModule.withComponents([
+      ActionCellRendererComponent,
+      CarrierCellRendererComponent
+    ]),
+    // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
+  ],
   declarations: [
     ActionBarComponent,
     ActionCellRendererComponent,
@@ -70,20 +78,6 @@ import { UserService } from './service/user.service';
     TopMenuComponent,
     VendorComponent,
     ShippingItemComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    AgGridModule.withComponents([
-      ActionCellRendererComponent,
-      CarrierCellRendererComponent
-    ]),
-    // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
-    BrowserModule,
-    FormsModule
-  ],
-  providers: [
-    AuthService,
-    UserService
   ],
   bootstrap: [AppComponent]
 })

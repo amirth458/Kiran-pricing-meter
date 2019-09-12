@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewChecked, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
 
 import * as facilities from '../../../assets/static/facilities';
-import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { VendorService } from '../../service/vendor.service';
 
 @Component({
   selector: 'app-facility',
@@ -150,18 +151,25 @@ export class FacilityComponent implements OnInit {
     }
   ];
 
-
   gridOptions: GridOptions;
-
   rowData;
   pageSize = 10;
-  constructor(private route: Router) { }
+
+  constructor(
+    private route: Router,
+    private vendorService: VendorService
+  ) { }
 
   ngOnInit() {
+    this.vendorService.getFacilities(330).subscribe(res => {
+      console.log(res);
+    });
+
     this.rowData = facilities;
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
+
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -177,7 +185,6 @@ export class FacilityComponent implements OnInit {
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
-
     }, 50);
   }
 
