@@ -3,24 +3,24 @@ module.exports = [{
     machineName: 'Alpha',
     facility: 'LA',
     equipment: 'EOS M 290',
-    serialNumber: 'AC34-340',
-    material: 'Inconel625'
+    serialNumber: 'B25820',
+    material: 'Stainless steel 316L'
   },
   {
     id: 2,
     machineName: 'Bravo',
     facility: 'Jersey',
-    equipment: 'EOS M 290',
-    serialNumber: 'ACA33-1',
-    material: 'Stainless Steel 15-5'
+    equipment: 'EOS M400',
+    serialNumber: 'A101',
+    material: 'Stainless steel 316L, Stainless steel 15-5, stainless steel 17-4'
   },
   {
     id: 3,
     machineName: 'Delta',
     facility: 'Youngstown',
-    equipment: 'EOS M 290',
-    serialNumber: 'AC34-341',
-    material: 'Stainless Steel 15-5'
+    equipment: 'EOS M400',
+    serialNumber: 'A102',
+    material: 'Titanium 6-4'
   },
   {
     id: 4,

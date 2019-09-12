@@ -152,7 +152,7 @@ export class ProcessPricingComponent implements OnInit {
   };
 
   columnDefs = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: true, },
     { headerName: 'Pricing Profile', field: 'pricingProfile', hide: false, sortable: true, filter: true },
     { headerName: 'Process Profile', field: 'processProfile', hide: false, sortable: true, filter: true },
     { headerName: 'Equipment', field: 'equipment', hide: false, sortable: true, filter: true },
@@ -160,10 +160,10 @@ export class ProcessPricingComponent implements OnInit {
     { headerName: 'Condition 1', field: 'condition1', hide: false, sortable: true, filter: true },
     { headerName: 'Condition 2', field: 'condition2', hide: false, sortable: true, filter: true },
     { headerName: 'Condition 3', field: 'condition3', hide: false, sortable: true, filter: true },
-    { headerName: 'Pricing Component 1', field: 'condition1', hide: false, sortable: true, filter: true },
-    { headerName: 'Pricing Component 2', field: 'condition2', hide: false, sortable: true, filter: true },
-    { headerName: 'Pricing Component 3', field: 'condition3', hide: false, sortable: true, filter: true },
-    { headerName: 'Pricing Component 4', field: 'condition3', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing Component 1', field: 'pricingComponent1', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing Component 2', field: 'pricingComponent2', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing Component 3', field: 'conpricingComponent3dition3', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing Component 4', field: 'pricingComponent14', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 100,

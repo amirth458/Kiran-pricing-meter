@@ -77,6 +77,7 @@ import { UserService } from './service/user.service';
       ActionCellRendererComponent,
       CarrierCellRendererComponent
     ]),
+    // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
     BrowserModule,
     FormsModule
   ],

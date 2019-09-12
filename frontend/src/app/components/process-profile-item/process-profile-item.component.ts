@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, Input, ElementRef, ViewChild } from '@angular/core';
 
 import * as processProfiles from '../../../assets/static/processProfile';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
+  @ViewChild('closeModal') closeModal: ElementRef;
   facilities = [];
   equipments = [];
   form = {
@@ -51,19 +52,65 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   processDimensionalProperties = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
     units: ['inches'],
-    conditionNames: ['Base Tolerance', 'Tolerance Increment']
+    conditionNames: [
+      'X',
+      'Y',
+      'Z',
+      'Equipment Name',
+      'Tolerance Percent',
+      'Tolerance Base',
+      'Tolerance Increment',
+      'Percent Tolerance',
+      'Surface Roughness',
+      'Wall thickness',
+      'Features Size',
+      'Base Tolerance',
+    ]
   };
 
   processMaterialCharacteristics = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
     units: ['MPa'],
-    conditionNames: ['Tensile Strength']
+    conditionNames: [
+      'Tensile Strength',
+      'Equipment Name',
+      'Is Thickness Uniform',
+      'Access Features With Line of Sight',
+      '3 Dimensional Lattice',
+      'Not Cylindrical',
+    ]
   };
 
   processProfileId = null;
   processProfiles = processProfiles;
 
-  activeTab = 'Process Parameters';
+  defaultValues = {
+    processParameters: [],
+    processDimensionalProperties: [
+      { name: 'X', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Y', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Z', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Equipment Name', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Tolerance Percent', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Tolerance Base', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Tolerance Increment', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Percent Tolerance', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Surface Roughness', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Wall thickness', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Features Size', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Base Tolerance', value: '-', condition: 'Equal to', unit: 'inches' }
+    ],
+    processMaterialCharacteristics: [
+      { name: 'Tensile Strength', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Equipment Name', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Is Thickness Uniform', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Access Features With Line of Sight', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: 'Not Cylindrical', value: '-', condition: 'Equal to', unit: 'inches' },
+      { name: '3 Dimensional Lattice', value: '-', condition: 'Equal to', unit: 'inches' },
+    ]
+  };
+  activeTab = 'processParameters';
+  activeTabName = 'Process Parameters';
   constructor(private route: Router) { }
 
   ngOnInit() {
@@ -111,9 +158,18 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  toggleTab(tabName) {
-    this.activeTab = tabName;
+  toggleTab(tab, tabName) {
+    this.activeTab = tab;
+    this.activeTabName = tabName;
   }
+
+  applyDefaults() {
+    this.form[this.activeTab] = [];
+    this.form[this.activeTab] = this.defaultValues[this.activeTab]
+    console.log(this.form);
+    this.closeModal.nativeElement.click();
+  }
+
   save() {
     console.log(this.form);
   }
