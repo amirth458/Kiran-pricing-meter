@@ -3,7 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
 import { VendorService } from '../../service/vendor.service';
-import { VendorDetail } from '../../model/vendor.model';
+import { Vendor, VendorMetaData } from '../../model/vendor.model';
+import { VendorMetaDataTypes } from '../../mockData/vendor';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-basic-details',
@@ -12,8 +14,10 @@ import { VendorDetail } from '../../model/vendor.model';
 })
 export class BasicDetailsComponent implements OnInit {
   internationalCode = internationalCode;
-  certificationsOption = [];
-  confidentialityOption = [];
+  vendorTypes: VendorMetaData[] = [];
+  countries: VendorMetaData[] = [];
+  certifications: VendorMetaData[] = [];
+  confidentialities: VendorMetaData[] = [];
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -27,15 +31,17 @@ export class BasicDetailsComponent implements OnInit {
     street: [null, Validators.required],
     zipCode: [null, Validators.required],
     confidentiality: null,
-    certification: null
+    vendorCertificates: null
   });
 
   constructor(
     private fb: FormBuilder,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private spineer: NgxSpinnerService
   ) { }
 
   ngOnInit() {
+    this.getVendorMetaDatas();
     this.vendorService.getVendorDetail(330).subscribe(res => {
       if (res) {
         this.initForm(res);
@@ -43,24 +49,59 @@ export class BasicDetailsComponent implements OnInit {
     });
   }
 
-  initForm(initValue: VendorDetail) {
+  async getVendorMetaDatas() {
+    this.spineer.show();
+    try {
+      this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
+      this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
+      this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+      this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+  }
+
+  initForm(initValue: Vendor) {
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
       email: initValue.email,
       phone: initValue.phone,
-      vendorType: initValue.vendorType,
+      vendorType: initValue.vendorType.id,
       city: initValue.city,
       state: initValue.state,
-      country: initValue.country,
+      country: initValue.country.id,
       street: initValue.street1 + initValue.street2,
       zipCode: initValue.zipCode,
-      confidentiality: initValue.confidentiality,
-      certification: null
+      confidentiality: initValue.confidentiality.id,
+      vendorCertificates: initValue.vendorCertificates.map(cert => cert.id)
     });
   }
 
   save() {
+    this.spineer.show();
     console.log(this.detailForm.value);
+    this.vendorService.createVendorProfile({
+      ...this.detailForm.value,
+      vendorType: {
+        id: this.detailForm.value.vendorType
+      },
+      country: {
+        id: this.detailForm.value.country
+      },
+      street1: this.detailForm.value.street,
+      confidentiality: {
+        id: this.detailForm.value.confidentiality
+      }
+    }).subscribe(res => {
+      console.log(res);
+      this.spineer.hide();
+    }, error => {
+      console.log(error);
+      this.spineer.hide();
+    });
   }
 }

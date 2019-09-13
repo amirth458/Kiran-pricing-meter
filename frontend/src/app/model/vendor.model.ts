@@ -1,18 +1,24 @@
-export class VendorDetail {
+export interface VendorMetaData {
+  id: number;
+  name: string;
+}
+
+export interface Vendor {
   id: string;
   name: string;
   email: string;
   phone: string;
-  vendorType: string;
+  vendorType: VendorMetaData;
   city: string;
   state: string;
-  country: string;
+  country: VendorMetaData;
   street1: string;
   street2: string;
   zipCode: string;
-  confidentiality: string;
+  confidentiality: VendorMetaData;
   clientExclusionCondition: string;
   rfqExclusionCondition: string;
+  vendorCertificates: VendorMetaData[];
 }
 
 export class FilterOption {

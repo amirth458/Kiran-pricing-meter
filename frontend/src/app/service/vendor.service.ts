@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
 import { Observable } from 'rxjs';
-import { VendorDetail, FilterOption } from '../model/vendor.model';
+import { map } from 'rxjs/operators';
+
+import { Vendor, FilterOption, VendorMetaData } from '../model/vendor.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,9 +16,26 @@ export class VendorService {
     private http: HttpClient
   ) { }
 
-  getVendorDetail(id: number): Observable<VendorDetail> {
-    const url = `${environment.apiBaseUrl}/vendors/${id}`;
-    return this.http.get<VendorDetail>(url);
+  getVendorMetaData(type: string): Observable<VendorMetaData[]> {
+    const url = `/api/v1/vendor-metadata/${type}`;
+    return this.http.get<any>(url).pipe(
+      map(res => res.metadataList)
+    );
+  }
+
+  getVendorDetail(id: number): Observable<Vendor> {
+    const url = `/api/v1/vendors/${id}`;
+    return this.http.get<Vendor>(url);
+  }
+
+  createVendorProfile(profile: Vendor) {
+    const url = `/api/v1/vendors`;
+    return this.http.post(url, profile);
+  }
+
+  updateVendorProfile(profile: Vendor) {
+    const url = `/api/v1/vendors`;
+    return this.http.put(url, profile);
   }
 
   getFacilities(id: number): Observable<any> {

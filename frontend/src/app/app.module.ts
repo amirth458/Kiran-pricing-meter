@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AgGridModule } from 'ag-grid-angular';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 import { AppRoutingModule } from './app-routing.module';
 
 // Components
@@ -47,6 +49,7 @@ import { VendorComponent } from './components/vendor/vendor.component';
       ActionCellRendererComponent,
       CarrierCellRendererComponent
     ]),
+    NgxSpinnerModule
     // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
   ],
   declarations: [
