@@ -1,3 +1,5 @@
+import { VendorMetaData } from './vendor.model';
+
 export class Preference {
     id: string;
     venderInfoId: string;
@@ -8,4 +10,13 @@ export class Preference {
     createdBy: string;
     createdDate: string;
     updatedDate: string;
+}
+
+export interface VendorPreference {
+  id: number;
+  vendorId: number;
+  adjacentGrowth: VendorMetaData;
+  clientExclusionCondition: string;
+  coreCompetence: VendorMetaData;
+  rfqExclusionCondition: string;
 }
