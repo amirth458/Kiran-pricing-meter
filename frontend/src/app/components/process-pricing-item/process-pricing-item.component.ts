@@ -23,6 +23,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   };
   processPricingId = null;
   processPricings = [];
+  processProfiles=[];
 
   conditions = ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to',];
   units = ['CC', 'UM', 'Days'];

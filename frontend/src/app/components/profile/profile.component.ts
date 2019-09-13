@@ -12,6 +12,7 @@ export class ProfileComponent implements OnInit {
 
   submenus;
   selectedSubmenu;
+  sidemenuClosed;
 
 
   searchColumns = [
