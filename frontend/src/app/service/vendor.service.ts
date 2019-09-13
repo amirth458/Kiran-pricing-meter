@@ -17,24 +17,24 @@ export class VendorService {
   ) { }
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {
-    const url = `${environment.apiBaseUrl}/vendor-metadata/${type}`;
+    const url = `/api/v1/vendor-metadata/${type}`;
     return this.http.get<any>(url).pipe(
       map(res => res.metadataList)
     );
   }
 
   getVendorDetail(id: number): Observable<Vendor> {
-    const url = `${environment.apiBaseUrl}/vendors/${id}`;
+    const url = `/api/v1/vendors/${id}`;
     return this.http.get<Vendor>(url);
   }
 
   createVendorProfile(profile: Vendor) {
-    const url = `${environment.apiBaseUrl}/vendors`;
+    const url = `/api/v1/vendors/`;
     return this.http.post(url, profile);
   }
 
   updateVendorProfile(profile: Vendor) {
-    const url = `${environment.apiBaseUrl}/vendors`;
+    const url = `/api/v1/vendors/`;
     return this.http.put(url, profile);
   }
 

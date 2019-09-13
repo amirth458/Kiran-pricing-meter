@@ -83,8 +83,7 @@ export class BasicDetailsComponent implements OnInit {
 
   save() {
     this.spineer.show();
-    console.log(this.detailForm.value);
-    this.vendorService.createVendorProfile({
+    const vendorProfile = {
       ...this.detailForm.value,
       vendorType: {
         id: this.detailForm.value.vendorType
@@ -96,7 +95,9 @@ export class BasicDetailsComponent implements OnInit {
       confidentiality: {
         id: this.detailForm.value.confidentiality
       }
-    }).subscribe(res => {
+    };
+    console.log(vendorProfile);
+    this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
       console.log(res);
       this.spineer.hide();
     }, error => {

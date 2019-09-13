@@ -3,6 +3,8 @@
     "target": "http://3diligent-dms-service-dev.7gzpdma3ia.us-west-2.elasticbeanstalk.com",
     "secure": false,
     "logLevel": "debug",
-    "changeOrigin": false
+    "pathRewrite": {
+      "^/api/v1": "/api/v1"
+    }
   }
 }
