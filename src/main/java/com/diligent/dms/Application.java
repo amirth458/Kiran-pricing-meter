@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
@@ -18,9 +21,15 @@ public class Application {
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 	}
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+	@LocalServerPort
+	private static Integer serverPort;
 
-		LOGGER.debug("Open http://localhost:5000 or http://{SERVER_IP}:5000");
+	public static void main(String[] args) {
+		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
+
+		Environment environment = applicationContext.getBean(Environment.class);
+
+		String serverPort = environment.getProperty("server.port");
+		LOGGER.debug("Open http://localhost:" + serverPort + " or http://{SERVER_IP}:" + serverPort);
 	}
 }
