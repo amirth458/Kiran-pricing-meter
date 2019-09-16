@@ -1,0 +1,148 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "ElasticBeanstalk for 3Diligent DMS Service",
+
+  "Parameters": {
+    "ProjectName":{
+      "Description": "Project Name",
+      "Type": "String",
+      "Default": "3diligent-dms-web"
+    },
+    "DevInstanceType" : {
+      "Description" : "EC2 Instance Type",
+      "Type" : "String",
+      "Default" : "t2.micro"
+    },
+    "StageInstanceType" : {
+      "Description" : "EC2 Instance Type",
+      "Type" : "String",
+      "Default" : "t2.micro"
+    },
+    "ProdInstanceType" : {
+      "Description" : "EC2 Instance Type",
+      "Type" : "String",
+      "Default" : "t2.micro"
+    },
+    "KeyName" : {
+      "Description" : "The EC2 Key Pair to allow SSH access to the instances",
+      "Type" : "AWS::EC2::KeyPair::KeyName",
+      "Default" : "3diligent-dms"
+    },
+    "S3Bucket" : {
+      "Description" : "S3 Bucket that stores the deployment bundle",
+      "Type" : "String",
+      "Default": "3diligent-dms-code"
+    },
+    "WebAppS3Key" : {
+      "Description" : "S3 Object key that points to the deployment bundle",
+      "Type" : "String",
+      "Default": "3diligent-dms-web/3diligent-dms-web-dev/20190914162932-builds.zip"
+    },
+    "EmailAddress": {
+      "Type": "String",
+      "Description": "Elastic Beanstalk Event Notification to specified email address",
+      "Default": "sunil.gulabani1@gmail.com"
+    },
+    "BackendAPIEBTemplateURL": {
+      "Type": "String",
+      "Description": "Elastic Beanstalk Environment Template URL",
+      "Default": "https://3diligent-dms-code.s3-us-west-2.amazonaws.com/backend-web-eb.template"
+    }
+
+
+  },
+
+  "Resources" : {
+    "EBIAMRole" : {
+      "Type": "AWS::IAM::Role",
+      "Properties" : {
+        "AssumeRolePolicyDocument" : {
+          "Version" : "2012-10-17",
+          "Statement" : [ {
+            "Effect" : "Allow",
+            "Principal" : {
+              "Service" : [ "ec2.amazonaws.com", "elasticbeanstalk.amazonaws.com" ]
+            },
+            "Action" : [ "sts:AssumeRole" ]
+          }]
+        },
+
+        "Path" : "/",
+
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+        ]
+      }
+    },
+
+    "EBInstanceProfile" : {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties" : {
+        "InstanceProfileName" : {
+          "Ref": "ProjectName"
+        },
+        "Path" : "/",
+        "Roles" : [ { "Ref" : "EBIAMRole" } ]
+      }
+    },
+
+    "EBApplication": {
+      "Type": "AWS::ElasticBeanstalk::Application",
+      "Properties": {
+        "ApplicationName" : {
+          "Ref": "ProjectName"
+        },
+        "Description": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "ProjectName"
+              },
+              "App"
+            ]
+          ]
+        }
+      }
+    },
+    "DevEBAPIStack" : {
+      "Type" : "AWS::CloudFormation::Stack",
+      "Properties" : {
+        "TemplateURL" : {
+          "Ref": "BackendAPIEBTemplateURL"
+        },
+        "TimeoutInMinutes" : "60",
+        "Parameters" : {
+          "ProjectName" : {
+            "Ref": "ProjectName"
+          },
+          "EnvironmentName" : "dev",
+          "InstanceType": {
+            "Ref": "DevInstanceType"
+          },
+          "KeyName": {
+            "Ref": "KeyName"
+          },
+          "S3Bucket": {
+            "Ref": "S3Bucket"
+          },
+          "WebAppS3Key": {
+            "Ref": "WebAppS3Key"
+          },
+          "MinInstance": "1",
+          "MaxInstance": "4",
+          "EmailAddress": {
+            "Ref": "EmailAddress"
+          }
+        }
+      },
+      "DependsOn": [
+        "EBApplication",
+        "EBIAMRole",
+        "EBInstanceProfile"
+      ]
+    }
+
+  }
+}

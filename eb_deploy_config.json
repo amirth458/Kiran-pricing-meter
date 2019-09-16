@@ -1,0 +1,26 @@
+{
+  "DEV": {
+    "AWS_REGION_NAME": "us-west-2",
+    "AWS_ACCESS_KEY": "AKIAXDHQUQPKBXI24IHH",
+    "AWS_SECRET_KEY": "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",
+    "EB_APPLICATION_NAME": "3diligent-dms-web",
+    "EB_APPLICATION_ENVIRONMENT_NAME": "3diligent-dms-web-dev",
+    "S3_BUCKET_NAME": "3diligent-dms-code"
+  },
+  "STAGE": {
+    "AWS_REGION_NAME": "us-west-2",
+    "AWS_ACCESS_KEY": "AKIAXDHQUQPKBXI24IHH",
+    "AWS_SECRET_KEY": "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",
+    "EB_APPLICATION_NAME": "3diligent-dms-web",
+    "EB_APPLICATION_ENVIRONMENT_NAME": "3diligent-dms-web-stage",
+    "S3_BUCKET_NAME": "3diligent-dms-code"
+  },
+  "PROD": {
+    "AWS_REGION_NAME": "us-west-2",
+    "AWS_ACCESS_KEY": "AKIAXDHQUQPKBXI24IHH",
+    "AWS_SECRET_KEY": "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",
+    "EB_APPLICATION_NAME": "3diligent-dms-web",
+    "EB_APPLICATION_ENVIRONMENT_NAME": "3diligent-dms-web-prod",
+    "S3_BUCKET_NAME": "3diligent-dms-code"
+  }
+}

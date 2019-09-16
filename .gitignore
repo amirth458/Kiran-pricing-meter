@@ -42,3 +42,5 @@ src/main/resources/static
 
 target/
 package-lock.json
+cloud-formation/3diligent-dms.pem
+cloud-formation/3diligent-dms.ppk
