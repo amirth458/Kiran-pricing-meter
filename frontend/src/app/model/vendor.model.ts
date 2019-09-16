@@ -8,17 +8,17 @@ export interface Vendor {
   name: string;
   email: string;
   phone: string;
-  vendorType: VendorMetaData;
+  vendorType: { id: number, name: string };
   city: string;
   state: string;
-  country: VendorMetaData;
+  country: { id: number, name: string };
   street1: string;
   street2: string;
   zipCode: string;
-  confidentiality: VendorMetaData;
+  confidentiality: { id: number, name: string };
   clientExclusionCondition: string;
   rfqExclusionCondition: string;
-  vendorCertificates: VendorMetaData[];
+  vendorCertificates: Array<{ id: number, name: string }>;
 }
 
 export class FilterOption {

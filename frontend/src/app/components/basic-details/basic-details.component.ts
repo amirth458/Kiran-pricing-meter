@@ -74,7 +74,7 @@ export class BasicDetailsComponent implements OnInit {
       city: initValue.city,
       state: initValue.state,
       country: initValue.country.id,
-      street: initValue.street1 + (initValue.street2 ? initValue.street2 : ''),
+      street: initValue.street1 + initValue.street2,
       zipCode: initValue.zipCode,
       confidentiality: initValue.confidentiality.id,
       vendorCertificates: initValue.vendorCertificates.map(cert => cert.id)
@@ -83,7 +83,7 @@ export class BasicDetailsComponent implements OnInit {
 
   save() {
     this.spineer.show();
-    this.vendorService.updateVendorProfile({
+    const vendorProfile = {
       ...this.detailForm.value,
       vendorType: {
         id: this.detailForm.value.vendorType
@@ -94,13 +94,10 @@ export class BasicDetailsComponent implements OnInit {
       street1: this.detailForm.value.street,
       confidentiality: {
         id: this.detailForm.value.confidentiality
-      },
-      vendorCertificates: [
-        {
-          id: this.detailForm.value.vendorCertificates[0]
-        }
-      ]
-    }).subscribe(res => {
+      }
+    };
+    console.log(vendorProfile);
+    this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
       console.log(res);
       this.spineer.hide();
     }, error => {

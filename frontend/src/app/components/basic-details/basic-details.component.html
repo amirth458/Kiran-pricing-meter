@@ -1,5 +1,5 @@
 <div class="wrapper shadow">
-  <form [formGroup]="detailForm" (submit)="save()">
+  <form [formGroup]="detailForm" (submit)="save($event)">
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Vendor Name</label>
