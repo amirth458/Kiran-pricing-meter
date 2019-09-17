@@ -19,9 +19,9 @@ export class UserService {
 
   getUserInfo() {
     const userInfo = {
-      id: 490,
-      name: 'Miki O',
-      email: 'test.miki@gmail.com',
+      id: 502,
+      name: 'Mike',
+      email: 'mike-test@gmail.com',
       phone: '3434343',
       street1: 'fdfdf',
       street2: 'dfdfdfdfd',

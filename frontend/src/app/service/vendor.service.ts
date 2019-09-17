@@ -34,7 +34,7 @@ export class VendorService {
   }
 
   updateVendorProfile(profile: Vendor) {
-    const url = `/api/v1/vendors/`;
+    const url = `/api/v1/vendors/${profile.id}`;
     return this.http.put(url, profile);
   }
 

@@ -6,6 +6,7 @@ import { VendorService } from '../../service/vendor.service';
 import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-basic-details',
@@ -40,12 +41,13 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   constructor(
     public fb: FormBuilder,
     public vendorService: VendorService,
+    public userService: UserService,
     public spineer: NgxSpinnerService
   ) { }
 
   async ngOnInit() {
     this.getVendorMetaDatas();
-    this.vendorService.getVendorDetail(330).subscribe(res => {
+    this.vendorService.getVendorDetail(this.userService.getUserInfo().id).subscribe(res => {
       if (res) {
         this.initForm(res);
       }
@@ -74,7 +76,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     try {
       this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
       this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
-      // TODO: UNcomment the following line after API is ready
+      // TODO:
       // this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
       this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
       this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
@@ -93,9 +95,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       email: initValue.email,
       phone: initValue.phone,
       vendorType: initValue.vendorType.id,
-      // TODO: UNcomment the following line after API is ready
-      // vendorIndustry: initValue.vendorIndustry.id || '',
-      vendorIndustry: '',
+      vendorIndustry: initValue.vendorIndustry ? initValue.vendorIndustry.id : '',
       city: initValue.city,
       state: initValue.state,
       country: initValue.country.id,
@@ -114,7 +114,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       vendorType: {
         id: this.detailForm.value.vendorType
       },
-      // TODO: UNcomment the following line after API is ready
       vendorIndustry: {
         id: this.detailForm.value.vendorIndustry
       },
