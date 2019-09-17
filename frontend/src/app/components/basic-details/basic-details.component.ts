@@ -90,8 +90,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue: Vendor) {
-    this.selectedCertifications = initValue.vendorCertificates.map(x => x.id);
-    this.selectedVendorIndustry = initValue.vendorIndustries.map(x => x.id);
+    this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
+    this.selectedVendorIndustry = initValue.vendorIndustries.map(x => x.id) || [];
 
     this.detailForm.setValue({
       id: initValue.id,

@@ -47,8 +47,8 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
         this.isPreferenceAvailable = false;
         const userInfo = {
           vendorId: this.userService.getUserInfo().id,
-          coreCompetence: [],
-          adjacentGrowth: [],
+          vendorCoreCompetence: [],
+          vendorAdjacentGrowths: [],
           rfqExclusionCondition: '',
           clientExclusionCondition: '',
         };
@@ -67,9 +67,9 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue) {
-    this.selectedCoreCompetence = initValue.vendorCoreCompetencies.map(x => x.id);
-    this.selectedAdjacentGrowth = initValue.vendorAdjacentGrowths.map(x => x.id);
-
+    console.log(initValue);
+    this.selectedCoreCompetence = initValue.vendorCoreCompetencies.map(x => x.id) || [];
+    this.selectedAdjacentGrowth = initValue.vendorAdjacentGrowths.map(x => x.id) || [];
     this.form.setValue({
       coreCompetence: [],
       adjacentGrowth: [],
@@ -100,9 +100,10 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
     this.spineer.show();
     const preferences = {
       ...this.form.value,
-      adjacentGrowth: this.adjacentGrowths.filter((item) => this.selectedAdjacentGrowth.includes(item.id)),
-      coreCompetence: this.coreCompetencies.filter((item) => this.selectedCoreCompetence.includes(item.id)),
+      vendorAdjacentGrowths: this.adjacentGrowths.filter((item) => this.selectedAdjacentGrowth.includes(item.id)),
+      vendorCoreCompetencies: this.coreCompetencies.filter((item) => this.selectedCoreCompetence.includes(item.id)),
     };
+    console.log(preferences);
     if (this.isPreferenceAvailable) {
 
       this.preferenceService.updatePreference(preferences)
