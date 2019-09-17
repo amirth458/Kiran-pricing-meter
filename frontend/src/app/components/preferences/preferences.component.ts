@@ -1,4 +1,10 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { VendorService } from 'src/app/service/vendor.service';
+import { VendorMetaDataTypes } from 'src/app/mockData/vendor';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PreferenceService } from 'src/app/service/preference.service';
+import { UserService } from 'src/app/service/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-preferences',
@@ -6,19 +12,70 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
   styleUrls: ['./preferences.component.css']
 })
 export class PreferencesComponent implements OnInit, AfterViewChecked {
-  form = {
-    core_competencies: '',
-    adjacent_growth: '',
-    RFQ_to_exclude: '',
-    companies_to_exclude: ''
-  };
+  form: FormGroup = this.fb.group({
+    id: [null],
+    coreCompetence: [''],
+    adjacentGrowth: [''],
+    rfqExclusionCondition: [''],
+    clientExclusionCondition: [''],
+    vendorId: [null]
+  });
+
   coreCompetencies = [];
   adjacentGrowth = [];
-  RFQToExclude = [];
+  rfqExclusionCondition = [];
+  clientExclusionCondition = [];
 
-  constructor() { }
+  isPreferenceAvailable = false;
 
-  ngOnInit() {
+  constructor(
+    private fb: FormBuilder,
+    private vendorService: VendorService,
+    private preferenceService: PreferenceService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService
+  ) { }
+
+  async ngOnInit() {
+    this.spineer.show();
+    this.preferenceService.getPreferenceByVendorId(this.userService.getUserInfo().id).subscribe(
+      (res) => {
+        this.isPreferenceAvailable = true;
+        this.initForm(res);
+      },
+      (err) => {
+        this.isPreferenceAvailable = false;
+        const userInfo = {
+          id: null,
+          vendorId: this.userService.getUserInfo().id,
+          coreCompetence: {},
+          adjacentGrowth: {},
+          rfqExclusionCondition: '',
+          clientExclusionCondition: '',
+        };
+        this.initForm(userInfo);
+      });
+    try {
+      this.coreCompetencies = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Competence).toPromise();
+      this.adjacentGrowth = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.AdjacentGrowth).toPromise();
+      this.spineer.hide();
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+  }
+
+  initForm(initValue) {
+    this.form.setValue({
+      id: initValue.id,
+      coreCompetence: initValue.coreCompetence.id,
+      adjacentGrowth: initValue.adjacentGrowth.id,
+      rfqExclusionCondition: initValue.rfqExclusionCondition,
+      clientExclusionCondition: initValue.clientExclusionCondition,
+      vendorId: initValue.vendorId
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -31,13 +88,59 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          this.save();
+
         }
         form.classList.add('was-validated');
       }, false);
     });
   }
+
   save() {
-    console.log(this.form);
+    this.spineer.show();
+    let preferences = {
+      ...this.form.value,
+      adjacentGrowth: {},
+      coreCompetence: {},
+    };
+
+    if (this.form.value.adjacentGrowth != '') {
+      preferences = {
+        ...preferences,
+        adjacentGrowth: {
+          id: this.form.value.adjacentGrowth
+        }
+      };
+    }
+
+    if (this.form.value.coreCompetence != '') {
+      preferences = {
+        ...preferences,
+        coreCompetence: {
+          id: this.form.value.coreCompetence
+        }
+      };
+    }
+    if (this.isPreferenceAvailable) {
+
+      this.preferenceService.updatePreference(preferences.id, preferences)
+        .subscribe(
+          res => {
+            this.spineer.hide();
+          },
+          error => {
+            this.spineer.hide();
+          });
+    } else {
+      this.preferenceService.createPreference(preferences)
+        .subscribe(
+          res => {
+            this.isPreferenceAvailable = true;
+            this.initForm(res);
+            this.spineer.hide();
+          },
+          err => {
+            this.spineer.hide();
+          });
+    }
   }
 }
