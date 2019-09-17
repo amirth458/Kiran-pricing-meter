@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
@@ -12,24 +12,27 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './basic-details.component.html',
   styleUrls: ['./basic-details.component.css']
 })
-export class BasicDetailsComponent implements OnInit {
+export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
   countries: VendorMetaData[] = [];
   certifications: VendorMetaData[] = [];
   confidentialities: VendorMetaData[] = [];
+  vendorIndustries = [];
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
     name: [null, Validators.required],
-    email: [null, Validators.required],
-    phone: [null, Validators.required],
+    email: [null, [Validators.required, Validators.email]],
+    phone: [null, [Validators.required]],
     vendorType: [null, Validators.required],
+    vendorIndustry: [null],
     city: [null, Validators.required],
     state: [null, Validators.required],
     country: [null, Validators.required],
-    street: [null, Validators.required],
-    zipCode: [null, Validators.required],
+    street1: [null, Validators.required],
+    street2: [null, Validators.required],
+    zipCode: [null, [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]],
     confidentiality: null,
     vendorCertificates: null
   });
@@ -40,7 +43,7 @@ export class BasicDetailsComponent implements OnInit {
     private spineer: NgxSpinnerService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getVendorMetaDatas();
     this.vendorService.getVendorDetail(330).subscribe(res => {
       if (res) {
@@ -49,11 +52,30 @@ export class BasicDetailsComponent implements OnInit {
     });
   }
 
+  ngAfterViewChecked(): void {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    const validation = Array.prototype.filter.call(forms, (form) => {
+      form.addEventListener('submit', (event) => {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        } else {
+
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }
+
   async getVendorMetaDatas() {
     this.spineer.show();
     try {
       this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
       this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
+      // TODO: UNcomment the following line after API is ready
+      // this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
       this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
       this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
     } catch (e) {
@@ -71,12 +93,16 @@ export class BasicDetailsComponent implements OnInit {
       email: initValue.email,
       phone: initValue.phone,
       vendorType: initValue.vendorType.id,
+      // TODO: UNcomment the following line after API is ready
+      // vendorIndustry: initValue.vendorIndustry.id || '',
+      vendorIndustry: '',
       city: initValue.city,
       state: initValue.state,
       country: initValue.country.id,
-      street: initValue.street1 + initValue.street2,
+      street1: initValue.street1 || '',
+      street2: initValue.street2 || '',
       zipCode: initValue.zipCode,
-      confidentiality: initValue.confidentiality.id,
+      confidentiality: initValue.confidentiality.id || '',
       vendorCertificates: initValue.vendorCertificates.map(cert => cert.id)
     });
   }
@@ -88,10 +114,14 @@ export class BasicDetailsComponent implements OnInit {
       vendorType: {
         id: this.detailForm.value.vendorType
       },
+      // TODO: UNcomment the following line after API is ready
+      // vendorIndustry: {
+      //   id: this.detailForm.value.vendorIndustry
+      // },
+      vendorIndustry: {},
       country: {
         id: this.detailForm.value.country
       },
-      street1: this.detailForm.value.street,
       confidentiality: {
         id: this.detailForm.value.confidentiality
       }
