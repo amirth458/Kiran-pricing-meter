@@ -1,0 +1,242 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Elastic Beanstalk Per Environment",
+
+  "Parameters": {
+    "ProjectName":{
+      "Description": "Projecy Name",
+      "Type": "String",
+      "Default": "3diligent-dms-web"
+    },
+    "EnvironmentName": {
+      "Description" : "Environment Name",
+      "Type" : "String",
+      "Default" : "dev",
+      "AllowedValues" : ["dev", "stage", "prod"]
+    },
+    "InstanceType" : {
+      "Description" : "EC2 Instance Type",
+      "Type" : "String",
+      "Default" : "t2.micro"
+    },
+    "KeyName" : {
+      "Description" : "The EC2 Key Pair to allow SSH access to the instances",
+      "Type" : "String",
+      "Default" : "3diligent-dms"
+    },
+    "S3Bucket" : {
+      "Description" : "S3 Bucket that stores the deployment bundle",
+      "Type" : "String",
+      "Default": "3diligent-dms-code"
+    },
+    "WebAppS3Key" : {
+      "Description" : "S3 Object key that points to the deployment bundle",
+      "Type" : "String",
+      "Default": "eb-diligent-dms-service_2019-09-08 07-32-bundle.zip"
+    },
+    "MinInstance": {
+      "Description" : "Min Instance Size",
+      "Type" : "Number",
+      "Default": "1"
+    },
+    "MaxInstance": {
+      "Description" : "Max Instance Size",
+      "Type" : "Number",
+      "Default": "4"
+    },
+    "EmailAddress": {
+      "Type": "String",
+      "Description": "Elastic Beanstalk Event Notification to specified email address",
+      "Default": "sunil.gulabani1@gmail.com"
+    },
+    "EBHealthCheckURL": {
+      "Type": "String",
+      "Description": "EB Application Health Check URL",
+      "Default": "/"
+    }
+  },
+
+  "Resources": {
+    "EBApplicationVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "ProjectName"
+        },
+        "SourceBundle": {
+          "S3Bucket": {
+            "Ref": "S3Bucket"
+          },
+          "S3Key": {
+            "Ref": "WebAppS3Key"
+          }
+        }
+      }
+    },
+
+    "EBConfigurationTemplate": {
+      "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "ProjectName"
+        },
+        "Description": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "ProjectName"
+              },
+              " Configuration Template"
+            ]
+          ]
+        },
+        "SolutionStackName": "64bit Amazon Linux 2018.03 v2.9.2 running Java 8",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MinSize",
+            "Value": { "Ref": "MinInstance"}
+          },
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MaxSize",
+            "Value": { "Ref": "MaxInstance"}
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "LoadBalanced"
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "InstanceType",
+            "Value": { "Ref": "InstanceType"}
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": {
+              "Ref": "ProjectName"
+            }
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "EC2KeyName",
+            "Value": { "Ref": "KeyName"}
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application",
+            "OptionName": "Application Healthcheck URL",
+            "Value": { "Ref": "EBHealthCheckURL"}
+          },
+          {
+            "Namespace": "aws:elb:healthcheck",
+            "OptionName": "Interval",
+            "Value": "300"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:sns:topics",
+            "OptionName": "Notification Protocol",
+            "Value": "email"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:sns:topics",
+            "OptionName": "Notification Endpoint",
+            "Value": {
+              "Ref": "EmailAddress"
+            }
+          },
+          {
+            "Namespace": "aws:elb:loadbalancer",
+            "OptionName": "CrossZone",
+            "Value": "true"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "StreamLogs",
+            "Value": "true"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "DeleteOnTerminate",
+            "Value": "false"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "RetentionInDays",
+            "Value": "7"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "SPRING_PROFILES_ACTIVE",
+            "Value": {"Ref": "EnvironmentName"}
+          },
+          {
+            "Namespace": "aws:elb:healthcheck",
+            "OptionName": "HealthyThreshold",
+            "Value": "2"
+          },
+          {
+            "Namespace": "aws:elb:healthcheck",
+            "OptionName": "Interval",
+            "Value": "60"
+          },
+          {
+            "Namespace": "aws:elb:healthcheck",
+            "OptionName": "UnhealthyThreshold",
+            "Value": "3"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "MeasureName",
+            "Value": "CPUUtilization"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "Unit",
+            "Value": "Percent"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "LowerThreshold",
+            "Value": "20"
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "UpperThreshold",
+            "Value": "80"
+          }
+        ]
+      }
+    },
+
+    "EBEnvironment": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "ProjectName"
+        },
+        "EnvironmentName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "ProjectName"
+              },
+              {
+                "Ref": "EnvironmentName"
+              }
+            ]
+          ]
+        },
+        "TemplateName": {
+          "Ref": "EBConfigurationTemplate"
+        },
+        "VersionLabel": {
+          "Ref": "EBApplicationVersion"
+        }
+      }
+    }
+  }
+}

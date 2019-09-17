@@ -49,4 +49,5 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Appointments', icon: 'fa-calendar-check-o', path: '/appointment' }
   ],
   serviceurl: '',
+  apiBaseUrl: 'http://3diligent-dms-service-dev.7gzpdma3ia.us-west-2.elasticbeanstalk.com/api/v1'
 };
