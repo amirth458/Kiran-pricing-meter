@@ -6,8 +6,8 @@
 
       <div class="form-group theme col">
         <label for="coreCompetence">Core Competencies</label>
-        <ng-select [multiple]="true" [virtualScroll]="true" [hideSelected]="true" [selectOnTab]="true"
-          [(ngModel)]="selectedCoreCompetence" [ngModelOptions]="{standalone: true}">
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedCoreCompetence" [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of coreCompetencies" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>
@@ -18,8 +18,8 @@
 
       <div class="form-group theme col">
         <label for="adjacentGrowth">Adjacent Growth</label>
-        <ng-select [multiple]="true" [virtualScroll]="true" [hideSelected]="true" [selectOnTab]="true"
-          [(ngModel)]="selectedAdjacentGrowth" [ngModelOptions]="{standalone: true}">
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedAdjacentGrowth" [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of adjacentGrowths" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>

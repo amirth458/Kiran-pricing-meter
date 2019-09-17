@@ -5,7 +5,7 @@
   position: fixed;
   top: 67px;
   width: 100%;
-  z-index: 5;
+  z-index: 9999;
 }
 
 ul {

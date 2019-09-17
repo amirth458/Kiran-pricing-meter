@@ -16,8 +16,8 @@
     <div class="form-row">
       <div class="form-group theme col">
         <label>Vendor Industry</label>
-        <ng-select [multiple]="true" [virtualScroll]="true" [hideSelected]="true" [selectOnTab]="true"
-          [(ngModel)]="selectedVendorIndustry" [ngModelOptions]="{standalone: true}">
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]="true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedVendorIndustry" [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of vendorIndustries" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>
@@ -68,8 +68,8 @@
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Certifications</label>
-        <ng-select [multiple]="true" [virtualScroll]="true" [hideSelected]="true" [selectOnTab]="true"
-          [(ngModel)]="selectedCertifications" [ngModelOptions]="{standalone: true}">
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedCertifications" [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>

@@ -114,12 +114,6 @@ button.theme.white:hover {
   cursor: not-allowed;
 }
 
-/* Overriding @ng-select */
-.ng-select,
-.ng-dropdown-panel.ng-select-top {
-  z-index: 1;
-}
-
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   background-color: var(--theme-light-green);
   color: white;
