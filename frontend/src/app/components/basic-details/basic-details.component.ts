@@ -103,7 +103,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       street2: initValue.street2 || '',
       zipCode: initValue.zipCode,
       confidentiality: initValue.confidentiality.id || '',
-      vendorCertificates: initValue.vendorCertificates.map(cert => cert.id)
+      vendorCertificates: initValue.vendorCertificates[0] ? initValue.vendorCertificates[0].id : ''
     });
   }
 
@@ -115,18 +115,17 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         id: this.detailForm.value.vendorType
       },
       // TODO: UNcomment the following line after API is ready
-      // vendorIndustry: {
-      //   id: this.detailForm.value.vendorIndustry
-      // },
-      vendorIndustry: {},
+      vendorIndustry: {
+        id: this.detailForm.value.vendorIndustry
+      },
       country: {
         id: this.detailForm.value.country
       },
       confidentiality: {
         id: this.detailForm.value.confidentiality
-      }
+      },
+      vendorCertificates: this.detailForm.value.vendorCertificates != '' ? [{ id: this.detailForm.value.vendorCertificates }] : []
     };
-    console.log(vendorProfile);
     this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
       console.log(res);
       this.spineer.hide();
