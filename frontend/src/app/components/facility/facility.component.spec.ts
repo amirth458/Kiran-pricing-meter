@@ -5,6 +5,7 @@ import { ColumnSearchFilterComponent } from 'src/app/common/column-search-filter
 import { AgGridModule } from 'ag-grid-angular';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('FacilityComponent', () => {
   let component: FacilityComponent;
@@ -15,7 +16,8 @@ describe('FacilityComponent', () => {
       declarations: [FacilityComponent, ColumnSearchFilterComponent],
       imports: [
         AgGridModule.withComponents([]),
-        FormsModule
+        FormsModule,
+        HttpClientModule
       ],
       providers: [
         {

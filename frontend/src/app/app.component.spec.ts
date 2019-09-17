@@ -3,18 +3,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './common/side-menu/side-menu.component';
 import { TopMenuComponent } from './common/top-menu/top-menu.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        NgxSpinnerModule
       ],
       declarations: [
         AppComponent,
         SideMenuComponent,
-        TopMenuComponent
-      ],
+        TopMenuComponent,
+      ]
     }).compileComponents();
   }));
 

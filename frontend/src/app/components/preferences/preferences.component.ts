@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { VendorService } from 'src/app/service/vendor.service';
 import { VendorMetaDataTypes } from 'src/app/mockData/vendor';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { PreferenceService } from 'src/app/service/preference.service';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
