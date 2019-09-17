@@ -10,7 +10,7 @@ export class SubSectionMenuComponent implements OnInit {
 
   @Input('submenus') submenus: [{ name: string, route: string }];
   @Input('selectedMenu') selectedMenu: string;
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     const urlArray = this.route.url.split('/');

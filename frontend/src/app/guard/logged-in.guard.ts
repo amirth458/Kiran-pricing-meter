@@ -10,7 +10,7 @@ import { AuthService } from '../service/auth.service';
 export class LoggedInGuard implements CanActivate {
   path: ActivatedRouteSnapshot[];
   route: ActivatedRouteSnapshot;
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,

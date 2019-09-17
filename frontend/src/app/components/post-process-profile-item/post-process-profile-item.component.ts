@@ -54,7 +54,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     { name: 'Surface Finish Increment', field: 'surfaceFinishIncrement', checked: true }
   ];
   displayedOptions = [];
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {

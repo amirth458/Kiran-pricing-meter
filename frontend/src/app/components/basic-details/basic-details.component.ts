@@ -38,9 +38,9 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   });
 
   constructor(
-    private fb: FormBuilder,
-    private vendorService: VendorService,
-    private spineer: NgxSpinnerService
+    public fb: FormBuilder,
+    public vendorService: VendorService,
+    public spineer: NgxSpinnerService
   ) { }
 
   async ngOnInit() {

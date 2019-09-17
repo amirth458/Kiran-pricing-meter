@@ -156,8 +156,8 @@ export class FacilityComponent implements OnInit {
   pageSize = 10;
 
   constructor(
-    private route: Router,
-    private vendorService: VendorService
+    public route: Router,
+    public vendorService: VendorService
   ) { }
 
   ngOnInit() {

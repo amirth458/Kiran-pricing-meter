@@ -9,7 +9,7 @@ import { Preference, VendorPreference } from '../model/preferences.model';
 export class PreferenceService {
 
   constructor(
-    private http: HttpClient
+    public http: HttpClient
   ) { }
 
   getPreference(id: number): Observable<any> {

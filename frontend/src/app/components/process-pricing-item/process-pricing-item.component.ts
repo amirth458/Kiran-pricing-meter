@@ -28,7 +28,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   units = ['CC', 'UM', 'Days'];
   conditionNames = ['Part Volume', 'Layer Height', 'Lead Time To Production'];
 
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {

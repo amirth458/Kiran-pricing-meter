@@ -29,11 +29,11 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   isPreferenceAvailable = false;
 
   constructor(
-    private fb: FormBuilder,
-    private vendorService: VendorService,
-    private preferenceService: PreferenceService,
-    private userService: UserService,
-    private spineer: NgxSpinnerService
+    public fb: FormBuilder,
+    public vendorService: VendorService,
+    public preferenceService: PreferenceService,
+    public userService: UserService,
+    public spineer: NgxSpinnerService
   ) { }
 
   async ngOnInit() {

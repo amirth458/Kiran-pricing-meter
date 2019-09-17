@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit {
     'is not empty',
   ];
   type = ['search', 'filter'];
-  constructor(private route: Router) {
+  constructor(public route: Router) {
     this.baseURL = this.route.url.split('/')[1];
   }
 

@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 export class VendorService {
 
   constructor(
-    private http: HttpClient
+    public http: HttpClient
   ) { }
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {

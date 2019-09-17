@@ -11,7 +11,7 @@ export class AuthService {
   data: {};
   url: string = environment.serviceurl + '/login';
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
 
   login(user: string, password: string) {

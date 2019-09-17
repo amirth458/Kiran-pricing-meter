@@ -111,7 +111,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   };
   activeTab = 'processParameters';
   activeTabName = 'Process Parameters';
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {

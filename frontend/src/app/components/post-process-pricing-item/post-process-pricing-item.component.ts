@@ -30,7 +30,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   units = ['CC', 'UM', 'Days'];
   conditionNames = ['Tolerance Increment', 'Surface Finish Increment'];
 
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {
