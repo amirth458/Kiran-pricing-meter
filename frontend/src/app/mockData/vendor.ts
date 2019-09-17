@@ -5,6 +5,6 @@ export enum VendorMetaDataTypes {
   Competence = 'core_competence',
   VendorCertificate = 'vendor_certificate',
   VendorType = 'vendor_type',
-  VendorIndustry = 'vendor_industry',
+  VendorIndustry = 'vendor_industries',
   Country = 'country'
 }

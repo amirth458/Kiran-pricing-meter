@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AgGridModule } from 'ag-grid-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -42,6 +43,7 @@ import { VendorComponent } from './components/vendor/vendor.component';
   imports: [
     AppRoutingModule,
     BrowserModule,
+    NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

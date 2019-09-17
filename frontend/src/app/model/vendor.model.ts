@@ -9,7 +9,7 @@ export interface Vendor {
   email: string;
   phone: string;
   vendorType: { id: number, name: string };
-  vendorIndustry: { id: number, name: string };
+  vendorIndustries: Array<{ id: number, name: string }>;
   city: string;
   state: string;
   country: { id: number, name: string };

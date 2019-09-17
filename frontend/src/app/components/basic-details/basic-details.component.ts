@@ -16,10 +16,12 @@ import { UserService } from 'src/app/service/user.service';
 export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
+  vendorIndustries: VendorMetaData[] = [];
   countries: VendorMetaData[] = [];
   certifications: VendorMetaData[] = [];
   confidentialities: VendorMetaData[] = [];
-  vendorIndustries = [];
+  selectedCertifications = [];
+  selectedVendorIndustry = [];
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -76,8 +78,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     try {
       this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
       this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
-      // TODO:
-      // this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
+      this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
       this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
       this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
     } catch (e) {
@@ -89,13 +90,16 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue: Vendor) {
+    this.selectedCertifications = initValue.vendorCertificates.map(x => x.id);
+    this.selectedVendorIndustry = initValue.vendorIndustries.map(x => x.id);
+
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
       email: initValue.email,
       phone: initValue.phone,
       vendorType: initValue.vendorType.id,
-      vendorIndustry: initValue.vendorIndustry ? initValue.vendorIndustry.id : '',
+      vendorIndustry: [],
       city: initValue.city,
       state: initValue.state,
       country: initValue.country.id,
@@ -103,7 +107,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       street2: initValue.street2 || '',
       zipCode: initValue.zipCode,
       confidentiality: initValue.confidentiality.id || '',
-      vendorCertificates: initValue.vendorCertificates[0] ? initValue.vendorCertificates[0].id : ''
+      vendorCertificates: []
     });
   }
 
@@ -123,10 +127,11 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       confidentiality: {
         id: this.detailForm.value.confidentiality
       },
-      vendorCertificates: this.detailForm.value.vendorCertificates != '' ? [{ id: this.detailForm.value.vendorCertificates }] : []
+      vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
+      vendorIndustries: this.vendorIndustries.filter((item) => this.selectedVendorIndustry.includes(item.id))
     };
     this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
-      console.log(res);
+      this.initForm(res);
       this.spineer.hide();
     }, error => {
       console.log(error);

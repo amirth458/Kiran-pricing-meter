@@ -27,8 +27,8 @@ export class PreferenceService {
     return this.http.post<any>(url, preference);
   }
 
-  updatePreference(id: number, preference: Preference): Observable<any> {
-    const url = `/api/v1/preferences/${id}`;
+  updatePreference(preference: Preference): Observable<any> {
+    const url = `/api/v1/vendors/${preference.vendorId}/preferences`;
     return this.http.put<any>(url, preference);
   }
 }

@@ -2,7 +2,7 @@ import { VendorMetaData } from './vendor.model';
 
 export class Preference {
     id: string;
-    venderInfoId: string;
+    vendorId: string;
     coreCompetencies: Array<string>;
     adjacentGrowth: Array<string>;
     rfqToExclude: Array<string>;

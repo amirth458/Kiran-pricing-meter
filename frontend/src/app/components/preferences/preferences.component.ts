@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { PreferenceService } from 'src/app/service/preference.service';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { VendorMetaData } from 'src/app/model/vendor.model';
 
 @Component({
   selector: 'app-preferences',
@@ -12,21 +13,20 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./preferences.component.css']
 })
 export class PreferencesComponent implements OnInit, AfterViewChecked {
+  coreCompetencies: VendorMetaData[] = [];
+  adjacentGrowths: VendorMetaData[] = [];
+
+  selectedCoreCompetence = [];
+  selectedAdjacentGrowth = [];
+  isPreferenceAvailable = false;
+
   form: FormGroup = this.fb.group({
-    id: [null],
-    coreCompetence: [''],
-    adjacentGrowth: [''],
+    coreCompetence: [],
+    adjacentGrowth: [],
     rfqExclusionCondition: [''],
     clientExclusionCondition: [''],
     vendorId: [null]
   });
-
-  coreCompetencies = [];
-  adjacentGrowth = [];
-  rfqExclusionCondition = [];
-  clientExclusionCondition = [];
-
-  isPreferenceAvailable = false;
 
   constructor(
     public fb: FormBuilder,
@@ -46,10 +46,9 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       (err) => {
         this.isPreferenceAvailable = false;
         const userInfo = {
-          id: null,
           vendorId: this.userService.getUserInfo().id,
-          coreCompetence: {},
-          adjacentGrowth: {},
+          coreCompetence: [],
+          adjacentGrowth: [],
           rfqExclusionCondition: '',
           clientExclusionCondition: '',
         };
@@ -57,7 +56,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       });
     try {
       this.coreCompetencies = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Competence).toPromise();
-      this.adjacentGrowth = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.AdjacentGrowth).toPromise();
+      this.adjacentGrowths = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.AdjacentGrowth).toPromise();
       this.spineer.hide();
     } catch (e) {
       this.spineer.hide();
@@ -68,10 +67,12 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue) {
+    this.selectedCoreCompetence = initValue.vendorCoreCompetencies.map(x => x.id);
+    this.selectedAdjacentGrowth = initValue.vendorAdjacentGrowths.map(x => x.id);
+
     this.form.setValue({
-      id: initValue.id,
-      coreCompetence: initValue.coreCompetence.id,
-      adjacentGrowth: initValue.adjacentGrowth.id,
+      coreCompetence: [],
+      adjacentGrowth: [],
       rfqExclusionCondition: initValue.rfqExclusionCondition,
       clientExclusionCondition: initValue.clientExclusionCondition,
       vendorId: initValue.vendorId
@@ -97,32 +98,14 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
 
   save() {
     this.spineer.show();
-    let preferences = {
+    const preferences = {
       ...this.form.value,
-      adjacentGrowth: {},
-      coreCompetence: {},
+      adjacentGrowth: this.adjacentGrowths.filter((item) => this.selectedAdjacentGrowth.includes(item.id)),
+      coreCompetence: this.coreCompetencies.filter((item) => this.selectedCoreCompetence.includes(item.id)),
     };
-
-    if (this.form.value.adjacentGrowth != '') {
-      preferences = {
-        ...preferences,
-        adjacentGrowth: {
-          id: this.form.value.adjacentGrowth
-        }
-      };
-    }
-
-    if (this.form.value.coreCompetence != '') {
-      preferences = {
-        ...preferences,
-        coreCompetence: {
-          id: this.form.value.coreCompetence
-        }
-      };
-    }
     if (this.isPreferenceAvailable) {
 
-      this.preferenceService.updatePreference(preferences.id, preferences)
+      this.preferenceService.updatePreference(preferences)
         .subscribe(
           res => {
             this.spineer.hide();

@@ -3,6 +3,8 @@
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 
 
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 :root {
   --theme-dark-blue: #092846;
   --them-dark-blue-opaque: #092846;
@@ -106,9 +108,21 @@ button.theme.white:hover {
 .button-section {
   margin-top: 30px;
 }
+
 .btn:disabled {
   background-color: rgba(0, 0, 0, 0.5) !important;
   cursor: not-allowed;
+}
+
+/* Overriding @ng-select */
+.ng-select,
+.ng-dropdown-panel.ng-select-top {
+  z-index: 1;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  background-color: var(--theme-light-green);
+  color: white;
 }
 
 /* Overriding Ag-grid style */
