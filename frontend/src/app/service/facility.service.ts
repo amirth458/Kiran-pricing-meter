@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { FilterOption } from '../model/vendor.model';
 import { Facilities } from '../model/facility.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class FacilityService {
   ) { }
 
   getFacilities(id: number, filterOption: FilterOption = null): Observable<any> {
-    const url = `/api/v1/vendors/facilities`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/facilities`;
     let params = new HttpParams();
     if (filterOption) {
       params = params.append('offset', filterOption.offset.toString());
@@ -31,17 +32,17 @@ export class FacilityService {
   }
 
   createFacilities(facility: Facilities): Observable<any> {
-    const url = `/api/v1/facilities`;
+    const url = `${environment.apiBaseUrl}/api/v1/facilities`;
     return this.http.post(url, facility);
   }
 
   updateFacilities(id: number, facility: Facilities): Observable<any> {
-    const url = `/api/v1/facilities/${id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/facilities/${id}`;
     return this.http.put(url, facility);
   }
 
   deleteFacilities(id: number): Observable<any> {
-    const url = `/api/v1/facilities/${id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/facilities/${id}`;
     return this.http.delete(url);
   }
 }

@@ -7,6 +7,7 @@ import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-basic-details',
@@ -44,10 +45,16 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     public fb: FormBuilder,
     public vendorService: VendorService,
     public userService: UserService,
-    public spineer: NgxSpinnerService
+    public spineer: NgxSpinnerService,
+    public route: Router
   ) { }
 
   async ngOnInit() {
+    if (this.route.url.match(/\//g).length == 4) {
+      const urlArray = this.route.url.split('/');
+      const userId = urlArray[urlArray.length - 1];
+      this.userService.setUserInfo({ id: userId });
+    }
     this.getVendorMetaDatas();
     this.vendorService.getVendorDetail(this.userService.getUserInfo().id).subscribe(res => {
       if (res) {

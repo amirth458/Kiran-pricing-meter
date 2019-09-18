@@ -17,24 +17,24 @@ export class VendorService {
   ) { }
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {
-    const url = `/api/v1/vendor-metadata/${type}`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendor-metadata/${type}`;
     return this.http.get<any>(url).pipe(
       map(res => res.metadataList)
     );
   }
 
   getVendorDetail(id: number): Observable<Vendor> {
-    const url = `/api/v1/vendors/${id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/${id}`;
     return this.http.get<Vendor>(url);
   }
 
   createVendorProfile(profile: Vendor) {
-    const url = `/api/v1/vendors/`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/`;
     return this.http.post(url, profile);
   }
 
   updateVendorProfile(profile: Vendor) {
-    const url = `/api/v1/vendors/${profile.id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/${profile.id}`;
     return this.http.put<Vendor>(url, profile);
   }
 
@@ -47,14 +47,14 @@ export class VendorService {
     const url = `${environment.apiBaseUrl}/vendors/${id}/machinery`;
     let params = new HttpParams();
     if (filterOption) {
-        params = params.append('offset', filterOption.offset.toString());
-        params = params.append('pageNumber', filterOption.pageNumber.toString());
-        params = params.append('pageSize', filterOption.pageSize.toString());
-        params = params.append('paged', filterOption.paged.toString());
-        params = params.append('sort.sorted', filterOption['sort.sorted'].toString());
-        params = params.append('sort.unsorted', filterOption['sort.unsorted'].toString());
-        params = params.append('unpaged', filterOption.unpaged.toString());
+      params = params.append('offset', filterOption.offset.toString());
+      params = params.append('pageNumber', filterOption.pageNumber.toString());
+      params = params.append('pageSize', filterOption.pageSize.toString());
+      params = params.append('paged', filterOption.paged.toString());
+      params = params.append('sort.sorted', filterOption['sort.sorted'].toString());
+      params = params.append('sort.unsorted', filterOption['sort.unsorted'].toString());
+      params = params.append('unpaged', filterOption.unpaged.toString());
     }
-    return this.http.get<any>(url, {params});
+    return this.http.get<any>(url, { params });
   }
 }

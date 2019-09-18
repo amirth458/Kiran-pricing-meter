@@ -32,6 +32,7 @@ const routes: Routes = [
         path: 'vendor', component: VendorComponent,
         children: [
           { path: 'basics', component: BasicDetailsComponent },
+          { path: 'basics/:vendorId', component: BasicDetailsComponent },
           { path: 'facilities', component: FacilityComponent },
           { path: 'facilities/add', component: FacilityItemComponent },
           { path: 'facilities/edit/:id', component: FacilityItemComponent },
