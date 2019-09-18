@@ -12,6 +12,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
 
   facilities = [];
   equipments = [];
+  processProfiles = [];
   form = {
     id: '',
     postProcessPricingProfileName: '',

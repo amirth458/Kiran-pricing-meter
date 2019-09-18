@@ -106,7 +106,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  save() {
+  save(event) {
     this.spineer.show();
     const preferences = {
       ...this.form.value,
