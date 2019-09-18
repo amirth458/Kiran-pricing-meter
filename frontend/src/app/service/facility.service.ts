@@ -30,18 +30,25 @@ export class FacilityService {
     return this.http.get<any>(url, {params});
   }
 
-  createFacilities(facility: Facility): Observable<any> {
-    const url = `/api/v1/facilities`;
+  getFacility(vendorId: number, id: number): Observable<any> {
+    const url = `/api/v1/vendors/${vendorId}/facilities/${id}`;
+    
+    return this.http.get(url);
+  }
+
+  createFacility(vendorId: number, facility: Facility): Observable<any> {
+    const url = `/api/v1/vendors/${vendorId}/facilities`;
+    
     return this.http.post(url, facility);
   }
 
-  updateFacilities(id: number, facility: Facility): Observable<any> {
-    const url = `/api/v1/facilities/${id}`;
+  updateFacility(vendorId: number, id: number, facility: Facility): Observable<any> {
+    const url = `/api/v1/vendors/${vendorId}/facilities/${id}`;
     return this.http.put(url, facility);
   }
 
-  deleteFacilities(id: number): Observable<any> {
-    const url = `/api/v1/facilities/${id}`;
+  deleteFacility(vendorId: number, id: number): Observable<any> {
+    const url = `/api/v1/vendors/${vendorId}/facilities/${id}`;
     return this.http.delete(url);
   }
 }

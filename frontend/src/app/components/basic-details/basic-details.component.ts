@@ -3,17 +3,20 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
 import { VendorService } from '../../service/vendor.service';
+import { UserService } from '../../service/user.service';
 import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { UserService } from 'src/app/service/user.service';
+
 
 @Component({
   selector: 'app-basic-details',
   templateUrl: './basic-details.component.html',
   styleUrls: ['./basic-details.component.css']
 })
+
 export class BasicDetailsComponent implements OnInit, AfterViewChecked {
+
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
   vendorIndustries: VendorMetaData[] = [];

@@ -5,6 +5,8 @@ import { GridOptions } from 'ag-grid-community';
 
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { VendorService } from '../../service/vendor.service';
+import { FacilityService } from '../../service/facility.service';
+import { UserService } from '../../service/user.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -146,8 +148,24 @@ export class FacilityComponent implements OnInit {
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
-          edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param),
+          edit: (param) => {
+            const gotoURL = `/profile/vendor/facilities/edit/${param.data.id}`;
+            this.route.navigateByUrl(gotoURL);
+          },
+          delete: async (param) => {
+            if (confirm ("Delete?")) {
+              this.spineer.show();
+              try {
+                await this.facilityService.deleteFacility(this.userService.getUserInfo().id, param.data.id).toPromise();
+              } catch (e) {
+                this.spineer.hide();
+                console.log(e);
+              } finally {
+                this.spineer.hide();
+              }
+              this.deleteRow(param)
+            }
+          },
           canEdit: true,
           canCopy: false,
           canDelete: true,
@@ -160,11 +178,11 @@ export class FacilityComponent implements OnInit {
   rowData;
   pageSize = 10;
 
-  vendorID = 494;
-
   constructor(
     private route: Router,
+    private facilityService: FacilityService,
     private vendorService: VendorService,
+    private userService: UserService,
     private spineer: NgxSpinnerService
   ) { }
 
@@ -200,7 +218,7 @@ export class FacilityComponent implements OnInit {
     const rows = [];
     try {
       while (true) {
-        const res = await this.vendorService.getFacilities(this.vendorID, page).toPromise();        
+        const res = await this.vendorService.getFacilities(this.userService.getUserInfo().id, page, 1000).toPromise();        
         if(!res.content) break;
         if(res.content.length === 0) {
           break;

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Facility } from 'src/app/model/facility.model';
 
 import { VendorService } from '../../service/vendor.service';
+import { FacilityService } from '../../service/facility.service';
+import { UserService } from '../../service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner'
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 
@@ -22,36 +24,52 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     phone: '',
     street1: '',
     street2: '',
+    zipCode: '',
     city: '',
     state: '',
     country: '',
     facilityCertificationList: [],
     createdBy: '',
     createdDate: '',
-    updatedDate: '',
-    zipCode: ''
+    updatedDate: ''
   };
 
   certifications = [];
   countries = [];
   facilityId = null;
   selectedCertifications = [];
-
+  isNew = true;
   constructor(
     private route: Router, 
     private vendorService: VendorService,
-    private spineer: NgxSpinnerService) { }
+    private facilityService: FacilityService,
+    private spineer: NgxSpinnerService,
+    private userService: UserService) { }
 
   ngOnInit() {
     this.getVendorMetaDatas();
     if (this.route.url.includes('edit')) {
       this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      
-      // if (facility.length > 0) {
-      //   this.form = { ...this.form, ...facility[0] };
-      // }
-      // Make API request
+      this.isNew = false;
+      this.getFacility(this.facilityId);
+    }
+  }
 
+  async getFacility( facilityId: number) {
+    this.spineer.show();
+    try {
+      this.form = await this.facilityService.getFacility(this.userService.getUserInfo().id, facilityId).toPromise();
+      const certs = this.form['vendorFacilityCertificationList'];
+      const arrCerts = [];
+      certs.forEach(cert => {
+        arrCerts.push(cert.facilityCertification.id);
+      });
+      this.selectedCertifications = arrCerts;
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
     }
   }
 
@@ -78,17 +96,89 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          this.save();
+          
         }
         form.classList.add('was-validated');
       }, false);
     });
   }
-  save() {
-    let gotoURL = '/profile/basics';
-    const urlArray = this.route.url.split('/');
-    gotoURL = `/${urlArray[1]}/${urlArray[2]}`;
-    this.route.navigateByUrl(gotoURL);
+
+  prepareData() {
+    const arrCerts = []
+    this.selectedCertifications.forEach((cert_id)=>{
+      arrCerts.push({id: cert_id});
+    })
+    this.form.updatedDate = new Date().toString();
+    this.form.facilityCertificationList = arrCerts;
+    delete this.form['vendorFacilityCertificationList'];
+
+    if(this.isNew) {
+      this.form.createdBy = this.userService.getUserInfo().name;
+      this.form.createdDate = new Date().toString();
+    } else {
+      this.form.updatedDate = new Date().toString();
+    }
   }
 
+  isEmail(email: string): boolean {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+    {
+      return true;
+    }
+    return false;
+  }
+
+  validateData(): boolean {
+   
+    if(
+      this.form.name === '' ||
+      this.form.email === '' ||
+      this.form.phone === '' ||
+      this.form.street1 === '' ||
+      this.form.street2 === '' ||
+      this.form.zipCode === '' ||
+      this.form.city === '' ||
+      this.form.state === '' ||
+      this.form.country === '' ||
+      !this.isEmail(this.form.email)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  async save() {    
+    this.prepareData();
+    if (!this.validateData()) return;
+
+    const vendorId = this.userService.getUserInfo().id;
+
+    if(this.isNew) {      
+      this.spineer.show();
+      try {
+        await this.facilityService.createFacility(vendorId, this.form).toPromise();
+      } catch (e) {
+        this.spineer.hide();
+        console.log(e);
+      } finally {
+        this.spineer.hide();
+        const gotoURL = `/profile/vendor/facilities`;
+        this.route.navigateByUrl(gotoURL);
+      }
+      
+    } else {
+      this.spineer.show();
+      try {
+        await this.facilityService.updateFacility(vendorId, this.facilityId, this.form).toPromise();
+      } catch (e) {
+        this.spineer.hide();
+        console.log(e);
+      } finally {
+        this.spineer.hide();
+        const gotoURL = `/profile/vendor/facilities`;
+        this.route.navigateByUrl(gotoURL);
+      }
+      
+    }
+  }
 }
