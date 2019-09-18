@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { FilterOption } from '../model/vendor.model';
-import { Facilities } from '../model/facility.model';
+import { Facility } from '../model/facility.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class FacilityService {
   ) { }
 
   getFacilities(id: number, filterOption: FilterOption = null): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/vendors/facilities`;
+    const url = `${environment.apiBaseUrl}/vendors/facilities`;
     let params = new HttpParams();
     if (filterOption) {
       params = params.append('offset', filterOption.offset.toString());
@@ -31,18 +31,25 @@ export class FacilityService {
     return this.http.get<any>(url, {params});
   }
 
-  createFacilities(facility: Facilities): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/facilities`;
+  getFacility(vendorId: number, id: number): Observable<any> {
+    const url = `${environment.apiBaseUrl}/vendors/${vendorId}/facilities/${id}`;
+    
+    return this.http.get(url);
+  }
+
+  createFacility(vendorId: number, facility: Facility): Observable<any> {
+    const url = `${environment.apiBaseUrl}/vendors/${vendorId}/facilities`;
+    
     return this.http.post(url, facility);
   }
 
-  updateFacilities(id: number, facility: Facilities): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/facilities/${id}`;
+  updateFacility(vendorId: number, id: number, facility: Facility): Observable<any> {
+    const url = `${environment.apiBaseUrl}/vendors/${vendorId}/facilities/${id}`;
     return this.http.put(url, facility);
   }
 
-  deleteFacilities(id: number): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/facilities/${id}`;
+  deleteFacility(vendorId: number, id: number): Observable<any> {
+    const url = `${environment.apiBaseUrl}/vendors/${vendorId}/facilities/${id}`;
     return this.http.delete(url);
   }
 }

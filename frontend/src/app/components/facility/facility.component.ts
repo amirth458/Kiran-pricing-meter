@@ -3,9 +3,12 @@ import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
 
-import * as facilities from '../../../assets/static/facilities';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { VendorService } from '../../service/vendor.service';
+import { FacilityService } from '../../service/facility.service';
+import { UserService } from '../../service/user.service';
+
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-facility',
@@ -23,7 +26,7 @@ export class FacilityComponent implements OnInit {
     },
     {
       name: 'Facility Name', checked: false,
-      field: 'facilityName', query: {
+      field: 'name', query: {
         type: '',
         filter: '',
       }
@@ -73,7 +76,7 @@ export class FacilityComponent implements OnInit {
     },
     {
       name: 'Certifications', checked: false,
-      field: 'certifications', query: {
+      field: 'vendorFacilityCertificationList', query: {
         type: '',
         filter: '',
       }
@@ -91,7 +94,7 @@ export class FacilityComponent implements OnInit {
       name: 'Facility No', checked: true, field: 'id'
     },
     {
-      name: 'Facility Name', checked: true, field: 'facilityName'
+      name: 'Facility Name', checked: true, field: 'name'
     },
     {
       name: 'Email', checked: true, field: 'email'
@@ -113,7 +116,7 @@ export class FacilityComponent implements OnInit {
       name: 'Country', checked: false, field: 'country'
     },
     {
-      name: 'Certifications', checked: true, field: 'certifications'
+      name: 'Certifications', checked: true, field: '[vendorFacilityCertificationList].length'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -127,22 +130,44 @@ export class FacilityComponent implements OnInit {
 
   columnDefs = [
     { headerName: 'Facility No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Facility Name', field: 'facilityName', hide: false, sortable: true, filter: true },
+    { headerName: 'Facility Name', field: 'name', hide: false, sortable: true, filter: true },
     { headerName: 'Email', field: 'email', hide: false, sortable: true, filter: true },
     { headerName: 'Phone', field: 'phone', hide: true, sortable: true, filter: true },
-    { headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true },
+    {
+      headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true,
+      cellRenderer(params) {
+        return params.data.street1 + ' ' + params.data.street2;
+      }
+    },
     { headerName: 'City', field: 'city', hide: false, sortable: true, filter: true },
     { headerName: 'State', field: 'state', hide: false, sortable: true, filter: true },
     { headerName: 'Country', field: 'country', hide: false, sortable: true, filter: true },
-    { headerName: 'Certifications', field: 'certifications', hide: false, sortable: true, filter: true },
+    { headerName: 'Certifications', field: '[vendorFacilityCertificationList].length', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
+      filter: false,
       width: 100,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
-          edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param),
+          edit: (param) => {
+            const gotoURL = `/profile/vendor/facilities/edit/${param.data.id}`;
+            this.route.navigateByUrl(gotoURL);
+          },
+          delete: async (param) => {
+            if (confirm('Delete?')) {
+              this.spineer.show();
+              try {
+                await this.facilityService.deleteFacility(this.userService.getUserInfo().id, param.data.id).toPromise();
+              } catch (e) {
+                this.spineer.hide();
+                console.log(e);
+              } finally {
+                this.spineer.hide();
+              }
+              this.deleteRow(param);
+            }
+          },
           canEdit: true,
           canCopy: false,
           canDelete: true,
@@ -156,16 +181,17 @@ export class FacilityComponent implements OnInit {
   pageSize = 10;
 
   constructor(
-    public route: Router,
-    public vendorService: VendorService
+    private route: Router,
+    private facilityService: FacilityService,
+    private vendorService: VendorService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService
   ) { }
 
   ngOnInit() {
-    this.vendorService.getFacilities(330).subscribe(res => {
-      console.log(res);
-    });
 
-    this.rowData = facilities;
+    this.getVendorFacilities();
+    this.rowData = [];
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -186,6 +212,29 @@ export class FacilityComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
+  }
+
+  async getVendorFacilities() {
+    this.spineer.show();
+    let page = 0;
+    const rows = [];
+    try {
+      while (true) {
+        const res = await this.vendorService.getFacilities(this.userService.getUserInfo().id, page, 1000).toPromise();
+        if (!res.content) { break; }
+        if (res.content.length === 0) {
+          break;
+        }
+        page++;
+        rows.push(...res.content);
+      }
+      this.rowData = rows;
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
   }
 
   configureColumnDefs() {
@@ -211,18 +260,20 @@ export class FacilityComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != event.data.id);
     this.rowData = filteredData;
-    console.log(this.rowData);
   }
 
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if (column.checked) {
-        columnInstance.setModel(column.query);
-      } else {
-        columnInstance.setModel({ type: '', filter: '' });
+      if(columnInstance) {
+        if (column.checked) {
+          columnInstance.setModel(column.query);
+        } else {
+          columnInstance.setModel({ type: '', filter: '' });
+        }
+        this.gridOptions.api.onFilterChanged();
       }
-      this.gridOptions.api.onFilterChanged();
+      
     });
   }
 
