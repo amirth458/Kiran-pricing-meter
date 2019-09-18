@@ -113,7 +113,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     delete this.form['vendorFacilityCertificationList'];
 
     if(this.isNew) {
-      this.form.createdBy = this.userService.getUserInfo().name;
+      this.form.createdBy = String(this.userService.getUserInfo().id);
       this.form.createdDate = new Date().toString();
     } else {
       this.form.updatedDate = new Date().toString();

@@ -142,9 +142,10 @@ export class FacilityComponent implements OnInit {
     { headerName: 'City', field: 'city', hide: false, sortable: true, filter: true },
     { headerName: 'State', field: 'state', hide: false, sortable: true, filter: true },
     { headerName: 'Country', field: 'country', hide: false, sortable: true, filter: true },
-    { headerName: 'Certifications', field: 'vendorFacilityCertificationList.length', hide: false, sortable: true, filter: true },
+    { headerName: 'Certifications', field: '[vendorFacilityCertificationList].length', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
+      filter: false,
       width: 100,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
@@ -264,12 +265,15 @@ export class FacilityComponent implements OnInit {
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if (column.checked) {
-        columnInstance.setModel(column.query);
-      } else {
-        columnInstance.setModel({ type: '', filter: '' });
+      if(columnInstance) {
+        if (column.checked) {
+          columnInstance.setModel(column.query);
+        } else {
+          columnInstance.setModel({ type: '', filter: '' });
+        }
+        this.gridOptions.api.onFilterChanged();
       }
-      this.gridOptions.api.onFilterChanged();
+      
     });
   }
 
