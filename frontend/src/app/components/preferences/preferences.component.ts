@@ -55,8 +55,18 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
         this.initForm(userInfo);
       });
     try {
-      this.coreCompetencies = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Competence).toPromise();
-      this.adjacentGrowths = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.AdjacentGrowth).toPromise();
+      const coreCompetencies = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Competence).toPromise();
+      const adjacentGrowths = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.AdjacentGrowth).toPromise();
+
+      this.coreCompetencies = coreCompetencies.map((x) => {
+        const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+        return { id: x.id, name };
+      });
+      this.adjacentGrowths = adjacentGrowths.map((x) => {
+        const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+        return { id: x.id, name };
+      });
+
       this.spineer.hide();
     } catch (e) {
       this.spineer.hide();
@@ -96,7 +106,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  save() {
+  save(event) {
     this.spineer.show();
     const preferences = {
       ...this.form.value,
@@ -126,5 +136,11 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
             this.spineer.hide();
           });
     }
+  }
+
+  htmlDecode(input) {
+    const str = input;
+    str.replace(/[&amp;]/g, '&#38;');
+    return str;
   }
 }

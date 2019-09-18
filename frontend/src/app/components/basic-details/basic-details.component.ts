@@ -3,11 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
 import { VendorService } from '../../service/vendor.service';
-import { UserService } from '../../service/user.service';
 import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { UserService } from 'src/app/service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-basic-details',
@@ -47,10 +47,16 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     public fb: FormBuilder,
     public vendorService: VendorService,
     public userService: UserService,
-    public spineer: NgxSpinnerService
+    public spineer: NgxSpinnerService,
+    public route: Router
   ) { }
 
   async ngOnInit() {
+    if (this.route.url.match(/\//g).length == 4) {
+      const urlArray = this.route.url.split('/');
+      const userId = urlArray[urlArray.length - 1];
+      this.userService.setUserInfo({ id: userId });
+    }
     this.getVendorMetaDatas();
     this.vendorService.getVendorDetail(this.userService.getUserInfo().id).subscribe(res => {
       if (res) {
@@ -79,11 +85,29 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   async getVendorMetaDatas() {
     this.spineer.show();
     try {
-      this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
+      const vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
       this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
-      this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
-      this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
-      this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+      const vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
+      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+      const confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+
+      this.vendorTypes = vendorTypes.map((x) => {
+        const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+        return { id: x.id, name };
+      });
+      this.vendorIndustries = vendorIndustries.map((x) => {
+        const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+        return { id: x.id, name };
+      });
+      this.certifications = certifications.map((x) => {
+        const name = this.htmlDecode(x.name);
+        return { id: x.id, name };
+      });
+      this.confidentialities = confidentialities.map((x) => {
+        const name = this.htmlDecode(x.name);
+        return { id: x.id, name };
+      });
+
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -114,7 +138,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  save() {
+  save(event) {
     this.spineer.show();
     const vendorProfile = {
       ...this.detailForm.value,
@@ -140,5 +164,11 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       console.log(error);
       this.spineer.hide();
     });
+  }
+
+  htmlDecode(input) {
+    const str = input;
+    str.replace(/[&amp;]/g, '&#38;');
+    return str;
   }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { FilterOption } from '../model/vendor.model';
 import { Facility } from '../model/facility.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class FacilityService {
   ) { }
 
   getFacilities(id: number, filterOption: FilterOption = null): Observable<any> {
-    const url = `/api/v1/vendors/facilities`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/facilities`;
     let params = new HttpParams();
     if (filterOption) {
       params = params.append('offset', filterOption.offset.toString());
@@ -31,24 +32,24 @@ export class FacilityService {
   }
 
   getFacility(vendorId: number, id: number): Observable<any> {
-    const url = `/api/v1/vendors/${vendorId}/facilities/${id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/${vendorId}/facilities/${id}`;
     
     return this.http.get(url);
   }
 
   createFacility(vendorId: number, facility: Facility): Observable<any> {
-    const url = `/api/v1/vendors/${vendorId}/facilities`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/${vendorId}/facilities`;
     
     return this.http.post(url, facility);
   }
 
   updateFacility(vendorId: number, id: number, facility: Facility): Observable<any> {
-    const url = `/api/v1/vendors/${vendorId}/facilities/${id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/${vendorId}/facilities/${id}`;
     return this.http.put(url, facility);
   }
 
   deleteFacility(vendorId: number, id: number): Observable<any> {
-    const url = `/api/v1/vendors/${vendorId}/facilities/${id}`;
+    const url = `${environment.apiBaseUrl}/api/v1/vendors/${vendorId}/facilities/${id}`;
     return this.http.delete(url);
   }
 }

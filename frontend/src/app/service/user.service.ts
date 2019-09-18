@@ -7,6 +7,9 @@ import { HttpHeaders } from '@angular/common/http';
 
 export class UserService {
 
+  userInfo = {
+    id: 502,
+  };
   constructor() { }
 
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
@@ -19,39 +22,10 @@ export class UserService {
   }
 
   getUserInfo() {
-    const userInfo = {
-      id: 502,
-      name: 'Mike',
-      email: 'mike-test@gmail.com',
-      phone: '3434343',
-      street1: 'fdfdf',
-      street2: 'dfdfdfdfd',
-      city: 'cdscsdcsd',
-      state: 'dfdfd',
-      zipCode: '323454',
-      country: {
-        id: 1,
-        name: 'Afghanistan'
-      },
-      confidentiality: {
-        id: 1,
-        name: 'No'
-      },
-      vendorType: {
-        id: 1,
-        name: 'retail'
-      },
-      vendorCertificates: [
-        {
-          id: 2,
-          name: 'FDA Certified'
-        },
-        {
-          id: 1,
-          name: 'ITAR Certified'
-        }
-      ]
-    };
-    return userInfo;
+    return this.userInfo;
+  }
+
+  setUserInfo(userInfo) {
+    this.userInfo = userInfo;
   }
 }
