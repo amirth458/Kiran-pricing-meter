@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 export class VendorService {
 
   constructor(
-    private http: HttpClient
+    public http: HttpClient
   ) { }
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {
@@ -34,8 +34,8 @@ export class VendorService {
   }
 
   updateVendorProfile(profile: Vendor) {
-    const url = `/api/v1/vendors/`;
-    return this.http.put(url, profile);
+    const url = `/api/v1/vendors/${profile.id}`;
+    return this.http.put<Vendor>(url, profile);
   }
 
   getFacilities(id: number, page: number, size: number=10): Observable<any> {

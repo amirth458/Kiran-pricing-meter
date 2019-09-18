@@ -11,7 +11,7 @@ import { FacilityItemComponent } from '../facility-item/facility-item.component'
 import { MachinesComponent } from 'src/app/components/machines/machines.component';
 import { MachineItemComponent } from 'src/app/components/machine-item/machine-item.component';
 import { PreferencesComponent } from '../preferences/preferences.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
 import { VendorComponent } from 'src/app/components/vendor/vendor.component';
 import { PostProcessComponent } from '../post-process/post-process.component';
@@ -61,7 +61,11 @@ describe('ProfileComponent', () => {
       imports: [
         AppRoutingModule,
         AgGridModule.withComponents([]),
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
+      ],
+      providers: [
+        { provide: FormBuilder }
       ]
     })
       .compileComponents();

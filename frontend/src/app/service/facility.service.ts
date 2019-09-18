@@ -11,7 +11,7 @@ import { Facility } from '../model/facility.model';
 export class FacilityService {
 
   constructor(
-    private http: HttpClient
+    public http: HttpClient
   ) { }
 
   getFacilities(id: number, filterOption: FilterOption = null): Observable<any> {

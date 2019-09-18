@@ -40,7 +40,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
   ];
   shippingId = null;
   shippings = shippings;
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {

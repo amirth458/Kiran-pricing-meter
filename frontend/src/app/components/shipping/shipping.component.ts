@@ -102,7 +102,7 @@ export class ShippingComponent implements OnInit {
 
   rowData;
   pageSize = 10;
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     this.rowData = shipping;

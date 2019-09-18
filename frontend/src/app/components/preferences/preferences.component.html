@@ -1,17 +1,15 @@
 <div class="wrapper shadow">
 
-  <form novalidate class="needs-validation">
-
+  <form [formGroup]="form" class="needs-validation" (submit)="save($event)">
 
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="core_competencies">Core Competencies</label>
-        <select required id="core_competencies" name="core_competencies" [(ngModel)]="form.core_competencies"
-          class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of coreCompetencies" [value]="item">{{item}}</option>
-        </select>
+        <label for="coreCompetence">Core Competencies</label>
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedCoreCompetence" [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let item of coreCompetencies" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
       </div>
 
     </div>
@@ -19,12 +17,11 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="adjacent_growth">Adjacent Growth</label>
-        <select required id="adjacent_growth" name="adjacent_growth" [(ngModel)]="form.adjacent_growth"
-          class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of adjacentGrowth" [value]="item">{{item}}</option>
-        </select>
+        <label for="adjacentGrowth">Adjacent Growth</label>
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedAdjacentGrowth" [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let item of adjacentGrowths" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
       </div>
 
     </div>
@@ -32,12 +29,9 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="RFQ_to_exclude">RFQ To Exclude</label>
-        <select required id="RFQ_to_exclude" name="RFQ_to_exclude" [(ngModel)]="form.RFQ_to_exclude"
-          class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of RFQToExclude" [value]="item">{{item}}</option>
-        </select>
+        <label>RFQ To Exclude</label>
+        <input formControlName="rfqExclusionCondition" id="rfqExclusionCondition" name="rfqExclusionCondition"
+          placeholder="RFQ To Exclude" class="form-control">
       </div>
 
     </div>
@@ -45,12 +39,9 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="companies_to_exclude">Companies to Exclude</label>
-        <select required id="companies_to_exclude" name="companies_to_exclude" [(ngModel)]="form.companies_to_exclude"
-          class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of companiesToExclude" [value]="item">{{item}}</option>
-        </select>
+        <label>Client To Exclude</label>
+        <input formControlName="clientExclusionCondition" id="clientExclusionCondition" name="clientExclusionCondition"
+          placeholder="Client To Exclude" class="form-control">
       </div>
 
     </div>
@@ -60,7 +51,7 @@
       <div class="col-md-10 col-sm-8"></div>
 
       <div class="form-group col-md-2 col-sm-4">
-        <button type="submit" class="btn btn-primary theme">Save</button>
+        <button type="submit" class="btn btn-primary theme" [disabled]="!form.valid">Save</button>
       </div>
 
     </div>

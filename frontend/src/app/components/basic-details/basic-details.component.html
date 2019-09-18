@@ -1,5 +1,5 @@
 <div class="wrapper shadow">
-  <form [formGroup]="detailForm" (submit)="save()">
+  <form [formGroup]="detailForm" class="needs-validation" (submit)="save($event)">
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Vendor Name</label>
@@ -14,6 +14,15 @@
       </div>
     </div>
     <div class="form-row">
+      <div class="form-group theme col">
+        <label>Vendor Industry</label>
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]="true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedVendorIndustry" [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let item of vendorIndustries" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Email</label>
         <input required type="email" formControlName="email" class="form-control" placeholder="Email">
@@ -25,8 +34,18 @@
     </div>
     <div class="form-row">
       <div class="form-group theme col">
-        <label>Primary Address</label>
-        <input required formControlName="street" class="form-control" placeholder="1234 Main St">
+        <label>Street 1</label>
+        <input required formControlName="street1" class="form-control" placeholder="1234 Main St">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>Street 2</label>
+        <input required formControlName="street2" class="form-control" placeholder="1234 Main St">
+      </div>
+      <div class="form-group theme col-md-6">
+        <label>Zip</label>
+        <input required formControlName="zipCode" class="form-control" placeholder="Zip Code" pattern="^[0-9\s]{5}$">
       </div>
     </div>
     <div class="form-row">
@@ -49,10 +68,10 @@
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Certifications</label>
-        <select formControlName="vendorCertificates" class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</option>
-        </select>
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedCertifications" [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
       </div>
       <div class="form-group theme col-md-6">
         <label>Confidentiality</label>

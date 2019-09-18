@@ -17,6 +17,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     id: '',
     processProfileName: '',
     equipment: '',
+    materialName:'',
     processType: '',
     layerHeight: '',
     infill: '',
@@ -48,6 +49,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       'Surface Finish',
     ],
   };
+
+  materials:[];
 
   processDimensionalProperties = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
@@ -111,7 +114,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   };
   activeTab = 'processParameters';
   activeTabName = 'Process Parameters';
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {
