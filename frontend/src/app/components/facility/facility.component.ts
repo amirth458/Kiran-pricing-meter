@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
 
-import * as facilities from '../../../assets/static/facilities';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { VendorService } from '../../service/vendor.service';
+
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-facility',
@@ -23,7 +24,7 @@ export class FacilityComponent implements OnInit {
     },
     {
       name: 'Facility Name', checked: false,
-      field: 'facilityName', query: {
+      field: 'name', query: {
         type: '',
         filter: '',
       }
@@ -73,7 +74,7 @@ export class FacilityComponent implements OnInit {
     },
     {
       name: 'Certifications', checked: false,
-      field: 'certifications', query: {
+      field: 'vendorFacilityCertificationList', query: {
         type: '',
         filter: '',
       }
@@ -91,7 +92,7 @@ export class FacilityComponent implements OnInit {
       name: 'Facility No', checked: true, field: 'id'
     },
     {
-      name: 'Facility Name', checked: true, field: 'facilityName'
+      name: 'Facility Name', checked: true, field: 'name'
     },
     {
       name: 'Email', checked: true, field: 'email'
@@ -113,7 +114,7 @@ export class FacilityComponent implements OnInit {
       name: 'Country', checked: false, field: 'country'
     },
     {
-      name: 'Certifications', checked: true, field: 'certifications'
+      name: 'Certifications', checked: true, field: '[vendorFacilityCertificationList].length'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -127,14 +128,18 @@ export class FacilityComponent implements OnInit {
 
   columnDefs = [
     { headerName: 'Facility No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Facility Name', field: 'facilityName', hide: false, sortable: true, filter: true },
+    { headerName: 'Facility Name', field: 'name', hide: false, sortable: true, filter: true },
     { headerName: 'Email', field: 'email', hide: false, sortable: true, filter: true },
     { headerName: 'Phone', field: 'phone', hide: true, sortable: true, filter: true },
-    { headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true },
+    { headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true,
+      cellRenderer: function(params) {
+        return params.data.street1 + ' ' + params.data.street2;
+      }
+    },
     { headerName: 'City', field: 'city', hide: false, sortable: true, filter: true },
     { headerName: 'State', field: 'state', hide: false, sortable: true, filter: true },
     { headerName: 'Country', field: 'country', hide: false, sortable: true, filter: true },
-    { headerName: 'Certifications', field: 'certifications', hide: false, sortable: true, filter: true },
+    { headerName: 'Certifications', field: 'vendorFacilityCertificationList.length', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 100,
@@ -155,17 +160,18 @@ export class FacilityComponent implements OnInit {
   rowData;
   pageSize = 10;
 
+  vendorID = 494;
+
   constructor(
     private route: Router,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private spineer: NgxSpinnerService
   ) { }
 
   ngOnInit() {
-    this.vendorService.getFacilities(330).subscribe(res => {
-      console.log(res);
-    });
-
-    this.rowData = facilities;
+    
+    this.getVendorFacilities();
+    this.rowData = [];
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -186,6 +192,29 @@ export class FacilityComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
+  }
+
+  async getVendorFacilities() {
+    this.spineer.show();
+    let page = 0;
+    const rows = [];
+    try {
+      while (true) {
+        const res = await this.vendorService.getFacilities(this.vendorID, page).toPromise();        
+        if(!res.content) break;
+        if(res.content.length === 0) {
+          break;
+        }
+        page++;
+        rows.push(...res.content);
+      }
+      this.rowData = rows;      
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
   }
 
   configureColumnDefs() {

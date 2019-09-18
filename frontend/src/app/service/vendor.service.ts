@@ -38,8 +38,8 @@ export class VendorService {
     return this.http.put(url, profile);
   }
 
-  getFacilities(id: number): Observable<any> {
-    const url = `${environment.apiBaseUrl}/vendors/${id}/facilities`;
+  getFacilities(id: number, page: number, size: number=10): Observable<any> {
+    const url = `${environment.apiBaseUrl}/vendors/${id}/facilities?page=${page}&size=${size}&sort=id,DESC`;
     return this.http.get<any>(url);
   }
 

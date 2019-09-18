@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { FilterOption } from '../model/vendor.model';
-import { Facilities } from '../model/facility.model';
+import { Facility } from '../model/facility.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +30,12 @@ export class FacilityService {
     return this.http.get<any>(url, {params});
   }
 
-  createFacilities(facility: Facilities): Observable<any> {
+  createFacilities(facility: Facility): Observable<any> {
     const url = `/api/v1/facilities`;
     return this.http.post(url, facility);
   }
 
-  updateFacilities(id: number, facility: Facilities): Observable<any> {
+  updateFacilities(id: number, facility: Facility): Observable<any> {
     const url = `/api/v1/facilities/${id}`;
     return this.http.put(url, facility);
   }

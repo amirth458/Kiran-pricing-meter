@@ -1,22 +1,7 @@
 import { VendorMetaData } from './vendor.model';
 
-export class Facility {
-    id: string;
-    venderInfoId: string;
-    facilityName: string;
-    email: string;
-    phone: string;
-    address: string;
-    city: string;
-    state: string;
-    country: string;
-    certifications: string;
-    createdBy: string;
-    createdDate: string;
-    updatedDate: string;
-}
-
-export interface Facilities {
+export interface Facility {
+  id: string;
   vendorId: string;
   name: string;
   email: string;
@@ -28,4 +13,7 @@ export interface Facilities {
   street1: string;
   street2: string;
   zipCode: string;
+  createdBy: string;
+  createdDate: string;
+  updatedDate: string;
 }

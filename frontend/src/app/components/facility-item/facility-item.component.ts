@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
-import * as facilities from '../../../assets/static/facilities';
-import * as internationalCode from '../../../assets/static/internationalCode';
-
 import { Router } from '@angular/router';
 import { Facility } from 'src/app/model/facility.model';
 
+import { VendorService } from '../../service/vendor.service';
+import { NgxSpinnerService } from 'ngx-spinner'
+import { VendorMetaDataTypes } from '../../mockData/vendor';
 
 @Component({
   selector: 'app-facility-item',
@@ -16,35 +16,55 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
   form: Facility = {
     id: '',
-    venderInfoId: '',
-    facilityName: '',
+    vendorId: '',
+    name: '',
     email: '',
     phone: '',
-    address: '',
+    street1: '',
+    street2: '',
     city: '',
     state: '',
     country: '',
-    certifications: '',
+    facilityCertificationList: [],
     createdBy: '',
     createdDate: '',
     updatedDate: '',
+    zipCode: ''
   };
 
-  certificationsOption = [];
-  facilities = facilities;
-  internationalCode = internationalCode;
+  certifications = [];
+  countries = [];
   facilityId = null;
+  selectedCertifications = [];
 
-  constructor(private route: Router) { }
+  constructor(
+    private route: Router, 
+    private vendorService: VendorService,
+    private spineer: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.getVendorMetaDatas();
     if (this.route.url.includes('edit')) {
       this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      const facility = this.facilities.filter(x => x.id == this.facilityId);
-      if (facility.length > 0) {
-        this.form = { ...this.form, ...facility[0] };
-      }
+      
+      // if (facility.length > 0) {
+      //   this.form = { ...this.form, ...facility[0] };
+      // }
       // Make API request
+
+    }
+  }
+
+  async getVendorMetaDatas() {
+    this.spineer.show();
+    try {
+      this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
+      this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
     }
   }
 
