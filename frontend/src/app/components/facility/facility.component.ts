@@ -133,8 +133,9 @@ export class FacilityComponent implements OnInit {
     { headerName: 'Facility Name', field: 'name', hide: false, sortable: true, filter: true },
     { headerName: 'Email', field: 'email', hide: false, sortable: true, filter: true },
     { headerName: 'Phone', field: 'phone', hide: true, sortable: true, filter: true },
-    { headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true,
-      cellRenderer: function(params) {
+    {
+      headerName: 'Address', field: 'address', hide: false, sortable: true, filter: true,
+      cellRenderer(params) {
         return params.data.street1 + ' ' + params.data.street2;
       }
     },
@@ -153,7 +154,7 @@ export class FacilityComponent implements OnInit {
             this.route.navigateByUrl(gotoURL);
           },
           delete: async (param) => {
-            if (confirm ("Delete?")) {
+            if (confirm('Delete?')) {
               this.spineer.show();
               try {
                 await this.facilityService.deleteFacility(this.userService.getUserInfo().id, param.data.id).toPromise();
@@ -163,7 +164,7 @@ export class FacilityComponent implements OnInit {
               } finally {
                 this.spineer.hide();
               }
-              this.deleteRow(param)
+              this.deleteRow(param);
             }
           },
           canEdit: true,
@@ -187,7 +188,7 @@ export class FacilityComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     this.getVendorFacilities();
     this.rowData = [];
     if (this.type.includes('filter')) {
@@ -218,15 +219,15 @@ export class FacilityComponent implements OnInit {
     const rows = [];
     try {
       while (true) {
-        const res = await this.vendorService.getFacilities(this.userService.getUserInfo().id, page, 1000).toPromise();        
-        if(!res.content) break;
-        if(res.content.length === 0) {
+        const res = await this.vendorService.getFacilities(this.userService.getUserInfo().id, page, 1000).toPromise();
+        if (!res.content) { break; }
+        if (res.content.length === 0) {
           break;
         }
         page++;
         rows.push(...res.content);
       }
-      this.rowData = rows;      
+      this.rowData = rows;
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -258,7 +259,6 @@ export class FacilityComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != event.data.id);
     this.rowData = filteredData;
-    console.log(this.rowData);
   }
 
   searchColumnsChange(event) {
