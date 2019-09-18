@@ -8,10 +8,11 @@
   color: var(--theme-secondary-blue);
   font-size: 19px;
   text-align: center;
+  height: 36px;
 }
 
 .tabs div {
-  padding: 5px;
+  padding: 3px 5px;
 }
 
 .tabs div:hover {
@@ -34,9 +35,12 @@
   /* height: 295px; */
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 20px
 }
 
+.column-container .name,
+.column-container .column-name span {
+  width: 120px;
+}
 
 .column-container .column-name {
   font-size: 14px;
@@ -44,6 +48,7 @@
   display: flex;
   align-items: center;
   user-select: none;
+  padding: 0px 8px;
 }
 
 .column-container .icon {
@@ -51,11 +56,16 @@
   font-size: 22px;
 }
 
+.column-container .space {
+  height: 10px;
+}
+
 .column-container .icon:hover {
   cursor: pointer;
 }
 
-.search, .filter {
+.search,
+.filter {
   padding-bottom: 10px;
 }
 
@@ -71,6 +81,11 @@
 .search .column-container .options select {
   font-size: 12px;
   height: 25px;
+}
+
+.search .column-container .options,
+.search .column-container .query {
+  width: 100%
 }
 
 .search .column-container .query input {

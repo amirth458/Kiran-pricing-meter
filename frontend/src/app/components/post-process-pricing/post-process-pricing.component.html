@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <div class="table theme-table">
+
+    <div class="page-size">
+      Page Size:
+      <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+        <option selected value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </div>
+
+    <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+      [gridOptions]="gridOptions">
+    </ag-grid-angular>
+
+
+  </div>
+</div>

@@ -1,0 +1,144 @@
+<div class="wrapper shadow">
+
+  <form novalidate class="needs-validation">
+    <div class="form-row">
+
+      <div class="form-group theme col-md-6">
+        <label for="postProcessPricingProfileName">Post-Process Pricing Profile Name</label>
+        <input type="text" [(ngModel)]="form.postProcessPricingProfileName" class="form-control" id="postProcessPricingProfileName"
+          name="postProcessPricingProfileName" placeholder="Post-Process Pricing Profile Name">
+        <span class="footnote">* If left blank, we will auto-generate one for you.</span>
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="postProcessProfileName">Post-Process Profile Name</label>
+        <select required id="postProcessProfileName" name="postProcessProfileName" [(ngModel)]="form.postProcessProfileName"
+          class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}}</option>
+        </select>
+        <span class="footnote">* If you don’t see a profile, update your Process profile.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group theme col-md-6 conditionLabel">
+        <label for="conditionLabel">Conditions</label>
+      </div>
+    </div>
+
+
+    <div id="conditionLabel" class="conditions">
+      <div class="info">Define the condition under which this profile should be used.</div>
+      <div class="condition-wrapper">
+        <span>
+          If
+        </span>
+
+        <div class="input-wrapper">
+
+          <div *ngFor="let item of form.conditions; let index = index" class="form-row">
+
+            <div class="form-group theme col-md-3">
+              <select required id="name" name="name" [(ngModel)]="form.conditions[index].name" class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of conditionNames" [value]="item">{{item}}</option>
+              </select>
+            </div>
+
+            <div class="form-group theme col-md-3">
+              <select required id="condition" name="condition" [(ngModel)]="form.conditions[index].condition"
+                class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of conditions" [value]="item">{{item}}</option>
+              </select>
+            </div>
+
+            <div class="form-group theme col-md-3">
+              <input required type="text" [(ngModel)]="form.conditions[index].value" class="form-control" id="value"
+                name="value" placeholder="Value">
+            </div>
+
+            <div class="form-group theme col-md-3">
+              <select required id="unit" name="unit" [(ngModel)]="form.conditions[index].unit" class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of units" [value]="item">{{item}}</option>
+              </select>
+            </div>
+
+          </div>
+
+        </div>
+
+        <span class="add" (click)="addCondition()">
+          <i class="fas fa-plus"></i>
+        </span>
+
+      </div>
+    </div>
+
+
+    <div class="form-row">
+      <div class="form-group theme col-md-6 pricingParameter">
+        <label for="pricingParameter">Pricing Parameters</label>
+      </div>
+    </div>
+
+
+    <div id="pricingParameter" class="conditions">
+      <div class="info">Define the Pricing Parameters for this Process Profile.</div>
+      <div class="condition-wrapper">
+        <!-- <span>
+          If
+        </span> -->
+
+        <div class="input-wrapper">
+
+          <div *ngFor="let item of form.pricingParameters; let index = index" class="form-row">
+
+            <div class="form-group theme col-md-4">
+              <input required type="text" [(ngModel)]="form.pricingParameters[index].value1" class="form-control"
+                id="value1" name="value1" placeholder="$0.05">
+            </div>
+
+            <div class="form-group col-md-1">
+
+              <div class="text-center d-flex justify-content-center align-items-center h-100">Per</div>
+
+            </div>
+
+            <div class="form-group theme col-md-3">
+              <input required type="text" [(ngModel)]="form.pricingParameters[index].value2" class="form-control"
+                id="value2" name="value2" placeholder="1">
+            </div>
+
+            <div class="form-group theme col-md-4">
+              <input required type="text" [(ngModel)]="form.pricingParameters[index].unit" class="form-control"
+                id="value" name="value" placeholder="Part Volume (cc)">
+            </div>
+          </div>
+
+        </div>
+
+        <span class="add" (click)="addPricingParameter()">
+          <i class="fas fa-plus"></i>
+        </span>
+
+      </div>
+      <div class="info">Adjust the generic characteristics for this build to match your internal capability, as
+        necessary.</div>
+
+    </div>
+
+
+    <div class="row button-section">
+
+      <div class="col-md-10 col-sm-8"></div>
+
+      <div class="form-group col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+
+    </div>
+  </form>
+</div>

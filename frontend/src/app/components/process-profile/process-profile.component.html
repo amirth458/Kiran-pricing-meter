@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="table-control">
-    <app-column-search-filter width="220px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
+    <app-column-search-filter width="200px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
       (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
       (searchColumnsChange)="searchColumnsChange($event)">
     </app-column-search-filter>
@@ -18,7 +18,7 @@
       </select>
     </div>
 
-    <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+    <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="rowData"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
 

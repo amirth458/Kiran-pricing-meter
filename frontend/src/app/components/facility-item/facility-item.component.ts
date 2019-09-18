@@ -35,7 +35,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   internationalCode = internationalCode;
   facilityId = null;
 
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {

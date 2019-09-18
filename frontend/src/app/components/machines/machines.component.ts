@@ -5,6 +5,7 @@ import { GridOptions } from 'ag-grid-community';
 import * as machines from '../../../assets/static/machines';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { VendorService } from '../../service/vendor.service';
 
 @Component({
   selector: 'app-machines',
@@ -117,18 +118,26 @@ export class MachinesComponent implements OnInit {
     }
   ];
 
-
   gridOptions: GridOptions;
-
   rowData;
   pageSize = 10;
-  constructor(private route: Router) { }
+
+  constructor(
+    public route: Router,
+    public vendorService: VendorService
+  ) { }
 
   ngOnInit() {
     this.rowData = machines;
+
+    this.vendorService.getMachinery(330).subscribe(res => {
+      console.log(res);
+    });
+
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
+
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,

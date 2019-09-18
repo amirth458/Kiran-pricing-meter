@@ -16,4 +16,41 @@ export class UserService {
 
     return headers;
   }
+
+  getUserInfo() {
+    const userInfo = {
+      id: 502,
+      name: 'Mike',
+      email: 'mike-test@gmail.com',
+      phone: '3434343',
+      street1: 'fdfdf',
+      street2: 'dfdfdfdfd',
+      city: 'cdscsdcsd',
+      state: 'dfdfd',
+      zipCode: '323454',
+      country: {
+        id: 1,
+        name: 'Afghanistan'
+      },
+      confidentiality: {
+        id: 1,
+        name: 'No'
+      },
+      vendorType: {
+        id: 1,
+        name: 'retail'
+      },
+      vendorCertificates: [
+        {
+          id: 2,
+          name: 'FDA Certified'
+        },
+        {
+          id: 1,
+          name: 'ITAR Certified'
+        }
+      ]
+    };
+    return userInfo;
+  }
 }

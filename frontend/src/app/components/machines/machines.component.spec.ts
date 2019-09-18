@@ -4,6 +4,7 @@ import { MachinesComponent } from './machines.component';
 import { FormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
 import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MachinesComponent', () => {
   let component: MachinesComponent;
@@ -15,6 +16,7 @@ describe('MachinesComponent', () => {
       imports: [FormsModule,
         AgGridModule.withComponents([
         ]),
+        HttpClientModule
       ],
       providers: [
         {

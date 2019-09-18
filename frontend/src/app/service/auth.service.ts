@@ -9,9 +9,9 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   data: {};
-  url: string = environment.serviceurl + '/login';
+  url: string = environment.apiBaseUrl + '/login';
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
 
   login(user: string, password: string) {

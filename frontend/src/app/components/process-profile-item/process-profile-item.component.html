@@ -36,72 +36,87 @@
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item" [class.active]="activeTab == 'Process Details'" (click)="toggleTab('Process Details')">
-          Process Details</div>
+        <div class="menu-item" [class.active]="activeTab == 'processParameters'"
+          (click)="toggleTab('processParameters','Process Parameters')">
+          Process Parameters</div>
         <span class="separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'Process Dimensional Properties'"
-          (click)="toggleTab('Process Dimensional Properties')">Process Dimensional Properties</div>
+        <div class="menu-item" [class.active]="activeTab == 'processDimensionalProperties'"
+          (click)="toggleTab('processDimensionalProperties', 'Process Dimensional Properties')">Process Dimensional
+          Properties</div>
         <span class=" separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'Process Material Characteristics'"
-          (click)="toggleTab('Process Material Characteristics')">
+        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristics'"
+          (click)="toggleTab('processMaterialCharacteristics','Process Material Characteristics')">
           Process Material Characteristics</div>
       </div>
 
       <div id="conditionLabel" class="conditions">
 
-        <!-- Process Details -->
-        <div *ngIf="activeTab == 'Process Details'" class="condition-wrapper">
+        <div *ngIf="'processParameters' != activeTab" class="default">
+          <span class="icon" data-toggle="tooltip" data-placement="right"
+            title="short desc of what default values mean">
+            <i class="fas fa-question-circle"></i>
+          </span>
+          <span data-toggle="modal" data-target="#exampleModalCenter">Default Values</span>
+        </div>
+
+        <!-- Process Parameters -->
+        <div *ngIf="activeTab == 'processParameters'" class="condition-wrapper">
           <!-- <span>
             If
           </span> -->
 
           <div class="input-wrapper">
 
-            <div *ngFor="let item of form.processDetails; let index = index" class="form-row">
+            <div *ngFor="let item of form.processParameters; let index = index" class="form-row">
 
               <div class="form-group theme col-md-3">
-                <select required id="name" name="name" [(ngModel)]="form.processDetails[index].name"
+                <select required id="name" name="name" [(ngModel)]="form.processParameters[index].name"
                   class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDetails.conditionNames" [value]="item">{{item}}</option>
+                  <option *ngFor="let item of processParameters.conditionNames" [value]="item">{{item}}</option>
                 </select>
               </div>
 
               <div class="form-group theme col-md-3">
-                <select required id="condition" name="condition" [(ngModel)]="form.processDetails[index].condition"
+                <select required id="condition" name="condition" [(ngModel)]="form.processParameters[index].condition"
                   class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDetails.conditions" [value]="item">{{item}}</option>
+                  <option *ngFor="let item of processParameters.conditions" [value]="item">{{item}}</option>
                 </select>
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="form.processDetails[index].value" class="form-control"
+                <input required type="text" [(ngModel)]="form.processParameters[index].value" class="form-control"
                   id="value" name="value" placeholder="Value">
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="form.processDetails[index].unit" class="form-control" id="unit"
-                  name="unit" placeholder="Unit">
+                <input required type="text" [(ngModel)]="form.processParameters[index].unit" class="form-control"
+                  id="unit" name="unit" placeholder="Unit">
               </div>
 
             </div>
 
           </div>
 
-          <span class="add" (click)="addCondition('processDetails')">
+          <span class="add" (click)="addCondition('processParameters')">
             <i class="fas fa-plus"></i>
           </span>
 
+
         </div>
-        <!-- End of Process Details -->
+
+        <!-- End of Process Parameters -->
 
         <!-- Process Dimensional Properties -->
-        <div *ngIf="activeTab == 'Process Dimensional Properties'" class="condition-wrapper">
+        <div *ngIf="activeTab == 'processDimensionalProperties'" class="condition-wrapper">
           <!-- <span>
             If
           </span> -->
 
+          <div>
+            <span *ngFor="let item of form.processDimensionalProperties">{{item.name}}</span>
+          </div>
           <div class="input-wrapper">
 
             <div *ngFor="let item of form.processDimensionalProperties; let index = index" class="form-row">
@@ -119,7 +134,7 @@
                 <select required id="condition" name="condition"
                   [(ngModel)]="form.processDimensionalProperties[index].condition" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDetails.conditions" [value]="item">{{item}}</option>
+                  <option *ngFor="let item of processDimensionalProperties.conditions" [value]="item">{{item}}</option>
                 </select>
               </div>
 
@@ -145,7 +160,7 @@
         <!-- End of Process Dimensional Properties -->
 
         <!-- Process Material Characteristics -->
-        <div *ngIf="activeTab == 'Process Material Characteristics'" class="condition-wrapper">
+        <div *ngIf="activeTab == 'processMaterialCharacteristics'" class="condition-wrapper">
           <!-- <span>
             If
           </span> -->
@@ -210,4 +225,49 @@
 
     </div>
   </form>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade default-value-modal" id="exampleModalCenter" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title text-center theme" id="exampleModalLongTitle">Default Values for {{activeTabName}}</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of defaultValues[activeTab]">
+              <td>{{item.name}}</td>
+              <td>{{item.value}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="modal-footer row">
+        <div class="offset-sm-8">
+          <button #closeModal type="button" class="close d-none" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" class="btn btn-primary theme" (click)="applyDefaults()">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

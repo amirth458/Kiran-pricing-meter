@@ -27,7 +27,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   };
   machineId = null;
   machines = machines;
-  constructor(private route: Router) { }
+  constructor(public route: Router) { }
 
   ngOnInit() {
     if (this.route.url.includes('edit')) {

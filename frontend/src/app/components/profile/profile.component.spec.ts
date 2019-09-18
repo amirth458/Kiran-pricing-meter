@@ -11,10 +11,12 @@ import { FacilityItemComponent } from '../facility-item/facility-item.component'
 import { MachinesComponent } from 'src/app/components/machines/machines.component';
 import { MachineItemComponent } from 'src/app/components/machine-item/machine-item.component';
 import { PreferencesComponent } from '../preferences/preferences.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
 import { VendorComponent } from 'src/app/components/vendor/vendor.component';
 import { PostProcessComponent } from '../post-process/post-process.component';
+import { PostProcessPricingComponent } from '../post-process-pricing/post-process-pricing.component';
+import { PostProcessPricingItemComponent } from '../post-process-pricing-item/post-process-pricing-item.component';
 import { PostProcessProfileComponent } from '../post-process-profile/post-process-profile.component';
 import { PostProcessProfileItemComponent } from '../post-process-profile-item/post-process-profile-item.component';
 import { ProcessComponent } from 'src/app/components/process/process.component';
@@ -22,6 +24,8 @@ import { ProcessProfileComponent } from 'src/app/components/process-profile/proc
 import { ProcessProfileItemComponent } from 'src/app/components/process-profile-item/process-profile-item.component';
 import { ProcessPricingComponent } from '../process-pricing/process-pricing.component';
 import { ProcessPricingItemComponent } from '../process-pricing-item/process-pricing-item.component';
+import { ShippingComponent } from '../shipping/shipping.component';
+import { ShippingItemComponent } from '../shipping-item/shipping-item.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -39,6 +43,8 @@ describe('ProfileComponent', () => {
         MachinesComponent,
         MachineItemComponent,
         PostProcessComponent,
+        PostProcessPricingComponent,
+        PostProcessPricingItemComponent,
         PostProcessProfileComponent,
         PostProcessProfileItemComponent,
         PreferencesComponent,
@@ -47,13 +53,19 @@ describe('ProfileComponent', () => {
         ProcessPricingItemComponent,
         ProcessProfileComponent,
         ProcessProfileItemComponent,
+        ShippingComponent,
+        ShippingItemComponent,
         SubSectionMenuComponent,
         VendorComponent
       ],
       imports: [
         AppRoutingModule,
         AgGridModule.withComponents([]),
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
+      ],
+      providers: [
+        { provide: FormBuilder }
       ]
     })
       .compileComponents();
