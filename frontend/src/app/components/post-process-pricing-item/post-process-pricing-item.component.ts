@@ -25,7 +25,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   };
   postProcessPricingId = null;
   postProcessPricings = postProcessPricing;
-
+  processProfiles = [];
   conditions = ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'];
   units = ['CC', 'UM', 'Days'];
   conditionNames = ['Tolerance Increment', 'Surface Finish Increment'];
