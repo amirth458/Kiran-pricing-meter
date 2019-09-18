@@ -76,11 +76,29 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   async getVendorMetaDatas() {
     this.spineer.show();
     try {
-      this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
+      const vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
       this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
-      this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
-      this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
-      this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+      const vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
+      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+      const confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+
+      this.vendorTypes = vendorTypes.map((x) => {
+        const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+        return { id: x.id, name };
+      });
+      this.vendorIndustries = vendorIndustries.map((x) => {
+        const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+        return { id: x.id, name };
+      });
+      this.certifications = certifications.map((x) => {
+        const name = this.htmlDecode(x.name);
+        return { id: x.id, name };
+      });
+      this.confidentialities = confidentialities.map((x) => {
+        const name = this.htmlDecode(x.name);
+        return { id: x.id, name };
+      });
+
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -137,5 +155,11 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       console.log(error);
       this.spineer.hide();
     });
+  }
+
+  htmlDecode(input) {
+    const str = input;
+    str.replace(/[&amp;]/g, '&#38;');
+    return str;
   }
 }
