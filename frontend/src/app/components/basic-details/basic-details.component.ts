@@ -14,7 +14,9 @@ import { Router } from '@angular/router';
   templateUrl: './basic-details.component.html',
   styleUrls: ['./basic-details.component.css']
 })
+
 export class BasicDetailsComponent implements OnInit, AfterViewChecked {
+
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
   vendorIndustries: VendorMetaData[] = [];

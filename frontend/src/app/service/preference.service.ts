@@ -14,22 +14,22 @@ export class PreferenceService {
   ) { }
 
   getPreference(id: number): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/preferences/${id}`;
+    const url = `${environment.apiBaseUrl}/preferences/${id}`;
     return this.http.get<any>(url);
   }
 
   getPreferenceByVendorId(id: number): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/vendors/${id}/preferences`;
+    const url = `${environment.apiBaseUrl}/vendors/${id}/preferences`;
     return this.http.get<any>(url);
   }
 
   createPreference(preference: VendorPreference): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/preferences`;
+    const url = `${environment.apiBaseUrl}/preferences`;
     return this.http.post<any>(url, preference);
   }
 
   updatePreference(preference: Preference): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/v1/vendors/${preference.vendorId}/preferences`;
+    const url = `${environment.apiBaseUrl}/vendors/${preference.vendorId}/preferences`;
     return this.http.put<any>(url, preference);
   }
 }
