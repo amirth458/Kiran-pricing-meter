@@ -59,10 +59,6 @@
 
     </dependencies>
 
-	<distributionManagement>
-
-	</distributionManagement>
-
 	<build>
 		<finalName>application</finalName>
 		<plugins>
@@ -148,7 +144,7 @@
 							<executable>ng</executable>
 							<arguments>
 								<argument>build</argument>
-								<argument>--prod</argument>
+								<argument>--configuration=development</argument>
 								<argument>--base-href</argument>
 								<argument>/</argument>
 							</arguments>
