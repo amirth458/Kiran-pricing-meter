@@ -23,11 +23,8 @@ export interface Vendor {
 }
 
 export class FilterOption {
-  offset: number;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  'sort.sorted': boolean;
-  'sort.unsorted': boolean;
-  unpaged: boolean;
+  size: number;
+  page: number;
+  sort: string;
+  q: string;
 }

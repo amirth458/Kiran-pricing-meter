@@ -1,10 +1,33 @@
 export class Machine {
     id: string;
-    venderInfoId: string;
-    machineName: string;
+    vendorId: string;
+    name: string;
     serialNumber: string;
-    equipment: string;
-    material: Array<string>;
+    equipment: {
+        brandedProcessName: string;
+        genericProcessName: string;
+        id: number;
+        name: string;
+        oemDescription: string;
+        processFamilyName: string;
+        processTypeName: string;
+    };
+    vendorEquipmentMaterialList: Array<{
+        createdBy: string;
+        createdDate: string;
+        id: number;
+        lastModifiedBy: string;
+        lastModifiedDate: string;
+        material: {
+            genericName: string;
+            id: number;
+            materialClassName: string;
+            materialFamilyName: string;
+            materialTypeName: string;
+            name: string;
+            oemDescription: string;
+        },
+    }>;
     facilityId: string;
     createdBy: string;
     createdDate: string;
