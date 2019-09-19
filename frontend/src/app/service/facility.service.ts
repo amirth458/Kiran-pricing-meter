@@ -16,30 +16,26 @@ export class FacilityService {
   ) { }
 
   getFacilities(id: number, filterOption: FilterOption = null): Observable<any> {
-    const url = `${environment.apiBaseUrl}/vendors/facilities`;
+    const url = `${environment.apiBaseUrl}/vendors/${id}/facilities`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append('offset', filterOption.offset.toString());
-      params = params.append('pageNumber', filterOption.pageNumber.toString());
-      params = params.append('pageSize', filterOption.pageSize.toString());
-      params = params.append('paged', filterOption.paged.toString());
-      params = params.append('sort.sorted', filterOption['sort.sorted'].toString());
-      params = params.append('sort.unsorted', filterOption['sort.unsorted'].toString());
-      params = params.append('unpaged', filterOption.unpaged.toString());
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
+      params = params.append('sort', filterOption.sort.toString());
+      params = params.append('q', filterOption.q.toString());
     }
-    params = params.append('vendor_id', id.toString());
-    return this.http.get<any>(url, {params});
+    return this.http.get<any>(url, { params });
   }
 
   getFacility(vendorId: number, id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/facilities/${id}`;
-    
+
     return this.http.get(url);
   }
 
   createFacility(vendorId: number, facility: Facility): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/facilities`;
-    
+
     return this.http.post(url, facility);
   }
 

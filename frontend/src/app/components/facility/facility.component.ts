@@ -220,7 +220,8 @@ export class FacilityComponent implements OnInit {
     const rows = [];
     try {
       while (true) {
-        const res = await this.vendorService.getFacilities(this.userService.getUserInfo().id, page, 1000).toPromise();
+        // tslint:disable-next-line:max-line-length
+        const res = await this.facilityService.getFacilities(this.userService.getUserInfo().id, { page, size: 1000, sort: 'id,ASC', q: '' }).toPromise();
         if (!res.content) { break; }
         if (res.content.length === 0) {
           break;
@@ -265,7 +266,7 @@ export class FacilityComponent implements OnInit {
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if(columnInstance) {
+      if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
         } else {
@@ -273,7 +274,7 @@ export class FacilityComponent implements OnInit {
         }
         this.gridOptions.api.onFilterChanged();
       }
-      
+
     });
   }
 
