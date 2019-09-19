@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, AfterViewInit, AfterContentInit, ViewChild } from '@angular/core';
 
 import { GridOptions, RowPositionUtils } from 'ag-grid-community';
 
@@ -16,6 +16,10 @@ import { MachineService } from 'src/app/service/machine.service';
   styleUrls: ['./machines.component.css']
 })
 export class MachinesComponent implements OnInit {
+
+  @ViewChild('modal') modal;
+  selectedMachine = null;
+
 
   searchColumns = [
     {
@@ -110,7 +114,6 @@ export class MachinesComponent implements OnInit {
       headerName: 'Material', field: 'vendorEquipmentMaterialList', hide: false, sortable: true, filter: true,
       cellRenderer(params) {
         const data = params.data;
-        console.log(data);
         let materials = '';
         data.vendorEquipmentMaterialList.map((x, index) => {
           if (index === 0) {
@@ -130,18 +133,8 @@ export class MachinesComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           delete: async (param) => {
-            if (confirm('Delete?')) {
-              this.spineer.show();
-              try {
-                await this.machineService.deleteMachine(this.userService.getUserInfo().id, param.data.id).toPromise();
-              } catch (e) {
-                this.spineer.hide();
-                console.log(e);
-              } finally {
-                this.spineer.hide();
-              }
-              this.deleteRow(param);
-            }
+            this.modal.nativeElement.click();
+            this.selectedMachine = param.data;
           },
           canEdit: true,
           canCopy: false,
@@ -234,9 +227,19 @@ export class MachinesComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  deleteRow(event) {
-    const filteredData = this.rowData.filter(x => x.id != event.data.id);
+  async deleteMachine() {
+    this.spineer.show();
+    try {
+      await this.machineService.deleteMachine(this.userService.getUserInfo().id, this.selectedMachine.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+    const filteredData = this.rowData.filter(x => x.id != this.selectedMachine.id);
     this.rowData = filteredData;
+    this.modal.nativeElement.click();
+
   }
 
   searchColumnsChange(event) {
