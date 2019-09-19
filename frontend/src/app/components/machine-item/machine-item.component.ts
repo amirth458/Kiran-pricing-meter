@@ -60,7 +60,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       if (this.route.url.includes('edit')) {
         this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
 
-        this.machine = await this.machineService.getMfachine(this.userService.getUserInfo().id, this.machineId).toPromise();
+        this.machine = await this.machineService.getMachine(this.userService.getUserInfo().id, this.machineId).toPromise();
         console.log(this.machine);
 
         this.initForm(this.machine);
