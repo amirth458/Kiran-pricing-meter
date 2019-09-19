@@ -13,14 +13,14 @@ export class EquipmentService {
   constructor(
     public http: HttpClient
   ) { }
-  getEquipments(filterOption: FilterOption = null, q): Observable<any> {
+  getEquipments(filterOption: FilterOption = null): Observable<any> {
     const url = `${environment.apiBaseUrl}/marketplace/equipment`;
     let params = new HttpParams();
     if (filterOption) {
       params = params.append('page', filterOption.page.toString());
       params = params.append('size', filterOption.size.toString());
       params = params.append('sort', filterOption.sort.toString());
-      params = params.append('q', q.toString());
+      params = params.append('q', filterOption.q.toString());
     }
     return this.http.get<any>(url, { params });
   }
