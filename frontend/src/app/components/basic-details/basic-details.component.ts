@@ -139,31 +139,33 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
-    this.spineer.show();
-    const vendorProfile = {
-      ...this.detailForm.value,
-      vendorType: {
-        id: this.detailForm.value.vendorType
-      },
-      vendorIndustry: {
-        id: this.detailForm.value.vendorIndustry
-      },
-      country: {
-        id: this.detailForm.value.country
-      },
-      confidentiality: {
-        id: this.detailForm.value.confidentiality
-      },
-      vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
-      vendorIndustries: this.vendorIndustries.filter((item) => this.selectedVendorIndustry.includes(item.id))
-    };
-    this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
-      this.initForm(res);
-      this.spineer.hide();
-    }, error => {
-      console.log(error);
-      this.spineer.hide();
-    });
+    if (this.detailForm.valid) {
+      this.spineer.show();
+      const vendorProfile = {
+        ...this.detailForm.value,
+        vendorType: {
+          id: this.detailForm.value.vendorType
+        },
+        vendorIndustry: {
+          id: this.detailForm.value.vendorIndustry
+        },
+        country: {
+          id: this.detailForm.value.country
+        },
+        confidentiality: {
+          id: this.detailForm.value.confidentiality
+        },
+        vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
+        vendorIndustries: this.vendorIndustries.filter((item) => this.selectedVendorIndustry.includes(item.id))
+      };
+      this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
+        this.initForm(res);
+        this.spineer.hide();
+      }, error => {
+        console.log(error);
+        this.spineer.hide();
+      });
+    }
   }
 
   htmlDecode(input) {
