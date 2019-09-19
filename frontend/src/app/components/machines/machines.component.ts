@@ -1,11 +1,14 @@
 import { Component, OnInit, AfterViewChecked, AfterViewInit, AfterContentInit } from '@angular/core';
 
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, RowPositionUtils } from 'ag-grid-community';
 
 import * as machines from '../../../assets/static/machines';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
-import { VendorService } from '../../service/vendor.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { UserService } from 'src/app/service/user.service';
+import { FilterOption } from 'src/app/model/vendor.model';
+import { MachineService } from 'src/app/service/machine.service';
 
 @Component({
   selector: 'app-machines',
@@ -23,7 +26,7 @@ export class MachinesComponent implements OnInit {
     },
     {
       name: 'Machine Name', checked: false,
-      field: 'machineName', query: {
+      field: 'name', query: {
         type: '',
         filter: '',
       }
@@ -37,7 +40,7 @@ export class MachinesComponent implements OnInit {
     },
     {
       name: 'Equipment', checked: false,
-      field: 'equipment', query: {
+      field: 'equipment.name', query: {
         type: '',
         filter: '',
       }
@@ -52,7 +55,7 @@ export class MachinesComponent implements OnInit {
 
     {
       name: 'Material', checked: false,
-      field: 'material', query: {
+      field: 'vendorEquipmentMaterialList', query: {
         type: '',
         filter: '',
       }
@@ -70,20 +73,20 @@ export class MachinesComponent implements OnInit {
       name: 'Machine No', checked: true, field: 'id'
     },
     {
-      name: 'Machine Name', checked: true, field: 'machineName'
+      name: 'Machine Name', checked: true, field: 'name'
     },
     {
       name: 'Facility', checked: true, field: 'facility'
     },
     {
-      name: 'Equipment', checked: true, field: 'equipment'
+      name: 'Equipment', checked: true, field: 'equipment.name'
     },
     {
       name: 'Serial Number', checked: true, field: 'serialNumber'
     },
 
     {
-      name: 'Material', checked: true, field: 'material'
+      name: 'Material', checked: true, field: 'vendorEquipmentMaterialList'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -97,11 +100,28 @@ export class MachinesComponent implements OnInit {
 
   columnDefs = [
     { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Machine Name', field: 'machineName', hide: false, sortable: true, filter: true },
+    { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: true },
     { headerName: 'Facility', field: 'facility', hide: false, sortable: true, filter: true },
-    { headerName: 'Equipment', field: 'equipment', hide: false, sortable: true, filter: true },
+    {
+      headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: true
+    },
     { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: true },
-    { headerName: 'Material', field: 'material', hide: false, sortable: true, filter: true },
+    {
+      headerName: 'Material', field: 'vendorEquipmentMaterialList', hide: false, sortable: true, filter: true,
+      cellRenderer(params) {
+        const data = params.data;
+        console.log(data);
+        let materials = '';
+        data.vendorEquipmentMaterialList.map((x, index) => {
+          if (index === 0) {
+            materials = x.material.name;
+          } else {
+            materials = materials + ',' + x.material.name;
+          }
+        });
+        return materials;
+      }
+    },
     {
       headerName: 'Actions',
       width: 100,
@@ -109,7 +129,20 @@ export class MachinesComponent implements OnInit {
       cellRendererParams: {
         action: {
           edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param),
+          delete: async (param) => {
+            if (confirm('Delete?')) {
+              this.spineer.show();
+              try {
+                await this.machineService.deleteMachine(this.userService.getUserInfo().id, param.data.id).toPromise();
+              } catch (e) {
+                this.spineer.hide();
+                console.log(e);
+              } finally {
+                this.spineer.hide();
+              }
+              this.deleteRow(param);
+            }
+          },
           canEdit: true,
           canCopy: false,
           canDelete: true,
@@ -124,19 +157,19 @@ export class MachinesComponent implements OnInit {
 
   constructor(
     public route: Router,
-    public vendorService: VendorService
+    public machineService: MachineService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService
   ) { }
 
   ngOnInit() {
-    this.rowData = machines;
 
-    this.vendorService.getMachinery(330).subscribe(res => {
-      console.log(res);
-    });
-
+    this.getMachinery();
+    this.rowData = [];
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
+
 
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -155,6 +188,31 @@ export class MachinesComponent implements OnInit {
       this.gridOptions.api.sizeColumnsToFit();
 
     }, 50);
+  }
+
+  async getMachinery() {
+    this.spineer.show();
+    let page = 0;
+    const rows = [];
+    try {
+      while (true) {
+        const param: FilterOption = { size: 1000, sort: 'id,ASC', page, q: '' };
+        const res = await this.machineService.getMachinery(this.userService.getUserInfo().id, param).toPromise();
+        if (!res.content || res.content.length === 0) {
+          break;
+        }
+        page++;
+        rows.push(...res.content);
+      }
+      this.rowData = rows;
+    } catch (e) {
+      this.spineer.hide();
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
+
   }
 
   configureColumnDefs() {
@@ -177,10 +235,8 @@ export class MachinesComponent implements OnInit {
   }
 
   deleteRow(event) {
-    // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != event.data.id);
     this.rowData = filteredData;
-    console.log(this.rowData);
   }
 
   searchColumnsChange(event) {

@@ -1,18 +1,18 @@
 <div class="wrapper shadow">
 
-  <form novalidate class="needs-validation">
+  <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
 
       <div class="form-group theme col-md-6">
         <label for="machineName">Machine Name</label>
-        <input required type="text" [(ngModel)]="form.machineName" class="form-control" id="machineName"
-          name="machineName" placeholder="Machine Name">
+        <input required type="text" formControlName="name" class="form-control" id="machineName" name="machineName"
+          placeholder="Machine Name">
       </div>
 
 
       <div class="form-group theme col-md-6">
         <label for="serialNumber">Serial Number</label>
-        <input required type="text" [(ngModel)]="form.serialNumber" class="form-control" id="serialNumber"
+        <input required type="text" formControlName="serialNumber" class="form-control" id="serialNumber"
           name="serialNumber" placeholder="Vendor Specific Unique Identifier">
       </div>
 
@@ -21,16 +21,18 @@
 
       <div class="form-group theme col-md-6">
         <label for="equipment">Equipment</label>
-        <select required id="equipment" name="equipment" [(ngModel)]="form.equipment" class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of equipments" [value]="item.id">{{item.name}}</option>
-        </select>
+        <ng-select [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedEquipment" [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
       </div>
 
       <div class="form-group theme col-md-6">
         <label for="material">Material</label>
-        <input required type="text" [(ngModel)]="form.material" class="form-control" id="material" name="material"
-          placeholder="Material">
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedMaterials" [ngModelOptions]="{standalone: true}">
+          <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
       </div>
 
     </div>
@@ -38,9 +40,9 @@
     <div class="form-row">
 
       <div class="form-group theme col-md-6">
-        <label for="facilityId">Facility</label>
-        <select required id="facilityId" name="facilityId" [(ngModel)]="form.facilityId" class="form-control">
-          <option selected value="">Choose...</option>
+        <label for="facility">Facility</label>
+        <select required id="facility" name="facility" formControlName="facility" class="form-control">
+          <option selected value=null>Choose...</option>
           <option *ngFor="let item of facilities" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
