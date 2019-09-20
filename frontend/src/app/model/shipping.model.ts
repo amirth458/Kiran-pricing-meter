@@ -1,7 +1,7 @@
 export class Shipping {
     id: string;
     vendorId: string;
-    shippingProvider: object;
+    shippingProvider: any;
     accountId: string;
     isActive: string;
     createdBy: string;
