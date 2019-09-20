@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
@@ -17,6 +17,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./shipping.component.css']
 })
 export class ShippingComponent implements OnInit {
+
+  @ViewChild('modal') modal;
+  selectedShipping = null;
+
   searchColumns = [
     {
       name: 'Carrier No', checked: false, field: 'id', query: {
@@ -92,17 +96,8 @@ export class ShippingComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           delete: async (param) => {
-            if (confirm('Delete?')) {
-              this.spineer.show();
-              try {
-                await this.shippingService.deleteShipping(this.userService.getUserInfo().id, param.data.id).toPromise();
-              } catch (e) {
-                console.log(e);
-              } finally {
-                this.spineer.hide();
-              }
-              this.deleteRow(param.data.id);
-            }
+            this.modal.nativeElement.click();
+            this.selectedShipping = param.data;
           },
           canEdit: true,
           canCopy: false,
@@ -197,10 +192,20 @@ export class ShippingComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  deleteRow(id) {
+  async deleteShipping() {
+    this.spineer.show();
+    try {
+      await this.shippingService.deleteShipping(this.userService.getUserInfo().id, this.selectedShipping.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
     // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != id);
+    const filteredData = this.rowData.filter(x => x.id != this.selectedShipping.id);
     this.rowData = filteredData;
+    this.modal.nativeElement.click();
+
   }
 
   searchColumnsChange(event) {
