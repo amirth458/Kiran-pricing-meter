@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner'
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ShippingService } from '../../service/shipping.service';
 import { VendorService } from '../../service/vendor.service';
 import { UserService } from '../../service/user.service';
@@ -20,19 +20,19 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     id: [null],
     shippingProvider: [null, Validators.required],
     accountId: [null, Validators.required],
-    is_active: [null, Validators.required],
+    isActive: [null, Validators.required],
     createdBy: null,
     createdDate: null,
     updatedDate: null
   });
-  
+
   carriers = null;
   shippingId = null;
   isNew = true;
 
   constructor(
     public fb: FormBuilder,
-    private route: Router, 
+    private route: Router,
     private shippingService: ShippingService,
     private vendorService: VendorService,
     private spineer: NgxSpinnerService,
@@ -40,11 +40,14 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
 
 
   async ngOnInit() {
+    this.spineer.show();
     await this.getMetaData();
     if (this.route.url.includes('edit')) {
       this.shippingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
       this.isNew = false;
       this.getShipping(this.shippingId);
+    } else {
+      this.spineer.hide();
     }
   }
 
@@ -65,23 +68,18 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
   }
 
   async getMetaData() {
-    
     try {
       this.carriers = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.ShippingPrivider).toPromise();
     } catch (e) {
       console.log(e);
-    } finally {
-      
     }
   }
 
-  async getShipping( shippingId: number) {
-    this.spineer.show();
+  async getShipping(shippingId: number) {
     try {
       const data = await this.shippingService.getShipping(this.userService.getUserInfo().id, shippingId).toPromise();
       this.initForm(data);
     } catch (e) {
-      this.spineer.hide();
       console.log(e);
     } finally {
       this.spineer.hide();
@@ -89,12 +87,11 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(data: any) {
-    
     this.shippingItem.setValue({
       id: data.id,
       shippingProvider: data.shippingProvider.id,
       accountId: data.accountId,
-      is_active: data.is_active?true:false,
+      isActive: data.isActive ? true : false,
       createdBy: data.createdBy || '',
       createdDate: data.createdDate || '',
       updatedDate: data.updatedDate || '',
@@ -102,21 +99,20 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
-    
-    if(!(this.shippingItem.valid && this.shippingItem.dirty)) {
+    if (!(this.shippingItem.valid && this.shippingItem.dirty)) {
       return;
-    } 
+    }
     this.spineer.show();
 
     const vendorId = this.userService.getUserInfo().id;
 
-    const shipping:Shipping = {
+    const shipping: Shipping = {
       ...this.shippingItem.value
     };
-    shipping.shippingProvider = {id: Number(shipping.shippingProvider)};
+    shipping.shippingProvider = { id: Number(shipping.shippingProvider) };
     shipping.updatedDate = new Date().toString();
 
-    if(this.isNew) {
+    if (this.isNew) {
       shipping.createdBy = String(this.userService.getUserInfo().id);
       shipping.createdDate = new Date().toString();
 

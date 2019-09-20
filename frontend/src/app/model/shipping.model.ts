@@ -3,7 +3,7 @@ export class Shipping {
     vendorId: string;
     shippingProvider: object;
     accountId: string;
-    is_active: string;
+    isActive: string;
     createdBy: string;
     createdDate: string;
     updatedDate: string;

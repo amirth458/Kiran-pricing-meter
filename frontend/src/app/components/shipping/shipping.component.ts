@@ -40,7 +40,7 @@ export class ShippingComponent implements OnInit {
     },
     {
       name: 'Status', checked: false,
-      field: 'is_active', query: {
+      field: 'isActive', query: {
         type: '',
         filter: '',
       }
@@ -64,7 +64,7 @@ export class ShippingComponent implements OnInit {
       name: 'Account ID', checked: true, field: 'accountId'
     },
     {
-      name: 'Status', checked: true, field: 'is_active'
+      name: 'Status', checked: true, field: 'isActive'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -83,7 +83,7 @@ export class ShippingComponent implements OnInit {
       headerName: 'Carrier', field: 'shippingProvider.name', hide: false, sortable: true, filter: true,
     },
     { headerName: 'Account ID', field: 'accountId', hide: false, sortable: true, filter: true },
-    { headerName: 'Status', field: 'is_active', hide: false, sortable: true, filter: true },
+    { headerName: 'Status', field: 'isActive', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 50,
@@ -97,7 +97,6 @@ export class ShippingComponent implements OnInit {
               try {
                 await this.shippingService.deleteShipping(this.userService.getUserInfo().id, param.data.id).toPromise();
               } catch (e) {
-                this.spineer.hide();
                 console.log(e);
               } finally {
                 this.spineer.hide();
@@ -125,7 +124,7 @@ export class ShippingComponent implements OnInit {
     private spineer: NgxSpinnerService
 
   ) {
-      
+
   }
 
   ngOnInit() {
@@ -157,10 +156,9 @@ export class ShippingComponent implements OnInit {
     const rows = [];
     try {
       while (true) {
-        // tslint:disable-next-line:max-line-length
         const res = await this.shippingService.getShippings(
           this.userService.getUserInfo().id,
-          { page, size: 1000, sort: 'id,DESC', q: '' }
+          { page, size: 1000, sort: 'id,ASC', q: '' }
         ).toPromise();
 
         rows.push(...res.content);
@@ -174,7 +172,6 @@ export class ShippingComponent implements OnInit {
       }
       this.rowData = rows;
     } catch (e) {
-      this.spineer.hide();
       console.log(e);
     } finally {
       this.spineer.hide();
@@ -202,7 +199,6 @@ export class ShippingComponent implements OnInit {
 
   deleteRow(id) {
     // tslint:disable-next-line:triple-equals
-    
     const filteredData = this.rowData.filter(x => x.id != id);
     this.rowData = filteredData;
   }

@@ -19,7 +19,7 @@ export class VendorService {
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {
     const url = `${environment.apiBaseUrl}/vendor-metadata/${type}`;
-    if(type === VendorMetaDataTypes.ShippingPrivider) {
+    if (type === VendorMetaDataTypes.ShippingPrivider) {
       return this.http.get<any>(url).pipe(
         map(res => res)
       );
@@ -28,7 +28,6 @@ export class VendorService {
         map(res => res.metadataList)
       );
     }
-    
   }
 
   getVendorDetail(id: number): Observable<Vendor> {
