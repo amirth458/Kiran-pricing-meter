@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { CarrierCellRendererComponent } from 'src/app/common/carrier-cell-renderer/carrier-cell-renderer.component';
 
+import { ShippingService } from '../../service/shipping.service';
+import { UserService } from '../../service/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-shipping',
   templateUrl: './shipping.component.html',
@@ -36,7 +40,7 @@ export class ShippingComponent implements OnInit {
     },
     {
       name: 'Status', checked: false,
-      field: 'status', query: {
+      field: 'isActive', query: {
         type: '',
         filter: '',
       }
@@ -60,7 +64,7 @@ export class ShippingComponent implements OnInit {
       name: 'Account ID', checked: true, field: 'accountId'
     },
     {
-      name: 'Status', checked: true, field: 'status'
+      name: 'Status', checked: true, field: 'isActive'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -76,11 +80,10 @@ export class ShippingComponent implements OnInit {
   columnDefs = [
     { headerName: 'Carrier No', field: 'id', hide: false, sortable: true, filter: true },
     {
-      headerName: 'Carrier', field: 'carrier', hide: false, sortable: true, filter: true,
-      cellRenderer: 'carrierCellRenderer',
+      headerName: 'Carrier', field: 'shippingProvider.name', hide: false, sortable: true, filter: true,
     },
     { headerName: 'Account ID', field: 'accountId', hide: false, sortable: true, filter: true },
-    { headerName: 'Status', field: 'status', hide: false, sortable: true, filter: true },
+    { headerName: 'Status', field: 'isActive', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 50,
@@ -88,7 +91,19 @@ export class ShippingComponent implements OnInit {
       cellRendererParams: {
         action: {
           edit: (param) => this.editRow(param),
-          delete: (param) => this.deleteRow(param),
+          delete: async (param) => {
+            if (confirm('Delete?')) {
+              this.spineer.show();
+              try {
+                await this.shippingService.deleteShipping(this.userService.getUserInfo().id, param.data.id).toPromise();
+              } catch (e) {
+                console.log(e);
+              } finally {
+                this.spineer.hide();
+              }
+              this.deleteRow(param.data.id);
+            }
+          },
           canEdit: true,
           canCopy: false,
           canDelete: true,
@@ -102,10 +117,18 @@ export class ShippingComponent implements OnInit {
 
   rowData;
   pageSize = 10;
-  constructor(public route: Router) { }
+  constructor(
+    private route: Router,
+    private shippingService: ShippingService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService
+
+  ) {
+
+  }
 
   ngOnInit() {
-    this.rowData = shipping;
+    this.getVendorShippings();
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -127,6 +150,33 @@ export class ShippingComponent implements OnInit {
 
     }, 50);
   }
+  async getVendorShippings() {
+    this.spineer.show();
+    let page = 0;
+    const rows = [];
+    try {
+      while (true) {
+        const res = await this.shippingService.getShippings(
+          this.userService.getUserInfo().id,
+          { page, size: 1000, sort: 'id,ASC', q: '' }
+        ).toPromise();
+
+        rows.push(...res.content);
+
+        if (!res.content) { break; }
+        if (res.content.length === 0 || res.content.length < 1000) {
+          break;
+        }
+
+        page++;
+      }
+      this.rowData = rows;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+  }
 
   configureColumnDefs() {
     this.filterColumns.map(column => {
@@ -147,11 +197,10 @@ export class ShippingComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  deleteRow(event) {
+  deleteRow(id) {
     // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != event.data.id);
+    const filteredData = this.rowData.filter(x => x.id != id);
     this.rowData = filteredData;
-    console.log(this.rowData);
   }
 
   searchColumnsChange(event) {

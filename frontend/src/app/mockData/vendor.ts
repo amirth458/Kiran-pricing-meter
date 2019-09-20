@@ -6,5 +6,6 @@ export enum VendorMetaDataTypes {
   VendorCertificate = 'vendor_certificate',
   VendorType = 'vendor_type',
   VendorIndustry = 'vendor_industries',
-  Country = 'country'
+  Country = 'country',
+  ShippingPrivider = 'shipping-provider'
 }

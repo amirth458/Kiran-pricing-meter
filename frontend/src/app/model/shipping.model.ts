@@ -1,9 +1,9 @@
 export class Shipping {
     id: string;
-    venderInfoId: string;
-    carrier: string;
+    vendorId: string;
+    shippingProvider: object;
     accountId: string;
-    state: string;
+    isActive: string;
     createdBy: string;
     createdDate: string;
     updatedDate: string;
