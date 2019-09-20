@@ -39,7 +39,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     serialNumber: [null],
     equipment: [null, Validators.required],
     material: [null, Validators.required],
-    facility: ['', Validators.required]
+    vendorFacility: ['', Validators.required]
   });
   machineId = null;
   constructor(
@@ -141,7 +141,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       serialNumber: initValue.serialNumber,
       equipment: this.selectedEquipment,
       material: this.selectedMaterials,
-      facility: ''
+      vendorFacility: initValue.vendorFacility.id
     });
   }
 
@@ -162,13 +162,16 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   }
 
   clearStore() {
-    this.materials = [];
-    this.equipments = [];
+    this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
+    this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
+    // this.materials = [];
+    // this.equipments = [];
   }
 
   async onMaterialSearch(event) {
     if (event.keyCode === 13) {
-      this.materials = [];
+      this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
+      // this.materials = [];
     }
     if (event.target.value.length >= 2) {
       if (event.keyCode === 13 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
@@ -184,7 +187,8 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
   async onEquipmentSearch(event) {
     if (event.keyCode === 13) {
-      this.equipments = [];
+      this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
+      // this.equipments = [];
     }
 
     if (event.target.value.length >= 2) {
@@ -209,11 +213,12 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       materialList: [...this.form.value.material.map((materialId) => {
         return { id: materialId };
       })],
-      vendorFacility: '',
+      vendorFacility: { id: this.form.value.vendorFacility },
       updatedDate: '',
       createdBy: '',
       createdDate: '',
     };
+
     postData.updatedDate = new Date().toString();
     if (this.isNew) {
       postData.createdBy = String(this.userService.getUserInfo().id);

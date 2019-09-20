@@ -42,8 +42,9 @@
     <div class="form-row">
 
       <div class="form-group theme col-md-6">
-        <label for="facility">Facility</label>
-        <select required id="facility" name="facility" formControlName="facility" class="form-control">
+        <label for="vendorFacility">Facility</label>
+        <select required id="vendorFacility" name="vendorFacility" formControlName="vendorFacility"
+          class="form-control">
           <option selected value=''>Choose...</option>
           <option *ngFor="let item of facilities" [value]="item.id">{{item.name}}</option>
         </select>
