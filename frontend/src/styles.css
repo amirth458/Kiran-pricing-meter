@@ -114,6 +114,11 @@ button.theme.white:hover {
   cursor: not-allowed;
 }
 
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  border-color: #8FBE4C !important;
+  outline: unset !important;
+}
+
 .ng-select.ng-select-single .ng-select-container,
 .ng-select .ng-select-container {
   background: var(--theme-input-bg);
