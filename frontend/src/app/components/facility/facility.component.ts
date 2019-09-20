@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { GridOptions } from 'ag-grid-community';
 
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
-import { VendorService } from '../../service/vendor.service';
 import { FacilityService } from '../../service/facility.service';
 import { UserService } from '../../service/user.service';
 
@@ -116,7 +115,7 @@ export class FacilityComponent implements OnInit {
       name: 'Country', checked: false, field: 'country'
     },
     {
-      name: 'Certifications', checked: true, field: '[vendorFacilityCertificationList].length'
+      name: 'Certifications', checked: true, field: 'vendorFacilityCertificationList'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -142,7 +141,11 @@ export class FacilityComponent implements OnInit {
     { headerName: 'City', field: 'city', hide: false, sortable: true, filter: true },
     { headerName: 'State', field: 'state', hide: false, sortable: true, filter: true },
     { headerName: 'Country', field: 'country', hide: false, sortable: true, filter: true },
-    { headerName: 'Certifications', field: '[vendorFacilityCertificationList].length', hide: false, sortable: true, filter: true },
+    { headerName: 'Certifications', field: '[vendorFacilityCertificationList].length', hide: false, sortable: true, filter: true,
+      cellRenderer(params) {
+        return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(", ");
+      }
+    },
     {
       headerName: 'Actions',
       filter: false,
@@ -150,10 +153,7 @@ export class FacilityComponent implements OnInit {
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
-          edit: (param) => {
-            const gotoURL = `/profile/vendor/facilities/edit/${param.data.id}`;
-            this.route.navigateByUrl(gotoURL);
-          },
+          edit: (param) =>  this.editRow(param),
           delete: async (param) => {
             if (confirm('Delete?')) {
               this.spineer.show();
@@ -183,7 +183,6 @@ export class FacilityComponent implements OnInit {
   constructor(
     private route: Router,
     private facilityService: FacilityService,
-    private vendorService: VendorService,
     private userService: UserService,
     private spineer: NgxSpinnerService
   ) { }
@@ -221,13 +220,17 @@ export class FacilityComponent implements OnInit {
     try {
       while (true) {
         // tslint:disable-next-line:max-line-length
-        const res = await this.facilityService.getFacilities(this.userService.getUserInfo().id, { page, size: 1000, sort: 'id,ASC', q: '' }).toPromise();
+        const res = await this.facilityService.getFacilities(
+          this.userService.getUserInfo().id,
+          { page, size: 1000, sort: 'id,DESC', q: '' }
+        ).toPromise();
+        rows.push(...res.content);
         if (!res.content) { break; }
-        if (res.content.length === 0) {
+        if (res.content.length === 0  || res.content.length < 1000) {
           break;
         }
         page++;
-        rows.push(...res.content);
+        
       }
       this.rowData = rows;
     } catch (e) {

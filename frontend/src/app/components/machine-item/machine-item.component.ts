@@ -164,13 +164,13 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          this.save();
+          this.save(event);
         }
         form.classList.add('was-validated');
       }, false);
     });
   }
-  save() {
+  save(event) {
     console.log(this.form);
     console.log(this.selectedMaterials);
     console.log(this.selectedEquipment);

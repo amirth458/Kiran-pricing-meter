@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 import { Facility } from 'src/app/model/facility.model';
@@ -16,30 +17,32 @@ import { VendorMetaDataTypes } from '../../mockData/vendor';
 })
 export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
-  form: Facility = {
-    id: '',
-    vendorId: '',
-    name: '',
-    email: '',
-    phone: '',
-    street1: '',
-    street2: '',
-    zipCode: '',
-    city: '',
-    state: '',
-    country: '',
-    facilityCertificationList: [],
-    createdBy: '',
-    createdDate: '',
-    updatedDate: ''
-  };
+  facilityItem: FormGroup = this.fb.group({
+    id: [null],
+    vendorId: [null],
+    name: [null, Validators.required],
+    email: [null, [Validators.required, Validators.email]],
+    phone: [null, Validators.required],
+    street1: [null, Validators.required],
+    street2: [null, Validators.required],
+    zipCode: [null, Validators.required],
+    city: [null, Validators.required],
+    state: [null, Validators.required],
+    country: [null, Validators.required],
+    facilityCertificationList: null,
+    createdBy: null,
+    createdDate: null,
+    updatedDate: null
+  });
 
   certifications = [];
   countries = [];
   facilityId = null;
   selectedCertifications = [];
   isNew = true;
+
   constructor(
+    public fb: FormBuilder,
     private route: Router, 
     private vendorService: VendorService,
     private facilityService: FacilityService,
@@ -58,13 +61,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   async getFacility( facilityId: number) {
     this.spineer.show();
     try {
-      this.form = await this.facilityService.getFacility(this.userService.getUserInfo().id, facilityId).toPromise();
-      const certs = this.form['vendorFacilityCertificationList'];
-      const arrCerts = [];
-      certs.forEach(cert => {
-        arrCerts.push(cert.facilityCertification.id);
-      });
-      this.selectedCertifications = arrCerts;
+      const data = await this.facilityService.getFacility(this.userService.getUserInfo().id, facilityId).toPromise();
+      this.initForm(data);
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -103,82 +101,65 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  prepareData() {
-    const arrCerts = []
-    this.selectedCertifications.forEach((cert_id)=>{
-      arrCerts.push({id: cert_id});
-    })
-    this.form.updatedDate = new Date().toString();
-    this.form.facilityCertificationList = arrCerts;
-    delete this.form['vendorFacilityCertificationList'];
-
-    if(this.isNew) {
-      this.form.createdBy = String(this.userService.getUserInfo().id);
-      this.form.createdDate = new Date().toString();
-    } else {
-      this.form.updatedDate = new Date().toString();
-    }
+  initForm(data: any) {
+    this.selectedCertifications = data.vendorFacilityCertificationList.map(x => x.facilityCertification.id) || [];
+    
+    this.facilityItem.setValue({
+      id: data.id,
+      vendorId: data.vendorId,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      street1: data.street1 || '',
+      street2: data.street2 || '',
+      zipCode: data.zipCode || '',
+      city: data.city,
+      state: data.state,
+      country: data.country,
+      facilityCertificationList: [],
+      createdBy: data.createdBy,
+      createdDate: data.createdDate,
+      updatedDate: data.updatedDate || '',
+    });
   }
 
-  isEmail(email: string): boolean {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
-    {
-      return true;
-    }
-    return false;
-  }
-
-  validateData(): boolean {
-   
-    if(
-      this.form.name === '' ||
-      this.form.email === '' ||
-      this.form.phone === '' ||
-      this.form.street1 === '' ||
-      this.form.street2 === '' ||
-      this.form.zipCode === '' ||
-      this.form.city === '' ||
-      this.form.state === '' ||
-      this.form.country === '' ||
-      !this.isEmail(this.form.email)
-    ) {
-      return false;
-    }
-    return true;
-  }
-
-  async save() {    
-    this.prepareData();
-    if (!this.validateData()) return;
+  save(event) {
+    console.log(this.facilityItem.value);
+    if(!(this.facilityItem.valid && this.facilityItem.dirty)) {
+      return;
+    } 
+    this.spineer.show();
 
     const vendorId = this.userService.getUserInfo().id;
 
-    if(this.isNew) {      
-      this.spineer.show();
-      try {
-        await this.facilityService.createFacility(vendorId, this.form).toPromise();
-      } catch (e) {
-        this.spineer.hide();
-        console.log(e);
-      } finally {
-        this.spineer.hide();
+    const facility = {
+      ...this.facilityItem.value,
+      facilityCertificationList: this.selectedCertifications.map((item) => ({id: item}))
+    };
+    facility.vendorId = vendorId;
+    facility.updatedDate = new Date().toString();
+
+    if(this.isNew) {
+      facility.createdBy = String(this.userService.getUserInfo().id);
+      facility.createdDate = new Date().toString();
+
+      this.facilityService.createFacility(vendorId, facility).subscribe(res => {
         const gotoURL = `/profile/vendor/facilities`;
         this.route.navigateByUrl(gotoURL);
-      }
-      
+        this.spineer.hide();
+      }, error => {
+        console.log(error);
+        this.spineer.hide();
+      });
     } else {
-      this.spineer.show();
-      try {
-        await this.facilityService.updateFacility(vendorId, this.facilityId, this.form).toPromise();
-      } catch (e) {
-        this.spineer.hide();
-        console.log(e);
-      } finally {
-        this.spineer.hide();
+      this.facilityService.updateFacility(vendorId, this.facilityId, facility).subscribe(res => {
         const gotoURL = `/profile/vendor/facilities`;
         this.route.navigateByUrl(gotoURL);
-      }
-      
+        this.spineer.hide();
+      }, error => {
+        console.log(error);
+        this.spineer.hide();
+      });
     }
   }
 }

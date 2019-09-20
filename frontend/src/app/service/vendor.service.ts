@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { Vendor, FilterOption, VendorMetaData } from '../model/vendor.model';
 import { environment } from 'src/environments/environment';
+import { VendorMetaDataTypes } from '../mockData/vendor';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,16 @@ export class VendorService {
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {
     const url = `${environment.apiBaseUrl}/vendor-metadata/${type}`;
-    return this.http.get<any>(url).pipe(
-      map(res => res.metadataList)
-    );
+    if(type === VendorMetaDataTypes.ShippingPrivider) {
+      return this.http.get<any>(url).pipe(
+        map(res => res)
+      );
+    } else {
+      return this.http.get<any>(url).pipe(
+        map(res => res.metadataList)
+      );
+    }
+    
   }
 
   getVendorDetail(id: number): Observable<Vendor> {
