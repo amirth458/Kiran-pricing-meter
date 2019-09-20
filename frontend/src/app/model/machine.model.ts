@@ -28,7 +28,7 @@ export class Machine {
             oemDescription: string;
         },
     }>;
-    facilityId: string;
+    vendorFacility: any;
     createdBy: string;
     createdDate: string;
     updatedDate: string;

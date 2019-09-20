@@ -37,7 +37,7 @@ export class MachinesComponent implements OnInit {
     },
     {
       name: 'Facility', checked: false,
-      field: 'facility', query: {
+      field: 'vendorFacility.name', query: {
         type: '',
         filter: '',
       }
@@ -80,7 +80,7 @@ export class MachinesComponent implements OnInit {
       name: 'Machine Name', checked: true, field: 'name'
     },
     {
-      name: 'Facility', checked: true, field: 'facility'
+      name: 'Facility', checked: true, field: 'vendorFacility.name'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment.name'
@@ -105,7 +105,7 @@ export class MachinesComponent implements OnInit {
   columnDefs = [
     { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: true },
     { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: true },
-    { headerName: 'Facility', field: 'facility', hide: false, sortable: true, filter: true },
+    { headerName: 'Facility', field: 'vendorFacility.name', hide: false, sortable: true, filter: true },
     {
       headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: true
     },
