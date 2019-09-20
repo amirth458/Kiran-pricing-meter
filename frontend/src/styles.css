@@ -114,6 +114,15 @@ button.theme.white:hover {
   cursor: not-allowed;
 }
 
+.modal.theme .modal-title {
+  color: var(--theme-dark-blue);
+}
+
+.modal.theme .modal-body {
+  color: var(--theme-secondary-blue);
+}
+
+/* Overriding @ng-select */
 .ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
   border-color: #8FBE4C !important;
   outline: unset !important;

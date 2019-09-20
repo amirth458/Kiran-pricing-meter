@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
@@ -15,6 +15,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./facility.component.css']
 })
 export class FacilityComponent implements OnInit {
+
+  @ViewChild('modal') modal;
+  selectedFacility = null;
+
 
   searchColumns = [
     {
@@ -141,9 +145,10 @@ export class FacilityComponent implements OnInit {
     { headerName: 'City', field: 'city', hide: false, sortable: true, filter: true },
     { headerName: 'State', field: 'state', hide: false, sortable: true, filter: true },
     { headerName: 'Country', field: 'country', hide: false, sortable: true, filter: true },
-    { headerName: 'Certifications', field: '[vendorFacilityCertificationList].length', hide: false, sortable: true, filter: true,
+    {
+      headerName: 'Certifications', field: '[vendorFacilityCertificationList].length', hide: false, sortable: true, filter: true,
       cellRenderer(params) {
-        return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(", ");
+        return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
       }
     },
     {
@@ -153,20 +158,10 @@ export class FacilityComponent implements OnInit {
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
-          edit: (param) =>  this.editRow(param),
+          edit: (param) => this.editRow(param),
           delete: async (param) => {
-            if (confirm('Delete?')) {
-              this.spineer.show();
-              try {
-                await this.facilityService.deleteFacility(this.userService.getUserInfo().id, param.data.id).toPromise();
-              } catch (e) {
-                this.spineer.hide();
-                console.log(e);
-              } finally {
-                this.spineer.hide();
-              }
-              this.deleteRow(param);
-            }
+            this.modal.nativeElement.click();
+            this.selectedFacility = param.data;
           },
           canEdit: true,
           canCopy: false,
@@ -226,11 +221,11 @@ export class FacilityComponent implements OnInit {
         ).toPromise();
         rows.push(...res.content);
         if (!res.content) { break; }
-        if (res.content.length === 0  || res.content.length < 1000) {
+        if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }
         page++;
-        
+
       }
       this.rowData = rows;
     } catch (e) {
@@ -260,12 +255,22 @@ export class FacilityComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  deleteRow(event) {
-    // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != event.data.id);
-    this.rowData = filteredData;
-  }
 
+  async deleteFacility() {
+    this.spineer.show();
+    try {
+      await this.facilityService.deleteFacility(this.userService.getUserInfo().id, this.selectedFacility.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+    // tslint:disable-next-line:triple-equals
+    const filteredData = this.rowData.filter(x => x.id != this.selectedFacility.id);
+    this.rowData = filteredData;
+    this.modal.nativeElement.click();
+
+  }
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
