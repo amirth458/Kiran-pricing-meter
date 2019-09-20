@@ -33,13 +33,12 @@ export class MachineService {
     return this.http.get(url);
   }
 
-  createMachine(vendorId: number, machine: Machine): Observable<any> {
+  createMachine(vendorId: number, machine): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/machineries`;
-
     return this.http.post(url, machine);
   }
 
-  updateMachine(vendorId: number, id: number, machine: Machine): Observable<any> {
+  updateMachine(vendorId: number, id: number, machine): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/machineries/${id}`;
     return this.http.put(url, machine);
   }

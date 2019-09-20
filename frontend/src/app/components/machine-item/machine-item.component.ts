@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { Machine } from 'src/app/model/machine.model';
 
 import * as machines from '../../../assets/static/machines';
@@ -20,20 +20,26 @@ import { FacilityService } from 'src/app/service/facility.service';
 export class MachineItemComponent implements OnInit, AfterViewChecked {
 
   facilities = [];
-  equipments = [];
-  materials = [];
+  equipments = [{ id: '', name: 'more than 2 characters to start search' }];
+  materials = [{ id: '', name: 'more than 2 characters to start search' }];
   selectedMaterials = [];
   selectedEquipment;
   machine;
+  isNew = true;
+  isMaterialLoading = false;
+  isEquipmentLoading = false;
+
+  @ViewChild('materialInput') materialInput;
+  @ViewChild('equipmentInput') equipmentInput;
 
   form: FormGroup = this.fb.group({
     id: [null],
-    vendorId: [null, Validators.required],
+    vendorId: [null],
     name: [null],
     serialNumber: [null],
     equipment: [null, Validators.required],
     material: [null, Validators.required],
-    facility: [null, Validators.required]
+    facility: ['', Validators.required]
   });
   machineId = null;
   constructor(
@@ -49,20 +55,13 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   async ngOnInit() {
     this.spinner.show();
     try {
-      await this.getMaterials();
-      await this.getEquipments();
       await this.getFacilities();
-
-      // console.log(this.materials);
-      // console.log(this.equipments);
-      // console.log(this.facilities);
-
       if (this.route.url.includes('edit')) {
+        this.isNew = false;
         this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-
         this.machine = await this.machineService.getMachine(this.userService.getUserInfo().id, this.machineId).toPromise();
-        console.log(this.machine);
-
+        this.materials = this.machine.vendorEquipmentMaterialList.map(x => x.material);
+        this.equipments = [this.machine.equipment];
         this.initForm(this.machine);
       }
       this.spinner.hide();
@@ -72,23 +71,17 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
   }
 
-  async getMachine(machineId) {
-  }
-
-  async getMaterials() {
+  async getMaterials(q) {
     let page = 0;
     const rows = [];
     try {
       while (true) {
-        const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q: 'ab' };
+        const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q };
         const res = await this.materialService.getMaterials(param).toPromise();
         if (!res.content || res.content.length === 0) {
           break;
         }
         rows.push(...res.content);
-        if (page > 1) {
-          break;
-        }
         page++;
       }
       this.materials = rows;
@@ -96,16 +89,15 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       this.spinner.hide();
       console.log(e);
     }
-    // return await this.materialService.getMaterials({ page: 0, size: 1000, sort: 'id,ASC' }, 'a').toPromise();
   }
 
-  async getEquipments() {
+  async getEquipments(q) {
     let page = 0;
     const rows = [];
     try {
       while (true) {
-        const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q: '' };
-        const res = await this.equipmentService.getEquipments(param, 'ab').toPromise();
+        const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q };
+        const res = await this.equipmentService.getEquipments(param).toPromise();
         if (!res.content || res.content.length === 0) {
           break;
         }
@@ -140,20 +132,19 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue: Machine) {
-    console.log(initValue);
     this.selectedMaterials = initValue.vendorEquipmentMaterialList.map(x => x.material.id) || [];
-    this.selectedEquipment = initValue.equipment.id || '';
-    console.log(this.selectedEquipment, this.selectedMaterials);
+    this.selectedEquipment = initValue.equipment.id;
     this.form.setValue({
       id: initValue.id,
       name: initValue.name,
       vendorId: initValue.vendorId,
       serialNumber: initValue.serialNumber,
-      equipment: initValue.equipment.name,
-      material: '',
+      equipment: this.selectedEquipment,
+      material: this.selectedMaterials,
       facility: ''
     });
   }
+
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
@@ -164,15 +155,106 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          this.save(event);
         }
         form.classList.add('was-validated');
       }, false);
     });
   }
-  save(event) {
-    console.log(this.form);
-    console.log(this.selectedMaterials);
-    console.log(this.selectedEquipment);
+
+  clearStore() {
+    this.materials = [];
+    this.equipments = [];
+  }
+
+  async onMaterialSearch(event) {
+    if (event.keyCode === 13) {
+      this.materials = [];
+    }
+    if (event.target.value.length >= 2) {
+      if (event.keyCode === 13 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
+        return;
+      }
+      this.isMaterialLoading = true;
+      await this.getMaterials(event.target.value);
+      this.isMaterialLoading = false;
+    } else {
+      this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
+    }
+  }
+
+  async onEquipmentSearch(event) {
+    if (event.keyCode === 13) {
+      this.equipments = [];
+    }
+
+    if (event.target.value.length >= 2) {
+      if (event.keyCode === 13 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
+        return;
+      }
+      this.isEquipmentLoading = true;
+      await this.getEquipments(event.target.value);
+      this.isEquipmentLoading = false;
+    } else {
+      this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
+    }
+  }
+
+  prepareData() {
+    const postData = {
+      id: this.form.value.id,
+      vendorId: this.userService.getUserInfo().id,
+      name: this.form.value.name,
+      serialNumber: this.form.value.serialNumber,
+      equipment: { id: this.form.value.equipment },
+      materialList: [...this.form.value.material.map((materialId) => {
+        return { id: materialId };
+      })],
+      vendorFacility: '',
+      updatedDate: '',
+      createdBy: '',
+      createdDate: '',
+    };
+    postData.updatedDate = new Date().toString();
+    if (this.isNew) {
+      postData.createdBy = String(this.userService.getUserInfo().id);
+      postData.createdDate = new Date().toString();
+    } else {
+      postData.updatedDate = new Date().toString();
+    }
+    return postData;
+  }
+
+  async save(event) {
+    event.preventDefault();
+    if (this.form.valid) {
+      const postData = this.prepareData();
+      const vendorId = this.userService.getUserInfo().id;
+      if (this.isNew) {
+        this.spinner.show();
+        try {
+          await this.machineService.createMachine(vendorId, postData).toPromise();
+        } catch (e) {
+          console.log(e);
+        } finally {
+          this.spinner.hide();
+          const gotoURL = `/profile/vendor/machines`;
+          this.route.navigateByUrl(gotoURL);
+        }
+
+      } else {
+        this.spinner.show();
+        try {
+          await this.machineService.updateMachine(vendorId, this.machineId, postData).toPromise();
+        } catch (e) {
+          console.log(e);
+        } finally {
+          this.spinner.hide();
+          const gotoURL = `/profile/vendor/machines`;
+          this.route.navigateByUrl(gotoURL);
+        }
+
+      }
+    }
+
   }
 }

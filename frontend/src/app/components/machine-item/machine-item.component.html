@@ -5,15 +5,15 @@
 
       <div class="form-group theme col-md-6">
         <label for="machineName">Machine Name</label>
-        <input required type="text" formControlName="name" class="form-control" id="machineName" name="machineName"
+        <input type="text" formControlName="name" class="form-control" id="machineName" name="machineName"
           placeholder="Machine Name">
       </div>
 
 
       <div class="form-group theme col-md-6">
         <label for="serialNumber">Serial Number</label>
-        <input required type="text" formControlName="serialNumber" class="form-control" id="serialNumber"
-          name="serialNumber" placeholder="Vendor Specific Unique Identifier">
+        <input type="text" formControlName="serialNumber" class="form-control" id="serialNumber" name="serialNumber"
+          placeholder="Vendor Specific Unique Identifier">
       </div>
 
     </div>
@@ -21,16 +21,18 @@
 
       <div class="form-group theme col-md-6">
         <label for="equipment">Equipment</label>
-        <ng-select [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
-          [selectOnTab]="true" [(ngModel)]="selectedEquipment" [ngModelOptions]="{standalone: true}">
-          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.name}}</ng-option>
+        <ng-select #equipmentInput (change)="clearStore()" (keyup)="onEquipmentSearch($event)"
+          placeholder="Add Equipment" loadingText="Searching..." [multiple]="false" [loading]="isEquipmentLoading"
+          dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
+          formControlName="equipment" [items]="equipments" bindValue="id" bindLabel="name">
         </ng-select>
       </div>
 
       <div class="form-group theme col-md-6">
         <label for="material">Material</label>
-        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
-          [selectOnTab]="true" [(ngModel)]="selectedMaterials" [ngModelOptions]="{standalone: true}">
+        <ng-select #materialInput (change)="clearStore()" (keyup)="onMaterialSearch($event)" placeholder="Add Materials"
+          loadingText="Searching..." [loading]="isMaterialLoading" [multiple]="true" dropdownPosition="bottom"
+          [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true" formControlName="material">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>
@@ -42,7 +44,7 @@
       <div class="form-group theme col-md-6">
         <label for="facility">Facility</label>
         <select required id="facility" name="facility" formControlName="facility" class="form-control">
-          <option selected value=null>Choose...</option>
+          <option selected value=''>Choose...</option>
           <option *ngFor="let item of facilities" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
