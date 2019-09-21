@@ -60,7 +60,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
         this.isNew = false;
         this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
         this.machine = await this.machineService.getMachine(this.userService.getUserInfo().id, this.machineId).toPromise();
-        this.materials = this.machine.vendorEquipmentMaterialList.map(x => x.material);
+        this.materials = this.machine.machineServingMaterialList.map(x => x.material);
         this.equipments = [this.machine.equipment];
         this.initForm(this.machine);
       }
@@ -132,7 +132,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue: Machine) {
-    this.selectedMaterials = initValue.vendorEquipmentMaterialList.map(x => x.material.id) || [];
+    this.selectedMaterials = initValue.machineServingMaterialList.map(x => x.material.id) || [];
     this.selectedEquipment = initValue.equipment.id;
     this.form.setValue({
       id: initValue.id,

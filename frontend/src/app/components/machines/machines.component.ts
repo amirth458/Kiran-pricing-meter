@@ -59,7 +59,7 @@ export class MachinesComponent implements OnInit {
 
     {
       name: 'Material', checked: false,
-      field: 'vendorEquipmentMaterialList', query: {
+      field: 'machineServingMaterialList', query: {
         type: '',
         filter: '',
       }
@@ -90,7 +90,7 @@ export class MachinesComponent implements OnInit {
     },
 
     {
-      name: 'Material', checked: true, field: 'vendorEquipmentMaterialList'
+      name: 'Material', checked: true, field: 'machineServingMaterialList'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -111,11 +111,12 @@ export class MachinesComponent implements OnInit {
     },
     { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: true },
     {
-      headerName: 'Material', field: 'vendorEquipmentMaterialList', hide: false, sortable: true, filter: true,
+      headerName: 'Material', field: 'machineServingMaterialList', hide: false, sortable: true, filter: true,
       cellRenderer(params) {
         const data = params.data;
+        console.log(data);
         let materials = '';
-        data.vendorEquipmentMaterialList.map((x, index) => {
+        data.machineServingMaterialList.map((x, index) => {
           if (index === 0) {
             materials = x.material.name;
           } else {

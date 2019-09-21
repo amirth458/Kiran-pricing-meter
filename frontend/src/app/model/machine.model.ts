@@ -12,7 +12,7 @@ export class Machine {
         processFamilyName: string;
         processTypeName: string;
     };
-    vendorEquipmentMaterialList: Array<{
+    machineServingMaterialList: Array<{
         createdBy: string;
         createdDate: string;
         id: number;
