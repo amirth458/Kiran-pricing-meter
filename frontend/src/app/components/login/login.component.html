@@ -1,0 +1,50 @@
+<div class="center-container">
+  <div class="wrapper shadow col-8 offset-2">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark-blue remove-margin" style="justify-content: center;">
+      <div class="d-flex flex-column logo">
+        <img src="assets/image/logo.png" width="230px" height="20px" alt="3Diligent Logo">
+        <span>The Digital Manufacuring Partner for Every Business</span>
+      </div>
+    </nav>
+    <div class="col-6 offset-3">
+      <form [formGroup]="userForm" novalidate class="needs-validation" (submit)="login($event)">
+        <p class="shop-manager">
+          Ship Manager
+        </p>
+            
+        <div class="form-row">
+          <div class="form-group theme col-md-12">
+            <input required type="text" formControlName="email" class="form-control" id="email" name="email"
+              placeholder="Email address or username" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-12">
+            <input required type="password" formControlName="password" class="form-control" id="password" name="password"
+              placeholder="Password">
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group theme col-md-12">
+            <button type="submit" class="btn btn-primary theme">Login</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <input type="checkbox" formControlName="remember_me" id="remember_me" name="remember_me" /> 
+            <span>Remember Me</span>
+          </div>
+          <div class="form-group theme col-md-6" align="right">
+            <a href="#">Forgot password</a>            
+          </div>
+        </div>
+
+        <div style="margin-top: 40px;margin-bottom: 40px;" align="center">
+          <span class='no-member-label'>Not a member?</span> <a href="#">Join now</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
