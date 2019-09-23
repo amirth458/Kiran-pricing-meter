@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,48 +10,48 @@ export class ProcessMetadataService {
 
   constructor(public http: HttpClient) { }
 
-  getMeasurementType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/measurement_type');
+  getMeasurementType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_type');
   }
 
-  getCurrency() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/currency');
+  getCurrency(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/currency');
   }
 
-  getoperatorType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/operator_type');
+  getoperatorType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type');
   }
 
-  getOperatorType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/operator_type');
+  getOperatorType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type');
   }
 
-  getProcessDimensionalPropertyType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/process_dimensional_property_type');
+  getProcessDimensionalPropertyType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_dimensional_property_type');
   }
 
-  getProcessMterialCharacteristicType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/process_material_characteristic_type');
+  getProcessMaterialCharacteristicType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_material_characteristic_type');
   }
 
-  getProcessParameterType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/process_parameter_type');
+  getProcessParameterType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_parameter_type');
   }
 
-  getProcessPricingConditionType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/process_pricing_condition_type');
+  getProcessPricingConditionType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type');
   }
 
-  getProcessPricingParameterType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/process_pricing_parameter_type');
+  getProcessPricingParameterType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type');
   }
 
-  getProcessProfileType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/process_profile_type');
+  getProcessProfileType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_profile_type');
   }
 
-  getValueSignType() {
-    this.http.get(environment.apiBaseUrl + '/api/v1/process-metadata/value_sign_type');
+  getValueSignType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/value_sign_type');
   }
 
 }
