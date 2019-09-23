@@ -1,0 +1,14 @@
+.footer {
+  width: 90%;
+  margin: auto;
+  padding: 10px;
+}
+
+.footer .copyright {
+  flex-grow: 1
+}
+
+.footer .footer-link {
+  width: 150px;
+  text-align: right;
+}

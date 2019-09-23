@@ -1,12 +1,12 @@
 <div class="center-container">
-  <div class="wrapper shadow col-8 offset-2">
+  <div class="wrapper shadow col-4 offset-4">
     <div style="width: 100%; padding-top: 60px; padding-bottom: 40px;display: flex; justify-content: center">
       <div class="d-flex flex-column logo" style="width: 230px">
         <img src="assets/image/blue-logo.png" width="230px" alt="3Diligent Logo">
         <span>Shop Management</span>
       </div>
     </div>
-    <div class="col-6 offset-3">
+    <div class="col-10 offset-1">
       <form [formGroup]="userForm" novalidate class="needs-validation" (submit)="login()">
         <p class="shop-manager">
           Sign In
@@ -25,7 +25,7 @@
           </div>
         </div>
   
-        <div *ngIf="errorMessage.length > 0 && errorCounter % 2 == 0 " class="errorContainer">
+        <div *ngIf="errorMessage.length > 0x" class="errorContainer">
           <span class="error">{{errorMessage}}</span>
         </div>
         <div class="form-row">

@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     const email = localStorage.getItem('email');
     const password = localStorage.getItem('password');
     if(remember_me === '1') {
-      console.log('---------------init---------')
       this.userForm.setValue({
         email: email,
         password: password, 
@@ -62,31 +61,8 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  errorPlay: boolean = false;
-  errorCounter: number = 0;
-  interval;
-  
-  startErrorTimer() {
-    this.errorPlay = true;
-    this.errorCounter = 0;
-    this.interval = setInterval(() => {
-      this.errorCounter++;
-      if(this.errorCounter >= 6) {
-        this.errorCounter = 0;
-        this.pauseErrorTimer();
-      }
-    },300);
-  }
-
-  pauseErrorTimer() {
-    this.errorPlay = false;
-    clearInterval(this.interval);
-  }
-
   login() {
     this.errorMessage = '';
-    console.log(this.userForm.valid);
-    console.log(this.userForm.dirty);
     if(!(this.userForm.valid)) {
       return;
     } 
@@ -122,11 +98,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     switch(error.status) {
       case 404:
         this.errorMessage = "Authentication service does not exist.";
-        this.startErrorTimer();
         break;
       case 401:
         this.errorMessage = "Login credentials is incorrect.";
-        this.startErrorTimer();
         break;
       case 500:
         this.errorMessage = "Error on Server";

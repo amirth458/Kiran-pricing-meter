@@ -1,12 +1,14 @@
 .center-container {
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 44px);
 }
+
 .remove-margin {
   margin-left: -15px;
   margin-right: -15px;
 }
+
 .logo span {
   color: var(--theme-light-green);
   font-size: 12px;
