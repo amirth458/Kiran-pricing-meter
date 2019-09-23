@@ -1,15 +1,15 @@
 <div class="center-container">
   <div class="wrapper shadow col-8 offset-2">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark-blue remove-margin" style="justify-content: center;">
-      <div class="d-flex flex-column logo">
-        <img src="assets/image/logo.png" width="230px" height="20px" alt="3Diligent Logo">
-        <span>The Digital Manufacuring Partner for Every Business</span>
+    <div style="width: 100%; padding-top: 60px; padding-bottom: 40px;display: flex; justify-content: center">
+      <div class="d-flex flex-column logo" style="width: 230px">
+        <img src="assets/image/blue-logo.png" width="230px" alt="3Diligent Logo">
+        <span>Shop Management</span>
       </div>
-    </nav>
+    </div>
     <div class="col-6 offset-3">
-      <form [formGroup]="userForm" novalidate class="needs-validation" (submit)="login($event)">
+      <form [formGroup]="userForm" novalidate class="needs-validation" (submit)="login()">
         <p class="shop-manager">
-          Ship Manager
+          Sign In
         </p>
             
         <div class="form-row">
@@ -25,6 +25,9 @@
           </div>
         </div>
   
+        <div *ngIf="errorMessage.length > 0 && errorCounter % 2 == 0 " class="errorContainer">
+          <span class="error">{{errorMessage}}</span>
+        </div>
         <div class="form-row">
           <div class="form-group theme col-md-12">
             <button type="submit" class="btn btn-primary theme">Login</button>
@@ -34,15 +37,15 @@
         <div class="form-row">
           <div class="form-group theme col-md-6">
             <input type="checkbox" formControlName="remember_me" id="remember_me" name="remember_me" /> 
-            <span>Remember Me</span>
+            <span  style="margin-left: 10px">Remember Me</span>
           </div>
-          <div class="form-group theme col-md-6" align="right">
+          <div class="form-group theme col-md-6 forgot" align="right">
             <a href="#">Forgot password</a>            
           </div>
         </div>
 
         <div style="margin-top: 40px;margin-bottom: 40px;" align="center">
-          <span class='no-member-label'>Not a member?</span> <a href="#">Join now</a>
+          <span class='no-member-label'>Not a member? <a href='#'><span class="join">Join Now</span></a></span>
         </div>
       </form>
     </div>

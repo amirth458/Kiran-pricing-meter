@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { UserService } from '../../service/user.service';
+import { AuthService } from '../../service/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner'
 
 @Component({
@@ -14,20 +15,34 @@ import { NgxSpinnerService } from 'ngx-spinner'
 export class LoginComponent implements OnInit, AfterViewChecked {
 
   userForm: FormGroup = this.fb.group({
-    email:[Validators.required],
-    password:[Validators.required],
+    email:[null, Validators.required],
+    password:[null, Validators.required],
     remember_me: null,
   });
 
+  errorMessage: string = '';
 
   constructor(
     public fb: FormBuilder,
-    private route: Router, 
+    private router: Router, 
     private spineer: NgxSpinnerService,
+    private authService: AuthService,
     private userService: UserService) { }
 
   ngOnInit() {
-
+    const remember_me = localStorage.getItem('remember_me');
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+    if(remember_me === '1') {
+      console.log('---------------init---------')
+      this.userForm.setValue({
+        email: email,
+        password: password, 
+        remember_me: null,
+      });
+      
+      this.login();
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -47,8 +62,78 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  errorPlay: boolean = false;
+  errorCounter: number = 0;
+  interval;
+  
+  startErrorTimer() {
+    this.errorPlay = true;
+    this.errorCounter = 0;
+    this.interval = setInterval(() => {
+      this.errorCounter++;
+      if(this.errorCounter >= 6) {
+        this.errorCounter = 0;
+        this.pauseErrorTimer();
+      }
+    },300);
+  }
 
-  login(event) {
-    
+  pauseErrorTimer() {
+    this.errorPlay = false;
+    clearInterval(this.interval);
+  }
+
+  login() {
+    this.errorMessage = '';
+    console.log(this.userForm.valid);
+    console.log(this.userForm.dirty);
+    if(!(this.userForm.valid)) {
+      return;
+    } 
+    this.spineer.show();
+
+    this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe(res => {
+      this.authService.setAuthData(res);
+      this.authService.getProfile().subscribe(res => {
+        if(this.userForm.value.remember_me) {
+          localStorage.setItem('remember_me', '1');
+          localStorage.setItem('email', this.userForm.value.email);
+          localStorage.setItem('password', this.userForm.value.password);
+        }
+        this.userService.setUserInfo(res);
+        this.router.navigate(['/profile']);
+        this.spineer.hide();
+      }, error=>{
+        console.log('get profile error', error);
+        this.spineer.hide();
+      })
+      // const gotoURL = `/profile`;
+      // this.route.navigateByUrl(gotoURL);
+      
+    }, error => {
+      console.log(error);
+      this.loginErrorHandler(error);
+      this.spineer.hide();
+    });
+  
+  }
+
+  loginErrorHandler(error) {
+    switch(error.status) {
+      case 404:
+        this.errorMessage = "Authentication service does not exist.";
+        this.startErrorTimer();
+        break;
+      case 401:
+        this.errorMessage = "Login credentials is incorrect.";
+        this.startErrorTimer();
+        break;
+      case 500:
+        this.errorMessage = "Error on Server";
+        break;
+      default:
+          this.errorMessage = "Error on Server";
+        break;
+    }
   }
 }
