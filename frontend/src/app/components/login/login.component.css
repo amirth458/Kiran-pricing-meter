@@ -1,8 +1,17 @@
+.form-group.theme input {
+  font-size: 14px
+}
+
+.form-row.login-btn {
+  margin: 10px 0px;
+}
+
 .center-container {
   display: flex;
   align-items: center;
   height: calc(100vh - 44px);
   padding: 0 20px;
+  background: var(--theme-green-grey-bg);
 }
 
 
@@ -13,10 +22,10 @@
 
 .logo span {
   color: var(--theme-light-green);
-  font-size: 12px;
-  text-align: right;
+  font-size: 19px;
+  text-align: center;
   margin-top: 6px;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .shop-manager {
@@ -26,14 +35,28 @@
   font-size: 20px;
 }
 
+.no-member-label,
+.shop-manager,
+.rememberMe {
+  color: var(--theme-secondary-blue);
+}
+
 .no-member-label {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--theme-secondary-blue);
 }
 
 .join {
   color: var(--theme-light-green);
 }
+
+.no-member-label:hover,
+.join:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .forgot {
   color: var(--theme-light-green);
   text-align: right;
@@ -65,6 +88,7 @@
   margin-left: 15px;
   margin-right: 15px;
 }
+
 .errorContainer .error {
   color: var(--red);
 }

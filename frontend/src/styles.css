@@ -12,7 +12,7 @@
   --theme-secondary-blue-solid: #607181;
   --theme-light-green: #8FBE4C;
   --theme-input-bg: rgba(196, 196, 196, .13);
-
+  --theme-green-grey-bg: #F9FAF7;
   --theme-table-border: rgba(112, 112, 112, .39)
 }
 
@@ -103,6 +103,15 @@ button.theme.dim:hover {
 button.theme.white:hover {
   color: var(--theme-dark-blue);
   background: unset;
+}
+
+button.theme.theme-reverse {
+  background: var(--theme-light-green);
+}
+
+button.theme.theme-reverse:active,
+button.theme.theme-reverse:hover {
+  background: var(--theme-secondary-blue);
 }
 
 .button-section {
