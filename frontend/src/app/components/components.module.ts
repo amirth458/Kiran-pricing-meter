@@ -25,6 +25,7 @@ import { ShippingComponent } from './shipping/shipping.component';
 import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
+import { FooterMenuComponent } from '../common/footer-menu/footer-menu.component';
 import { VendorComponent } from './vendor/vendor.component';
 import { ShippingItemComponent } from './shipping-item/shipping-item.component';
 import { AgGridModule } from 'ag-grid-angular';
@@ -61,6 +62,7 @@ import { RouterModule } from '@angular/router';
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
+    FooterMenuComponent,
     VendorComponent,
     ShippingItemComponent,
   ],
@@ -104,6 +106,7 @@ import { RouterModule } from '@angular/router';
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
+    FooterMenuComponent,
     VendorComponent,
     ShippingItemComponent,
   ]
