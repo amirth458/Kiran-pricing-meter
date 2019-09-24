@@ -24,7 +24,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   certifications: VendorMetaData[] = [];
   confidentialities: VendorMetaData[] = [];
   selectedCertifications = [];
-  selectedVendorIndustry = [];
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -57,6 +56,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       const userId = urlArray[urlArray.length - 1];
       this.userService.setUserInfo({ id: userId });
     }
+    
     this.getVendorMetaDatas();
     this.vendorService.getVendorDetail(this.userService.getUserInfo().id).subscribe(res => {
       if (res) {
@@ -107,7 +107,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         const name = this.htmlDecode(x.name);
         return { id: x.id, name };
       });
-
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -118,7 +117,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
 
   initForm(initValue: Vendor) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
-    this.selectedVendorIndustry = initValue.vendorIndustries.map(x => x.id) || [];
 
     this.detailForm.setValue({
       id: initValue.id,
@@ -156,7 +154,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
           id: this.detailForm.value.confidentiality
         },
         vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
-        vendorIndustries: this.vendorIndustries.filter((item) => this.selectedVendorIndustry.includes(item.id))
+        vendorIndustries: this.detailForm.value.vendorIndustry
       };
       this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
         this.initForm(res);
