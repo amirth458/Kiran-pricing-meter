@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   constructor(
     public fb: FormBuilder,
-    private router: Router, 
+    private router: Router,
     private spineer: NgxSpinnerService,
     private authService: AuthService,
     private userService: UserService) { }
@@ -36,10 +36,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     if(remember_me === '1') {
       this.userForm.setValue({
         email: email,
-        password: password, 
+        password: password,
         remember_me: null,
       });
-      
+
       this.login();
     }
   }
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          
+
         }
         form.classList.add('was-validated');
       }, false);
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this.errorMessage = '';
     if(!(this.userForm.valid)) {
       return;
-    } 
+    }
     this.spineer.show();
 
     this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe(res => {
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
           localStorage.setItem('email', this.userForm.value.email);
           localStorage.setItem('password', this.userForm.value.password);
         }
-        this.userService.setUserInfo(res);
+        // this.userService.setUserInfo(res);
         this.router.navigate(['/profile']);
         this.spineer.hide();
       }, error=>{
@@ -85,13 +85,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       })
       // const gotoURL = `/profile`;
       // this.route.navigateByUrl(gotoURL);
-      
+
     }, error => {
       console.log(error);
       this.loginErrorHandler(error);
       this.spineer.hide();
     });
-  
+
   }
 
   loginErrorHandler(error) {
