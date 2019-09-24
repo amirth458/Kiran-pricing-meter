@@ -22,7 +22,7 @@ import { FooterMenuComponent } from './common/footer-menu/footer-menu.component'
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
     // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
   ],
   declarations: [
