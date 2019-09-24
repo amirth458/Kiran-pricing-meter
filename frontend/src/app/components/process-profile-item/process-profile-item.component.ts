@@ -10,6 +10,7 @@ import { MaterialService } from 'src/app/service/material.service';
 import { EquipmentService } from 'src/app/service/equipment.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ProcessProfileService } from 'src/app/service/process-profile.service';
 
 @Component({
   selector: 'app-process-profile-item',
@@ -20,16 +21,14 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('closeModal') closeModal: ElementRef;
   facilities = [];
-  equipments = [{ id: '', name: 'more than 2 characters to start search' }];
-  materials = [{ id: '', name: 'more than 2 characters to start search' }];
-
-  isMaterialLoading = false;
-  isEquipmentLoading = false;
+  equipments = [];
+  materials = [];
+  submitActive = true;
 
   form: FormGroup = this.fb.group({
     id: [null],
     vendorId: [null],
-    processProfileName: [null],
+    name: [null],
     equipment: [null, Validators.required],
     material: [null, Validators.required],
     // processType: [null, Validators.required],
@@ -41,53 +40,29 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     ],
     processMaterialCharacteristicList: [
       []
-    ]
+    ],
   });
 
   processParameterList = {
-    conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
-    units: ['%', 'micron'],
-    conditionNames: [
-      'Layer Height',
-      'Infill',
-      'Tolerance Base',
-      'Tensile Strength',
-      'Tensile Modulus',
-      'Surface Finish',
-    ],
+    conditions: [],
+    conditionNames: [],
   };
 
   processDimensionalPropertyList = {
-    conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
-    units: ['inches'],
-    conditionNames: [
-      'X',
-      'Y',
-      'Z',
-      'Equipment Name',
-      'Tolerance Percent',
-      'Tolerance Base',
-      'Tolerance Increment',
-      'Percent Tolerance',
-      'Surface Roughness',
-      'Wall thickness',
-      'Features Size',
-      'Base Tolerance',
-    ]
+    conditions: [],
+    units: [],
+    conditionNames: []
   };
 
   processMaterialCharacteristicList = {
-    conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
-    units: ['MPa'],
-    conditionNames: [
-      'Tensile Strength',
-      'Equipment Name',
-      'Is Thickness Uniform',
-      'Access Features With Line of Sight',
-      '3 Dimensional Lattice',
-      'Not Cylindrical',
-    ]
+    conditions: [],
+    units: [],
+    conditionNames: []
   };
+
+  signTypes = [];
+  units = [];
+  conditions = {};
 
   selectedProcessParameterList = [
     // { name: '', condition: '', value: '', unit: '' }
@@ -105,7 +80,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       valueInDefaultUnit: '',
       valueSignType: {
         id: ''
-      }
+      },
+      operandTypeList: []
     }
   ];
   selectedProcessDimensionalPropertyList = [
@@ -123,7 +99,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       valueInDefaultUnit: '',
       valueSignType: {
         id: ''
-      }
+      },
+      operandTypeList: []
     }
   ];
   selectedProcessMaterialCharacteristicList = [
@@ -142,9 +119,11 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       valueInDefaultUnit: '',
       valueSignType: {
         id: ''
-      }
+      },
+      operandTypeList: []
     }
   ];
+
 
   processProfileId = null;
   processProfiles = processProfiles;
@@ -158,31 +137,53 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   activeTabName = 'Process Parameters';
 
   isNew = true;
+  isFormValid = false;
 
   constructor(
     public route: Router,
     public fb: FormBuilder,
     public processMetaData: ProcessMetadataService,
+    public processProfileService: ProcessProfileService,
     public spinner: NgxSpinnerService,
     public userService: UserService,
     public machineService: MachineService,
     public materialService: MaterialService,
-    public equipmentService: EquipmentService,
+    public equipmentService: EquipmentService
   ) { }
 
   async ngOnInit() {
     try {
       this.spinner.show();
 
+      await this.getInputValues();
+
+      console.log(this.materials, this.equipments);
+
       const processParameterType = await this.processMetaData.getProcessParameterType().toPromise();
       const operatorType = await this.processMetaData.getoperatorType().toPromise();
       const processDimensionalPropertyList = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
       const processMaterialCharacteristicList = await this.processMetaData.getProcessMaterialCharacteristicType().toPromise();
+      const signType = await this.processMetaData.getValueSignType().toPromise();
+      const units = await this.processMetaData.getMeasurementUnitType().toPromise();
+
+      operatorType.metadataList.map(operator => {
+        const addedList = Object.keys(this.conditions);
+        if (addedList.includes(operator.operandType.name)) {
+          this.conditions[operator.operandType.name].push(operator);
+        } else {
+          this.conditions[operator.operandType.name] = [operator];
+        }
+      });
+
+      this.units = units.metadataList;
+      this.signTypes = signType.metadataList;
 
       this.processParameterList.conditionNames = processParameterType.metadataList;
-      this.processParameterList.conditions = operatorType.metadataList;
-      this.processDimensionalPropertyList.conditions = operatorType.metadataList;
-      this.processMaterialCharacteristicList.conditions = operatorType.metadataList;
+      // this.processParameterList.conditions = operatorType.metadataList;
+
+      // this.processDimensionalPropertyList.conditions = operatorType.metadataList;
+      // this.processMaterialCharacteristicList.conditions = operatorType.metadataList;
+
       this.processDimensionalPropertyList.conditionNames = processDimensionalPropertyList.metadataList;
       this.processMaterialCharacteristicList.conditionNames = processMaterialCharacteristicList.metadataList;
     } catch (e) {
@@ -190,7 +191,6 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     } finally {
       this.spinner.hide();
     }
-
 
     if (this.route.url.includes('edit')) {
       this.isNew = false;
@@ -208,13 +208,31 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
+          this.isFormValid = false;
         } else {
-
+          this.isFormValid = true;
         }
         form.classList.add('was-validated');
       }, false);
     });
   }
+
+  getProperOperands(conditionId, index, section) {
+    if (section === 'Process Parameters') {
+      const operandTypeName = this.processParameterList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      this.selectedProcessParameterList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+    } else if (section === 'Process Dimensional Properties') {
+      // tslint:disable-next-line:max-line-length
+      const operandTypeName = this.processDimensionalPropertyList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      this.selectedProcessDimensionalPropertyList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+    } else if (section === 'Process Material Characteristics') {
+      // tslint:disable-next-line:max-line-length
+      const operandTypeName = this.processMaterialCharacteristicList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      this.selectedProcessMaterialCharacteristicList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+    }
+
+  }
+
 
   addCondition(section = this.activeTab) {
     switch (section) {
@@ -234,7 +252,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueInDefaultUnit: '',
             valueSignType: {
               id: ''
-            }
+            },
+            operandTypeList: []
           }
         );
         break;
@@ -254,7 +273,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueInDefaultUnit: '',
             valueSignType: {
               id: ''
-            }
+            },
+            operandTypeList: []
           }
         );
         break;
@@ -274,7 +294,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueInDefaultUnit: '',
             valueSignType: {
               id: ''
-            }
+            },
+            operandTypeList: []
           }
         );
         break;
@@ -288,20 +309,25 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     let endSlice = [];
     switch (section) {
       case 'processParameterList':
-        frontSlice = this.selectedProcessParameterList.slice(0, index);
-        endSlice = this.selectedProcessParameterList.slice(index + 1);
-        this.selectedProcessParameterList = frontSlice.concat(endSlice);
-        console.log(this.selectedProcessParameterList);
+        if (this.selectedProcessParameterList.length !== 1) {
+          frontSlice = this.selectedProcessParameterList.slice(0, index);
+          endSlice = this.selectedProcessParameterList.slice(index + 1);
+          this.selectedProcessParameterList = frontSlice.concat(endSlice);
+        }
         break;
       case 'processDimensionalPropertyList':
-        frontSlice = this.selectedProcessDimensionalPropertyList.slice(0, index);
-        endSlice = this.selectedProcessDimensionalPropertyList.slice(index + 1);
-        this.selectedProcessDimensionalPropertyList = frontSlice.concat(endSlice);
+        if (this.selectedProcessParameterList.length !== 1) {
+          frontSlice = this.selectedProcessDimensionalPropertyList.slice(0, index);
+          endSlice = this.selectedProcessDimensionalPropertyList.slice(index + 1);
+          this.selectedProcessDimensionalPropertyList = frontSlice.concat(endSlice);
+        }
         break;
       case 'processMaterialCharacteristicList':
-        frontSlice = this.selectedProcessMaterialCharacteristicList.slice(0, index);
-        endSlice = this.selectedProcessMaterialCharacteristicList.slice(index + 1);
-        this.selectedProcessMaterialCharacteristicList = frontSlice.concat(endSlice);
+        if (this.selectedProcessParameterList.length !== 1) {
+          frontSlice = this.selectedProcessMaterialCharacteristicList.slice(0, index);
+          endSlice = this.selectedProcessMaterialCharacteristicList.slice(index + 1);
+          this.selectedProcessMaterialCharacteristicList = frontSlice.concat(endSlice);
+        }
         break;
 
       default:
@@ -322,120 +348,69 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
 
-  async getMaterials(q) {
+  async getInputValues() {
     let page = 0;
     const rows = [];
     try {
       while (true) {
-        const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q };
-        const res = await this.materialService.getMaterials(param).toPromise();
+        const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
+        const res = await this.machineService.getMachinery(this.userService.getUserInfo().id, param).toPromise();
         if (!res.content || res.content.length === 0) {
           break;
         }
         rows.push(...res.content);
         page++;
       }
-      this.materials = rows;
+      rows.map(machine => {
+        this.equipments.push(machine.equipment);
+      });
+      rows.map(machine => {
+        machine.machineServingMaterialList.map(material => {
+          this.materials.push(material.material);
+        });
+      });
     } catch (e) {
-      this.spinner.hide();
       console.log(e);
-    }
-  }
-
-  async getEquipments(q) {
-    let page = 0;
-    const rows = [];
-    try {
-      while (true) {
-        const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q };
-        const res = await this.equipmentService.getEquipments(param).toPromise();
-        if (!res.content || res.content.length === 0) {
-          break;
-        }
-        rows.push(...res.content);
-        page++;
-      }
-      this.equipments = rows;
-    } catch (e) {
-      this.spinner.hide();
-      console.log(e);
-    }
-  }
-
-  clearStore() {
-    this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
-    this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
-  }
-
-  async onMaterialSearch(event) {
-    if (event.keyCode === 13) {
-      this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
-      // this.materials = [];
-    }
-    if (event.target.value.length >= 2) {
-      if (event.keyCode === 13 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
-        return;
-      }
-      this.isMaterialLoading = true;
-      await this.getMaterials(event.target.value);
-      this.isMaterialLoading = false;
-    } else {
-      this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
-    }
-  }
-
-  async onEquipmentSearch(event) {
-    if (event.keyCode === 13) {
-      this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
-      // this.equipments = [];
-    }
-
-    if (event.target.value.length >= 2) {
-      if (event.keyCode === 13 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
-        return;
-      }
-      this.isEquipmentLoading = true;
-      await this.getEquipments(event.target.value);
-      this.isEquipmentLoading = false;
-    } else {
-      this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
     }
   }
 
   prepareData() {
     // TODO: add valueSignType to all
     const postData = {
-      id: this.form.value.id,
       vendorId: this.userService.getUserInfo().id,
-      processProfileName: this.form.value.processProfileName,
+      name: this.form.value.name,
       equipment: { id: this.form.value.equipment },
-      materialList: [...this.form.value.material.map((materialId) => {
-        return { id: materialId };
-      })],
+      // machineServingMaterial: { id: this.form.value.material[0] },
+      machineServingMaterial: { id: 128 },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
       processMaterialCharacteristicList: [...this.selectedProcessMaterialCharacteristicList],
-      updatedDate: '',
-      createdBy: '',
-      createdDate: '',
+      processProfileType: {
+        id: 1
+      }
     };
-
-    postData.updatedDate = new Date().toString();
-    if (this.isNew) {
-      postData.createdBy = String(this.userService.getUserInfo().id);
-      postData.createdDate = new Date().toString();
-    } else {
-      postData.updatedDate = new Date().toString();
-    }
     return postData;
   }
 
   save(event) {
     event.preventDefault();
-    if (this.form.valid) {
-      const postData = this.prepareData();
-      const vendorId = this.userService.getUserInfo().id;
-      console.log({ postData, vendorId });
-    }
+    this.submitActive = false;
+    setTimeout(async () => {
+      if (this.form.valid && this.isFormValid) {
+        this.spinner.show();
+        const postData = this.prepareData();
+        const vendorId = this.userService.getUserInfo().id;
+        console.log({ postData, vendorId });
+        try {
+          await this.processProfileService.saveProfile(vendorId, postData).toPromise();
+          const gotoURL = `/profile/processes/profile`;
+          this.route.navigateByUrl(gotoURL);
+        } catch (e) {
+          this.spinner.hide();
+        }
+      } else {
+        this.submitActive = true;
+      }
+    }, 100);
   }
 }

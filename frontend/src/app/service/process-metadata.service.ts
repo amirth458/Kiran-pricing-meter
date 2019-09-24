@@ -18,12 +18,16 @@ export class ProcessMetadataService {
     return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/currency');
   }
 
+  getMeasurementUnitType(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_unit_type');
+  }
+
   getoperatorType(): Observable<{ metadataList: any, metadataType: any }> {
     return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type');
   }
 
-  getOperatorType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type');
+  getOperand(): Observable<{ metadataList: any, metadataType: any }> {
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operand_type');
   }
 
   getProcessDimensionalPropertyType(): Observable<{ metadataList: any, metadataType: any }> {

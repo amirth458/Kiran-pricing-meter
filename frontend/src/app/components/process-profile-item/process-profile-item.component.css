@@ -92,6 +92,10 @@
   margin-left: 10px;
 }
 
+.conditions .minus.invisible {
+  width: 15px;
+}
+
 .conditions .add:hover,
 .conditions .minus:hover {
   cursor: pointer;

@@ -4,18 +4,18 @@
     <div class="form-row">
 
       <div class="form-group theme col-md-6">
-        <label for="processProfileName">Process Profile Name</label>
-        <input type="text" formControlName="processProfileName" class="form-control" id="processProfileName"
-          name="processProfileName" placeholder="Process Profile Name">
+        <label for="name">Process Profile Name</label>
+        <input type="text" formControlName="name" class="form-control" id="name" name="name"
+          placeholder="Process Profile Name">
         <span class="footnote">* If left blank, we will auto-generate one for you.</span>
       </div>
 
       <div class="form-group theme col-md-6">
         <label for="equipment">Equipment</label>
-        <ng-select #equipmentInput (change)="clearStore()" (keyup)="onEquipmentSearch($event)"
-          placeholder="Add Equipment" loadingText="Searching..." [multiple]="false" [loading]="isEquipmentLoading"
+        <ng-select #equipmentInput placeholder="Add Equipment" loadingText="Searching..." [multiple]="false"
           dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
-          formControlName="equipment" [items]="equipments" bindValue="id" bindLabel="name">
+          formControlName="equipment">
+          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
         <span class="footnote">* Required</span>
       </div>
@@ -25,9 +25,9 @@
 
       <div class="form-group theme col">
         <label for="material">Material</label>
-        <ng-select #materialInput (change)="clearStore()" (keyup)="onMaterialSearch($event)" placeholder="Add Materials"
-          loadingText="Searching..." [loading]="isMaterialLoading" [multiple]="true" dropdownPosition="bottom"
-          [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true" formControlName="material">
+        <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="true"
+          dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
+          formControlName="material">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
         <span class="footnote">* Required</span>
@@ -81,6 +81,7 @@
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
                   [(ngModel)]="selectedProcessParameterList[index].processParameterType.id"
+                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Process Parameters')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of processParameterList.conditionNames" [value]="item.id">{{item.name}}
@@ -88,12 +89,22 @@
                 </select>
               </div>
 
-              <div class="form-group theme col-md-3">
-                <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessParameterList[index].operatorType.id"
+              <div class="form-group theme col-md-2">
+                <select [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
+                  id="condition" name="condition" [(ngModel)]="selectedProcessParameterList[index].operatorType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processParameterList.conditions" [value]="item.id">{{item.name}}</option>
+                  <option *ngFor="let item of selectedProcessParameterList[index].operandTypeList" [value]=" item.id">
+                    {{item.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="selectedProcessParameterList[index].valueSignType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of signTypes" [value]="item.id">{{item.name}}</option>
                 </select>
               </div>
 
@@ -104,21 +115,24 @@
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <input required type="text" [(ngModel)]="selectedProcessParameterList[index].unitType.id"
-                  [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit" placeholder="Unit">
-
-                <span class="minus" (click)="removeCondition(index)">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
+                  class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of units" [value]="item.id">{{item.name}}</option>
+                </select>
+                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
+                </span>
+
+                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
+                  <i class=""></i>
                 </span>
               </div>
 
             </div>
 
           </div>
-
-          <!-- <span class="minus" (click)="addCondition('processDimensionalPropertyList')">
-            <i class="fas fa-minus"></i>
-          </span> -->
 
 
         </div>
@@ -138,6 +152,7 @@
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id"
+                  (ngModelChange)="getProperOperands(selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id, index,'Process Dimensional Properties')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of processDimensionalPropertyList.conditionNames" [value]="item.id">
@@ -146,12 +161,27 @@
                 </select>
               </div>
 
-              <div class="form-group theme col-md-3">
-                <select required id="condition" name="condition"
+              <div class="form-group theme col-md-2">
+                <select
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  required id="condition" name="condition"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].operatorType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDimensionalPropertyList.conditions" [value]="item.id">{{item.name}}
+                  <option *ngFor="let item of selectedProcessDimensionalPropertyList[index].operandTypeList"
+                    [value]="item.id">
+                    {{item.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].valueSignType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of signTypes" [value]="item.id">
+                    {{item.name}}
                   </option>
                 </select>
               </div>
@@ -163,11 +193,21 @@
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <input required type="text" [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
-                  [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit" placeholder="Unit">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of units" [value]="item.id">
+                    {{item.name}}
+                  </option>
+                </select>
 
-                <span class="minus" (click)="removeCondition(index)">
+                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
+                </span>
+
+                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
+                  <i class=""></i>
                 </span>
               </div>
 
@@ -191,6 +231,7 @@
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id"
+                  (ngModelChange)="getProperOperands(selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id, index,'Process Material Characteristics')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of processMaterialCharacteristicList.conditionNames" [value]="item.id">
@@ -199,14 +240,26 @@
                 </select>
               </div>
 
-              <div class="form-group theme col-md-3">
-                <select required id="condition" name="condition"
+              <div class="form-group theme col-md-2">
+                <select
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  required id="condition" name="condition"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].operatorType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processMaterialCharacteristicList.conditions" [value]="item.id">
+                  <option *ngFor="let item of selectedProcessMaterialCharacteristicList[index].operandTypeList"
+                    [value]="item.id">
                     {{item.name}}
                   </option>
+                </select>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].valueSignType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of signTypes" [value]="item.id">{{item.name}}</option>
                 </select>
               </div>
 
@@ -217,11 +270,19 @@
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <input required type="text" [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
-                  [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit" placeholder="Unit">
+                <select required id="condition" name="condition"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of units" [value]="item.id">{{item.name}}</option>
+                </select>
 
-                <span class="minus" (click)="removeCondition(index)">
+                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
+                </span>
+
+                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
+                  <i class=""></i>
                 </span>
               </div>
 
@@ -239,7 +300,7 @@
       <div class="col-md-10 col-sm-8"></div>
 
       <div class="form-group col-md-2 col-sm-4">
-        <button type="submit" class="btn btn-primary theme">Save</button>
+        <button [disabled]="!submitActive" type="submit" class="btn btn-primary theme">Save</button>
       </div>
 
     </div>
