@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +10,23 @@ export class ProcessProfileService {
 
   constructor(public http: HttpClient) { }
 
-  getAllProfiles(vendorId: string) {
+  getAllProfiles(vendorId: number): Observable<any> {
     return this.http.get(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile`);
   }
 
-  getProfile(vendorId: string, profileId: string) {
+  getProfile(vendorId: number, profileId: string): Observable<any> {
     return this.http.get(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile/${profileId}`);
   }
 
-  editProfile(vendorId: string, formData) {
+  editProfile(vendorId: number, formData): Observable<any> {
     return this.http.put(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile`, { ...formData });
   }
 
-  saveProfile(vendorId: string, formData) {
+  deleteProfile(vendorId: number, profileId: string): Observable<any> {
+    return this.http.delete(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile/${profileId}`);
+  }
+
+  saveProfile(vendorId: number, formData): Observable<any> {
     return this.http.post(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile`, { ...formData });
   }
 }
