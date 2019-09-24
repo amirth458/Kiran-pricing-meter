@@ -185,7 +185,6 @@ export class FacilityComponent implements OnInit {
   ngOnInit() {
 
     this.getVendorFacilities();
-    this.rowData = [];
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }

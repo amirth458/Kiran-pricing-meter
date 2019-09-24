@@ -159,7 +159,6 @@ export class MachinesComponent implements OnInit {
   ngOnInit() {
 
     this.getMachinery();
-    this.rowData = [];
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
