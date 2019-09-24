@@ -34,8 +34,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { RouterModule } from '@angular/router';
 
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+
 @NgModule({
   declarations: [
+    
     ActionBarComponent,
     ActionCellRendererComponent,
     BasicDetailsComponent,
@@ -63,6 +66,7 @@ import { RouterModule } from '@angular/router';
     TopMenuComponent,
     VendorComponent,
     ShippingItemComponent,
+
   ],
   imports: [
     CommonModule,
@@ -75,7 +79,8 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     HttpClientModule,
     NgxSpinnerModule,
-    RouterModule
+    RouterModule,
+    InternationalPhoneNumberModule,
   ],
   exports: [
     NgxSpinnerModule,

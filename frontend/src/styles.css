@@ -219,5 +219,19 @@ button.theme.theme-reverse:hover {
   user-select: none;
 }
 
+.phone .dropdown .dropbtn .arrow-down {
+  margin: 10px 0px 0px 5px !important;
+}
 
+.phone .dropdown .dropbtn {
+  border: 1px solid #ced4da !important;
+  padding: .25rem .75rem !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  background-color: var(--theme-input-bg);
+}
+
+.phone .dropdown {
+  background-color: var(--theme-input-bg);
+}
 /* NON Ag-grid table style */
