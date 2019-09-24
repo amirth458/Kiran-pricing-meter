@@ -40,16 +40,16 @@
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item" [class.active]="activeTab == 'processParameters'"
-          (click)="toggleTab('processParameters','Process Parameters')">
+        <div class="menu-item" [class.active]="activeTab == 'processParameterList'"
+          (click)="toggleTab('processParameterList','Process Parameters')">
           Process Parameters</div>
         <span class="separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'processDimensionalProperties'"
-          (click)="toggleTab('processDimensionalProperties', 'Process Dimensional Properties')">Process Dimensional
+        <div class="menu-item" [class.active]="activeTab == 'processDimensionalPropertyList'"
+          (click)="toggleTab('processDimensionalPropertyList', 'Process Dimensional Properties')">Process Dimensional
           Properties</div>
         <span class=" separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristics'"
-          (click)="toggleTab('processMaterialCharacteristics','Process Material Characteristics')">
+        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristicList'"
+          (click)="toggleTab('processMaterialCharacteristicList','Process Material Characteristics')">
           Process Material Characteristics</div>
       </div>
 
@@ -60,49 +60,51 @@
             <i class="fas fa-plus"></i>
           </span>
 
-          <span *ngIf="'processParameters' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
+          <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
             title="short desc of what default values mean">
             <i class="fas fa-question-circle"></i>
           </span>
-          <span *ngIf="'processParameters' != activeTab" data-toggle="modal" data-target="#exampleModalCenter">Default
+          <span *ngIf="'processParameterList' != activeTab" data-toggle="modal"
+            data-target="#exampleModalCenter">Default
             Values</span>
         </div>
 
         <!-- Process Parameters -->
-        <div *ngIf="activeTab == 'processParameters'" class="condition-wrapper">
+        <div *ngIf="activeTab == 'processParameterList'" class="condition-wrapper">
           <!-- <span>
             If
           </span> -->
 
           <div class="input-wrapper">
 
-            <div *ngFor="let item of selectedProcessParameters; let index = index" class="form-row">
-
+            <div *ngFor="let item of selectedProcessParameterList; let index = index" class="form-row">
               <div class="form-group theme col-md-3">
-                <select required id="name" name="name" [(ngModel)]="selectedProcessParameters[index].name"
+                <select required id="name" name="name"
+                  [(ngModel)]="selectedProcessParameterList[index].processParameterType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processParameters.conditionNames" [value]="item.id">{{item.name}}</option>
+                  <option *ngFor="let item of processParameterList.conditionNames" [value]="item.id">{{item.name}}
+                  </option>
                 </select>
               </div>
 
               <div class="form-group theme col-md-3">
                 <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessParameters[index].condition" [ngModelOptions]="{standalone: true}"
-                  class="form-control">
+                  [(ngModel)]="selectedProcessParameterList[index].operatorType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processParameters.conditions" [value]="item.id">{{item.name}}</option>
+                  <option *ngFor="let item of processParameterList.conditions" [value]="item.id">{{item.name}}</option>
                 </select>
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="selectedProcessParameters[index].value"
+                <input required type="text" [(ngModel)]="selectedProcessParameterList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <input required type="text" [(ngModel)]="selectedProcessParameters[index].unit"
+                <input required type="text" [(ngModel)]="selectedProcessParameterList[index].unitType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit" placeholder="Unit">
 
                 <span class="minus" (click)="removeCondition(index)">
@@ -114,7 +116,7 @@
 
           </div>
 
-          <!-- <span class="minus" (click)="addCondition('processDimensionalProperties')">
+          <!-- <span class="minus" (click)="addCondition('processDimensionalPropertyList')">
             <i class="fas fa-minus"></i>
           </span> -->
 
@@ -124,20 +126,21 @@
         <!-- End of Process Parameters -->
 
         <!-- Process Dimensional Properties -->
-        <div *ngIf="activeTab == 'processDimensionalProperties'" class="condition-wrapper">
+        <div *ngIf="activeTab == 'processDimensionalPropertyList'" class="condition-wrapper">
           <!-- <span>
             If
           </span> -->
 
           <div class="input-wrapper">
 
-            <div *ngFor="let item of selectedProcessDimensionalProperties; let index = index" class="form-row">
+            <div *ngFor="let item of selectedProcessDimensionalPropertyList; let index = index" class="form-row">
 
               <div class="form-group theme col-md-3">
-                <select required id="name" name="name" [(ngModel)]="selectedProcessDimensionalProperties[index].name"
+                <select required id="name" name="name"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDimensionalProperties.conditionNames" [value]="item.id">
+                  <option *ngFor="let item of processDimensionalPropertyList.conditionNames" [value]="item.id">
                     {{item.name}}
                   </option>
                 </select>
@@ -145,22 +148,22 @@
 
               <div class="form-group theme col-md-3">
                 <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessDimensionalProperties[index].condition"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].operatorType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDimensionalProperties.conditions" [value]="item.id">{{item.name}}
+                  <option *ngFor="let item of processDimensionalPropertyList.conditions" [value]="item.id">{{item.name}}
                   </option>
                 </select>
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="selectedProcessDimensionalProperties[index].value"
+                <input required type="text" [(ngModel)]="selectedProcessDimensionalPropertyList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <input required type="text" [(ngModel)]="selectedProcessDimensionalProperties[index].unit"
+                <input required type="text" [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit" placeholder="Unit">
 
                 <span class="minus" (click)="removeCondition(index)">
@@ -176,20 +179,21 @@
         <!-- End of Process Dimensional Properties -->
 
         <!-- Process Material Characteristics -->
-        <div *ngIf="activeTab == 'processMaterialCharacteristics'" class="condition-wrapper">
+        <div *ngIf="activeTab == 'processMaterialCharacteristicList'" class="condition-wrapper">
           <!-- <span>
             If
           </span> -->
 
           <div class="input-wrapper">
 
-            <div *ngFor="let item of selectedProcessMaterialCharacteristics; let index = index" class="form-row">
+            <div *ngFor="let item of selectedProcessMaterialCharacteristicList; let index = index" class="form-row">
 
               <div class="form-group theme col-md-3">
-                <select required id="name" name="name" [(ngModel)]="selectedProcessMaterialCharacteristics[index].name"
+                <select required id="name" name="name"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processMaterialCharacteristics.conditionNames" [value]="item.id">
+                  <option *ngFor="let item of processMaterialCharacteristicList.conditionNames" [value]="item.id">
                     {{item.name}}
                   </option>
                 </select>
@@ -197,22 +201,23 @@
 
               <div class="form-group theme col-md-3">
                 <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessMaterialCharacteristics[index].condition"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].operatorType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processMaterialCharacteristics.conditions" [value]="item.id">{{item.name}}
+                  <option *ngFor="let item of processMaterialCharacteristicList.conditions" [value]="item.id">
+                    {{item.name}}
                   </option>
                 </select>
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="selectedProcessMaterialCharacteristics[index].value"
+                <input required type="text" [(ngModel)]="selectedProcessMaterialCharacteristicList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <input required type="text" [(ngModel)]="selectedProcessMaterialCharacteristics[index].unit"
+                <input required type="text" [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit" placeholder="Unit">
 
                 <span class="minus" (click)="removeCondition(index)">

@@ -33,18 +33,18 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     equipment: [null, Validators.required],
     material: [null, Validators.required],
     // processType: [null, Validators.required],
-    processParameters: [
+    processParameterList: [
       []
     ],
-    processDimensionalProperties: [
+    processDimensionalPropertyList: [
       []
     ],
-    processMaterialCharacteristics: [
+    processMaterialCharacteristicList: [
       []
     ]
   });
 
-  processParameters = {
+  processParameterList = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
     units: ['%', 'micron'],
     conditionNames: [
@@ -57,7 +57,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     ],
   };
 
-  processDimensionalProperties = {
+  processDimensionalPropertyList = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
     units: ['inches'],
     conditionNames: [
@@ -76,7 +76,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     ]
   };
 
-  processMaterialCharacteristics = {
+  processMaterialCharacteristicList = {
     conditions: ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'],
     units: ['MPa'],
     conditionNames: [
@@ -89,45 +89,72 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     ]
   };
 
-  selectedProcessParameters = [
-    { name: '', condition: '', value: '', unit: '' }
+  selectedProcessParameterList = [
+    // { name: '', condition: '', value: '', unit: '' }
+    {
+      operatorType: {
+        id: ''
+      },
+      processParameterType: {
+        id: ''
+      },
+      unitType: {
+        id: ''
+      },
+      value: '',
+      valueInDefaultUnit: '',
+      valueSignType: {
+        id: ''
+      }
+    }
   ];
-  selectedProcessDimensionalProperties = [
-    { name: '', condition: '', value: '', unit: '' }
+  selectedProcessDimensionalPropertyList = [
+    {
+      operatorType: {
+        id: ''
+      },
+      processDimensionalPropertyType: {
+        id: ''
+      },
+      unitType: {
+        id: ''
+      },
+      value: '',
+      valueInDefaultUnit: '',
+      valueSignType: {
+        id: ''
+      }
+    }
   ];
-  selectedProcessMaterialCharacteristics = [
-    { name: '', condition: '', value: '', unit: '' }
+  selectedProcessMaterialCharacteristicList = [
+    {
+
+      operatorType: {
+        id: ''
+      },
+      processMaterialCharacteristicType: {
+        id: ''
+      },
+      unitType: {
+        id: ''
+      },
+      value: '',
+      valueInDefaultUnit: '',
+      valueSignType: {
+        id: ''
+      }
+    }
   ];
 
   processProfileId = null;
   processProfiles = processProfiles;
 
   defaultValues = {
-    processParameters: [],
-    processDimensionalProperties: [
-      { name: 'X', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Y', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Z', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Equipment Name', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Tolerance Percent', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Tolerance Base', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Tolerance Increment', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Percent Tolerance', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Surface Roughness', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Wall thickness', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Features Size', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Base Tolerance', value: '-', condition: 'Equal to', unit: 'inches' }
-    ],
-    processMaterialCharacteristics: [
-      { name: 'Tensile Strength', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Equipment Name', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Is Thickness Uniform', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Access Features With Line of Sight', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: 'Not Cylindrical', value: '-', condition: 'Equal to', unit: 'inches' },
-      { name: '3 Dimensional Lattice', value: '-', condition: 'Equal to', unit: 'inches' },
-    ]
+    processParameterList: [],
+    processDimensionalPropertyList: [],
+    processMaterialCharacteristicList: []
   };
-  activeTab = 'processParameters';
+  activeTab = 'processParameterList';
   activeTabName = 'Process Parameters';
 
   isNew = true;
@@ -149,15 +176,15 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
       const processParameterType = await this.processMetaData.getProcessParameterType().toPromise();
       const operatorType = await this.processMetaData.getoperatorType().toPromise();
-      const processDimensionalProperties = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
-      const processMaterialCharacteristics = await this.processMetaData.getProcessMaterialCharacteristicType().toPromise();
+      const processDimensionalPropertyList = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
+      const processMaterialCharacteristicList = await this.processMetaData.getProcessMaterialCharacteristicType().toPromise();
 
-      this.processParameters.conditionNames = processParameterType.metadataList;
-      this.processParameters.conditions = operatorType.metadataList;
-      this.processDimensionalProperties.conditions = operatorType.metadataList;
-      this.processMaterialCharacteristics.conditions = operatorType.metadataList;
-      this.processDimensionalProperties.conditionNames = processDimensionalProperties.metadataList;
-      this.processMaterialCharacteristics.conditionNames = processMaterialCharacteristics.metadataList;
+      this.processParameterList.conditionNames = processParameterType.metadataList;
+      this.processParameterList.conditions = operatorType.metadataList;
+      this.processDimensionalPropertyList.conditions = operatorType.metadataList;
+      this.processMaterialCharacteristicList.conditions = operatorType.metadataList;
+      this.processDimensionalPropertyList.conditionNames = processDimensionalPropertyList.metadataList;
+      this.processMaterialCharacteristicList.conditionNames = processMaterialCharacteristicList.metadataList;
     } catch (e) {
       console.log(e);
     } finally {
@@ -191,16 +218,66 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   addCondition(section = this.activeTab) {
     switch (section) {
-      case 'processParameters':
-        this.selectedProcessParameters.push({ name: '', condition: '', value: '', unit: '' });
+      case 'processParameterList':
+        this.selectedProcessParameterList.push(
+          {
+            operatorType: {
+              id: ''
+            },
+            processParameterType: {
+              id: ''
+            },
+            unitType: {
+              id: ''
+            },
+            value: '',
+            valueInDefaultUnit: '',
+            valueSignType: {
+              id: ''
+            }
+          }
+        );
         break;
-      case 'processDimensionalProperties':
-        this.selectedProcessDimensionalProperties.push({ name: '', condition: '', value: '', unit: '' });
+      case 'processDimensionalPropertyList':
+        this.selectedProcessDimensionalPropertyList.push(
+          {
+            operatorType: {
+              id: ''
+            },
+            processDimensionalPropertyType: {
+              id: ''
+            },
+            unitType: {
+              id: ''
+            },
+            value: '',
+            valueInDefaultUnit: '',
+            valueSignType: {
+              id: ''
+            }
+          }
+        );
         break;
-      case 'processMaterialCharacteristics':
-        this.selectedProcessMaterialCharacteristics.push({ name: '', condition: '', value: '', unit: '' });
+      case 'processMaterialCharacteristicList':
+        this.selectedProcessMaterialCharacteristicList.push(
+          {
+            operatorType: {
+              id: ''
+            },
+            processMaterialCharacteristicType: {
+              id: ''
+            },
+            unitType: {
+              id: ''
+            },
+            value: '',
+            valueInDefaultUnit: '',
+            valueSignType: {
+              id: ''
+            }
+          }
+        );
         break;
-
       default:
         break;
     }
@@ -210,21 +287,21 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     let frontSlice = [];
     let endSlice = [];
     switch (section) {
-      case 'processParameters':
-        frontSlice = this.selectedProcessParameters.slice(0, index);
-        endSlice = this.selectedProcessParameters.slice(index + 1);
-        this.selectedProcessParameters = frontSlice.concat(endSlice);
-        console.log(this.selectedProcessParameters);
+      case 'processParameterList':
+        frontSlice = this.selectedProcessParameterList.slice(0, index);
+        endSlice = this.selectedProcessParameterList.slice(index + 1);
+        this.selectedProcessParameterList = frontSlice.concat(endSlice);
+        console.log(this.selectedProcessParameterList);
         break;
-      case 'processDimensionalProperties':
-        frontSlice = this.selectedProcessDimensionalProperties.slice(0, index);
-        endSlice = this.selectedProcessDimensionalProperties.slice(index + 1);
-        this.selectedProcessDimensionalProperties = frontSlice.concat(endSlice);
+      case 'processDimensionalPropertyList':
+        frontSlice = this.selectedProcessDimensionalPropertyList.slice(0, index);
+        endSlice = this.selectedProcessDimensionalPropertyList.slice(index + 1);
+        this.selectedProcessDimensionalPropertyList = frontSlice.concat(endSlice);
         break;
-      case 'processMaterialCharacteristics':
-        frontSlice = this.selectedProcessMaterialCharacteristics.slice(0, index);
-        endSlice = this.selectedProcessMaterialCharacteristics.slice(index + 1);
-        this.selectedProcessMaterialCharacteristics = frontSlice.concat(endSlice);
+      case 'processMaterialCharacteristicList':
+        frontSlice = this.selectedProcessMaterialCharacteristicList.slice(0, index);
+        endSlice = this.selectedProcessMaterialCharacteristicList.slice(index + 1);
+        this.selectedProcessMaterialCharacteristicList = frontSlice.concat(endSlice);
         break;
 
       default:
@@ -326,17 +403,18 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   prepareData() {
+    // TODO: add valueSignType to all
     const postData = {
-    id: this.form.value.id,
+      id: this.form.value.id,
       vendorId: this.userService.getUserInfo().id,
       processProfileName: this.form.value.processProfileName,
       equipment: { id: this.form.value.equipment },
       materialList: [...this.form.value.material.map((materialId) => {
         return { id: materialId };
       })],
-      processParameters: [...this.selectedProcessParameters.map(x => new Object({ id: x }))],
-      processDimensionalProperties: [...this.selectedProcessDimensionalProperties.map(x => new Object({ id: x }))],
-      processMaterialCharacteristics: [...this.selectedProcessMaterialCharacteristics.map(x => new Object({ id: x }))],
+      processParameterList: [...this.selectedProcessParameterList],
+      processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
+      processMaterialCharacteristicList: [...this.selectedProcessMaterialCharacteristicList],
       updatedDate: '',
       createdBy: '',
       createdDate: '',
