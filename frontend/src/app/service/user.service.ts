@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class UserService {
   userInfo = {
     id: 502,
   };
-  constructor() { }
+  constructor(public http: HttpClient) { }
 
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
     const headers = new HttpHeaders()
@@ -19,6 +21,14 @@ export class UserService {
       .set('roleId', roleId.toString());
 
     return headers;
+  }
+
+  getProfile() {
+    
+  }
+
+  setProfile() {
+
   }
 
   getUserInfo() {
