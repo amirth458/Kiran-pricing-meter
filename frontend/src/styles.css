@@ -158,6 +158,11 @@ button.theme.white:hover {
   margin-top: 3px;
 }
 
+.ng-select.ng-select-opened .ng-select-container,
+.ng-dropdown-panel {
+  z-index: 3 !important;
+}
+
 /* Overriding Ag-grid style */
 .theme-table .ag-theme-balham .ag-header-row {
   background: var(--theme-secondary-blue);
