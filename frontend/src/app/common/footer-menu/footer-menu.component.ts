@@ -10,13 +10,13 @@ import { Router } from '@angular/router';
 export class FooterMenuComponent implements OnInit {
 
   constructor(
-    private router: Router,
-    private authService:AuthService
+    public router: Router,
+    public authService:AuthService
   ) {
-    
+
   }
 
   ngOnInit() {
   }
-  
+
 }

@@ -152,8 +152,8 @@ export class MachinesComponent implements OnInit {
   constructor(
     public route: Router,
     public machineService: MachineService,
-    private userService: UserService,
-    private spineer: NgxSpinnerService
+    public userService: UserService,
+    public spineer: NgxSpinnerService
   ) { }
 
   ngOnInit() {

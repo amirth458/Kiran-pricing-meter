@@ -16,8 +16,8 @@ export class TopMenuComponent implements OnInit {
     img: 'assets/image/avatar3.png'
   };
   constructor(
-    private router: Router,
-    private authService: AuthService,
+    public router: Router,
+    public authService: AuthService,
     public vendorService: VendorService,
     public userService: UserService
   ) {

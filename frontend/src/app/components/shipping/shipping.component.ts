@@ -113,10 +113,10 @@ export class ShippingComponent implements OnInit {
   rowData;
   pageSize = 10;
   constructor(
-    private route: Router,
-    private shippingService: ShippingService,
-    private userService: UserService,
-    private spineer: NgxSpinnerService
+    public route: Router,
+    public shippingService: ShippingService,
+    public userService: UserService,
+    public spineer: NgxSpinnerService
 
   ) {
 

@@ -32,11 +32,11 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
 
   constructor(
     public fb: FormBuilder,
-    private route: Router,
-    private shippingService: ShippingService,
-    private vendorService: VendorService,
-    private spineer: NgxSpinnerService,
-    private userService: UserService) { }
+    public route: Router,
+    public shippingService: ShippingService,
+    public vendorService: VendorService,
+    public spineer: NgxSpinnerService,
+    public userService: UserService) { }
 
 
   async ngOnInit() {

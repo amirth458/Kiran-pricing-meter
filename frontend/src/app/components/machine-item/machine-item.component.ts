@@ -45,7 +45,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   constructor(
     public route: Router,
     public fb: FormBuilder,
-    private spinner: NgxSpinnerService,
+    public spinner: NgxSpinnerService,
     public machineService: MachineService,
     public materialService: MaterialService,
     public equipmentService: EquipmentService,

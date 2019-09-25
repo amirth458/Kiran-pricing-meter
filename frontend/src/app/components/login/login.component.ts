@@ -26,10 +26,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   constructor(
     public fb: FormBuilder,
-    private router: Router,
-    private spineer: NgxSpinnerService,
-    private authService: AuthService,
-    private userService: UserService) { }
+    public router: Router,
+    public spineer: NgxSpinnerService,
+    public authService: AuthService,
+    public userService: UserService) { }
 
   ngOnInit() {
     const remember_me = localStorage.getItem('remember_me');
