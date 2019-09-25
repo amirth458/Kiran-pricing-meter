@@ -76,7 +76,7 @@
         Please provide a new name for the cloned Process Profile Name.
 
         <div class="form-row">
-          <!-- <div class="form-group col-md-2"></div> -->
+          <div class="form-group col-md-2"></div>
 
           <div class="form-group theme col-md-8">
             <label for="name"></label>
@@ -88,8 +88,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" [disabled]="newProfileName.length <= 4"
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn theme theme-reverse btn-primary " [disabled]="newProfileName.length <= 4"
           (click)="copyRow()">Clone</button>
       </div>
     </div>
