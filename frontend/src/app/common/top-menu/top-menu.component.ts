@@ -25,13 +25,12 @@ export class TopMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.userService.getVendorInfo()) {
-      this.vendorService.getVendorDetail(this.userService.getUserInfo().id).subscribe(res => {
-        if (res) {
-          this.userInfo = { ...this.userInfo, ...res };
-        }
-      });
-    }
+    this.authService.getVendor().subscribe(res => {
+      this.userService.setVendorInfo(res);
+      this.userInfo = { ...this.userInfo, ...res };
+    }, error=>{
+      console.log('get profile error', error);
+    })
   }
 
   onLogout() {

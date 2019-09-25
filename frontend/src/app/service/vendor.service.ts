@@ -46,7 +46,12 @@ export class VendorService {
 
   updateVendorProfile(profile: Vendor) {
     const url = `${environment.apiBaseUrl}/vendors/${profile.id}`;
-    return this.http.put<Vendor>(url, profile);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    
+    return this.http.put<Vendor>(url, profile, { headers });
   }
 
 }
