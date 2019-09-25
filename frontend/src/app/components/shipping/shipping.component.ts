@@ -152,7 +152,7 @@ export class ShippingComponent implements OnInit {
     try {
       while (true) {
         const res = await this.shippingService.getShippings(
-          this.userService.getUserInfo().id,
+          this.userService.getVendorInfo().id,
           { page, size: 1000, sort: 'id,ASC', q: '' }
         ).toPromise();
 
@@ -195,7 +195,7 @@ export class ShippingComponent implements OnInit {
   async deleteShipping() {
     this.spineer.show();
     try {
-      await this.shippingService.deleteShipping(this.userService.getUserInfo().id, this.selectedShipping.id).toPromise();
+      await this.shippingService.deleteShipping(this.userService.getVendorInfo().id, this.selectedShipping.id).toPromise();
     } catch (e) {
       console.log(e);
     } finally {

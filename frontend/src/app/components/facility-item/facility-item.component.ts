@@ -8,6 +8,7 @@ import { FacilityService } from '../../service/facility.service';
 import { UserService } from '../../service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-facility-item',
@@ -41,15 +42,18 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
   isSubmited = false;
 
+  userId;
   constructor(
     public fb: FormBuilder,
     public route: Router,
     public vendorService: VendorService,
     public facilityService: FacilityService,
     public spineer: NgxSpinnerService,
-    public userService: UserService) {}
+    public userService: UserService,
+    public authService: AuthService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userId = await this.authService.getVendor().toPromise();
     this.getVendorMetaDatas();
     if (this.route.url.includes('edit')) {
       this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
@@ -61,7 +65,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   async getFacility(facilityId: number) {
     this.spineer.show();
     try {
-      const data = await this.facilityService.getFacility(this.userService.getUserInfo().id, facilityId).toPromise();
+      const data = await this.facilityService.getFacility(this.userService.getVendorInfo().id, facilityId).toPromise();
       this.initForm(data);
     } catch (e) {
       this.spineer.hide();
@@ -130,7 +134,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     }
     this.spineer.show();
 
-    const vendorId = this.userService.getUserInfo().id;
+    const vendorId = this.userService.getVendorInfo().id;
 
     const facility = {
       ...this.facilityItem.value,
@@ -142,7 +146,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     facility.updatedDate = new Date().toString();
 
     if (this.isNew) {
-      facility.createdBy = String(this.userService.getUserInfo().id);
+      facility.createdBy = String(this.userService.getVendorInfo().id);
       facility.createdDate = new Date().toString();
 
       this.facilityService.createFacility(vendorId, facility).subscribe(res => {

@@ -46,7 +46,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       $('[data-toggle="tooltip"]').tooltip();
     });
     this.spineer.show();
-    this.preferenceService.getPreferenceByVendorId(this.userService.getUserInfo().id).subscribe(
+    this.preferenceService.getPreferenceByVendorId(this.userService.getVendorInfo().id).subscribe(
       (res) => {
         this.isPreferenceAvailable = true;
         this.initForm(res);
@@ -54,7 +54,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       (err) => {
         this.isPreferenceAvailable = false;
         const userInfo = {
-          vendorId: this.userService.getUserInfo().id,
+          vendorId: this.userService.getVendorInfo().id,
           vendorCoreCompetence: [],
           vendorAdjacentGrowths: [],
           rfqExclusionCondition: '',

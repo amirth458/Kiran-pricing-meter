@@ -59,7 +59,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       if (this.route.url.includes('edit')) {
         this.isNew = false;
         this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-        this.machine = await this.machineService.getMachine(this.userService.getUserInfo().id, this.machineId).toPromise();
+        this.machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, this.machineId).toPromise();
         this.materials = this.machine.machineServingMaterialList.map(x => x.material);
         this.equipments = [this.machine.equipment];
         this.initForm(this.machine);
@@ -117,7 +117,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     try {
       while (true) {
         const param: FilterOption = { size: 1000, sort: 'name,ASC', page, q: '' };
-        const res = await this.facilityService.getFacilities(this.userService.getUserInfo().id, param).toPromise();
+        const res = await this.facilityService.getFacilities(this.userService.getVendorInfo().id, param).toPromise();
         if (!res.content || res.content.length === 0) {
           break;
         }
@@ -206,7 +206,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   prepareData() {
     const postData = {
       id: this.form.value.id,
-      vendorId: this.userService.getUserInfo().id,
+      vendorId: this.userService.getVendorInfo().id,
       name: this.form.value.name,
       serialNumber: this.form.value.serialNumber,
       equipment: { id: this.form.value.equipment },
@@ -221,7 +221,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
     postData.updatedDate = new Date().toString();
     if (this.isNew) {
-      postData.createdBy = String(this.userService.getUserInfo().id);
+      postData.createdBy = String(this.userService.getVendorInfo().id);
       postData.createdDate = new Date().toString();
     } else {
       postData.updatedDate = new Date().toString();
@@ -233,7 +233,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     if (this.form.valid) {
       const postData = this.prepareData();
-      const vendorId = this.userService.getUserInfo().id;
+      const vendorId = this.userService.getVendorInfo().id;
       if (this.isNew) {
         this.spinner.show();
         try {

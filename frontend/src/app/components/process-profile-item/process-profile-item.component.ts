@@ -184,7 +184,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       this.isNew = false;
       this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
       // tslint:disable-next-line:max-line-length
-      const processProfile = await this.processProfileService.getProfile(this.userService.getUserInfo().id, this.processProfileId).toPromise();
+      const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
       this.initForm(processProfile);
       this.spinner.hide();
     }
@@ -360,7 +360,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     try {
       while (true) {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
-        const res = await this.machineService.getMachinery(this.userService.getUserInfo().id, param).toPromise();
+        const res = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
         if (!res.content || res.content.length === 0) {
           break;
         }
@@ -418,7 +418,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     const postData = {
-      vendorId: this.userService.getUserInfo().id,
+      vendorId: this.userService.getVendorInfo().id,
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
       equipment: { id: this.form.value.equipment },
       machineServingMaterial: { id: this.form.value.material },
@@ -439,7 +439,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
-        const vendorId = this.userService.getUserInfo().id;
+        const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
         if (this.isNew) {
           this.spinner.show();
