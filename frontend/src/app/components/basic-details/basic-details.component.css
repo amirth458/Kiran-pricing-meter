@@ -46,3 +46,7 @@
     position: absolute;
     z-index: -1;
 }
+.phone-number-error {
+  position: absolute;
+  color: var(--theme-error-color);
+}
