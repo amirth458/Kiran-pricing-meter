@@ -2,12 +2,11 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
-import { Facility } from 'src/app/model/facility.model';
 
 import { VendorService } from '../../service/vendor.service';
 import { FacilityService } from '../../service/facility.service';
 import { UserService } from '../../service/user.service';
-import { NgxSpinnerService } from 'ngx-spinner'
+import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 
 @Component({
@@ -47,7 +46,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     public vendorService: VendorService,
     public facilityService: FacilityService,
     public spineer: NgxSpinnerService,
-    public userService: UserService) { }
+    public userService: UserService) {}
 
   ngOnInit() {
     this.getVendorMetaDatas();
@@ -58,7 +57,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  async getFacility( facilityId: number) {
+  async getFacility(facilityId: number) {
     this.spineer.show();
     try {
       const data = await this.facilityService.getFacility(this.userService.getUserInfo().id, facilityId).toPromise();
@@ -125,7 +124,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
   save(event) {
     console.log(this.facilityItem.value);
-    if(!(this.facilityItem.valid && this.facilityItem.dirty)) {
+    if (!(this.facilityItem.valid && this.facilityItem.dirty)) {
       return;
     }
     this.spineer.show();
@@ -134,12 +133,14 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
     const facility = {
       ...this.facilityItem.value,
-      facilityCertificationList: this.selectedCertifications.map((item) => ({id: item}))
+      facilityCertificationList: this.selectedCertifications.map((item) => ({
+        id: item
+      }))
     };
     facility.vendorId = vendorId;
     facility.updatedDate = new Date().toString();
 
-    if(this.isNew) {
+    if (this.isNew) {
       facility.createdBy = String(this.userService.getUserInfo().id);
       facility.createdDate = new Date().toString();
 

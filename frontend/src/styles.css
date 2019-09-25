@@ -293,8 +293,7 @@ button.theme.theme-reverse:hover {
       -ms-user-select: none;
           user-select: none;
 }
-.file-custom:after {
-}
+
 .file-custom:before {
   position: absolute;
   top: -.075rem;

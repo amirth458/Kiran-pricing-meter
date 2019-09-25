@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 describe('PostProcessPricingItemComponent', () => {
   let component: PostProcessPricingItemComponent;
   let fixture: ComponentFixture<PostProcessPricingItemComponent>;
-  
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PostProcessPricingItemComponent],

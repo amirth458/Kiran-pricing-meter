@@ -219,15 +219,18 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   getProperOperands(conditionId, index, section) {
     if (section === 'Process Parameters') {
-      const operandTypeName = this.processParameterList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      const operandTypeName = this.processParameterList.conditionNames
+        .filter(condition => condition.id === conditionId)[0].operandType.name;
       this.selectedProcessParameterList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     } else if (section === 'Process Dimensional Properties') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processDimensionalPropertyList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      const operandTypeName = this.processDimensionalPropertyList.conditionNames
+        .filter(condition => condition.id === conditionId)[0].operandType.name;
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     } else if (section === 'Process Material Characteristics') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processMaterialCharacteristicList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      const operandTypeName = this.processMaterialCharacteristicList.conditionNames
+        .filter(condition => condition.id === conditionId)[0].operandType.name;
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     }
 
