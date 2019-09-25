@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FilterOption } from '../model/vendor.model';
-import { environment } from 'src/environments/environment.staging';
+import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 
