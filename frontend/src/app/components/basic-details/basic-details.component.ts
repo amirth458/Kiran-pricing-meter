@@ -150,7 +150,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
-    console.log(this.detailForm);
     if (this.detailForm.valid) {
       this.spineer.show();
       const vendorProfile = {

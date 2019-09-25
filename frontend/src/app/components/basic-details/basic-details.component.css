@@ -32,8 +32,9 @@
   }
 }
 .link {
-  padding-top: 35px;
-  font-size: 14px;
+  display: inline;
+  margin-left: 20px;
+  font-size: 12px;
   text-align: center;
   color: var(--theme-light-green);
 }
