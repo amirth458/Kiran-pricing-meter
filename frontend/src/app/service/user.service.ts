@@ -30,7 +30,6 @@ export class UserService {
   }
 
   getProfile() {
-
   }
 
   setProfile() {

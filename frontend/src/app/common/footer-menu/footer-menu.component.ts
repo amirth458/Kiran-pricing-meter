@@ -11,12 +11,11 @@ export class FooterMenuComponent implements OnInit {
 
   constructor(
     public router: Router,
-    public authService:AuthService
+    public authService: AuthService
   ) {
 
   }
 
   ngOnInit() {
   }
-
 }
