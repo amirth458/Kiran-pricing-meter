@@ -7,6 +7,7 @@ import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorMetaData } from 'src/app/model/vendor.model';
 
+declare var $: any;
 @Component({
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
@@ -28,6 +29,10 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
     vendorId: [null]
   });
 
+  tooltipCoreCompetencies = 'Highlight industries you currently support.';
+  tooltipAdjacentGrowth = 'Highlight industries you seek to support.';
+  tooltipRFQ = 'RFQ to exclude.';
+  tooltipClientToExclude = 'Specify any industries you do not wish to support.';
   constructor(
     public fb: FormBuilder,
     public vendorService: VendorService,
@@ -37,6 +42,9 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   ) { }
 
   async ngOnInit() {
+    $(() => {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
     this.spineer.show();
     this.preferenceService.getPreferenceByVendorId(this.userService.getUserInfo().id).subscribe(
       (res) => {
