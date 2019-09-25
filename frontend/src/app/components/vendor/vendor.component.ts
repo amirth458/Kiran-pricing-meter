@@ -15,19 +15,19 @@ export class VendorComponent implements OnInit {
   }> = [
       {
         name: 'Basic Details',
-        tooltipMessage: 'At vero eos et accusamus et',
+        tooltipMessage: 'High level information about your business operations.',
         route: 'basics',
         actions: []
       },
       {
         name: 'Facilities',
-        tooltipMessage: 'At vero eos et accusamus et',
+        tooltipMessage: 'Details regarding specific manufacturing facilities. If you have different individuals quoting for different divisions, create that delineation here',
         route: 'facilities',
         actions: [{ name: 'Add Facility', route: 'add' }]
       },
       {
         name: 'Preferences',
-        tooltipMessage: 'At vero eos et accusamus et',
+        tooltipMessage: 'Specify the industries you currently support, seek to support, and would rather not support',
         route: 'preferences',
         actions: []
       },

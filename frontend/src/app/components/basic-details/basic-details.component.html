@@ -16,11 +16,14 @@
     <div class="form-row">
       <div class="form-group theme col">
         <label>Vendor Industry</label>
-        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]="true" [hideSelected]="true"
-          placeholder="Vendor Industry" [selectOnTab]="true" [(ngModel)]="selectedVendorIndustry"
-          [ngModelOptions]="{standalone: true}">
+        <select required formControlName="vendorIndustry" class="form-control">
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of vendorIndustries" [value]="item.id">{{item.name}}</option>
+        </select>
+        <!-- <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]="true" [hideSelected]="true"
+          [selectOnTab]="true" [(ngModel)]="selectedVendorIndustry" [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of vendorIndustries" [value]="item.id">{{item.name}}</ng-option>
-        </ng-select>
+        </ng-select> -->
       </div>
     </div>
     <div class="form-row">
@@ -28,9 +31,11 @@
         <label>Email</label>
         <input required type="email" formControlName="email" class="form-control" placeholder="Email">
       </div>
-      <div class="form-group theme col-md-6">
+      <div class="form-group theme col-md-6 phone">
         <label>Phone</label>
-        <input required type="tel" formControlName="phone" class="form-control" placeholder="Phone">
+        <international-phone-number formControlName="phone" placeholder="Enter phone number"
+          [defaultCountry]="'us'"
+          [required]="true" name="phone_number" ></international-phone-number>
       </div>
     </div>
     <div class="form-row">

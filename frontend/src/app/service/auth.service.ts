@@ -9,14 +9,14 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   data: {};
-  url: string = environment.apiBaseUrl + '/login';
+  url: string = environment.apiBaseUrl + '/auth/signin';
 
   constructor(public http: HttpClient) { }
 
 
   login(user: string, password: string) {
 
-    const userRequest = JSON.stringify({ userName: user, password });
+    const userRequest = { email: user, password };
 
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
@@ -28,16 +28,39 @@ export class AuthService {
 
   }
 
-  logout(): any {
-    localStorage.removeItem('username');
+  setAuthData(data) {
+    localStorage.setItem('auth', JSON.stringify(data));
   }
 
-  getUser(): any {
-    return localStorage.getItem('username');
+  logout(): any {
+    localStorage.removeItem('auth');
+    localStorage.removeItem('remember_me');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');  
+  }
+
+  getProfile(): any {
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    
+    // headers.set('Authorization', );
+    // const options = { headers };
+    // console.log(options);
+    const url = `${environment.apiBaseUrl}/auth/user/me`;
+    return this.http.get(url, { headers });
   }
 
   isLoggedIn(): boolean {
-    return this.getUser() !== null;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    if(data) {
+      const expireDate = new Date(data.expiryDate);
+      const now = new Date();
+      if(now > expireDate) return false;
+      return true;
+    }
+    return false;
   }
 
   errorHandler(error: Response) {

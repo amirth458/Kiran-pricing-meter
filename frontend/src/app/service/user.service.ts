@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 import { User } from '../model/user.model';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 import * as crypto from 'crypto-js';
 import { Router } from '@angular/router';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,14 @@ export class UserService {
       .set('roleId', roleId.toString());
 
     return headers;
+  }
+
+  getProfile() {
+
+  }
+
+  setProfile() {
+
   }
 
   getUserInfo() {

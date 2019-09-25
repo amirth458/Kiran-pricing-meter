@@ -6,7 +6,7 @@
 	<groupId>com.3diligent</groupId>
 	<artifactId>3diligent-connect-website</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>${packaging.type}</packaging>
 
 	<name>3diligent-connect-website</name>
 	<description>Digital Manufacturing Platform</description>
@@ -27,6 +27,24 @@
 		<maven.build.timestamp.format>yyyy-MM-dd_HH-mm</maven.build.timestamp.format>
 		<maven-assembly-plugin.version>3.0.0</maven-assembly-plugin.version>
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<packaging.type>jar</packaging.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>stage_or_prod</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<packaging.type>war</packaging.type>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -49,6 +67,11 @@
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
@@ -144,7 +167,7 @@
 							<executable>ng</executable>
 							<arguments>
 								<argument>build</argument>
-								<argument>--configuration=development</argument>
+								<argument>--configuration=staging</argument>
 								<argument>--base-href</argument>
 								<argument>/</argument>
 							</arguments>
