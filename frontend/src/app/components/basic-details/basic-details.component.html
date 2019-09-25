@@ -32,6 +32,7 @@
         <international-phone-number formControlName="phone" placeholder="Enter phone number"
           [defaultCountry]="'us'"
           [required]="true" name="phone_number" ></international-phone-number>
+        <div class='phone-number-error' *ngIf="detailForm.controls.phone.status === 'INVALID'">phone number is not valid.</div>
       </div>
     </div>
     <div class="form-row">

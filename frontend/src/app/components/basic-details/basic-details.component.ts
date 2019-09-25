@@ -31,7 +31,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     id: [null],
     name: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
-    phone: [null, [Validators.required, Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
+    phone: [null, [Validators.required]],
     vendorType: [null, Validators.required],
     vendorIndustry: [null],
     city: [null, Validators.required],
@@ -55,7 +55,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.getVendorMetaDatas();
-    console.log('------------vendor infor--------');
+    
     this.authService.getVendor().subscribe(res => {
       this.userService.setVendorInfo(res);
       
@@ -150,6 +150,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
+    console.log(this.detailForm);
     if (this.detailForm.valid) {
       this.spineer.show();
       const vendorProfile = {
