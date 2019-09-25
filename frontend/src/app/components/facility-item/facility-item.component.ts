@@ -39,6 +39,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   facilityId = null;
   selectedCertifications = [];
   isNew = true;
+  isSubmited = false;
 
   constructor(
     public fb: FormBuilder,
@@ -123,7 +124,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
-    console.log(this.facilityItem.value);
+    this.isSubmited = true;
     if (!(this.facilityItem.valid && this.facilityItem.dirty)) {
       return;
     }

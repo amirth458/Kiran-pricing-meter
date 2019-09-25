@@ -26,6 +26,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   confidentialities: VendorMetaData[] = [];
   selectedCertifications = [];
   certFile = '';
+  isSubmited = false;
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -160,6 +161,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
+    this.isSubmited = true;
     if (this.detailForm.valid) {
       this.spineer.show();
       const vendorProfile = {
