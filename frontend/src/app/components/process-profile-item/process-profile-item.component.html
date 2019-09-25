@@ -70,7 +70,7 @@
         </div>
 
         <!-- Process Parameters -->
-        <div *ngIf="activeTab == 'processParameterList'" class="condition-wrapper">
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processParameterList'">
           <!-- <span>
             If
           </span> -->
@@ -147,7 +147,7 @@
         <!-- End of Process Parameters -->
 
         <!-- Process Dimensional Properties -->
-        <div *ngIf="activeTab == 'processDimensionalPropertyList'" class="condition-wrapper">
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processDimensionalPropertyList'">
           <!-- <span>
             If
           </span> -->
@@ -227,7 +227,7 @@
         <!-- End of Process Dimensional Properties -->
 
         <!-- Process Material Characteristics -->
-        <div *ngIf="activeTab == 'processMaterialCharacteristicList'" class="condition-wrapper">
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processMaterialCharacteristicList'">
           <!-- <span>
             If
           </span> -->
