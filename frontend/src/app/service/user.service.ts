@@ -19,7 +19,7 @@ export class UserService {
   accessToken = null;
   vendorInfo = null;
 
-  constructor(public http: HttpClient, public route: Router) {}
+  constructor(public http: HttpClient, public route: Router) { }
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
     const headers = new HttpHeaders()
       .set('Content-type', 'application/json')
@@ -29,7 +29,7 @@ export class UserService {
     return headers;
   }
 
-  getProfile() {}
+  getProfile() { }
 
   setProfile() {
 
@@ -118,11 +118,13 @@ export class UserService {
     return true;
   }
 
+  // TODO: Do an encryption and decryption
   setVendorInfo(vendorInfo) {
+    localStorage.setItem('vendor', JSON.stringify(vendorInfo));
     this.vendorInfo = vendorInfo;
   }
 
   getVendorInfo() {
-    return this.vendorInfo;
+    return JSON.parse(localStorage.getItem('vendor'));
   }
 }

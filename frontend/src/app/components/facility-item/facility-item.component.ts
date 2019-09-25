@@ -61,7 +61,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   async getFacility(facilityId: number) {
     this.spineer.show();
     try {
-      const data = await this.facilityService.getFacility(this.userService.getUserInfo().id, facilityId).toPromise();
+      const data = await this.facilityService.getFacility(this.userService.getVendorInfo().id, facilityId).toPromise();
       this.initForm(data);
     } catch (e) {
       this.spineer.hide();
@@ -130,7 +130,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     }
     this.spineer.show();
 
-    const vendorId = this.userService.getUserInfo().id;
+    const vendorId = this.userService.getVendorInfo().id;
 
     const facility = {
       ...this.facilityItem.value,
@@ -142,7 +142,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     facility.updatedDate = new Date().toString();
 
     if (this.isNew) {
-      facility.createdBy = String(this.userService.getUserInfo().id);
+      facility.createdBy = String(this.userService.getVendorInfo().id);
       facility.createdDate = new Date().toString();
 
       this.facilityService.createFacility(vendorId, facility).subscribe(res => {

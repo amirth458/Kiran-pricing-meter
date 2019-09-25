@@ -303,7 +303,7 @@ export class FacilityComponent implements OnInit {
       while (true) {
         // tslint:disable-next-line:max-line-length
         const res = await this.facilityService.getFacilities(
-          this.userService.getUserInfo().id, {
+          this.userService.getVendorInfo().id, {
             page,
             size: 1000,
             sort: 'id,DESC',
@@ -352,7 +352,7 @@ export class FacilityComponent implements OnInit {
   async deleteFacility() {
     this.spineer.show();
     try {
-      await this.facilityService.deleteFacility(this.userService.getUserInfo().id, this.selectedFacility.id).toPromise();
+      await this.facilityService.deleteFacility(this.userService.getVendorInfo().id, this.selectedFacility.id).toPromise();
     } catch (e) {
       console.log(e);
     } finally {
