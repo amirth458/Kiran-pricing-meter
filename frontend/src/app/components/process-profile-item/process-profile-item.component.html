@@ -12,10 +12,10 @@
 
       <div class="form-group theme col-md-6">
         <label for="equipment">Equipment</label>
-        <ng-select #equipmentInput placeholder="Add Equipment" loadingText="Searching..." [multiple]="false"
-          dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
-          formControlName="equipment">
-          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.name}}</ng-option>
+        <ng-select (change)="equipmentChanged()" #equipmentInput placeholder="Add Equipment" loadingText="Searching..."
+          [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          [selectOnTab]="true" formControlName="equipment">
+          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
         </ng-select>
         <span class="footnote">* Required</span>
       </div>
@@ -28,7 +28,7 @@
         <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="false"
           dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
           formControlName="material">
-          <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>
+          <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
         <span class="footnote">* Required</span>
       </div>
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Process Parameters -->
-        <div *ngIf="activeTab == 'processParameterList'" class="condition-wrapper">
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processParameterList'">
           <!-- <span>
             If
           </span> -->
@@ -109,9 +109,9 @@
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="selectedProcessParameterList[index].value"
-                  [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
-                  placeholder="Value">
+                <input required type="number" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessParameterList[index].value" [ngModelOptions]="{standalone: true}"
+                  class="form-control" id="value" name="value" placeholder="Value">
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
@@ -119,7 +119,14 @@
                   [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
                   class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">{{item.symbol}}</option>
+                  <option *ngFor="let item of units" [value]="item.id">
+                    <ng-container *ngIf="item.id < 13">
+                      {{item.name}}({{item.symbol}})
+                    </ng-container>
+                    <ng-container *ngIf="item.id >= 13">
+                      {{item.name}}
+                    </ng-container>
+                  </option>
                 </select>
                 <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
@@ -140,7 +147,7 @@
         <!-- End of Process Parameters -->
 
         <!-- Process Dimensional Properties -->
-        <div *ngIf="activeTab == 'processDimensionalPropertyList'" class="condition-wrapper">
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processDimensionalPropertyList'">
           <!-- <span>
             If
           </span> -->
@@ -187,7 +194,8 @@
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="selectedProcessDimensionalPropertyList[index].value"
+                <input required type="number" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
               </div>
@@ -219,7 +227,7 @@
         <!-- End of Process Dimensional Properties -->
 
         <!-- Process Material Characteristics -->
-        <div *ngIf="activeTab == 'processMaterialCharacteristicList'" class="condition-wrapper">
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processMaterialCharacteristicList'">
           <!-- <span>
             If
           </span> -->
@@ -264,7 +272,8 @@
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="text" [(ngModel)]="selectedProcessMaterialCharacteristicList[index].value"
+                <input required type="number" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
               </div>

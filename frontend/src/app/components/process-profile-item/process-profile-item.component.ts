@@ -70,46 +70,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       operandTypeList: []
     }
   ];
-  selectedProcessDimensionalPropertyList = [
-    {
-      id: '',
-      operatorType: {
-        id: ''
-      },
-      processDimensionalPropertyType: {
-        id: ''
-      },
-      unitType: {
-        id: ''
-      },
-      value: '',
-      valueInDefaultUnit: '',
-      valueSignType: {
-        id: ''
-      },
-      operandTypeList: []
-    }
-  ];
-  selectedProcessMaterialCharacteristicList = [
-    {
-      id: '',
-      operatorType: {
-        id: ''
-      },
-      processMaterialCharacteristicType: {
-        id: '',
-      },
-      unitType: {
-        id: ''
-      },
-      value: '',
-      valueInDefaultUnit: '',
-      valueSignType: {
-        id: ''
-      },
-      operandTypeList: []
-    }
-  ];
+  selectedProcessDimensionalPropertyList = [];
+  selectedProcessMaterialCharacteristicList = [];
 
 
   processProfileId = null;
@@ -368,30 +330,37 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         page++;
       }
       rows.map(machine => {
-        this.equipments.push(machine.equipment);
-      });
-      rows.map(machine => {
-        machine.machineServingMaterialList.map(material => {
-          this.materials.push(material.material);
-        });
+        this.equipments.push(machine);
       });
     } catch (e) {
       console.log(e);
     }
   }
 
+  equipmentChanged() {
+    const equipmentId = this.form.value.equipment;
+    this.form.setValue({ ...this.form.value, material: null });
+    this.equipments.map(x => {
+      if (x.id == equipmentId) {
+        this.materials = x.machineServingMaterialList;
+      }
+    });
+  }
 
   initForm(processProfile) {
     this.form.setValue({
       id: processProfile.id,
       name: processProfile.name,
       vendorId: processProfile.vendorId,
-      equipment: processProfile.machineServingMaterial.vendorMachinery.equipment.id,
-      material: processProfile.machineServingMaterial.material.id,
+      equipment: processProfile.machineServingMaterial.vendorMachinery.id,
+      material: processProfile.machineServingMaterial.id,
       processParameterList: processProfile.processParameterList,
       processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,
       processDimensionalPropertyList: processProfile.processDimensionalPropertyList
     });
+
+    this.equipmentChanged();
+    this.form.setValue({ ...this.form.value, material: processProfile.machineServingMaterial.id });
 
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
@@ -404,7 +373,6 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     //   selectedProcessMaterialCharacteristicList: this.selectedProcessMaterialCharacteristicList,
     //   selectedProcessParameterList: this.selectedProcessParameterList,
     // });
-
     this.selectedProcessParameterList.map((parameter, index) => {
       this.getProperOperands(parameter.processParameterType.id, index, 'Process Parameters');
     });
@@ -418,12 +386,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     const postData = {
-      vendorId: this.userService.getVendorInfo().id,
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
-      equipment: { id: this.form.value.equipment },
       machineServingMaterial: { id: this.form.value.material },
-      // machineServingMaterial: { id: 128 },
-      // machineServingMaterial: { id: 1483 },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
       processMaterialCharacteristicList: [...this.selectedProcessMaterialCharacteristicList],
@@ -443,7 +407,6 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         const postData = this.prepareData();
         if (this.isNew) {
           this.spinner.show();
-          console.log({ postData, vendorId });
           try {
             await this.processProfileService.saveProfile(vendorId, postData).toPromise();
             const gotoURL = `/profile/processes/profile`;
