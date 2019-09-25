@@ -5,7 +5,12 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="coreCompetence">Core Competencies</label>
+        <label for="coreCompetence">
+          Core Competencies
+          <span class="icon" data-toggle="tooltip" data-placement="right" [title]="tooltipCoreCompetencies">
+            <i class="fas fa-question-circle"></i>
+          </span>
+        </label>
         <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
           placeholder="Core Competencies" [selectOnTab]="true" [(ngModel)]="selectedCoreCompetence"
           [ngModelOptions]="{standalone: true}">
@@ -18,7 +23,12 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="adjacentGrowth">Adjacent Growth</label>
+        <label for="adjacentGrowth">
+          Adjacent Growth
+          <span class="icon" data-toggle="tooltip" data-placement="right" [title]="tooltipAdjacentGrowth">
+            <i class="fas fa-question-circle"></i>
+          </span>
+        </label>
         <ng-select [multiple]="true" placeholder="Adjacent Growth" dropdownPosition="bottom" [virtualScroll]=" true"
           [hideSelected]="true" [selectOnTab]="true" [(ngModel)]="selectedAdjacentGrowth"
           [ngModelOptions]="{standalone: true}">
@@ -31,7 +41,12 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label>RFQ To Exclude</label>
+        <label>
+          RFQ To Exclude
+          <span class="icon" data-toggle="tooltip" data-placement="right" [title]="tooltipRFQ">
+            <i class="fas fa-question-circle"></i>
+          </span>
+        </label>
         <input formControlName="rfqExclusionCondition" id="rfqExclusionCondition" name="rfqExclusionCondition"
           placeholder="RFQ To Exclude" class="form-control">
       </div>
@@ -41,7 +56,12 @@
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label>Client To Exclude</label>
+        <label>
+          Client To Exclude
+          <span class="icon" data-toggle="tooltip" data-placement="right" [title]="tooltipClientToExclude">
+            <i class="fas fa-question-circle"></i>
+          </span>
+        </label>
         <input formControlName="clientExclusionCondition" id="clientExclusionCondition" name="clientExclusionCondition"
           placeholder="Client To Exclude" class="form-control">
       </div>

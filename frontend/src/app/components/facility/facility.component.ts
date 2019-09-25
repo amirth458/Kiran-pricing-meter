@@ -276,7 +276,7 @@ export class FacilityComponent implements OnInit {
   ];
 
   gridOptions: GridOptions;
-  rowData;
+  rowData = [];
   pageSize = 10;
 
   constructor(
