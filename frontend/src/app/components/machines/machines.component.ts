@@ -236,7 +236,7 @@ export class MachinesComponent implements OnInit {
     } finally {
       this.spineer.hide();
     }
-    const filteredData = this.rowData.filter(x => x.id != this.selectedMachine.id);
+    const filteredData = this.rowData.filter(x => x.id !== this.selectedMachine.id);
     this.rowData = filteredData;
     this.modal.nativeElement.click();
 

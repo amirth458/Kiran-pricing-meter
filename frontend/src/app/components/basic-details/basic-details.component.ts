@@ -25,7 +25,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   certifications: VendorMetaData[] = [];
   confidentialities: VendorMetaData[] = [];
   selectedCertifications = [];
-  certFile: string = '';
+  certFile = '';
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -51,15 +51,15 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     public authService: AuthService,
     public spineer: NgxSpinnerService,
     public route: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getVendorMetaDatas();
-    
+
     this.authService.getVendor().subscribe(res => {
       this.userService.setVendorInfo(res);
-      
-      if(res) {
+
+      if (res) {
         this.vendorService.getVendorDetail(res.id).subscribe(res1 => {
           if (res1) {
             this.initForm(res1);
@@ -69,13 +69,11 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         this.detailForm.setValue({
           ...this.detailForm.value,
           confidentiality: 1,
-  
         });
       }
-    }, error=>{
+    }, error => {
       console.log('get profile error', error);
-    })  
-    
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -106,19 +104,31 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
 
       this.vendorTypes = vendorTypes.map((x) => {
         const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
-        return { id: x.id, name };
+        return {
+          id: x.id,
+          name
+        };
       });
       this.vendorIndustries = vendorIndustries.map((x) => {
         const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
-        return { id: x.id, name };
+        return {
+          id: x.id,
+          name
+        };
       });
       this.certifications = certifications.map((x) => {
         const name = this.htmlDecode(x.name);
-        return { id: x.id, name };
+        return {
+          id: x.id,
+          name
+        };
       });
       this.confidentialities = confidentialities.map((x) => {
         const name = this.htmlDecode(x.name);
-        return { id: x.id, name };
+        return {
+          id: x.id,
+          name
+        };
       });
     } catch (e) {
       this.spineer.hide();
@@ -167,17 +177,19 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
           id: this.detailForm.value.confidentiality
         },
         vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
-        vendorIndustries: [{id:this.detailForm.value.vendorIndustry}]
+        vendorIndustries: [{
+          id: this.detailForm.value.vendorIndustry
+        }]
       };
 
-      if(this.userService.getVendorInfo()) {
+      if (this.userService.getVendorInfo()) {
         this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
           this.initForm(res);
           this.spineer.hide();
         }, error => {
           console.log(error);
           this.spineer.hide();
-        });  
+        });
       } else {
         this.vendorService.createVendorProfile(vendorProfile).subscribe(res => {
           this.initForm(res);
@@ -198,7 +210,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   fileChangeEvent(evt) {
-    let file = evt.target.files[0];
+    const file = evt.target.files[0];
     this.certFile = file.name;
   }
 }

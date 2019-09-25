@@ -8,11 +8,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: './layouts/dashboard/dashboard.module#DashboardModule',
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent, pathMatch: 'full' },
   { path: '**',  pathMatch: 'full', redirectTo: 'profile',
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuard]
   }
 ];
 

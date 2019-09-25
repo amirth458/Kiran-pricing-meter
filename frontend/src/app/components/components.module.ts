@@ -38,7 +38,6 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 
 @NgModule({
   declarations: [
-    
     ActionBarComponent,
     ActionCellRendererComponent,
     BasicDetailsComponent,

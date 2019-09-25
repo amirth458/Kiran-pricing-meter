@@ -59,7 +59,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   ngOnInit() {
     if (this.route.url.includes('edit')) {
       this.postProcessProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      const machine = this.postProcessProfile.filter(x => x.id == this.postProcessProfileId);
+      const machine = this.postProcessProfile.filter(x => x.id === this.postProcessProfileId);
       if (machine.length > 0) {
         this.form = { ...this.form, ...machine[0] };
       }

@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class UserService {
   accessToken = null;
   vendorInfo = null;
 
-  constructor(public http: HttpClient, public route: Router) { }
+  constructor(public http: HttpClient, public route: Router) {}
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
     const headers = new HttpHeaders()
       .set('Content-type', 'application/json')
@@ -30,13 +29,12 @@ export class UserService {
     return headers;
   }
 
-  getProfile() {
-  }
+  getProfile() {}
 
   setProfile() {
 
   }
-  
+
   getUserInfo() {
     return this.userInfo;
   }
@@ -46,13 +44,16 @@ export class UserService {
   }
 
   login(data: User) {
-    return this.http.post(environment.apiBaseUrl + '/auth/signin',
-      { usernameOrEmail: data.username, password: data.password });
+    return this.http.post(environment.apiBaseUrl + '/auth/signin', {
+      usernameOrEmail: data.username,
+      password: data.password
+    });
   }
 
   signup(userData: User) {
-    return this.http.post(environment.apiBaseUrl + '/auth/signup',
-      { ...userData });
+    return this.http.post(environment.apiBaseUrl + '/auth/signup', {
+      ...userData
+    });
   }
 
   logout() {
@@ -64,7 +65,12 @@ export class UserService {
     return !!localStorage.getItem('3d-token');
   }
 
-  getTokenData(): { accessToken: string, tokenType: string, generatedIn: string, expiryDate: string } {
+  getTokenData(): {
+    accessToken: string,
+    tokenType: string,
+    generatedIn: string,
+    expiryDate: string
+  } {
     const tokenData = JSON.parse(localStorage.getItem('3d-token'));
     if (tokenData == null) {
       return null;
@@ -78,7 +84,12 @@ export class UserService {
     };
   }
 
-  saveTokenData(tokenData: { accessToken: string, tokenType: string, generatedIn: string, expiryDate: string }) {
+  saveTokenData(tokenData: {
+    accessToken: string,
+    tokenType: string,
+    generatedIn: string,
+    expiryDate: string
+  }) {
     const tokenInfo = {
       ...tokenData
     };
