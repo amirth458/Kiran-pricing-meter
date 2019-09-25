@@ -52,7 +52,14 @@ export class ProcessProfileComponent implements OnInit {
         type: '',
         filter: '',
       }
-    }
+    },
+    {
+      name: 'Process Type', checked: false,
+      field: 'processProfileType.name', query: {
+        type: '',
+        filter: '',
+      }
+    },
   ];
 
   filterColumns = [
@@ -64,7 +71,10 @@ export class ProcessProfileComponent implements OnInit {
     },
     {
       name: 'Equipment', checked: true, field: 'machineServingMaterial.vendorMachinery.equipment.name'
-    }
+    },
+    {
+      name: 'Process Type', checked: true, field: 'processProfileType.name'
+    },
   ];
 
 
@@ -77,7 +87,8 @@ export class ProcessProfileComponent implements OnInit {
   columnDefs: Array<any> = [
     { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
     { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: true },
-    { headerName: 'Equipment', field: 'machineServingMaterial.vendorMachinery.equipment.name', hide: false, sortable: true, filter: true }
+    { headerName: 'Equipment', field: 'machineServingMaterial.vendorMachinery.equipment.name', hide: false, sortable: true, filter: true },
+    { headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: true }
   ];
 
 
@@ -332,14 +343,14 @@ export class ProcessProfileComponent implements OnInit {
     });
 
     availableColumns.map(x => {
-      this.searchColumns.push({
-        name: x.name, checked: false,
-        field: x.name.replace(/ /g, ''),
-        query: {
-          type: '',
-          filter: '',
-        }
-      });
+      // this.searchColumns.push({
+      //   name: x.name, checked: false,
+      //   field: x.name.replace(/ /g, ''),
+      //   query: {
+      //     type: '',
+      //     filter: '',
+      //   }
+      // });
       if (visibleColumns < 3) {
         this.filterColumns.push({
           name: x.name, checked: true,

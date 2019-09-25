@@ -206,16 +206,17 @@
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of units" [value]="item.id">
-                    {{item.symbol}}
+                    <ng-container *ngIf="item.id < 13">
+                      {{item.name}}({{item.symbol}})
+                    </ng-container>
+                    <ng-container *ngIf="item.id >= 13">
+                      {{item.name}}
+                    </ng-container>
                   </option>
                 </select>
 
-                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
+                <span class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
-                </span>
-
-                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
-                  <i class=""></i>
                 </span>
               </div>
 
@@ -283,15 +284,18 @@
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">{{item.symbol}}</option>
+                  <option *ngFor="let item of units" [value]="item.id">
+                    <ng-container *ngIf="item.id < 13">
+                      {{item.name}}({{item.symbol}})
+                    </ng-container>
+                    <ng-container *ngIf="item.id >= 13">
+                      {{item.name}}
+                    </ng-container>
+                  </option>
                 </select>
 
-                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
+                <span class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
-                </span>
-
-                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
-                  <i class=""></i>
                 </span>
               </div>
 
