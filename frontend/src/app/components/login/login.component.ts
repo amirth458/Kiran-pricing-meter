@@ -17,8 +17,8 @@ import { NgxSpinnerService } from 'ngx-spinner'
 export class LoginComponent implements OnInit, AfterViewChecked {
 
   userForm: FormGroup = this.fb.group({
-    email:[null, Validators.required],
-    password:[null, Validators.required],
+    email: [null, Validators.required],
+    password: [null, Validators.required],
     remember_me: null,
   });
 
@@ -26,16 +26,16 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   constructor(
     public fb: FormBuilder,
-    private router: Router,
-    private spineer: NgxSpinnerService,
-    private authService: AuthService,
-    private userService: UserService) { }
+    public router: Router,
+    public spineer: NgxSpinnerService,
+    public authService: AuthService,
+    public userService: UserService) { }
 
   ngOnInit() {
     const remember_me = localStorage.getItem('remember_me');
     const email = localStorage.getItem('email');
     const password = localStorage.getItem('password');
-    if(remember_me === '1') {
+    if (remember_me === '1') {
       this.userForm.setValue({
         email: email,
         password: password,
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   login() {
     this.errorMessage = '';
-    if(!(this.userForm.valid)) {
+    if (!(this.userForm.valid)) {
       return;
     }
     this.spineer.show();
@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   loginErrorHandler(error) {
-    switch(error.status) {
+    switch (error.status) {
       case 404:
         this.errorMessage = "Authentication service does not exist.";
         break;
@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         this.errorMessage = "Error on Server";
         break;
       default:
-          this.errorMessage = "Error on Server";
+        this.errorMessage = "Error on Server";
         break;
     }
   }

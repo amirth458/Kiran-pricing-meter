@@ -51,7 +51,8 @@ export const environment = {
   extendedmenu: [
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
   ],
-  apiBaseUrl: 'http://dev-manage-api.3diligent.com/api/v1'
+  apiBaseUrl: 'http://dev-manage-api.3diligent.com/api/v1',
+  encryptionKey: '1Kf@%4%3ADfEafw'
 };
 
 /*

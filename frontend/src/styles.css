@@ -151,11 +151,25 @@ button.theme.theme-reverse:hover {
   color: var(--theme-secondary-blue)
 }
 
+.ng-select .ng-select-container .ng-value-container .ng-placeholder,
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value,
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
 .ng-select.ng-select-single .ng-select-container .ng-value-container,
 .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
   font-size: 13px;
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--theme-secondary-blue-solid);
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  margin-top: 3px;
+}
+
+.ng-select.ng-select-opened .ng-select-container,
+.ng-dropdown-panel {
+  z-index: 3 !important;
 }
 
 /* Overriding Ag-grid style */
@@ -231,9 +245,19 @@ button.theme.theme-reverse:hover {
   background-color: var(--theme-input-bg);
 }
 
+
+.phone .dropdown .dropbtn {
+  border: 1px solid #ced4da !important;
+  padding: .25rem .75rem !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  background-color: var(--theme-input-bg);
+}
+
 .phone .dropdown {
   background-color: var(--theme-input-bg);
 }
+
 /* NON Ag-grid table style */
 
 

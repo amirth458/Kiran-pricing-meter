@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ɵConsole } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
 import * as processProfiles from '../../../assets/static/processProfile';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FilterOption } from 'src/app/model/vendor.model';
+import { ProcessProfileService } from 'src/app/service/process-profile.service';
+import { UserService } from 'src/app/service/user.service';
+import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 
 @Component({
   selector: 'app-process-profile',
@@ -12,6 +17,20 @@ import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer
   styleUrls: ['./process-profile.component.css']
 })
 export class ProcessProfileComponent implements OnInit {
+
+  @ViewChild('copyModal') copyModal;
+  @ViewChild('deleteModal') deleteModal;
+
+  newProfileName = '';
+  cloneData;
+
+  selectedProfile = null;
+  tableControlReady = false;
+
+  processParameterType: any = [];
+  processDimensionalPropertyList: any = [];
+  processMaterialCharacteristicList: any = [];
+
 
   searchColumns = [
     {
@@ -22,134 +41,43 @@ export class ProcessProfileComponent implements OnInit {
     },
     {
       name: 'Process Profile Name', checked: false,
-      field: 'processProfileName', query: {
+      field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
       name: 'Equipment', checked: false,
-      field: 'equipment', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Process Type', checked: false,
-      field: 'processType', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Layer Height', checked: false,
-      field: 'layerHeight', query: {
-        type: '',
-        filter: '',
-      }
-    },
-
-    {
-      name: 'Infill', checked: false,
-      field: 'infill', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Tolerance Base', checked: false,
-      field: 'toleranceBase', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Tensile Strength', checked: false,
-      field: 'tensileStrength', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Tensile Modulus', checked: false,
-      field: 'tensileModulus', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Surface Finish', checked: false,
-      field: 'surfaceFinish', query: {
+      field: 'machineServingMaterial.vendorMachinery.equipment.name', query: {
         type: '',
         filter: '',
       }
     }
   ];
+
   filterColumns = [
     {
       name: 'Process Profile No', checked: true, field: 'id'
     },
     {
-      name: 'Process Profile Name', checked: true, field: 'processProfileName'
+      name: 'Process Profile Name', checked: true, field: 'name'
     },
     {
-      name: 'Equipment', checked: true, field: 'equipment'
-    },
-    {
-      name: 'Process Type', checked: false, field: 'processType'
-    },
-    {
-      name: 'Layer Height', checked: false, field: 'layerHeight'
-    },
-
-    {
-      name: 'Infill', checked: false, field: 'infill'
-    },
-    {
-      name: 'Tolerance Base', checked: true, field: 'toleranceBase'
-    },
-    {
-      name: 'Tensile Strength', checked: false, field: 'tensileStrength'
-    },
-    {
-      name: 'Tensile Modulus', checked: true, field: 'tensileModulus'
-    },
-    {
-      name: 'Surface Finish', checked: true, field: 'surfaceFinish'
-    },
+      name: 'Equipment', checked: true, field: 'machineServingMaterial.vendorMachinery.equipment.name'
+    }
   ];
+
+
   type = ['search', 'filter'];
 
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
   };
 
-  columnDefs = [
+  columnDefs: Array<any> = [
     { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Process Profile Name', field: 'processProfileName', hide: false, sortable: true, filter: true },
-    { headerName: 'Equipment', field: 'equipment', hide: false, sortable: true, filter: true },
-    { headerName: 'Process Type', field: 'processType', hide: true, sortable: true, filter: true },
-    { headerName: 'Layer Height', field: 'layerHeight', hide: false, sortable: true, filter: true },
-    { headerName: 'Infill', field: 'infill', hide: false, sortable: true, filter: true },
-    { headerName: 'Tolerance Base', field: 'toleranceBase', hide: false, sortable: true, filter: true },
-    { headerName: 'Tensile Strength', field: 'tensileStrength', hide: false, sortable: true, filter: true },
-    { headerName: 'Tensile Modulus', field: 'tensileModulus', hide: false, sortable: true, filter: true },
-    { headerName: 'Surface Finish', field: 'surfaceFinish', hide: false, sortable: true, filter: true },
-    {
-      headerName: 'Actions',
-      width: 140,
-      cellRenderer: 'actionCellRenderer',
-      cellRendererParams: {
-        action: {
-          edit: (param) => this.editRow(param),
-          copy: (param) => this.copyRow(param),
-          delete: (param) => this.deleteRow(param),
-          canEdit: true,
-          canCopy: true,
-          canDelete: true,
-        }
-      }
-    }
+    { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: true },
+    { headerName: 'Equipment', field: 'machineServingMaterial.vendorMachinery.equipment.name', hide: false, sortable: true, filter: true }
   ];
 
 
@@ -157,13 +85,28 @@ export class ProcessProfileComponent implements OnInit {
 
   rowData;
   pageSize = 10;
-  constructor(public route: Router) { }
+  constructor(
+    public route: Router,
+    public spineer: NgxSpinnerService,
+    public userService: UserService,
+    public processService: ProcessProfileService,
+    public processMetaData: ProcessMetadataService
+  ) { }
 
-  ngOnInit() {
-    this.rowData = processProfiles;
+
+  async ngOnInit() {
+    this.spineer.show();
+
+    await this.getMetaColumns();
+    await this.getProfiles();
+    this.createColumns();
+
+    this.tableControlReady = true;
+
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
+
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -171,15 +114,10 @@ export class ProcessProfileComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35,
-      onRowClicked: (event) => {
-        // this.onRowClick(event);
-      }
-
+      headerHeight: 35
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
-
     }, 50);
   }
 
@@ -202,21 +140,42 @@ export class ProcessProfileComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  copyRow(event) {
-    const startIndex = this.rowData.indexOf(event.data);
+  async copyRow() {
+    this.spineer.show();
+    const postData = {
+      name: this.newProfileName || 'Process Profile - ' + this.getRandomString(7),
+      machineServingMaterial: this.cloneData.machineServingMaterial,
+      processDimensionalPropertyList: this.cloneData.processDimensionalPropertyList,
+      processMaterialCharacteristicList: this.cloneData.processMaterialCharacteristicList,
+      processParameterList: this.cloneData.processParameterList,
+      processProfileType: this.cloneData.processProfileType,
+      vendorId: this.cloneData.vendorId,
+    };
+    // tslint:disable-next-line:max-line-length
+    const res = await this.processService.saveProfile(this.userService.getUserInfo().id, postData).toPromise();
+    const startIndex = this.rowData.indexOf(this.cloneData);
     const frontSlice = this.rowData.slice(0, startIndex + 1);
     const endSlice = this.rowData.slice(startIndex + 1);
-    this.rowData = frontSlice.concat([{ ...event.data, id: '-' }].concat(endSlice));
+    // this.rowData = frontSlice.concat([{ ...this.cloneData, name: this.cloneData.name + ' - COPY', id: '-' }].concat(endSlice));
+    this.rowData = frontSlice.concat([res].concat(endSlice));
     this.gridOptions.api.setRowData(this.rowData);
-
-    // API Request to save the copied row
+    this.spineer.hide();
   }
 
-  deleteRow(event) {
+  async deleteProfile() {
+    this.spineer.show();
+    try {
+      await this.processService.deleteProfile(this.userService.getUserInfo().id, this.selectedProfile.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
     // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != event.data.id);
+    const filteredData = this.rowData.filter(x => x.id != this.selectedProfile.id);
     this.rowData = filteredData;
-    // API Request to delete the selected row
+    this.deleteModal.nativeElement.click();
 
   }
 
@@ -242,5 +201,166 @@ export class ProcessProfileComponent implements OnInit {
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  async getProfiles() {
+    try {
+      const res = await this.processService.getAllProfiles(this.userService.getUserInfo().id).toPromise();
+      this.rowData = res || [];
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
+  }
+
+  async getMetaColumns() {
+    const processParameterType = await this.processMetaData.getProcessParameterType().toPromise();
+    const processDimensionalPropertyList = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
+    const processMaterialCharacteristicList = await this.processMetaData.getProcessMaterialCharacteristicType().toPromise();
+
+    this.processParameterType = processParameterType.metadataList;
+    this.processDimensionalPropertyList = processDimensionalPropertyList.metadataList;
+    this.processMaterialCharacteristicList = processMaterialCharacteristicList.metadataList;
+  }
+
+  createColumns() {
+    const availableColumnNames = [];
+    const availableColumns = [];
+    let visibleColumns = 0;
+    this.rowData.map(row => {
+      row.processParameterList.map(x => {
+        if (!availableColumnNames.includes(x.processParameterType.name)) {
+          availableColumnNames.push(x.processParameterType.name);
+          availableColumns.push(x.processParameterType);
+          this.columnDefs.push(
+            {
+              headerName: x.processParameterType.name,
+              field: x.processParameterType.name.replace(/ /g, ''),
+              hide: true,
+              sortable: true,
+              filter: true,
+              cellRenderer(params: any): any {
+                let value = '';
+                params.data.processParameterList.map(item => {
+                  if (item.processParameterType.name === x.processParameterType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
+              }
+            }
+          );
+        }
+
+      });
+      row.processDimensionalPropertyList.map(x => {
+        if (!availableColumnNames.includes(x.processDimensionalPropertyType.name)) {
+          availableColumnNames.push(x.processDimensionalPropertyType.name);
+          availableColumns.push(x.processDimensionalPropertyType);
+          this.columnDefs.push(
+            {
+              headerName: x.processDimensionalPropertyType.name,
+              field: x.processDimensionalPropertyType.name.replace(/ /g, ''),
+              hide: true,
+              sortable: true,
+              filter: true,
+              cellRenderer(params: any): any {
+                let value = '';
+                params.data.processDimensionalPropertyList.map(item => {
+                  if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
+              }
+            }
+          );
+        }
+      });
+
+      row.processMaterialCharacteristicList.map(x => {
+        if (!availableColumnNames.includes(x.processMaterialCharacteristicType.name)) {
+          availableColumnNames.push(x.processMaterialCharacteristicType.name);
+          availableColumns.push(x.processMaterialCharacteristicType);
+          this.columnDefs.push(
+            {
+              headerName: x.processMaterialCharacteristicType.name,
+              field: x.processMaterialCharacteristicType.name.replace(/ /g, ''),
+              hide: true,
+              sortable: true,
+              filter: true,
+              cellRenderer(params: any): any {
+                let value = '';
+                params.data.processMaterialCharacteristicList.map(item => {
+                  if (item.processMaterialCharacteristicType.name === x.processMaterialCharacteristicType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
+              }
+            }
+          );
+        }
+      });
+    });
+
+
+    this.columnDefs.push({
+      headerName: 'Actions',
+      width: 140,
+      cellRenderer: 'actionCellRenderer',
+      cellRendererParams: {
+        action: {
+          edit: (param) => this.editRow(param),
+          copy: (param) => {
+            this.copyModal.nativeElement.click();
+            this.cloneData = param.data;
+          },
+          delete: async (param) => {
+            this.deleteModal.nativeElement.click();
+            this.selectedProfile = param.data;
+          },
+          canEdit: true,
+          canCopy: true,
+          canDelete: true,
+        }
+      }
+    });
+
+    availableColumns.map(x => {
+      this.searchColumns.push({
+        name: x.name, checked: false,
+        field: x.name.replace(/ /g, ''),
+        query: {
+          type: '',
+          filter: '',
+        }
+      });
+      if (visibleColumns < 3) {
+        this.filterColumns.push({
+          name: x.name, checked: true,
+          field: x.name.replace(/ /g, '')
+        });
+        visibleColumns++;
+      } else {
+        this.filterColumns.push({
+          name: x.name, checked: false,
+          field: x.name.replace(/ /g, '')
+        });
+      }
+    });
+
+  }
+
+  getRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 }

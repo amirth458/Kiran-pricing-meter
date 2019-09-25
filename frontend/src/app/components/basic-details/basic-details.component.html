@@ -71,7 +71,8 @@
       <div class="form-group theme col-md-6">
         <label>Certifications</label>
         <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
-          [selectOnTab]="true" [(ngModel)]="selectedCertifications" [ngModelOptions]="{standalone: true}">
+          placeholder="Certifications" [selectOnTab]="true" [(ngModel)]="selectedCertifications"
+          [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>

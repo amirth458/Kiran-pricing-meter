@@ -1,6 +1,10 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-process-pricing-item',
@@ -10,34 +14,60 @@ import { Router } from '@angular/router';
 export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   facilities = [];
   equipments = [];
-  form = {
+
+  form: FormGroup = this.fb.group({
     id: '',
-    pricingProfileName: '',
-    processProfileName: '',
-    conditions: [
-      { name: '', condition: '', value: '', unit: '' }
-    ],
-    pricingParameters: [
-      { value1: '', value2: '', unit: '' }
-    ]
-  };
+    vendorId: [null],
+    pricingProfileName: [null],
+    processProfileName: [null, Validators.required],
+    conditions: [[]],
+    pricingParameters: [[]]
+  });
+
+
+  selectedConditions = [
+    { name: '', condition: '', value: '', unit: '' }
+  ];
+  selectedPricingParameters = [
+    { value1: '', value2: '', unit: '' }
+  ];
+
+
   processPricingId = null;
   processPricings = [];
-  processProfiles=[];
+  processProfiles = [];
 
-  conditions = ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to',];
+  conditions = ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'];
   units = ['CC', 'UM', 'Days'];
   conditionNames = ['Part Volume', 'Layer Height', 'Lead Time To Production'];
 
-  constructor(public route: Router) { }
+  isNew = true;
+  constructor(
+    public route: Router,
+    public fb: FormBuilder,
+    public processMetaData: ProcessMetadataService,
+    public spinner: NgxSpinnerService,
+    public userService: UserService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    try {
+      this.spinner.show();
+      const pricingParameterType = await this.processMetaData.getProcessPricingParameterType().toPromise();
+      const pricingConditionType = await this.processMetaData.getProcessPricingConditionType().toPromise();
+      const operatorType = await this.processMetaData.getoperatorType().toPromise();
+
+      this.conditionNames = pricingParameterType.metadataList;
+      this.conditions = operatorType.metadataList;
+      this.units = pricingConditionType.metadataList;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spinner.hide();
+    }
     if (this.route.url.includes('edit')) {
+      this.isNew = false;
       this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      const processProfile = this.processPricings.filter(x => x.id == this.processPricingId);
-      if (processProfile.length > 0) {
-        this.form = { ...this.form, ...processProfile[0] };
-      }
       // Make API request
     }
   }
@@ -52,7 +82,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          this.save();
         }
         form.classList.add('was-validated');
       }, false);
@@ -60,12 +89,64 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   }
 
   addCondition() {
-    this.form.conditions.push({ name: '', condition: '', value: '', unit: '' });
+    this.selectedConditions.push({ name: '', condition: '', value: '', unit: '' });
   }
   addPricingParameter() {
-    this.form.pricingParameters.push({ value1: '', value2: '', unit: '' });
+    this.selectedPricingParameters.push({ value1: '', value2: '', unit: '' });
   }
-  save() {
-    console.log(this.form);
+
+  removeCondition(index, section) {
+    let frontSlice = [];
+    let endSlice = [];
+    switch (section) {
+      case 'conditions':
+        if (this.selectedConditions.length !== 1) {
+          frontSlice = this.selectedConditions.slice(0, index);
+          endSlice = this.selectedConditions.slice(index + 1);
+          this.selectedConditions = frontSlice.concat(endSlice);
+        }
+        break;
+      case 'pricingParameters':
+        if (this.selectedPricingParameters.length !== 1) {
+          frontSlice = this.selectedPricingParameters.slice(0, index);
+          endSlice = this.selectedPricingParameters.slice(index + 1);
+          this.selectedPricingParameters = frontSlice.concat(endSlice);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  prepareData() {
+    const postData = {
+      id: this.form.value.id,
+      vendorId: this.userService.getUserInfo().id,
+      processPricingName: this.form.value.processPricingName,
+      processProfileName: this.form.value.processProfileName,
+      conditions: [...this.selectedConditions.map(x => new Object({ id: x }))],
+      pricingParameters: [...this.selectedPricingParameters.map(x => new Object({ id: x }))],
+      updatedDate: '',
+      createdBy: '',
+      createdDate: '',
+    };
+
+    postData.updatedDate = new Date().toString();
+    if (this.isNew) {
+      postData.createdBy = String(this.userService.getUserInfo().id);
+      postData.createdDate = new Date().toString();
+    } else {
+      postData.updatedDate = new Date().toString();
+    }
+    return postData;
+  }
+
+  save(event) {
+    event.preventDefault();
+    if (this.form.valid) {
+      const postData = this.prepareData();
+      const vendorId = this.userService.getUserInfo().id;
+      console.log({ postData, vendorId });
+    }
   }
 }

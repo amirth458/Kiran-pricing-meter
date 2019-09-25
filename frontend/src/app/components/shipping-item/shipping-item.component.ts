@@ -20,7 +20,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     id: [null],
     shippingProvider: [null, Validators.required],
     accountId: [null, Validators.required],
-    isActive: [null, Validators.required],
+    status: [null, Validators.required],
     createdBy: null,
     createdDate: null,
     updatedDate: null
@@ -32,11 +32,11 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
 
   constructor(
     public fb: FormBuilder,
-    private route: Router,
-    private shippingService: ShippingService,
-    private vendorService: VendorService,
-    private spineer: NgxSpinnerService,
-    private userService: UserService) { }
+    public route: Router,
+    public shippingService: ShippingService,
+    public vendorService: VendorService,
+    public spineer: NgxSpinnerService,
+    public userService: UserService) { }
 
 
   async ngOnInit() {
@@ -91,7 +91,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
       id: data.id,
       shippingProvider: data.shippingProvider.id,
       accountId: data.accountId,
-      isActive: data.isActive ? true : false,
+      status: data.status || 'INACTIVE',
       createdBy: data.createdBy || '',
       createdDate: data.createdDate || '',
       updatedDate: data.updatedDate || '',

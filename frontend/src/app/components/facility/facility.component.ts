@@ -176,16 +176,15 @@ export class FacilityComponent implements OnInit {
   pageSize = 10;
 
   constructor(
-    private route: Router,
-    private facilityService: FacilityService,
-    private userService: UserService,
-    private spineer: NgxSpinnerService
+    public route: Router,
+    public facilityService: FacilityService,
+    public userService: UserService,
+    public spineer: NgxSpinnerService
   ) { }
 
   ngOnInit() {
 
     this.getVendorFacilities();
-    this.rowData = [];
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }

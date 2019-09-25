@@ -43,11 +43,11 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
   constructor(
     public fb: FormBuilder,
-    private route: Router, 
-    private vendorService: VendorService,
-    private facilityService: FacilityService,
-    private spineer: NgxSpinnerService,
-    private userService: UserService) { }
+    public route: Router,
+    public vendorService: VendorService,
+    public facilityService: FacilityService,
+    public spineer: NgxSpinnerService,
+    public userService: UserService) { }
 
   ngOnInit() {
     this.getVendorMetaDatas();
@@ -94,7 +94,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          
+
         }
         form.classList.add('was-validated');
       }, false);
@@ -103,7 +103,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
   initForm(data: any) {
     this.selectedCertifications = data.vendorFacilityCertificationList.map(x => x.facilityCertification.id) || [];
-    
+
     this.facilityItem.setValue({
       id: data.id,
       vendorId: data.vendorId,
@@ -127,7 +127,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     console.log(this.facilityItem.value);
     if(!(this.facilityItem.valid && this.facilityItem.dirty)) {
       return;
-    } 
+    }
     this.spineer.show();
 
     const vendorId = this.userService.getUserInfo().id;

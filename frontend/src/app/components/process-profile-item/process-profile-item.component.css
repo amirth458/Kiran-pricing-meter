@@ -17,6 +17,9 @@
 
 }
 
+.form-group.theme.icon-attached {
+  display: flex;
+}
 
 .card .card-header {
   background: white;
@@ -53,7 +56,7 @@
 }
 
 .conditions {
-  margin: 0px 0px 20px 20px;
+  margin: 0px 0px 20px 0px;
   padding: 20px;
   border: 2px solid var(--theme-table-border);
   border-radius: 8px;
@@ -73,9 +76,10 @@
   flex-grow: 1;
 }
 
-.conditions .add {
+.conditions .add,
+.conditions .mins {
   display: flex;
-  margin-top: 6px;
+  /* margin-top: 6px; */
   font-size: 16px;
   color: var(--theme-light-green);
   margin-left: 12px;
@@ -83,7 +87,17 @@
   height: fit-content;
 }
 
-.conditions .add:hover {
+.conditions .minus {
+  color: red;
+  margin-left: 10px;
+}
+
+.conditions .minus.invisible {
+  width: 15px;
+}
+
+.conditions .add:hover,
+.conditions .minus:hover {
   cursor: pointer;
 }
 
@@ -102,7 +116,7 @@
 
 .default span {
   float: right;
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .default span:hover {

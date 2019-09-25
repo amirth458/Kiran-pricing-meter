@@ -44,7 +44,7 @@ export class ShippingComponent implements OnInit {
     },
     {
       name: 'Status', checked: false,
-      field: 'isActive', query: {
+      field: 'status', query: {
         type: '',
         filter: '',
       }
@@ -68,7 +68,7 @@ export class ShippingComponent implements OnInit {
       name: 'Account ID', checked: true, field: 'accountId'
     },
     {
-      name: 'Status', checked: true, field: 'isActive'
+      name: 'Status', checked: true, field: 'status'
     },
     {
       name: 'Actions', checked: true, field: 'actions'
@@ -87,7 +87,7 @@ export class ShippingComponent implements OnInit {
       headerName: 'Carrier', field: 'shippingProvider.name', hide: false, sortable: true, filter: true,
     },
     { headerName: 'Account ID', field: 'accountId', hide: false, sortable: true, filter: true },
-    { headerName: 'Status', field: 'isActive', hide: false, sortable: true, filter: true },
+    { headerName: 'Status', field: 'status', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 50,
@@ -113,10 +113,10 @@ export class ShippingComponent implements OnInit {
   rowData;
   pageSize = 10;
   constructor(
-    private route: Router,
-    private shippingService: ShippingService,
-    private userService: UserService,
-    private spineer: NgxSpinnerService
+    public route: Router,
+    public shippingService: ShippingService,
+    public userService: UserService,
+    public spineer: NgxSpinnerService
 
   ) {
 

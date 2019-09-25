@@ -22,6 +22,11 @@
   height: 10px
 }
 
+.form-group.icon-attached {
+  display: flex;
+  align-items: center;
+}
+
 .conditions {
   margin: 0px 0px 20px 20px;
   padding: 20px;
@@ -32,7 +37,9 @@
 .conditions .info {
   font-size: 13px;
   margin-bottom: 20px;
-  color: var(--theme-secondary-blue)
+  color: var(--theme-secondary-blue);
+  display: flex;
+  justify-content: space-between;
 }
 
 .condition-wrapper {
@@ -53,7 +60,13 @@
   height: fit-content;
 }
 
-.conditions .add:hover {
+.conditions .minus {
+  margin-left: 5px;
+  color: red;
+}
+
+.conditions .add:hover,
+.conditions .minus:hover {
   cursor: pointer;
 }
 
