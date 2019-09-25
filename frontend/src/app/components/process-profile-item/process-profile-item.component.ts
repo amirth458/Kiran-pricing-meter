@@ -211,15 +211,15 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   getProperOperands(conditionId, index, section) {
     if (section === 'Process Parameters') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processParameterList.filter(condition => condition.id === conditionId)[0].operandType.name;
+      const operandTypeName = this.processParameterList.filter(condition => condition.id == conditionId)[0].operandType.name;
       this.selectedProcessParameterList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     } else if (section === 'Process Dimensional Properties') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processDimensionalPropertyList.filter(condition => condition.id === conditionId)[0].operandType.name;
+      const operandTypeName = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0].operandType.name;
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     } else if (section === 'Process Material Characteristics') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processMaterialCharacteristicList.filter(condition => condition.id === conditionId)[0].operandType.name;
+      const operandTypeName = this.processMaterialCharacteristicList.filter(condition => condition.id == conditionId)[0].operandType.name;
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     }
 
@@ -361,7 +361,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       while (true) {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
         const res = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
-        if (!res.content || res.content.length === 0) {
+        if (!res.content || res.content.length == 0) {
           break;
         }
         rows.push(...res.content);
