@@ -79,8 +79,9 @@ const routes: Routes = [
           { path: '**', redirectTo: 'vendor', pathMatch: 'full' }
         ],
       },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ]
-  }
+  },
 ];
 
 @NgModule({
