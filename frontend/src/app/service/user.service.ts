@@ -15,11 +15,12 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   userInfo = {
-    id: 502,
+    id: 501,
   };
   accessToken = null;
-  constructor(public http: HttpClient, public route: Router) { }
+  vendorInfo = null;
 
+  constructor(public http: HttpClient, public route: Router) { }
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
     const headers = new HttpHeaders()
       .set('Content-type', 'application/json')
@@ -35,7 +36,7 @@ export class UserService {
   setProfile() {
 
   }
-
+  
   getUserInfo() {
     return this.userInfo;
   }
@@ -106,4 +107,11 @@ export class UserService {
     return true;
   }
 
+  setVendorInfo(vendorInfo) {
+    this.vendorInfo = vendorInfo;
+  }
+
+  getVendorInfo() {
+    return this.vendorInfo;
+  }
 }
