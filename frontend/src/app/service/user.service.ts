@@ -10,8 +10,9 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   userInfo = {
-    id: 502,
+    id: 501,
   };
+  vendorInfo = null;
   constructor(public http: HttpClient) { }
 
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
@@ -30,12 +31,20 @@ export class UserService {
   setProfile() {
 
   }
-
+  
   getUserInfo() {
     return this.userInfo;
   }
 
   setUserInfo(userInfo) {
     this.userInfo = userInfo;
+  }
+
+  setVendorInfo(vendorInfo) {
+    this.vendorInfo = vendorInfo;
+  }
+
+  getVendorInfo() {
+    return this.vendorInfo;
   }
 }
