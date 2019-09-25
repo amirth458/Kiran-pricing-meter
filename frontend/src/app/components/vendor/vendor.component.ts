@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { AuthService } from 'src/app/service/auth.service';
 
@@ -59,14 +60,37 @@ export class VendorComponent implements OnInit {
       }]
     }
   ];
+
   selectedTab = this.actionbarMenu[0].name;
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private route: Router,
   ) {}
 
   ngOnInit() {
+    const routeArr = this.route.url.slice(this.route.url.indexOf('profile/vendor/') + 'profile/vendor/'.length).split('/');
+    switch (routeArr[0]) {
+      case 'basics':
+        this.selectedTab = 'Basic Details';
+        break;
+      case 'facilities':
+        this.selectedTab = 'Facilities';
+        break;
+      case 'preferences':
+        this.selectedTab = 'Preferences';
+        break;
+      case 'machines':
+        this.selectedTab = 'Machines';
+        break;
+      case 'shipping':
+        this.selectedTab = 'Shipping';
+        break;
+      default:
+        this.selectedTab = 'Basic Details';
+        break;
+    }
     this.authService.getVendor().subscribe(res => {
       this.userService.setVendorInfo(res);
       if (this.userService.getVendorInfo()) {
