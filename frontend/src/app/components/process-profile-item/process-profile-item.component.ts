@@ -273,14 +273,14 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         }
         break;
       case 'processDimensionalPropertyList':
-        if (this.selectedProcessParameterList.length !== 1) {
+        if (this.selectedProcessParameterList.length !== 0) {
           frontSlice = this.selectedProcessDimensionalPropertyList.slice(0, index);
           endSlice = this.selectedProcessDimensionalPropertyList.slice(index + 1);
           this.selectedProcessDimensionalPropertyList = frontSlice.concat(endSlice);
         }
         break;
       case 'processMaterialCharacteristicList':
-        if (this.selectedProcessParameterList.length !== 1) {
+        if (this.selectedProcessParameterList.length !== 0) {
           frontSlice = this.selectedProcessMaterialCharacteristicList.slice(0, index);
           endSlice = this.selectedProcessMaterialCharacteristicList.slice(index + 1);
           this.selectedProcessMaterialCharacteristicList = frontSlice.concat(endSlice);

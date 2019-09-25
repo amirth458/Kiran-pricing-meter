@@ -142,10 +142,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.submenus = [
-      {
-        name: 'Home',
-        route: this.baseURL + '/home'
-      },
+      // {
+      //   name: 'Home',
+      //   route: this.baseURL + '/home'
+      // },
       {
         name: 'Vendor',
         route: this.baseURL + '/vendor'
