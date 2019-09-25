@@ -1,29 +1,13 @@
-import {
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import {
-  Router
-} from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {
-  GridOptions
-} from 'ag-grid-community';
+import { GridOptions } from 'ag-grid-community';
 
-import {
-  ActionCellRendererComponent
-} from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
-import {
-  FacilityService
-} from '../../service/facility.service';
-import {
-  UserService
-} from '../../service/user.service';
+import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { FacilityService } from '../../service/facility.service';
+import { UserService } from '../../service/user.service';
 
-import {
-  NgxSpinnerService
-} from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-facility',
