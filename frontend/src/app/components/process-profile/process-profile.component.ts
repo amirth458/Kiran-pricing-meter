@@ -160,6 +160,8 @@ export class ProcessProfileComponent implements OnInit {
     this.rowData = frontSlice.concat([res].concat(endSlice));
     this.gridOptions.api.setRowData(this.rowData);
     this.spineer.hide();
+    this.copyModal.nativeElement.click();
+
   }
 
   async deleteProfile() {

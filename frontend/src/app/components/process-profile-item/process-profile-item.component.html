@@ -84,7 +84,7 @@
                   (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Process Parameters')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processParameterList.conditionNames" [value]="item.id">{{item.name}}
+                  <option *ngFor="let item of processParameterList" [value]="item.id">{{item.name}}
                   </option>
                 </select>
               </div>
@@ -155,7 +155,7 @@
                   (ngModelChange)="getProperOperands(selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id, index,'Process Dimensional Properties')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processDimensionalPropertyList.conditionNames" [value]="item.id">
+                  <option *ngFor="let item of processDimensionalPropertyList" [value]="item.id">
                     {{item.name}}
                   </option>
                 </select>
@@ -234,7 +234,7 @@
                   (ngModelChange)="getProperOperands(selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id, index,'Process Material Characteristics')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processMaterialCharacteristicList.conditionNames" [value]="item.id">
+                  <option *ngFor="let item of processMaterialCharacteristicList" [value]="item.id">
                     {{item.name}}
                   </option>
                 </select>

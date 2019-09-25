@@ -19,8 +19,10 @@
   height: 430px;
 }
 
-btn.btn-primary {
+.btn.btn-primary {
   width: unset !important;
+  padding: 7px 10px !important;
+  width: 100px !important;
 }
 
 @media (max-width: 768px) {
