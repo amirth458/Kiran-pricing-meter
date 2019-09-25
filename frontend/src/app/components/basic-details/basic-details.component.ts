@@ -7,6 +7,7 @@ import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,12 +25,13 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   certifications: VendorMetaData[] = [];
   confidentialities: VendorMetaData[] = [];
   selectedCertifications = [];
+  certFile: string = '';
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
     name: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
-    phone: [null, [Validators.required]],
+    phone: [null, [Validators.required, Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)]],
     vendorType: [null, Validators.required],
     vendorIndustry: [null],
     city: [null, Validators.required],
@@ -46,23 +48,34 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     public fb: FormBuilder,
     public vendorService: VendorService,
     public userService: UserService,
+    public authService: AuthService,
     public spineer: NgxSpinnerService,
     public route: Router
   ) { }
 
-  async ngOnInit() {
-    if (this.route.url.match(/\//g).length == 4) {
-      const urlArray = this.route.url.split('/');
-      const userId = urlArray[urlArray.length - 1];
-      this.userService.setUserInfo({ id: userId });
-    }
-    
+  ngOnInit() {
     this.getVendorMetaDatas();
-    this.vendorService.getVendorDetail(this.userService.getUserInfo().id).subscribe(res => {
-      if (res) {
-        this.initForm(res);
+    console.log('------------vendor infor--------');
+    this.authService.getVendor().subscribe(res => {
+      this.userService.setVendorInfo(res);
+      
+      if(res) {
+        this.vendorService.getVendorDetail(res.id).subscribe(res1 => {
+          if (res1) {
+            this.initForm(res1);
+          }
+        });
+      } else {
+        this.detailForm.setValue({
+          ...this.detailForm.value,
+          confidentiality: 1,
+  
+        });
       }
-    });
+    }, error=>{
+      console.log('get profile error', error);
+    })  
+    
   }
 
   ngAfterViewChecked(): void {
@@ -124,7 +137,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       email: initValue.email,
       phone: initValue.phone,
       vendorType: initValue.vendorType.id,
-      vendorIndustry: [],
+      vendorIndustry: initValue.vendorIndustries[0].id,
       city: initValue.city,
       state: initValue.state,
       country: initValue.country.id,
@@ -154,15 +167,27 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
           id: this.detailForm.value.confidentiality
         },
         vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
-        vendorIndustries: this.detailForm.value.vendorIndustry
+        vendorIndustries: [{id:this.detailForm.value.vendorIndustry}]
       };
-      this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
-        this.initForm(res);
-        this.spineer.hide();
-      }, error => {
-        console.log(error);
-        this.spineer.hide();
-      });
+
+      if(this.userService.getVendorInfo()) {
+        this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
+          this.initForm(res);
+          this.spineer.hide();
+        }, error => {
+          console.log(error);
+          this.spineer.hide();
+        });  
+      } else {
+        this.vendorService.createVendorProfile(vendorProfile).subscribe(res => {
+          this.initForm(res);
+          this.userService.setVendorInfo(res);
+          this.spineer.hide();
+        }, error => {
+          console.log(error);
+          this.spineer.hide();
+        });
+      }
     }
   }
 
@@ -170,5 +195,10 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     const str = input;
     str.replace(/[&amp;]/g, '&#38;');
     return str;
+  }
+
+  fileChangeEvent(evt) {
+    let file = evt.target.files[0];
+    this.certFile = file.name;
   }
 }

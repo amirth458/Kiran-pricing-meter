@@ -8,7 +8,7 @@
 .form-row>.col:first-child,
 .form-row>[class*=col-]:first-child {
   padding-right: 5px;
-  padding-left: 25px;
+  padding-left: 0px;
 }
 
 .form-row>.col:only-child,
@@ -31,4 +31,18 @@
 
   }
 }
-
+.link {
+  padding-top: 35px;
+  font-size: 14px;
+  text-align: center;
+  color: var(--theme-light-green);
+}
+.cert_file {
+  
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
