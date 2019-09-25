@@ -32,6 +32,7 @@
         <international-phone-number formControlName="phone" placeholder="Enter phone number"
           [defaultCountry]="'us'"
           [required]="true" name="phone_number" ></international-phone-number>
+        <div class='phone-number-error' *ngIf="detailForm.controls.phone.status === 'INVALID' && isSubmited">phone number is not valid.</div>
       </div>
     </div>
     <div class="form-row">
@@ -76,24 +77,26 @@
           <ng-option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
       </div>
-      <div class="form-group theme col-md-3">
-        <label>Confidentiality</label>
+      <div class="form-group theme col-md-6">
+        <label>
+          Confidentiality
+          <div class="link">
+            <a href="https://www.3diligent.com/wp-content/uploads/2019/03/drctVndrAgrmnt-190305_clean.pdf" target="_blank">View Vendor agreement</a>
+          </div>
+        </label>
         <select formControlName="confidentiality" class="form-control">
           <option selected value="">Choose...</option>
           <option *ngFor="let item of confidentialities" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
-      <div class="form-group theme col-md-3 link" >
-        <a href="https://www.3diligent.com/wp-content/uploads/2019/03/drctVndrAgrmnt-190305_clean.pdf" target="_blank">View Vendor agreement</a>
-      </div>
     </div>
     <div class="row button-section">
       <div class="col-md-2 col-sm-2">
-        <button type="button" class="btn btn-primary theme">Upload</button>
+        <button type="button" class="btn btn-primary theme"  style="display: none">Upload</button>
        
       </div>
       <div class="col-md-2 col-sm-2">
-        <label class="file">
+        <label class="file"  style="display: none">
           <input type="file" id="file" (change)="fileChangeEvent($event)" aria-label="File browser example">
           <span class="file-custom" id='file_name'  style="margin-top: 1px">{{certFile || 'Choose file...'}}</span>
         </label>

@@ -13,7 +13,8 @@
   --theme-light-green: #8FBE4C;
   --theme-input-bg: rgba(196, 196, 196, .13);
   --theme-green-grey-bg: #F9FAF7;
-  --theme-table-border: rgba(112, 112, 112, .39)
+  --theme-table-border: rgba(112, 112, 112, .39);
+  --theme-error-color: #dc3545;
 }
 
 * {
@@ -292,8 +293,7 @@ button.theme.theme-reverse:hover {
       -ms-user-select: none;
           user-select: none;
 }
-.file-custom:after {
-}
+
 .file-custom:before {
   position: absolute;
   top: -.075rem;

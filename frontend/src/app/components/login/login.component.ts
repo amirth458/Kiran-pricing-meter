@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../../service/user.service';
 import { AuthService } from '../../service/auth.service';
-import { NgxSpinnerService } from 'ngx-spinner'
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 
@@ -22,23 +22,23 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     remember_me: null,
   });
 
-  errorMessage: string = '';
+  errorMessage = '';
 
   constructor(
     public fb: FormBuilder,
     public router: Router,
     public spineer: NgxSpinnerService,
     public authService: AuthService,
-    public userService: UserService) { }
+    public userService: UserService) {}
 
   ngOnInit() {
-    const remember_me = localStorage.getItem('remember_me');
+    const rememberMe = localStorage.getItem('remember_me');
     const email = localStorage.getItem('email');
     const password = localStorage.getItem('password');
-    if (remember_me === '1') {
+    if (rememberMe === '1') {
       this.userForm.setValue({
-        email: email,
-        password: password,
+        email,
+        password,
         remember_me: null,
       });
 
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
     this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe(res => {
       this.authService.setAuthData(res);
-      if(this.userForm.value.remember_me) {
+      if (this.userForm.value.remember_me) {
         localStorage.setItem('remember_me', '1');
         localStorage.setItem('email', this.userForm.value.email);
         localStorage.setItem('password', this.userForm.value.password);
@@ -90,16 +90,16 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   loginErrorHandler(error) {
     switch (error.status) {
       case 404:
-        this.errorMessage = "Authentication service does not exist.";
+        this.errorMessage = 'Authentication service does not exist.';
         break;
       case 401:
-        this.errorMessage = "Login credentials is incorrect.";
+        this.errorMessage = 'Login credentials is incorrect.';
         break;
       case 500:
-        this.errorMessage = "Error on Server";
+        this.errorMessage = 'Error on Server';
         break;
       default:
-        this.errorMessage = "Error on Server";
+        this.errorMessage = 'Error on Server';
         break;
     }
   }
