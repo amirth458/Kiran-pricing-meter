@@ -121,7 +121,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   prepareData() {
     const postData = {
       id: this.form.value.id,
-      vendorId: this.userService.getUserInfo().id,
+      vendorId: this.userService.getVendorInfo().id,
       processPricingName: this.form.value.processPricingName,
       processProfileName: this.form.value.processProfileName,
       conditions: [...this.selectedConditions.map(x => new Object({ id: x }))],
@@ -133,7 +133,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
     postData.updatedDate = new Date().toString();
     if (this.isNew) {
-      postData.createdBy = String(this.userService.getUserInfo().id);
+      postData.createdBy = String(this.userService.getVendorInfo().id);
       postData.createdDate = new Date().toString();
     } else {
       postData.updatedDate = new Date().toString();
@@ -145,7 +145,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     if (this.form.valid) {
       const postData = this.prepareData();
-      const vendorId = this.userService.getUserInfo().id;
+      const vendorId = this.userService.getVendorInfo().id;
       console.log({ postData, vendorId });
     }
   }

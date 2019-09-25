@@ -77,7 +77,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
 
   async getShipping(shippingId: number) {
     try {
-      const data = await this.shippingService.getShipping(this.userService.getUserInfo().id, shippingId).toPromise();
+      const data = await this.shippingService.getShipping(this.userService.getVendorInfo().id, shippingId).toPromise();
       this.initForm(data);
     } catch (e) {
       console.log(e);
@@ -104,7 +104,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     }
     this.spineer.show();
 
-    const vendorId = this.userService.getUserInfo().id;
+    const vendorId = this.userService.getVendorInfo().id;
 
     const shipping: Shipping = {
       ...this.shippingItem.value
@@ -113,7 +113,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     shipping.updatedDate = new Date().toString();
 
     if (this.isNew) {
-      shipping.createdBy = String(this.userService.getUserInfo().id);
+      shipping.createdBy = String(this.userService.getVendorInfo().id);
       shipping.createdDate = new Date().toString();
 
       this.shippingService.createShipping(vendorId, shipping).subscribe(res => {

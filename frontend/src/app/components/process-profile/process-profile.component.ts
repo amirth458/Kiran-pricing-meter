@@ -152,7 +152,7 @@ export class ProcessProfileComponent implements OnInit {
       vendorId: this.cloneData.vendorId,
     };
     // tslint:disable-next-line:max-line-length
-    const res = await this.processService.saveProfile(this.userService.getUserInfo().id, postData).toPromise();
+    const res = await this.processService.saveProfile(this.userService.getVendorInfo().id, postData).toPromise();
     const startIndex = this.rowData.indexOf(this.cloneData);
     const frontSlice = this.rowData.slice(0, startIndex + 1);
     const endSlice = this.rowData.slice(startIndex + 1);
@@ -167,7 +167,7 @@ export class ProcessProfileComponent implements OnInit {
   async deleteProfile() {
     this.spineer.show();
     try {
-      await this.processService.deleteProfile(this.userService.getUserInfo().id, this.selectedProfile.id).toPromise();
+      await this.processService.deleteProfile(this.userService.getVendorInfo().id, this.selectedProfile.id).toPromise();
     } catch (e) {
       console.log(e);
     } finally {
@@ -207,7 +207,7 @@ export class ProcessProfileComponent implements OnInit {
 
   async getProfiles() {
     try {
-      const res = await this.processService.getAllProfiles(this.userService.getUserInfo().id).toPromise();
+      const res = await this.processService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
       this.rowData = res || [];
     } catch (e) {
       console.log(e);

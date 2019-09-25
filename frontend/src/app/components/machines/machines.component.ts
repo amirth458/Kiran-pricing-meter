@@ -190,7 +190,7 @@ export class MachinesComponent implements OnInit {
     try {
       while (true) {
         const param: FilterOption = { size: 1000, sort: 'id,ASC', page, q: '' };
-        const res = await this.machineService.getMachinery(this.userService.getUserInfo().id, param).toPromise();
+        const res = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
         if (!res.content || res.content.length === 0) {
           break;
         }
@@ -230,7 +230,7 @@ export class MachinesComponent implements OnInit {
   async deleteMachine() {
     this.spineer.show();
     try {
-      await this.machineService.deleteMachine(this.userService.getUserInfo().id, this.selectedMachine.id).toPromise();
+      await this.machineService.deleteMachine(this.userService.getVendorInfo().id, this.selectedMachine.id).toPromise();
     } catch (e) {
       console.log(e);
     } finally {
