@@ -43,30 +43,16 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     ],
   });
 
-  processParameterList = {
-    conditions: [],
-    conditionNames: [],
-  };
-
-  processDimensionalPropertyList = {
-    conditions: [],
-    units: [],
-    conditionNames: []
-  };
-
-  processMaterialCharacteristicList = {
-    conditions: [],
-    units: [],
-    conditionNames: []
-  };
-
+  processParameterList = [];
+  processDimensionalPropertyList = [];
+  processMaterialCharacteristicList = [];
   signTypes = [];
   units = [];
   conditions = {};
 
   selectedProcessParameterList = [
-    // { name: '', condition: '', value: '', unit: '' }
     {
+      id: '',
       operatorType: {
         id: ''
       },
@@ -86,6 +72,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   ];
   selectedProcessDimensionalPropertyList = [
     {
+      id: '',
       operatorType: {
         id: ''
       },
@@ -105,7 +92,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   ];
   selectedProcessMaterialCharacteristicList = [
     {
-
+      id: '',
       operatorType: {
         id: ''
       },
@@ -158,9 +145,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       await this.getInputValues();
 
       const processParameterType = await this.processMetaData.getProcessParameterType().toPromise();
+      const processDimensionalPropertyType = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
+      const processMaterialCharacteristicType = await this.processMetaData.getProcessMaterialCharacteristicType().toPromise();
       const operatorType = await this.processMetaData.getoperatorType().toPromise();
-      const processDimensionalPropertyList = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
-      const processMaterialCharacteristicList = await this.processMetaData.getProcessMaterialCharacteristicType().toPromise();
       const signType = await this.processMetaData.getValueSignType().toPromise();
       const units = await this.processMetaData.getMeasurementUnitType().toPromise();
 
@@ -176,14 +163,16 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       this.units = units.metadataList;
       this.signTypes = signType.metadataList;
 
-      this.processParameterList.conditionNames = processParameterType.metadataList;
-      // this.processParameterList.conditions = operatorType.metadataList;
+      this.processParameterList = processParameterType.metadataList;
+      this.processDimensionalPropertyList = processDimensionalPropertyType.metadataList;
+      this.processMaterialCharacteristicList = processMaterialCharacteristicType.metadataList;
 
-      // this.processDimensionalPropertyList.conditions = operatorType.metadataList;
-      // this.processMaterialCharacteristicList.conditions = operatorType.metadataList;
-
-      this.processDimensionalPropertyList.conditionNames = processDimensionalPropertyList.metadataList;
-      this.processMaterialCharacteristicList.conditionNames = processMaterialCharacteristicList.metadataList;
+      // console.log({
+      //   conditions: this.conditions,
+      //   processParameterList: this.processParameterList,
+      //   processDimensionalPropertyList: this.processDimensionalPropertyList,
+      //   processMaterialCharacteristicList: this.processMaterialCharacteristicList,
+      // });
     } catch (e) {
       console.log(e);
     } finally {
@@ -191,11 +180,13 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     }
 
     if (this.route.url.includes('edit')) {
+      this.spinner.show();
       this.isNew = false;
       this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
       // tslint:disable-next-line:max-line-length
       const processProfile = await this.processProfileService.getProfile(this.userService.getUserInfo().id, this.processProfileId).toPromise();
       this.initForm(processProfile);
+      this.spinner.hide();
     }
   }
 
@@ -219,15 +210,15 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   getProperOperands(conditionId, index, section) {
     if (section === 'Process Parameters') {
-      const operandTypeName = this.processParameterList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      const operandTypeName = this.processParameterList.filter(condition => condition.id == conditionId)[0].operandType.name;
       this.selectedProcessParameterList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     } else if (section === 'Process Dimensional Properties') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processDimensionalPropertyList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      const operandTypeName = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0].operandType.name;
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     } else if (section === 'Process Material Characteristics') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processMaterialCharacteristicList.conditionNames.filter(condition => condition.id == conditionId)[0].operandType.name;
+      const operandTypeName = this.processMaterialCharacteristicList.filter(condition => condition.id == conditionId)[0].operandType.name;
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = this.conditions[operandTypeName.toString()];
     }
 
@@ -239,6 +230,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       case 'processParameterList':
         this.selectedProcessParameterList.push(
           {
+            id: '',
             operatorType: {
               id: ''
             },
@@ -260,6 +252,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       case 'processDimensionalPropertyList':
         this.selectedProcessDimensionalPropertyList.push(
           {
+            id: '',
             operatorType: {
               id: ''
             },
@@ -281,6 +274,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       case 'processMaterialCharacteristicList':
         this.selectedProcessMaterialCharacteristicList.push(
           {
+            id: '',
             operatorType: {
               id: ''
             },
@@ -341,8 +335,19 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   applyDefaults() {
-    this[this.activeTab] = [];
-    this[this.activeTab] = this.defaultValues[this.activeTab];
+    switch (this.activeTab) {
+      case 'processParameterList':
+        this.selectedProcessParameterList = this.defaultValues[this.activeTab];
+        break;
+      case 'processDimensionalPropertyList':
+        this.selectedProcessDimensionalPropertyList = this.defaultValues[this.activeTab];
+        break;
+      case 'processMaterialCharacteristicList':
+        this.selectedProcessMaterialCharacteristicList = this.defaultValues[this.activeTab];
+        break;
+      default:
+        break;
+    }
     console.log(this.form);
     this.closeModal.nativeElement.click();
   }
@@ -393,23 +398,20 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     // tslint:disable-next-line:max-line-length
     this.selectedProcessDimensionalPropertyList = [...processProfile.processDimensionalPropertyList.map(x => { x.operandTypeList = []; return x; })];
 
-    console.log(this.selectedProcessDimensionalPropertyList, 'dime');
-    console.log(this.selectedProcessMaterialCharacteristicList, 'material');
-    console.log(this.selectedProcessParameterList, 'param');
+    // console.log({
+    //   selectedProcessDimensionalPropertyList: this.selectedProcessDimensionalPropertyList,
+    //   selectedProcessMaterialCharacteristicList: this.selectedProcessMaterialCharacteristicList,
+    //   selectedProcessParameterList: this.selectedProcessParameterList,
+    // });
 
     this.selectedProcessParameterList.map((parameter, index) => {
-      this.getProperOperands(parameter.operatorType.id, index, 'Process Parameters');
+      this.getProperOperands(parameter.processParameterType.id, index, 'Process Parameters');
     });
     this.selectedProcessMaterialCharacteristicList.map((parameter, index) => {
-      this.getProperOperands(parameter.operatorType.id, index, 'Process Material Characteristics');
+      this.getProperOperands(parameter.processMaterialCharacteristicType.id, index, 'Process Material Characteristics');
     });
     this.selectedProcessDimensionalPropertyList.map((parameter, index) => {
-      console.log(parameter);
-      if (parameter.operatorType) {
-        this.getProperOperands(parameter.operatorType.id, index, 'Process Dimensional Properties');
-      } else {
-        this.selectedProcessDimensionalPropertyList[index].operandTypeList = [];
-      }
+      this.getProperOperands(parameter.processDimensionalPropertyType.id, index, 'Process Dimensional Properties');
     });
   }
 
@@ -418,9 +420,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       vendorId: this.userService.getUserInfo().id,
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
       equipment: { id: this.form.value.equipment },
-      // machineServingMaterial: { id: this.form.value.material[0] },
-      // TODO: Make this value dynamic
-      machineServingMaterial: { id: 128 },
+      machineServingMaterial: { id: this.form.value.material },
+      // machineServingMaterial: { id: 128 },
+      // machineServingMaterial: { id: 1483 },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
       processMaterialCharacteristicList: [...this.selectedProcessMaterialCharacteristicList],
@@ -456,7 +458,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             console.log(e);
           } finally {
             this.spinner.hide();
-            const gotoURL = `/profile/vendor/processes/profile`;
+            this.submitActive = true;
+            const gotoURL = `/profile/processes/processes/profile`;
             this.route.navigateByUrl(gotoURL);
           }
         }
