@@ -72,22 +72,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
     this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe(res => {
       this.authService.setAuthData(res);
-      this.authService.getProfile().subscribe(res => {
-        if(this.userForm.value.remember_me) {
-          localStorage.setItem('remember_me', '1');
-          localStorage.setItem('email', this.userForm.value.email);
-          localStorage.setItem('password', this.userForm.value.password);
-        }
-        // this.userService.setUserInfo(res);
-        this.router.navigate(['/profile']);
-        this.spineer.hide();
-      }, error=>{
-        console.log('get profile error', error);
-        this.spineer.hide();
-      })
-      // const gotoURL = `/profile`;
-      // this.route.navigateByUrl(gotoURL);
-
+      if(this.userForm.value.remember_me) {
+        localStorage.setItem('remember_me', '1');
+        localStorage.setItem('email', this.userForm.value.email);
+        localStorage.setItem('password', this.userForm.value.password);
+      }
+      this.router.navigate(['/profile']);
+      this.spineer.hide();
     }, error => {
       console.log(error);
       this.loginErrorHandler(error);
