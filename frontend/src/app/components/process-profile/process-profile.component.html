@@ -28,12 +28,13 @@
 
 
 <!-- Button trigger modal -->
-<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#processProfileModal">
+<button #deleteModal type="button" class="btn btn-primary d-none" data-toggle="modal"
+  data-target="#processProfileModal">
 </button>
 
 <!-- Modal -->
-<div class="modal fade theme" id="processProfileModal" tabindex="-1" role="dialog" aria-labelledby="processProfileModalLabel"
-  aria-hidden="true">
+<div class="modal fade theme" id="processProfileModal" tabindex="-1" role="dialog"
+  aria-labelledby="processProfileModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -48,6 +49,48 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-danger" (click)="deleteProfile()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<button #copyModal type="button" class="btn btn-primary d-none" data-toggle="modal"
+  data-target="#processProfileCopyModal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade theme" id="processProfileCopyModal" tabindex="-1" role="dialog"
+  aria-labelledby="processProfileCopyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="processProfileCopyModalLabel">Confirm Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Please provide a new name for the cloned Process Profile Name.
+
+        <div class="form-row">
+          <!-- <div class="form-group col-md-2"></div> -->
+
+          <div class="form-group theme col-md-8">
+            <label for="name"></label>
+            <input type="text" class="form-control" [(ngModel)]="newProfileName" [ngModelOptions]="{standalone: true}"
+              id="name" name="name" placeholder="New Process Profile Name">
+          </div>
+
+          <div class="form-group col-md-2"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="newProfileName.length <= 4"
+          (click)="copyRow()">Clone</button>
       </div>
     </div>
   </div>

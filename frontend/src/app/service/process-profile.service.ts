@@ -18,8 +18,8 @@ export class ProcessProfileService {
     return this.http.get(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile/${profileId}`);
   }
 
-  editProfile(vendorId: number, formData): Observable<any> {
-    return this.http.put(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile`, { ...formData });
+  updateProfile(vendorId: number, profileId, formData): Observable<any> {
+    return this.http.put(environment.apiBaseUrl + `/vendors/${vendorId}/process-profile/${profileId}`, { ...formData });
   }
 
   deleteProfile(vendorId: number, profileId: string): Observable<any> {

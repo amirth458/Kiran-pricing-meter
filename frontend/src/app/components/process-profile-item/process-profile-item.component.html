@@ -25,7 +25,7 @@
 
       <div class="form-group theme col">
         <label for="material">Material</label>
-        <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="true"
+        <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="false"
           dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
           formControlName="material">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>

@@ -110,7 +110,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         id: ''
       },
       processMaterialCharacteristicType: {
-        id: ''
+        id: '',
       },
       unitType: {
         id: ''
@@ -157,8 +157,6 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
       await this.getInputValues();
 
-      console.log(this.materials, this.equipments);
-
       const processParameterType = await this.processMetaData.getProcessParameterType().toPromise();
       const operatorType = await this.processMetaData.getoperatorType().toPromise();
       const processDimensionalPropertyList = await this.processMetaData.getProcessDimensionalPropertyType().toPromise();
@@ -195,7 +193,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     if (this.route.url.includes('edit')) {
       this.isNew = false;
       this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // Make API request
+      // tslint:disable-next-line:max-line-length
+      const processProfile = await this.processProfileService.getProfile(this.userService.getUserInfo().id, this.processProfileId).toPromise();
+      this.initForm(processProfile);
     }
   }
 
@@ -374,13 +374,52 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     }
   }
 
+
+  initForm(processProfile) {
+    this.form.setValue({
+      id: processProfile.id,
+      name: processProfile.name,
+      vendorId: processProfile.vendorId,
+      equipment: processProfile.machineServingMaterial.vendorMachinery.equipment.id,
+      material: processProfile.machineServingMaterial.material.id,
+      processParameterList: processProfile.processParameterList,
+      processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,
+      processDimensionalPropertyList: processProfile.processDimensionalPropertyList
+    });
+
+    this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
+    // tslint:disable-next-line:max-line-length
+    this.selectedProcessMaterialCharacteristicList = [...processProfile.processMaterialCharacteristicList.map(x => { x.operandTypeList = []; return x; })];
+    // tslint:disable-next-line:max-line-length
+    this.selectedProcessDimensionalPropertyList = [...processProfile.processDimensionalPropertyList.map(x => { x.operandTypeList = []; return x; })];
+
+    console.log(this.selectedProcessDimensionalPropertyList, 'dime');
+    console.log(this.selectedProcessMaterialCharacteristicList, 'material');
+    console.log(this.selectedProcessParameterList, 'param');
+
+    this.selectedProcessParameterList.map((parameter, index) => {
+      this.getProperOperands(parameter.operatorType.id, index, 'Process Parameters');
+    });
+    this.selectedProcessMaterialCharacteristicList.map((parameter, index) => {
+      this.getProperOperands(parameter.operatorType.id, index, 'Process Material Characteristics');
+    });
+    this.selectedProcessDimensionalPropertyList.map((parameter, index) => {
+      console.log(parameter);
+      if (parameter.operatorType) {
+        this.getProperOperands(parameter.operatorType.id, index, 'Process Dimensional Properties');
+      } else {
+        this.selectedProcessDimensionalPropertyList[index].operandTypeList = [];
+      }
+    });
+  }
+
   prepareData() {
-    // TODO: add valueSignType to all
     const postData = {
       vendorId: this.userService.getUserInfo().id,
-      name: this.form.value.name,
+      name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
       equipment: { id: this.form.value.equipment },
       // machineServingMaterial: { id: this.form.value.material[0] },
+      // TODO: Make this value dynamic
       machineServingMaterial: { id: 128 },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
@@ -397,20 +436,45 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
-        this.spinner.show();
-        const postData = this.prepareData();
         const vendorId = this.userService.getUserInfo().id;
-        console.log({ postData, vendorId });
-        try {
-          await this.processProfileService.saveProfile(vendorId, postData).toPromise();
-          const gotoURL = `/profile/processes/profile`;
-          this.route.navigateByUrl(gotoURL);
-        } catch (e) {
-          this.spinner.hide();
+        const postData = this.prepareData();
+        if (this.isNew) {
+          this.spinner.show();
+          console.log({ postData, vendorId });
+          try {
+            await this.processProfileService.saveProfile(vendorId, postData).toPromise();
+            const gotoURL = `/profile/processes/profile`;
+            this.route.navigateByUrl(gotoURL);
+          } catch (e) {
+            this.spinner.hide();
+          }
+        } else {
+          this.spinner.show();
+          try {
+            await this.processProfileService.updateProfile(vendorId, this.processProfileId, postData).toPromise();
+          } catch (e) {
+            console.log(e);
+          } finally {
+            this.spinner.hide();
+            const gotoURL = `/profile/vendor/processes/profile`;
+            this.route.navigateByUrl(gotoURL);
+          }
         }
       } else {
         this.submitActive = true;
       }
+
     }, 100);
   }
+
+  getRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
 }

@@ -18,7 +18,12 @@ import { ProcessMetadataService } from 'src/app/service/process-metadata.service
 })
 export class ProcessProfileComponent implements OnInit {
 
-  @ViewChild('modal') modal;
+  @ViewChild('copyModal') copyModal;
+  @ViewChild('deleteModal') deleteModal;
+
+  newProfileName = '';
+  cloneData;
+
   selectedProfile = null;
   tableControlReady = false;
 
@@ -135,14 +140,26 @@ export class ProcessProfileComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  copyRow(event) {
-    const startIndex = this.rowData.indexOf(event.data);
+  async copyRow() {
+    this.spineer.show();
+    const postData = {
+      name: this.newProfileName || 'Process Profile - ' + this.getRandomString(7),
+      machineServingMaterial: this.cloneData.machineServingMaterial,
+      processDimensionalPropertyList: this.cloneData.processDimensionalPropertyList,
+      processMaterialCharacteristicList: this.cloneData.processMaterialCharacteristicList,
+      processParameterList: this.cloneData.processParameterList,
+      processProfileType: this.cloneData.processProfileType,
+      vendorId: this.cloneData.vendorId,
+    };
+    // tslint:disable-next-line:max-line-length
+    const res = await this.processService.saveProfile(this.userService.getUserInfo().id, postData).toPromise();
+    const startIndex = this.rowData.indexOf(this.cloneData);
     const frontSlice = this.rowData.slice(0, startIndex + 1);
     const endSlice = this.rowData.slice(startIndex + 1);
-    this.rowData = frontSlice.concat([{ ...event.data, id: '-' }].concat(endSlice));
+    // this.rowData = frontSlice.concat([{ ...this.cloneData, name: this.cloneData.name + ' - COPY', id: '-' }].concat(endSlice));
+    this.rowData = frontSlice.concat([res].concat(endSlice));
     this.gridOptions.api.setRowData(this.rowData);
-
-    // API Request to save the copied row
+    this.spineer.hide();
   }
 
   async deleteProfile() {
@@ -158,7 +175,7 @@ export class ProcessProfileComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != this.selectedProfile.id);
     this.rowData = filteredData;
-    this.modal.nativeElement.click();
+    this.deleteModal.nativeElement.click();
 
   }
 
@@ -297,9 +314,12 @@ export class ProcessProfileComponent implements OnInit {
       cellRendererParams: {
         action: {
           edit: (param) => this.editRow(param),
-          copy: (param) => this.copyRow(param),
+          copy: (param) => {
+            this.copyModal.nativeElement.click();
+            this.cloneData = param.data;
+          },
           delete: async (param) => {
-            this.modal.nativeElement.click();
+            this.deleteModal.nativeElement.click();
             this.selectedProfile = param.data;
           },
           canEdit: true,
@@ -332,5 +352,15 @@ export class ProcessProfileComponent implements OnInit {
       }
     });
 
+  }
+
+  getRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 }
