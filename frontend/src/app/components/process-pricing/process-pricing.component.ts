@@ -94,6 +94,8 @@ export class ProcessPricingComponent implements OnInit {
 
   gridOptions: GridOptions;
 
+  selectedProfileId = null;
+
   rowData;
   pageSize = 10;
   constructor(
@@ -151,11 +153,20 @@ export class ProcessPricingComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  deleteRow(event) {
+  async deleteRow(event) {
+    this.spineer.show();
+    try {
+      await this.processPricingService.deleteProfile(this.userService.getVendorInfo().id, this.selectedProfileId.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
     // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != event.data.id);
+    const filteredData = this.rowData.filter(x => x.id != this.selectedProfileId.id);
     this.rowData = filteredData;
-    console.log(this.rowData);
+    this.deleteModal.nativeElement.click();
   }
 
   searchColumnsChange(event) {
@@ -286,6 +297,7 @@ export class ProcessPricingComponent implements OnInit {
           },
           delete: async (param) => {
             this.deleteModal.nativeElement.click();
+            this.selectedProfileId = param.data;
           },
           canEdit: true,
           canCopy: false,
@@ -311,6 +323,23 @@ export class ProcessPricingComponent implements OnInit {
         return { ...column };
       }
     });
+
+  }
+
+  async deletePricing() {
+    this.spineer.show();
+    try {
+      await this.processPricingService.deleteProfile(this.userService.getVendorInfo().id, this.selectedProfileId.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
+    // tslint:disable-next-line:triple-equals
+    const filteredData = this.rowData.filter(x => x.id != this.selectedProfileId.id);
+    this.rowData = filteredData;
+    this.deleteModal.nativeElement.click();
 
   }
 

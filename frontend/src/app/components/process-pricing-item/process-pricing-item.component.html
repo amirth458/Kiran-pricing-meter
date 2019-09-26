@@ -11,10 +11,10 @@
       </div>
 
       <div class="form-group theme col-md-6">
-        <label for="processProfileName">Process Profile Name</label>
-        <select required id="processProfileName" name="processProfileName" formControlName="processProfileName"
+        <label for="processProfileId">Process Profile Name</label>
+        <select required id="processProfileId" name="processProfileId" formControlName="processProfileId"
           class="form-control">
-          <option selected value="">Choose...</option>
+          <option selected value=null>Choose...</option>
           <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}}</option>
         </select>
         <span class="footnote">* If you don’t see a profile, update your Process profile.</span>
@@ -45,38 +45,64 @@
 
         <div class="input-wrapper">
 
-          <div *ngFor="let item of selectedConditions; let index = index" class="form-row">
-
+          <div *ngFor="let item of selectedPricingConditionList; let index = index" class="form-row">
             <div class="form-group theme col-md-3">
-              <select required id="name" name="name" [(ngModel)]="selectedConditions[index].name"
+              <select required id="name" name="name"
+                [(ngModel)]="selectedPricingConditionList[index].processPricingConditionType.id"
+                (ngModelChange)="getProperOperands(selectedPricingConditionList[index].processPricingConditionType.id, index)"
                 [ngModelOptions]="{standalone: true}" class="form-control">
                 <option selected value="">Choose...</option>
-                <option *ngFor="let item of conditionNames" [value]="item.id">{{item.name}}</option>
+                <option *ngFor="let item of pricingConditionTypes" [value]="item.id">{{item.name}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group theme col-md-2">
+              <select [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
+                required id="condition" name="condition"
+                [(ngModel)]="selectedPricingConditionList[index].operatorType.id" [ngModelOptions]="{standalone: true}"
+                class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of selectedPricingConditionList[index].operandTypeList" [value]=" item.id">
+                  {{item.symbol}}</option>
+              </select>
+            </div>
+
+            <div class="form-group theme col-md-1">
+              <select required id="condition" name="condition"
+                [(ngModel)]="selectedPricingConditionList[index].valueSignType.id" [ngModelOptions]="{standalone: true}"
+                class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of signTypes" [value]="item.id">{{item.symbol}}</option>
               </select>
             </div>
 
             <div class="form-group theme col-md-3">
-              <select required id="condition" name="condition" [(ngModel)]="selectedConditions[index].condition"
-                [ngModelOptions]="{standalone: true}" class="form-control">
-                <option selected value="">Choose...</option>
-                <option *ngFor="let item of conditions" [value]="item.id">{{item.name}}</option>
-              </select>
-            </div>
-
-            <div class="form-group theme col-md-3">
-              <input required type="text" [(ngModel)]="selectedConditions[index].value"
-                [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value" placeholder="Value">
+              <input required type="number" maxlength="4" min="0" min="0" max="9999"
+                [(ngModel)]="selectedPricingConditionList[index].value" [ngModelOptions]="{standalone: true}"
+                class="form-control" id="value" name="value" placeholder="Value">
             </div>
 
             <div class="form-group theme col-md-3 icon-attached">
-              <select required id="unit" name="unit" [(ngModel)]="selectedConditions[index].unit"
-                [ngModelOptions]="{standalone: true}" class="form-control">
+              <select required id="condition" name="condition"
+                [(ngModel)]="selectedPricingConditionList[index].unitType.id" [ngModelOptions]="{standalone: true}"
+                class="form-control">
                 <option selected value="">Choose...</option>
-                <option *ngFor="let item of units" [value]="item.id">{{item.name}}</option>
+                <option *ngFor="let item of units" [value]="item.id">
+                  <ng-container *ngIf="item.id < 13">
+                    {{item.name}}({{item.symbol}})
+                  </ng-container>
+                  <ng-container *ngIf="item.id >= 13">
+                    {{item.name}}
+                  </ng-container>
+                </option>
               </select>
-
-              <span class="minus" (click)="removeCondition(index, 'conditions')">
+              <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index, 'Condition')">
                 <i class="fas fa-minus"></i>
+              </span>
+
+              <span *ngIf="index === 0" class="minus invisible">
+                <i class=""></i>
               </span>
             </div>
 
@@ -116,12 +142,19 @@
 
         <div class="input-wrapper">
 
-          <div *ngFor="let item of selectedPricingParameters; let index = index" class="form-row">
+          <div *ngFor="let item of selectedParameterList; let index = index" class="form-row">
 
-            <div class="form-group theme col-md-4">
-              <input required type="text" [(ngModel)]="selectedPricingParameters[index].value1"
-                [ngModelOptions]="{standalone: true}" class="form-control" id="value1" name="value1"
-                placeholder="$0.05">
+            <div class="form-group theme col-md-2">
+              <select required id="name" name="name" [(ngModel)]="selectedParameterList[index].currency.id"
+                [ngModelOptions]="{standalone: true}" class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of currencyList" [value]="item.id">{{item.symbol}}</option>
+              </select>
+            </div>
+
+            <div class="form-group theme col-md-2">
+              <input required type="text" [(ngModel)]="selectedParameterList[index].price"
+                [ngModelOptions]="{standalone: true}" class="form-control" id="price" name="price" placeholder="500">
             </div>
 
             <div class="form-group col-md-1">
@@ -130,18 +163,48 @@
 
             </div>
 
-            <div class="form-group theme col-md-3">
-              <input required type="text" [(ngModel)]="selectedPricingParameters[index].value2"
-                [ngModelOptions]="{standalone: true}" class="form-control" id="value2" name="value2" placeholder="1">
+            <div class="form-group theme col-md-2">
+              <input required type="number" min="0" max="9999" maxlength="4" [(ngModel)]="selectedParameterList[index].quantity"
+                [ngModelOptions]="{standalone: true}" class="form-control" id="quantity" name="quantity"
+                placeholder="1">
             </div>
 
-            <div class="form-group theme col-md-4 icon-attached">
-              <input required type="text" [(ngModel)]="selectedPricingParameters[index].unit"
-                [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
-                placeholder="Part Volume (cc)">
-              <span class="minus" (click)="removeCondition(index, 'pricingParameters')">
+            <div class="form-group theme col-md-2 icon-attached">
+              <select required id="condition" name="condition"
+                [(ngModel)]="selectedParameterList[index].quantityUnitType.id" [ngModelOptions]="{standalone: true}"
+                class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of units" [value]="item.id">
+                  <ng-container *ngIf="item.id < 13">
+                    {{item.name}}({{item.symbol}})
+                  </ng-container>
+                  <ng-container *ngIf="item.id >= 13">
+                    {{item.name}}
+                  </ng-container>
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group theme col-md-3 icon-attached">
+
+              <select required id="type" name="type" [(ngModel)]="selectedParameterList[index].processPricingParameterType.id"
+                [ngModelOptions]="{standalone: true}" class="form-control">
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of processPricingParameterTypeList" [value]="item.id">{{item.name}}</option>
+              </select>
+
+              <!-- <input required type="text" [(ngModel)]="selectedParameterList[index].unit"
+                [ngModelOptions]="{standalone: true}" class="form-control" id="unit" name="unit"
+                placeholder="Part Volume (cc)"> -->
+
+              <span *ngIf="index === 0" class="minus invisible">
+                <i class=""></i>
+              </span>
+
+              <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index, 'Parameter')">
                 <i class="fas fa-minus"></i>
               </span>
+
             </div>
           </div>
         </div>

@@ -5,6 +5,9 @@ import { ProcessMetadataService } from 'src/app/service/process-metadata.service
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
+import { ProcessProfileService } from 'src/app/service/process-profile.service';
+import { ProcessPricingService } from 'src/app/service/process-pricing.service';
+import { PricingMetadataService } from 'src/app/service/pricing-metadata.service';
 
 @Component({
   selector: 'app-process-pricing-item',
@@ -12,40 +15,81 @@ import { UserService } from 'src/app/service/user.service';
   styleUrls: ['./process-pricing-item.component.css']
 })
 export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
-  facilities = [];
-  equipments = [];
 
   form: FormGroup = this.fb.group({
     id: '',
-    vendorId: [null],
     pricingProfileName: [null],
-    processProfileName: [null, Validators.required],
-    conditions: [[]],
-    pricingParameters: [[]]
+    processProfileId: [null, Validators.required],
+    processPricingConditionList: [[]],
+    processPricingParameterList: [[]]
   });
 
+  conditions = [];
 
-  selectedConditions = [
-    { name: '', condition: '', value: '', unit: '' }
-  ];
-  selectedPricingParameters = [
-    { value1: '', value2: '', unit: '' }
-  ];
+  selectedParameterList = [
+    {
+      currency: {
+        id: ''
+      },
 
+      price: '',
+      processPricingParameterType: {
+        id: ''
+      },
+      quantity: '',
+      quantityUnitType: {
+        id: ''
+      }
+    }
+  ];
+  selectedPricingConditionList = [
+    {
+      operatorType: {
+        id: ''
+      },
+
+      processPricingConditionType: {
+        id: ''
+      },
+      unitType: {
+        id: ''
+      },
+      value: '',
+      valueInDefaultUnit: '',
+      valueSignType: {
+        id: ''
+      },
+      operandTypeList: []
+    }
+  ];
 
   processPricingId = null;
-  processPricings = [];
-  processProfiles = [];
 
-  conditions = ['Equal to', 'Not equal to', 'Grater than', 'Grater than or Equal', 'Less than', 'Less than or Equal', 'Equal to'];
-  units = ['CC', 'UM', 'Days'];
-  conditionNames = ['Part Volume', 'Layer Height', 'Lead Time To Production'];
+  processProfiles = [];
+  units = [];
+  signTypes = [];
+  pricingConditionTypes = [];
+  currencyList = [];
+  processPricingParameterTypeList = [];
 
   isNew = true;
+  isFormValid = false;
+
+
+  // Currency - $
+  // Price - 40
+  // processPricingParameterType - Infill
+  // quantity - 4
+  // quantityUnitType - mm
+
+
   constructor(
     public route: Router,
     public fb: FormBuilder,
-    public processMetaData: ProcessMetadataService,
+    public processMetaDataService: ProcessMetadataService,
+    public pricingMetaDataService: PricingMetadataService,
+    public processProfileService: ProcessProfileService,
+    public processPricingService: ProcessPricingService,
     public spinner: NgxSpinnerService,
     public userService: UserService
   ) { }
@@ -53,13 +97,30 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   async ngOnInit() {
     try {
       this.spinner.show();
-      const pricingParameterType = await this.processMetaData.getProcessPricingParameterType().toPromise();
-      const pricingConditionType = await this.processMetaData.getProcessPricingConditionType().toPromise();
-      const operatorType = await this.processMetaData.getoperatorType().toPromise();
 
-      this.conditionNames = pricingParameterType.metadataList;
-      this.conditions = operatorType.metadataList;
-      this.units = pricingConditionType.metadataList;
+      this.processProfiles = await this.processProfileService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
+
+      const signType = await this.processMetaDataService.getValueSignType().toPromise();
+      const units = await this.processMetaDataService.getMeasurementUnitType().toPromise();
+      const pricingParameterType = await this.pricingMetaDataService.getConditionParameters().toPromise();
+      const pricingConditionType = await this.pricingMetaDataService.getConditionTypes().toPromise();
+      const operatorType = await this.processMetaDataService.getoperatorType().toPromise();
+      const currency = await this.processMetaDataService.getCurrency().toPromise();
+
+      operatorType.metadataList.map(operator => {
+        const addedList = Object.keys(this.conditions);
+        if (addedList.includes(operator.operandType.name)) {
+          this.conditions[operator.operandType.name].push(operator);
+        } else {
+          this.conditions[operator.operandType.name] = [operator];
+        }
+      });
+      this.processPricingParameterTypeList = pricingParameterType.metadataList;
+      this.pricingConditionTypes = pricingConditionType.metadataList;
+      this.units = units.metadataList;
+      this.signTypes = signType.metadataList;
+      this.currencyList = currency.metadataList;
+
     } catch (e) {
       console.log(e);
     } finally {
@@ -69,7 +130,36 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       this.isNew = false;
       this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
       // Make API request
+      this.isNew = false;
+      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+      // tslint:disable-next-line:max-line-length
+      const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
+      this.initForm(processProfile);
+      this.spinner.hide();
     }
+  }
+
+  initForm(pricingProfile) {
+    this.form.setValue({
+      id: pricingProfile.id,
+      pricingProfileName: pricingProfile.name,
+      processProfileId: pricingProfile.processProfile.id,
+      processPricingConditionList: pricingProfile.processPricingConditionList,
+      processPricingParameterList: pricingProfile.processPricingParameterList,
+    });
+
+    this.selectedParameterList = [...pricingProfile.processPricingParameterList.map(x => { x.operandTypeList = []; return x; })];
+    // tslint:disable-next-line:max-line-length
+    this.selectedPricingConditionList = [...pricingProfile.processPricingConditionList];
+
+    this.selectedPricingConditionList.map((parameter, index) => {
+      this.getProperOperands(parameter.processPricingConditionType.id, index);
+    });
+  }
+
+  getProperOperands(conditionId, index) {
+    const operandTypeName = this.pricingConditionTypes.filter(condition => condition.id == conditionId)[0].operandType.name;
+    this.selectedPricingConditionList[index].operandTypeList = this.conditions[operandTypeName.toString()];
   }
 
   ngAfterViewChecked(): void {
@@ -81,7 +171,9 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
+          this.isFormValid = false;
         } else {
+          this.isFormValid = true;
         }
         form.classList.add('was-validated');
       }, false);
@@ -89,28 +181,61 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   }
 
   addCondition() {
-    this.selectedConditions.push({ name: '', condition: '', value: '', unit: '' });
+    this.selectedPricingConditionList.push({
+      operatorType: {
+        id: ''
+      },
+
+      processPricingConditionType: {
+        id: ''
+      },
+      unitType: {
+        id: ''
+      },
+      value: '',
+      valueInDefaultUnit: '',
+      valueSignType: {
+        id: ''
+      },
+      operandTypeList: []
+    });
   }
+
   addPricingParameter() {
-    this.selectedPricingParameters.push({ value1: '', value2: '', unit: '' });
+    this.selectedParameterList.push(
+      {
+        currency: {
+          id: ''
+        },
+
+        price: '',
+        processPricingParameterType: {
+          id: ''
+        },
+        quantity: '',
+        quantityUnitType: {
+          id: ''
+        }
+      }
+    );
   }
 
   removeCondition(index, section) {
     let frontSlice = [];
     let endSlice = [];
     switch (section) {
-      case 'conditions':
-        if (this.selectedConditions.length !== 1) {
-          frontSlice = this.selectedConditions.slice(0, index);
-          endSlice = this.selectedConditions.slice(index + 1);
-          this.selectedConditions = frontSlice.concat(endSlice);
+      case 'Condition':
+        if (this.selectedPricingConditionList.length !== 1) {
+          frontSlice = this.selectedPricingConditionList.slice(0, index);
+          endSlice = this.selectedPricingConditionList.slice(index + 1);
+          this.selectedPricingConditionList = frontSlice.concat(endSlice);
         }
         break;
-      case 'pricingParameters':
-        if (this.selectedPricingParameters.length !== 1) {
-          frontSlice = this.selectedPricingParameters.slice(0, index);
-          endSlice = this.selectedPricingParameters.slice(index + 1);
-          this.selectedPricingParameters = frontSlice.concat(endSlice);
+      case 'Parameter':
+        if (this.selectedParameterList.length !== 1) {
+          frontSlice = this.selectedParameterList.slice(0, index);
+          endSlice = this.selectedParameterList.slice(index + 1);
+          this.selectedParameterList = frontSlice.concat(endSlice);
         }
         break;
       default:
@@ -120,33 +245,58 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     const postData = {
-      id: this.form.value.id,
-      vendorId: this.userService.getVendorInfo().id,
-      processPricingName: this.form.value.processPricingName,
-      processProfileName: this.form.value.processProfileName,
-      conditions: [...this.selectedConditions.map(x => new Object({ id: x }))],
-      pricingParameters: [...this.selectedPricingParameters.map(x => new Object({ id: x }))],
-      updatedDate: '',
-      createdBy: '',
-      createdDate: '',
+      id: this.form.value.id || '',
+      name: this.form.value.pricingProfileName || 'Process Pricing - ' + this.getRandomString(7),
+      processPricingParameterList: this.selectedParameterList,
+      processPricingConditionList: this.selectedPricingConditionList,
+      processProfile: { id: this.form.value.processProfileId },
     };
-
-    postData.updatedDate = new Date().toString();
-    if (this.isNew) {
-      postData.createdBy = String(this.userService.getVendorInfo().id);
-      postData.createdDate = new Date().toString();
-    } else {
-      postData.updatedDate = new Date().toString();
-    }
     return postData;
   }
 
   save(event) {
     event.preventDefault();
-    if (this.form.valid) {
-      const postData = this.prepareData();
-      const vendorId = this.userService.getVendorInfo().id;
-      console.log({ postData, vendorId });
+    // this.submitActive = false;
+    setTimeout(async () => {
+      if (this.form.valid && this.isFormValid) {
+        const vendorId = this.userService.getVendorInfo().id;
+        const postData = this.prepareData();
+        if (this.isNew) {
+          this.spinner.show();
+          try {
+            await this.processPricingService.saveProfile(vendorId, postData).toPromise();
+            const gotoURL = `/profile/processes/pricing`;
+            this.route.navigateByUrl(gotoURL);
+          } catch (e) {
+            this.spinner.hide();
+          }
+        } else {
+          this.spinner.show();
+          try {
+            await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
+          } catch (e) {
+            console.log(e);
+          } finally {
+            this.spinner.hide();
+            // this.submitActive = true;
+            const gotoURL = `/profile/processes/pricing`;
+            this.route.navigateByUrl(gotoURL);
+          }
+        }
+      } else {
+        // this.submitActive = true;
+      }
+
+    }, 100);
+  }
+
+  getRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+    return result;
   }
 }
