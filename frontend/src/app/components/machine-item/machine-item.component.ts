@@ -35,10 +35,11 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   form: FormGroup = this.fb.group({
     id: [null],
     vendorId: [null],
-    name: [null],
-    serialNumber: [null],
+    name: [null, Validators.required],
+    serialNumber: [null, Validators.required],
     equipment: [null, Validators.required],
     material: [null, Validators.required],
+    // material: [null],
     vendorFacility: ['', Validators.required]
   });
   machineId = null;
@@ -210,6 +211,9 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       name: this.form.value.name,
       serialNumber: this.form.value.serialNumber,
       equipment: { id: this.form.value.equipment },
+      // materialList: this.form.value.material ? [...this.form.value.material.map((materialId) => {
+      //   return { id: materialId };
+      // })] : [],
       materialList: [...this.form.value.material.map((materialId) => {
         return { id: materialId };
       })],

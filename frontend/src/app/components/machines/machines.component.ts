@@ -10,6 +10,7 @@ import { UserService } from 'src/app/service/user.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { MachineService } from 'src/app/service/machine.service';
 
+declare var $: any;
 @Component({
   selector: 'app-machines',
   templateUrl: './machines.component.html',
@@ -109,7 +110,6 @@ export class MachinesComponent implements OnInit {
     {
       headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: true
     },
-    { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: true },
     {
       headerName: 'Material', field: 'machineServingMaterialList', hide: false, sortable: true, filter: true,
       cellRenderer(params) {
@@ -123,9 +123,20 @@ export class MachinesComponent implements OnInit {
             materials = materials + ',' + x.material.name;
           }
         });
-        return materials;
+        return `
+        <div>
+        <a href="#" data-toggle="tooltip" title="${materials}">${materials}</a>
+
+        <div class="tooltip bs-tooltip-top" role="tooltip">
+          <div class="arrow"></div>
+          <div class="tooltip-inner">
+            ${materials}
+          </div>
+        </div>
+        </div>`;
       }
     },
+    { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: true },
     {
       headerName: 'Actions',
       width: 100,
@@ -157,6 +168,10 @@ export class MachinesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    $(() => {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
 
     this.getMachinery();
     if (this.type.includes('filter')) {
