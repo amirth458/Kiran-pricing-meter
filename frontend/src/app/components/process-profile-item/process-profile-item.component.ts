@@ -30,7 +30,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     vendorId: [null],
     name: [null],
     equipment: [null, Validators.required],
-    material: [null, Validators.required],
+    materials: [[], Validators.required],
     // processType: [null, Validators.required],
     processParameterList: [
       []
@@ -354,7 +354,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       name: processProfile.name,
       vendorId: processProfile.vendorId,
       equipment: processProfile.machineServingMaterial.vendorMachinery.id,
-      material: processProfile.machineServingMaterial.id,
+      materials: processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial),
       processParameterList: processProfile.processParameterList,
       processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,
       processDimensionalPropertyList: processProfile.processDimensionalPropertyList
@@ -388,7 +388,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   prepareData() {
     const postData = {
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
-      machineServingMaterial: { id: this.form.value.material },
+      processMachineServingMaterialList: this.form.value.materials.map(x => new Object({ machineServingMaterial: { id: 1 } })),
+      // machineServingMaterial: { id: this.form.value.materials },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
       processMaterialCharacteristicList: [...this.selectedProcessMaterialCharacteristicList],
