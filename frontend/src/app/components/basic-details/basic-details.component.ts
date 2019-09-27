@@ -11,6 +11,7 @@ import { UserService } from 'src/app/service/user.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 import { FileService } from 'src/app/service/file.service';
+
 declare var $: any;
 @Component({
   selector: 'app-basic-details',
@@ -34,7 +35,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     id: [null],
     name: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
-    phone: [null, [Validators.required]],
+    phone: [null, [Validators.required ]],
     vendorType: [null, Validators.required],
     vendorIndustry: [null],
     city: [null, Validators.required],
@@ -84,7 +85,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
-    const validation = Array.prototype.filter.call(forms, (form) => {
+    Array.prototype.filter.call(forms, (form) => {
       form.addEventListener('submit', (event) => {
         if (form.checkValidity() === false) {
           event.preventDefault();

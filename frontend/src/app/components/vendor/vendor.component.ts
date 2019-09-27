@@ -19,7 +19,7 @@ export class VendorComponent implements OnInit {
       route: string
     } >
   } > = [{
-    name: 'Basic Details',
+    name: 'Corporate Details',
     tooltipMessage: 'High level information about your business operations.',
     route: 'basics',
     actions: []
@@ -73,7 +73,7 @@ export class VendorComponent implements OnInit {
     const routeArr = this.route.url.slice(this.route.url.indexOf('profile/vendor/') + 'profile/vendor/'.length).split('/');
     switch (routeArr[0]) {
       case 'basics':
-        this.selectedTab = 'Basic Details';
+        this.selectedTab = 'Corporate Details';
         break;
       case 'facilities':
         this.selectedTab = 'Facilities';
@@ -88,7 +88,7 @@ export class VendorComponent implements OnInit {
         this.selectedTab = 'Shipping';
         break;
       default:
-        this.selectedTab = 'Basic Details';
+        this.selectedTab = 'Corporate Details';
         break;
     }
     this.authService.getVendor().subscribe(res => {
