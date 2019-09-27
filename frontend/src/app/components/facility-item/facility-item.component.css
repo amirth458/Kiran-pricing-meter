@@ -8,7 +8,7 @@
 .form-row>.col:first-child,
 .form-row>[class*=col-]:first-child {
   padding-right: 5px;
-  padding-left: 25px;
+  padding-left: 0px;
 }
 
 .form-row>.col:only-child,

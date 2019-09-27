@@ -10,6 +10,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { AuthService } from 'src/app/service/auth.service';
 
+import { FileService } from 'src/app/service/file.service';
+
+declare var $: any;
 @Component({
   selector: 'app-facility-item',
   templateUrl: './facility-item.component.html',
@@ -39,6 +42,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   countries = [];
   facilityId = null;
   selectedCertifications = [];
+  certDocuments = [];
+
   isNew = true;
   isSubmited = false;
 
@@ -50,6 +55,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     public facilityService: FacilityService,
     public spineer: NgxSpinnerService,
     public userService: UserService,
+    public fileService: FileService,
     public authService: AuthService) { }
 
   async ngOnInit() {
@@ -105,9 +111,20 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  getFileName(filePath): string {
+    const arrFilePath = filePath.split('/');
+    return arrFilePath[arrFilePath.length - 1];
+  }
+
   initForm(data: any) {
     this.selectedCertifications = data.vendorFacilityCertificationList.map(x => x.facilityCertification.id) || [];
-
+    this.certDocuments = data.certificateURLs.map(x => {
+      return {
+        name: x,
+        fileName: this.getFileName(x),
+        saved: 1
+      };
+    });
     this.facilityItem.setValue({
       id: data.id,
       vendorId: data.vendorId,
@@ -126,10 +143,46 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
       updatedDate: data.updatedDate || '',
     });
   }
+  onOpenFile(event) {
+    $('#file').click();
+  }
 
+  upload = (file) => {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const userId = this.userService.getUserInfo().id;
+        const vendorId = this.userService.getVendorInfo().id;
+        const s3KeyFile = `u/${userId}/v/${vendorId}/certifications/${file.name}`;
+        const certFile = {
+          s3Key: s3KeyFile,
+          fileType: 'PDF',
+          base64: reader.result,
+        };
+
+        this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
+          this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
+        }, error => {
+          console.log(error);
+        });
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  onRemoveFile(name) {
+    this.certDocuments = this.certDocuments.filter((item) => item.name !== name);
+  }
+  onFileChange(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      const file = fileInput.target.files[0];
+      this.upload(file);
+    }
+  }
   save(event) {
     this.isSubmited = true;
-    if (!(this.facilityItem.valid && this.facilityItem.dirty)) {
+    if (!(this.facilityItem.valid)) {
       return;
     }
     this.spineer.show();
@@ -140,7 +193,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
       ...this.facilityItem.value,
       facilityCertificationList: this.selectedCertifications.map((item) => ({
         id: item
-      }))
+      })),
+      certificateURLs: this.certDocuments.map((item) => item.name)
     };
     facility.vendorId = vendorId;
     facility.updatedDate = new Date().toString();

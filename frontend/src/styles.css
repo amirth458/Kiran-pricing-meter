@@ -261,58 +261,66 @@ button.theme.theme-reverse:hover {
 
 /* NON Ag-grid table style */
 
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
 
-.file {
-  position: relative;
+.inputfile + label {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  background-color: black;
   display: inline-block;
-  cursor: pointer;
-  height: 2.5rem;
 }
-.file input {
-  min-width: 14rem;
-  margin: 0;
-  filter: alpha(opacity=0);
-  opacity: 0;
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: red;
 }
-.file-custom {
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+} 
+.inputfile + label * {
+	pointer-events: none;
+}
+
+.upload-section {
+  width: 155px;
+}
+.uploaded_files {
+  list-style-type: none;
+  padding-left: 30px;
+  max-height: 75px;
+  height: 75px;
+  overflow: auto;
+}
+
+.uploaded_files li {
+  font-size: 14px;
+  width: 200px;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;    
+}
+
+.uploaded_files li .close {
+  background: transparent;
+  padding: 0 !important;
+  margin: 0 !important;
   position: absolute;
-  top: 0;
   right: 0;
-  left: 0;
-  z-index: 5;
-  height: 2.5rem;
-  padding: .5rem 1rem;
-  line-height: 1.5;
-  color: #555;
-  background-color: #fff;
-  border: .075rem solid #ddd;
-  border-radius: .25rem;
-  box-shadow: inset 0 .2rem .4rem rgba(0,0,0,.05);
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  font-size: 14px;
+  top: 1px;
 }
-
-.file-custom:before {
-  position: absolute;
-  top: -.075rem;
-  right: -.075rem;
-  bottom: -.075rem;
-  z-index: 6;
-  display: block;
-  content: "Browse";
-  height: 2.5rem;
-  padding: .5rem 1rem;
-  line-height: 1.5;
-  color: #555;
-  background-color: #eee;
-  border: .075rem solid #ddd;
-  border-radius: 0 .25rem .25rem 0;
-}
-
-/* Focus */
-.file input:focus ~ .file-custom {
-  box-shadow: 0 0 0 .075rem #fff, 0 0 0 .2rem #0074d9;
-}
-

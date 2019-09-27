@@ -329,6 +329,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         rows.push(...res.content);
         page++;
       }
+      console.log(rows);
       rows.map(machine => {
         this.equipments.push(machine);
       });
