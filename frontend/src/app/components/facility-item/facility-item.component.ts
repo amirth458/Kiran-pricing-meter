@@ -47,7 +47,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
   isSubmited = false;
 
-  userId;
+  userId = 0;
   constructor(
     public fb: FormBuilder,
     public route: Router,
@@ -111,17 +111,12 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  getFileName(filePath): string {
-    const arrFilePath = filePath.split('/');
-    return arrFilePath[arrFilePath.length - 1];
-  }
-
   initForm(data: any) {
     this.selectedCertifications = data.vendorFacilityCertificationList.map(x => x.facilityCertification.id) || [];
     this.certDocuments = data.certificateURLs.map(x => {
       return {
         name: x,
-        fileName: this.getFileName(x),
+        fileName: this.fileService.getFileNameFromPath(x),
         saved: 1
       };
     });
@@ -172,7 +167,16 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   }
 
   onRemoveFile(name) {
-    this.certDocuments = this.certDocuments.filter((item) => item.name !== name);
+    const certFiles = this.certDocuments.filter((item) => item.name === name);
+    if (certFiles[0].saved === 3) {
+      certFiles[0].saved = 0;
+    } else if (certFiles[0].saved === 2) {
+      certFiles[0].saved = 1;
+    } else if (certFiles[0].saved === 1) {
+      certFiles[0].saved = 2;
+    } else {
+      certFiles[0].saved = 3;
+    }
   }
   onFileChange(fileInput) {
     if (fileInput.target.files && fileInput.target.files[0]) {
@@ -180,21 +184,23 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
       this.upload(file);
     }
   }
-  save(event) {
+
+  async save(event) {
     this.isSubmited = true;
     if (!(this.facilityItem.valid)) {
       return;
     }
     this.spineer.show();
 
+    const userId = this.userService.getUserInfo().id;
     const vendorId = this.userService.getVendorInfo().id;
-
+    const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
     const facility = {
       ...this.facilityItem.value,
       facilityCertificationList: this.selectedCertifications.map((item) => ({
         id: item
       })),
-      certificateURLs: this.certDocuments.map((item) => item.name)
+      certificateURLs: certFiles.map((item) => item.name)
     };
     facility.vendorId = vendorId;
     facility.updatedDate = new Date().toString();
@@ -202,24 +208,18 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     if (this.isNew) {
       facility.createdBy = String(this.userService.getVendorInfo().id);
       facility.createdDate = new Date().toString();
-
-      this.facilityService.createFacility(vendorId, facility).subscribe(res => {
-        const gotoURL = `/profile/vendor/facilities`;
-        this.route.navigateByUrl(gotoURL);
-        this.spineer.hide();
-      }, error => {
-        console.log(error);
-        this.spineer.hide();
-      });
+      this.facilityService.createFacility(vendorId, facility).toPromise();
     } else {
-      this.facilityService.updateFacility(vendorId, this.facilityId, facility).subscribe(res => {
-        const gotoURL = `/profile/vendor/facilities`;
-        this.route.navigateByUrl(gotoURL);
-        this.spineer.hide();
-      }, error => {
-        console.log(error);
-        this.spineer.hide();
-      });
+      await this.facilityService.updateFacility(vendorId, this.facilityId, facility).toPromise();
     }
+    const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
+
+    for ( const file of deletedFiles) {
+      const s3URL = this.fileService.getS3URL(file.name);
+      await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+    }
+    const gotoURL = `/profile/vendor/facilities`;
+    this.route.navigateByUrl(gotoURL);
+    this.spineer.hide();
   }
 }

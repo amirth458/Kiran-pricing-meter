@@ -143,17 +143,12 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  getFileName(filePath): string {
-    const arrFilePath = filePath.split('/');
-    return arrFilePath[arrFilePath.length - 1];
-  }
-
   initForm(initValue: Vendor) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
     this.certDocuments = initValue.certificateURLs.map(x => {
       return {
         name: x,
-        fileName: this.getFileName(x),
+        fileName: this.fileService.getFileNameFromPath(x),
         saved: 1
       };
     });
@@ -191,7 +186,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
           fileType: 'PDF',
           base64: reader.result,
         };
-
+        console.log('--------------');
+        console.log(reader.result);
         this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
           this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
         }, error => {
@@ -204,7 +200,16 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   }
 
   onRemoveFile(name) {
-    this.certDocuments = this.certDocuments.filter((item) => item.name !== name);
+    const certFiles = this.certDocuments.filter((item) => item.name === name);
+    if (certFiles[0].saved === 3) {
+      certFiles[0].saved = 0;
+    } else if (certFiles[0].saved === 2) {
+      certFiles[0].saved = 1;
+    } else if (certFiles[0].saved === 1) {
+      certFiles[0].saved = 2;
+    } else {
+      certFiles[0].saved = 3;
+    }
   }
   onFileChange(fileInput) {
     if (fileInput.target.files && fileInput.target.files[0]) {
@@ -213,9 +218,12 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  save(event) {
+  async save(event) {
     this.isSubmited = true;
     if (this.detailForm.valid) {
+      const userId = this.userService.getUserInfo().id;
+      const vendorId = this.userService.getVendorInfo().id;
+      const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
       this.spineer.show();
       const vendorProfile = {
         ...this.detailForm.value,
@@ -235,26 +243,27 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         vendorIndustries: [{
           id: this.detailForm.value.vendorIndustry
         }],
-        certificateURLs: this.certDocuments.map((item) => item.name)
+        certificateURLs: certFiles.map((item) => item.name)
       };
+
       if (this.userService.getVendorInfo()) {
-        this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
-          this.initForm(res);
-          this.spineer.hide();
-        }, error => {
-          console.log(error);
-          this.spineer.hide();
-        });
+        const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
+        console.log(res);
+        this.initForm(res);
+        this.userService.setVendorInfo(res);
       } else {
-        this.vendorService.createVendorProfile(vendorProfile).subscribe(res => {
-          this.initForm(res);
-          this.userService.setVendorInfo(res);
-          this.spineer.hide();
-        }, error => {
-          console.log(error);
-          this.spineer.hide();
-        });
+        const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
+        this.initForm(res);
+        this.userService.setVendorInfo(res);
       }
+
+      const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
+
+      for ( const file of deletedFiles) {
+        const s3URL = this.fileService.getS3URL(file.name);
+        await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+      }
+      this.spineer.hide();
     }
   }
 
