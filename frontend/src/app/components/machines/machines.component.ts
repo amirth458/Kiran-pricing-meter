@@ -114,7 +114,6 @@ export class MachinesComponent implements OnInit {
       headerName: 'Material', field: 'machineServingMaterialList', hide: false, sortable: true, filter: true,
       cellRenderer(params) {
         const data = params.data;
-        console.log(data);
         let materials = '';
         data.machineServingMaterialList.map((x, index) => {
           if (index === 0) {
