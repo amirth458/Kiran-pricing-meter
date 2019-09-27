@@ -4,12 +4,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as internationalCode from '../../../assets/static/internationalCode';
 import { VendorService } from '../../service/vendor.service';
 import { Vendor, VendorMetaData } from '../../model/vendor.model';
+
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
-
+import { FileService } from 'src/app/service/file.service';
+declare var $: any;
 @Component({
   selector: 'app-basic-details',
   templateUrl: './basic-details.component.html',
@@ -25,7 +27,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   certifications: VendorMetaData[] = [];
   confidentialities: VendorMetaData[] = [];
   selectedCertifications = [];
-  certFile = '';
+  certDocuments = [];
   isSubmited = false;
 
   detailForm: FormGroup = this.fb.group({
@@ -50,6 +52,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     public vendorService: VendorService,
     public userService: UserService,
     public authService: AuthService,
+    public fileService: FileService,
     public spineer: NgxSpinnerService,
     public route: Router
   ) {}
@@ -139,9 +142,20 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  getFileName(filePath): string {
+    const arrFilePath = filePath.split('/');
+    return arrFilePath[arrFilePath.length - 1];
+  }
+
   initForm(initValue: Vendor) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
-
+    this.certDocuments = initValue.certificateURLs.map(x => {
+      return {
+        name: x,
+        fileName: this.getFileName(x),
+        saved: 1
+      };
+    });
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
@@ -158,6 +172,44 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       confidentiality: initValue.confidentiality.id || '',
       vendorCertificates: []
     });
+  }
+
+  onOpenFile(event) {
+    $('#file').click();
+  }
+
+  upload = (file) => {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const userId = this.userService.getUserInfo().id;
+        const vendorId = this.userService.getVendorInfo().id;
+        const s3KeyFile = `u/${userId}/v/${vendorId}/certifications/${file.name}`;
+        const certFile = {
+          s3Key: s3KeyFile,
+          fileType: 'PDF',
+          base64: reader.result,
+        };
+
+        this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
+          this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
+        }, error => {
+          console.log(error);
+        });
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  onRemoveFile(name) {
+    this.certDocuments = this.certDocuments.filter((item) => item.name !== name);
+  }
+  onFileChange(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      const file = fileInput.target.files[0];
+      this.upload(file);
+    }
   }
 
   save(event) {
@@ -181,9 +233,9 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
         vendorIndustries: [{
           id: this.detailForm.value.vendorIndustry
-        }]
+        }],
+        certificateURLs: this.certDocuments.map((item) => item.name)
       };
-
       if (this.userService.getVendorInfo()) {
         this.vendorService.updateVendorProfile(vendorProfile).subscribe(res => {
           this.initForm(res);
@@ -209,10 +261,5 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     const str = input;
     str.replace(/[&amp;]/g, '&#38;');
     return str;
-  }
-
-  fileChangeEvent(evt) {
-    const file = evt.target.files[0];
-    this.certFile = file.name;
   }
 }

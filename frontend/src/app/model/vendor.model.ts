@@ -20,6 +20,7 @@ export interface Vendor {
   clientExclusionCondition: string;
   rfqExclusionCondition: string;
   vendorCertificates: Array<{ id: number, name: string }>;
+  certificateURLs: Array<string>;
 }
 
 export class FilterOption {

@@ -36,10 +36,11 @@ export class UserService {
   }
 
   getUserInfo() {
-    return this.userInfo;
+    return JSON.parse(localStorage.getItem('user'));
   }
 
   setUserInfo(userInfo) {
+    localStorage.setItem('user', JSON.stringify(userInfo));
     this.userInfo = userInfo;
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -135,7 +136,8 @@ export class ProfileComponent implements OnInit {
   type = ['search', 'filter'];
   constructor(
     private route: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService,
   ) {
     this.baseURL = this.route.url.split('/')[1];
   }
@@ -161,12 +163,20 @@ export class ProfileComponent implements OnInit {
         route: this.baseURL + '/post-processes'
       }
     ];
+    this.authService.getProfile().subscribe(res => {
+      if (res) {
+        this.userService.setUserInfo(res);
+      }
+    }, error => {
+      console.log('get profile error', error);
+    });
+
     this.authService.getVendor().subscribe(res => {
       if (res) {
         this.submenus.push(...this.additionalSubMenus);
       }
     }, error => {
-      console.log('get profile error', error);
+      console.log('get Vendor error', error);
     });
     this.selectedSubmenu = this.baseURL + '/vendor';
   }
