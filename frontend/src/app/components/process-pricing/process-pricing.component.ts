@@ -87,9 +87,36 @@ export class ProcessPricingComponent implements OnInit {
     { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: true, },
     { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: true },
     { headerName: 'Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: true },
-    // tslint:disable-next-line:max-line-length
-    { headerName: 'Equipment', field: 'processProfile.machineServingMaterial.vendorMachinery.equipment.name', hide: false, sortable: true, filter: true },
-    { headerName: 'Material', field: 'processProfile.machineServingMaterial.material.name', hide: false, sortable: true, filter: true },
+    {
+      // tslint:disable-next-line:max-line-length
+      headerName: 'Equipment', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
+      hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processProfile.processMachineServingMaterialList[0] ? param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
+        return value;
+      }
+    },
+    {
+      // tslint:disable-next-line:max-line-length
+      headerName: 'Material', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
+      hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        let value = '';
+        if (param.data.processProfile.processMachineServingMaterialList[0]) {
+          // tslint:disable-next-line:max-line-length
+          param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
+            if (index == 0) {
+              value += material.name;
+            } else {
+              value += ', ' + material.name;
+            }
+          });
+        }
+
+        return value;
+      }
+    }
   ];
 
   gridOptions: GridOptions;
