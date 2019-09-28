@@ -88,7 +88,7 @@
                   (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Process Parameters')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of processParameterList" [value]="item.id">{{item.name}}
+                  <option *ngFor="let item of filteredProcessParameterList" [value]="item.id">{{item.name}}
                   </option>
                 </select>
                 <div class="invalid-feedback">
