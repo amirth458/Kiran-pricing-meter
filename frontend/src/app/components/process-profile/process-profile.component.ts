@@ -87,8 +87,24 @@ export class ProcessProfileComponent implements OnInit {
   columnDefs: Array<any> = [
     { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
     { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: true },
-    { headerName: 'Equipment', field: 'machineServingMaterial.vendorMachinery.equipment.name', hide: false, sortable: true, filter: true },
-    { headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: true }
+    // tslint:disable-next-line:max-line-length
+    {
+      headerName: 'Equipment', field: 'processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
+      hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
+        return value;
+      }
+    },
+    {
+      headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName : '';
+        return value;
+      }
+    }
   ];
 
 
