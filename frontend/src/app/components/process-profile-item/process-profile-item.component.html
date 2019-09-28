@@ -27,7 +27,7 @@
         <label for="material">Material</label>
         <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="true"
           dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
-          formControlName="materials">
+          formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
         <span class="footnote">* Required</span>
