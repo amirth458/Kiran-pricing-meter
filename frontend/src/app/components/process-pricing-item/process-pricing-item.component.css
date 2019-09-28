@@ -24,7 +24,7 @@
 
 .form-group.icon-attached {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .conditions .minus {

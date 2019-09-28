@@ -25,6 +25,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   materials = [];
   submitActive = true;
 
+  filteredProcessParameterList = [];
+
   form: FormGroup = this.fb.group({
     id: [null],
     vendorId: [null],
@@ -341,9 +343,11 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   equipmentChanged() {
     const equipmentId = this.form.value.equipment;
     this.form.setValue({ ...this.form.value, materialList: [] });
+    this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
         this.materials = x.machineServingMaterialList;
+        this.filteredProcessParameterList = this.processParameterList.filter(item => item.processType.name == x.equipment.processTypeName);
       }
     });
   }
