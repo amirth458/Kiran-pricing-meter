@@ -353,7 +353,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       id: processProfile.id,
       name: processProfile.name,
       vendorId: processProfile.vendorId,
-      equipment: processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id,
+      // tslint:disable-next-line:max-line-length
+      equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
       materialList: [],
       processParameterList: processProfile.processParameterList,
       processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,

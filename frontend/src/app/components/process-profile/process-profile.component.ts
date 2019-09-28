@@ -97,7 +97,14 @@ export class ProcessProfileComponent implements OnInit {
         return value;
       }
     },
-    { headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: true }
+    {
+      headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName : '';
+        return value;
+      }
+    }
   ];
 
 
