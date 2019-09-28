@@ -208,8 +208,9 @@ export class ProcessPricingComponent implements OnInit {
     const conditionNames = [];
     const componentName = [];
 
-    this.rowData.map(row => {
+    this.rowData.map((row, outterIndex) => {
       row.processPricingConditionList.map((x, index) => {
+        console.log('index ', index, row.processPricingConditionList);
         if (!conditionNames.includes(`Condition ${index + 1}`)) {
           conditionNames.push(`Condition ${index + 1}`);
           // this.searchColumns.push(
@@ -232,8 +233,8 @@ export class ProcessPricingComponent implements OnInit {
             filter: true,
             cellRenderer(params: any): any {
               let value = '';
-              params.data.processPricingConditionList.map(item => {
-                if (item.id === x.id) {
+              params.data.processPricingConditionList.map((item, innerIndex) => {
+                if (innerIndex === outterIndex) {
                   value = `${item.processPricingConditionType.name} ${item.operatorType.symbol} `;
                   if (item.valueSignType == 'positive') {
                     value += `${item.value} ${item.unitType.symbol}`;
@@ -247,6 +248,8 @@ export class ProcessPricingComponent implements OnInit {
               return value;
             }
           });
+        } else {
+          console.log(index);
         }
       });
 
@@ -273,8 +276,8 @@ export class ProcessPricingComponent implements OnInit {
             filter: true,
             cellRenderer(params: any): any {
               let value = '';
-              params.data.processPricingParameterList.map(item => {
-                if (item.id == x.id) {
+              params.data.processPricingParameterList.map((item, innerIndex) => {
+                if (innerIndex == outterIndex) {
                   value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
                 }
               });
