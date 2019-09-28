@@ -170,13 +170,8 @@ export class ProcessProfileComponent implements OnInit {
   async copyRow() {
     this.spineer.show();
     const postData = {
+      ...this.cloneData,
       name: this.newProfileName || 'Process Profile - ' + this.getRandomString(7),
-      machineServingMaterial: this.cloneData.machineServingMaterial,
-      processDimensionalPropertyList: this.cloneData.processDimensionalPropertyList,
-      processMaterialCharacteristicList: this.cloneData.processMaterialCharacteristicList,
-      processParameterList: this.cloneData.processParameterList,
-      processProfileType: this.cloneData.processProfileType,
-      vendorId: this.cloneData.vendorId,
     };
     // tslint:disable-next-line:max-line-length
     const res = await this.processService.saveProfile(this.userService.getVendorInfo().id, postData).toPromise();
