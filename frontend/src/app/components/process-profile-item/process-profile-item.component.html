@@ -59,18 +59,31 @@
 
       <div id="conditionLabel" class="conditions">
 
-        <div class="default">
-          <span class="add" (click)="addCondition()">
-            <i class="fas fa-plus"></i>
-          </span>
+        <div class="info-bar">
+          <p *ngIf="activeTab == 'processParameterList'">
+            Enter the parameters you will use for the manufacturing process
+          </p>
+          <p *ngIf="activeTab == 'processDimensionalPropertyList'">
+            Enter the dimensional characteristics that will result from the process. Please note that max/min values are
+            required inputs for any work for customers specifying specific dimensional characteristics
+          </p>
+          <p *ngIf="activeTab == 'processMaterialCharacteristicList'">
+            Material Characteristics: Enter the material properties that will result from he process. Please note that
+            max/min values are required inputs for any work for customers specifying specific material characteristics.
+          </p>
+          <div class="default">
+            <span class="add" (click)="addCondition()">
+              <i class="fas fa-plus"></i>
+            </span>
 
-          <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
-            title="short desc of what default values mean">
-            <i class="fas fa-question-circle"></i>
-          </span>
-          <span *ngIf="'processParameterList' != activeTab" data-toggle="modal"
-            data-target="#exampleModalCenter">Default
-            Values</span>
+            <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
+              title="short desc of what default values mean">
+              <i class="fas fa-question-circle"></i>
+            </span>
+            <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
+              data-target="#exampleModalCenter">Default
+              Values</span>
+          </div>
         </div>
 
         <!-- Process Parameters -->
@@ -162,6 +175,20 @@
 
             </div>
 
+
+            <div *ngIf="selectedProcessParameterList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+
+              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+                data-placement="right" title="short desc of what default values mean">
+                <i class="fas fa-question-circle"></i>
+              </span>
+              <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
+                data-target="#exampleModalCenter">Default
+                Values</span>
+            </div>
           </div>
 
 
@@ -263,6 +290,20 @@
 
             </div>
 
+            <div *ngIf="selectedProcessDimensionalPropertyList.length > 5" class=" default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+
+              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+                data-placement="right" title="short desc of what default values mean">
+                <i class="fas fa-question-circle"></i>
+              </span>
+              <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
+                data-target="#exampleModalCenter">Default
+                Values</span>
+            </div>
+
           </div>
 
         </div>
@@ -360,6 +401,20 @@
 
             </div>
 
+
+            <div *ngIf="selectedProcessMaterialCharacteristicList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+
+              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+                data-placement="right" title="short desc of what default values mean">
+                <i class="fas fa-question-circle"></i>
+              </span>
+              <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
+                data-target="#exampleModalCenter">Default
+                Values</span>
+            </div>
           </div>
 
         </div>
