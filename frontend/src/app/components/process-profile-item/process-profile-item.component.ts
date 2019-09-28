@@ -343,6 +343,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   equipmentChanged() {
     const equipmentId = this.form.value.equipment;
     this.form.setValue({ ...this.form.value, materialList: [] });
+    this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
         this.materials = x.machineServingMaterialList;
