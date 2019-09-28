@@ -19,7 +19,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   form: FormGroup = this.fb.group({
     id: '',
     pricingProfileName: [null],
-    processProfileId: [null, Validators.required],
+    processProfileId: ['', Validators.required],
     processPricingConditionList: [[]],
     processPricingParameterList: [[]]
   });
@@ -29,7 +29,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   selectedParameterList = [
     {
       currency: {
-        id: ''
+        id: '1'
       },
 
       price: '',
@@ -205,7 +205,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.selectedParameterList.push(
       {
         currency: {
-          id: ''
+          id: '1'
         },
 
         price: '',
