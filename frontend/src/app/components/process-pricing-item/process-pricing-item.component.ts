@@ -149,15 +149,28 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.selectedPricingConditionList = [...pricingProfile.processPricingConditionList];
 
     this.selectedPricingConditionList.map((parameter, index) => {
-      this.getProperOperands(parameter.processPricingConditionType.id, index);
+      this.onPropertyChange(parameter.processPricingConditionType.id, index);
     });
 
     this.processProfileChanged();
   }
 
-  getProperOperands(conditionId, index) {
-    const operandTypeName = this.pricingConditionTypes.filter(condition => condition.id == conditionId)[0].operandType.name;
+  onPropertyChange(conditionId, index) {
+    // Set proper operands
+    const operand = this.pricingConditionTypes.filter(condition => condition.id == conditionId)[0];
+    const operandTypeName = operand.operandType.name;
     this.selectedPricingConditionList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+
+    // Set proper sign types
+    let signTypeId = null;
+    if (operandTypeName == 'absolute') {
+      signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+    } else {
+      signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+    }
+    this.selectedPricingConditionList[index].valueSignType = {
+      id: signTypeId
+    };
   }
 
   ngAfterViewChecked(): void {

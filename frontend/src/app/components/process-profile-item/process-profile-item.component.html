@@ -101,7 +101,7 @@
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
                   [(ngModel)]="selectedProcessParameterList[index].processParameterType.id"
-                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Process Parameters')"
+                  (ngModelChange)="onPropertyChange(selectedProcessParameterList[index].processParameterType.id, index,'Process Parameters')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of filteredProcessParameterList" [value]="item.id">{{item.name}}
@@ -112,7 +112,7 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-2">
+              <div class="form-group theme col-md-3">
                 <select [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
                   id="condition" name="condition" [(ngModel)]="selectedProcessParameterList[index].operatorType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
@@ -125,7 +125,7 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
+              <!-- <div class="form-group theme col-md-1">
                 <select required id="condition" name="condition"
                   [(ngModel)]="selectedProcessParameterList[index].valueSignType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
@@ -135,7 +135,7 @@
                 <div class="invalid-feedback">
                   Required.
                 </div>
-              </div>
+              </div> -->
 
               <div class="form-group theme col-md-3">
                 <input required type="number" step="0.00001" maxlength="4" min="0" max="9999"
@@ -212,7 +212,7 @@
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id"
-                  (ngModelChange)="getProperOperands(selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id, index,'Process Dimensional Properties')"
+                  (ngModelChange)="onPropertyChange(selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id, index,'Process Dimensional Properties')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of processDimensionalPropertyList" [value]="item.id">
@@ -224,7 +224,7 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-2">
+              <div class="form-group theme col-md-3">
                 <select
                   [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
                   required id="condition" name="condition"
@@ -241,7 +241,7 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
+              <!-- <div class="form-group theme col-md-1">
                 <select required id="condition" name="condition"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].valueSignType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
@@ -253,7 +253,7 @@
                 <div class="invalid-feedback">
                   Required.
                 </div>
-              </div>
+              </div> -->
 
               <div class="form-group theme col-md-3">
                 <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
@@ -325,7 +325,7 @@
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id"
-                  (ngModelChange)="getProperOperands(selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id, index,'Process Material Characteristics')"
+                  (ngModelChange)="onPropertyChange(selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id, index,'Process Material Characteristics')"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of processMaterialCharacteristicList" [value]="item.id">
@@ -337,7 +337,7 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-2">
+              <div class="form-group theme col-md-3">
                 <select
                   [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
                   required id="condition" name="condition"
@@ -354,7 +354,7 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
+              <!-- <div class="form-group theme col-md-1">
                 <select required id="condition" name="condition"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].valueSignType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
@@ -364,7 +364,7 @@
                 <div class="invalid-feedback">
                   Required.
                 </div>
-              </div>
+              </div> -->
 
               <div class="form-group theme col-md-3">
                 <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
