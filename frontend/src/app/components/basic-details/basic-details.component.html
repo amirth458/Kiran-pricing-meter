@@ -7,7 +7,7 @@
       </div>
       <div class="form-group theme col-md-6">
         <label>Vendor Type</label>
-        <select required formControlName="vendorType" class="form-control">
+        <select required formControlName="vendorType" (change)="onChangeVendorType($event)" class="form-control">
           <option selected value="">Choose...</option>
           <option *ngFor="let item of vendorTypes" [value]="item.id">{{item.name}}</option>
         </select>
@@ -18,7 +18,8 @@
         <label>Vendor Industry</label>
         <select required formControlName="vendorIndustry" class="form-control">
           <option selected value="">Choose...</option>
-          <option *ngFor="let item of vendorIndustries" [value]="item.id">{{item.name}}</option>
+          <option *ngFor="let item of vendorIndustries" [value]="item.id"
+            [disabled]="checkDisable(item.id)">{{item.name}}</option>
         </select>
       </div>
     </div>
@@ -41,21 +42,23 @@
       </div>
       <div class="form-group theme col-md-3">
         <label>Street 2</label>
-        <input required formControlName="street2" class="form-control" placeholder="1234 Main St">
+        <input formControlName="street2" class="form-control" placeholder="1234 Main St">
       </div>
       <div class="form-group theme col-md-6">
-        <label>Zip</label>
-        <input required formControlName="zipCode" class="form-control" placeholder="Zip Code" pattern="^[0-9\s]{5}$">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group theme col-md-3">
         <label>City</label>
         <input required formControlName="city" class="form-control">
       </div>
+      
+    </div>
+    <div class="form-row">
+      
       <div class="form-group theme col-md-3">
-        <label>State</label>
+        <label>State/Territory/Region</label>
         <input required formControlName="state" class="form-control">
+      </div>
+      <div class="form-group theme col-md-3">
+        <label>Zip</label>
+        <input required formControlName="zipCode" class="form-control" placeholder="Zip Code" pattern="^[0-9\s]{5}$">
       </div>
       <div class="form-group theme col-md-6">
         <label>Country</label>
@@ -66,16 +69,26 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group theme col-md-6">
-        <label>
+      <div class="form-group theme col-md-12">
+        <label style="margin-bottom: 0">
           Confidentiality
-          <div class="link">
-            <a href="https://www.3diligent.com/wp-content/uploads/2019/03/drctVndrAgrmnt-190305_clean.pdf" target="_blank">View Vendor agreement</a>
-          </div>
         </label>
-        <select formControlName="confidentiality" class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of confidentialities" [value]="item.id">{{item.name}}</option>
+        <div class="footnote">
+          * By marking this box YES and clicking the SAVE button, I acknowledge that 
+          I have read and agree to be bound by the Confidentiality Provisions of the 
+          3Diligent 
+          <div class="link">
+            <a href="https://www.3diligent.com/wp-content/uploads/2019/03/drctVndrAgrmnt-190305_clean.pdf" target="_blank">
+              Vendor Agreement
+            </a>
+          </div>
+        </div>
+      
+      </div>
+      <div class="form-group theme col-md-6">
+        <select formControlName="confidentiality" (change)="onChangeConfidentiality($event)" class="form-control">
+          <option selected value="" [disabled]="disableConfidentiality">Choose...</option>
+          <option *ngFor="let item of confidentialities" [disabled]="disableConfidentiality" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
     </div>

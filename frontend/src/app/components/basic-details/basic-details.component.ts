@@ -21,6 +21,16 @@ declare var $: any;
 
 export class BasicDetailsComponent implements OnInit, AfterViewChecked {
 
+  constructor(
+    public fb: FormBuilder,
+    public vendorService: VendorService,
+    public userService: UserService,
+    public authService: AuthService,
+    public fileService: FileService,
+    public spineer: NgxSpinnerService,
+    public route: Router
+  ) {}
+
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
   vendorIndustries: VendorMetaData[] = [];
@@ -42,21 +52,12 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     state: [null, Validators.required],
     country: [null, Validators.required],
     street1: [null, Validators.required],
-    street2: [null, Validators.required],
+    street2: [null],
     zipCode: [null, [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]],
     confidentiality: null,
     vendorCertificates: null
   });
-
-  constructor(
-    public fb: FormBuilder,
-    public vendorService: VendorService,
-    public userService: UserService,
-    public authService: AuthService,
-    public fileService: FileService,
-    public spineer: NgxSpinnerService,
-    public route: Router
-  ) {}
+  disableConfidentiality = false;
 
   ngOnInit() {
     this.getVendorMetaDatas();
@@ -97,7 +98,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       }, false);
     });
   }
-
   async getVendorMetaDatas() {
     this.spineer.show();
     try {
@@ -142,7 +142,9 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       this.spineer.hide();
     }
   }
-
+  onChangeConfidentiality(e) {
+    this.disableConfidentiality = Number(e.target.value) === 2;
+  }
   initForm(initValue: Vendor) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
     this.certDocuments = initValue.certificateURLs.map(x => {
@@ -152,6 +154,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         saved: 1
       };
     });
+    this.disableConfidentiality = Number(initValue.confidentiality) === 2;
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
@@ -186,8 +189,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
           fileType: 'PDF',
           base64: reader.result,
         };
-        console.log('--------------');
-        console.log(reader.result);
         this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
           this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
         }, error => {
@@ -197,6 +198,28 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       };
       reader.readAsDataURL(file);
     });
+  }
+  onChangeVendorType(e) {
+    console.log(e.target.value);
+    if (Number(e.target.value) === 2 || Number(e.target.value) === 6) {
+      this.detailForm.setValue({
+        ...this.detailForm.value,
+        vendorIndustry: 13,
+      });
+
+    } else {
+      this.detailForm.setValue({
+        ...this.detailForm.value,
+        vendorIndustry: 1,
+      });
+    }
+  }
+
+  checkDisable(vendorIndustry): boolean {
+    const { vendorType } = this.detailForm.value;
+
+    return ((Number(vendorType) === 2 || Number(vendorType) === 6) && Number(vendorIndustry) !== 13) ||
+      ((Number(vendorType) !== 2 && Number(vendorType) !== 6) && Number(vendorIndustry) === 13);
   }
 
   onRemoveFile(name) {

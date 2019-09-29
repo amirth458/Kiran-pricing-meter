@@ -33,7 +33,6 @@
 }
 .link {
   display: inline;
-  margin-left: 20px;
   font-size: 12px;
   text-align: center;
   color: var(--theme-light-green);
