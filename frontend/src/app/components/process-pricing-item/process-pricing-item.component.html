@@ -79,17 +79,6 @@
                 Required.
               </div>
             </div>
-            <!-- <div class="form-group theme col-md-1">
-              <select required id="condition" name="condition"
-                [(ngModel)]="selectedPricingConditionList[index].valueSignType.id" [ngModelOptions]="{standalone: true}"
-                class="form-control">
-                <option selected value="">Choose...</option>
-                <option *ngFor="let item of signTypes" [value]="item.id">{{item.symbol}}</option>
-              </select>
-              <div class="invalid-feedback">
-                Required.
-              </div>
-            </div> -->
 
             <div class="form-group theme col-md-3">
               <input required type="number" step="0.00001" maxlength="4" min="0" max="9999"
@@ -107,12 +96,7 @@
                   class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of units" [value]="item.id">
-                    <ng-container *ngIf="item.id < 13">
-                      {{item.name}}({{item.symbol}})
-                    </ng-container>
-                    <ng-container *ngIf="item.id >= 13">
-                      {{item.name}}
-                    </ng-container>
+                    {{item.displayName}}
                   </option>
                 </select>
                 <div class="invalid-feedback">
@@ -213,12 +197,7 @@
                   class="form-control">
                   <option selected value="">Choose...</option>
                   <option *ngFor="let item of units" [value]="item.id">
-                    <ng-container *ngIf="item.id < 13">
-                      {{item.name}}({{item.symbol}})
-                    </ng-container>
-                    <ng-container *ngIf="item.id >= 13">
-                      {{item.name}}
-                    </ng-container>
+                    {{item.displayName}}
                   </option>
                 </select>
                 <div class="invalid-feedback">
