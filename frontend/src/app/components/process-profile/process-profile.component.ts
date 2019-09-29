@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, ɵConsole } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
-import * as processProfiles from '../../../assets/static/processProfile';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -10,6 +9,7 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-process-profile',
@@ -112,13 +112,18 @@ export class ProcessProfileComponent implements OnInit {
 
   rowData;
   pageSize = 10;
+
+  navigation;
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,
     public userService: UserService,
     public processService: ProcessProfileService,
-    public processMetaData: ProcessMetadataService
-  ) { }
+    public processMetaData: ProcessMetadataService,
+    public toastr: ToastrService
+  ) {
+    this.navigation = this.route.getCurrentNavigation();
+  }
 
 
   async ngOnInit() {
@@ -146,6 +151,14 @@ export class ProcessProfileComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
+    if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+      const toastInfo = this.navigation.extras.state.toast;
+      if (toastInfo.type == 'success') {
+        this.toastr.success(toastInfo.body);
+      } else {
+        this.toastr.error(toastInfo.body);
+      }
+    }
   }
 
   configureColumnDefs() {
