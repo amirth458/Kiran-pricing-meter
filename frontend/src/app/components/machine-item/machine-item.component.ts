@@ -29,6 +29,8 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   isMaterialLoading = false;
   isEquipmentLoading = false;
 
+  error = '';
+
   @ViewChild('materialInput') materialInput;
   @ViewChild('equipmentInput') equipmentInput;
 
@@ -236,30 +238,33 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   async save(event) {
     event.preventDefault();
     if (this.form.valid) {
+      this.error = '';
       const postData = this.prepareData();
       const vendorId = this.userService.getVendorInfo().id;
       if (this.isNew) {
         this.spinner.show();
         try {
           await this.machineService.createMachine(vendorId, postData).toPromise();
+          const gotoURL = `/profile/vendor/machines`;
+          this.route.navigateByUrl(gotoURL);
         } catch (e) {
+          this.error = e.error.message;
           console.log(e);
         } finally {
           this.spinner.hide();
-          const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL);
         }
 
       } else {
         this.spinner.show();
         try {
           await this.machineService.updateMachine(vendorId, this.machineId, postData).toPromise();
+          const gotoURL = `/profile/vendor/machines`;
+          this.route.navigateByUrl(gotoURL);
         } catch (e) {
+          this.error = e.error.message;
           console.log(e);
         } finally {
           this.spinner.hide();
-          const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL);
         }
 
       }

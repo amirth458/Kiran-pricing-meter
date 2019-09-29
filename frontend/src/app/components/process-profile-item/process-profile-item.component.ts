@@ -25,12 +25,14 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   materials = [];
   submitActive = true;
 
+  filteredProcessParameterList = [];
+
   form: FormGroup = this.fb.group({
     id: [null],
     vendorId: [null],
     name: [null],
     equipment: [null, Validators.required],
-    material: [null, Validators.required],
+    materialList: [null, Validators.required],
     // processType: [null, Validators.required],
     processParameterList: [
       []
@@ -340,10 +342,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   equipmentChanged() {
     const equipmentId = this.form.value.equipment;
-    this.form.setValue({ ...this.form.value, material: null });
+    this.form.setValue({ ...this.form.value, materialList: [] });
+    this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
         this.materials = x.machineServingMaterialList;
+        this.filteredProcessParameterList = this.processParameterList.filter(item => item.processType.name == x.equipment.processTypeName);
       }
     });
   }
@@ -353,16 +357,18 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       id: processProfile.id,
       name: processProfile.name,
       vendorId: processProfile.vendorId,
-      equipment: processProfile.machineServingMaterial.vendorMachinery.id,
-      material: processProfile.machineServingMaterial.id,
+      // tslint:disable-next-line:max-line-length
+      equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
+      materialList: [],
       processParameterList: processProfile.processParameterList,
       processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,
       processDimensionalPropertyList: processProfile.processDimensionalPropertyList
     });
 
     this.equipmentChanged();
-    this.form.setValue({ ...this.form.value, material: processProfile.machineServingMaterial.id });
-
+    this.form.setValue({
+      ...this.form.value, materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)]
+    });
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
     this.selectedProcessMaterialCharacteristicList = [...processProfile.processMaterialCharacteristicList.map(x => { x.operandTypeList = []; return x; })];
@@ -388,7 +394,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   prepareData() {
     const postData = {
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
-      machineServingMaterial: { id: this.form.value.material },
+      processMachineServingMaterialList: this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } })),
+      // machineServingMaterial: { id: this.form.value.materialList },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
       processMaterialCharacteristicList: [...this.selectedProcessMaterialCharacteristicList],

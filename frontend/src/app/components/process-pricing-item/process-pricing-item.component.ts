@@ -19,7 +19,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   form: FormGroup = this.fb.group({
     id: '',
     pricingProfileName: [null],
-    processProfileId: [null, Validators.required],
+    processProfileId: ['', Validators.required],
     processPricingConditionList: [[]],
     processPricingParameterList: [[]]
   });
@@ -29,7 +29,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   selectedParameterList = [
     {
       currency: {
-        id: ''
+        id: '1'
       },
 
       price: '',
@@ -71,16 +71,11 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   pricingConditionTypes = [];
   currencyList = [];
   processPricingParameterTypeList = [];
+  filteredProcessPricingParameterTypeList = [];
+  filteredPricingConditionTypes = [];
 
   isNew = true;
   isFormValid = false;
-
-
-  // Currency - $
-  // Price - 40
-  // processPricingParameterType - Infill
-  // quantity - 4
-  // quantityUnitType - mm
 
 
   constructor(
@@ -155,6 +150,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.selectedPricingConditionList.map((parameter, index) => {
       this.getProperOperands(parameter.processPricingConditionType.id, index);
     });
+
+    this.processProfileChanged();
   }
 
   getProperOperands(conditionId, index) {
@@ -179,6 +176,19 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       }, false);
     });
   }
+
+  processProfileChanged() {
+    const processProfile = this.processProfiles.filter(profile => profile.id == this.form.value.processProfileId);
+    if (processProfile.length) {
+      // tslint:disable-next-line:max-line-length
+      const processType = processProfile[0].processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName;
+      // tslint:disable-next-line:max-line-length
+      this.filteredProcessPricingParameterTypeList = this.processPricingParameterTypeList.filter(param => param.processType.name == processType);
+      // tslint:disable-next-line:max-line-length
+      this.filteredPricingConditionTypes = this.pricingConditionTypes.filter(param => param.processProfileType.name == processProfile[0].processProfileType.name);
+    }
+  }
+
 
   addCondition() {
     this.selectedPricingConditionList.push({
@@ -205,7 +215,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.selectedParameterList.push(
       {
         currency: {
-          id: ''
+          id: '1'
         },
 
         price: '',

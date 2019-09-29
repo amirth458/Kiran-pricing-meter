@@ -1,5 +1,9 @@
 <div class="wrapper shadow">
 
+  <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+
   <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
 
