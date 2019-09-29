@@ -27,7 +27,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     email: [null, [Validators.required, Validators.email]],
     phone: [null, Validators.required],
     street1: [null, Validators.required],
-    street2: [null, Validators.required],
+    street2: [null],
     zipCode: [null, Validators.required],
     city: [null, Validators.required],
     state: [null, Validators.required],
