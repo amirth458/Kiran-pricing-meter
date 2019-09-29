@@ -74,6 +74,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   filteredProcessPricingParameterTypeList = [];
   filteredPricingConditionTypes = [];
 
+  error = '';
   isNew = true;
   isFormValid = false;
 
@@ -269,6 +270,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     // this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
+        this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
         if (this.isNew) {
@@ -276,21 +278,34 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           try {
             await this.processPricingService.saveProfile(vendorId, postData).toPromise();
             const gotoURL = `/profile/processes/pricing`;
-            this.route.navigateByUrl(gotoURL);
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Pricing Created!!' } } });
           } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
             this.spinner.hide();
           }
         } else {
           this.spinner.show();
           try {
             await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
+            const gotoURL = `/profile/processes/pricing`;
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Pricing Edited!' } } });
           } catch (e) {
             console.log(e);
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
           } finally {
             this.spinner.hide();
             // this.submitActive = true;
-            const gotoURL = `/profile/processes/pricing`;
-            this.route.navigateByUrl(gotoURL);
+
           }
         }
       } else {

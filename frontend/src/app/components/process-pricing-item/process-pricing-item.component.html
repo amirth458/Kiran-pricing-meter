@@ -1,4 +1,7 @@
 <div class="wrapper shadow">
+  <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
 
   <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
@@ -12,8 +15,8 @@
 
       <div class="form-group theme col-md-6">
         <label for="processProfileId">Process Profile Name</label>
-        <select (change)="processProfileChanged()" required id="processProfileId" name="processProfileId" formControlName="processProfileId"
-          class="form-control">
+        <select (change)="processProfileChanged()" required id="processProfileId" name="processProfileId"
+          formControlName="processProfileId" class="form-control">
           <option selected value=''>Choose...</option>
           <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}}</option>
         </select>
@@ -232,7 +235,8 @@
                   [(ngModel)]="selectedParameterList[index].processPricingParameterType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of filteredProcessPricingParameterTypeList" [value]="item.id">{{item.name}}</option>
+                  <option *ngFor="let item of filteredProcessPricingParameterTypeList" [value]="item.id">{{item.name}}
+                  </option>
                 </select>
                 <div class="invalid-feedback">
                   Required.

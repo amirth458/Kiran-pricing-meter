@@ -86,6 +86,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   };
   activeTab = 'processParameterList';
   activeTabName = 'Process Parameters';
+  error = '';
 
   isNew = true;
   isFormValid = false;
@@ -411,6 +412,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
+        this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
         if (this.isNew) {
@@ -418,21 +420,36 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
           try {
             await this.processProfileService.saveProfile(vendorId, postData).toPromise();
             const gotoURL = `/profile/processes/profile`;
-            this.route.navigateByUrl(gotoURL);
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Profile Saved!' } } });
           } catch (e) {
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
             this.spinner.hide();
+            this.submitActive = true;
+
           }
         } else {
           this.spinner.show();
           try {
             await this.processProfileService.updateProfile(vendorId, this.processProfileId, postData).toPromise();
+            const gotoURL = `/profile/processes/profile`;
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Profile Edited!' } } });
           } catch (e) {
             console.log(e);
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+
           } finally {
             this.spinner.hide();
             this.submitActive = true;
-            const gotoURL = `/profile/processes/processes/profile`;
-            this.route.navigateByUrl(gotoURL);
+
           }
         }
       } else {

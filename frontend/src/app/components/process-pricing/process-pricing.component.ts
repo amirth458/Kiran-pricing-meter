@@ -8,6 +8,7 @@ import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessPricingService } from 'src/app/service/process-pricing.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-process-pricing',
@@ -125,11 +126,18 @@ export class ProcessPricingComponent implements OnInit {
 
   rowData;
   pageSize = 10;
+
+  navigation;
+
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,
     public userService: UserService,
-    public processPricingService: ProcessPricingService) { }
+    public processPricingService: ProcessPricingService,
+    public toastr: ToastrService
+  ) {
+    this.navigation = this.route.getCurrentNavigation();
+  }
 
   async ngOnInit() {
     this.spineer.show();
@@ -159,6 +167,14 @@ export class ProcessPricingComponent implements OnInit {
       this.gridOptions.api.sizeColumnsToFit();
 
     }, 50);
+    if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+      const toastInfo = this.navigation.extras.state.toast;
+      if (toastInfo.type == 'success') {
+        this.toastr.success(toastInfo.body);
+      } else {
+        this.toastr.error(toastInfo.body);
+      }
+    }
   }
 
   configureColumnDefs() {
