@@ -319,6 +319,7 @@ button.theme.theme-reverse:hover {
   max-height: 75px;
   height: 75px;
   overflow: auto;
+  margin-top: 30px;
 }
 
 .uploaded_files li {
@@ -352,4 +353,13 @@ button.theme.theme-reverse:hover {
 
 .line-through {
   text-decoration: line-through;
+}
+
+.submit-message {
+  position: absolute;
+  text-align: center;
+  right: 15px;
+  font-weight: bold;
+  color:  var(--them-dark-blue-opaque);
+  
 }
