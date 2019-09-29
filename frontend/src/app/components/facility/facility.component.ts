@@ -175,35 +175,35 @@ export class FacilityComponent implements OnInit {
       field: 'id',
       hide: false,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'Facility Name',
       field: 'name',
       hide: false,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'Email',
       field: 'email',
       hide: false,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'Phone',
       field: 'phone',
       hide: true,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'Address',
       field: 'address',
       hide: false,
       sortable: true,
-      filter: true,
+      filter: false,
       cellRenderer(params) {
         return params.data.street1 + ' ' + params.data.street2;
       }
@@ -213,28 +213,28 @@ export class FacilityComponent implements OnInit {
       field: 'city',
       hide: false,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'State',
       field: 'state',
       hide: false,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'Country',
       field: 'country',
       hide: false,
       sortable: true,
-      filter: true
+      filter: false
     },
     {
       headerName: 'Certifications',
       field: '[vendorFacilityCertificationList].length',
       hide: false,
       sortable: true,
-      filter: true,
+      filter: false,
       cellRenderer(params) {
         return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
       }

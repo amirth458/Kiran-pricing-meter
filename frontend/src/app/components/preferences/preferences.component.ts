@@ -33,6 +33,8 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   tooltipAdjacentGrowth = 'Highlight industries you seek to support.';
   tooltipRFQ = 'RFQ to exclude.';
   tooltipClientToExclude = 'Specify any industries you do not wish to support.';
+  saveSuccessfully = false;
+
   constructor(
     public fb: FormBuilder,
     public vendorService: VendorService,
@@ -123,10 +125,10 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
     };
     console.log(preferences);
     if (this.isPreferenceAvailable) {
-
       this.preferenceService.updatePreference(preferences)
         .subscribe(
           res => {
+            this.saveSuccessfully = true;
             this.spineer.hide();
           },
           error => {
@@ -138,6 +140,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
           res => {
             this.isPreferenceAvailable = true;
             this.initForm(res);
+            this.saveSuccessfully = true;
             this.spineer.hide();
           },
           err => {
