@@ -58,7 +58,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     vendorCertificates: null
   });
   disableConfidentiality = false;
-
+  saveSuccessfully = false;
   ngOnInit() {
     this.getVendorMetaDatas();
 
@@ -274,10 +274,12 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         console.log(res);
         this.initForm(res);
         this.userService.setVendorInfo(res);
+        this.saveSuccessfully = true;
       } else {
         const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
         this.initForm(res);
         this.userService.setVendorInfo(res);
+        this.saveSuccessfully = true;
       }
 
       const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);

@@ -354,3 +354,12 @@ button.theme.theme-reverse:hover {
 .line-through {
   text-decoration: line-through;
 }
+
+.submit-message {
+  position: absolute;
+  text-align: center;
+  right: 15px;
+  font-weight: bold;
+  color:  var(--them-dark-blue-opaque);
+  
+}
