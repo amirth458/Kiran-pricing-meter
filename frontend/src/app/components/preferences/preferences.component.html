@@ -38,8 +38,7 @@
 
     </div>
 
-    <div class="form-row">
-
+    <div class="form-row" style="display: none">
       <div class="form-group theme col">
         <label>
           RFQ To Exclude
@@ -50,11 +49,9 @@
         <input formControlName="rfqExclusionCondition" id="rfqExclusionCondition" name="rfqExclusionCondition"
           placeholder="RFQ To Exclude" class="form-control">
       </div>
-
     </div>
 
     <div class="form-row">
-
       <div class="form-group theme col">
         <label>
           Client To Exclude
@@ -74,6 +71,7 @@
 
       <div class="form-group col-md-2 col-sm-4">
         <button type="submit" class="btn btn-primary theme" [disabled]="!form.valid">Save</button>
+        <p *ngIf="saveSuccessfully" class="submit-message">Saved Successfully</p>
       </div>
 
     </div>

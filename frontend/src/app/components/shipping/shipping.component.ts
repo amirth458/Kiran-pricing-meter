@@ -22,12 +22,12 @@ export class ShippingComponent implements OnInit {
   selectedShipping = null;
 
   searchColumns = [
-    {
-      name: 'Carrier No', checked: false, field: 'id', query: {
-        type: '',
-        filter: '',
-      }
-    },
+    // {
+    //   name: 'Carrier No', checked: false, field: 'id', query: {
+    //     type: '',
+    //     filter: '',
+    //   }
+    // },
     {
       name: 'Carrier', checked: false,
       field: 'carrier', query: {
@@ -58,9 +58,9 @@ export class ShippingComponent implements OnInit {
     },
   ];
   filterColumns = [
-    {
-      name: 'Carrier No', checked: true, field: 'id'
-    },
+    // {
+    //   name: 'Carrier No', checked: true, field: 'id'
+    // },
     {
       name: 'Carrier', checked: true, field: 'carrier'
     },
@@ -82,7 +82,7 @@ export class ShippingComponent implements OnInit {
   };
 
   columnDefs = [
-    { headerName: 'Carrier No', field: 'id', hide: false, sortable: true, filter: true },
+    // { headerName: 'Carrier No', field: 'id', hide: false, sortable: true, filter: true },
     {
       headerName: 'Carrier', field: 'shippingProvider.name', hide: false, sortable: true, filter: true,
     },

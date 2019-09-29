@@ -1,4 +1,10 @@
 <div class="wrapper">
+  <div class="table-control">
+    <app-column-search-filter width="200px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
+      (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
+      (searchColumnsChange)="searchColumnsChange($event)">
+    </app-column-search-filter>
+  </div>
   <div class="table theme-table">
 
     <div class="page-size">

@@ -104,14 +104,14 @@ export class MachinesComponent implements OnInit {
   };
 
   columnDefs = [
-    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: true },
-    { headerName: 'Facility', field: 'vendorFacility.name', hide: false, sortable: true, filter: true },
+    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Facility', field: 'vendorFacility.name', hide: false, sortable: true, filter: false },
     {
-      headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: true
+      headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: false
     },
     {
-      headerName: 'Material', field: 'machineServingMaterialList', hide: false, sortable: true, filter: true,
+      headerName: 'Material', field: 'machineServingMaterialList', hide: false, sortable: true, filter: false,
       cellRenderer(params) {
         const data = params.data;
         let materials = '';
@@ -135,7 +135,7 @@ export class MachinesComponent implements OnInit {
         </div>`;
       }
     },
-    { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: true },
+    { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: false },
     {
       headerName: 'Actions',
       width: 100,
@@ -259,12 +259,14 @@ export class MachinesComponent implements OnInit {
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if (column.checked) {
-        columnInstance.setModel(column.query);
-      } else {
-        columnInstance.setModel({ type: '', filter: '' });
+      if (columnInstance) {
+        if (column.checked) {
+          columnInstance.setModel(column.query);
+        } else {
+          columnInstance.setModel({ type: '', filter: '' });
+        }
+        this.gridOptions.api.onFilterChanged();
       }
-      this.gridOptions.api.onFilterChanged();
     });
   }
 
