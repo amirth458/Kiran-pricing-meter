@@ -121,7 +121,7 @@
                 <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
                 <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
               </a>
-              <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fa fa-times" aria-hidden="true"></i></button>
+              <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fa fa-times" color="red" aria-hidden="true"></i></button>
             </li>
           </ul>
       </div>

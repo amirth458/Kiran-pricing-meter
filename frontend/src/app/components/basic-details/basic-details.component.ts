@@ -245,7 +245,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     this.isSubmited = true;
     if (this.detailForm.valid) {
       const userId = this.userService.getUserInfo().id;
-      const vendorId = this.userService.getVendorInfo().id;
+
       const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
       this.spineer.show();
       const vendorProfile = {
@@ -271,7 +271,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
 
       if (this.userService.getVendorInfo()) {
         const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
-        console.log(res);
         this.initForm(res);
         this.userService.setVendorInfo(res);
         this.saveSuccessfully = true;
@@ -284,10 +283,14 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
 
       const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
-      for ( const file of deletedFiles) {
-        const s3URL = this.fileService.getS3URL(file.name);
-        await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+      if (this.userService.getVendorInfo()) {
+        const vendorId = this.userService.getVendorInfo().id;
+        for ( const file of deletedFiles) {
+          const s3URL = this.fileService.getS3URL(file.name);
+          await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+        }
       }
+
       this.spineer.hide();
     }
   }
