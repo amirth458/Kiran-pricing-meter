@@ -63,13 +63,17 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   });
   disableConfidentiality = false;
   saveSuccessfully = false;
+  vendorId = 0;
 
   ngOnInit() {
     this.getVendorMetaDatas();
     this.sub = this.vendor.subscribe(res => {
       if (res) {
+        this.userService.setUserInfo(res);
         this.initForm(res);
+        this.vendorId = Number(res.id);
       } else {
+        this.vendorId = 0;
         this.detailForm.setValue({
           ...this.detailForm.value,
           confidentiality: 1,
@@ -184,14 +188,13 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
       const reader = new FileReader();
       reader.onload = (event) => {
         const userId = this.userService.getUserInfo().id;
-        const vendorId = this.userService.getVendorInfo().id;
-        const s3KeyFile = `u/${userId}/v/${vendorId}/certifications/${file.name}`;
+        const s3KeyFile = `u/${userId}/v/${this.vendorId}/certifications/${file.name}`;
         const certFile = {
           s3Key: s3KeyFile,
           fileType: 'PDF',
           base64: reader.result,
         };
-        this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
+        this.fileService.fileUpload(userId, this.vendorId, certFile).subscribe(res => {
           this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
         }, error => {
           console.log(error);
@@ -287,11 +290,10 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
 
       const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
-      if (this.userService.getVendorInfo()) {
-        const vendorId = this.userService.getVendorInfo().id;
+      if (this.vendorId > 0) {
         for ( const file of deletedFiles) {
           const s3URL = this.fileService.getS3URL(file.name);
-          await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+          await this.fileService.fileDelete(userId, this.vendorId, s3URL).toPromise();
         }
       }
 

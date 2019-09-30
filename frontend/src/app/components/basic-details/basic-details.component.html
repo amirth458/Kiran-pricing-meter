@@ -104,8 +104,8 @@
     </div>
     <div class="form-row ">
       <div class="form-group theme upload-section">
-        <label>Certification Documents</label>
-        <div>
+        <label *ngIf="vendorId > 0">Certification Documents</label>
+        <div *ngIf="vendorId > 0">
           <button type="button" class="btn btn-primary theme" (click)="onOpenFile($event)" style="width: 120px; margin-left: 15px;">
             <i class="fa fa-upload"></i>
             Upload
@@ -115,7 +115,7 @@
           accept="application/pdf" />
       </div>
       <div style="flex-grow: 1">
-          <ul class="uploaded_files">
+          <ul class="uploaded_files"  *ngIf="vendorId > 0">
             <li *ngFor="let item of certDocuments">
               <!-- <a href="{{item.name}}" target="_blank"> -->
                 <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
