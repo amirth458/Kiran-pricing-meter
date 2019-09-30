@@ -164,7 +164,11 @@
               </div>
 
             </div>
-
+            <div *ngIf="selectedProcessParameterList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+            </div>
           </div>
 
 
@@ -305,7 +309,11 @@
               </div>
 
             </div>
-
+            <div *ngIf="selectedProcessDimensionalPropertyList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+            </div>
           </div>
 
         </div>
@@ -440,6 +448,11 @@
                 </span>
               </div>
 
+            </div>
+            <div *ngIf="selectedProcessMaterialCharacteristicList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
             </div>
           </div>
         </div>
