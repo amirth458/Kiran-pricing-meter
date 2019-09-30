@@ -10,52 +10,88 @@ export class ProcessMetadataService {
 
   constructor(public http: HttpClient) { }
 
-  getMeasurementType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_type');
+  getMeasurementType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_type?processProfileTypeId=1');
   }
 
-  getCurrency(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/currency');
+  getCurrency(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/currency?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/currency?processProfileTypeId=1');
   }
 
-  getMeasurementUnitType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_unit_type');
+  getMeasurementUnitType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_unit_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/measurement_unit_type?processProfileTypeId=1');
   }
 
-  getoperatorType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type');
+  getoperatorType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operator_type?processProfileTypeId=1');
   }
 
-  getOperand(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operand_type');
+  getOperand(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operand_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/operand_type?processProfileTypeId=1');
   }
 
-  getProcessDimensionalPropertyType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_dimensional_property_type');
+  getProcessDimensionalPropertyType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_dimensional_property_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_dimensional_property_type?processProfileTypeId=1');
   }
 
-  getProcessMaterialCharacteristicType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_material_characteristic_type');
+  getProcessMaterialCharacteristicType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_material_characteristic_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_material_characteristic_type?processProfileTypeId=1');
   }
 
-  getProcessParameterType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_parameter_type');
+  getProcessParameterType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_parameter_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_parameter_type?processProfileTypeId=1');
   }
 
-  getProcessPricingConditionType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type');
+  getProcessPricingConditionType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type?processProfileTypeId=1');
   }
 
-  getProcessPricingParameterType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type');
+  getProcessPricingParameterType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type?processProfileTypeId=1');
   }
 
-  getProcessProfileType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_profile_type');
+  getProcessProfileType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_profile_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_profile_type?processProfileTypeId=1');
   }
 
-  getValueSignType(): Observable<{ metadataList: any, metadataType: any }> {
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/value_sign_type');
+  getValueSignType(postProcess = false): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/value_sign_type?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/value_sign_type?processProfileTypeId=1');
   }
 
 }

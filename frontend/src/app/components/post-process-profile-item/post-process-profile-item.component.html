@@ -1,12 +1,18 @@
 <div class="wrapper shadow">
 
-  <form novalidate class="needs-validation">
+  <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+
+
+  <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
 
       <div class="form-group theme col">
-        <label for="postProcessProfileName">Post-Process Profile Name</label>
-        <input required type="text" [(ngModel)]="form.postProcessProfileName" class="form-control"
-          id="postProcessProfileName" name="postProcessProfileName" placeholder="Post-Process Profile Name">
+        <label for="name">Post-Process Profile Name</label>
+        <input type="text" formControlName="name" class="form-control" id="name" name="name"
+          placeholder="Post-Process Profile Name">
+        <span class="footnote">* If left blank, we will auto-generate one for you.</span>
       </div>
 
     </div>
@@ -14,72 +20,447 @@
     <div class="form-row">
 
       <div class="form-group theme col-md-6">
-        <label for="asset">Asset</label>
-        <select required id="asset" name="asset" [(ngModel)]="form.asset" class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of assetOption" [value]="item">{{item}}</option>
-        </select>
-      </div>
-
-      <div class="form-group theme col-md-6">
-        <label for="material">Material</label>
-        <select required id="material" name="material" [(ngModel)]="form.material" class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of materialOption" [value]="item">{{item}}</option>
-        </select>
-      </div>
-
-    </div>
-
-    <div class="form-row">
-
-      <div class="form-group theme col-md-6">
-        <label for="postProcessType">Process Type</label>
-        <select required id="postProcessType" name="postProcessType" [(ngModel)]="form.postProcessType"
+        <label for="asset">Equipment/Asset</label>
+        <select required (change)="equipmentChanged()" id="equipment" name="equipment" formControlName="equipment"
           class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of processTypeOption" [value]="item">{{item}}</option>
+          <option selected value=''>Choose...</option>
+          <option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</option>
         </select>
+        <div class="invalid-feedback">
+          Required.
+        </div>
       </div>
 
       <div class="form-group theme col-md-6">
-        <label for="postProcessProfileFamily">Process Family</label>
-        <select required id="postProcessProfileFamily" name="postProcessProfileFamily"
-          [(ngModel)]="form.postProcessProfileFamily" class="form-control">
-          <option selected value="">Choose...</option>
-          <option *ngFor="let item of processFamilyOption" [value]="item">{{item}}</option>
-        </select>
+        <label for="material">Materials</label>
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+          placeholder="Materials" [selectOnTab]="true" formControlName="materialList">
+          <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
+        </ng-select>
       </div>
 
     </div>
 
-    <div class="conditions">
+    <div class="form-row">
 
-      <div class="input-control">
-        <app-column-search-filter width="200px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
-          (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
-          (searchColumnsChange)="searchColumnsChange($event)">
-        </app-column-search-filter>
+      <div class="form-group theme col-md-6">
+        <label for="postProcessProfileFamily">Post-Process Family</label>
+        <select required id="postProcessProfileFamily" name="postProcessProfileFamily"
+          formControlName="postProcessProfileFamily" class="form-control">
+          <option selected value=''>Choose...</option>
+          <option *ngFor="let item of familyOptions" [value]="item.id">{{item.name}}</option>
+        </select>
+        <div class="invalid-feedback">
+          Required.
+        </div>
       </div>
 
-      <div class="input-wrapper">
+      <div class="form-group theme col-md-6">
+        <label for="postProcessAction">Post-Process Action</label>
+        <select required id="postProcessAction" name="postProcessAction" formControlName="postProcessAction"
+          class="form-control">
+          <option selected value=''>Choose...</option>
+          <option *ngFor="let item of actionOptions" [value]="item.id">{{item.name}}</option>
+        </select>
+        <div class="invalid-feedback">
+          Required.
+        </div>
+      </div>
+    </div>
 
-        <div class="form-row">
 
-          <ng-container *ngFor="let input of displayedOptions">
-            <div *ngIf="input.checked" class="form-group theme col-md-6">
-              <label [for]="input.field">{{input.name}}</label>
-              <input required type="text" [(ngModel)]="form[input.field]" class="form-control" [id]="input.field"
-                [name]="input.field" [placeholder]="input.name">
+    <!--  -->
+    <div class="tab-container card">
+
+      <div class="card-header">
+        <div class="menu-item" [class.active]="activeTab == 'processParameterList'"
+          (click)="toggleTab('processParameterList','Post-Process Parameters')">
+          Post-Process Parameters</div>
+        <span class="separator"></span>
+        <div class="menu-item" [class.active]="activeTab == 'processDimensionalPropertyList'"
+          (click)="toggleTab('processDimensionalPropertyList', 'Post-Process Dimensional Properties')">
+          Post-Process Dimensional Properties</div>
+        <span class=" separator"></span>
+        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristicList'"
+          (click)="toggleTab('processMaterialCharacteristicList','Post-Process Material Characteristics')">
+          Post-Process Material Characteristics</div>
+      </div>
+
+      <div id="conditionLabel" class="conditions">
+
+        <div class="default">
+          <span class="add" (click)="addCondition()">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+
+        <!-- Post-Process Parameters -->
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processParameterList'">
+          <!-- <span>
+            If
+          </span> -->
+
+          <div class="input-wrapper">
+
+            <div *ngFor="let item of selectedProcessParameterList; let index = index" class="form-row">
+              <div class="form-group theme col-md-3">
+                <select required id="name" name="name"
+                  [(ngModel)]="selectedProcessParameterList[index].processParameterType.id"
+                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Post-Process Parameters')"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processParameterList" [value]="item.id">{{item.name}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <select [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
+                  id="condition" name="condition" [(ngModel)]="selectedProcessParameterList[index].operatorType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of selectedProcessParameterList[index].operandTypeList" [value]=" item.id">
+                    {{item.symbol}}</option>
+                </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-3">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessParameterList[index].value" [ngModelOptions]="{standalone: true}"
+                  class="form-control" id="value" name="value" placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-3 icon-attached">
+                <div>
+
+                  <select required id="condition" name="condition"
+                    [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
+                    class="form-control">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let item of units" [value]="item.id">
+                      {{item.displayName}}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Required.
+                  </div>
+                </div>
+                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
+                  <i class="fas fa-minus"></i>
+                </span>
+
+                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
+                  <i class=""></i>
+                </span>
+              </div>
+
             </div>
-          </ng-container>
+            <div *ngIf="selectedProcessParameterList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+            </div>
+          </div>
 
 
         </div>
 
-      </div>
+        <!-- End of Post-Process Parameters -->
 
+        <!-- Post-Process Dimensional Properties -->
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processDimensionalPropertyList'">
+
+          <div class="input-wrapper">
+
+            <div class="form-row label-row justify-content-around"
+              *ngIf="selectedProcessDimensionalPropertyList.length">
+              <!-- <div class="form-group theme col-md-1">
+              </div> -->
+
+              <div class="form-group theme col-md-3">
+                <label>Dimension Property</label>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <label>Before Min</label>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <label>Before Max</label>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <label>After Min</label>
+              </div>
+
+              <div class="form-group theme col-md-1 icon-attached">
+                <label>After Expected</label>
+              </div>
+
+              <div class="form-group theme col-md-1 icon-attached">
+                <label>After Max</label>
+              </div>
+
+              <div class="form-group theme col-md-3 icon-attached">
+                <label>Measurment Unit</label>
+              </div>
+
+            </div>
+
+
+
+            <div *ngFor="let item of selectedProcessDimensionalPropertyList; let index = index"
+              class="form-row justify-content-around">
+              <!-- <div class="form-group theme col-md-1"> -->
+              <!-- </div> -->
+              <div class="form-group theme col-md-3">
+                <select required id="name" name="name"
+                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Post-Process Dimensional Properties')"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processDimensionalPropertyList" [value]="item.id">
+                    {{item.name}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMinValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMaxValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMinValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterExpectedValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
+                  name="afterExpectedValue" placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMaxValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-3 icon-attached">
+                <div>
+
+                  <select required id="condition" name="condition"
+                    [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
+                    [ngModelOptions]="{standalone: true}" class="form-control">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let item of units" [value]="item.id">
+                      {{item.displayName}}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Required.
+                  </div>
+                </div>
+                <span class="minus" (click)="removeCondition(index)">
+                  <i class="fas fa-minus"></i>
+                </span>
+              </div>
+
+            </div>
+            <div *ngIf="selectedProcessDimensionalPropertyList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+            </div>
+          </div>
+
+        </div>
+        <!-- End of Post-Process Dimensional Properties -->
+
+        <!-- Post-Process Material Characteristics -->
+        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processMaterialCharacteristicList'">
+
+          <div class="input-wrapper">
+
+            <div class="form-row label-row justify-content-around"
+              *ngIf="selectedProcessMaterialCharacteristicList.length">
+              <!-- <div class="form-group theme col-md-1">
+              </div> -->
+
+              <div class="form-group theme col-md-3">
+                <label>Material Characteristic</label>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <label>Before Min</label>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <label>Before Max</label>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <label>After Min</label>
+              </div>
+
+              <div class="form-group theme col-md-1 icon-attached">
+                <label>After Expected</label>
+              </div>
+
+              <div class="form-group theme col-md-1 icon-attached">
+                <label>After Max</label>
+              </div>
+
+              <div class="form-group theme col-md-3 icon-attached">
+                <label>Measurment Unit</label>
+              </div>
+
+            </div>
+
+            <div *ngFor="let item of selectedProcessMaterialCharacteristicList; let index = index"
+              class="form-row justify-content-around">
+              <!-- <div class="form-group theme col-md-1"> -->
+              <!-- </div> -->
+              <div class="form-group theme col-md-3">
+                <select required id="name" name="name"
+                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Post-Process Material Characteristics')"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of processMaterialCharacteristicList" [value]="item.id">
+                    {{item.name}}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMinValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMaxValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMinValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterExpectedValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
+                  name="afterExpectedValue" placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-1">
+                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMaxValue"
+                  [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
+                  placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <div class="form-group theme col-md-3 icon-attached">
+                <div>
+                  <select required id="condition" name="condition"
+                    [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
+                    [ngModelOptions]="{standalone: true}" class="form-control">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let item of units" [value]="item.id">
+                      {{item.displayName}}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Required.
+                  </div>
+                </div>
+                <span class="minus" (click)="removeCondition(index)">
+                  <i class="fas fa-minus"></i>
+                </span>
+              </div>
+
+            </div>
+            <div *ngIf="selectedProcessMaterialCharacteristicList.length > 5" class="default">
+              <span class="add" (click)="addCondition()">
+                <i class="fas fa-plus"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- End of Post-Process Material Characteristics -->
+      </div>
     </div>
+
+
     <div class="row button-section">
 
       <div class="col-md-10 col-sm-8"></div>

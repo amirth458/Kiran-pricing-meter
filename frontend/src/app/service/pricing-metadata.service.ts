@@ -9,11 +9,17 @@ import { environment } from 'src/environments/environment';
 export class PricingMetadataService {
 
   constructor(public http: HttpClient) { }
-  getConditionTypes(): Observable<{ metadataList: any, metadataType: any }> {
+  getConditionTypes(postProcess?): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type?processProfileTypeId=2');
+    }
     return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type');
   }
 
-  getConditionParameters(): Observable<{ metadataList: any, metadataType: any }> {
+  getConditionParameters(postProcess?): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type?processProfileTypeId=2');
+    }
     return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type');
   }
 }

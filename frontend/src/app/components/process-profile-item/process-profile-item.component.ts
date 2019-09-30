@@ -178,8 +178,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     if (section === 'Process Parameters') {
       // tslint:disable-next-line:max-line-length
       const operand = this.processParameterList.filter(condition => condition.id == conditionId)[0];
-      const operandTypeName = operand.operandType.name;
-      const options = this.conditions[operandTypeName.toString()];
+      const operandTypeName = operand ? operand.operandType.name : null;
+      const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessParameterList[index].operandTypeList = options;
 
       if (operandTypeName == 'absolute') {
@@ -194,8 +194,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     } else if (section === 'Process Dimensional Properties') {
       // tslint:disable-next-line:max-line-length
       const operand = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0];
-      const operandTypeName = operand.operandType.name;
-      const options = this.conditions[operandTypeName.toString()];
+      const operandTypeName = operand ? operand.operandType.name : null;
+      const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = options;
 
       if (operandTypeName == 'absolute') {
@@ -209,8 +209,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     } else if (section === 'Process Material Characteristics') {
       // tslint:disable-next-line:max-line-length
       const operand = this.processMaterialCharacteristicList.filter(condition => condition.id == conditionId)[0];
-      const operandTypeName = operand.operandType.name;
-      const options = this.conditions[operandTypeName.toString()];
+      const operandTypeName = operand ? operand.operandType.name : null;
+      const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
 
       if (operandTypeName == 'absolute') {
