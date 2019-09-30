@@ -361,5 +361,8 @@ button.theme.theme-reverse:hover {
   right: 15px;
   font-weight: bold;
   color:  var(--them-dark-blue-opaque);
-  
+}
+
+.shipping-icon {
+  margin-right: 20px;
 }
