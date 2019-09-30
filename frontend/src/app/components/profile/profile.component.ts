@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   baseURL = '';
 
   submenus = [];
+  vendorMenus = [];
   additionalSubMenus = [];
   selectedSubmenu;
   sidemenuClosed;
@@ -153,16 +154,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.submenus = [
-      // {
-      //   name: 'Home',
-      //   route: this.baseURL + '/home'
-      // },
+    this.vendorMenus = [
       {
         name: 'Vendor',
         route: this.baseURL + '/vendor'
       }
     ];
+
     this.additionalSubMenus = [
       {
         name: 'Processes',
@@ -183,7 +181,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     this.sub = this.vendor.subscribe(res => {
       if (res) {
-        this.submenus.push(...this.additionalSubMenus);
+        this.submenus = [...this.vendorMenus, ...this.additionalSubMenus];
+      } else {
+        this.submenus = [...this.vendorMenus];
       }
     });
     this.selectedSubmenu = this.baseURL + '/vendor';

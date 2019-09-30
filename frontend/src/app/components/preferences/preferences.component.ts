@@ -89,7 +89,6 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue) {
-    console.log(initValue);
     this.selectedCoreCompetence = initValue.vendorCoreCompetencies.map(x => x.id) || [];
     this.selectedAdjacentGrowth = initValue.vendorAdjacentGrowths.map(x => x.id) || [];
     this.form.setValue({
@@ -125,7 +124,6 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       vendorAdjacentGrowths: this.adjacentGrowths.filter((item) => this.selectedAdjacentGrowth.includes(item.id)),
       vendorCoreCompetencies: this.coreCompetencies.filter((item) => this.selectedCoreCompetence.includes(item.id)),
     };
-    console.log(preferences);
     if (this.isPreferenceAvailable) {
       this.preferenceService.updatePreference(preferences)
         .subscribe(

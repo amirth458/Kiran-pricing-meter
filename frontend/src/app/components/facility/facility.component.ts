@@ -282,7 +282,6 @@ export class FacilityComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.vendor.subscribe(res => {
-      console.log(res);
       if (res) {
         this.vendorId = Number(res.id);
       } else {
@@ -311,8 +310,6 @@ export class FacilityComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
-
-    
   }
 
   async getVendorFacilities() {

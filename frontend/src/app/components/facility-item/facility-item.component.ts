@@ -53,7 +53,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   vendor: Observable<Vendor>;
   sub: Subscription;
   vendorId = 0;
-
+  error = '';
   userId = 0;
 
   constructor(
@@ -61,7 +61,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     private route: Router,
     private vendorService: VendorService,
     private facilityService: FacilityService,
-    private spineer: NgxSpinnerService,
+    private spinner: NgxSpinnerService,
     private userService: UserService,
     private fileService: FileService,
     private authService: AuthService,
@@ -88,28 +88,28 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   }
 
   async getFacility(facilityId: number) {
-    this.spineer.show();
+    this.spinner.show();
     try {
       const data = await this.facilityService.getFacility(this.vendorId, facilityId).toPromise();
       this.initForm(data);
     } catch (e) {
-      this.spineer.hide();
+      this.spinner.hide();
       console.log(e);
     } finally {
-      this.spineer.hide();
+      this.spinner.hide();
     }
   }
 
   async getVendorMetaDatas() {
-    this.spineer.show();
+    this.spinner.show();
     try {
       this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
       this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
     } catch (e) {
-      this.spineer.hide();
+      this.spinner.hide();
       console.log(e);
     } finally {
-      this.spineer.hide();
+      this.spinner.hide();
     }
   }
 
@@ -203,12 +203,20 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  async deleteRemovedFiles(userId) {
+    const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
+
+    for ( const file of deletedFiles) {
+      const s3URL = this.fileService.getS3URL(file.name);
+      await this.fileService.fileDelete(userId, this.vendorId, s3URL).toPromise();
+    }
+  }
   async save(event) {
     this.isSubmited = true;
     if (!(this.facilityItem.valid)) {
       return;
     }
-    this.spineer.show();
+    this.spinner.show();
 
     const userId = this.userService.getUserInfo().id;
     const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
@@ -225,18 +233,31 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     if (this.isNew) {
       facility.createdBy = String(this.vendorId);
       facility.createdDate = new Date().toString();
-      this.facilityService.createFacility(this.vendorId, facility).toPromise();
-    } else {
-      await this.facilityService.updateFacility(this.vendorId, this.facilityId, facility).toPromise();
-    }
-    const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
-    for ( const file of deletedFiles) {
-      const s3URL = this.fileService.getS3URL(file.name);
-      await this.fileService.fileDelete(userId, this.vendorId, s3URL).toPromise();
+      try {
+        await this.facilityService.createFacility(this.vendorId, facility).toPromise();
+        this.deleteRemovedFiles(userId);
+        const gotoURL = `/profile/vendor/facilities`;
+        this.route.navigateByUrl(gotoURL);
+      } catch (e) {
+        this.error = e.error.message;
+        console.log(e);
+      } finally {
+        this.spinner.hide();
+      }
+    } else {
+
+      try {
+        await this.facilityService.updateFacility(this.vendorId, this.facilityId, facility).toPromise();
+        this.deleteRemovedFiles(userId);
+        const gotoURL = `/profile/vendor/facilities`;
+        this.route.navigateByUrl(gotoURL);
+      } catch (e) {
+        this.error = e.error.message;
+        console.log(e);
+      } finally {
+        this.spinner.hide();
+      }
     }
-    const gotoURL = `/profile/vendor/facilities`;
-    this.route.navigateByUrl(gotoURL);
-    this.spineer.hide();
   }
 }
