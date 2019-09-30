@@ -11,6 +11,10 @@ import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { AuthService } from 'src/app/service/auth.service';
 
 import { FileService } from 'src/app/service/file.service';
+import { Subscription, Observable } from 'rxjs';
+import { Vendor } from 'src/app/model/vendor.model';
+import { Store } from '@ngrx/store';
+import { AppFields } from 'src/app/store';
 
 declare var $: any;
 @Component({
@@ -46,32 +50,47 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
   isNew = true;
   isSubmited = false;
+  vendor: Observable<Vendor>;
+  sub: Subscription;
+  vendorId = 0;
 
   userId = 0;
+
   constructor(
-    public fb: FormBuilder,
-    public route: Router,
-    public vendorService: VendorService,
-    public facilityService: FacilityService,
-    public spineer: NgxSpinnerService,
-    public userService: UserService,
-    public fileService: FileService,
-    public authService: AuthService) { }
+    private fb: FormBuilder,
+    private route: Router,
+    private vendorService: VendorService,
+    private facilityService: FacilityService,
+    private spineer: NgxSpinnerService,
+    private userService: UserService,
+    private fileService: FileService,
+    private authService: AuthService,
+    private store: Store<any>,
+  ) {
+    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+  }
 
   async ngOnInit() {
     this.userId = await this.authService.getVendor().toPromise();
     this.getVendorMetaDatas();
-    if (this.route.url.includes('edit')) {
-      this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      this.isNew = false;
-      this.getFacility(this.facilityId);
-    }
+    this.sub = this.vendor.subscribe(res => {
+      if (res) {
+        this.vendorId = Number(res.id);
+      } else {
+        this.vendorId = 0;
+      }
+      if (this.route.url.includes('edit')) {
+        this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        this.isNew = false;
+        this.getFacility(this.facilityId);
+      }
+    });
   }
 
   async getFacility(facilityId: number) {
     this.spineer.show();
     try {
-      const data = await this.facilityService.getFacility(this.userService.getVendorInfo().id, facilityId).toPromise();
+      const data = await this.facilityService.getFacility(this.vendorId, facilityId).toPromise();
       this.initForm(data);
     } catch (e) {
       this.spineer.hide();
@@ -147,15 +166,14 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
       const reader = new FileReader();
       reader.onload = (event) => {
         const userId = this.userService.getUserInfo().id;
-        const vendorId = this.userService.getVendorInfo().id;
-        const s3KeyFile = `u/${userId}/v/${vendorId}/certifications/${file.name}`;
+        const s3KeyFile = `u/${userId}/v/${this.vendorId}/certifications/${file.name}`;
         const certFile = {
           s3Key: s3KeyFile,
           fileType: 'PDF',
           base64: reader.result,
         };
 
-        this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
+        this.fileService.fileUpload(userId, this.vendorId, certFile).subscribe(res => {
           this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
         }, error => {
           console.log(error);
@@ -193,7 +211,6 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     this.spineer.show();
 
     const userId = this.userService.getUserInfo().id;
-    const vendorId = this.userService.getVendorInfo().id;
     const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
     const facility = {
       ...this.facilityItem.value,
@@ -202,21 +219,21 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
       })),
       certificateURLs: certFiles.map((item) => item.name)
     };
-    facility.vendorId = vendorId;
+    facility.vendorId = this.vendorId;
     facility.updatedDate = new Date().toString();
 
     if (this.isNew) {
-      facility.createdBy = String(this.userService.getVendorInfo().id);
+      facility.createdBy = String(this.vendorId);
       facility.createdDate = new Date().toString();
-      this.facilityService.createFacility(vendorId, facility).toPromise();
+      this.facilityService.createFacility(this.vendorId, facility).toPromise();
     } else {
-      await this.facilityService.updateFacility(vendorId, this.facilityId, facility).toPromise();
+      await this.facilityService.updateFacility(this.vendorId, this.facilityId, facility).toPromise();
     }
     const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
     for ( const file of deletedFiles) {
       const s3URL = this.fileService.getS3URL(file.name);
-      await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+      await this.fileService.fileDelete(userId, this.vendorId, s3URL).toPromise();
     }
     const gotoURL = `/profile/vendor/facilities`;
     this.route.navigateByUrl(gotoURL);

@@ -8,6 +8,10 @@ import { FacilityService } from '../../service/facility.service';
 import { UserService } from '../../service/user.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Observable, Subscription } from 'rxjs';
+import { Vendor } from 'src/app/model/vendor.model';
+import { Store } from '@ngrx/store';
+import { AppFields } from 'src/app/store';
 
 @Component({
   selector: 'app-facility',
@@ -262,17 +266,31 @@ export class FacilityComponent implements OnInit {
   gridOptions: GridOptions;
   rowData = [];
   pageSize = 10;
+  vendor: Observable<Vendor>;
+  sub: Subscription;
+  vendorId = 0;
 
   constructor(
-    public route: Router,
-    public facilityService: FacilityService,
-    public userService: UserService,
-    public spineer: NgxSpinnerService
-  ) {}
+    private route: Router,
+    private facilityService: FacilityService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService,
+    private store: Store<any>,
+  ) {
+    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+  }
 
   ngOnInit() {
+    this.sub = this.vendor.subscribe(res => {
+      console.log(res);
+      if (res) {
+        this.vendorId = Number(res.id);
+      } else {
+        this.vendorId = 0;
+      }
+      this.getVendorFacilities();
+    });
 
-    this.getVendorFacilities();
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -293,6 +311,8 @@ export class FacilityComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
+
+    
   }
 
   async getVendorFacilities() {
@@ -303,7 +323,7 @@ export class FacilityComponent implements OnInit {
       while (true) {
         // tslint:disable-next-line:max-line-length
         const res = await this.facilityService.getFacilities(
-          this.userService.getVendorInfo().id, {
+          this.vendorId, {
             page,
             size: 1000,
             sort: 'id,DESC',
@@ -352,7 +372,7 @@ export class FacilityComponent implements OnInit {
   async deleteFacility() {
     this.spineer.show();
     try {
-      await this.facilityService.deleteFacility(this.userService.getVendorInfo().id, this.selectedFacility.id).toPromise();
+      await this.facilityService.deleteFacility(this.vendorId, this.selectedFacility.id).toPromise();
     } catch (e) {
       console.log(e);
     } finally {

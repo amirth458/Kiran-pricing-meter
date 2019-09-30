@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { throwError } from 'rxjs';
+import { Store, AppTypes, AppFields } from '../store';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,10 @@ export class AuthService {
   data: {};
   url: string = environment.apiBaseUrl + '/auth/signin';
 
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private store: Store<any>
+  ) {}
 
 
   login(user: string, password: string) {
@@ -38,11 +42,21 @@ export class AuthService {
     localStorage.setItem('auth', JSON.stringify(data));
   }
 
+  getAuthData() {
+    return JSON.parse(localStorage.getItem('auth'));
+  }
   logout(): any {
     localStorage.removeItem('auth');
     localStorage.removeItem('remember_me');
     localStorage.removeItem('email');
     localStorage.removeItem('password');
+
+    this.store.dispatch({
+      type: AppTypes.UpdateState,
+      payload: {
+        [AppFields.VendorInfo]: null
+      }
+    });
   }
 
   getProfile(): any {
