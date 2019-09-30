@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
-import * as postProcessProfile from '../../../assets/static/postProcessProfile';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { UserService } from 'src/app/service/user.service';
+import { PostProcessProfileService } from 'src/app/service/post-process-profile.service';
+import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-post-process-profile',
@@ -13,38 +17,37 @@ import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer
 })
 export class PostProcessProfileComponent implements OnInit {
 
+  @ViewChild('copyModal') copyModal;
+  @ViewChild('deleteModal') deleteModal;
+
+  newProfileName = '';
+  cloneData;
+
+  selectedProfile = null;
+  tableControlReady = false;
+
+  processParameterType: any = [];
+  processDimensionalPropertyList: any = [];
+  processMaterialCharacteristicList: any = [];
+
 
   searchColumns = [
     {
-      name: 'Post-Process Profile No', checked: false, field: 'id', query: {
+      name: 'Post-Process No', checked: false, field: 'id', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Post-Process Profile Name', checked: false,
-      field: 'postProcessProfileName', query: {
+      name: 'Post-Process Name', checked: false,
+      field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Asset', checked: false,
+      name: 'Equipment/Asset', checked: false,
       field: 'asset', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Post-Process Profile Family', checked: false,
-      field: 'postProcessProfileFamily', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Post-Process Type', checked: false,
-      field: 'postProcessType', query: {
         type: '',
         filter: '',
       }
@@ -56,77 +59,104 @@ export class PostProcessProfileComponent implements OnInit {
         filter: '',
       }
     },
-
     {
-      name: 'Tolerance Increment', checked: false,
-      field: 'toleranceIncrement', query: {
+      name: 'Post-Process Family', checked: false,
+      field: 'family', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Surface Finish Increment', checked: false, field: 'surfaceFinishIncrement',
-      query: {
+      name: 'Post-Process Type', checked: false,
+      field: 'postProcessType', query: {
         type: '',
         filter: '',
       }
     }
-
   ];
+
   filterColumns = [
     {
-      name: 'Post-Process Profile No', checked: true, field: 'id'
+      name: 'Post-Process No', checked: true, field: 'id'
     },
     {
-      name: 'Post-Process Profile Name', checked: true, field: 'postProcessProfileName'
+      name: 'Post-Process Name', checked: true, field: 'name'
     },
     {
-      name: 'Asset', checked: true, field: 'asset'
+      name: 'Equipment/Asset', checked: true, field: 'asset'
     },
     {
-      name: 'Post-Process Profile Family', checked: true, field: 'postProcessProfileFamily'
+      name: 'Material', checked: true, field: 'material'
+    },
+    {
+      name: 'Post-Process Family', checked: true, field: 'family'
     },
     {
       name: 'Post-Process Type', checked: true, field: 'postProcessType'
-    },
-    {
-      name: 'Material', checked: false, field: 'material'
-    },
-    {
-      name: 'Tolerance Increment', checked: false, field: 'toleranceIncrement'
-    },
-    {
-      name: 'Surface Finish Increment', checked: false, field: 'surfaceFinishIncrement'
     }
   ];
+
+
   type = ['search', 'filter'];
 
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
   };
 
-  columnDefs = [
-    { headerName: 'Post-Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Post-Process Profile Name', field: 'postProcessProfileName', hide: false, sortable: true, filter: true },
-    { headerName: 'Asset', field: 'asset', hide: false, sortable: true, filter: true },
-    { headerName: 'Post-Process Profile Family', field: 'postProcessProfileFamily', hide: false, sortable: true, filter: true },
-    { headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: true },
-    { headerName: 'Material', field: 'material', hide: false, sortable: true, filter: true },
-    { headerName: 'Tolerance Increment', field: 'toleranceIncrement', hide: false, sortable: true, filter: true },
-    { headerName: 'Surface Finish Increment', field: 'surfaceFinishIncrement', hide: false, sortable: true, filter: true },
+  columnDefs: Array<any> = [
+    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process Name', field: 'name', hide: false, sortable: true, filter: true },
     {
-      headerName: 'Actions',
-      width: 100,
-      cellRenderer: 'actionCellRenderer',
-      cellRendererParams: {
-        action: {
-          edit: (param) => this.editRow(param),
-          copy: (param) => this.copyRow(param),
-          delete: (param) => this.deleteRow(param),
-          canEdit: true,
-          canCopy: false,
-          canDelete: true,
+      headerName: 'Equipment/Asset', field: 'asset', hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        const machineList = param.data.processMachineServingMaterialList[0];
+        if (machineList) {
+          return machineList.machineServingMaterial.vendorMachinery.equipment.name;
         }
+        return '';
+      }
+    }, {
+      headerName: 'Material', field: 'material', hide: false, sortable: true, filter: true,
+      cellRenderer(params) {
+        let materials = '';
+        params.data.processMachineServingMaterialList.map((x, index) => {
+          if (index === 0) {
+            materials = x.machineServingMaterial.material.name;
+          } else {
+            materials = materials + ',' + x.machineServingMaterial.material.name;
+          }
+        });
+        return `
+        <div>
+        <a href="#" data-toggle="tooltip" title="${materials}">${materials}</a>
+
+        <div class="tooltip bs-tooltip-top" role="tooltip">
+          <div class="arrow"></div>
+          <div class="tooltip-inner">
+            ${materials}
+          </div>
+        </div>
+        </div>`;
+      }
+    },
+    {
+      headerName: 'Post-Process Family', field: 'family', hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        const machineList = param.data.processMachineServingMaterialList[0];
+        if (machineList) {
+          return machineList.machineServingMaterial.vendorMachinery.equipment.processFamily.name;
+        }
+        return '';
+      }
+    },
+    {
+      headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: true,
+      cellRenderer(param): any {
+        const machineList = param.data.processMachineServingMaterialList[0];
+        if (machineList) {
+          return machineList.machineServingMaterial.vendorMachinery.equipment.processFamily.processType.name;
+        }
+        return '';
       }
     }
   ];
@@ -134,15 +164,35 @@ export class PostProcessProfileComponent implements OnInit {
 
   gridOptions: GridOptions;
 
-  rowData;
+  rowData = [];
   pageSize = 10;
-  constructor(public route: Router) { }
+  navigation;
+  constructor(
+    public route: Router,
+    public spineer: NgxSpinnerService,
+    public userService: UserService,
+    public postProcessService: PostProcessProfileService,
+    public processMetaData: ProcessMetadataService,
+    public toastr: ToastrService
+  ) {
+    this.navigation = this.route.getCurrentNavigation();
 
-  ngOnInit() {
-    this.rowData = postProcessProfile;
+  }
+
+
+  async ngOnInit() {
+    this.spineer.show();
+
+    await this.getMetaColumns();
+    await this.getProfiles();
+    this.createColumns();
+
+    this.tableControlReady = true;
+
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
+
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -150,16 +200,19 @@ export class PostProcessProfileComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35,
-      onRowClicked: (event) => {
-        // this.onRowClick(event);
-      }
-
+      headerHeight: 35
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
-
     }, 50);
+    if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+      const toastInfo = this.navigation.extras.state.toast;
+      if (toastInfo.type == 'success') {
+        this.toastr.success(toastInfo.body);
+      } else {
+        this.toastr.error(toastInfo.body);
+      }
+    }
   }
 
   configureColumnDefs() {
@@ -181,21 +234,44 @@ export class PostProcessProfileComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
-  copyRow(event) {
-    const startIndex = this.rowData.indexOf(event.data);
+  async copyRow() {
+    this.spineer.show();
+    const postData = {
+      name: this.newProfileName || 'Post-Process Profile - ' + this.getRandomString(7),
+      machineServingMaterial: this.cloneData.machineServingMaterial,
+      processDimensionalPropertyList: this.cloneData.processDimensionalPropertyList,
+      processMaterialCharacteristicList: this.cloneData.processMaterialCharacteristicList,
+      processParameterList: this.cloneData.processParameterList,
+      processProfileType: this.cloneData.processProfileType,
+      vendorId: this.cloneData.vendorId,
+    };
+    // tslint:disable-next-line:max-line-length
+    const res = await this.postProcessService.saveProfile(this.userService.getVendorInfo().id, postData).toPromise();
+    const startIndex = this.rowData.indexOf(this.cloneData);
     const frontSlice = this.rowData.slice(0, startIndex + 1);
     const endSlice = this.rowData.slice(startIndex + 1);
-    this.rowData = frontSlice.concat([{ ...event.data, id: '-' }].concat(endSlice));
+    // this.rowData = frontSlice.concat([{ ...this.cloneData, name: this.cloneData.name + ' - COPY', id: '-' }].concat(endSlice));
+    this.rowData = frontSlice.concat([res].concat(endSlice));
     this.gridOptions.api.setRowData(this.rowData);
+    this.spineer.hide();
+    this.copyModal.nativeElement.click();
 
-    // API Request to save the copied row
   }
 
-  deleteRow(event) {
+  async deleteProfile() {
+    this.spineer.show();
+    try {
+      await this.postProcessService.deleteProfile(this.userService.getVendorInfo().id, this.selectedProfile.id).toPromise();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
     // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != event.data.id);
+    const filteredData = this.rowData.filter(x => x.id != this.selectedProfile.id);
     this.rowData = filteredData;
-    // API Request to delete the selected row
+    this.deleteModal.nativeElement.click();
 
   }
 
@@ -221,6 +297,159 @@ export class PostProcessProfileComponent implements OnInit {
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  async getProfiles() {
+    try {
+      const res = await this.postProcessService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
+      this.rowData = res || [];
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spineer.hide();
+    }
+
+  }
+
+  async getMetaColumns() {
+    const processParameterType = await this.processMetaData.getProcessParameterType(true).toPromise();
+    const processDimensionalPropertyList = await this.processMetaData.getProcessDimensionalPropertyType(true).toPromise();
+    const processMaterialCharacteristicList = await this.processMetaData.getProcessMaterialCharacteristicType(true).toPromise();
+
+    this.processParameterType = processParameterType.metadataList;
+    this.processDimensionalPropertyList = processDimensionalPropertyList.metadataList;
+    this.processMaterialCharacteristicList = processMaterialCharacteristicList.metadataList;
+  }
+
+  createColumns() {
+    const availableColumnNames = [];
+    const availableColumns = [];
+    let visibleColumns = 0;
+    this.rowData.map(row => {
+      row.processParameterList.map(x => {
+        if (!availableColumnNames.includes(x.processParameterType.name)) {
+          availableColumnNames.push(x.processParameterType.name);
+          availableColumns.push(x.processParameterType);
+          this.columnDefs.push(
+            {
+              headerName: x.processParameterType.name,
+              field: x.processParameterType.name.replace(/ /g, ''),
+              hide: true,
+              sortable: true,
+              filter: true,
+              cellRenderer(params: any): any {
+                let value = '';
+                params.data.processParameterList.map(item => {
+                  if (item.processParameterType.name === x.processParameterType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
+              }
+            }
+          );
+        }
+
+      });
+
+      // row.processDimensionalPropertyList.map(x => {
+      //   if (!availableColumnNames.includes(x.processDimensionalPropertyType.name)) {
+      //     availableColumnNames.push(x.processDimensionalPropertyType.name);
+      //     availableColumns.push(x.processDimensionalPropertyType);
+      //     this.columnDefs.push(
+      //       {
+      //         headerName: x.processDimensionalPropertyType.name,
+      //         field: x.processDimensionalPropertyType.name.replace(/ /g, ''),
+      //         hide: true,
+      //         sortable: true,
+      //         filter: true,
+      //         cellRenderer(params: any): any {
+      //           let value = '';
+      //           params.data.processDimensionalPropertyList.map(item => {
+      //             if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
+      //               value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+      //             }
+      //           });
+      //           return value;
+      //         }
+      //       }
+      //     );
+      //   }
+      // });
+
+      // row.processMaterialCharacteristicList.map(x => {
+      //   if (!availableColumnNames.includes(x.processMaterialCharacteristicType.name)) {
+      //     availableColumnNames.push(x.processMaterialCharacteristicType.name);
+      //     availableColumns.push(x.processMaterialCharacteristicType);
+      //     this.columnDefs.push(
+      //       {
+      //         headerName: x.processMaterialCharacteristicType.name,
+      //         field: x.processMaterialCharacteristicType.name.replace(/ /g, ''),
+      //         hide: true,
+      //         sortable: true,
+      //         filter: true,
+      //         cellRenderer(params: any): any {
+      //           let value = '';
+      //           params.data.processMaterialCharacteristicList.map(item => {
+      //             if (item.processMaterialCharacteristicType.name === x.processMaterialCharacteristicType.name) {
+      //               value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+      //             }
+      //           });
+      //           return value;
+      //         }
+      //       }
+      //     );
+      //   }
+      // });
+    });
+
+
+    this.columnDefs.push({
+      headerName: 'Actions',
+      width: 140,
+      cellRenderer: 'actionCellRenderer',
+      cellRendererParams: {
+        action: {
+          edit: (param) => this.editRow(param),
+          copy: (param) => {
+            this.copyModal.nativeElement.click();
+            this.cloneData = param.data;
+          },
+          delete: async (param) => {
+            this.deleteModal.nativeElement.click();
+            this.selectedProfile = param.data;
+          },
+          canEdit: true,
+          canCopy: false,
+          canDelete: true,
+        }
+      }
+    });
+
+    availableColumns.map(x => {
+      if (visibleColumns < 3) {
+        this.filterColumns.push({
+          name: x.name, checked: true,
+          field: x.name.replace(/ /g, '')
+        });
+        visibleColumns++;
+      } else {
+        this.filterColumns.push({
+          name: x.name, checked: false,
+          field: x.name.replace(/ /g, '')
+        });
+      }
+    });
+  }
+
+  getRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 }
 
