@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         localStorage.setItem('email', this.userForm.value.email);
         localStorage.setItem('password', this.userForm.value.password);
       }
-
+      
       this.store.dispatch({
         type: AppTypes.GetVendorInfo
       });
