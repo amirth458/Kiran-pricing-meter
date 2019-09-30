@@ -207,7 +207,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
     });
   }
   onChangeVendorType(e) {
-    console.log(e.target.value);
     if (Number(e.target.value) === 2 || Number(e.target.value) === 6) {
       this.detailForm.setValue({
         ...this.detailForm.value,
@@ -275,21 +274,33 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         }],
         certificateURLs: certFiles.map((item) => item.name)
       };
-
       if (this.vendorId > 0) {
-        this.store.dispatch({
-          type: AppTypes.UpdateVendorInfo,
-          payload: vendorProfile
-        });
-        this.saveSuccessfully = true;
+        try {
+          const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
+          this.toastr.success('Saved Successfully');
+          this.store.dispatch({
+            type: AppTypes.UpdateVendorInfo,
+            payload: res
+          });
+        } catch (e) {
+          this.toastr.error('Error on Updating Vendor Profile');
+        } finally {
+          this.spineer.hide();
+        }
       } else {
-        this.store.dispatch({
-          type: AppTypes.CreateVendorInfo,
-          payload: vendorProfile
-        });
-        this.saveSuccessfully = true;
+        try {
+          const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
+          this.toastr.success('Saved Successfully');
+          this.store.dispatch({
+            type: AppTypes.CreateVendorInfo,
+            payload: res
+          });
+        } catch (e) {
+          this.toastr.error('Error on Creating Vendor Profile');
+        } finally {
+          this.spineer.hide();
+        }
       }
-      this.toastr.success('Saved Successfully');
       const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
       if (this.vendorId > 0) {

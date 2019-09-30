@@ -16,19 +16,23 @@ import { UserService } from '../service/user.service';
 
   @Effect() CreateVendorInfo: Observable<Action> = this.as.pipe(
     ofType(AppTypes.CreateVendorInfo),
-    switchMap((a: CreateVendorInfo) => this.vendorService.createVendorProfile(a.payload)),
-    map((res: any) => ({
-      type: AppTypes.UpdateState,
-      payload: {
-        [AppFields.VendorInfo]: res
-      }
-    }))
+    switchMap((a: CreateVendorInfo) => [a.payload]),
+    map((res: any) => {
+      this.userService.setVendorInfo(res);
+      return {
+        type: AppTypes.UpdateState,
+        payload: {
+          [AppFields.VendorInfo]: res
+        }
+      };
+    })
   );
 
   @Effect() UpdateVendorInfo: Observable<Action> = this.as.pipe(
     ofType(AppTypes.UpdateVendorInfo),
-    switchMap((a: UpdateVendorInfo) => this.vendorService.updateVendorProfile(a.payload)),
+    switchMap((a: UpdateVendorInfo) => [a.payload]),
     map((res: any) => {
+      this.userService.setVendorInfo(res);
       return {
         type: AppTypes.UpdateState,
         payload: {
