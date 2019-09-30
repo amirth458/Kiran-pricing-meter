@@ -12,6 +12,7 @@ import { FileService } from 'src/app/service/file.service';
 import { Store } from '@ngrx/store';
 import { AppTypes, AppFields, Observable } from 'src/app/store';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -28,7 +29,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
     private userService: UserService,
     private fileService: FileService,
     private spineer: NgxSpinnerService,
-    private store: Store<any>
+    private store: Store<any>,
+    private toastr: ToastrService
   ) {
     this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
   }
@@ -274,7 +276,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         certificateURLs: certFiles.map((item) => item.name)
       };
 
-      if (this.userService.getVendorInfo()) {
+      if (this.vendorId > 0) {
         this.store.dispatch({
           type: AppTypes.UpdateVendorInfo,
           payload: vendorProfile
@@ -287,7 +289,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         });
         this.saveSuccessfully = true;
       }
-
+      this.toastr.success('Saved Successfully');
       const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
       if (this.vendorId > 0) {

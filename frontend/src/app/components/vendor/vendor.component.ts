@@ -12,7 +12,7 @@ import { AppFields } from 'src/app/store';
 })
 export class VendorComponent implements OnInit, OnDestroy {
 
-  actionbarMenu: Array < {
+  actionbarBasicMenu: Array < {
     name: string,
     tooltipMessage: string,
     route: string,
@@ -62,8 +62,8 @@ export class VendorComponent implements OnInit, OnDestroy {
       }]
     }
   ];
-
-  selectedTab = this.actionbarMenu[0].name;
+  actionbarMenu = [];
+  selectedTab = this.actionbarBasicMenu[0].name;
   vendor: Observable<Vendor>;
   sub: Subscription;
 
@@ -99,7 +99,9 @@ export class VendorComponent implements OnInit, OnDestroy {
 
     this.sub = this.vendor.subscribe(res => {
       if (res) {
-        this.actionbarMenu.push(...this.arrAdditionalMenuItems);
+        this.actionbarMenu = [...this.actionbarBasicMenu, ...this.arrAdditionalMenuItems];
+      } else {
+        this.actionbarMenu = [...this.actionbarBasicMenu];
       }
     });
   }

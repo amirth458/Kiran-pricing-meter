@@ -48,6 +48,6 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
     { needsapproval: false, enabled: true, active: false, name: 'Appointments', icon: 'fa-calendar-check-o', path: '/appointment' }
   ],
-  apiBaseUrl: 'http://prod-manage-api.3diligent.com/api/v1',
+  apiBaseUrl: 'http://manage-api.3diligent.com/api/v1',
   encryptionKey: '1Kf@%4%3ADfEafw'
 };

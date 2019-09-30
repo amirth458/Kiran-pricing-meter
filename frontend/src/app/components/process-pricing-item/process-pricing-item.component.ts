@@ -74,6 +74,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   filteredProcessPricingParameterTypeList = [];
   filteredPricingConditionTypes = [];
 
+  error = '';
   isNew = true;
   isFormValid = false;
 
@@ -148,15 +149,28 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.selectedPricingConditionList = [...pricingProfile.processPricingConditionList];
 
     this.selectedPricingConditionList.map((parameter, index) => {
-      this.getProperOperands(parameter.processPricingConditionType.id, index);
+      this.onPropertyChange(parameter.processPricingConditionType.id, index);
     });
 
     this.processProfileChanged();
   }
 
-  getProperOperands(conditionId, index) {
-    const operandTypeName = this.pricingConditionTypes.filter(condition => condition.id == conditionId)[0].operandType.name;
+  onPropertyChange(conditionId, index) {
+    // Set proper operands
+    const operand = this.pricingConditionTypes.filter(condition => condition.id == conditionId)[0];
+    const operandTypeName = operand.operandType.name;
     this.selectedPricingConditionList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+
+    // Set proper sign types
+    let signTypeId = null;
+    if (operandTypeName == 'absolute') {
+      signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+    } else {
+      signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+    }
+    this.selectedPricingConditionList[index].valueSignType = {
+      id: signTypeId
+    };
   }
 
   ngAfterViewChecked(): void {
@@ -269,6 +283,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     // this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
+        this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
         if (this.isNew) {
@@ -276,21 +291,34 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           try {
             await this.processPricingService.saveProfile(vendorId, postData).toPromise();
             const gotoURL = `/profile/processes/pricing`;
-            this.route.navigateByUrl(gotoURL);
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Pricing Created!!' } } });
           } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
             this.spinner.hide();
           }
         } else {
           this.spinner.show();
           try {
             await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
+            const gotoURL = `/profile/processes/pricing`;
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Pricing Edited!' } } });
           } catch (e) {
             console.log(e);
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
           } finally {
             this.spinner.hide();
             // this.submitActive = true;
-            const gotoURL = `/profile/processes/pricing`;
-            this.route.navigateByUrl(gotoURL);
+
           }
         }
       } else {

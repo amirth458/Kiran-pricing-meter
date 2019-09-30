@@ -86,6 +86,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   };
   activeTab = 'processParameterList';
   activeTabName = 'Process Parameters';
+  error = '';
 
   isNew = true;
   isFormValid = false;
@@ -172,19 +173,54 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  getProperOperands(conditionId, index, section) {
+  onPropertyChange(conditionId, index, section) {
+    let signTypeId = null;
     if (section === 'Process Parameters') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processParameterList.filter(condition => condition.id == conditionId)[0].operandType.name;
-      this.selectedProcessParameterList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+      const operand = this.processParameterList.filter(condition => condition.id == conditionId)[0];
+      const operandTypeName = operand.operandType.name;
+      const options = this.conditions[operandTypeName.toString()];
+      this.selectedProcessParameterList[index].operandTypeList = options;
+
+      if (operandTypeName == 'absolute') {
+        signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+      } else {
+        signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+      }
+      this.selectedProcessParameterList[index].valueSignType = {
+        id: signTypeId
+      };
+
     } else if (section === 'Process Dimensional Properties') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0].operandType.name;
-      this.selectedProcessDimensionalPropertyList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+      const operand = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0];
+      const operandTypeName = operand.operandType.name;
+      const options = this.conditions[operandTypeName.toString()];
+      this.selectedProcessDimensionalPropertyList[index].operandTypeList = options;
+
+      if (operandTypeName == 'absolute') {
+        signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+      } else {
+        signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+      }
+      this.selectedProcessDimensionalPropertyList[index].valueSignType = {
+        id: signTypeId
+      };
     } else if (section === 'Process Material Characteristics') {
       // tslint:disable-next-line:max-line-length
-      const operandTypeName = this.processMaterialCharacteristicList.filter(condition => condition.id == conditionId)[0].operandType.name;
-      this.selectedProcessMaterialCharacteristicList[index].operandTypeList = this.conditions[operandTypeName.toString()];
+      const operand = this.processMaterialCharacteristicList.filter(condition => condition.id == conditionId)[0];
+      const operandTypeName = operand.operandType.name;
+      const options = this.conditions[operandTypeName.toString()];
+      this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
+
+      if (operandTypeName == 'absolute') {
+        signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+      } else {
+        signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+      }
+      this.selectedProcessMaterialCharacteristicList[index].valueSignType = {
+        id: signTypeId
+      };
     }
 
   }
@@ -331,7 +367,6 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         rows.push(...res.content);
         page++;
       }
-      console.log(rows);
       rows.map(machine => {
         this.equipments.push(machine);
       });
@@ -381,13 +416,13 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     //   selectedProcessParameterList: this.selectedProcessParameterList,
     // });
     this.selectedProcessParameterList.map((parameter, index) => {
-      this.getProperOperands(parameter.processParameterType.id, index, 'Process Parameters');
+      this.onPropertyChange(parameter.processParameterType.id, index, 'Process Parameters');
     });
     this.selectedProcessMaterialCharacteristicList.map((parameter, index) => {
-      this.getProperOperands(parameter.processMaterialCharacteristicType.id, index, 'Process Material Characteristics');
+      this.onPropertyChange(parameter.processMaterialCharacteristicType.id, index, 'Process Material Characteristics');
     });
     this.selectedProcessDimensionalPropertyList.map((parameter, index) => {
-      this.getProperOperands(parameter.processDimensionalPropertyType.id, index, 'Process Dimensional Properties');
+      this.onPropertyChange(parameter.processDimensionalPropertyType.id, index, 'Process Dimensional Properties');
     });
   }
 
@@ -411,6 +446,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
+        this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
         if (this.isNew) {
@@ -418,21 +454,36 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
           try {
             await this.processProfileService.saveProfile(vendorId, postData).toPromise();
             const gotoURL = `/profile/processes/profile`;
-            this.route.navigateByUrl(gotoURL);
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Profile Saved!' } } });
           } catch (e) {
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
             this.spinner.hide();
+            this.submitActive = true;
+
           }
         } else {
           this.spinner.show();
           try {
             await this.processProfileService.updateProfile(vendorId, this.processProfileId, postData).toPromise();
+            const gotoURL = `/profile/processes/profile`;
+            this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Profile Edited!' } } });
           } catch (e) {
             console.log(e);
+            if (e.error && e.error.message) {
+              this.error = e.error.message;
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+
           } finally {
             this.spinner.hide();
             this.submitActive = true;
-            const gotoURL = `/profile/processes/processes/profile`;
-            this.route.navigateByUrl(gotoURL);
+
           }
         }
       } else {
