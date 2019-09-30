@@ -163,13 +163,13 @@ export class ProcessPricingComponent implements OnInit {
       }
 
     };
+
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
-
     }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
-      if (toastInfo.type == 'success') {
+      if (toastInfo.type === 'success') {
         this.toastr.success(toastInfo.body);
       } else {
         this.toastr.error(toastInfo.body);

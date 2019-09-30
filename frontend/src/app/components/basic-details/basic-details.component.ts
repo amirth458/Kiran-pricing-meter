@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
@@ -8,9 +8,11 @@ import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
-import { AuthService } from 'src/app/service/auth.service';
-import { Router } from '@angular/router';
 import { FileService } from 'src/app/service/file.service';
+import { Store } from '@ngrx/store';
+import { AppTypes, AppFields, Observable } from 'src/app/store';
+import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -19,7 +21,19 @@ declare var $: any;
   styleUrls: ['./basic-details.component.css']
 })
 
-export class BasicDetailsComponent implements OnInit, AfterViewChecked {
+export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestroy {
+
+  constructor(
+    private fb: FormBuilder,
+    private vendorService: VendorService,
+    private userService: UserService,
+    private fileService: FileService,
+    private spineer: NgxSpinnerService,
+    private store: Store<any>,
+    private toastr: ToastrService
+  ) {
+    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+  }
 
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
@@ -30,6 +44,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   selectedCertifications = [];
   certDocuments = [];
   isSubmited = false;
+  vendor: Observable<Vendor>;
+  sub: Subscription;
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -42,45 +58,36 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     state: [null, Validators.required],
     country: [null, Validators.required],
     street1: [null, Validators.required],
-    street2: [null, Validators.required],
+    street2: [null],
     zipCode: [null, [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]],
     confidentiality: null,
     vendorCertificates: null
   });
-
-  constructor(
-    public fb: FormBuilder,
-    public vendorService: VendorService,
-    public userService: UserService,
-    public authService: AuthService,
-    public fileService: FileService,
-    public spineer: NgxSpinnerService,
-    public route: Router
-  ) {}
+  disableConfidentiality = false;
+  saveSuccessfully = false;
+  vendorId = 0;
 
   ngOnInit() {
     this.getVendorMetaDatas();
-
-    this.authService.getVendor().subscribe(res => {
-      this.userService.setVendorInfo(res);
-
+    this.sub = this.vendor.subscribe(res => {
       if (res) {
-        this.vendorService.getVendorDetail(res.id).subscribe(res1 => {
-          if (res1) {
-            this.initForm(res1);
-          }
-        });
+        this.userService.setUserInfo(res);
+        this.initForm(res);
+        this.vendorId = Number(res.id);
       } else {
+        this.vendorId = 0;
         this.detailForm.setValue({
           ...this.detailForm.value,
           confidentiality: 1,
         });
       }
-    }, error => {
-      console.log('get profile error', error);
     });
   }
-
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
@@ -143,6 +150,9 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  onChangeConfidentiality(e) {
+    this.disableConfidentiality = Number(e.target.value) === 2;
+  }
   initForm(initValue: Vendor) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
     this.certDocuments = initValue.certificateURLs.map(x => {
@@ -152,6 +162,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         saved: 1
       };
     });
+    this.disableConfidentiality = Number(initValue.confidentiality) === 2;
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
@@ -179,16 +190,13 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       const reader = new FileReader();
       reader.onload = (event) => {
         const userId = this.userService.getUserInfo().id;
-        const vendorId = this.userService.getVendorInfo().id;
-        const s3KeyFile = `u/${userId}/v/${vendorId}/certifications/${file.name}`;
+        const s3KeyFile = `u/${userId}/v/${this.vendorId}/certifications/${file.name}`;
         const certFile = {
           s3Key: s3KeyFile,
           fileType: 'PDF',
           base64: reader.result,
         };
-        console.log('--------------');
-        console.log(reader.result);
-        this.fileService.fileUpload(userId, vendorId, certFile).subscribe(res => {
+        this.fileService.fileUpload(userId, this.vendorId, certFile).subscribe(res => {
           this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
         }, error => {
           console.log(error);
@@ -197,6 +205,27 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       };
       reader.readAsDataURL(file);
     });
+  }
+  onChangeVendorType(e) {
+    if (Number(e.target.value) === 2 || Number(e.target.value) === 6) {
+      this.detailForm.setValue({
+        ...this.detailForm.value,
+        vendorIndustry: 13,
+      });
+
+    } else {
+      this.detailForm.setValue({
+        ...this.detailForm.value,
+        vendorIndustry: 1,
+      });
+    }
+  }
+
+  checkDisable(vendorIndustry): boolean {
+    const { vendorType } = this.detailForm.value;
+
+    return ((Number(vendorType) === 2 || Number(vendorType) === 6) && Number(vendorIndustry) !== 13) ||
+      ((Number(vendorType) !== 2 && Number(vendorType) !== 6) && Number(vendorIndustry) === 13);
   }
 
   onRemoveFile(name) {
@@ -222,7 +251,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
     this.isSubmited = true;
     if (this.detailForm.valid) {
       const userId = this.userService.getUserInfo().id;
-      const vendorId = this.userService.getVendorInfo().id;
+
       const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
       this.spineer.show();
       const vendorProfile = {
@@ -245,24 +274,42 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
         }],
         certificateURLs: certFiles.map((item) => item.name)
       };
-
-      if (this.userService.getVendorInfo()) {
-        const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
-        console.log(res);
-        this.initForm(res);
-        this.userService.setVendorInfo(res);
+      if (this.vendorId > 0) {
+        try {
+          const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
+          this.toastr.success('Saved Successfully');
+          this.store.dispatch({
+            type: AppTypes.UpdateVendorInfo,
+            payload: res
+          });
+        } catch (e) {
+          this.toastr.error('Error on Updating Vendor Profile');
+        } finally {
+          this.spineer.hide();
+        }
       } else {
-        const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
-        this.initForm(res);
-        this.userService.setVendorInfo(res);
+        try {
+          const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
+          this.toastr.success('Saved Successfully');
+          this.store.dispatch({
+            type: AppTypes.CreateVendorInfo,
+            payload: res
+          });
+        } catch (e) {
+          this.toastr.error('Error on Creating Vendor Profile');
+        } finally {
+          this.spineer.hide();
+        }
       }
-
       const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
 
-      for ( const file of deletedFiles) {
-        const s3URL = this.fileService.getS3URL(file.name);
-        await this.fileService.fileDelete(userId, vendorId, s3URL).toPromise();
+      if (this.vendorId > 0) {
+        for ( const file of deletedFiles) {
+          const s3URL = this.fileService.getS3URL(file.name);
+          await this.fileService.fileDelete(userId, this.vendorId, s3URL).toPromise();
+        }
       }
+
       this.spineer.hide();
     }
   }

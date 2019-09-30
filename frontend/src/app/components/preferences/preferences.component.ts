@@ -6,6 +6,7 @@ import { PreferenceService } from 'src/app/service/preference.service';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorMetaData } from 'src/app/model/vendor.model';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -33,12 +34,15 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   tooltipAdjacentGrowth = 'Highlight industries you seek to support.';
   tooltipRFQ = 'RFQ to exclude.';
   tooltipClientToExclude = 'Specify any industries you do not wish to support.';
+  saveSuccessfully = false;
+
   constructor(
-    public fb: FormBuilder,
-    public vendorService: VendorService,
-    public preferenceService: PreferenceService,
-    public userService: UserService,
-    public spineer: NgxSpinnerService
+    private fb: FormBuilder,
+    private vendorService: VendorService,
+    private preferenceService: PreferenceService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService,
+    private toastr: ToastrService
   ) { }
 
   async ngOnInit() {
@@ -85,7 +89,6 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   }
 
   initForm(initValue) {
-    console.log(initValue);
     this.selectedCoreCompetence = initValue.vendorCoreCompetencies.map(x => x.id) || [];
     this.selectedAdjacentGrowth = initValue.vendorAdjacentGrowths.map(x => x.id) || [];
     this.form.setValue({
@@ -121,12 +124,11 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       vendorAdjacentGrowths: this.adjacentGrowths.filter((item) => this.selectedAdjacentGrowth.includes(item.id)),
       vendorCoreCompetencies: this.coreCompetencies.filter((item) => this.selectedCoreCompetence.includes(item.id)),
     };
-    console.log(preferences);
     if (this.isPreferenceAvailable) {
-
       this.preferenceService.updatePreference(preferences)
         .subscribe(
           res => {
+            this.toastr.success('Saved Successfully');
             this.spineer.hide();
           },
           error => {
@@ -138,6 +140,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
           res => {
             this.isPreferenceAvailable = true;
             this.initForm(res);
+            this.toastr.success('Saved Successfully');
             this.spineer.hide();
           },
           err => {

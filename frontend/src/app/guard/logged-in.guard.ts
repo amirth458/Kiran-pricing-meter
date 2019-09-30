@@ -3,6 +3,7 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@a
 import { Observable } from 'rxjs';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 import { AuthService } from '../service/auth.service';
+import { Store, AppTypes } from '../store';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,11 @@ import { AuthService } from '../service/auth.service';
 export class LoggedInGuard implements CanActivate {
   path: ActivatedRouteSnapshot[];
   route: ActivatedRouteSnapshot;
-  constructor(public authService: AuthService,  public router: Router) { }
+  constructor(
+    public authService: AuthService,
+    public router: Router,
+    private store: Store<any>,
+  ) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -18,6 +23,13 @@ export class LoggedInGuard implements CanActivate {
     const isLoggedIn = this.authService.isLoggedIn();
     if (!isLoggedIn) {
       this.router.navigate(['/login']);
+    } else {
+      this.store.dispatch({
+        type: AppTypes.GetVendorInfo
+      });
+      this.store.dispatch({
+        type: AppTypes.GetUserInfo
+      });
     }
     return isLoggedIn;
   }

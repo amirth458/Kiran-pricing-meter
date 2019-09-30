@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../service/user.service';
 import { AuthService } from '../../service/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Store } from '@ngrx/store';
+import { AppTypes } from 'src/app/store';
 
 
 
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     public router: Router,
     public spineer: NgxSpinnerService,
     public authService: AuthService,
+    private store: Store<any>,
     public userService: UserService) {}
 
   ngOnInit() {
@@ -77,6 +80,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         localStorage.setItem('email', this.userForm.value.email);
         localStorage.setItem('password', this.userForm.value.password);
       }
+
+      this.store.dispatch({
+        type: AppTypes.GetVendorInfo
+      });
+      this.store.dispatch({
+        type: AppTypes.GetUserInfo
+      });
 
       this.router.navigate(['/profile']);
       this.spineer.hide();
