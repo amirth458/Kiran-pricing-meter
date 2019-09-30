@@ -23,9 +23,12 @@
         <label for="asset">Equipment/Asset</label>
         <select required (change)="equipmentChanged()" id="equipment" name="equipment" formControlName="equipment"
           class="form-control">
-          <option selected value=null>Choose...</option>
+          <option selected value=''>Choose...</option>
           <option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</option>
         </select>
+        <div class="invalid-feedback">
+          Required.
+        </div>
       </div>
 
       <div class="form-group theme col-md-6">
@@ -47,15 +50,21 @@
           <option selected value=''>Choose...</option>
           <option *ngFor="let item of familyOptions" [value]="item.id">{{item.name}}</option>
         </select>
+        <div class="invalid-feedback">
+          Required.
+        </div>
       </div>
 
       <div class="form-group theme col-md-6">
         <label for="postProcessAction">Post-Process Action</label>
-        <select id="postProcessAction" name="postProcessAction" formControlName="postProcessAction"
+        <select required id="postProcessAction" name="postProcessAction" formControlName="postProcessAction"
           class="form-control">
           <option selected value=''>Choose...</option>
           <option *ngFor="let item of actionOptions" [value]="item.id">{{item.name}}</option>
         </select>
+        <div class="invalid-feedback">
+          Required.
+        </div>
       </div>
     </div>
 
@@ -103,6 +112,9 @@
                   <option *ngFor="let item of processParameterList" [value]="item.id">{{item.name}}
                   </option>
                 </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-3">
@@ -113,28 +125,35 @@
                   <option *ngFor="let item of selectedProcessParameterList[index].operandTypeList" [value]=" item.id">
                     {{item.symbol}}</option>
                 </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-3">
                 <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessParameterList[index].value" [ngModelOptions]="{standalone: true}"
                   class="form-control" id="value" name="value" placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
-                  class="form-control">
-                  <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">
-                    <ng-container *ngIf="item.id < 13">
-                      {{item.name}}({{item.symbol}})
-                    </ng-container>
-                    <ng-container *ngIf="item.id >= 13">
-                      {{item.name}}
-                    </ng-container>
-                  </option>
-                </select>
+                <div>
+
+                  <select required id="condition" name="condition"
+                    [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
+                    class="form-control">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let item of units" [value]="item.id">
+                      {{item.displayName}}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Required.
+                  </div>
+                </div>
                 <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
                 </span>
@@ -155,9 +174,6 @@
 
         <!-- Post-Process Dimensional Properties -->
         <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processDimensionalPropertyList'">
-          <!-- <span>
-            If
-          </span> -->
 
           <div class="input-wrapper">
 
@@ -212,6 +228,9 @@
                     {{item.name}}
                   </option>
                 </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -220,6 +239,9 @@
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -227,6 +249,9 @@
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -234,6 +259,9 @@
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -241,6 +269,9 @@
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -248,23 +279,26 @@
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
-                  [ngModelOptions]="{standalone: true}" class="form-control">
-                  <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">
-                    <ng-container *ngIf="item.id < 13">
-                      {{item.name}}({{item.symbol}})
-                    </ng-container>
-                    <ng-container *ngIf="item.id >= 13">
-                      {{item.name}}
-                    </ng-container>
-                  </option>
-                </select>
+                <div>
 
+                  <select required id="condition" name="condition"
+                    [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
+                    [ngModelOptions]="{standalone: true}" class="form-control">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let item of units" [value]="item.id">
+                      {{item.displayName}}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Required.
+                  </div>
+                </div>
                 <span class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
                 </span>
@@ -331,6 +365,9 @@
                     {{item.name}}
                   </option>
                 </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -339,6 +376,9 @@
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -346,6 +386,9 @@
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -353,6 +396,9 @@
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -360,6 +406,9 @@
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-1">
@@ -367,23 +416,25 @@
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
+                <div class="invalid-feedback">
+                  Required.
+                </div>
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
-                <select required id="condition" name="condition"
-                  [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
-                  [ngModelOptions]="{standalone: true}" class="form-control">
-                  <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">
-                    <ng-container *ngIf="item.id < 13">
-                      {{item.name}}({{item.symbol}})
-                    </ng-container>
-                    <ng-container *ngIf="item.id >= 13">
-                      {{item.name}}
-                    </ng-container>
-                  </option>
-                </select>
-
+                <div>
+                  <select required id="condition" name="condition"
+                    [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
+                    [ngModelOptions]="{standalone: true}" class="form-control">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let item of units" [value]="item.id">
+                      {{item.displayName}}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Required.
+                  </div>
+                </div>
                 <span class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
                 </span>
