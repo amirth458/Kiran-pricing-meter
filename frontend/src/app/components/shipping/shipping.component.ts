@@ -84,10 +84,49 @@ export class ShippingComponent implements OnInit {
   columnDefs = [
     // { headerName: 'Carrier No', field: 'id', hide: false, sortable: true, filter: true },
     {
-      headerName: 'Carrier', field: 'shippingProvider.name', hide: false, sortable: true, filter: true,
+      headerName: 'Carrier', field: 'carrier', hide: false, sortable: true, filter: false,
+      cellRenderer(params)  {
+        let str = '';
+        switch (params.data.shippingProvider.id) {
+          case 1:
+            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            break;
+          case 2:
+            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            break;
+          case 3:
+            str = '<img src="assets/image/shipping/fedex.png" class="shipping-icon" height=33px />';
+            break;
+          case 4:
+            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            break;
+          case 5:
+            str = '<img src="assets/image/shipping/dhl.png" class="shipping-icon" height=33px />';
+            break;
+          case 6:
+            str = '<img src="assets/image/shipping/fastaust.png" class="shipping-icon" height=33px />';
+            break;
+          case 7:
+            str = '<img src="assets/image/shipping/couriers.png" class="shipping-icon" height=33px />';
+            break;
+          case 8:
+            str = '<img src="assets/image/shipping/sendle.png" class="shipping-icon" height=33px />';
+            break;
+          case 9:
+            str = '<img src="assets/image/shipping/deutsche.png" class="shipping-icon" height=33px />';
+            break;
+          case 10:
+            str = '<img src="assets/image/shipping/fedex.png" class="shipping-icon" height=33px />';
+            break;
+          default:
+            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            break;
+        }
+        return str + params.data.shippingProvider.name;
+      }
     },
-    { headerName: 'Account ID', field: 'accountId', hide: false, sortable: true, filter: true },
-    { headerName: 'Status', field: 'status', hide: false, sortable: true, filter: true },
+    { headerName: 'Account ID', field: 'accountId', hide: false, sortable: true, filter: false },
+    { headerName: 'Status', field: 'status', hide: false, sortable: true, filter: false },
     {
       headerName: 'Actions',
       width: 50,
