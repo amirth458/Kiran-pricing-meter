@@ -29,12 +29,6 @@ export class UserService {
     return headers;
   }
 
-  getProfile() { }
-
-  setProfile() {
-
-  }
-
   getUserInfo() {
     return JSON.parse(localStorage.getItem('user'));
   }

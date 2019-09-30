@@ -14,6 +14,11 @@ import { LoginComponent } from './components/login/login.component';
 
 import { FooterMenuComponent } from './common/footer-menu/footer-menu.component';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { appReducer } from './store/app.reducer';
+import { AppEffects } from './store/app.effects';
+
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -24,6 +29,9 @@ import { FooterMenuComponent } from './common/footer-menu/footer-menu.component'
     HttpClientModule,
     NgxSpinnerModule,
     // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
+
+    StoreModule.forRoot({ app: appReducer }),
+    EffectsModule.forRoot([ AppEffects ])
   ],
   declarations: [
     LoginComponent,

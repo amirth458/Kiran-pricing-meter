@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/service/user.service';
-import { AuthService } from 'src/app/service/auth.service';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { Vendor } from 'src/app/model/vendor.model';
+import { AppFields } from 'src/app/store';
 
 @Component({
   selector: 'app-vendor',
   templateUrl: './vendor.component.html',
   styleUrls: ['./vendor.component.css']
 })
-export class VendorComponent implements OnInit {
+export class VendorComponent implements OnInit, OnDestroy {
 
   actionbarMenu: Array < {
     name: string,
@@ -62,12 +64,15 @@ export class VendorComponent implements OnInit {
   ];
 
   selectedTab = this.actionbarMenu[0].name;
+  vendor: Observable<Vendor>;
+  sub: Subscription;
 
   constructor(
-    private userService: UserService,
-    private authService: AuthService,
     private route: Router,
-  ) {}
+    private store: Store<any>
+  ) {
+    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+  }
 
   ngOnInit() {
     const routeArr = this.route.url.slice(this.route.url.indexOf('profile/vendor/') + 'profile/vendor/'.length).split('/');
@@ -91,13 +96,17 @@ export class VendorComponent implements OnInit {
         this.selectedTab = 'Corporate Details';
         break;
     }
-    this.authService.getVendor().subscribe(res => {
-      this.userService.setVendorInfo(res);
-      if (this.userService.getVendorInfo()) {
+
+    this.sub = this.vendor.subscribe(res => {
+      if (res) {
         this.actionbarMenu.push(...this.arrAdditionalMenuItems);
       }
-    }, error => {
-      console.log('get profile error', error);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

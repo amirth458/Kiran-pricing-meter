@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
@@ -8,9 +8,10 @@ import { Vendor, VendorMetaData } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
-import { AuthService } from 'src/app/service/auth.service';
-import { Router } from '@angular/router';
 import { FileService } from 'src/app/service/file.service';
+import { Store } from '@ngrx/store';
+import { AppTypes, AppFields, Observable } from 'src/app/store';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 @Component({
@@ -19,17 +20,18 @@ declare var $: any;
   styleUrls: ['./basic-details.component.css']
 })
 
-export class BasicDetailsComponent implements OnInit, AfterViewChecked {
+export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   constructor(
-    public fb: FormBuilder,
-    public vendorService: VendorService,
-    public userService: UserService,
-    public authService: AuthService,
-    public fileService: FileService,
-    public spineer: NgxSpinnerService,
-    public route: Router
-  ) {}
+    private fb: FormBuilder,
+    private vendorService: VendorService,
+    private userService: UserService,
+    private fileService: FileService,
+    private spineer: NgxSpinnerService,
+    private store: Store<any>
+  ) {
+    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+  }
 
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
@@ -40,6 +42,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   selectedCertifications = [];
   certDocuments = [];
   isSubmited = false;
+  vendor: Observable<Vendor>;
+  sub: Subscription;
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -59,29 +63,25 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
   });
   disableConfidentiality = false;
   saveSuccessfully = false;
+
   ngOnInit() {
     this.getVendorMetaDatas();
-
-    this.authService.getVendor().subscribe(res => {
-      this.userService.setVendorInfo(res);
-
+    this.sub = this.vendor.subscribe(res => {
       if (res) {
-        this.vendorService.getVendorDetail(res.id).subscribe(res1 => {
-          if (res1) {
-            this.initForm(res1);
-          }
-        });
+        this.initForm(res);
       } else {
         this.detailForm.setValue({
           ...this.detailForm.value,
           confidentiality: 1,
         });
       }
-    }, error => {
-      console.log('get profile error', error);
     });
   }
-
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
@@ -98,6 +98,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       }, false);
     });
   }
+
   async getVendorMetaDatas() {
     this.spineer.show();
     try {
@@ -142,6 +143,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       this.spineer.hide();
     }
   }
+
   onChangeConfidentiality(e) {
     this.disableConfidentiality = Number(e.target.value) === 2;
   }
@@ -270,14 +272,16 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked {
       };
 
       if (this.userService.getVendorInfo()) {
-        const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
-        this.initForm(res);
-        this.userService.setVendorInfo(res);
+        this.store.dispatch({
+          type: AppTypes.UpdateVendorInfo,
+          payload: vendorProfile
+        });
         this.saveSuccessfully = true;
       } else {
-        const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
-        this.initForm(res);
-        this.userService.setVendorInfo(res);
+        this.store.dispatch({
+          type: AppTypes.CreateVendorInfo,
+          payload: vendorProfile
+        });
         this.saveSuccessfully = true;
       }
 
