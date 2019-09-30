@@ -6,6 +6,7 @@ import { PreferenceService } from 'src/app/service/preference.service';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorMetaData } from 'src/app/model/vendor.model';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -36,11 +37,12 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
   saveSuccessfully = false;
 
   constructor(
-    public fb: FormBuilder,
-    public vendorService: VendorService,
-    public preferenceService: PreferenceService,
-    public userService: UserService,
-    public spineer: NgxSpinnerService
+    private fb: FormBuilder,
+    private vendorService: VendorService,
+    private preferenceService: PreferenceService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService,
+    private toastr: ToastrService
   ) { }
 
   async ngOnInit() {
@@ -128,7 +130,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       this.preferenceService.updatePreference(preferences)
         .subscribe(
           res => {
-            this.saveSuccessfully = true;
+            this.toastr.success('Saved Successfully');
             this.spineer.hide();
           },
           error => {
@@ -140,7 +142,7 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
           res => {
             this.isPreferenceAvailable = true;
             this.initForm(res);
-            this.saveSuccessfully = true;
+            this.toastr.success('Saved Successfully');
             this.spineer.hide();
           },
           err => {
