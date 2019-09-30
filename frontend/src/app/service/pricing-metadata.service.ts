@@ -13,13 +13,13 @@ export class PricingMetadataService {
     if (postProcess) {
       return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type?processProfileTypeId=2');
     }
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_type');
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_condition_typeprocessProfileTypeId=1');
   }
 
   getConditionParameters(postProcess?): Observable<{ metadataList: any, metadataType: any }> {
     if (postProcess) {
       return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type?processProfileTypeId=2');
     }
-    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type');
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_typeprocessProfileTypeId=1');
   }
 }
