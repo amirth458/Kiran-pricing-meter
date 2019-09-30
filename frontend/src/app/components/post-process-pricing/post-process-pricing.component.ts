@@ -216,7 +216,6 @@ export class PostProcessPricingComponent implements OnInit {
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      console.log(columnInstance)
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
@@ -252,87 +251,70 @@ export class PostProcessPricingComponent implements OnInit {
   }
 
   createColumns() {
-    const conditionNames = [];
-    const componentName = [];
+    let maxCondition = 0;
+    let maxComponent = 0;
 
-    this.rowData.map((row, outterIndex) => {
-      row.processPricingConditionList.map((x, index) => {
-        if (!conditionNames.includes(`Condition ${index + 1}`)) {
-          conditionNames.push(`Condition ${index + 1}`);
-          // this.searchColumns.push(
-          //   {
-          //     name: `Condition ${index + 1}`, checked: false, field: `condition${index + 1}`, query: {
-          //       type: '',
-          //       filter: '',
-          //     }
-          //   });
-          this.filterColumns.push(
-            {
-              name: `Pricing Condition ${index + 1}`, checked: false, field: `condition${index + 1}`
-            });
-
-          this.columnDefs.push({
-            headerName: `Pricing Condition ${index + 1}`,
-            field: `condition${index + 1}`,
-            hide: false,
-            sortable: true,
-            filter: true,
-            cellRenderer(params: any): any {
-              let value = '';
-              params.data.processPricingConditionList.map((item, innerIndex) => {
-                if (innerIndex === outterIndex) {
-                  value = `${item.processPricingConditionType.name} ${item.operatorType.symbol} `;
-                  if (item.valueSignType == 'positive') {
-                    value += `${item.value} ${item.unitType.symbol}`;
-                  } else if (item.valueSignType === 'absolute') {
-                    value += `|${item.value}| ${item.unitType.symbol}`;
-                  } else {
-                    value += `-${item.value} ${item.unitType.symbol}`;
-                  }
-                }
-              });
-              return value;
-            }
-          });
-        } else {
-
-        }
-      });
-
-      row.processPricingParameterList.map((x, index) => {
-        if (!componentName.includes(`Pricing Component ${index + 1}`)) {
-          componentName.push(`Pricing Component ${index + 1}`);
-          // this.searchColumns.push(
-          //   {
-          //     name: `Pricing Component ${index + 1}`, checked: false, field: `pricingComponent${index + 1}`, query: {
-          //       type: '',
-          //       filter: '',
-          //     }
-          //   });
-          this.filterColumns.push(
-            {
-              name: `Pricing Component ${index + 1}`, checked: false, field: `pricingComponent${index + 1}`
-            });
-
-          this.columnDefs.push({
-            headerName: `Pricing Component ${index + 1}`,
-            field: `pricingComponent${index + 1}`,
-            hide: true,
-            sortable: true,
-            filter: true,
-            cellRenderer(params: any): any {
-              let value = '';
-              params.data.processPricingParameterList.map((item, innerIndex) => {
-                if (innerIndex == outterIndex) {
-                  value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
-                }
-              });
-              return value;
-            }
-          });
-        }
-      });
+    this.rowData.map((x, index) => {
+      if (maxCondition < x.processPricingConditionList.length) {
+        maxCondition = x.processPricingConditionList.length;
+      }
+      if (maxComponent < x.processPricingParameterList.length) {
+        maxComponent = x.processPricingParameterList.length;
+      }
     });
+
+    for (let index = 0; index < maxCondition; index++) {
+      this.filterColumns.push(
+        {
+          name: `Pricing Condition ${index + 1}`, checked: false, field: `condition${index + 1}`
+        });
+      this.columnDefs.push({
+        headerName: `Pricing Condition ${index + 1}`,
+        field: `condition${index + 1}`,
+        hide: false,
+        sortable: true,
+        filter: true,
+        cellRenderer(params: any): any {
+          let value = '';
+          params.data.processPricingConditionList.map((item, innerIndex) => {
+            if (index === innerIndex) {
+              value = `${item.processPricingConditionType.name} ${item.operatorType.symbol} `;
+              if (item.valueSignType == 'positive') {
+                value += `${item.value} ${item.unitType.symbol}`;
+              } else if (item.valueSignType === 'absolute') {
+                value += `| ${item.value} | ${item.unitType.symbol}`;
+              } else {
+                value += `- ${item.value} ${item.unitType.symbol}`;
+              }
+            }
+          });
+          return value;
+        }
+      });
+
+    }
+    for (let index = 0; index < maxComponent; index++) {
+      this.filterColumns.push(
+        {
+          name: `Pricing Component ${index + 1}`, checked: false, field: `pricingComponent${index + 1}`
+        });
+      this.columnDefs.push({
+        headerName: `Pricing Component ${index + 1}`,
+        field: `pricingComponent${index + 1}`,
+        hide: true,
+        sortable: true,
+        filter: true,
+        cellRenderer(params: any): any {
+          let value = '';
+          params.data.processPricingParameterList.map((item, innerIndex) => {
+            if (innerIndex == index) {
+              value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
+            }
+          });
+          return value;
+        }
+      });
+    }
 
 
     this.columnDefs.push({
