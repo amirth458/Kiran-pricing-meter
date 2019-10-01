@@ -31,7 +31,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     id: [null],
     vendorId: [null],
     name: [null],
-    equipment: [null, Validators.required],
+    equipment: ['', Validators.required],
     materialList: [null, Validators.required],
     postProcessProfileFamily: [''],
     // postProcessAction: ['', Validators.required],
@@ -102,6 +102,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
   async ngOnInit() {
     this.form.controls.postProcessProfileFamily.disable();
+    this.form.controls.postProcessAction.disable();
+
     try {
       this.spinner.show();
 
@@ -379,15 +381,18 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   equipmentChanged(processProfile?) {
     const equipmentId = this.form.value.equipment;
     if (processProfile) {
+      console.log(processProfile)
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
+        postProcessAction: processProfile.processAction.id || '',
         materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
       });
     } else {
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
+        postProcessAction: '',
         materialList: []
       });
     }
@@ -399,10 +404,17 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
         this.actionOptions = machine.equipment.processFamily.processAction;
         this.form.setValue({
           ...this.form.value,
+          postProcessAction: processProfile ? processProfile.processAction.id || '' : '',
           postProcessProfileFamily: x.equipment.processFamily.id
         });
       }
+      if (this.actionOptions.length == 0) {
+        this.form.controls.postProcessAction.disable();
+      } else {
+        this.form.controls.postProcessAction.enable();
+      }
     });
+
   }
 
   async initForm(processProfile) {
@@ -430,7 +442,6 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     });
 
     this.equipmentChanged(processProfile);
-    console.log(this.form.value)
     // console.log(this.form.value);
     // this.form.setValue({
     //   ...this.form.value,

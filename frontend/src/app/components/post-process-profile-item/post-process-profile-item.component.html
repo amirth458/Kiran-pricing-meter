@@ -37,6 +37,8 @@
           placeholder="Materials" [selectOnTab]="true" formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
+        <span class="footnote red">* Required</span>
+
       </div>
 
     </div>
@@ -57,9 +59,10 @@
 
       <div class="form-group theme col-md-6">
         <label for="postProcessAction">Post-Process Action</label>
-        <select required id="postProcessAction" name="postProcessAction" formControlName="postProcessAction"
-          class="form-control">
-          <option selected value=''>Choose...</option>
+        <select [required]="actionOptions.length>0" id="postProcessAction" name="postProcessAction"
+          formControlName="postProcessAction" class="form-control">
+          <option *ngIf="actionOptions.length==0" selected value=''>None</option>
+          <option *ngIf="actionOptions.length>0" selected value=''>Choose...</option>
           <option *ngFor="let item of actionOptions" [value]="item.id">{{item.name}}</option>
         </select>
         <div class="invalid-feedback">
@@ -224,7 +227,7 @@
               <!-- </div> -->
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
-                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Post-Process Dimensional Properties')"
+                  (ngModelChange)="getProperOperands(selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id, index,'Post-Process Dimensional Properties')"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
@@ -365,7 +368,7 @@
               <!-- </div> -->
               <div class="form-group theme col-md-3">
                 <select required id="name" name="name"
-                  (ngModelChange)="getProperOperands(selectedProcessParameterList[index].processParameterType.id, index,'Post-Process Material Characteristics')"
+                  (ngModelChange)="getProperOperands(selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id, index,'Post-Process Material Characteristics')"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id"
                   [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
