@@ -117,10 +117,10 @@
       <div style="flex-grow: 1">
           <ul class="uploaded_files"  *ngIf="vendorId > 0">
             <li *ngFor="let item of certDocuments">
-              <!-- <a href="{{item.name}}" target="_blank"> -->
+              <a href="{{item.name}}" target="_blank">
                 <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
                 <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
-              <!-- </a> -->
+              </a>
               <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fa fa-times" color="red" aria-hidden="true"></i></button>
             </li>
           </ul>
