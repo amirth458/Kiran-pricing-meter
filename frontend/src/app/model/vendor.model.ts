@@ -8,6 +8,8 @@ export interface Vendor {
   name: string;
   email: string;
   phone: string;
+  primaryContactFirstName: string;
+  primaryContactLastName: string;
   vendorType: { id: number, name: string };
   vendorIndustries: Array<{ id: number, name: string }>;
   city: string;

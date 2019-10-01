@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
 
 declare var $: any;
@@ -7,7 +7,7 @@ declare var $: any;
   templateUrl: './action-bar.component.html',
   styleUrls: ['./action-bar.component.css']
 })
-export class ActionBarComponent implements OnInit {
+export class ActionBarComponent implements OnChanges, OnInit {
   @Input('menus') menus: Array<{
     name: string,
     tooltipMessage: string,
@@ -23,7 +23,19 @@ export class ActionBarComponent implements OnInit {
     $(() => {
       $('[data-toggle="tooltip"]').tooltip();
     });
+    const routeArray = this.route.url.split('/');
+    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
+    if (routeArray.length > 2) {
+      this.menus.map((x, index) => {
+        if (x.route === routeArray[3]) {
+          this.activeTabIndex = index;
+          this.selectedTab = x.name;
+        }
+      });
+    }
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
     const routeArray = this.route.url.split('/');
     this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
     if (routeArray.length > 2) {
