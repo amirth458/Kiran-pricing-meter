@@ -71,7 +71,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
     this.getVendorMetaDatas();
     this.sub = this.vendor.subscribe(res => {
       if (res) {
-        this.userService.setUserInfo(res);
         this.initForm(res);
         this.vendorId = Number(res.id);
       } else {
