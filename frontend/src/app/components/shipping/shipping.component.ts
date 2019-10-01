@@ -85,7 +85,7 @@ export class ShippingComponent implements OnInit {
     // { headerName: 'Carrier No', field: 'id', hide: false, sortable: true, filter: true },
     {
       headerName: 'Carrier', field: 'carrier', hide: false, sortable: true, filter: false,
-      cellRenderer(params)  {
+      cellRenderer(params) {
         let str = '';
         switch (params.data.shippingProvider.id) {
           case 1:
@@ -123,6 +123,9 @@ export class ShippingComponent implements OnInit {
             break;
         }
         return str + params.data.shippingProvider.name;
+      },
+      valueGetter: (params) => {
+        return params.data.shippingProvider.name;
       }
     },
     { headerName: 'Account ID', field: 'accountId', hide: false, sortable: true, filter: false },

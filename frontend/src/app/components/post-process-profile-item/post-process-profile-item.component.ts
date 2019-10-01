@@ -31,7 +31,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     id: [null],
     vendorId: [null],
     name: [null],
-    equipment: [null, Validators.required],
+    equipment: ['', Validators.required],
     materialList: [null, Validators.required],
     postProcessProfileFamily: [''],
     // postProcessAction: ['', Validators.required],
@@ -47,6 +47,11 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       []
     ],
   });
+
+  filteredProcessParameterList = [];
+  filteredProcessDimensionalPropertyList = [];
+  filteredProcessMaterialCharacteristicList = [];
+
   processParameterList = [];
   processDimensionalPropertyList = [];
   processMaterialCharacteristicList = [];
@@ -102,6 +107,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
   async ngOnInit() {
     this.form.controls.postProcessProfileFamily.disable();
+    this.form.controls.postProcessAction.disable();
+
     try {
       this.spinner.show();
 
@@ -135,12 +142,6 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       this.processDimensionalPropertyList = processDimensionalPropertyType.metadataList;
       this.processMaterialCharacteristicList = processMaterialCharacteristicType.metadataList;
 
-      // console.log({
-      //   conditions: this.conditions,
-      //   processParameterList: this.processParameterList,
-      //   processDimensionalPropertyList: this.processDimensionalPropertyList,
-      //   processMaterialCharacteristicList: this.processMaterialCharacteristicList,
-      // });
     } catch (e) {
       console.log(e);
     } finally {
@@ -367,7 +368,6 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
         rows.push(...res.content);
         page++;
       }
-      console.log(rows);
       rows.map(machine => {
         this.equipments.push(machine);
       });
@@ -382,12 +382,14 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
+        postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
         materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
       });
     } else {
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
+        postProcessAction: '',
         materialList: []
       });
     }
@@ -396,13 +398,27 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
         this.materials = x.machineServingMaterialList;
         this.familyOptions = [x.equipment.processFamily];
         const machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, x.id).toPromise();
+        const processTypeName = machine.equipment.processTypeName;
         this.actionOptions = machine.equipment.processFamily.processAction;
+
+
+        this.filteredProcessParameterList = this.processParameterList.filter(x => x.processType.name == processTypeName);
+        this.filteredProcessDimensionalPropertyList = this.processDimensionalPropertyList;
+        this.filteredProcessMaterialCharacteristicList = this.processMaterialCharacteristicList;
+
         this.form.setValue({
           ...this.form.value,
+          postProcessAction: processProfile ? processProfile.processAction ? processProfile.processAction.id || '' : '' : '',
           postProcessProfileFamily: x.equipment.processFamily.id
         });
       }
+      if (this.actionOptions.length == 0) {
+        this.form.controls.postProcessAction.disable();
+      } else {
+        this.form.controls.postProcessAction.enable();
+      }
     });
+
   }
 
   async initForm(processProfile) {
@@ -413,14 +429,13 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     }];
     const machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, machineId).toPromise();
     this.actionOptions = machine.equipment.processFamily.processAction;
-    console.log({ action: this.actionOptions });
 
     this.form.setValue({
       id: processProfile.id,
       name: processProfile.name,
       vendorId: processProfile.vendorId,
       postProcessProfileFamily: machine.equipment.processFamily.id,
-      postProcessAction: processProfile.processAction.id,
+      postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
       // tslint:disable-next-line:max-line-length
       equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
       materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
@@ -430,12 +445,6 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     });
 
     this.equipmentChanged(processProfile);
-    console.log(this.form.value)
-    // console.log(this.form.value);
-    // this.form.setValue({
-    //   ...this.form.value,
-    //   materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
-    // });
 
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
@@ -443,11 +452,6 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     // tslint:disable-next-line:max-line-length
     this.selectedProcessDimensionalPropertyList = [...processProfile.processDimensionalPropertyList.map(x => { x.operandTypeList = []; return x; })];
 
-    // console.log({
-    //   selectedProcessDimensionalPropertyList: this.selectedProcessDimensionalPropertyList,
-    //   selectedProcessMaterialCharacteristicList: this.selectedProcessMaterialCharacteristicList,
-    //   selectedProcessParameterList: this.selectedProcessParameterList,
-    // });
     this.selectedProcessParameterList.map((parameter, index) => {
       this.getProperOperands(parameter.processParameterType.id, index, 'Post-Process Parameters');
     });
@@ -482,11 +486,11 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     this.submitActive = false;
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
-        console.log(this.selectedProcessParameterList, this.selectedProcessDimensionalPropertyList, this.selectedProcessMaterialCharacteristicList)
+
         this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
-        console.log({ postData });
+
         if (this.isNew) {
           this.spinner.show();
           try {

@@ -133,6 +133,18 @@ export class MachinesComponent implements OnInit {
           </div>
         </div>
         </div>`;
+      },
+      valueGetter: (params) => {
+        const data = params.data;
+        let materials = '';
+        data.machineServingMaterialList.map((x, index) => {
+          if (index === 0) {
+            materials = x.material.name;
+          } else {
+            materials = materials + ',' + x.material.name;
+          }
+        });
+        return materials;
       }
     },
     { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: false },
