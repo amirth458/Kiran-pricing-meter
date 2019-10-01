@@ -137,6 +137,17 @@ export class PostProcessProfileComponent implements OnInit {
           </div>
         </div>
         </div>`;
+      },
+      valueGetter: (params) => {
+        let materials = '';
+        params.data.processMachineServingMaterialList.map((x, index) => {
+          if (index === 0) {
+            materials = x.machineServingMaterial.material.name;
+          } else {
+            materials = materials + ',' + x.machineServingMaterial.material.name;
+          }
+        });
+        return materials;
       }
     },
     {
@@ -147,11 +158,25 @@ export class PostProcessProfileComponent implements OnInit {
           return machineList.machineServingMaterial.vendorMachinery.equipment.processFamily.name;
         }
         return '';
+      },
+      valueGetter: (param) => {
+        const machineList = param.data.processMachineServingMaterialList[0];
+        if (machineList) {
+          return machineList.machineServingMaterial.vendorMachinery.equipment.processFamily.name;
+        }
+        return '';
       }
     },
     {
       headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
+        const machineList = param.data.processMachineServingMaterialList[0];
+        if (machineList) {
+          return machineList.machineServingMaterial.vendorMachinery.equipment.processFamily.processType.name;
+        }
+        return '';
+      },
+      valueGetter: (param) => {
         const machineList = param.data.processMachineServingMaterialList[0];
         if (machineList) {
           return machineList.machineServingMaterial.vendorMachinery.equipment.processFamily.processType.name;
@@ -345,62 +370,21 @@ export class PostProcessProfileComponent implements OnInit {
                   }
                 });
                 return value;
+              },
+              valueGetter: (params: any) => {
+                let value = '';
+                params.data.processParameterList.map(item => {
+                  if (item.processParameterType.name === x.processParameterType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
               }
             }
           );
         }
 
       });
-
-      // row.processDimensionalPropertyList.map(x => {
-      //   if (!availableColumnNames.includes(x.processDimensionalPropertyType.name)) {
-      //     availableColumnNames.push(x.processDimensionalPropertyType.name);
-      //     availableColumns.push(x.processDimensionalPropertyType);
-      //     this.columnDefs.push(
-      //       {
-      //         headerName: x.processDimensionalPropertyType.name,
-      //         field: x.processDimensionalPropertyType.name.replace(/ /g, ''),
-      //         hide: true,
-      //         sortable: true,
-      //         filter: false,
-      //         cellRenderer(params: any): any {
-      //           let value = '';
-      //           params.data.processDimensionalPropertyList.map(item => {
-      //             if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
-      //               value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
-      //             }
-      //           });
-      //           return value;
-      //         }
-      //       }
-      //     );
-      //   }
-      // });
-
-      // row.processMaterialCharacteristicList.map(x => {
-      //   if (!availableColumnNames.includes(x.processMaterialCharacteristicType.name)) {
-      //     availableColumnNames.push(x.processMaterialCharacteristicType.name);
-      //     availableColumns.push(x.processMaterialCharacteristicType);
-      //     this.columnDefs.push(
-      //       {
-      //         headerName: x.processMaterialCharacteristicType.name,
-      //         field: x.processMaterialCharacteristicType.name.replace(/ /g, ''),
-      //         hide: true,
-      //         sortable: true,
-      //         filter: false,
-      //         cellRenderer(params: any): any {
-      //           let value = '';
-      //           params.data.processMaterialCharacteristicList.map(item => {
-      //             if (item.processMaterialCharacteristicType.name === x.processMaterialCharacteristicType.name) {
-      //               value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
-      //             }
-      //           });
-      //           return value;
-      //         }
-      //       }
-      //     );
-      //   }
-      // });
     });
 
 

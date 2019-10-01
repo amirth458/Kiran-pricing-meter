@@ -95,11 +95,22 @@ export class ProcessProfileComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
         return value;
-      }
+      },
+      valueGetter: (param) => {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
+        return value;
+      },
+
     },
     {
       headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName : '';
+        return value;
+      },
+      valueGetter: (param) => {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName : '';
         return value;
@@ -286,6 +297,15 @@ export class ProcessProfileComponent implements OnInit {
                   }
                 });
                 return value;
+              },
+              valueGetter: (params: any) => {
+                let value = '';
+                params.data.processParameterList.map(item => {
+                  if (item.processParameterType.name === x.processParameterType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
               }
             }
           );
@@ -311,6 +331,15 @@ export class ProcessProfileComponent implements OnInit {
                   }
                 });
                 return value;
+              },
+              valueGetter: (params: any) => {
+                let value = '';
+                params.data.processDimensionalPropertyList.map(item => {
+                  if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
               }
             }
           );
@@ -329,6 +358,15 @@ export class ProcessProfileComponent implements OnInit {
               sortable: true,
               filter: false,
               cellRenderer(params: any): any {
+                let value = '';
+                params.data.processMaterialCharacteristicList.map(item => {
+                  if (item.processMaterialCharacteristicType.name === x.processMaterialCharacteristicType.name) {
+                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  }
+                });
+                return value;
+              },
+              valueGetter: (params: any) => {
                 let value = '';
                 params.data.processMaterialCharacteristicList.map(item => {
                   if (item.processMaterialCharacteristicType.name === x.processMaterialCharacteristicType.name) {

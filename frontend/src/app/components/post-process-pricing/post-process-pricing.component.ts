@@ -97,6 +97,11 @@ export class PostProcessPricingComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processProfile.processMachineServingMaterialList[0] ? param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
         return value;
+      },
+      valueGetter: (param) => {
+        // tslint:disable-next-line:max-line-length
+        const value = param.data.processProfile.processMachineServingMaterialList[0] ? param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
+        return value;
       }
     },
     {
@@ -104,6 +109,21 @@ export class PostProcessPricingComponent implements OnInit {
       headerName: 'Material', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
+        let value = '';
+        if (param.data.processProfile.processMachineServingMaterialList[0]) {
+          // tslint:disable-next-line:max-line-length
+          param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
+            if (index == 0) {
+              value += material.name;
+            } else {
+              value += ', ' + material.name;
+            }
+          });
+        }
+
+        return value;
+      },
+      valueGetter: (param) => {
         let value = '';
         if (param.data.processProfile.processMachineServingMaterialList[0]) {
           // tslint:disable-next-line:max-line-length
@@ -289,6 +309,22 @@ export class PostProcessPricingComponent implements OnInit {
             }
           });
           return value;
+        },
+        valueGetter: (params: any) => {
+          let value = '';
+          params.data.processPricingConditionList.map((item, innerIndex) => {
+            if (index === innerIndex) {
+              value = `${item.processPricingConditionType.name} ${item.operatorType.symbol} `;
+              if (item.valueSignType == 'positive') {
+                value += `${item.value} ${item.unitType.symbol}`;
+              } else if (item.valueSignType === 'absolute') {
+                value += `| ${item.value} | ${item.unitType.symbol}`;
+              } else {
+                value += `- ${item.value} ${item.unitType.symbol}`;
+              }
+            }
+          });
+          return value;
         }
       });
 
@@ -305,6 +341,15 @@ export class PostProcessPricingComponent implements OnInit {
         sortable: true,
         filter: false,
         cellRenderer(params: any): any {
+          let value = '';
+          params.data.processPricingParameterList.map((item, innerIndex) => {
+            if (innerIndex == index) {
+              value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
+            }
+          });
+          return value;
+        },
+        valueGetter: (params: any) => {
           let value = '';
           params.data.processPricingParameterList.map((item, innerIndex) => {
             if (innerIndex == index) {
