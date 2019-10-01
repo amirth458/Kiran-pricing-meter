@@ -382,7 +382,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
-        postProcessAction: processProfile.processAction.id || '',
+        postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
         materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
       });
     } else {
@@ -408,7 +408,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
         this.form.setValue({
           ...this.form.value,
-          postProcessAction: processProfile ? processProfile.processAction.id || '' : '',
+          postProcessAction: processProfile ? processProfile.processAction ? processProfile.processAction.id || '' : '' : '',
           postProcessProfileFamily: x.equipment.processFamily.id
         });
       }
@@ -435,7 +435,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       name: processProfile.name,
       vendorId: processProfile.vendorId,
       postProcessProfileFamily: machine.equipment.processFamily.id,
-      postProcessAction: processProfile.processAction.id,
+      postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
       // tslint:disable-next-line:max-line-length
       equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
       materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
