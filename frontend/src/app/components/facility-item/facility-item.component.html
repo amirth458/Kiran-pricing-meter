@@ -5,43 +5,52 @@
   <form [formGroup]="facilityItem" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
 
-      <div class="form-group theme col">
+      <div class="form-group theme col-md-12">
         <label for="facility_name">Facility Name</label>
         <input required type="text" formControlName="name" class="form-control" id="facility_name" name="facility_name"
           placeholder="Facility Name">
       </div>
+
+      
     </div>
     <div class="form-row">
-
-      <div class="form-group theme col-md-6">
+      <div class="form-group theme col-md-3">
+        <label>Primary Contact Name</label>
+        <input required formControlName="primaryContactFirstName" class="form-control" placeholder="First Name">
+      </div>
+      <div class="form-group theme col-md-3">
+        <label> &nbsp; </label>
+        <input required formControlName="primaryContactLastName" class="form-control" placeholder="Last Name">
+      </div>
+      <div class="form-group theme col-md-3">
         <label for="email">Email</label>
         <input required type="email" formControlName="email" class="form-control" id="email" name="email"
           placeholder="Email">
       </div>
 
-      <div class="form-group theme col-md-6 phone">
+      <div class="form-group theme col-md-3 phone">
           <label>Phone</label>
-          <international-phone-number formControlName="phone" placeholder="Enter phone number"
-            [defaultCountry]="'us'"
+          <international-phone-number *ngIf="!isNew" formControlName="phone" placeholder="Enter phone number"
+            [required]="true" name="phone_number" ></international-phone-number>
+          <international-phone-number *ngIf="isNew" formControlName="phone" placeholder="Enter phone number"
+            [defaultCountry] = "'us'"
             [required]="true" name="phone_number" ></international-phone-number>
         </div>
 
     </div>
 
     <div class="form-row">
-      <div class="form-group theme col">
+      <div class="form-group theme col-md-6">
         <label>Street 1</label>
         <input required formControlName="street1" class="form-control" name="street1" id="street1"
           placeholder="1234 Main St">
       </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group theme col-md-6">
+      <div class="form-group theme col-md-3">
         <label>Street 2</label>
         <input formControlName="street2" class="form-control" name="street2" id="street2"
           placeholder="1234 Main St">
       </div>
-      <div class="form-group theme col-md-6">
+      <div class="form-group theme col-md-3">
         <label for="city">City</label>
         <input required type="text" formControlName="city" class="form-control" id="city" name="city">
       </div>

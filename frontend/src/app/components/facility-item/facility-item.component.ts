@@ -27,6 +27,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
   facilityItem: FormGroup = this.fb.group({
     id: [null],
     vendorId: [null],
+    primaryContactFirstName: [null, Validators.required],
+    primaryContactLastName: [null, Validators.required],
     name: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
     phone: [null, Validators.required],
@@ -83,6 +85,9 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         this.facilityId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
         this.isNew = false;
         this.getFacility(this.facilityId);
+
+      } else {
+        this.isNew = true;
       }
     });
   }
@@ -91,6 +96,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     this.spinner.show();
     try {
       const data = await this.facilityService.getFacility(this.vendorId, facilityId).toPromise();
+      console.log(data);
       this.initForm(data);
     } catch (e) {
       this.spinner.hide();
@@ -142,6 +148,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     this.facilityItem.setValue({
       id: data.id,
       vendorId: data.vendorId,
+      primaryContactFirstName: data.primaryContactFirstName,
+      primaryContactLastName: data.primaryContactLastName,
       name: data.name,
       email: data.email,
       phone: data.phone,

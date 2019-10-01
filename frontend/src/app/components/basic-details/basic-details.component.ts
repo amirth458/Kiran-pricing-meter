@@ -50,6 +50,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   detailForm: FormGroup = this.fb.group({
     id: [null],
     name: [null, Validators.required],
+    primaryContactFirstName: [null, Validators.required],
+    primaryContactLastName: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
     phone: [null, [Validators.required ]],
     vendorType: [null, Validators.required],
@@ -70,6 +72,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   ngOnInit() {
     this.getVendorMetaDatas();
     this.sub = this.vendor.subscribe(res => {
+      console.log(res);
       if (res) {
         this.initForm(res);
         this.vendorId = Number(res.id);
@@ -165,6 +168,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
+      primaryContactFirstName: initValue.primaryContactFirstName,
+      primaryContactLastName: initValue.primaryContactLastName,
       email: initValue.email,
       phone: initValue.phone,
       vendorType: initValue.vendorType.id,
