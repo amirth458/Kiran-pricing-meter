@@ -25,148 +25,148 @@ export class FacilityComponent implements OnInit {
 
 
   searchColumns = [{
-      name: 'Facility No',
-      checked: false,
-      field: 'id',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Facility Name',
-      checked: false,
-      field: 'name',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Email',
-      checked: false,
-      field: 'email',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Phone',
-      checked: false,
-      field: 'phone',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Address',
-      checked: false,
-      field: 'address',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
+    name: 'Facility No',
+    checked: false,
+    field: 'id',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Facility Name',
+    checked: false,
+    field: 'name',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Email',
+    checked: false,
+    field: 'email',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Phone',
+    checked: false,
+    field: 'phone',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Address',
+    checked: false,
+    field: 'address',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
 
-    {
-      name: 'City',
-      checked: false,
-      field: 'city',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'State',
-      checked: false,
-      field: 'state',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Country',
-      checked: false,
-      field: 'country',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Certifications',
-      checked: false,
-      field: 'vendorFacilityCertificationList',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
-      name: 'Actions',
-      checked: false,
-      field: 'actions',
-      query: {
-        type: '',
-        filter: '',
-      }
-    },
+  {
+    name: 'City',
+    checked: false,
+    field: 'city',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'State',
+    checked: false,
+    field: 'state',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Country',
+    checked: false,
+    field: 'country',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Certifications',
+    checked: false,
+    field: 'vendorFacilityCertificationList',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
+  {
+    name: 'Actions',
+    checked: false,
+    field: 'actions',
+    query: {
+      type: '',
+      filter: '',
+    }
+  },
   ];
   filterColumns = [{
-      name: 'Facility No',
-      checked: true,
-      field: 'id'
-    },
-    {
-      name: 'Facility Name',
-      checked: true,
-      field: 'name'
-    },
-    {
-      name: 'Email',
-      checked: true,
-      field: 'email'
-    },
-    {
-      name: 'Phone',
-      checked: false,
-      field: 'phone'
-    },
-    {
-      name: 'Address',
-      checked: false,
-      field: 'address'
-    },
+    name: 'Facility No',
+    checked: true,
+    field: 'id'
+  },
+  {
+    name: 'Facility Name',
+    checked: true,
+    field: 'name'
+  },
+  {
+    name: 'Email',
+    checked: true,
+    field: 'email'
+  },
+  {
+    name: 'Phone',
+    checked: false,
+    field: 'phone'
+  },
+  {
+    name: 'Address',
+    checked: false,
+    field: 'address'
+  },
 
-    {
-      name: 'City',
-      checked: true,
-      field: 'city'
-    },
-    {
-      name: 'State',
-      checked: true,
-      field: 'state'
-    },
-    {
-      name: 'Country',
-      checked: false,
-      field: 'country'
-    },
-    {
-      name: 'Certifications',
-      checked: true,
-      field: 'vendorFacilityCertificationList'
-    },
-    {
-      name: 'Actions',
-      checked: true,
-      field: 'actions'
-    },
+  {
+    name: 'City',
+    checked: true,
+    field: 'city'
+  },
+  {
+    name: 'State',
+    checked: true,
+    field: 'state'
+  },
+  {
+    name: 'Country',
+    checked: false,
+    field: 'country'
+  },
+  {
+    name: 'Certifications',
+    checked: true,
+    field: 'vendorFacilityCertificationList'
+  },
+  {
+    name: 'Actions',
+    checked: true,
+    field: 'actions'
+  },
   ];
   type = ['search', 'filter'];
 
@@ -175,92 +175,98 @@ export class FacilityComponent implements OnInit {
   };
 
   columnDefs = [{
-      headerName: 'Facility No',
-      field: 'id',
-      hide: false,
-      sortable: true,
-      filter: false
+    headerName: 'Facility No',
+    field: 'id',
+    hide: false,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'Facility Name',
+    field: 'name',
+    hide: false,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'Email',
+    field: 'email',
+    hide: false,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'Phone',
+    field: 'phone',
+    hide: true,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'Address',
+    field: 'address',
+    hide: false,
+    sortable: true,
+    filter: false,
+    cellRenderer(params) {
+      return params.data.street1 + ' ' + params.data.street2;
     },
-    {
-      headerName: 'Facility Name',
-      field: 'name',
-      hide: false,
-      sortable: true,
-      filter: false
+    valueGetter: (params) => {
+      return params.data.street1 + ' ' + params.data.street2;
+    }
+  },
+  {
+    headerName: 'City',
+    field: 'city',
+    hide: false,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'State',
+    field: 'state',
+    hide: false,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'Country',
+    field: 'country',
+    hide: false,
+    sortable: true,
+    filter: false
+  },
+  {
+    headerName: 'Certifications',
+    field: '[vendorFacilityCertificationList].length',
+    hide: false,
+    sortable: true,
+    filter: false,
+    cellRenderer(params) {
+      return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
     },
-    {
-      headerName: 'Email',
-      field: 'email',
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Phone',
-      field: 'phone',
-      hide: true,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Address',
-      field: 'address',
-      hide: false,
-      sortable: true,
-      filter: false,
-      cellRenderer(params) {
-        return params.data.street1 + ' ' + params.data.street2;
-      }
-    },
-    {
-      headerName: 'City',
-      field: 'city',
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'State',
-      field: 'state',
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Country',
-      field: 'country',
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Certifications',
-      field: '[vendorFacilityCertificationList].length',
-      hide: false,
-      sortable: true,
-      filter: false,
-      cellRenderer(params) {
-        return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
-      }
-    },
-    {
-      headerName: 'Actions',
-      filter: false,
-      width: 100,
-      cellRenderer: 'actionCellRenderer',
-      cellRendererParams: {
-        action: {
-          edit: (param) => this.editRow(param),
-          delete: async (param) => {
-            this.modal.nativeElement.click();
-            this.selectedFacility = param.data;
-          },
-          canEdit: true,
-          canCopy: false,
-          canDelete: true,
-        }
+    valueGetter: (params) => {
+      return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
+    }
+  },
+  {
+    headerName: 'Actions',
+    filter: false,
+    width: 100,
+    cellRenderer: 'actionCellRenderer',
+    cellRendererParams: {
+      action: {
+        edit: (param) => this.editRow(param),
+        delete: async (param) => {
+          this.modal.nativeElement.click();
+          this.selectedFacility = param.data;
+        },
+        canEdit: true,
+        canCopy: false,
+        canDelete: true,
       }
     }
+  }
   ];
 
   gridOptions: GridOptions;
@@ -321,11 +327,11 @@ export class FacilityComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         const res = await this.facilityService.getFacilities(
           this.vendorId, {
-            page,
-            size: 1000,
-            sort: 'id,DESC',
-            q: ''
-          }
+          page,
+          size: 1000,
+          sort: 'id,DESC',
+          q: ''
+        }
         ).toPromise();
         rows.push(...res.content);
         if (!res.content) {
