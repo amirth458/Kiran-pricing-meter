@@ -48,7 +48,7 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       name: 'Equipment', checked: false,
-      field: 'processProfile.machineServingMaterial.vendorMachinery.equipment.name', query: {
+      field: 'equipment', query: {
         type: '',
         filter: '',
       }
@@ -56,7 +56,7 @@ export class PostProcessPricingComponent implements OnInit {
 
     {
       name: 'Material', checked: false,
-      field: 'processProfile.machineServingMaterial.material.name', query: {
+      field: 'material', query: {
         type: '',
         filter: '',
       }
@@ -73,10 +73,10 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Post-Process Profile', checked: true, field: 'processProfile.name'
     },
     {
-      name: 'Equipment', checked: true, field: 'processProfile.machineServingMaterial.vendorMachinery.equipment.name'
+      name: 'Equipment', checked: true, field: 'equipment'
     },
     {
-      name: 'Material', checked: true, field: 'processProfile.machineServingMaterial.material.name'
+      name: 'Material', checked: true, field: 'material'
     }
   ];
   type = ['search', 'filter'];
@@ -91,7 +91,7 @@ export class PostProcessPricingComponent implements OnInit {
     { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
-      headerName: 'Equipment', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
+      headerName: 'Equipment', field: 'equipment',
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         // tslint:disable-next-line:max-line-length
@@ -106,7 +106,7 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       // tslint:disable-next-line:max-line-length
-      headerName: 'Material', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
+      headerName: 'Material', field: 'material',
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         let value = '';

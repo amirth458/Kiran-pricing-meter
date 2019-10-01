@@ -48,7 +48,7 @@ export class ProcessProfileComponent implements OnInit {
     },
     {
       name: 'Equipment', checked: false,
-      field: 'machineServingMaterial.vendorMachinery.equipment.name', query: {
+      field: 'equipment', query: {
         type: '',
         filter: '',
       }
@@ -70,7 +70,7 @@ export class ProcessProfileComponent implements OnInit {
       name: 'Process Profile Name', checked: true, field: 'name'
     },
     {
-      name: 'Equipment', checked: true, field: 'machineServingMaterial.vendorMachinery.equipment.name'
+      name: 'Equipment', checked: true, field: 'equipment'
     },
     {
       name: 'Process Type', checked: true, field: 'processProfileType.name'
@@ -89,7 +89,7 @@ export class ProcessProfileComponent implements OnInit {
     { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
-      headerName: 'Equipment', field: 'processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
+      headerName: 'Equipment', field: 'equipment',
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         // tslint:disable-next-line:max-line-length
