@@ -100,7 +100,7 @@ export class FacilityComponent implements OnInit {
   {
     name: 'Certifications',
     checked: false,
-    field: 'vendorFacilityCertificationList',
+    field: 'certifications',
     query: {
       type: '',
       filter: '',
@@ -160,7 +160,7 @@ export class FacilityComponent implements OnInit {
   {
     name: 'Certifications',
     checked: true,
-    field: 'vendorFacilityCertificationList'
+    field: 'certifications'
   },
   {
     name: 'Actions',
@@ -238,7 +238,7 @@ export class FacilityComponent implements OnInit {
   },
   {
     headerName: 'Certifications',
-    field: '[vendorFacilityCertificationList].length',
+    field: 'certifications',
     hide: false,
     sortable: true,
     filter: false,
