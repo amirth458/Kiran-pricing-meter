@@ -26,6 +26,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   familyOptions = [];
   actionOptions = [];
   submitActive = true;
+  triedToSubmit = false;
 
   form: FormGroup = this.fb.group({
     id: [null],
@@ -165,6 +166,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     // Loop over them and prevent submission
     const validation = Array.prototype.filter.call(forms, (form) => {
       form.addEventListener('submit', (event) => {
+        this.triedToSubmit = true;
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
@@ -275,7 +277,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
             unitType: {
               id: ''
             },
-            value: '0',
+            value: '',
             valueInDefaultUnit: '',
             valueSignType: {
               id: ''
@@ -304,7 +306,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
             unitType: {
               id: ''
             },
-            value: '0',
+            value: '',
             valueInDefaultUnit: '',
             valueSignType: {
               id: ''
@@ -374,6 +376,32 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     } catch (e) {
       console.log(e);
     }
+  }
+
+  getSelectedEquipment() {
+    return this.form.value.equipment;
+  }
+
+  areInputRowsValid() {
+    this.selectedProcessMaterialCharacteristicList.map(x => {
+      if (x.beforeMinValue !== '' &&
+        x.beforeMaxValue !== '' &&
+        x.afterMinValue !== '' &&
+        x.afterExpectedValue !== '' &&
+        x.afterMaxValue !== '') {
+        return false;
+      }
+    });
+    this.selectedProcessDimensionalPropertyList.map(x => {
+      if (x.beforeMinValue !== '' &&
+        x.beforeMaxValue !== '' &&
+        x.afterMinValue !== '' &&
+        x.afterExpectedValue !== '' &&
+        x.afterMaxValue !== '') {
+        return false;
+      }
+    });
+    return true;
   }
 
   equipmentChanged(processProfile?) {
@@ -485,8 +513,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     event.preventDefault();
     this.submitActive = false;
     setTimeout(async () => {
-      if (this.form.valid && this.isFormValid) {
-
+      if (this.form.valid && this.isFormValid && this.areInputRowsValid()) {
         this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();

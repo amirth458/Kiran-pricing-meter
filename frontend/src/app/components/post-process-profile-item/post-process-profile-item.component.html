@@ -5,7 +5,7 @@
   </div>
 
 
-  <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
+  <form [formGroup]="form" novalidate vali class="needs-validation" (submit)="save($event)">
     <div class="form-row">
 
       <div class="form-group theme col">
@@ -26,6 +26,9 @@
           <option selected value=''>Choose...</option>
           <option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</option>
         </select>
+        <span class="footnote red"
+          *ngIf="getSelectedEquipment() != '' && filteredProcessParameterList.length == 0">*This equipment can not be
+          used for post-processing, please select another equipment/asset</span>
         <div class="invalid-feedback">
           Required.
         </div>
@@ -91,7 +94,16 @@
 
       <div id="conditionLabel" class="conditions">
 
+
         <div class="default">
+          <p class="footnote red"
+            *ngIf="triedToSubmit &&  areInputRowsValid() && ((activeTab == 'processDimensionalPropertyList' && selectedProcessDimensionalPropertyList.length > 0) || (activeTab == 'processMaterialCharacteristicList' && selectedProcessMaterialCharacteristicList.length >0))">
+            *You need to provide at least one value.
+          </p>
+          <p class="footnote red"
+            *ngIf="activeTab == 'processParameterList' || !triedToSubmit ||  !areInputRowsValid() || ((activeTab == 'processDimensionalPropertyList' && selectedProcessDimensionalPropertyList.length == 0) || (activeTab == 'processMaterialCharacteristicList' && selectedProcessMaterialCharacteristicList.length ==0))">
+
+          </p>
           <span class="add" (click)="addCondition()">
             <i class="fas fa-plus"></i>
           </span>
@@ -242,7 +254,7 @@
 
               <div class="form-group theme col-md-1">
 
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
@@ -252,7 +264,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
@@ -262,7 +274,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
@@ -272,7 +284,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
@@ -282,7 +294,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
@@ -383,7 +395,7 @@
 
               <div class="form-group theme col-md-1">
 
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
@@ -393,7 +405,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
@@ -403,7 +415,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
@@ -413,7 +425,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
@@ -423,7 +435,7 @@
               </div>
 
               <div class="form-group theme col-md-1">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">

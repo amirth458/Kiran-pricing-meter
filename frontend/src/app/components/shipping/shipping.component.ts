@@ -253,10 +253,12 @@ export class ShippingComponent implements OnInit {
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if (column.checked) {
-        columnInstance.setModel(column.query);
-      } else {
-        columnInstance.setModel({ type: '', filter: '' });
+      if (columnInstance) {
+        if (column.checked) {
+          columnInstance.setModel(column.query);
+        } else {
+          columnInstance.setModel({ type: '', filter: '' });
+        }
       }
       this.gridOptions.api.onFilterChanged();
     });
