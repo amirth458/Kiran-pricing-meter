@@ -86,13 +86,13 @@ export class PostProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: true, },
-    { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: true },
-    { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: true },
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, },
+    { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Equipment', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
-      hide: false, sortable: true, filter: true,
+      hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processProfile.processMachineServingMaterialList[0] ? param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
@@ -102,7 +102,7 @@ export class PostProcessPricingComponent implements OnInit {
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Material', field: 'processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
-      hide: false, sortable: true, filter: true,
+      hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         let value = '';
         if (param.data.processProfile.processMachineServingMaterialList[0]) {
@@ -273,7 +273,7 @@ export class PostProcessPricingComponent implements OnInit {
         field: `condition${index + 1}`,
         hide: false,
         sortable: true,
-        filter: true,
+        filter: false,
         cellRenderer(params: any): any {
           let value = '';
           params.data.processPricingConditionList.map((item, innerIndex) => {
@@ -303,7 +303,7 @@ export class PostProcessPricingComponent implements OnInit {
         field: `pricingComponent${index + 1}`,
         hide: true,
         sortable: true,
-        filter: true,
+        filter: false,
         cellRenderer(params: any): any {
           let value = '';
           params.data.processPricingParameterList.map((item, innerIndex) => {

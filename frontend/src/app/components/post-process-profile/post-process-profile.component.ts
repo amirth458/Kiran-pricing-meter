@@ -104,10 +104,10 @@ export class PostProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Post-Process Name', field: 'name', hide: false, sortable: true, filter: true },
+    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Post-Process Name', field: 'name', hide: false, sortable: true, filter: false },
     {
-      headerName: 'Equipment/Asset', field: 'asset', hide: false, sortable: true, filter: true,
+      headerName: 'Equipment/Asset', field: 'asset', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         const machineList = param.data.processMachineServingMaterialList[0];
         if (machineList) {
@@ -116,7 +116,7 @@ export class PostProcessProfileComponent implements OnInit {
         return '';
       }
     }, {
-      headerName: 'Material', field: 'material', hide: false, sortable: true, filter: true,
+      headerName: 'Material', field: 'material', hide: false, sortable: true, filter: false,
       cellRenderer(params) {
         let materials = '';
         params.data.processMachineServingMaterialList.map((x, index) => {
@@ -140,7 +140,7 @@ export class PostProcessProfileComponent implements OnInit {
       }
     },
     {
-      headerName: 'Post-Process Family', field: 'family', hide: false, sortable: true, filter: true,
+      headerName: 'Post-Process Family', field: 'family', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         const machineList = param.data.processMachineServingMaterialList[0];
         if (machineList) {
@@ -150,7 +150,7 @@ export class PostProcessProfileComponent implements OnInit {
       }
     },
     {
-      headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: true,
+      headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         const machineList = param.data.processMachineServingMaterialList[0];
         if (machineList) {
@@ -336,7 +336,7 @@ export class PostProcessProfileComponent implements OnInit {
               field: x.processParameterType.name.replace(/ /g, ''),
               hide: true,
               sortable: true,
-              filter: true,
+              filter: false,
               cellRenderer(params: any): any {
                 let value = '';
                 params.data.processParameterList.map(item => {
@@ -362,7 +362,7 @@ export class PostProcessProfileComponent implements OnInit {
       //         field: x.processDimensionalPropertyType.name.replace(/ /g, ''),
       //         hide: true,
       //         sortable: true,
-      //         filter: true,
+      //         filter: false,
       //         cellRenderer(params: any): any {
       //           let value = '';
       //           params.data.processDimensionalPropertyList.map(item => {
@@ -387,7 +387,7 @@ export class PostProcessProfileComponent implements OnInit {
       //         field: x.processMaterialCharacteristicType.name.replace(/ /g, ''),
       //         hide: true,
       //         sortable: true,
-      //         filter: true,
+      //         filter: false,
       //         cellRenderer(params: any): any {
       //           let value = '';
       //           params.data.processMaterialCharacteristicList.map(item => {

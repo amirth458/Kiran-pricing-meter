@@ -85,12 +85,12 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: true },
-    { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: true },
+    { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
       headerName: 'Equipment', field: 'processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name',
-      hide: false, sortable: true, filter: true,
+      hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
@@ -98,7 +98,7 @@ export class ProcessProfileComponent implements OnInit {
       }
     },
     {
-      headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: true,
+      headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName : '';
@@ -277,7 +277,7 @@ export class ProcessProfileComponent implements OnInit {
               field: x.processParameterType.name.replace(/ /g, ''),
               hide: true,
               sortable: true,
-              filter: true,
+              filter: false,
               cellRenderer(params: any): any {
                 let value = '';
                 params.data.processParameterList.map(item => {
@@ -302,7 +302,7 @@ export class ProcessProfileComponent implements OnInit {
               field: x.processDimensionalPropertyType.name.replace(/ /g, ''),
               hide: true,
               sortable: true,
-              filter: true,
+              filter: false,
               cellRenderer(params: any): any {
                 let value = '';
                 params.data.processDimensionalPropertyList.map(item => {
@@ -327,7 +327,7 @@ export class ProcessProfileComponent implements OnInit {
               field: x.processMaterialCharacteristicType.name.replace(/ /g, ''),
               hide: true,
               sortable: true,
-              filter: true,
+              filter: false,
               cellRenderer(params: any): any {
                 let value = '';
                 params.data.processMaterialCharacteristicList.map(item => {
