@@ -179,6 +179,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     });
   }
 
+  getMaterials = () => this.form.value.materialList != null ? this.form.value.materialList : [];
+
   getProperOperands(conditionId, index, section) {
     let signTypeId = null;
 
