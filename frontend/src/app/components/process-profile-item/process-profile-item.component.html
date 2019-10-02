@@ -24,7 +24,7 @@
           [selectOnTab]="true" formControlName="equipment">
           <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
         </ng-select>
-        <span *ngIf="equipments.length" class="footnote red">* Required</span>
+        <span *ngIf="submitClicked&& !getEquipment().length" class="footnote red">* Required</span>
         <span *ngIf="!equipments.length" class="footnote red">*You need to add machines in <a
             class="link font-weight-bold" href="profile/vendor/machines">here</a> </span>
       </div>
@@ -32,12 +32,12 @@
 
       <div class="form-group theme col">
         <label for="material">Material</label>
-        <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="true"
-          dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
+        <ng-select #materialInput (change)="materialChanged()" placeholder="Add Materials" loadingText="Searching..."
+          [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
           formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
-        <span *ngIf="equipments.length" class="footnote red">* Required</span>
+        <span *ngIf="submitClicked && !getMaterials().length" class="footnote red">* Required</span>
         <span *ngIf="!equipments.length" class="footnote red">*You need to add machines in <a
             class="link font-weight-bold" href="profile/vendor/machines">here</a> </span>
       </div>
@@ -81,13 +81,13 @@
               <i class="fas fa-plus"></i>
             </span>
 
-            <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
+            <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
               title="short desc of what default values mean">
               <i class="fas fa-question-circle"></i>
             </span>
             <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
               data-target="#exampleModalCenter">Default
-              Values</span>
+              Values</span> -->
           </div>
         </div>
 
@@ -169,13 +169,13 @@
                 <i class="fas fa-plus"></i>
               </span>
 
-              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
                 data-placement="right" title="short desc of what default values mean">
                 <i class="fas fa-question-circle"></i>
               </span>
               <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
                 data-target="#exampleModalCenter">Default
-                Values</span>
+                Values</span> -->
             </div>
           </div>
 
@@ -265,13 +265,13 @@
                 <i class="fas fa-plus"></i>
               </span>
 
-              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
                 data-placement="right" title="short desc of what default values mean">
                 <i class="fas fa-question-circle"></i>
               </span>
               <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
                 data-target="#exampleModalCenter">Default
-                Values</span>
+                Values</span> -->
             </div>
 
           </div>
@@ -361,13 +361,13 @@
                 <i class="fas fa-plus"></i>
               </span>
 
-              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
                 data-placement="right" title="short desc of what default values mean">
                 <i class="fas fa-question-circle"></i>
               </span>
               <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
                 data-target="#exampleModalCenter">Default
-                Values</span>
+                Values</span> -->
             </div>
           </div>
 

@@ -24,6 +24,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   equipments = [];
   materials = [];
   submitActive = true;
+  submitClicked = false;
 
   filteredProcessParameterList = [];
 
@@ -151,6 +152,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       // tslint:disable-next-line:max-line-length
       const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
       this.initForm(processProfile);
+      this.materialChanged(true);
       this.spinner.hide();
     }
   }
@@ -161,6 +163,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     // Loop over them and prevent submission
     const validation = Array.prototype.filter.call(forms, (form) => {
       form.addEventListener('submit', (event) => {
+        this.submitClicked = true;
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
@@ -172,6 +175,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       }, false);
     });
   }
+
+  getEquipment = () => this.form.value.equipment != null ? [this.form.value.equipment] : [];
+  getMaterials = () => this.form.value.materialList;
 
   onPropertyChange(conditionId, index, section) {
     let signTypeId = null;
@@ -381,11 +387,42 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
-        this.materials = x.machineServingMaterialList;
+        this.materials = [{ id: 'all-materials', material: { name: 'All Materials' } }, ...x.machineServingMaterialList];
         this.filteredProcessParameterList = this.processParameterList.filter(item => item.processType.name == x.equipment.processTypeName);
       }
     });
   }
+  materialChanged(editScreen = false) {
+    const materialList = this.form.value.materialList;
+    if (materialList.length) {
+
+      if (editScreen && materialList.length == this.materials.length - 1) {
+        this.form.setValue({
+          ...this.form.value,
+          materialList: ['all-materials']
+        });
+      } else {
+        const lastInput = materialList[materialList.length - 1];
+        if (lastInput === 'all-materials') {
+          this.form.setValue({
+            ...this.form.value,
+            materialList: ['all-materials']
+          });
+        } else {
+          if (materialList.includes('all-materials')) {
+            const startIndex = materialList.indexOf('all-materials');
+            const frontSlice = materialList.slice(0, startIndex);
+            const endSlice = materialList.slice(startIndex + 1);
+            this.form.setValue({
+              ...this.form.value,
+              materialList: [...frontSlice, ...endSlice]
+            });
+          }
+        }
+      }
+    }
+  }
+
 
   initForm(processProfile) {
     this.form.setValue({
@@ -426,10 +463,22 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  getProperMaterialList() {
+    const materialList = this.form.value.materialList;
+    if (materialList.length) {
+      if (materialList.includes('all-materials')) {
+        const materials = this.materials.map(x => new Object({ machineServingMaterial: { id: x.id } }));
+        return materials.filter((mat: any) => mat.machineServingMaterial.id !== 'all-materials');
+      }
+      return this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } }));
+    }
+    return [];
+  }
+
   prepareData() {
     const postData = {
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
-      processMachineServingMaterialList: this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } })),
+      processMachineServingMaterialList: [...this.getProperMaterialList()],
       // machineServingMaterial: { id: this.form.value.materialList },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
