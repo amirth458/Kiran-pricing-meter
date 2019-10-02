@@ -1,15 +1,15 @@
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import * as internationalCode from '../../../assets/static/internationalCode';
 import { VendorService } from '../../service/vendor.service';
-import { Vendor, VendorMetaData } from '../../model/vendor.model';
-
+import { Vendor, VendorMetaData, Country } from '../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../mockData/vendor';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
 import { FileService } from 'src/app/service/file.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppTypes, AppFields, Observable } from 'src/app/store';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,6 @@ declare var $: any;
 })
 
 export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestroy {
-
   constructor(
     private fb: FormBuilder,
     private vendorService: VendorService,
@@ -30,7 +29,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
     private fileService: FileService,
     private spineer: NgxSpinnerService,
     private store: Store<any>,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {
     this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
   }
@@ -46,6 +45,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   isSubmited = false;
   vendor: Observable<Vendor>;
   sub: Subscription;
+  phoneUtil = PhoneNumberUtil.getInstance();
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -72,7 +72,6 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   ngOnInit() {
     this.getVendorMetaDatas();
     this.sub = this.vendor.subscribe(res => {
-      console.log(res);
       if (res) {
         this.initForm(res);
         this.vendorId = Number(res.id);
@@ -84,12 +83,16 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         });
       }
     });
+
+    this.onValueChanges();
   }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
   }
+
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
@@ -104,6 +107,31 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         }
         form.classList.add('was-validated');
       }, false);
+    });
+  }
+
+  onValueChanges(): void {
+    this.detailForm.get('phone').valueChanges.subscribe(val => {
+      try {
+        const phoneNumber = this.phoneUtil.parseAndKeepRawInput(val);
+        const region = this.phoneUtil.getRegionCodeForNumber(phoneNumber);
+        if (!region) { return; }
+        const selectedCountries = this.internationalCode.filter((country: Country) => country.code === region);
+        if (selectedCountries.length === 0) {
+          return;
+        }
+        const { name } = selectedCountries[0];
+        const cns = this.countries.filter(country => country.name === name);
+        if (cns.length > 0) {
+          this.detailForm.patchValue({
+            country: cns[0].id
+          });
+        }
+      } catch (e) {
+        // console.log(e);
+      } finally {
+
+      }
     });
   }
 
@@ -155,6 +183,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   onChangeConfidentiality(e) {
     this.disableConfidentiality = Number(e.target.value) === 2;
   }
+
   initForm(initValue: Vendor) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
     this.certDocuments = initValue.certificateURLs.map(x => {
@@ -164,7 +193,8 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         saved: 1
       };
     });
-    this.disableConfidentiality = Number(initValue.confidentiality) === 2;
+    this.disableConfidentiality = Number(initValue.confidentiality.id) === 2;
+
     this.detailForm.setValue({
       id: initValue.id,
       name: initValue.name,
@@ -210,6 +240,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
       reader.readAsDataURL(file);
     });
   }
+
   onChangeVendorType(e) {
     if (Number(e.target.value) === 2 || Number(e.target.value) === 6) {
       this.detailForm.setValue({
@@ -220,7 +251,7 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
     } else {
       this.detailForm.setValue({
         ...this.detailForm.value,
-        vendorIndustry: 1,
+        vendorIndustry: 0,
       });
     }
   }
@@ -228,8 +259,19 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
   checkDisable(vendorIndustry): boolean {
     const { vendorType } = this.detailForm.value;
 
+    if (Number(vendorType) === 4) {
+      return false;
+    }
     return ((Number(vendorType) === 2 || Number(vendorType) === 6) && Number(vendorIndustry) !== 13) ||
       ((Number(vendorType) !== 2 && Number(vendorType) !== 6) && Number(vendorIndustry) === 13);
+  }
+
+  showRequired(field: string, fieldType: number): boolean {
+    if (fieldType === 1) {
+      return this.detailForm.value[field] === '' || this.detailForm.value[field] === null;
+    } else if (fieldType === 2) {
+      return Number(this.detailForm.value[field]) === 0;
+    }
   }
 
   onRemoveFile(name) {

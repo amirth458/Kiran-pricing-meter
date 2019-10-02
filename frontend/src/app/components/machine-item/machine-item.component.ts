@@ -74,6 +74,16 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
   }
 
+  showRequired(field: string, fieldType: number): boolean {
+    if (fieldType === 1) {
+      return this.form.value[field] === '' || this.form.value[field] === null;
+    } else if (fieldType === 2) {
+      return Number(this.form.value[field]) === 0;
+    } else if (fieldType === 3) {
+      return this.form.value[field] === null || this.form.value[field].length === 0;
+    }
+  }
+
   async getMaterials(q) {
     let page = 0;
     const rows = [];

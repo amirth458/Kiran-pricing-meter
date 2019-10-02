@@ -10,14 +10,16 @@
       <div class="form-group theme col-md-6">
         <label for="machineName">Machine Name</label>
         <input required type="text" formControlName="name" class="form-control" id="machineName" name="machineName"
-          placeholder="Machine Name">
+          placeholder="Machine Name" />
+        <span *ngIf="showRequired('name', 1)" class="footnote red">* Required</span>
       </div>
 
 
       <div class="form-group theme col-md-6">
         <label for="serialNumber">Serial Number</label>
         <input required type="text" formControlName="serialNumber" class="form-control" id="serialNumber"
-          name="serialNumber" placeholder="Vendor Specific Unique Identifier">
+          name="serialNumber" placeholder="Vendor Specific Unique Identifier" />
+        <span *ngIf="showRequired('serialNumber', 1)" class="footnote red">* Required</span>
       </div>
 
     </div>
@@ -30,6 +32,7 @@
           dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
           formControlName="equipment" [items]="equipments" bindValue="id" bindLabel="name">
         </ng-select>
+        <span *ngIf="showRequired('equipment', 3)" class="footnote red">* Required</span>
       </div>
 
       <div class="form-group theme col-md-6">
@@ -39,6 +42,7 @@
           [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true" formControlName="material">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>
         </ng-select>
+        <span *ngIf="showRequired('material', 3)" class="footnote red">* Required</span>
       </div>
 
     </div>
@@ -49,9 +53,10 @@
         <label for="vendorFacility">Facility</label>
         <select required id="vendorFacility" name="vendorFacility" formControlName="vendorFacility"
           class="form-control">
-          <option selected value=''>Choose...</option>
+          <option selected value='0'>Choose...</option>
           <option *ngFor="let item of facilities" [value]="item.id">{{item.name}}</option>
         </select>
+        <span *ngIf="showRequired('vendorFacility', 2)" class="footnote red">* Required</span>
       </div>
 
     </div>

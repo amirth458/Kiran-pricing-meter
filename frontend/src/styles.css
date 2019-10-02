@@ -376,3 +376,8 @@ international-phone-number.ng-invalid .input-group .ng-valid {
 .ag-cell span {
   line-height: 34px;
 }
+
+::placeholder{
+  color: #607181 !important;
+  opacity: 0.4 !important;
+}
