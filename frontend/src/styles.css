@@ -71,7 +71,7 @@ a.link {
 }
 
 .form-group.theme .footnote.red {
-  color: red;
+  color: #dc3545;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
