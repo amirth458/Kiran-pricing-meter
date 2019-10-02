@@ -1,6 +1,9 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { PhoneNumberUtil } from 'google-libphonenumber';
+
+import * as internationalCode from '../../../assets/static/internationalCode';
 import { Router } from '@angular/router';
 
 import { VendorService } from '../../service/vendor.service';
@@ -12,7 +15,7 @@ import { AuthService } from 'src/app/service/auth.service';
 
 import { FileService } from 'src/app/service/file.service';
 import { Subscription, Observable } from 'rxjs';
-import { Vendor } from 'src/app/model/vendor.model';
+import { Vendor, Country } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { AppFields } from 'src/app/store';
 
@@ -43,7 +46,8 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     createdDate: null,
     updatedDate: null
   });
-
+  internationalCode = internationalCode;
+  phoneUtil = PhoneNumberUtil.getInstance();
   certifications = [];
   countries = [];
   facilityId = null;
@@ -90,13 +94,42 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         this.isNew = true;
       }
     });
+    this.onValueChanges();
+  }
+  onValueChanges(): void {
+    this.facilityItem.get('phone').valueChanges.subscribe(val => {
+      try {
+        const phoneNumber = this.phoneUtil.parseAndKeepRawInput(val);
+        const region = this.phoneUtil.getRegionCodeForNumber(phoneNumber);
+        if (!region) { return; }
+        const selectedCountries = this.internationalCode.filter((country: Country) => country.code === region);
+        if (selectedCountries.length === 0) {
+          return;
+        }
+        const { name } = selectedCountries[0];
+        this.facilityItem.patchValue({
+          country: name
+        });
+      } catch (e) {
+        // console.log(e);
+      } finally {
+
+      }
+    });
+  }
+
+  showRequired(field: string, fieldType: number): boolean {
+    if (fieldType === 1) {
+      return this.facilityItem.value[field] === '' || this.facilityItem.value[field] === null;
+    } else if (fieldType === 2) {
+      return Number(this.facilityItem.value[field]) === 0;
+    }
   }
 
   async getFacility(facilityId: number) {
     this.spinner.show();
     try {
       const data = await this.facilityService.getFacility(this.vendorId, facilityId).toPromise();
-      console.log(data);
       this.initForm(data);
     } catch (e) {
       this.spinner.hide();

@@ -8,7 +8,8 @@
       <div class="form-group theme col-md-12">
         <label for="facility_name">Facility Name</label>
         <input required type="text" formControlName="name" class="form-control" id="facility_name" name="facility_name"
-          placeholder="Facility Name">
+          placeholder="Facility Name" />
+        <span *ngIf="showRequired('name', 1)" class="footnote red">* Required</span>
       </div>
 
       
@@ -16,16 +17,19 @@
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label>Primary Contact Name</label>
-        <input required formControlName="primaryContactFirstName" class="form-control" placeholder="First Name">
+        <input required formControlName="primaryContactFirstName" class="form-control" placeholder="First Name" />
+        <span *ngIf="showRequired('primaryContactFirstName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label> &nbsp; </label>
-        <input required formControlName="primaryContactLastName" class="form-control" placeholder="Last Name">
+        <input required formControlName="primaryContactLastName" class="form-control" placeholder="Last Name" />
+        <span *ngIf="showRequired('primaryContactLastName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label for="email">Email</label>
         <input required type="email" formControlName="email" class="form-control" id="email" name="email"
-          placeholder="Email">
+          placeholder="Email" />
+        <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
       </div>
 
       <div class="form-group theme col-md-3 phone">
@@ -35,6 +39,7 @@
           <international-phone-number *ngIf="isNew" formControlName="phone" placeholder="Enter phone number"
             [defaultCountry] = "'us'"
             [required]="true" name="phone_number" ></international-phone-number>
+          <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
         </div>
 
     </div>
@@ -43,16 +48,18 @@
       <div class="form-group theme col-md-6">
         <label>Street 1</label>
         <input required formControlName="street1" class="form-control" name="street1" id="street1"
-          placeholder="1234 Main St">
+          placeholder="1234 Main St" />
+        <span *ngIf="showRequired('street1', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Street 2</label>
         <input formControlName="street2" class="form-control" name="street2" id="street2"
-          placeholder="1234 Main St">
+          placeholder="1234 Main St" />
       </div>
       <div class="form-group theme col-md-3">
         <label for="city">City</label>
-        <input required type="text" formControlName="city" class="form-control" id="city" name="city">
+        <input required type="text" formControlName="city" class="form-control" id="city" name="city" />
+        <span *ngIf="showRequired('city', 1)" class="footnote red">* Required</span>
       </div>
       
     </div>
@@ -60,20 +67,23 @@
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label for="state">State</label>
-        <input required type="text" formControlName="state" class="form-control" id="state" name="state">
+        <input required type="text" formControlName="state" class="form-control" id="state" name="state" />
+        <span *ngIf="showRequired('state', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Zip</label>
         <input required formControlName="zipCode" class="form-control" name="zipCode" id="zipCode"
-          placeholder="Zip Code" pattern="^[0-9\s]{5}$">
+          placeholder="Zip Code" pattern="^[0-9\s]{5}$" />
+        <span *ngIf="showRequired('zipCode', 1)" class="footnote red">* Required</span>
       </div>
 
       <div class="form-group theme col-md-6">
         <label for="country">Country</label>
         <select required id="country" name="country" formControlName="country" class="form-control">
-          <option selected value="">Choose...</option>
+          <option selected value="0">Choose...</option>
           <option *ngFor="let item of countries" [value]="item.name">{{item.name}}</option>
         </select>
+        <span *ngIf="showRequired('country', 2)" class="footnote red">* Required</span>
       </div>
 
     </div>

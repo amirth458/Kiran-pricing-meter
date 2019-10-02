@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
-import * as shipping from '../../../assets/static/shipping';
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { CarrierCellRendererComponent } from 'src/app/common/carrier-cell-renderer/carrier-cell-renderer.component';

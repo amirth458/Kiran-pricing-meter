@@ -14,3 +14,4 @@ export class BasicDetails {
     createdDate: string;
     updatedDate: string;
 }
+

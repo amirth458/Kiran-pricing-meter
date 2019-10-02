@@ -51,6 +51,16 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  showRequired(field: string, fieldType: number): boolean {
+    if (fieldType === 1) {
+      return this.shippingItem.value[field] === '' || this.shippingItem.value[field] === null;
+    } else if (fieldType === 2) {
+      return Number(this.shippingItem.value[field]) === 0;
+    } else if (fieldType === 3) {
+      return this.shippingItem.value[field] === null || this.shippingItem.value[field].length === 0;
+    }
+  }
+
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
