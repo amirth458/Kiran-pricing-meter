@@ -40,7 +40,7 @@
           placeholder="Materials" [selectOnTab]="true" formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
-        <span class="footnote red">* Required</span>
+        <span *ngIf="triedToSubmit && !getMaterials().length" class="footnote red">* Required</span>
 
       </div>
 

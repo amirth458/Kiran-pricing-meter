@@ -30,7 +30,11 @@
         <ng-select #equipmentInput (change)="clearStore()" (keyup)="onEquipmentSearch($event)"
           placeholder="Add Equipment" loadingText="Searching..." [multiple]="false" [loading]="isEquipmentLoading"
           dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
-          formControlName="equipment" [items]="equipments" bindValue="id" bindLabel="name">
+          formControlName="equipment">
+          <!-- [items]="equipments" bindValue="id" bindLabel="name" -->
+          <ng-container *ngFor="let item of equipments">
+            <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
+          </ng-container>
         </ng-select>
         <span *ngIf="showRequired('equipment', 3)" class="footnote red">* Required</span>
       </div>
@@ -40,7 +44,10 @@
         <ng-select #materialInput (change)="clearStore()" (keyup)="onMaterialSearch($event)" placeholder="Add Materials"
           loadingText="Searching..." [loading]="isMaterialLoading" [multiple]="true" dropdownPosition="bottom"
           [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true" formControlName="material">
-          <ng-option *ngFor="let item of materials" [value]="item.id">{{item.name}}</ng-option>
+          <ng-container *ngFor="let item of materials">
+            <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
+          </ng-container>
+
         </ng-select>
         <span *ngIf="showRequired('material', 3)" class="footnote red">* Required</span>
       </div>
