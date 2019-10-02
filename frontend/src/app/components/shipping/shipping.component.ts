@@ -89,37 +89,31 @@ export class ShippingComponent implements OnInit {
         let str = '';
         switch (params.data.shippingProvider.id) {
           case 1:
-            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" />';
             break;
           case 2:
-            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/dhl.png" class="shipping-icon" />';
             break;
           case 3:
-            str = '<img src="assets/image/shipping/fedex.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/fastaust.png" class="shipping-icon" />';
             break;
           case 4:
-            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/couriers.png" class="shipping-icon" />';
             break;
           case 5:
-            str = '<img src="assets/image/shipping/dhl.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/sendle.png" class="shipping-icon" />';
             break;
           case 6:
-            str = '<img src="assets/image/shipping/fastaust.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/deutsche.png" class="shipping-icon" />';
             break;
           case 7:
-            str = '<img src="assets/image/shipping/couriers.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/fedex.png" class="shipping-icon-fedex" />';
             break;
           case 8:
-            str = '<img src="assets/image/shipping/sendle.png" class="shipping-icon" height=33px />';
-            break;
-          case 9:
-            str = '<img src="assets/image/shipping/deutsche.png" class="shipping-icon" height=33px />';
-            break;
-          case 10:
-            str = '<img src="assets/image/shipping/fedex.png" class="shipping-icon" height=33px />';
+            str = '<img src="assets/image/shipping/ups.png" class="shipping-icon" />';
             break;
           default:
-            str = '<img src="assets/image/shipping/usps.png" class="shipping-icon" height=33px />';
+            str = '';
             break;
         }
         return str + params.data.shippingProvider.name;
