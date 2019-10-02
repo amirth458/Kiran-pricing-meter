@@ -5,13 +5,13 @@ import { GridOptions } from 'ag-grid-community';
 
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { FacilityService } from '../../service/facility.service';
-import { UserService } from '../../service/user.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subscription } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { AppFields } from 'src/app/store';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-facility',
@@ -269,15 +269,17 @@ export class FacilityComponent implements OnInit {
   vendor: Observable<Vendor>;
   sub: Subscription;
   vendorId = 0;
+  navigation;
 
   constructor(
     private route: Router,
     private facilityService: FacilityService,
-    private userService: UserService,
     private spineer: NgxSpinnerService,
     private store: Store<any>,
+    private toastr: ToastrService,
   ) {
     this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+    this.navigation = this.route.getCurrentNavigation();
   }
 
   ngOnInit() {
@@ -309,6 +311,14 @@ export class FacilityComponent implements OnInit {
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
+      if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+        const toastInfo = this.navigation.extras.state.toast;
+        if (toastInfo.type === 'success') {
+          this.toastr.success(toastInfo.body);
+        } else {
+          this.toastr.error(toastInfo.body);
+        }
+      }
     }, 50);
   }
 
@@ -370,8 +380,9 @@ export class FacilityComponent implements OnInit {
     this.spineer.show();
     try {
       await this.facilityService.deleteFacility(this.vendorId, this.selectedFacility.id).toPromise();
+      this.toastr.success(this.selectedFacility.name + ' is deleted.');
     } catch (e) {
-      console.log(e);
+      this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
     } finally {
       this.spineer.hide();
     }

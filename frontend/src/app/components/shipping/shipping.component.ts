@@ -9,6 +9,7 @@ import { CarrierCellRendererComponent } from 'src/app/common/carrier-cell-render
 import { ShippingService } from '../../service/shipping.service';
 import { UserService } from '../../service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-shipping',
@@ -144,14 +145,17 @@ export class ShippingComponent implements OnInit {
 
   rowData;
   pageSize = 10;
+  navigation;
+
   constructor(
-    public route: Router,
-    public shippingService: ShippingService,
-    public userService: UserService,
-    public spineer: NgxSpinnerService
+    private route: Router,
+    private shippingService: ShippingService,
+    private userService: UserService,
+    private spineer: NgxSpinnerService,
+    private toastr: ToastrService
 
   ) {
-
+    this.navigation = this.route.getCurrentNavigation();
   }
 
   ngOnInit() {
@@ -175,6 +179,14 @@ export class ShippingComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
 
+      if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+        const toastInfo = this.navigation.extras.state.toast;
+        if (toastInfo.type === 'success') {
+          this.toastr.success(toastInfo.body);
+        } else {
+          this.toastr.error(toastInfo.body);
+        }
+      }
     }, 50);
   }
   async getVendorShippings() {
@@ -228,7 +240,9 @@ export class ShippingComponent implements OnInit {
     this.spineer.show();
     try {
       await this.shippingService.deleteShipping(this.userService.getVendorInfo().id, this.selectedShipping.id).toPromise();
+      this.toastr.success(this.selectedShipping.name + ' is deleted.');
     } catch (e) {
+      this.toastr.error('We are sorry, ' + this.selectedShipping.shippingProvider.name + ' delete failed. Please try again later.');
       console.log(e);
     } finally {
       this.spineer.hide();

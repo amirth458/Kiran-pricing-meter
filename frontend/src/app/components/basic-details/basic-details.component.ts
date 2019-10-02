@@ -320,29 +320,30 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
         }],
         certificateURLs: certFiles.map((item) => item.name)
       };
+
       if (this.vendorId > 0) {
         try {
           const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
-          this.toastr.success('Saved Successfully');
+          this.toastr.success(this.detailForm.value.name + ' is updated Successfully');
           this.store.dispatch({
             type: AppTypes.UpdateVendorInfo,
             payload: res
           });
         } catch (e) {
-          this.toastr.error('Error on Updating Vendor Profile');
+          this.toastr.error('We are sorry, ' + this.detailForm.value.name + ' update failed. Please try again later.');
         } finally {
           this.spineer.hide();
         }
       } else {
         try {
           const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
-          this.toastr.success('Saved Successfully');
+          this.toastr.success(this.detailForm.value.name + ' is created Successfully');
           this.store.dispatch({
             type: AppTypes.CreateVendorInfo,
             payload: res
           });
         } catch (e) {
-          this.toastr.error('Error on Creating Vendor Profile');
+          this.toastr.error('We are sorry, ' + this.detailForm.value.name + ' creation failed. Please try again later.');
         } finally {
           this.spineer.hide();
         }
