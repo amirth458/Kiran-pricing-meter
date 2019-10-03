@@ -76,7 +76,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       valueSignType: {
         id: ''
       },
-      operandTypeList: []
+      operandTypeList: [],
+      units: []
     }
   ];
   selectedProcessDimensionalPropertyList = [];
@@ -224,11 +225,11 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   onPropertyChange(conditionId, index, section) {
     let signTypeId = null;
     if (section === 'Process Parameters') {
-      // tslint:disable-next-line:max-line-length
       const operand = this.processParameterList.filter(condition => condition.id == conditionId)[0];
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessParameterList[index].operandTypeList = options;
+      this.selectedProcessParameterList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -240,11 +241,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       };
 
     } else if (section === 'Process Dimensional Properties') {
-      // tslint:disable-next-line:max-line-length
       const operand = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0];
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessDimensionalPropertyList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -260,6 +262,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessMaterialCharacteristicList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -294,7 +298,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
@@ -316,7 +321,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
@@ -338,7 +344,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
