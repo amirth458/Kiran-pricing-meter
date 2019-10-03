@@ -372,4 +372,19 @@ international-phone-number.ng-invalid .input-group .ng-valid {
 
 .shipping-icon {
   margin-right: 20px;
+  height: 32px;
+  border-radius: 32px;
+}
+
+.shipping-icon-fedex {
+  height: 12px;
+  margin-right: 13px;
+}
+.ag-cell span {
+  line-height: 34px;
+}
+
+::placeholder{
+  color: #607181 !important;
+  opacity: 0.4 !important;
 }

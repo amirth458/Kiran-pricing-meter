@@ -31,3 +31,11 @@ export class FilterOption {
   sort: string;
   q: string;
 }
+
+export class Country {
+  name: string;
+  // tslint:disable-next-line: variable-name
+  dial_code: string;
+  code: string;
+  flag: string;
+}

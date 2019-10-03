@@ -2,19 +2,20 @@
 
   <form [formGroup]="shippingItem" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
-
       <div class="form-group theme col-md-6">
         <label for="carrier">Carrier</label>
         <select required id="carrier" name="carrier" formControlName="shippingProvider" class="form-control">
-          <option selected value="">Choose...</option>
+          <option selected value="0">Choose...</option>
           <option *ngFor="let item of carriers" [value]="item.id">{{item.name}}</option>
         </select>
+        <span *ngIf="showRequired('shippingProvider', 2)" class="footnote red">* Required</span>
       </div>
 
       <div class="form-group theme col-md-6">
         <label for="accountId">Account ID</label>
         <input required type="accountId" formControlName="accountId" class="form-control" id="email" name="email"
-          placeholder="Account ID">
+          placeholder="Account ID" />
+        <span *ngIf="showRequired('accountId', 1)" class="footnote red">* Required</span>
       </div>
 
     </div>
@@ -22,10 +23,11 @@
       <div class="form-group theme col-md-6">
         <label for="status">Status</label>
         <select required id="status" name="status" formControlName="status" class="form-control">
-          <option selected value="">Choose...</option>
+          <option selected value="0">Choose...</option>
           <option value="ACTIVE">Active</option>
           <option value="INACTIVE">Inactive</option>
         </select>
+        <span *ngIf="showRequired('status', 2)" class="footnote red">* Required</span>
       </div>
     </div>
 
