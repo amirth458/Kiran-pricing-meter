@@ -37,6 +37,12 @@ a.link {
   text-decoration: underline
 }
 
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #e9ecef !important;
+  opacity: 1;
+}
+
 .form-group.theme label {
   color: var(--theme-secondary-blue-solid);
   font-weight: 500;
@@ -59,6 +65,7 @@ a.link {
 .form-group.theme select {
   font-size: 13px;
 }
+
 
 .form-group.theme input:focus {
   border-color: #8FBE4C !important;
@@ -360,7 +367,7 @@ international-phone-number.ng-invalid .input-group .ng-valid {
   text-align: center;
   right: 15px;
   font-weight: bold;
-  color:  var(--them-dark-blue-opaque);
+  color: var(--them-dark-blue-opaque);
 }
 
 .shipping-icon {
