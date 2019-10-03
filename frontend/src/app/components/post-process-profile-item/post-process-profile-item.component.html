@@ -79,15 +79,17 @@
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item" [class.active]="activeTab == 'processParameterList'"
+        <div class="menu-item" [ngClass]="{'active': activeTab == 'processParameterList'}"
           (click)="toggleTab('processParameterList','Post-Process Parameters')">
           Post-Process Parameters</div>
         <span class="separator"></span>
         <div class="menu-item" [class.active]="activeTab == 'processDimensionalPropertyList'"
+          [ngClass]="{'active': activeTab == 'processDimensionalPropertyList', 'error':tabErrors.processDimensionalProperty}"
           (click)="toggleTab('processDimensionalPropertyList', 'Post-Process Dimensional Properties')">
           Post-Process Dimensional Properties</div>
         <span class=" separator"></span>
         <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristicList'"
+          [ngClass]="{'active': activeTab == 'processMaterialCharacteristicList', 'error':tabErrors.processMaterialCharacteristic}"
           (click)="toggleTab('processMaterialCharacteristicList','Post-Process Material Characteristics')">
           Post-Process Material Characteristics</div>
       </div>
