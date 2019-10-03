@@ -26,6 +26,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   submitActive = true;
   submitClicked = false;
 
+  tabErrors = {
+    processParameter: false,
+    processDimensionalProperty: false,
+    processMaterialCharacteristic: false
+  };
+
   filteredProcessParameterList = [];
 
   form: FormGroup = this.fb.group({
@@ -164,6 +170,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     const validation = Array.prototype.filter.call(forms, (form) => {
       form.addEventListener('submit', (event) => {
         this.submitClicked = true;
+        this.checkInputValidationInTabs();
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
@@ -177,7 +184,42 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   getEquipment = () => this.form.value.equipment != null ? [this.form.value.equipment] : [];
-  getMaterials = () => this.form.value.materialList;
+  getMaterials = () => this.form.value.materialList || [];
+
+  checkInputValidationInTabs() {
+    const dimensionalPropertyListStatus = [];
+    const materialCharacteristicListStatus = [];
+    this.selectedProcessDimensionalPropertyList.map((row, index) => {
+      if (
+        row.operatorType.id === '' ||
+        row.processDimensionalPropertyType.id === '' ||
+        row.unitType.id === '' ||
+        row.value === ''
+      ) {
+        dimensionalPropertyListStatus.push(false);
+      } else {
+        dimensionalPropertyListStatus.push(true);
+      }
+
+    });
+    this.selectedProcessMaterialCharacteristicList.map(row => {
+      if (
+        row.operatorType.id === '' ||
+        row.processMaterialCharacteristicType.id === '' ||
+        row.unitType.id === '' ||
+        row.value === ''
+      ) {
+        materialCharacteristicListStatus.push(false);
+      } else {
+        materialCharacteristicListStatus.push(true);
+      }
+    });
+
+    this.tabErrors.processDimensionalProperty = dimensionalPropertyListStatus.filter(x => x === false).length > 0;
+    this.tabErrors.processMaterialCharacteristic = materialCharacteristicListStatus.filter(x => x === false).length > 0;
+
+
+  }
 
   onPropertyChange(conditionId, index, section) {
     let signTypeId = null;
@@ -337,6 +379,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   toggleTab(tab, tabName) {
+    this.checkInputValidationInTabs();
     this.activeTab = tab;
     this.activeTabName = tabName;
   }

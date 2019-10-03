@@ -295,7 +295,19 @@ export class ProcessProfileComponent implements OnInit {
                 let value = '';
                 params.data.processParameterList.map(item => {
                   if (item.processParameterType.name === x.processParameterType.name) {
-                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                    if (item.valueSignType.symbol === '+') {
+                      if (item.operatorType.name === 'is equal to') {
+                        value = item.value.toString() + ' ' + item.unitType.symbol;
+                      } else {
+                        value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
+                      }
+                    } else {
+                      if (item.operatorType.name === 'is equal to') {
+                        value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
+                      } else {
+                        value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                      }
+                    }
                   }
                 });
                 return value;
@@ -304,7 +316,19 @@ export class ProcessProfileComponent implements OnInit {
                 let value = '';
                 params.data.processParameterList.map(item => {
                   if (item.processParameterType.name === x.processParameterType.name) {
-                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                    if (item.valueSignType.symbol === '+') {
+                      if (item.operatorType.name === 'is equal to') {
+                        value = item.value.toString() + ' ' + item.unitType.symbol;
+                      } else {
+                        value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
+                      }
+                    } else {
+                      if (item.operatorType.name === 'is equal to') {
+                        value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
+                      } else {
+                        value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                      }
+                    }
                   }
                 });
                 return value;
@@ -328,8 +352,21 @@ export class ProcessProfileComponent implements OnInit {
               cellRenderer(params: any): any {
                 let value = '';
                 params.data.processDimensionalPropertyList.map(item => {
-                  if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
-                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  // if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
+                  //   value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  // }
+                  if (item.valueSignType.symbol === '+') {
+                    if (item.operatorType.name === 'is equal to') {
+                      value = item.value.toString() + ' ' + item.unitType.symbol;
+                    } else {
+                      value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
+                    }
+                  } else {
+                    if (item.operatorType.name === 'is equal to') {
+                      value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
+                    } else {
+                      value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                    }
                   }
                 });
                 return value;
@@ -337,8 +374,21 @@ export class ProcessProfileComponent implements OnInit {
               valueGetter: (params: any) => {
                 let value = '';
                 params.data.processDimensionalPropertyList.map(item => {
-                  if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
-                    value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  // if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
+                  //   value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
+                  // }
+                  if (item.valueSignType.symbol === '+') {
+                    if (item.operatorType.name === 'is equal to') {
+                      value = item.value.toString() + ' ' + item.unitType.symbol;
+                    } else {
+                      value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
+                    }
+                  } else {
+                    if (item.operatorType.name === 'is equal to') {
+                      value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
+                    } else {
+                      value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                    }
                   }
                 });
                 return value;
