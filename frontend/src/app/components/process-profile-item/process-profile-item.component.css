@@ -8,7 +8,7 @@
 .form-row>.col:first-child,
 .form-row>[class*=col-]:first-child {
   padding-right: 5px;
-  padding-left: 25px;
+  padding-left: 5px;
 }
 
 .form-row>.col:only-child,
@@ -21,10 +21,26 @@
   display: flex;
 }
 
+.title-bar {
+  margin-bottom: 20px;
+}
+
+.title-bar>h4 {
+  color: var(--theme-secondary-blue);
+}
+
+.title-bar>span {
+  color: var(--theme-light-green);
+}
+
+.tab-container {
+  margin-bottom: 30px;
+}
+
 .card .card-header {
   background: white;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: 18px;
   padding: 5px;
   height: 50px;
@@ -61,8 +77,8 @@
 
 .conditions {
   margin: 0px 0px 20px 0px;
-  padding: 20px;
-  border: 2px solid var(--theme-table-border);
+  padding: 0px 20px;
+  /* border: 2px solid var(--theme-table-border); */
   border-radius: 8px;
 }
 
@@ -74,6 +90,10 @@
 
 .condition-wrapper {
   display: flex;
+}
+
+.conditions>.form-group.nickname {
+  padding: 0px 25px 0px 0px;
 }
 
 .conditions .input-wrapper {
@@ -113,7 +133,6 @@
 .info-bar p {
   font-size: 14px;
   width: 87%;
-  padding-left: 25px;
 }
 
 .default {

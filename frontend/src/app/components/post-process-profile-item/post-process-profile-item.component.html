@@ -4,17 +4,13 @@
     {{error}}
   </div>
 
+  <div class="title-bar">
+    <h4>{{parameterNickName}}</h4>
+    <span>{{profileName}}</span>
+  </div>
 
   <form [formGroup]="form" novalidate vali class="needs-validation" (submit)="save($event)">
     <div class="form-row">
-
-      <div class="form-group theme col">
-        <label for="name">Post-Process Profile Name</label>
-        <input type="text" formControlName="name" class="form-control" id="name" name="name"
-          placeholder="Post-Process Profile Name">
-        <span class="footnote">* If left blank, we will auto-generate one for you.</span>
-      </div>
-
     </div>
 
     <div class="form-row">
@@ -74,48 +70,32 @@
       </div>
     </div>
 
-
-    <!--  -->
+    <!-- Post-Process Parameters  -->
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item" [ngClass]="{'active': activeTab == 'processParameterList'}"
-          (click)="toggleTab('processParameterList','Post-Process Parameters')">
-          Post-Process Parameters</div>
-        <span class="separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'processDimensionalPropertyList'"
-          [ngClass]="{'active': activeTab == 'processDimensionalPropertyList', 'error':tabErrors.processDimensionalProperty}"
-          (click)="toggleTab('processDimensionalPropertyList', 'Post-Process Dimensional Properties')">
-          Post-Process Dimensional Properties</div>
-        <span class=" separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristicList'"
-          [ngClass]="{'active': activeTab == 'processMaterialCharacteristicList', 'error':tabErrors.processMaterialCharacteristic}"
-          (click)="toggleTab('processMaterialCharacteristicList','Post-Process Material Characteristics')">
-          Post-Process Material Characteristics</div>
+        <div class="menu-item active">
+          Post-Process Parameters
+        </div>
       </div>
 
       <div id="conditionLabel" class="conditions">
-
+        <div class="form-group nickname theme col">
+          <label for="parameterNickName">Post-Process Set Nickname (optional)</label>
+          <input type="text" formControlName="parameterNickName" class="form-control" id="parameterNickName"
+            name="parameterNickName" placeholder="Post-Process Set Nickname (optional)">
+          <!-- <span class="footnote">* If left blank, we will auto-generate one for you.</span> -->
+        </div>
 
         <div class="default">
-          <p class="footnote red"
-            *ngIf="triedToSubmit &&  areInputRowsValid() && ((activeTab == 'processDimensionalPropertyList' && selectedProcessDimensionalPropertyList.length > 0) || (activeTab == 'processMaterialCharacteristicList' && selectedProcessMaterialCharacteristicList.length >0))">
-            *You need to provide at least one value.
+          <p class="footnote red">
           </p>
-          <p class="footnote red"
-            *ngIf="activeTab == 'processParameterList' || !triedToSubmit ||  !areInputRowsValid() || ((activeTab == 'processDimensionalPropertyList' && selectedProcessDimensionalPropertyList.length == 0) || (activeTab == 'processMaterialCharacteristicList' && selectedProcessMaterialCharacteristicList.length ==0))">
-
-          </p>
-          <span class="add" (click)="addCondition()">
+          <span class="add" (click)="addCondition('processParameterList')">
             <i class="fas fa-plus"></i>
           </span>
         </div>
 
-        <!-- Post-Process Parameters -->
-        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processParameterList'">
-          <!-- <span>
-            If
-          </span> -->
+        <div class="condition-wrapper">
 
           <div class="input-wrapper">
 
@@ -148,7 +128,8 @@
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessParameterList[index].value" [ngModelOptions]="{standalone: true}"
                   class="form-control" id="value" name="value" placeholder="Value">
                 <div class="invalid-feedback">
@@ -159,11 +140,11 @@
               <div class="form-group theme col-md-3 icon-attached">
                 <div>
 
-                  <select required id="condition" name="condition"
-                    [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
-                    class="form-control">
+                  <select [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
+                    id="condition" name="condition" [(ngModel)]="selectedProcessParameterList[index].unitType.id"
+                    [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessParameterList[index].units" [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -189,6 +170,52 @@
           </div>
 
 
+        </div>
+      </div>
+    </div>
+    <!-- End of Post-Process Parameters -->
+
+
+
+
+
+    <!-- Post-Process Dimensional Properties and Material Characteristics  -->
+    <div class="tab-container card">
+
+      <div class="card-header">
+        <div class="menu-item" [class.active]="activeTab == 'processDimensionalPropertyList'"
+          [ngClass]="{'active': activeTab == 'processDimensionalPropertyList', 'error':tabErrors.processDimensionalProperty}"
+          (click)="toggleTab('processDimensionalPropertyList', 'Post-Process Dimensional Properties')">
+          Post-Process Dimensional Properties</div>
+        <span class=" separator"></span>
+        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristicList'"
+          [ngClass]="{'active': activeTab == 'processMaterialCharacteristicList', 'error':tabErrors.processMaterialCharacteristic}"
+          (click)="toggleTab('processMaterialCharacteristicList','Post-Process Material Characteristics')">
+          Post-Process Material Characteristics</div>
+      </div>
+
+      <div id="conditionLabel" class="conditions">
+
+
+        <!-- triedToSubmit &&  areInputRowsValid() && ((activeTab == 'processDimensionalPropertyList' && selectedProcessDimensionalPropertyList.length > 0) || (activeTab == 'processMaterialCharacteristicList' && selectedProcessMaterialCharacteristicList.length >0)) -->
+        <div class="default">
+          <p class="footnote red" [ngClass]="{'d-none': activeTab !='processDimensionalPropertyList' }">
+            <span *ngIf="activeTab == 'processDimensionalPropertyList' && tabErrors.processDimensionalProperty">
+              *You need to provide at least one value for each row.
+            </span>
+          </p>
+          <p class="footnote red" [ngClass]="{'d-none': activeTab !='processMaterialCharacteristicList'}">
+            <span *ngIf="activeTab == 'processMaterialCharacteristicList' && tabErrors.processMaterialCharacteristic">
+              *You need to provide at least one value for each row.
+            </span>
+          </p>
+          <!-- <p class="footnote red"
+            *ngIf="!tabErrors.processDimensionalProperty && !tabErrors.processMaterialCharacteristic">
+
+          </p> -->
+          <span class="add" (click)="addCondition()">
+            <i class="fas fa-plus"></i>
+          </span>
         </div>
 
         <!-- End of Post-Process Parameters -->
@@ -254,9 +281,11 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
+              <div class="form-group ignore-validation-style  theme col-md-1">
 
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
@@ -265,8 +294,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
@@ -275,8 +306,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
@@ -285,8 +318,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
@@ -295,8 +330,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
@@ -308,11 +345,13 @@
               <div class="form-group theme col-md-3 icon-attached">
                 <div>
 
-                  <select required id="condition" name="condition"
+                  <select
+                    [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                    required id="condition" name="condition"
                     [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessDimensionalPropertyList[index].units" [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -395,9 +434,11 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
+              <div class="form-group ignore-validation-style  theme col-md-1">
 
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
@@ -406,8 +447,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
@@ -416,8 +459,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
@@ -426,8 +471,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
@@ -436,8 +483,10 @@
                 </div>
               </div>
 
-              <div class="form-group theme col-md-1">
-                <input type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+              <div class="form-group ignore-validation-style  theme col-md-1">
+                <input
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
@@ -447,12 +496,15 @@
               </div>
 
               <div class="form-group theme col-md-3 icon-attached">
+                <!-- [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0" -->
                 <div>
-                  <select required id="condition" name="condition"
+                  <select
+                    required id="condition" name="condition"
                     [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessMaterialCharacteristicList[index].units"
+                      [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -476,6 +528,7 @@
         <!-- End of Post-Process Material Characteristics -->
       </div>
     </div>
+    <!-- End of Post-Process Dimensional Properties and Material Characteristics  -->
 
 
     <div class="row button-section">

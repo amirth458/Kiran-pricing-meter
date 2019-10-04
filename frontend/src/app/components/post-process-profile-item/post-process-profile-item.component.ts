@@ -38,6 +38,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     id: [null],
     vendorId: [null],
     name: [null],
+    parameterNickName: [null],
     equipment: ['', Validators.required],
     materialList: [null, Validators.required],
     postProcessProfileFamily: [''],
@@ -83,7 +84,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       valueSignType: {
         id: ''
       },
-      operandTypeList: []
+      operandTypeList: [],
+      units: []
     }
   ];
   selectedProcessDimensionalPropertyList = [];
@@ -93,8 +95,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
   postProcessProfileId = null;
 
-  activeTab = 'processParameterList';
-  activeTabName = 'Post-Process Parameters';
+  activeTab = 'processDimensionalPropertyList';
+  activeTabName = 'Post-Process Dimensional Properties';
   error = '';
   isNew = true;
   isFormValid = false;
@@ -187,16 +189,49 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   }
 
   getMaterials = () => this.form.value.materialList != null ? this.form.value.materialList : [];
+  get parameterNickName() {
+    return this.form.value.parameterNickName || '';
+  }
+  get profileName() {
+    let name = '';
+    let equipmentName = '';
+    const materialList = this.getMaterials();
+
+    if (this.form.value.equipment) {
+      this.equipments.map(equipment => {
+        if (equipment.id == this.form.value.equipment) {
+          equipmentName = equipment.equipment.name;
+        }
+      });
+    }
+    name += equipmentName;
+    if (materialList.length) {
+      materialList.map(selectedMaterial => {
+        this.materials.map(material => {
+          if (material.id == selectedMaterial) {
+            name += ' - ' + material.material.name;
+          }
+        });
+      });
+    }
+
+    return name;
+  }
 
   checkInputValidationInTabs() {
     const dimensionalPropertyListStatus = [];
     const materialCharacteristicListStatus = [];
     this.selectedProcessDimensionalPropertyList.map((row, index) => {
       if (
-        row.operatorType.id === '' ||
-        row.processDimensionalPropertyType.id === '' ||
-        row.unitType.id === '' ||
-        row.value === ''
+        !row.operatorType.id ||
+        !row.processDimensionalPropertyType.id ||
+        !row.unitType.id ||
+        (
+          !row.beforeMinValue &&
+          !row.beforeMaxValue &&
+          !row.afterMinValue &&
+          !row.afterExpectedValue &&
+          !row.afterMaxValue)
       ) {
         dimensionalPropertyListStatus.push(false);
       } else {
@@ -206,10 +241,15 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     });
     this.selectedProcessMaterialCharacteristicList.map(row => {
       if (
-        row.operatorType.id === '' ||
-        row.processMaterialCharacteristicType.id === '' ||
-        row.unitType.id === '' ||
-        row.value === ''
+        !row.operatorType.id ||
+        !row.processMaterialCharacteristicType.id ||
+        !row.unitType.id ||
+        (
+          !row.beforeMinValue &&
+          !row.beforeMaxValue &&
+          !row.afterMinValue &&
+          !row.afterExpectedValue &&
+          !row.afterMaxValue)
       ) {
         materialCharacteristicListStatus.push(false);
       } else {
@@ -232,6 +272,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessParameterList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessParameterList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -248,6 +290,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessDimensionalPropertyList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -263,6 +307,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessMaterialCharacteristicList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -297,7 +343,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
@@ -326,7 +373,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            unit: []
           });
 
         break;
@@ -355,7 +403,8 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            unit: []
           }
         );
         break;
@@ -393,6 +442,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       default:
         break;
     }
+    this.checkInputValidationInTabs();
   }
 
   toggleTab(tab, tabName) {
@@ -425,28 +475,6 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
   getSelectedEquipment() {
     return this.form.value.equipment;
-  }
-
-  areInputRowsValid() {
-    this.selectedProcessMaterialCharacteristicList.map(x => {
-      if (x.beforeMinValue !== '' &&
-        x.beforeMaxValue !== '' &&
-        x.afterMinValue !== '' &&
-        x.afterExpectedValue !== '' &&
-        x.afterMaxValue !== '') {
-        return false;
-      }
-    });
-    this.selectedProcessDimensionalPropertyList.map(x => {
-      if (x.beforeMinValue !== '' &&
-        x.beforeMaxValue !== '' &&
-        x.afterMinValue !== '' &&
-        x.afterExpectedValue !== '' &&
-        x.afterMaxValue !== '') {
-        return false;
-      }
-    });
-    return true;
   }
 
   equipmentChanged(processProfile?) {
@@ -506,6 +534,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     this.form.setValue({
       id: processProfile.id,
       name: processProfile.name,
+      parameterNickName: processProfile.parameterNickName,
       vendorId: processProfile.vendorId,
       postProcessProfileFamily: machine.equipment.processFamily.id,
       postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
@@ -529,16 +558,17 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       this.getProperOperands(parameter.processParameterType.id, index, 'Post-Process Parameters');
     });
     this.selectedProcessMaterialCharacteristicList.map((parameter, index) => {
-      this.getProperOperands(parameter.processMaterialCharacteristicType.id, index, 'Process Material Characteristics');
+      this.getProperOperands(parameter.processMaterialCharacteristicType.id, index, 'Post-Process Material Characteristics');
     });
     this.selectedProcessDimensionalPropertyList.map((parameter, index) => {
-      this.getProperOperands(parameter.processDimensionalPropertyType.id, index, 'Process Dimensional Properties');
+      this.getProperOperands(parameter.processDimensionalPropertyType.id, index, 'Post-Process Dimensional Properties');
     });
   }
 
   prepareData() {
     const postData = {
-      name: this.form.value.name || 'Post-Process Profile - ' + this.getRandomString(7),
+      name: this.profileName,
+      parameterNickName: this.form.value.parameterNickName,
       // machineServingMaterial: { id: this.form.value.material },
       processMachineServingMaterialList: this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } })),
       processParameterList: [...this.selectedProcessParameterList],
@@ -558,7 +588,14 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     event.preventDefault();
     this.submitActive = false;
     setTimeout(async () => {
-      if (this.form.valid && this.isFormValid && this.areInputRowsValid()) {
+      this.checkInputValidationInTabs();
+      if (
+        this.form.valid &&
+        this.isFormValid &&
+        !this.tabErrors.processParameter &&
+        !this.tabErrors.processDimensionalProperty &&
+        !this.tabErrors.processMaterialCharacteristic
+      ) {
         this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
