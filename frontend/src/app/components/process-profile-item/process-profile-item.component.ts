@@ -188,14 +188,29 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   getMaterials = () => this.form.value.materialList || [];
 
   checkInputValidationInTabs() {
+    const processParameterListStatus = [];
     const dimensionalPropertyListStatus = [];
     const materialCharacteristicListStatus = [];
+
+    this.selectedProcessParameterList.map((row, index) => {
+      if (
+        !row.operatorType.id ||
+        !row.processParameterType.id ||
+        !row.unitType.id ||
+        !row.value
+      ) {
+        processParameterListStatus.push(false);
+      } else {
+        processParameterListStatus.push(true);
+      }
+
+    });
     this.selectedProcessDimensionalPropertyList.map((row, index) => {
       if (
-        row.operatorType.id === '' ||
-        row.processDimensionalPropertyType.id === '' ||
-        row.unitType.id === '' ||
-        row.value === ''
+        !row.operatorType.id ||
+        !row.processDimensionalPropertyType.id ||
+        !row.unitType.id ||
+        !row.value
       ) {
         dimensionalPropertyListStatus.push(false);
       } else {
@@ -205,10 +220,10 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
     this.selectedProcessMaterialCharacteristicList.map(row => {
       if (
-        row.operatorType.id === '' ||
-        row.processMaterialCharacteristicType.id === '' ||
-        row.unitType.id === '' ||
-        row.value === ''
+        !row.operatorType.id ||
+        !row.processMaterialCharacteristicType.id ||
+        !row.unitType.id ||
+        !row.value
       ) {
         materialCharacteristicListStatus.push(false);
       } else {
@@ -216,6 +231,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       }
     });
 
+    this.tabErrors.processParameter = processParameterListStatus.filter(x => x === false).length > 0;
     this.tabErrors.processDimensionalProperty = dimensionalPropertyListStatus.filter(x => x === false).length > 0;
     this.tabErrors.processMaterialCharacteristic = materialCharacteristicListStatus.filter(x => x === false).length > 0;
 
@@ -229,7 +245,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessParameterList[index].operandTypeList = options;
-      this.selectedProcessParameterList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessParameterList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -246,7 +263,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = options;
       // tslint:disable-next-line:max-line-length
-      this.selectedProcessDimensionalPropertyList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
+      this.selectedProcessDimensionalPropertyList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -263,7 +280,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
       // tslint:disable-next-line:max-line-length
-      this.selectedProcessMaterialCharacteristicList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
+      this.selectedProcessMaterialCharacteristicList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;

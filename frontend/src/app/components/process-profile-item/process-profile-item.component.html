@@ -49,7 +49,8 @@
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item" [ngClass]="{'active': activeTab == 'processParameterList'}"
+        <div class="menu-item"
+          [ngClass]="{'active': activeTab == 'processParameterList', 'error':tabErrors.processParameter}"
           (click)="toggleTab('processParameterList','Process Parameters')">
           Process Parameters</div>
         <span class="separator"></span>
