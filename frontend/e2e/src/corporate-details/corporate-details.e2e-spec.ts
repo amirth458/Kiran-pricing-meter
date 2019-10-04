@@ -48,7 +48,7 @@ describe('Corporate Details Page', () => {
   //     expect(page.getCountryControl().getText()).toEqual('Albania');
   //   });
   // });
-  
+
   describe('Save button clicked', () => {
     it('Check success message', () => {
       browser.sleep(100);
