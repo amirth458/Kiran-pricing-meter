@@ -144,7 +144,7 @@
                     id="condition" name="condition" [(ngModel)]="selectedProcessParameterList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessParameterList[index].units" [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -205,8 +205,7 @@
             </span>
           </p>
           <p class="footnote red" [ngClass]="{'d-none': activeTab !='processMaterialCharacteristicList'}">
-            <span
-              *ngIf="activeTab == 'processMaterialCharacteristicList' && tabErrors.processMaterialCharacteristic">
+            <span *ngIf="activeTab == 'processMaterialCharacteristicList' && tabErrors.processMaterialCharacteristic">
               *You need to provide at least one value for each row.
             </span>
           </p>
@@ -352,7 +351,7 @@
                     [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessDimensionalPropertyList[index].units" [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -504,7 +503,8 @@
                     [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessMaterialCharacteristicList[index].units"
+                      [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
