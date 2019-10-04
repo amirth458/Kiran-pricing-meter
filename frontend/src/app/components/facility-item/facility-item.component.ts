@@ -18,6 +18,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Vendor, Country } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { AppFields } from 'src/app/store';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -72,6 +73,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
     private fileService: FileService,
     private authService: AuthService,
     private store: Store<any>,
+    private toastr: ToastrService,
   ) {
     this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
   }
@@ -261,6 +263,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
 
     const userId = this.userService.getUserInfo().id;
     const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
+    const facilityName = this.facilityItem.value.name;
     const facility = {
       ...this.facilityItem.value,
       facilityCertificationList: this.selectedCertifications.map((item) => ({
@@ -279,8 +282,9 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         await this.facilityService.createFacility(this.vendorId, facility).toPromise();
         this.deleteRemovedFiles(userId);
         const gotoURL = `/profile/vendor/facilities`;
-        this.route.navigateByUrl(gotoURL);
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + facilityName + '" is created.' } } });
       } catch (e) {
+        this.toastr.error('We are sorry, ' + facilityName + ' creation failed. Please try again later.');
         this.error = e.error.message;
         console.log(e);
       } finally {
@@ -292,8 +296,9 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         await this.facilityService.updateFacility(this.vendorId, this.facilityId, facility).toPromise();
         this.deleteRemovedFiles(userId);
         const gotoURL = `/profile/vendor/facilities`;
-        this.route.navigateByUrl(gotoURL);
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + facilityName + '" is updated.' } } });
       } catch (e) {
+        this.toastr.error('We are sorry, ' + facilityName + ' update failed. Please try again later.');
         this.error = e.error.message;
         console.log(e);
       } finally {

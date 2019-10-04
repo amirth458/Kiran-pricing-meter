@@ -128,10 +128,11 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
       this.preferenceService.updatePreference(preferences)
         .subscribe(
           res => {
-            this.toastr.success('Saved Successfully');
+            this.toastr.success('Preferences is updated Successfully');
             this.spineer.hide();
           },
           error => {
+            this.toastr.error('We are sorry, Preferences saving is failed. Please try again later.');
             this.spineer.hide();
           });
     } else {
@@ -140,10 +141,11 @@ export class PreferencesComponent implements OnInit, AfterViewChecked {
           res => {
             this.isPreferenceAvailable = true;
             this.initForm(res);
-            this.toastr.success('Saved Successfully');
+            this.toastr.success('Preferences is created Successfully');
             this.spineer.hide();
           },
           err => {
+            this.toastr.error('We are sorry, Preferences saving is failed. Please try again later.');
             this.spineer.hide();
           });
     }
