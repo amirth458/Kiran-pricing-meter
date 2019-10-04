@@ -558,10 +558,10 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       this.getProperOperands(parameter.processParameterType.id, index, 'Post-Process Parameters');
     });
     this.selectedProcessMaterialCharacteristicList.map((parameter, index) => {
-      this.getProperOperands(parameter.processMaterialCharacteristicType.id, index, 'Process Material Characteristics');
+      this.getProperOperands(parameter.processMaterialCharacteristicType.id, index, 'Post-Process Material Characteristics');
     });
     this.selectedProcessDimensionalPropertyList.map((parameter, index) => {
-      this.getProperOperands(parameter.processDimensionalPropertyType.id, index, 'Process Dimensional Properties');
+      this.getProperOperands(parameter.processDimensionalPropertyType.id, index, 'Post-Process Dimensional Properties');
     });
   }
 
