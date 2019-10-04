@@ -1,15 +1,15 @@
 import { browser, by, element, ElementFinder } from 'protractor';
 
-export class CorporateDetails {
+export class FacilityDetails {
 
-  url = '/profile/vendor/basics';
+  url = '/profile/vendor/facilities/edit/840';
 
   navigateTo() {
     browser.get(this.url);
-    browser.sleep(2000);
+    browser.sleep(1000);
   }
 
-  getDetailForm(): ElementFinder {
+  getFacilityForm(): ElementFinder {
     return element(by.tagName('form'));
   }
 

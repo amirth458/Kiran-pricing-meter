@@ -112,7 +112,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
   }
 
   save(event) {
-    if (!(this.shippingItem.valid && this.shippingItem.dirty)) {
+    if (!this.shippingItem.valid) {
       return;
     }
     this.spineer.show();

@@ -1,5 +1,5 @@
 export const Config = {
-  email: 'ivantest1@gmail.com',
+  email: 'ivantest3@gmail.com',
   password: 'test123',
   corporateDetails: {
     id: 0,
@@ -19,4 +19,11 @@ export const Config = {
     confidentiality: '2',
     vendorCertificates: []
   },
+  machineItem: {
+    name: 'aaaa',
+    serialNumber: '105992910293123',
+    equipment: '3D Systems SLA 5000',
+    material: 'ABS 3SP',
+    facility: '835'
+  }
 };
