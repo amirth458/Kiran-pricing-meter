@@ -40,8 +40,15 @@ export class ProcessProfileComponent implements OnInit {
       }
     },
     {
-      name: 'Process Profile Name', checked: false,
+      name: 'Process Name', checked: false,
       field: 'name', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
+      name: 'Process Nickname', checked: false,
+      field: 'parameterNickName', query: {
         type: '',
         filter: '',
       }
@@ -67,7 +74,10 @@ export class ProcessProfileComponent implements OnInit {
       name: 'Process Profile No', checked: true, field: 'id'
     },
     {
-      name: 'Process Profile Name', checked: true, field: 'name'
+      name: 'Process Name', checked: true, field: 'name'
+    },
+    {
+      name: 'Process Nickname', checked: true, field: 'parameterNickName'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -86,7 +96,8 @@ export class ProcessProfileComponent implements OnInit {
 
   columnDefs: Array<any> = [
     { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: false },
-    { headerName: 'Process Profile Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
       headerName: 'Equipment', field: 'equipment',

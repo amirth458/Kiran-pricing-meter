@@ -38,6 +38,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     id: [null],
     vendorId: [null],
     name: [null],
+    parameterNickName: [null],
     equipment: [null, Validators.required],
     materialList: [null, Validators.required],
     // processType: [null, Validators.required],
@@ -186,7 +187,35 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   getEquipment = () => this.form.value.equipment != null ? [this.form.value.equipment] : [];
   getMaterials = () => this.form.value.materialList || [];
+  get parameterNickName() {
+    return this.form.value.parameterNickName || '';
+  }
+  get profileName() {
+    let name = '';
+    let materialList = [];
+    const equipmentId = this.form.value.equipment || '';
+    if (this.form.value.materialList) {
+      materialList = this.getProperMaterialList();
+    }
+    if (equipmentId) {
+      this.equipments.map(x => {
+        if (x.id === equipmentId) {
+          name += x.equipment.name;
+        }
+      });
+    }
+    if (materialList.length) {
+      materialList.map(selectedMaterial => {
+        this.materials.map(material => {
+          if (material.id == selectedMaterial.machineServingMaterial.id) {
+            name += ' - ' + material.material.name;
+          }
+        });
+      });
+    }
 
+    return name;
+  }
   checkInputValidationInTabs() {
     const processParameterListStatus = [];
     const dimensionalPropertyListStatus = [];
@@ -459,6 +488,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       }
     });
   }
+
   materialChanged(editScreen = false) {
     const materialList = this.form.value.materialList;
     if (materialList.length) {
@@ -468,6 +498,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
           ...this.form.value,
           materialList: ['all-materials']
         });
+        return this.materials;
       } else {
         const lastInput = materialList[materialList.length - 1];
         if (lastInput === 'all-materials') {
@@ -475,6 +506,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             ...this.form.value,
             materialList: ['all-materials']
           });
+          return this.materials;
         } else {
           if (materialList.includes('all-materials')) {
             const startIndex = materialList.indexOf('all-materials');
@@ -484,6 +516,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
               ...this.form.value,
               materialList: [...frontSlice, ...endSlice]
             });
+            return [...frontSlice, ...endSlice];
           }
         }
       }
@@ -495,6 +528,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.form.setValue({
       id: processProfile.id,
       name: processProfile.name,
+      parameterNickName: processProfile.parameterNickName,
       vendorId: processProfile.vendorId,
       // tslint:disable-next-line:max-line-length
       equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
@@ -544,7 +578,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     const postData = {
-      name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
+      parameterNickName: this.form.value.parameterNickName,
+      name: this.profileName,
       processMachineServingMaterialList: [...this.getProperMaterialList()],
       // machineServingMaterial: { id: this.form.value.materialList },
       processParameterList: [...this.selectedProcessParameterList],

@@ -3,18 +3,14 @@
     {{error}}
   </div>
 
+  <div class="title-bar">
+    <h4>{{parameterNickName}}</h4>
+    <span>{{profileName}}</span>
+  </div>
   <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
-
-      <div class="form-group theme col">
-        <label for="name">Process Profile Name</label>
-        <input type="text" formControlName="name" class="form-control" id="name" name="name"
-          placeholder="Process Profile Name">
-        <span class="footnote">* If left blank, we will auto-generate one for you.</span>
-      </div>
-
-
     </div>
+
     <div class="form-row">
 
       <div class="form-group theme col">
@@ -54,6 +50,12 @@
       </div>
 
       <div id="conditionLabel" class="conditions">
+        <div class="form-group nickname theme col">
+          <label for="parameterNickName">Process Set Nickname (optional)</label>
+          <input type="text" formControlName="parameterNickName" class="form-control" id="parameterNickName"
+            name="parameterNickName" placeholder="Process Set Nickname (optional)">
+          <!-- <span class="footnote">* If left blank, we will auto-generate one for you.</span> -->
+        </div>
 
         <div class="info-bar">
           <p>
