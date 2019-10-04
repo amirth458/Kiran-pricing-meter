@@ -1,11 +1,22 @@
 export const Config = {
   email: 'ivantest1@gmail.com',
   password: 'test123',
-  profile: {
-    first_name: 'Julian',
-    last_name: 'Gong',
-    email: 'zhiliang.gong@gmail.com',
-    phone: '+17735511373',
-    birth_date: '1989-10-22'
-  }
+  corporateDetails: {
+    id: 0,
+    name: 'Test Vendor',
+    primaryContactFirstName: 'Ivan',
+    primaryContactLastName: 'Modric',
+    email: 'ivantest1@gmail.com',
+    phone: '+14155558762',
+    vendorType: '1',
+    vendorIndustry: '4',
+    city: 'LosAngelos',
+    state: 'Califonia',
+    country: '232',
+    street1: 'Test Street-1',
+    street2: '',
+    zipCode: '12342',
+    confidentiality: '2',
+    vendorCertificates: []
+  },
 };
