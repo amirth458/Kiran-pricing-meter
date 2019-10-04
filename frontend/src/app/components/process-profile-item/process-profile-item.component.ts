@@ -92,8 +92,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     processDimensionalPropertyList: [],
     processMaterialCharacteristicList: []
   };
-  activeTab = 'processParameterList';
-  activeTabName = 'Process Parameters';
+  activeTab = 'processDimensionalPropertyList';
+  activeTabName = 'Process Dimensional Properties';
   error = '';
 
   isNew = true;

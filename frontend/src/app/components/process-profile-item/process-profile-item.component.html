@@ -43,62 +43,33 @@
       </div>
 
     </div>
+    <!-- Process Parameters -->
 
-
-    <!--  -->
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item"
-          [ngClass]="{'active': activeTab == 'processParameterList', 'error':tabErrors.processParameter}"
-          (click)="toggleTab('processParameterList','Process Parameters')">
-          Process Parameters</div>
-        <span class="separator"></span>
-        <div class="menu-item"
-          [ngClass]="{'active': activeTab == 'processDimensionalPropertyList', 'error':tabErrors.processDimensionalProperty}"
-          (click)="toggleTab('processDimensionalPropertyList', 'Process Dimensional Properties')">Process Dimensional
-          Properties</div>
-        <span class=" separator"></span>
-        <div class="menu-item"
-          [ngClass]="{'active': activeTab == 'processMaterialCharacteristicList', 'error':tabErrors.processMaterialCharacteristic}"
-          (click)="toggleTab('processMaterialCharacteristicList','Process Material Characteristics')">
-          Process Material Characteristics</div>
+        <div class="menu-item active" [ngClass]="{'error':tabErrors.processParameter}">
+          Process Parameters
+        </div>
       </div>
 
       <div id="conditionLabel" class="conditions">
 
         <div class="info-bar">
-          <p *ngIf="activeTab == 'processParameterList'">
+          <p>
             Enter the parameters you will use for the manufacturing process
           </p>
-          <p *ngIf="activeTab == 'processDimensionalPropertyList'">
-            Enter the dimensional characteristics that will result from the process. Please note that max/min values are
-            required inputs for any work for customers specifying specific dimensional characteristics
-          </p>
-          <p *ngIf="activeTab == 'processMaterialCharacteristicList'">
-            Material Characteristics: Enter the material properties that will result from he process. Please note that
-            max/min values are required inputs for any work for customers specifying specific material characteristics.
-          </p>
           <div class="default">
-            <span class="add" (click)="addCondition()">
+            <span class="add" (click)="addCondition('processParameterList')">
               <i class="fas fa-plus"></i>
             </span>
-
-            <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
-              title="short desc of what default values mean">
-              <i class="fas fa-question-circle"></i>
-            </span>
-            <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
-              data-target="#exampleModalCenter">Default
-              Values</span> -->
           </div>
         </div>
 
-        <!-- Process Parameters -->
-        <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processParameterList'">
+        <div class="condition-wrapper">
           <!-- <span>
-            If
-          </span> -->
+              If
+            </span> -->
 
           <div class="input-wrapper">
 
@@ -156,11 +127,12 @@
                   </div>
                 </div>
 
-                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index)">
+                <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index, 'processParameterList')">
                   <i class="fas fa-minus"></i>
                 </span>
 
-                <span *ngIf="index === 0" class="minus invisible" (click)="removeCondition(index)">
+                <span *ngIf="index === 0" class="minus invisible"
+                  (click)="removeCondition(index,'processParameterList')">
                   <i class=""></i>
                 </span>
               </div>
@@ -172,27 +144,53 @@
               <span class="add" (click)="addCondition()">
                 <i class="fas fa-plus"></i>
               </span>
-
-              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
-                data-placement="right" title="short desc of what default values mean">
-                <i class="fas fa-question-circle"></i>
-              </span>
-              <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
-                data-target="#exampleModalCenter">Default
-                Values</span> -->
             </div>
           </div>
-
-
         </div>
+      </div>
+    </div>
 
-        <!-- End of Process Parameters -->
+    <!-- End of Process Parameters -->
 
+
+
+
+    <!-- Dimensional Property & Material Characteristics -->
+    <div class="tab-container card">
+
+      <div class="card-header">
+        <div class="menu-item"
+          [ngClass]="{'active': activeTab == 'processDimensionalPropertyList', 'error':tabErrors.processDimensionalProperty}"
+          (click)="toggleTab('processDimensionalPropertyList', 'Process Dimensional Properties')">Process Dimensional
+          Properties</div>
+        <span class=" separator"></span>
+        <div class="menu-item"
+          [ngClass]="{'active': activeTab == 'processMaterialCharacteristicList', 'error':tabErrors.processMaterialCharacteristic}"
+          (click)="toggleTab('processMaterialCharacteristicList','Process Material Characteristics')">
+          Process Material Characteristics</div>
+      </div>
+
+      <div id="conditionLabel" class="conditions">
+
+        <div class="info-bar">
+          <p *ngIf="activeTab == 'processDimensionalPropertyList'">
+            Enter the dimensional characteristics that will result from the process. Please note that max/min values
+            are
+            required inputs for any work for customers specifying specific dimensional characteristics
+          </p>
+          <p *ngIf="activeTab == 'processMaterialCharacteristicList'">
+            Material Characteristics: Enter the material properties that will result from he process. Please note that
+            max/min values are required inputs for any work for customers specifying specific material
+            characteristics.
+          </p>
+          <div class="default">
+            <span class="add" (click)="addCondition()">
+              <i class="fas fa-plus"></i>
+            </span>
+          </div>
+        </div>
         <!-- Process Dimensional Properties -->
         <div class="condition-wrapper d-none" [class.d-block]="activeTab == 'processDimensionalPropertyList'">
-          <!-- <span>
-            If
-          </span> -->
 
           <div class="input-wrapper">
 
