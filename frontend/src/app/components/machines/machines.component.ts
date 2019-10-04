@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { MachineService } from 'src/app/service/machine.service';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 @Component({
@@ -170,13 +171,17 @@ export class MachinesComponent implements OnInit {
   gridOptions: GridOptions;
   rowData;
   pageSize = 10;
+  navigation;
 
   constructor(
     public route: Router,
     public machineService: MachineService,
     public userService: UserService,
-    public spineer: NgxSpinnerService
-  ) { }
+    public spineer: NgxSpinnerService,
+    private toastr: ToastrService
+  ) {
+    this.navigation = this.route.getCurrentNavigation();
+  }
 
   ngOnInit() {
 
@@ -206,6 +211,14 @@ export class MachinesComponent implements OnInit {
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
 
+      if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+        const toastInfo = this.navigation.extras.state.toast;
+        if (toastInfo.type === 'success') {
+          this.toastr.success(toastInfo.body);
+        } else {
+          this.toastr.error(toastInfo.body);
+        }
+      }
     }, 50);
   }
 
@@ -257,7 +270,9 @@ export class MachinesComponent implements OnInit {
     this.spineer.show();
     try {
       await this.machineService.deleteMachine(this.userService.getVendorInfo().id, this.selectedMachine.id).toPromise();
+      this.toastr.success(this.selectedMachine.name + ' is deleted.');
     } catch (e) {
+      this.toastr.error('We are sorry, ' + this.selectedMachine.name + ' delete failed. Please try again later.');
       console.log(e);
     } finally {
       this.spineer.hide();

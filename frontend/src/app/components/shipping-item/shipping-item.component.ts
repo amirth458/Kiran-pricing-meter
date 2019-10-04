@@ -9,6 +9,7 @@ import { UserService } from '../../service/user.service';
 import { Shipping } from '../../model/shipping.model';
 
 import { VendorMetaDataTypes } from '../../mockData/vendor';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-shipping-item',
   templateUrl: './shipping-item.component.html',
@@ -31,12 +32,14 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
 
   constructor(
-    public fb: FormBuilder,
-    public route: Router,
-    public shippingService: ShippingService,
-    public vendorService: VendorService,
-    public spineer: NgxSpinnerService,
-    public userService: UserService) { }
+    private fb: FormBuilder,
+    private route: Router,
+    private shippingService: ShippingService,
+    private vendorService: VendorService,
+    private spineer: NgxSpinnerService,
+    private userService: UserService,
+    private toastr: ToastrService
+  ) { }
 
 
   async ngOnInit() {
@@ -121,25 +124,27 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     };
     shipping.shippingProvider = { id: Number(shipping.shippingProvider) };
     shipping.updatedDate = new Date().toString();
-
+    const carrierName = this.carriers.filter(carrier => carrier.id === Number(shipping.shippingProvider.id))[0].name;
     if (this.isNew) {
       shipping.createdBy = String(this.userService.getVendorInfo().id);
       shipping.createdDate = new Date().toString();
 
       this.shippingService.createShipping(vendorId, shipping).subscribe(res => {
         const gotoURL = `/profile/vendor/shipping`;
-        this.route.navigateByUrl(gotoURL);
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + carrierName + '" is created.' } } });
         this.spineer.hide();
       }, error => {
+        this.toastr.error('We are sorry, ' +  carrierName + ' creation failed. Please try again later.');
         console.log(error);
         this.spineer.hide();
       });
     } else {
       this.shippingService.updateShipping(vendorId, this.shippingId, shipping).subscribe(res => {
         const gotoURL = `/profile/vendor/shipping`;
-        this.route.navigateByUrl(gotoURL);
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + carrierName + '" is updated.' } } });
         this.spineer.hide();
       }, error => {
+        this.toastr.error('We are sorry, ' +  carrierName + ' update failed. Please try again later.');
         console.log(error);
         this.spineer.hide();
       });

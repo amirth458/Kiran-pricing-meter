@@ -11,6 +11,7 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { EquipmentService } from 'src/app/service/equipment.service';
 import { FacilityService } from 'src/app/service/facility.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-machine-item',
@@ -53,7 +54,8 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     public materialService: MaterialService,
     public equipmentService: EquipmentService,
     public facilityService: FacilityService,
-    public userService: UserService) { }
+    public userService: UserService,
+    private toastr: ToastrService) { }
 
   async ngOnInit() {
     this.spinner.show();
@@ -256,8 +258,9 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
         try {
           await this.machineService.createMachine(vendorId, postData).toPromise();
           const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL);
+          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" is created.' } } });
         } catch (e) {
+          this.toastr.error('We are sorry, ' +  postData.name + ' creation failed. Please try again later.');
           this.error = e.error.message;
           console.log(e);
         } finally {
@@ -269,8 +272,9 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
         try {
           await this.machineService.updateMachine(vendorId, this.machineId, postData).toPromise();
           const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL);
+          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" is updated.' } } });
         } catch (e) {
+          this.toastr.error('We are sorry, ' +  postData.name + ' update failed. Please try again later.');
           this.error = e.error.message;
           console.log(e);
         } finally {
