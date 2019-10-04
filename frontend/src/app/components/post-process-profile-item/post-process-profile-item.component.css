@@ -37,6 +37,10 @@
   margin: 0px 20px;
 }
 
+.card .card-header .menu-item.error {
+  color: red;
+}
+
 .card .card-header .menu-item:hover {
   cursor: pointer;
 }
@@ -48,7 +52,7 @@
 
 .card .card-header .menu-item.active {
   color: var(--theme-light-green);
-  border-bottom: 5px solid;
+  border-bottom: 5px solid var(--theme-light-green);
 }
 
 .form-group.conditionLabel {

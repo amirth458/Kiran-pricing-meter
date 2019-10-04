@@ -24,7 +24,7 @@
           [selectOnTab]="true" formControlName="equipment">
           <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
         </ng-select>
-        <span *ngIf="equipments.length" class="footnote red">* Required</span>
+        <span *ngIf="submitClicked&& !getEquipment().length" class="footnote red">* Required</span>
         <span *ngIf="!equipments.length" class="footnote red">*You need to add machines in <a
             class="link font-weight-bold" href="profile/vendor/machines">here</a> </span>
       </div>
@@ -32,12 +32,12 @@
 
       <div class="form-group theme col">
         <label for="material">Material</label>
-        <ng-select #materialInput placeholder="Add Materials" loadingText="Searching..." [multiple]="true"
-          dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
+        <ng-select #materialInput (change)="materialChanged()" placeholder="Add Materials" loadingText="Searching..."
+          [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
           formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
-        <span *ngIf="equipments.length" class="footnote red">* Required</span>
+        <span *ngIf="submitClicked && !getMaterials().length" class="footnote red">* Required</span>
         <span *ngIf="!equipments.length" class="footnote red">*You need to add machines in <a
             class="link font-weight-bold" href="profile/vendor/machines">here</a> </span>
       </div>
@@ -49,15 +49,17 @@
     <div class="tab-container card">
 
       <div class="card-header">
-        <div class="menu-item" [class.active]="activeTab == 'processParameterList'"
+        <div class="menu-item" [ngClass]="{'active': activeTab == 'processParameterList'}"
           (click)="toggleTab('processParameterList','Process Parameters')">
           Process Parameters</div>
         <span class="separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'processDimensionalPropertyList'"
+        <div class="menu-item"
+          [ngClass]="{'active': activeTab == 'processDimensionalPropertyList', 'error':tabErrors.processDimensionalProperty}"
           (click)="toggleTab('processDimensionalPropertyList', 'Process Dimensional Properties')">Process Dimensional
           Properties</div>
         <span class=" separator"></span>
-        <div class="menu-item" [class.active]="activeTab == 'processMaterialCharacteristicList'"
+        <div class="menu-item"
+          [ngClass]="{'active': activeTab == 'processMaterialCharacteristicList', 'error':tabErrors.processMaterialCharacteristic}"
           (click)="toggleTab('processMaterialCharacteristicList','Process Material Characteristics')">
           Process Material Characteristics</div>
       </div>
@@ -81,13 +83,13 @@
               <i class="fas fa-plus"></i>
             </span>
 
-            <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
+            <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip" data-placement="right"
               title="short desc of what default values mean">
               <i class="fas fa-question-circle"></i>
             </span>
             <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
               data-target="#exampleModalCenter">Default
-              Values</span>
+              Values</span> -->
           </div>
         </div>
 
@@ -128,7 +130,8 @@
               </div>
 
               <div class="form-group theme col-md-3">
-                <input required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                <input [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
+                  type="number" step="0.00001" maxlength="4" min="0" max="9999"
                   [(ngModel)]="selectedProcessParameterList[index].value" [ngModelOptions]="{standalone: true}"
                   class="form-control" id="value" name="value" placeholder="Value">
                 <div class="invalid-feedback">
@@ -139,11 +142,11 @@
               <div class="form-group theme col-md-3 icon-attached">
                 <div>
 
-                  <select required id="condition" name="condition"
-                    [(ngModel)]="selectedProcessParameterList[index].unitType.id" [ngModelOptions]="{standalone: true}"
-                    class="form-control">
+                  <select [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
+                    id="condition" name="condition" [(ngModel)]="selectedProcessParameterList[index].unitType.id"
+                    [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessParameterList[index].units" [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -169,13 +172,13 @@
                 <i class="fas fa-plus"></i>
               </span>
 
-              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
                 data-placement="right" title="short desc of what default values mean">
                 <i class="fas fa-question-circle"></i>
               </span>
               <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
                 data-target="#exampleModalCenter">Default
-                Values</span>
+                Values</span> -->
             </div>
           </div>
 
@@ -228,7 +231,9 @@
 
 
               <div class="form-group theme col-md-3">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input
+                  [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                  required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
@@ -240,11 +245,13 @@
               <div class="form-group theme col-md-3 icon-attached">
 
                 <div>
-                  <select required id="condition" name="condition"
+                  <select
+                    [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
+                    required id="condition" name="condition"
                     [(ngModel)]="selectedProcessDimensionalPropertyList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessDimensionalPropertyList[index].units" [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -265,13 +272,13 @@
                 <i class="fas fa-plus"></i>
               </span>
 
-              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
                 data-placement="right" title="short desc of what default values mean">
                 <i class="fas fa-question-circle"></i>
               </span>
               <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
                 data-target="#exampleModalCenter">Default
-                Values</span>
+                Values</span> -->
             </div>
 
           </div>
@@ -323,7 +330,9 @@
 
 
               <div class="form-group theme col-md-3">
-                <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                <input
+                  [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                  required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].value"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="value" name="value"
                   placeholder="Value">
@@ -334,11 +343,14 @@
 
               <div class="form-group theme col-md-3 icon-attached">
                 <div>
-                  <select required id="condition" name="condition"
+                  <select
+                    [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
+                    required id="condition" name="condition"
                     [(ngModel)]="selectedProcessMaterialCharacteristicList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of units" [value]="item.id">
+                    <option *ngFor="let item of selectedProcessMaterialCharacteristicList[index].units"
+                      [value]="item.id">
                       {{item.displayName}}
                     </option>
                   </select>
@@ -361,13 +373,13 @@
                 <i class="fas fa-plus"></i>
               </span>
 
-              <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
+              <!-- <span *ngIf="'processParameterList' != activeTab" class="icon" data-toggle="tooltip"
                 data-placement="right" title="short desc of what default values mean">
                 <i class="fas fa-question-circle"></i>
               </span>
               <span *ngIf="'processParameterList' != activeTab" data-toggle="modal" class="label"
                 data-target="#exampleModalCenter">Default
-                Values</span>
+                Values</span> -->
             </div>
           </div>
 

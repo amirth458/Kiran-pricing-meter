@@ -49,6 +49,8 @@
         <international-phone-number *ngIf="vendorId > 1" formControlName="phone" placeholder="Enter phone number"
           [required]="true" name="phone_number" ></international-phone-number>
         <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 1) && detailForm.controls.phone.status === 'INVALID'" 
+          class="footnote red">* Phone number is invalid.</span>
       </div>
     </div>
     <div class="form-row">

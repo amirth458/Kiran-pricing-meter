@@ -28,6 +28,12 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   submitActive = true;
   triedToSubmit = false;
 
+  tabErrors = {
+    processParameter: false,
+    processDimensionalProperty: false,
+    processMaterialCharacteristic: false
+  };
+
   form: FormGroup = this.fb.group({
     id: [null],
     vendorId: [null],
@@ -167,6 +173,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     const validation = Array.prototype.filter.call(forms, (form) => {
       form.addEventListener('submit', (event) => {
         this.triedToSubmit = true;
+        this.checkInputValidationInTabs();
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
@@ -177,6 +184,43 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
         form.classList.add('was-validated');
       }, false);
     });
+  }
+
+  getMaterials = () => this.form.value.materialList != null ? this.form.value.materialList : [];
+
+  checkInputValidationInTabs() {
+    const dimensionalPropertyListStatus = [];
+    const materialCharacteristicListStatus = [];
+    this.selectedProcessDimensionalPropertyList.map((row, index) => {
+      if (
+        row.operatorType.id === '' ||
+        row.processDimensionalPropertyType.id === '' ||
+        row.unitType.id === '' ||
+        row.value === ''
+      ) {
+        dimensionalPropertyListStatus.push(false);
+      } else {
+        dimensionalPropertyListStatus.push(true);
+      }
+
+    });
+    this.selectedProcessMaterialCharacteristicList.map(row => {
+      if (
+        row.operatorType.id === '' ||
+        row.processMaterialCharacteristicType.id === '' ||
+        row.unitType.id === '' ||
+        row.value === ''
+      ) {
+        materialCharacteristicListStatus.push(false);
+      } else {
+        materialCharacteristicListStatus.push(true);
+      }
+    });
+
+    this.tabErrors.processDimensionalProperty = dimensionalPropertyListStatus.filter(x => x === false).length > 0;
+    this.tabErrors.processMaterialCharacteristic = materialCharacteristicListStatus.filter(x => x === false).length > 0;
+
+
   }
 
   getProperOperands(conditionId, index, section) {
@@ -352,6 +396,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   }
 
   toggleTab(tab, tabName) {
+    this.checkInputValidationInTabs();
     this.activeTab = tab;
     this.activeTabName = tabName;
   }

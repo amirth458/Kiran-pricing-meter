@@ -24,6 +24,13 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   equipments = [];
   materials = [];
   submitActive = true;
+  submitClicked = false;
+
+  tabErrors = {
+    processParameter: false,
+    processDimensionalProperty: false,
+    processMaterialCharacteristic: false
+  };
 
   filteredProcessParameterList = [];
 
@@ -69,7 +76,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       valueSignType: {
         id: ''
       },
-      operandTypeList: []
+      operandTypeList: [],
+      units: []
     }
   ];
   selectedProcessDimensionalPropertyList = [];
@@ -151,6 +159,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       // tslint:disable-next-line:max-line-length
       const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
       this.initForm(processProfile);
+      this.materialChanged(true);
       this.spinner.hide();
     }
   }
@@ -161,6 +170,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     // Loop over them and prevent submission
     const validation = Array.prototype.filter.call(forms, (form) => {
       form.addEventListener('submit', (event) => {
+        this.submitClicked = true;
+        this.checkInputValidationInTabs();
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
@@ -173,14 +184,52 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  getEquipment = () => this.form.value.equipment != null ? [this.form.value.equipment] : [];
+  getMaterials = () => this.form.value.materialList || [];
+
+  checkInputValidationInTabs() {
+    const dimensionalPropertyListStatus = [];
+    const materialCharacteristicListStatus = [];
+    this.selectedProcessDimensionalPropertyList.map((row, index) => {
+      if (
+        row.operatorType.id === '' ||
+        row.processDimensionalPropertyType.id === '' ||
+        row.unitType.id === '' ||
+        row.value === ''
+      ) {
+        dimensionalPropertyListStatus.push(false);
+      } else {
+        dimensionalPropertyListStatus.push(true);
+      }
+
+    });
+    this.selectedProcessMaterialCharacteristicList.map(row => {
+      if (
+        row.operatorType.id === '' ||
+        row.processMaterialCharacteristicType.id === '' ||
+        row.unitType.id === '' ||
+        row.value === ''
+      ) {
+        materialCharacteristicListStatus.push(false);
+      } else {
+        materialCharacteristicListStatus.push(true);
+      }
+    });
+
+    this.tabErrors.processDimensionalProperty = dimensionalPropertyListStatus.filter(x => x === false).length > 0;
+    this.tabErrors.processMaterialCharacteristic = materialCharacteristicListStatus.filter(x => x === false).length > 0;
+
+
+  }
+
   onPropertyChange(conditionId, index, section) {
     let signTypeId = null;
     if (section === 'Process Parameters') {
-      // tslint:disable-next-line:max-line-length
       const operand = this.processParameterList.filter(condition => condition.id == conditionId)[0];
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessParameterList[index].operandTypeList = options;
+      this.selectedProcessParameterList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -192,11 +241,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       };
 
     } else if (section === 'Process Dimensional Properties') {
-      // tslint:disable-next-line:max-line-length
       const operand = this.processDimensionalPropertyList.filter(condition => condition.id == conditionId)[0];
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessDimensionalPropertyList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessDimensionalPropertyList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -212,6 +262,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       const operandTypeName = operand ? operand.operandType.name : null;
       const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
+      // tslint:disable-next-line:max-line-length
+      this.selectedProcessMaterialCharacteristicList[index].units = this.units.filter(unit => unit.measurementType.id == operand.measurementType.id);
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -246,7 +298,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
@@ -268,7 +321,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
@@ -290,7 +344,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
             valueSignType: {
               id: ''
             },
-            operandTypeList: []
+            operandTypeList: [],
+            units: []
           }
         );
         break;
@@ -331,6 +386,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   toggleTab(tab, tabName) {
+    this.checkInputValidationInTabs();
     this.activeTab = tab;
     this.activeTabName = tabName;
   }
@@ -381,11 +437,42 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
-        this.materials = x.machineServingMaterialList;
+        this.materials = [{ id: 'all-materials', material: { name: 'All Materials' } }, ...x.machineServingMaterialList];
         this.filteredProcessParameterList = this.processParameterList.filter(item => item.processType.name == x.equipment.processTypeName);
       }
     });
   }
+  materialChanged(editScreen = false) {
+    const materialList = this.form.value.materialList;
+    if (materialList.length) {
+
+      if (editScreen && materialList.length == this.materials.length - 1) {
+        this.form.setValue({
+          ...this.form.value,
+          materialList: ['all-materials']
+        });
+      } else {
+        const lastInput = materialList[materialList.length - 1];
+        if (lastInput === 'all-materials') {
+          this.form.setValue({
+            ...this.form.value,
+            materialList: ['all-materials']
+          });
+        } else {
+          if (materialList.includes('all-materials')) {
+            const startIndex = materialList.indexOf('all-materials');
+            const frontSlice = materialList.slice(0, startIndex);
+            const endSlice = materialList.slice(startIndex + 1);
+            this.form.setValue({
+              ...this.form.value,
+              materialList: [...frontSlice, ...endSlice]
+            });
+          }
+        }
+      }
+    }
+  }
+
 
   initForm(processProfile) {
     this.form.setValue({
@@ -426,10 +513,22 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  getProperMaterialList() {
+    const materialList = this.form.value.materialList;
+    if (materialList.length) {
+      if (materialList.includes('all-materials')) {
+        const materials = this.materials.map(x => new Object({ machineServingMaterial: { id: x.id } }));
+        return materials.filter((mat: any) => mat.machineServingMaterial.id !== 'all-materials');
+      }
+      return this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } }));
+    }
+    return [];
+  }
+
   prepareData() {
     const postData = {
       name: this.form.value.name || 'Process Profile - ' + this.getRandomString(7),
-      processMachineServingMaterialList: this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } })),
+      processMachineServingMaterialList: [...this.getProperMaterialList()],
       // machineServingMaterial: { id: this.form.value.materialList },
       processParameterList: [...this.selectedProcessParameterList],
       processDimensionalPropertyList: [...this.selectedProcessDimensionalPropertyList],
