@@ -243,7 +243,7 @@ export class ShippingComponent implements OnInit {
     this.spineer.show();
     try {
       await this.shippingService.deleteShipping(this.userService.getVendorInfo().id, this.selectedShipping.id).toPromise();
-      this.toastr.success(this.selectedShipping.name + ' is deleted.');
+      this.toastr.success(this.selectedShipping.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedShipping.shippingProvider.name + ' delete failed. Please try again later.');
       console.log(e);

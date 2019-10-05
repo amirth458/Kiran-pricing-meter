@@ -324,26 +324,26 @@ export class BasicDetailsComponent implements OnInit, AfterViewChecked, OnDestro
       if (this.vendorId > 0) {
         try {
           const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
-          this.toastr.success(this.detailForm.value.name + ' is updated Successfully');
+          this.toastr.success('Corporate details updated Successfully');
           this.store.dispatch({
             type: AppTypes.UpdateVendorInfo,
             payload: res
           });
         } catch (e) {
-          this.toastr.error('We are sorry, ' + this.detailForm.value.name + ' update failed. Please try again later.');
+          this.toastr.error('We are sorry, Corporate details update failed. Please try again later.');
         } finally {
           this.spineer.hide();
         }
       } else {
         try {
           const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
-          this.toastr.success(this.detailForm.value.name + ' is created Successfully');
+          this.toastr.success('Corporate details created Successfully');
           this.store.dispatch({
             type: AppTypes.CreateVendorInfo,
             payload: res
           });
         } catch (e) {
-          this.toastr.error('We are sorry, ' + this.detailForm.value.name + ' creation failed. Please try again later.');
+          this.toastr.error('We are sorry, Corporate details creation failed. Please try again later.');
         } finally {
           this.spineer.hide();
         }
