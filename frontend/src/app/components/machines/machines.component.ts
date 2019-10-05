@@ -270,7 +270,7 @@ export class MachinesComponent implements OnInit {
     this.spineer.show();
     try {
       await this.machineService.deleteMachine(this.userService.getVendorInfo().id, this.selectedMachine.id).toPromise();
-      this.toastr.success(this.selectedMachine.name + ' is deleted.');
+      this.toastr.success(this.selectedMachine.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedMachine.name + ' delete failed. Please try again later.');
       console.log(e);

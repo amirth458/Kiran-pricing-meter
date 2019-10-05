@@ -386,7 +386,7 @@ export class FacilityComponent implements OnInit {
     this.spineer.show();
     try {
       await this.facilityService.deleteFacility(this.vendorId, this.selectedFacility.id).toPromise();
-      this.toastr.success(this.selectedFacility.name + ' is deleted.');
+      this.toastr.success(this.selectedFacility.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
     } finally {

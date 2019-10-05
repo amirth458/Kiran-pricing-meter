@@ -131,7 +131,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
 
       this.shippingService.createShipping(vendorId, shipping).subscribe(res => {
         const gotoURL = `/profile/vendor/shipping`;
-        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + carrierName + '" is created.' } } });
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + carrierName + '" created.' } } });
         this.spineer.hide();
       }, error => {
         this.toastr.error('We are sorry, ' +  carrierName + ' creation failed. Please try again later.');
@@ -141,7 +141,7 @@ export class ShippingItemComponent implements OnInit, AfterViewChecked {
     } else {
       this.shippingService.updateShipping(vendorId, this.shippingId, shipping).subscribe(res => {
         const gotoURL = `/profile/vendor/shipping`;
-        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + carrierName + '" is updated.' } } });
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + carrierName + '" updated.' } } });
         this.spineer.hide();
       }, error => {
         this.toastr.error('We are sorry, ' +  carrierName + ' update failed. Please try again later.');

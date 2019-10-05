@@ -258,7 +258,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
         try {
           await this.machineService.createMachine(vendorId, postData).toPromise();
           const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" is created.' } } });
+          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" created.' } } });
         } catch (e) {
           this.toastr.error('We are sorry, ' +  postData.name + ' creation failed. Please try again later.');
           this.error = e.error.message;
@@ -272,7 +272,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
         try {
           await this.machineService.updateMachine(vendorId, this.machineId, postData).toPromise();
           const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" is updated.' } } });
+          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" updated.' } } });
         } catch (e) {
           this.toastr.error('We are sorry, ' +  postData.name + ' update failed. Please try again later.');
           this.error = e.error.message;

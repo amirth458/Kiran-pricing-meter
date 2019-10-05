@@ -282,7 +282,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         await this.facilityService.createFacility(this.vendorId, facility).toPromise();
         this.deleteRemovedFiles(userId);
         const gotoURL = `/profile/vendor/facilities`;
-        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + facilityName + '" is created.' } } });
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + facilityName + '" created.' } } });
       } catch (e) {
         this.toastr.error('We are sorry, ' + facilityName + ' creation failed. Please try again later.');
         this.error = e.error.message;
@@ -296,7 +296,7 @@ export class FacilityItemComponent implements OnInit, AfterViewChecked {
         await this.facilityService.updateFacility(this.vendorId, this.facilityId, facility).toPromise();
         this.deleteRemovedFiles(userId);
         const gotoURL = `/profile/vendor/facilities`;
-        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + facilityName + '" is updated.' } } });
+        this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + facilityName + '" updated.' } } });
       } catch (e) {
         this.toastr.error('We are sorry, ' + facilityName + ' update failed. Please try again later.');
         this.error = e.error.message;
