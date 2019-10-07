@@ -26,6 +26,7 @@ import { RegisterActionBarComponent } from './common/register-action-bar/registe
 import { RegisterVendorComponent } from './components/register-vendor/register-vendor.component';
 import { RegisterMachineComponent } from './components/register-machine/register-machine.component';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { ComponentsModule } from './components/components.module';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -50,6 +51,7 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
       extendedTimeOut: 1000,
       easing: 'ease-in',
     }),
+    ComponentsModule,
   ],
   declarations: [
     LoginComponent,

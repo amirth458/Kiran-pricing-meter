@@ -1,11 +1,17 @@
 <div class="center-container">
 	<div class=" col-sm-12 col-md-12 col-lg-10 col-xl-8">
-		<div style="width: 100%; padding-top: 60px; padding-bottom: 40px;display: flex; justify-content: center">
+		<div style="width: 100%; padding-top: 60px; padding-bottom:20px;display: flex; justify-content: center">
 			<div class="d-flex flex-column logo" style="width: 230px">
 				<img src="assets/image/blue-logo.png" width="230px" alt="3Diligent Logo">
 				<span>Shop Management</span>
 			</div>
 		</div>
+		<div style="width: 100%; display: flex; justify-content: center">
+				<span>Are you already member? </span> &nbsp;
+				<span class="action-button" style="text-align: right; color:  var(--theme-light-green);">
+					<a href="/login">Sign in</a>
+				</span>
+			</div>
 	</div>
 </div>
 <app-register-action-bar [menus]="actionbarMenu" [(selectedTab)]="selectedTab"></app-register-action-bar>

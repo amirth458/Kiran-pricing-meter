@@ -194,7 +194,6 @@ export class MachinesComponent implements OnInit {
       this.configureColumnDefs();
     }
 
-
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,

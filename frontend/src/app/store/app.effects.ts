@@ -76,7 +76,7 @@ import { UserService } from '../service/user.service';
       return {
         type: AppTypes.UpdateState,
         payload: {
-          [AppFields.RegisterStep]: res
+          [AppFields.RegisterStatus]: res
         }
       };
     })

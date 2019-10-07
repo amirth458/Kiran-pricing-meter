@@ -129,33 +129,9 @@
             </ng-select>
           </div>
         </div>
-        <div class="form-row ">
-          <div class="form-group theme upload-section">
-            <label *ngIf="vendorId > 0">Certification Documents</label>
-            <div *ngIf="vendorId > 0">
-              <button type="button" class="btn btn-primary theme" (click)="onOpenFile($event)"
-                style="width: 120px; margin-left: 15px;">
-                <i class="fa fa-upload"></i>
-                Upload
-              </button>
-            </div>
-            <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile"
-              accept="application/pdf" />
-          </div>
-          <div style="flex-grow: 1">
-            <ul class="uploaded_files" *ngIf="vendorId > 0">
-              <li *ngFor="let item of certDocuments">
-                <a href="{{item.name}}" target="_blank">
-                  <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp;
-                  <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
-                </a>
-                <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fa fa-times" color="red"
-                    aria-hidden="true"></i></button>
-              </li>
-            </ul>
-          </div>
-          <div class="form-group col-md-2 button-section">
-            <button type="submit" class="btn btn-primary theme">Save</button>
+        <div class="form-row " style="justify-content: center">
+          <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-primary theme">Continue</button>
           </div>
         </div>
       </form>

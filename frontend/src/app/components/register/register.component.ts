@@ -94,8 +94,10 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     };
     this.userService.setRegisterUserInfo(user);
     this.store.dispatch({
-      type: AppTypes.RegsiterStepInfo,
-      payload: 1
+      type: AppTypes.RegisterStatus,
+      payload: {
+        userDetails: 1,
+      }
     });
   }
 }
