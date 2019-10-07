@@ -246,7 +246,11 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       materialList.map(selectedMaterial => {
         this.materials.map(material => {
           if (material.id == selectedMaterial.machineServingMaterial.id) {
-            name += material.material.name + ', ';
+            if (name.length > 1) {
+              name += ', ' + material.material.name;
+            } else {
+              name += material.material.name;
+            }
           }
         });
       });
@@ -267,10 +271,18 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
         const parameterName = parameter.name;
         const operatorSymbol = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0].symbol;
         const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
-        if (operatorSymbol == '=') {
-          name += ' ' + row.value + ' ' + unit.symbol + ' ' + parameterName + ', ';
+        if (name.length > 1) {
+          if (operatorSymbol == '=') {
+            name += ', ' + row.value + ' ' + unit.symbol + ' ' + parameterName;
+          } else {
+            name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+          }
         } else {
-          name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName + ', ';
+          if (operatorSymbol == '=') {
+            name += row.value + ' ' + unit.symbol + ' ' + parameterName;
+          } else {
+            name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+          }
         }
       }
     });
