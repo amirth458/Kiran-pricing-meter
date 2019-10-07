@@ -4,8 +4,10 @@
   </div>
 
   <div class="title-bar">
-    <h4>{{parameterNickName}}</h4>
-    <span>{{profileName}}</span>
+      <!-- Equipment name – Material name – Parameter set nick name -->
+    <h4>{{equipmentName}}<span *ngIf="equipmentName.length"> - </span>{{materialName}}<span *ngIf="materialName.length"> - </span>{{parameterNickName}}</h4>
+    <!-- parameter details -->
+    <span>{{parameterDetails}}</span>
   </div>
   <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">

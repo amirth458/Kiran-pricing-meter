@@ -61,6 +61,13 @@ export class ProcessProfileComponent implements OnInit {
       }
     },
     {
+      name: 'Materials', checked: false,
+      field: 'materials', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
       name: 'Process Type', checked: false,
       field: 'processProfileType.name', query: {
         type: '',
@@ -81,6 +88,9 @@ export class ProcessProfileComponent implements OnInit {
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
+    },
+    {
+      name: 'Materials', checked: true, field: 'materials'
     },
     {
       name: 'Process Type', checked: true, field: 'processProfileType.name'
@@ -112,6 +122,41 @@ export class ProcessProfileComponent implements OnInit {
         const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.name : '';
         return value;
       },
+
+    },
+    {
+      headerName: 'Materials', field: 'materials',
+      hide: false, sortable: true, filter: false,
+      cellRenderer(param): any {
+        let value = '';
+        if (param.data.processMachineServingMaterialList[0]) {
+          // tslint:disable-next-line:max-line-length
+          param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
+            if (index == 0) {
+              value += material.name;
+            } else {
+              value += ', ' + material.name;
+            }
+          });
+        }
+
+        return value;
+      },
+      valueGetter: (param) => {
+        let value = '';
+        if (param.data.processMachineServingMaterialList[0]) {
+          // tslint:disable-next-line:max-line-length
+          param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
+            if (index == 0) {
+              value += material.name;
+            } else {
+              value += ', ' + material.name;
+            }
+          });
+        }
+
+        return value;
+      }
 
     },
     {
@@ -468,17 +513,9 @@ export class ProcessProfileComponent implements OnInit {
     });
 
     availableColumns.map(x => {
-      // this.searchColumns.push({
-      //   name: x.name, checked: false,
-      //   field: x.name.replace(/ /g, ''),
-      //   query: {
-      //     type: '',
-      //     filter: '',
-      //   }
-      // });
       if (visibleColumns < 3) {
         this.filterColumns.push({
-          name: x.name, checked: true,
+          name: x.name, checked: false,
           field: x.name.replace(/ /g, '')
         });
         visibleColumns++;
