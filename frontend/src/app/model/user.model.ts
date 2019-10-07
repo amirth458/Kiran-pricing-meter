@@ -1,3 +1,5 @@
+import { NumberFilter } from 'ag-grid-community';
+
 export interface User {
   name: string;
   email: string;
@@ -15,5 +17,11 @@ export interface RegisterUser {
   phone: string;
   company: string;
   department: string;
+}
+
+export interface RegisterStatus {
+  userDetails: number;
+  vendorDetails: number;
+  machineDetails: number;
 }
 
