@@ -84,6 +84,7 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
   exports: [
     NgxSpinnerModule,
     ActionBarComponent,
+    AgGridModule,
     ActionCellRendererComponent,
     BasicDetailsComponent,
     CarrierCellRendererComponent,

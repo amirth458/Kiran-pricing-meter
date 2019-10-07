@@ -1,0 +1,16 @@
+<div class="center-container">
+  <div class=" col-sm-12 col-md-12 col-lg-10 col-xl-8">
+  <div class="wrapper shadow ">
+    <ul>
+      <li *ngFor="let menu of menus">
+        <div>
+          <span (click)="selectTab(menu)" class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
+          <span class="icon" data-toggle="tooltip" data-placement="right" [title]="menu.tooltipMessage">
+            <i class="fas fa-question-circle"></i>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>

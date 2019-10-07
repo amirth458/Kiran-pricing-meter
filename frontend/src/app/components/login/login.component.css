@@ -52,7 +52,7 @@
   color: var(--theme-light-green);
 }
 
-.no-member-label:hover,
+.no-member-label join:hover,
 .join:hover {
   cursor: pointer;
   text-decoration: underline;

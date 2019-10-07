@@ -122,4 +122,20 @@ export class UserService {
   getVendorInfo() {
     return JSON.parse(localStorage.getItem('vendor'));
   }
+
+  getRegisterUserInfo() {
+    return JSON.parse(localStorage.getItem('RegisterUser'));
+  }
+
+  setRegisterUserInfo(user) {
+    localStorage.setItem('RegisterUser', JSON.stringify(user));
+  }
+
+  getRegisterVendorInfo() {
+    return JSON.parse(localStorage.getItem('RegisterVendor'));
+  }
+
+  setRegisterVendorInfo(vendor) {
+    localStorage.setItem('RegisterVendor', JSON.stringify(vendor));
+  }
 }

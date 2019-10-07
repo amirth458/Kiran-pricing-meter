@@ -13,6 +13,8 @@ import { AppRoutingModule } from './app-routing.module';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+import { UnapprovedComponent } from './components/unapproved/unapproved.component';
+import { RegisterComponent } from './components/register/register.component';
 
 import { FooterMenuComponent } from './common/footer-menu/footer-menu.component';
 
@@ -20,7 +22,11 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.reducer';
 import { AppEffects } from './store/app.effects';
-
+import { RegisterActionBarComponent } from './common/register-action-bar/register-action-bar.component';
+import { RegisterVendorComponent } from './components/register-vendor/register-vendor.component';
+import { RegisterMachineComponent } from './components/register-machine/register-machine.component';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { ComponentsModule } from './components/components.module';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -32,7 +38,7 @@ import { AppEffects } from './store/app.effects';
     HttpClientModule,
     NgxSpinnerModule,
     // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
-
+    InternationalPhoneNumberModule,
     StoreModule.forRoot({ app: appReducer }),
     EffectsModule.forRoot([ AppEffects ]),
     ToastrModule.forRoot({
@@ -45,11 +51,17 @@ import { AppEffects } from './store/app.effects';
       extendedTimeOut: 1000,
       easing: 'ease-in',
     }),
+    ComponentsModule,
   ],
   declarations: [
     LoginComponent,
+    UnapprovedComponent,
     AppComponent,
-    FooterMenuComponent
+    FooterMenuComponent,
+    RegisterActionBarComponent,
+    RegisterComponent,
+    RegisterVendorComponent,
+    RegisterMachineComponent
   ],
   bootstrap: [AppComponent]
 })

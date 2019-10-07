@@ -8,7 +8,8 @@ export { switchMap, map } from 'rxjs/operators';
 export enum AppFields {
   App = 'app',
   UserInfo = 'user-info',
-  VendorInfo = 'vendor-info'
+  VendorInfo = 'vendor-info',
+  RegisterStatus = 'register-status',
 }
 
 export interface AppState {
@@ -25,6 +26,7 @@ export enum AppTypes {
   CreateVendorInfo = 'create-vendor-info',
   UpdateVendorInfo = 'update-vendor-info',
   GetUserInfo = 'get-user-info',
+  RegisterStatus = 'get-register-status'
 }
 
 export interface UpdateState { type: AppTypes.UpdateState; payload: any; }
@@ -32,5 +34,6 @@ export interface CreateVendorInfo { type: AppTypes.CreateVendorInfo; payload: an
 export interface UpdateVendorInfo { type: AppTypes.UpdateVendorInfo; payload: any; }
 export interface GetVendorInfo { type: AppTypes.GetVendorInfo; }
 export interface GetUserInfo { type: AppTypes.GetUserInfo; }
+export interface GetRegisterStatus { type: AppTypes.RegisterStatus; payload: any;  }
 
 export type AppAction = UpdateState;
