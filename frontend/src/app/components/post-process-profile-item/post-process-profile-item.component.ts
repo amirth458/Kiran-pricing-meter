@@ -218,6 +218,65 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     return name;
   }
 
+  get processActionName() {
+    return this.form.value.postProcessAction || '';
+  }
+
+  get equipmentName() {
+    let name = '';
+    const equipmentId = this.form.value.equipment || '';
+    if (equipmentId) {
+      this.equipments.map(x => {
+        if (x.id.toString() === equipmentId) {
+          name += x.equipment.name;
+        }
+      });
+    }
+    return name;
+  }
+
+  get materialName() {
+    let name = '';
+    let materialList = [];
+
+    if (this.form.value.materialList) {
+      materialList = this.getProperMaterialList();
+    }
+    if (materialList.length) {
+      materialList.map(selectedMaterial => {
+        this.materials.map(material => {
+          if (material.id == selectedMaterial.machineServingMaterial.id) {
+            name += material.material.name + ', ';
+          }
+        });
+      });
+    }
+    return name;
+  }
+
+  get parameterDetails() {
+    let name = '';
+    this.selectedProcessParameterList.map(row => {
+      if (
+        row.operatorType.id &&
+        row.processParameterType.id &&
+        row.unitType.id &&
+        row.value
+      ) {
+        const parameter = this.processParameterList.filter(item => item.id == row.processParameterType.id)[0];
+        const parameterName = parameter.name;
+        const operatorSymbol = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0].symbol;
+        const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
+        if (operatorSymbol == '=') {
+          name += ' ' + row.value + ' ' + unit.symbol + ' ' + parameterName + ', ';
+        } else {
+          name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName + ', ';
+        }
+      }
+    });
+    return name;
+  }
+
   checkInputValidationInTabs() {
     const dimensionalPropertyListStatus = [];
     const materialCharacteristicListStatus = [];
@@ -261,6 +320,18 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     this.tabErrors.processMaterialCharacteristic = materialCharacteristicListStatus.filter(x => x === false).length > 0;
 
 
+  }
+
+  getProperMaterialList() {
+    const materialList = this.form.value.materialList;
+    if (materialList.length) {
+      if (materialList.includes('all-materials')) {
+        const materials = this.materials.map(x => new Object({ machineServingMaterial: { id: x.id } }));
+        return materials.filter((mat: any) => mat.machineServingMaterial.id !== 'all-materials');
+      }
+      return this.form.value.materialList.map(x => new Object({ machineServingMaterial: { id: x } }));
+    }
+    return [];
   }
 
   getProperOperands(conditionId, index, section) {

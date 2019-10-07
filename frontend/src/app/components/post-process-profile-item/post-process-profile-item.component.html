@@ -5,8 +5,13 @@
   </div>
 
   <div class="title-bar">
-    <h4>{{parameterNickName}}</h4>
-    <span>{{profileName}}</span>
+    <!-- Equipment name – Material name – Process Action - Parameter set nick name -->
+    <h4>
+      {{equipmentName}}<span *ngIf="equipmentName.length"> - </span>{{materialName}}<span *ngIf="materialName.length"> -
+      </span>{{processActionName}}<span *ngIf="processActionName"> - </span>{{parameterNickName}}
+    </h4>
+    <!-- parameter details -->
+    <span>{{parameterDetails}}</span>
   </div>
 
   <form [formGroup]="form" novalidate vali class="needs-validation" (submit)="save($event)">
@@ -17,7 +22,7 @@
 
       <div class="form-group theme col-md-6">
         <label for="asset">Equipment/Asset</label>
-        <select required (change)="equipmentChanged()" id="equipment" name="equipment" formControlName="equipment"
+        <select required formControlName="equipment" (change)="equipmentChanged()" id="equipment" name="equipment"
           class="form-control">
           <option selected value=''>Choose...</option>
           <option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</option>

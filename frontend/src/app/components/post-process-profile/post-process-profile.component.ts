@@ -450,7 +450,7 @@ export class PostProcessProfileComponent implements OnInit {
     availableColumns.map(x => {
       if (visibleColumns < 3) {
         this.filterColumns.push({
-          name: x.name, checked: true,
+          name: x.name, checked: false,
           field: x.name.replace(/ /g, '')
         });
         visibleColumns++;
