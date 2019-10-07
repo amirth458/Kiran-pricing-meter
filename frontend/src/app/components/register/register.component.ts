@@ -39,7 +39,6 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     if (user) {
       this.isLoadedUser = true;
       this.initUser(user);
-      
     }
   }
   ngAfterViewChecked(): void {
