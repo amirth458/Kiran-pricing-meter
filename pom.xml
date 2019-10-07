@@ -167,7 +167,7 @@
 							<executable>ng</executable>
 							<arguments>
 								<argument>build</argument>
-								<argument>--configuration=staging</argument>
+								<argument>--configuration=development</argument>
 								<argument>--base-href</argument>
 								<argument>/</argument>
 							</arguments>
