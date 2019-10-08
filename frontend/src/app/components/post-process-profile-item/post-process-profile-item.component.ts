@@ -276,15 +276,15 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
           if (name.length > 1) {
             if (operatorSymbol == '=') {
-              name += ', ' + row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += ', ' + row.value + ' ' + unit.displayName + ' ' + parameterName;
             } else {
-              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
             }
           } else {
             if (operatorSymbol == '=') {
-              name += row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += row.value + ' ' + unit.displayName + ' ' + parameterName;
             } else {
-              name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
             }
           }
         }

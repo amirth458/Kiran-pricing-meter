@@ -274,15 +274,15 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
           if (name.length > 1) {
             if (operatorSymbol == '=') {
-              name += ', ' + row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += ', ' + row.value + ' ' + unit.displayName + ' ' + parameterName;
             } else {
-              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
             }
           } else {
             if (operatorSymbol == '=') {
-              name += row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += row.value + ' ' + unit.displayName + ' ' + parameterName;
             } else {
-              name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+              name += operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
             }
           }
         }
@@ -671,7 +671,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     this.submitActive = false;
     setTimeout(async () => {
-      if (this.form.valid && this.isFormValid) {
+      this.checkInputValidationInTabs();
+      if (this.form.valid &&
+        this.isFormValid &&
+        !this.tabErrors.processParameter &&
+        !this.tabErrors.processDimensionalProperty &&
+        !this.tabErrors.processMaterialCharacteristic) {
         this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
