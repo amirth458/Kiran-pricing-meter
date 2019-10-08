@@ -267,19 +267,23 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       ) {
         const parameter = this.processParameterList.filter(item => item.id == row.processParameterType.id)[0];
         const parameterName = parameter.name;
-        const operatorSymbol = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0].symbol;
+        const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0];
         const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
-        if (name.length > 1) {
-          if (operatorSymbol == '=') {
-            name += ', ' + row.value + ' ' + unit.symbol + ' ' + parameterName;
+        if (parameter && unit && operator) {
+          const operatorSymbol = operator.symbol;
+
+          if (name.length > 1) {
+            if (operatorSymbol == '=') {
+              name += ', ' + row.value + ' ' + unit.displayName + ' ' + parameterName;
+            } else {
+              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
+            }
           } else {
-            name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
-          }
-        } else {
-          if (operatorSymbol == '=') {
-            name += row.value + ' ' + unit.symbol + ' ' + parameterName;
-          } else {
-            name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+            if (operatorSymbol == '=') {
+              name += row.value + ' ' + unit.displayName + ' ' + parameterName;
+            } else {
+              name += operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
+            }
           }
         }
 
@@ -348,6 +352,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       // tslint:disable-next-line:max-line-length
       this.selectedProcessParameterList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessParameterList[index].units.filter(u => u.id == this.selectedProcessParameterList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessParameterList[index].unitType.id = '';
+      }
+
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
       } else {
@@ -365,6 +375,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       // tslint:disable-next-line:max-line-length
       this.selectedProcessDimensionalPropertyList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessDimensionalPropertyList[index].units.filter(u => u.id == this.selectedProcessDimensionalPropertyList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessDimensionalPropertyList[index].unitType.id = '';
+      }
+
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
       } else {
@@ -381,6 +397,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
       // tslint:disable-next-line:max-line-length
       this.selectedProcessMaterialCharacteristicList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
+
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessMaterialCharacteristicList[index].units.filter(u => u.id == this.selectedProcessMaterialCharacteristicList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessMaterialCharacteristicList[index].unitType.id = '';
+      }
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -667,7 +689,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     this.submitActive = false;
     setTimeout(async () => {
-      if (this.form.valid && this.isFormValid) {
+      this.checkInputValidationInTabs();
+      if (this.form.valid &&
+        this.isFormValid &&
+        !this.tabErrors.processParameter &&
+        !this.tabErrors.processDimensionalProperty &&
+        !this.tabErrors.processMaterialCharacteristic) {
         this.error = '';
         const vendorId = this.userService.getVendorInfo().id;
         const postData = this.prepareData();
