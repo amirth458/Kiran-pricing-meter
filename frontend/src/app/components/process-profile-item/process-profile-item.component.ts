@@ -352,6 +352,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       // tslint:disable-next-line:max-line-length
       this.selectedProcessParameterList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessParameterList[index].units.filter(u => u.id == this.selectedProcessParameterList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessParameterList[index].unitType.id = '';
+      }
+
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
       } else {
@@ -369,6 +375,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       // tslint:disable-next-line:max-line-length
       this.selectedProcessDimensionalPropertyList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessDimensionalPropertyList[index].units.filter(u => u.id == this.selectedProcessDimensionalPropertyList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessDimensionalPropertyList[index].unitType.id = '';
+      }
+
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
       } else {
@@ -385,6 +397,12 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
       // tslint:disable-next-line:max-line-length
       this.selectedProcessMaterialCharacteristicList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
+
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessMaterialCharacteristicList[index].units.filter(u => u.id == this.selectedProcessMaterialCharacteristicList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessMaterialCharacteristicList[index].unitType.id = '';
+      }
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;

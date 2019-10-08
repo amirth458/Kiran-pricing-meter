@@ -260,7 +260,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
   get parameterDetails() {
     let name = '';
-    this.selectedProcessParameterList.map(row => {
+    this.selectedProcessParameterList.map((row, index) => {
       if (
         row.operatorType.id &&
         row.processParameterType.id &&
@@ -362,6 +362,12 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       // tslint:disable-next-line:max-line-length
       this.selectedProcessParameterList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessParameterList[index].units.filter(u => u.id == this.selectedProcessParameterList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessParameterList[index].unitType.id = '';
+      }
+
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
       } else {
@@ -380,6 +386,12 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       // tslint:disable-next-line:max-line-length
       this.selectedProcessDimensionalPropertyList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
 
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessDimensionalPropertyList[index].units.filter(u => u.id == this.selectedProcessDimensionalPropertyList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessDimensionalPropertyList[index].unitType.id = '';
+      }
+
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
       } else {
@@ -396,6 +408,12 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       this.selectedProcessMaterialCharacteristicList[index].operandTypeList = options;
       // tslint:disable-next-line:max-line-length
       this.selectedProcessMaterialCharacteristicList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
+
+      // tslint:disable-next-line:max-line-length
+      const isSelectedUnitValid = this.selectedProcessMaterialCharacteristicList[index].units.filter(u => u.id == this.selectedProcessMaterialCharacteristicList[index].unitType.id).length > 0;
+      if (!isSelectedUnitValid) {
+        this.selectedProcessMaterialCharacteristicList[index].unitType.id = '';
+      }
 
       if (operandTypeName == 'absolute') {
         signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
@@ -641,6 +659,30 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     // tslint:disable-next-line:max-line-length
     this.selectedProcessDimensionalPropertyList = [...processProfile.processDimensionalPropertyList.map(x => { x.operandTypeList = []; return x; })];
 
+    // this.selectedProcessParameterList.map((row, index) => {
+    //   console.log(row.id);
+    //   const isPropertyValid = this.filteredProcessParameterList.filter(param => param.id == row.id).length > 0
+    //   if (!isPropertyValid) {
+    //     this.selectedProcessParameterList[index].processParameterType.id = '';
+    //   }
+    // });
+
+
+    // this.selectedProcessDimensionalPropertyList.map((row, index) => {
+    //   const isPropertyValid = this.filteredProcessDimensionalPropertyList.filter(param => param.id == row.id).length > 0
+    //   if (!isPropertyValid) {
+    //     this.selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id = '';
+    //   }
+    // });
+
+    // this.selectedProcessMaterialCharacteristicList.map((row, index) => {
+    //   const isPropertyValid = this.filteredProcessMaterialCharacteristicList.filter(param => param.id == row.id).length > 0
+    //   if (!isPropertyValid) {
+    //     this.selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id = '';
+    //   }
+    // });
+
+
     this.selectedProcessParameterList.map((parameter, index) => {
       this.getProperOperands(parameter.processParameterType.id, index, 'Post-Process Parameters');
     });
@@ -674,6 +716,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   save(event) {
     event.preventDefault();
     this.submitActive = false;
+    console.log(this.form.value)
     setTimeout(async () => {
       this.checkInputValidationInTabs();
       if (
