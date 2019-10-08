@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -27,6 +27,7 @@ import { RegisterVendorComponent } from './components/register-vendor/register-v
 import { RegisterMachineComponent } from './components/register-machine/register-machine.component';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { ComponentsModule } from './components/components.module';
+import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -40,7 +41,7 @@ import { ComponentsModule } from './components/components.module';
     // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
     InternationalPhoneNumberModule,
     StoreModule.forRoot({ app: appReducer }),
-    EffectsModule.forRoot([ AppEffects ]),
+    EffectsModule.forRoot([AppEffects]),
     ToastrModule.forRoot({
       closeButton: true,
       newestOnTop: false,
@@ -62,6 +63,9 @@ import { ComponentsModule } from './components/components.module';
     RegisterComponent,
     RegisterVendorComponent,
     RegisterMachineComponent
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
