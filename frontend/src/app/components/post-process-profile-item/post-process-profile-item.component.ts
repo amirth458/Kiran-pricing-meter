@@ -269,19 +269,23 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       ) {
         const parameter = this.processParameterList.filter(item => item.id == row.processParameterType.id)[0];
         const parameterName = parameter.name;
-        const operatorSymbol = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0].symbol;
+        const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0];
         const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
-        if (name.length > 1) {
-          if (operatorSymbol == '=') {
-            name += ', ' + row.value + ' ' + unit.symbol + ' ' + parameterName;
+        if (parameter && unit && operator) {
+          const operatorSymbol = operator.symbol;
+
+          if (name.length > 1) {
+            if (operatorSymbol == '=') {
+              name += ', ' + row.value + ' ' + unit.symbol + ' ' + parameterName;
+            } else {
+              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+            }
           } else {
-            name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
-          }
-        } else {
-          if (operatorSymbol == '=') {
-            name += row.value + ' ' + unit.symbol + ' ' + parameterName;
-          } else {
-            name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+            if (operatorSymbol == '=') {
+              name += row.value + ' ' + unit.symbol + ' ' + parameterName;
+            } else {
+              name += operatorSymbol + ' ' + + row.value + ' ' + unit.symbol + ' ' + parameterName;
+            }
           }
         }
       }
