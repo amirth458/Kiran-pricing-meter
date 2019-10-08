@@ -45,9 +45,9 @@
           </div>
           <div class="form-group theme col-md-3 phone">
             <label>Phone</label>
-            <international-phone-number *ngIf="vendorId === 0" formControlName="phone" placeholder="Enter phone number"
+            <international-phone-number *ngIf="isNewPhone" formControlName="phone" placeholder="Enter phone number"
               [defaultCountry]="'us'" [required]="true" name="phone_number"></international-phone-number>
-            <international-phone-number *ngIf="vendorId > 1" formControlName="phone" placeholder="Enter phone number"
+            <international-phone-number *ngIf="!isNewPhone" formControlName="phone" placeholder="Enter phone number"
               [required]="true" name="phone_number"></international-phone-number>
             <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
             <span *ngIf="!showRequired('phone', 1) && detailForm.controls.phone.status === 'INVALID'"
@@ -131,7 +131,7 @@
         </div>
         <div class="form-row " style="justify-content: center">
           <div class="form-group col-md-3">
-            <button type="submit" class="btn btn-primary theme">Continue</button>
+            <button type="button" (click)="save($event)" class="btn btn-primary theme">Continue</button>
           </div>
         </div>
       </form>

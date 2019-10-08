@@ -22,16 +22,15 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
   @ViewChild('modal') modal;
 
   selectedMachine = null;
-  facilities = [];
   equipments = [{ id: '', name: 'more than 2 characters to start search' }];
   materials = [{ id: '', name: 'more than 2 characters to start search' }];
+  allEquipments = [];
+  allMaterials = [];
   selectedMaterials = [];
-  selectedEquipment;
-  machine;
-  isNew = true;
+  selectedEquipment = 0;
   isMaterialLoading = false;
   isEquipmentLoading = false;
-
+  isUpdate = false;
   error = '';
 
   @ViewChild('materialInput') materialInput;
@@ -43,40 +42,18 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
       headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: false
     },
     {
-      headerName: 'Material', field: 'machineServingMaterialList', hide: false, sortable: true, filter: false,
+      headerName: 'Material', field: 'materialList', hide: false, sortable: true, filter: false,
       cellRenderer(params) {
         const data = params.data;
         let materials = '';
-        data.machineServingMaterialList.map((x, index) => {
+        data.materialList.map((x, index) => {
           if (index === 0) {
-            materials = x.material.name;
+            materials = x.name;
           } else {
-            materials = materials + ',' + x.material.name;
+            materials = materials + ',' + x.name;
           }
         });
-        return `
-        <div>
-        <a href="#" data-toggle="tooltip" title="${materials}">${materials}</a>
-
-        <div class="tooltip bs-tooltip-top" role="tooltip">
-          <div class="arrow"></div>
-          <div class="tooltip-inner">
-            ${materials}
-          </div>
-        </div>
-        </div>`;
-      },
-      valueGetter: (params) => {
-        const data = params.data;
-        let materials = '';
-        data.machineServingMaterialList.map((x, index) => {
-          if (index === 0) {
-            materials = x.material.name;
-          } else {
-            materials = materials + ',' + x.material.name;
-          }
-        });
-        return materials;
+        return `${materials}`;
       }
     },
     { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: false },
@@ -105,15 +82,13 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
 
   form: FormGroup = this.fb.group({
     id: [null],
-    vendorId: [null],
     name: [null, Validators.required],
     serialNumber: [null, Validators.required],
     equipment: [null, Validators.required],
     material: [null, Validators.required],
   });
 
-  machineId = null;
-
+  duplicated = 0;
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
   };
@@ -141,20 +116,10 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
       headerHeight: 35,
     };
 
-    try {
-      if (this.route.url.includes('edit')) {
-        this.isNew = false;
-        this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-        this.machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, this.machineId).toPromise();
-        this.materials = this.machine.machineServingMaterialList.map(x => x.material);
-        this.equipments = [this.machine.equipment];
-        this.initForm(this.machine);
-      }
-      this.spinner.hide();
-    } catch (e) {
-      this.spinner.hide();
+    const data = this.userService.getRegisterMachineInfo();
+    if (data) {
+      this.rowData = data;
     }
-
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
@@ -181,6 +146,9 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
           break;
         }
         rows.push(...res.content);
+        if (res.content.length < 1000) {
+          break;
+        }
         page++;
       }
       this.materials = rows;
@@ -201,6 +169,9 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
           break;
         }
         rows.push(...res.content);
+        if (res.content.length < 1000) {
+          break;
+        }
         page++;
       }
       this.equipments = rows;
@@ -210,17 +181,16 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  initForm(initValue: Machine) {
-    this.selectedMaterials = initValue.machineServingMaterialList.map(x => x.material.id) || [];
-    this.selectedEquipment = initValue.equipment.id;
+  initForm(initValue) {
+    this.materials = initValue.materialList || [];
+    this.equipments = [ initValue.equipment ];
     this.form.setValue({
       id: initValue.id,
       name: initValue.name,
-      vendorId: initValue.vendorId,
       serialNumber: initValue.serialNumber,
-      equipment: this.selectedEquipment,
-      material: this.selectedMaterials,
-    });
+      equipment: initValue.equipment.id,
+      material: this.materials.map(mat => mat.id) || []
+     });
   }
 
   ngAfterViewChecked(): void {
@@ -245,20 +215,21 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
   }
 
   editRow(event) {
-    this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
+    this.isUpdate = true;
+    this.initForm(event.data);
   }
 
-  async deleteMachine() {
+  deleteMachine() {
     const filteredData = this.rowData.filter(x => x.id !== this.selectedMachine.id);
     this.rowData = filteredData;
     this.modal.nativeElement.click();
+    this.userService.setRegisterMachineInfo(this.rowData);
+    this.isUpdate = false;
   }
 
   clearStore() {
     this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
     this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
-    // this.materials = [];
-    // this.equipments = [];
   }
 
   async onMaterialSearch(event) {
@@ -297,66 +268,113 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
   }
 
   prepareData() {
+    const arr = $('#materialInput .ng-value-label').map(function() {
+      return $(this).html();
+    }).get();
     const postData = {
       id: this.form.value.id,
-      vendorId: this.userService.getVendorInfo().id,
       name: this.form.value.name,
       serialNumber: this.form.value.serialNumber,
-      equipment: { id: this.form.value.equipment },
-      materialList: [...this.form.value.material.map((materialId) => {
-        return { id: materialId };
-      })],
-      updatedDate: '',
-      createdBy: '',
-      createdDate: '',
+      equipment: { id: this.form.value.equipment, name: $('#equipmentInput .ng-value-label').html()},
+      materialList: [...this.form.value.material.map((materialId, index) => {
+        return { id: materialId, name: arr[index]};
+      })]
     };
-
-    postData.updatedDate = new Date().toString();
-    if (this.isNew) {
-      postData.createdBy = String(this.userService.getVendorInfo().id);
-      postData.createdDate = new Date().toString();
-    } else {
-      postData.updatedDate = new Date().toString();
-    }
     return postData;
   }
 
-  async save(event) {
+  async add(event) {
     event.preventDefault();
-    if (this.form.valid) {
-      this.error = '';
-      const postData = this.prepareData();
-      const vendorId = this.userService.getVendorInfo().id;
-      if (this.isNew) {
-        this.spinner.show();
-        try {
-          await this.machineService.createMachine(vendorId, postData).toPromise();
-          const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" created.' } } });
-        } catch (e) {
-          this.toastr.error('We are sorry, ' +  postData.name + ' creation failed. Please try again later.');
-          this.error = e.error.message;
-          console.log(e);
-        } finally {
-          this.spinner.hide();
-        }
-
-      } else {
-        this.spinner.show();
-        try {
-          await this.machineService.updateMachine(vendorId, this.machineId, postData).toPromise();
-          const gotoURL = `/profile/vendor/machines`;
-          this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" updated.' } } });
-        } catch (e) {
-          this.toastr.error('We are sorry, ' +  postData.name + ' update failed. Please try again later.');
-          this.error = e.error.message;
-          console.log(e);
-        } finally {
-          this.spinner.hide();
-        }
-
-      }
+    if (!this.form.valid) {
+      return;
     }
+    this.duplicated = 0;
+    this.error = '';
+    const postData = this.prepareData();
+    if (this.isUpdate ) {
+      this.rowData = this.rowData.map((item) => {
+        if ( item.id === postData.id) {
+          return {...postData};
+        } else {
+          return {...item};
+        }
+      });
+    } else {
+      this.rowData = this.rowData.map((item, index) => {
+        return {id: index + 1, ...item};
+      });
+      postData.id = this.rowData.length + 1;
+      this.rowData = [...this.rowData, postData];
+    }
+    this.userService.setRegisterMachineInfo(this.rowData);
+    this.form.reset();
+  }
 
+  async submitUserRegisterInfo(event) {
+    this.spinner.show();
+    try {
+      const userInfo = this.userService.getRegisterUserInfo();
+      const vendorInfo = this.userService.getVendorInfo();
+
+      const reqData = {
+        email: userInfo.email,
+        password: userInfo.password,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        companyName: userInfo.company,
+        department: userInfo.department,
+        phoneNo: userInfo.phone,
+        vendor: {
+          name: vendorInfo.name,
+          vendorType: {
+              id: vendorInfo.vendorType.id
+          },
+          email: vendorInfo.email,
+          phone: vendorInfo.phone,
+          street1: vendorInfo.street1,
+          street2: vendorInfo.street2,
+          city: vendorInfo.city,
+          state: vendorInfo.state,
+          country: {
+            id: vendorInfo.country.id
+          },
+          zipCode: vendorInfo.zipCode,
+          confidentiality: {
+            id: vendorInfo.confidentiality.id
+          },
+          vendorIndustries: [
+            {
+              id: vendorInfo.vendorIndustries[0].id
+            }
+          ],
+          vendorCertificates: vendorInfo.vendorCertificates.map(cert => {
+            return {id: cert.id};
+          }) || [],
+          primaryContactFirstName: vendorInfo.primaryContactFirstName,
+          primaryContactLastName: vendorInfo.primaryContactLastName
+        },
+        machines: this.rowData.map(machine => {
+          return {
+            name: machine.name,
+            serialNumber: machine.serialNumber,
+            equipment: {
+              id: machine.equipment.id
+            },
+            materialList: machine.materialList.map(mat => {
+              return {id: mat.id};
+            }) || []
+          };
+        }) || []
+      };
+
+      const res = await this.userService.registerUser(reqData).toPromise();
+      console.log(res);
+      this.toastr.success('Corporate details updated Successfully');
+    } catch (e) {
+      console.log(e);
+      this.toastr.error('We are sorry, Corporate details update failed. Please try again later. "' + e.error.message + '"');
+    } finally {
+      this.spinner.hide();
+    }
   }
 }
