@@ -10,6 +10,7 @@ export enum AppFields {
   UserInfo = 'user-info',
   VendorInfo = 'vendor-info',
   RegisterStatus = 'register-status',
+  AuthInfo = 'auth-info',
 }
 
 export interface AppState {
@@ -26,7 +27,8 @@ export enum AppTypes {
   CreateVendorInfo = 'create-vendor-info',
   UpdateVendorInfo = 'update-vendor-info',
   GetUserInfo = 'get-user-info',
-  RegisterStatus = 'get-register-status'
+  RegisterStatus = 'get-register-status',
+  UpdateAuthInfo = 'update-auth-info',
 }
 
 export interface UpdateState { type: AppTypes.UpdateState; payload: any; }
@@ -35,5 +37,6 @@ export interface UpdateVendorInfo { type: AppTypes.UpdateVendorInfo; payload: an
 export interface GetVendorInfo { type: AppTypes.GetVendorInfo; }
 export interface GetUserInfo { type: AppTypes.GetUserInfo; }
 export interface GetRegisterStatus { type: AppTypes.RegisterStatus; payload: any;  }
+export interface UpdateAuthInfo { type: AppTypes.UpdateAuthInfo; payload: any; }
 
 export type AppAction = UpdateState;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { UserService } from 'src/app/service/user.service';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,12 +14,12 @@ export class DashboardComponent implements OnInit {
   sideMenuOpen = true;
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    const user = this.userService.getUserInfo();
-    if (user.is_admin) {
+    const auth = this.authService.getAuthData();
+    if (auth.is_admin) {
       this.menus = environment.admin_menus;
       this.selectedMenu = '/admin';
     } else {

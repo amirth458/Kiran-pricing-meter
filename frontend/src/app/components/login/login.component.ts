@@ -73,7 +73,11 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this.spineer.show();
 
     this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe(res => {
-      this.authService.setAuthData(res);
+      this.store.dispatch({
+        type: AppTypes.UpdateAuthInfo,
+        payload: res
+      });
+      console.log(res);
       if (this.userForm.value.remember_me) {
         localStorage.setItem('remember_me', '1');
         localStorage.setItem('email', this.userForm.value.email);
@@ -87,7 +91,12 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         type: AppTypes.GetUserInfo
       });
 
-      this.router.navigate(['/profile']);
+      // tslint:disable-next-line: no-string-literal
+      if (res['is_admin']) {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/profile']);
+      }
       this.spineer.hide();
     }, error => {
       console.log(error);

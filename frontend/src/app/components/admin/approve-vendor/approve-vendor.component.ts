@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { GridOptions } from 'ag-grid-community';
 
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
-import { FacilityService } from '../../../service/facility.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subscription } from 'rxjs';
@@ -12,6 +11,8 @@ import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { AppFields } from 'src/app/store';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/service/user.service';
+import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-approve-vendor',
@@ -25,64 +26,27 @@ export class ApproveVendorComponent implements OnInit {
 
 
   searchColumns = [{
-    name: 'Facility No',
+    name: 'Vendor Name',
     checked: false,
-    field: 'id',
+    field: 'vendorName',
     query: {
       type: '',
       filter: '',
     }
   },
   {
-    name: 'Facility Name',
+    name: 'Company Name',
     checked: false,
-    field: 'name',
+    field: 'companyName',
     query: {
       type: '',
       filter: '',
     }
   },
   {
-    name: 'Email',
+    name: 'Email Address',
     checked: false,
     field: 'email',
-    query: {
-      type: '',
-      filter: '',
-    }
-  },
-  {
-    name: 'Phone',
-    checked: false,
-    field: 'phone',
-    query: {
-      type: '',
-      filter: '',
-    }
-  },
-  {
-    name: 'Address',
-    checked: false,
-    field: 'address',
-    query: {
-      type: '',
-      filter: '',
-    }
-  },
-
-  {
-    name: 'City',
-    checked: false,
-    field: 'city',
-    query: {
-      type: '',
-      filter: '',
-    }
-  },
-  {
-    name: 'State',
-    checked: false,
-    field: 'state',
     query: {
       type: '',
       filter: '',
@@ -98,18 +62,9 @@ export class ApproveVendorComponent implements OnInit {
     }
   },
   {
-    name: 'Certifications',
+    name: 'Confidentiality',
     checked: false,
-    field: 'certifications',
-    query: {
-      type: '',
-      filter: '',
-    }
-  },
-  {
-    name: 'Actions',
-    checked: false,
-    field: 'actions',
+    field: 'confidentiality',
     query: {
       type: '',
       filter: '',
@@ -117,55 +72,29 @@ export class ApproveVendorComponent implements OnInit {
   },
   ];
   filterColumns = [{
-    name: 'Facility No',
+    name: 'Vendor Name',
     checked: true,
-    field: 'id'
+    field: 'vendorName'
   },
   {
-    name: 'Facility Name',
+    name: 'Company Name',
     checked: true,
-    field: 'name'
+    field: 'companyName'
   },
   {
-    name: 'Email',
+    name: 'Email Address',
     checked: true,
     field: 'email'
   },
   {
-    name: 'Phone',
-    checked: false,
-    field: 'phone'
-  },
-  {
-    name: 'Address',
-    checked: false,
-    field: 'address'
-  },
-
-  {
-    name: 'City',
-    checked: true,
-    field: 'city'
-  },
-  {
-    name: 'State',
-    checked: true,
-    field: 'state'
-  },
-  {
     name: 'Country',
-    checked: false,
+    checked: true,
     field: 'country'
   },
   {
-    name: 'Certifications',
+    name: 'Confidentiality',
     checked: true,
-    field: 'certifications'
-  },
-  {
-    name: 'Actions',
-    checked: true,
-    field: 'actions'
+    field: 'confidentiality'
   },
   ];
   type = ['search', 'filter'];
@@ -175,56 +104,22 @@ export class ApproveVendorComponent implements OnInit {
   };
 
   columnDefs = [{
-    headerName: 'Facility No',
-    field: 'id',
+    headerName: 'Vendor Name',
+    field: 'vendorName',
     hide: false,
     sortable: true,
     filter: false
   },
   {
-    headerName: 'Facility Name',
-    field: 'name',
+    headerName: 'Company Name',
+    field: 'companyName',
     hide: false,
     sortable: true,
     filter: false
   },
   {
-    headerName: 'Email',
+    headerName: 'Email Address',
     field: 'email',
-    hide: false,
-    sortable: true,
-    filter: false
-  },
-  {
-    headerName: 'Phone',
-    field: 'phone',
-    hide: true,
-    sortable: true,
-    filter: false
-  },
-  {
-    headerName: 'Address',
-    field: 'address',
-    hide: false,
-    sortable: true,
-    filter: false,
-    cellRenderer(params) {
-      return params.data.street1 + ' ' + params.data.street2;
-    },
-    valueGetter: (params) => {
-      return params.data.street1 + ' ' + params.data.street2;
-    }
-  },
-  {
-    headerName: 'City',
-    field: 'city',
-    hide: false,
-    sortable: true,
-    filter: false
-  },
-  {
-    headerName: 'State',
-    field: 'state',
     hide: false,
     sortable: true,
     filter: false
@@ -232,22 +127,34 @@ export class ApproveVendorComponent implements OnInit {
   {
     headerName: 'Country',
     field: 'country',
-    hide: false,
+    hide: true,
     sortable: true,
-    filter: false
+    filter: false,
+    cellRenderer(params) {
+      let country = '';
+      try {
+        country = params.data.vendor.country.name;
+      } catch (e) {
+
+      }
+      return country;
+    },
   },
   {
-    headerName: 'Certifications',
-    field: 'certifications',
+    headerName: 'Confidentiality',
+    field: 'confidentiality',
     hide: false,
     sortable: true,
     filter: false,
     cellRenderer(params) {
-      return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
+      let confidentiality = '';
+      try {
+        confidentiality = params.data.vendor.confidentiality.name;
+      } catch (e) {
+
+      }
+      return confidentiality;
     },
-    valueGetter: (params) => {
-      return params.data.vendorFacilityCertificationList.map(x => x.facilityCertification.name).join(', ');
-    }
   },
   {
     headerName: 'Actions',
@@ -279,25 +186,17 @@ export class ApproveVendorComponent implements OnInit {
 
   constructor(
     private route: Router,
-    private facilityService: FacilityService,
+    private userService: UserService,
     private spineer: NgxSpinnerService,
     private store: Store<any>,
     private toastr: ToastrService,
   ) {
-    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+    // this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
     this.navigation = this.route.getCurrentNavigation();
   }
 
   ngOnInit() {
-    this.sub = this.vendor.subscribe(res => {
-      if (res) {
-        this.vendorId = Number(res.id);
-      } else {
-        this.vendorId = 0;
-      }
-      this.getVendorFacilities();
-    });
-
+    this.getAllUsers();
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -317,43 +216,21 @@ export class ApproveVendorComponent implements OnInit {
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
-      if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
-        const toastInfo = this.navigation.extras.state.toast;
-        if (toastInfo.type === 'success') {
-          this.toastr.success(toastInfo.body);
-        } else {
-          this.toastr.error(toastInfo.body);
-        }
-      }
+      // if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+      //   const toastInfo = this.navigation.extras.state.toast;
+      //   if (toastInfo.type === 'success') {
+      //     this.toastr.success(toastInfo.body);
+      //   } else {
+      //     this.toastr.error(toastInfo.body);
+      //   }
+      // }
     }, 50);
   }
 
-  async getVendorFacilities() {
+  async getAllUsers() {
     this.spineer.show();
-    let page = 0;
-    const rows = [];
     try {
-      while (true) {
-        // tslint:disable-next-line:max-line-length
-        const res = await this.facilityService.getFacilities(
-          this.vendorId, {
-          page,
-          size: 1000,
-          sort: 'id,DESC',
-          q: ''
-        }
-        ).toPromise();
-        rows.push(...res.content);
-        if (!res.content) {
-          break;
-        }
-        if (res.content.length === 0 || res.content.length < 1000) {
-          break;
-        }
-        page++;
-
-      }
-      this.rowData = rows;
+      this.rowData = await this.userService.getAllUsers().toPromise();
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -382,10 +259,10 @@ export class ApproveVendorComponent implements OnInit {
   }
 
 
-  async deleteFacility() {
+  async declineUser() {
     this.spineer.show();
     try {
-      await this.facilityService.deleteFacility(this.vendorId, this.selectedFacility.id).toPromise();
+      // await this.userService.declineUser(this.selectedUser.id).toPromise();
       this.toastr.success(this.selectedFacility.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
@@ -398,6 +275,7 @@ export class ApproveVendorComponent implements OnInit {
     this.modal.nativeElement.click();
 
   }
+
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(column.field);

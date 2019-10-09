@@ -24,9 +24,6 @@ export class LoggedInGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const isLoggedIn = this.authService.isLoggedIn();
     console.log('CanActivate');
-    console.log(this.router.url);
-    const user = this.userService.getUserInfo();
-    console.log(user);
     if (!isLoggedIn) {
       this.router.navigate(['/login']);
     } else {
@@ -36,15 +33,6 @@ export class LoggedInGuard implements CanActivate {
       this.store.dispatch({
         type: AppTypes.GetUserInfo
       });
-      if (user.is_admin) {
-        if (!this.router.url.includes('admin')) {
-          this.router.navigate(['/admin']);
-        }
-      } else {
-        if (this.router.url.includes('admin')) {
-          this.router.navigate(['/profile']);
-        }
-      }
     }
     return isLoggedIn;
   }
