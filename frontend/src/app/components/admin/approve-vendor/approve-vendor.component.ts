@@ -21,7 +21,7 @@ import { count } from 'rxjs/operators';
 })
 export class ApproveVendorComponent implements OnInit {
 
-  @ViewChild('modal') modal;
+  @ViewChild('infoModal') infoModal;
   selectedFacility = null;
 
 
@@ -104,6 +104,15 @@ export class ApproveVendorComponent implements OnInit {
   };
 
   columnDefs = [{
+    headerName: '',
+    field: 'chooseall',
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    hide: false,
+    sortable: false,
+    filter: false,
+  },
+  {
     headerName: 'Vendor Name',
     field: 'vendorName',
     hide: false,
@@ -159,30 +168,36 @@ export class ApproveVendorComponent implements OnInit {
   {
     headerName: 'Actions',
     filter: false,
-    width: 100,
-    cellRenderer: 'actionCellRenderer',
-    cellRendererParams: {
-      action: {
-        edit: (param) => this.editRow(param),
-        delete: async (param) => {
-          this.modal.nativeElement.click();
-          this.selectedFacility = param.data;
-        },
-        canEdit: true,
-        canCopy: false,
-        canDelete: true,
+    width: 250,
+    cellRenderer(params) {
+      if (params.data.vendor) {
+        if (params.data.vendor.approved) {
+          return 'Approved';
+        } else {
+          if (params.data.vendor.approvedAt === null) {
+            return '<div><button type="button" (click)="approveUser(' + params.data.vendor.id +
+              ')" class="btn-approve-in-row">Approve</button>' +
+              '<button type="button" (click)="declineUser(' + params.data.vendor.id +
+              ')" class="btn-decline-in-row">Decline</button></div>';
+          } else {
+            return 'Declined';
+          }
+        }
       }
-    }
+      return '';
+    },
   }
   ];
 
   gridOptions: GridOptions;
+  allUsers = [];
   rowData = [];
   pageSize = 10;
   vendor: Observable<Vendor>;
   sub: Subscription;
-  vendorId = 0;
+  vendorStatus = 0;
   navigation;
+  infoText = '';
 
   constructor(
     private route: Router,
@@ -209,10 +224,31 @@ export class ApproveVendorComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      rowSelection: 'multiple',
+
       onRowClicked: (event) => {
         // this.onRowClick(event);
+      },
+      rowClassRules: {
+        'non-approved': (params) => {
+          if ( params.data.vendor ) {
+            return !params.data.vendor.approved && params.data.vendor.approvedAt === null;
+          }
+          return false;
+        },
+        approved: (params) => {
+          if ( params.data.vendor ) {
+            return params.data.vendor.approved;
+          }
+          return false;
+        },
+        declined: (params) => {
+          if ( params.data.vendor ) {
+            return !params.data.vendor.approved && params.data.vendor.approvedAt !== null;
+          }
+          return false;
+        }
       }
-
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
@@ -230,7 +266,8 @@ export class ApproveVendorComponent implements OnInit {
   async getAllUsers() {
     this.spineer.show();
     try {
-      this.rowData = await this.userService.getAllUsers().toPromise();
+      this.allUsers = await this.userService.getAllUsers().toPromise();
+      this.rowData = this.allUsers;
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -254,26 +291,125 @@ export class ApproveVendorComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
+  vendorStatusChanged(value) {
+    const status = Number(value);
+    if (status === 0) {
+      this.rowData = this.allUsers;
+    } else if (status === 1) {
+      // Not approved
+      this.rowData = this.allUsers.filter(user => {
+        let flag = false;
+        if ( user.vendor) {
+          flag = !user.vendor.approved && user.vendor.approvedAt === null;
+        }
+        return  flag;
+      });
+    } else if (status === 2) {
+      // Approved
+      this.rowData = this.allUsers.filter(user => {
+        let flag = false;
+        if ( user.vendor) {
+          flag = user.vendor.approved;
+        }
+        return  flag;
+      });
+    } else if (status === 3) {
+      // Declined
+      this.rowData = this.allUsers.filter(user => {
+        let flag = false;
+        if ( user.vendor) {
+          flag = !user.vendor.approved && user.vendor.approvedAt !== null;
+        }
+        return  flag;
+      });
+    }
+  }
+
   editRow(event) {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
 
+  async approveUsers(event) {
+    const data = this.gridOptions.api.getSelectedNodes();
+    let userIds = data.map(node => {
+      if (node.data.vendor) {
+        return node.data.vendor.id;
+      } else {
+        return null;
+      }
+    });
+    userIds = userIds.filter(id => id !== null);
+    if (userIds.length === 0) {
+      this.infoText = 'approve';
+      this.infoModal.nativeElement.click();
+    } else {
+      try {
+        this.spineer.show();
+        await this.userService.approveUsers(userIds).toPromise();
+        await this.getAllUsers();
+        this.toastr.success('Approve is done.');
+      } catch (e) {
+        this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+      } finally {
+        this.spineer.hide();
+      }
+    }
+  }
 
-  async declineUser() {
+  async declineUsers(event) {
+    const data = this.gridOptions.api.getSelectedNodes();
+    let userIds = data.map(node => {
+      if (node.data.vendor) {
+        return node.data.vendor.id;
+      } else {
+        return null;
+      }
+    });
+    userIds = userIds.filter(id => id !== null);
+    if (userIds.length === 0) {
+      this.infoText = 'decline';
+      this.infoModal.nativeElement.click();
+    } else {
+      try {
+        this.spineer.show();
+        await this.userService.declineUsers(userIds).toPromise();
+        await this.getAllUsers();
+        this.toastr.success('Decline is done.');
+      } catch (e) {
+        this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+      } finally {
+        this.spineer.hide();
+      }
+    }
+  }
+
+  async declineUser(id) {
     this.spineer.show();
     try {
-      // await this.userService.declineUser(this.selectedUser.id).toPromise();
+      await this.userService.declineUser(id).toPromise();
+      await this.getAllUsers();
+      this.toastr.success('Decline is done.');
       this.toastr.success(this.selectedFacility.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
     } finally {
       this.spineer.hide();
     }
-    // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != this.selectedFacility.id);
-    this.rowData = filteredData;
-    this.modal.nativeElement.click();
+  }
 
+  async approveUser(id) {
+    this.spineer.show();
+    try {
+      await this.userService.approveUser(id).toPromise();
+      console.log('aaaa');
+      await this.getAllUsers();
+      this.toastr.success('Approve is done.');
+      this.toastr.success(this.selectedFacility.name + ' deleted.');
+    } catch (e) {
+      this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+    } finally {
+      this.spineer.hide();
+    }
   }
 
   searchColumnsChange(event) {

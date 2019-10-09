@@ -170,4 +170,68 @@ export class UserService {
       headers
     });
   }
+
+  approveUsers(ids) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: true,
+        vendorIds: ids
+      },
+      {
+        headers
+      });
+  }
+
+  declineUsers(ids) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: false,
+        vendorIds: ids
+      },
+      {
+        headers
+      });
+  }
+
+  approveUser(id) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: true,
+        vendorIds: [id]
+      },
+      {
+        headers
+      });
+  }
+
+  declineUser(id) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: false,
+        vendorIds: [id]
+      },
+      {
+        headers
+      });
+  }
 }
