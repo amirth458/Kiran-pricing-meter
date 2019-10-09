@@ -21,6 +21,8 @@ import { PostProcessProfileComponent } from '../../components/post-process-profi
 import { PostProcessProfileItemComponent } from '../../components/post-process-profile-item/post-process-profile-item.component';
 import { PostProcessPricingComponent } from '../../components/post-process-pricing/post-process-pricing.component';
 import { PostProcessPricingItemComponent } from '../../components/post-process-pricing-item/post-process-pricing-item.component';
+import { AdminComponent } from 'src/app/components/admin/container/admin.component';
+import { ApproveVendorComponent } from 'src/app/components/admin/approve-vendor/approve-vendor.component';
 
 const routes: Routes = [
   {
@@ -78,6 +80,19 @@ const routes: Routes = [
           { path: '', redirectTo: 'vendor', pathMatch: 'full' },
           { path: '**', redirectTo: 'vendor', pathMatch: 'full' }
         ],
+      },
+      {
+        path: 'admin', component: AdminComponent,
+        children: [
+          {
+            path: 'approve-vendor', component: ApproveVendorComponent,
+            children: [
+              { path: ':vendorId', component: BasicDetailsComponent },
+            ]
+          },
+          { path: '', pathMatch: 'full', redirectTo: 'approve-vendor' },
+          { path: '**', pathMatch: 'full', redirectTo: 'approve-vendor' }
+        ]
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ]

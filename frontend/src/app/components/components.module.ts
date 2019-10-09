@@ -35,6 +35,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { RouterModule } from '@angular/router';
 
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { AdminComponent } from './admin/container/admin.component';
+import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     TopMenuComponent,
     VendorComponent,
     ShippingItemComponent,
+    AdminComponent,
+    ApproveVendorComponent,
 
   ],
   imports: [
@@ -111,6 +115,8 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     TopMenuComponent,
     VendorComponent,
     ShippingItemComponent,
+    AdminComponent,
+    ApproveVendorComponent,
   ]
 })
 export class ComponentsModule { }
