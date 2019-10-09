@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 import { AuthService } from '../service/auth.service';
 import { Store, AppTypes } from '../store';
+import { UserService } from '../service/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,9 @@ export class LoggedInGuard implements CanActivate {
   path: ActivatedRouteSnapshot[];
   route: ActivatedRouteSnapshot;
   constructor(
-    public authService: AuthService,
-    public router: Router,
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router,
     private store: Store<any>,
   ) { }
 

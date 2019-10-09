@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
+import { FilterOption } from '../model/vendor.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -157,5 +157,81 @@ export class UserService {
     localStorage.removeItem('RegisterUser');
     localStorage.removeItem('RegisterVendor');
     localStorage.removeItem('RegisterMachines');
+  }
+
+  getAllUsers() {
+    const url = `${environment.apiBaseUrl}/users/all`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<any>(url, {
+      headers
+    });
+  }
+
+  approveUsers(ids) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: true,
+        vendorIds: ids
+      },
+      {
+        headers
+      });
+  }
+
+  declineUsers(ids) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: false,
+        vendorIds: ids
+      },
+      {
+        headers
+      });
+  }
+
+  approveUser(id) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: true,
+        vendorIds: [id]
+      },
+      {
+        headers
+      });
+  }
+
+  declineUser(id) {
+    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.patch<any>(url, {
+        approved: false,
+        vendorIds: [id]
+      },
+      {
+        headers
+      });
   }
 }

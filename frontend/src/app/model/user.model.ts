@@ -25,3 +25,11 @@ export interface RegisterStatus {
   machineDetails: number;
 }
 
+export interface AuthData {
+  accessToken: string;
+  expiryDate: string;
+  generatedIn: string;
+  is_admin: boolean;
+  roles: Array<string>;
+  tokenType: string;
+}
