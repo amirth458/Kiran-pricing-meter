@@ -138,4 +138,24 @@ export class UserService {
   setRegisterVendorInfo(vendor) {
     localStorage.setItem('RegisterVendor', JSON.stringify(vendor));
   }
+
+  getRegisterMachineInfo() {
+    return JSON.parse(localStorage.getItem('RegisterMachines'));
+  }
+
+  setRegisterMachineInfo(machines) {
+    localStorage.setItem('RegisterMachines', JSON.stringify(machines));
+  }
+
+  registerUser(user) {
+    console.log(JSON.stringify(user));
+    const url = `${environment.apiBaseUrl}/users/signup`;
+    return this.http.post(url, user);
+  }
+
+  resetRegisterInfo() {
+    localStorage.removeItem('RegisterUser');
+    localStorage.removeItem('RegisterVendor');
+    localStorage.removeItem('RegisterMachines');
+  }
 }

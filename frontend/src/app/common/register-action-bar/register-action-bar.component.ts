@@ -15,7 +15,7 @@ export class RegisterActionBarComponent implements OnChanges, OnInit {
     actions: Array<{ name: string, route: string }>
   }>;
   @Input('selectedTab') selectedTab: string;
-  baseURL;
+  baseURL = '';
   activeTabIndex = 0;
   constructor(public route: Router) { }
 
