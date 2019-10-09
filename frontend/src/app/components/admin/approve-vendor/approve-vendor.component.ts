@@ -356,7 +356,7 @@ export class ApproveVendorComponent implements OnInit {
         if ( user.vendor) {
           flag = !user.vendor.approved && user.vendor.approvedAt !== null;
         }
-        return  flag;
+        return flag;
       });
     }
   }
