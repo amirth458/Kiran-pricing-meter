@@ -64,7 +64,6 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
       this.initForm(vendor);
       this.isNewPhone = false;
     }
-
     this.onValueChanges();
   }
 

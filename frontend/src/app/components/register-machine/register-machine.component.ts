@@ -314,8 +314,7 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
     this.spinner.show();
     try {
       const userInfo = this.userService.getRegisterUserInfo();
-      const vendorInfo = this.userService.getVendorInfo();
-
+      const vendorInfo = this.userService.getRegisterVendorInfo();
       const reqData = {
         email: userInfo.email,
         password: userInfo.password,
@@ -366,10 +365,15 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
           };
         }) || []
       };
-
       const res = await this.userService.registerUser(reqData).toPromise();
       console.log(res);
-      this.toastr.success('Corporate details updated Successfully');
+      this.toastr.success('User registered Successfully');
+
+      setTimeout(() => {
+        this.userService.resetRegisterInfo();
+        this.route.navigateByUrl('/login');
+      }, 2000);
+
     } catch (e) {
       console.log(e);
       this.toastr.error('We are sorry, Corporate details update failed. Please try again later. "' + e.error.message + '"');

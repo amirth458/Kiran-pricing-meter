@@ -152,4 +152,10 @@ export class UserService {
     const url = `${environment.apiBaseUrl}/users/signup`;
     return this.http.post(url, user);
   }
+
+  resetRegisterInfo() {
+    localStorage.removeItem('RegisterUser');
+    localStorage.removeItem('RegisterVendor');
+    localStorage.removeItem('RegisterMachines');
+  }
 }
