@@ -48,6 +48,15 @@ export const environment = {
       active: false,
     }
   ],
+  admin_menus: [
+    {
+      name: 'Admin',
+      route: '/admin',
+      icon: 'fas fa-user-shield',
+      visible: true,
+      active: false
+    },
+  ],
   extendedmenu: [
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
   ],

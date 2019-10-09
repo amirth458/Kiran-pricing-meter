@@ -169,23 +169,59 @@ export class ApproveVendorComponent implements OnInit {
     headerName: 'Actions',
     filter: false,
     width: 250,
-    cellRenderer(params) {
-      if (params.data.vendor) {
-        if (params.data.vendor.approved) {
-          return 'Approved';
-        } else {
-          if (params.data.vendor.approvedAt === null) {
-            return '<div><button type="button" (click)="approveUser(' + params.data.vendor.id +
-              ')" class="btn-approve-in-row">Approve</button>' +
-              '<button type="button" (click)="declineUser(' + params.data.vendor.id +
-              ')" class="btn-decline-in-row">Decline</button></div>';
-          } else {
-            return 'Declined';
+    cellRenderer: 'actionCellRenderer',
+    cellRendererParams: {
+      action: {
+        approve: (param) => {
+          if (param.data.vendor) {
+            this.approveUser(param.data.vendor.id);
           }
-        }
+        },
+        decline: async (param) => {
+          if (param.data.vendor) {
+            this.declineUser(param.data.vendor.id);
+          }
+        },
+        canEdit: false,
+        canCopy: false,
+        canDelete: false,
+        canApprove: (param) => {
+          if (param.data.vendor) {
+            if ( param.data.vendor.approvedAt !== null) {
+              return false;
+            }
+            return true;
+          }
+          return false;
+        },
+        canDecline: (param) => {
+          if (param.data.vendor) {
+            if ( param.data.vendor.approvedAt !== null) {
+              return false;
+            }
+            return true;
+          }
+          return false;
+        },
       }
-      return '';
-    },
+    }
+    // cellRenderer(params) {
+    //   if (params.data.vendor) {
+    //     if (params.data.vendor.approved) {
+    //       return 'Approved';
+    //     } else {
+    //       if (params.data.vendor.approvedAt === null) {
+    //         return '<div><span (click)="approveUser(' + params.data.vendor.id +
+    //           ')" class="btn-approve-in-row">Approve</span>' +
+    //           '<span (click)="declineUser(' + params.data.vendor.id +
+    //           ')" class="btn-decline-in-row">Decline</span></div>';
+    //       } else {
+    //         return 'Declined';
+    //       }
+    //     }
+    //   }
+    //   return '';
+    // },
   }
   ];
 
