@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  onSaveUserInformation() {
+  onSaveUserInformation(event) {
 
     this.errorMessage = '';
     if (!(this.form.valid)) {
