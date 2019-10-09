@@ -214,7 +214,7 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  async save() {
+  async saveVenorInformation(event) {
     if (!this.detailForm.valid) {
       return;
     }
