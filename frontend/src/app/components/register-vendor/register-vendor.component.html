@@ -1,7 +1,7 @@
 <div class="center-container">
   <div class=" col-sm-12 col-md-12 col-lg-10 col-xl-8">
     <div class="wrapper shadow">
-      <form [formGroup]="detailForm" class="needs-validation" (submit)="save($event)">
+      <form [formGroup]="detailForm" class="needs-validation" (submit)="saveVenorInformation($event)">
         <div class="form-row">
           <div class="form-group theme col-md-6">
             <label>Vendor Name</label>
@@ -131,7 +131,7 @@
         </div>
         <div class="form-row " style="justify-content: center">
           <div class="form-group col-md-3">
-            <button type="button" (click)="save($event)" class="btn btn-primary theme">Continue</button>
+            <button type="button" (click)="saveVenorInformation($event)" class="btn btn-primary theme">Continue</button>
           </div>
         </div>
       </form>
