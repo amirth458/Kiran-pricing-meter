@@ -10,7 +10,8 @@
   --them-dark-blue-opaque: #092846;
   --theme-secondary-blue: rgba(9, 40, 70, .74);
   --theme-secondary-blue-solid: #607181;
-  --theme-light-green: #89D818;
+  --theme-grid-header: #194B7C;
+  --theme-light-green: #74BF09;
   --theme-input-bg: rgba(196, 196, 196, .13);
   --theme-green-grey-bg: #F9FAF7;
   --theme-table-border: rgba(112, 112, 112, .39);
@@ -145,10 +146,12 @@ button.theme.theme-reverse:hover {
   background-color: rgba(0, 0, 0, 0.5) !important;
   cursor: not-allowed;
 }
+.btn-primary,
 .btn-contniue {
   background: var(--theme-btn-primary)!important;
   color: white;
 }
+.btn-primary:hover,
 .btn-contniue:hover {
   background: var(--theme-btn-hover) !important;
   color: white;
@@ -218,9 +221,9 @@ button.theme.theme-reverse:hover {
 
 /* Overriding Ag-grid style */
 .theme-table .ag-theme-balham .ag-header-row {
-  background: var(--theme-secondary-blue);
+  background: var(--theme-grid-header);
   color: white;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 300;
 }
 
