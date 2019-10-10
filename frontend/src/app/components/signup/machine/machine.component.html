@@ -62,7 +62,7 @@
           <div class="col-md-10 col-sm-8"></div>
 
           <div class="form-group col-md-2 col-sm-4">
-            <button type="button"  (click)="add($event)"  class="btn btn-primary theme">{{ this.isUpdate ? 'Update' : 'Add'}}</button>
+            <button type="button"  (click)="add($event)"  class="btn btn-white theme">{{ this.isUpdate ? 'Update' : 'Add'}}</button>
           </div>
 
         </div>
@@ -89,14 +89,12 @@
       </div>
       <div class="form-row " style="justify-content: center">
         <div class="form-group col-md-3">
-          <button type="button" (click)="submitUserRegisterInfo($event)" class="btn btn-primary theme">Submit</button>
+          <button type="button" (click)="submitUserRegisterInfo($event)" class="btn btn-contniue theme">Submit</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<app-footer-menu ></app-footer-menu>
 <!-- Button trigger modal -->
 <button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#machineModal">
 </button>

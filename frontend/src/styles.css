@@ -16,6 +16,8 @@
   --theme-table-border: rgba(112, 112, 112, .39);
   --theme-error-color: #dc3545;
   --theme-orange: #EF773F;
+  --theme-btn-primary: #74BF09;
+  --theme-btn-hover: #64A506;
 }
 
 * {
@@ -142,6 +144,27 @@ button.theme.theme-reverse:hover {
 .btn:disabled {
   background-color: rgba(0, 0, 0, 0.5) !important;
   cursor: not-allowed;
+}
+.btn-contniue {
+  background: var(--theme-btn-primary)!important;
+  color: white;
+}
+.btn-contniue:hover {
+  background: var(--theme-btn-hover) !important;
+  color: white;
+}
+.btn-white {
+  background: white !important;
+  border-radius: 4px;
+  color: var(--theme-btn-primary)!important;
+  box-shadow: 0 .2rem 0.2rem rgba(0, 0, 0, .15) !important;
+}
+.btn-white:hover {
+  background: #F8FDF0 !important;
+  
+  color: var(--theme-btn-hover)!important;
+  border-radius: 4px;
+  box-shadow: 0 .2rem 0.2rem rgba(0, 0, 0, .15) !important;
 }
 
 .modal.theme .modal-title {

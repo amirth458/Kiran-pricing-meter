@@ -25,7 +25,7 @@ import { RegisterUserComponent } from './components/signup/user/user.component';
 import { RegisterActionBarComponent } from './common/register-action-bar/register-action-bar.component';
 import { RegisterVendorComponent } from './components/signup/vendor/vendor.component';
 import { RegisterMachineComponent } from './components/signup/machine/machine.component';
-import { RegisterCompletedComponent } from './components/signup/completed/completed.component';
+import { RegisterCompletedComponent } from './components/signup-completed/completed.component';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
