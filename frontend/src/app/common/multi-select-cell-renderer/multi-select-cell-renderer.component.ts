@@ -11,6 +11,7 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
   params;
   options = [];
   value = [];
+  equipment = '';
   constructor() { }
 
   agInit(params): void {
