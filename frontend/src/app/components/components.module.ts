@@ -40,6 +40,11 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { AdminComponent } from './admin/container/admin.component';
 import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
 import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-details.component';
+import { AdminVendorDetailsActionBarComponent } from './admin/vendor-details-action-bar/vendor-details-action-bar.component';
+import { AdminVendorDetailsUserComponent } from './admin/vendor-details-user/vendor-details-user.component';
+import { AdminVendorDetailsVendorComponent } from './admin/vendor-details-vendor/vendor-details-vendor.component';
+import { AdminVendorDetailsMachineComponent } from './admin/vendor-details-machine/vendor-details-machine.component';
+
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -73,7 +78,10 @@ import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-detai
     AdminComponent,
     ApproveVendorComponent,
     AdminVendorDetailsComponent,
-
+    AdminVendorDetailsActionBarComponent,
+    AdminVendorDetailsUserComponent,
+    AdminVendorDetailsVendorComponent,
+    AdminVendorDetailsMachineComponent
   ],
   imports: [
     CommonModule,
@@ -123,7 +131,11 @@ import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-detai
     ShippingItemComponent,
     AdminComponent,
     ApproveVendorComponent,
-    AdminVendorDetailsComponent
+    AdminVendorDetailsComponent,
+    AdminVendorDetailsActionBarComponent,
+    AdminVendorDetailsUserComponent,
+    AdminVendorDetailsVendorComponent,
+    AdminVendorDetailsMachineComponent
   ]
 })
 export class ComponentsModule { }

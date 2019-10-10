@@ -10,11 +10,12 @@
   --them-dark-blue-opaque: #092846;
   --theme-secondary-blue: rgba(9, 40, 70, .74);
   --theme-secondary-blue-solid: #607181;
-  --theme-light-green: #8FBE4C;
+  --theme-light-green: #89D818;
   --theme-input-bg: rgba(196, 196, 196, .13);
   --theme-green-grey-bg: #F9FAF7;
   --theme-table-border: rgba(112, 112, 112, .39);
   --theme-error-color: #dc3545;
+  --theme-orange: #EF773F;
 }
 
 * {
@@ -358,6 +359,10 @@ international-phone-number.ng-invalid .input-group .ng-valid {
   background-size: calc(.75em + .375rem) calc(.75em + .375rem);
 }
 
+international-phone-number.readonly .dropdown .dropbtn {
+  pointer-events: none !important;
+}
+
 .line-through {
   text-decoration: line-through;
 }
@@ -413,10 +418,34 @@ international-phone-number.ng-invalid .input-group .ng-valid {
 .approve {
   font-size: 14px;
   background: transparent;
-  color: #89D818 !important;
+  color: var(--theme-light-green) !important;
 }
 .decline {
   font-size: 14px;
   background: transparent;
-  color: #EF773F !important;
+  color: var(--theme-orange) !important;
+}
+.btn-approve {
+  background: var(--theme-light-green) !important;
+  color: white;
+  width: 140px !important;
+  margin-right: 40px;
+}
+.btn-approved {
+  background: transparent !important;
+  color: var(--theme-light-green) !important;
+  border: 1px solid var(--theme-light-green) !important;
+  width: 140px !important;
+  margin-right: 40px;
+}
+.btn-decline {
+  background: var(--theme-orange) !important;
+  color: white;
+  width: 140px !important;
+}
+.btn-declined {
+  background: transparent !important;
+  color: var(--theme-orange) !important;
+  border: 1px solid var(--theme-orange) !important;
+  width: 140px !important;
 }

@@ -1,0 +1,53 @@
+<div class="wrapper shadow">
+  <form [formGroup]="form" class="needs-validation">
+    <div class="form-row">
+      <div class="form-group theme col-md-12">
+        <label>Email Address (username)</label>
+        <input required readonly type="email" formControlName="email" class="form-control" placeholder="Email">
+        <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>First Name</label>
+        <input required readonly formControlName="firstName" class="form-control" placeholder="First Name">
+        <span *ngIf="showRequired('firstName', 1)" class="footnote red">* Required</span>
+      </div>
+      <div class="form-group theme col-md-6">
+        <label> Last Name </label>
+        <input required readonly formControlName="lastName" class="form-control" placeholder="Last Name">
+        <span *ngIf="showRequired('lastName', 1)" class="footnote red">* Required</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-12 phone">
+        <label>Phone</label>
+        <international-phone-number class="readonly" formControlName="phone" placeholder="Enter phone number"
+          [required]="true" name="phone_number"></international-phone-number>
+        <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 1) && form.controls.phone.status === 'INVALID'" class="footnote red">* Phone
+          number is invalid.</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>Company</label>
+        <input required readonly formControlName="company" class="form-control" placeholder="Company">
+        <span *ngIf="showRequired('company', 1)" class="footnote red">* Required</span>
+      </div>
+      <div class="form-group theme col-md-6">
+        <label>Department</label>
+        <input readonly formControlName="department" class="form-control" placeholder="Department" />
+      </div>
+    </div>
+
+    <div class="form-row ">
+      <div class="form-group col-12" align="right">
+          <button type="button" (click) = "approveUser()" *ngIf="this.status === 3 || this.status === 2" class="btn btn-approve theme">Approve</button>
+          <button type="button" *ngIf="this.status === 1" class="btn btn-approved theme">Approved</button>
+          <button type="button" (click) = "declineUser()" *ngIf="this.status === 3 || this.status === 1" class="btn btn-decline theme">Decline</button>
+          <button type="button" *ngIf="this.status === 2" class="btn btn-declined theme">Declined</button>
+      </div>
+    </div>
+  </form>
+</div>

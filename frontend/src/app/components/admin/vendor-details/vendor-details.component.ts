@@ -12,16 +12,19 @@ export class AdminVendorDetailsComponent implements OnInit {
     name: 'User Details',
     tooltipMessage: 'User Details.',
     route: 'user',
+    actions: ['back'],
   };
   vendorMenu = {
     name: 'Vendor Details',
     tooltipMessage: 'Vendor Details.',
     route: 'vendor',
+    actions: ['back'],
   };
   machineMenu = {
     name: 'Machine Details',
     tooltipMessage: 'Machine Details.',
     route: 'machine',
+    actions: ['back'],
   };
   actionbarMenu = [];
   selectedTab = 'User Details';

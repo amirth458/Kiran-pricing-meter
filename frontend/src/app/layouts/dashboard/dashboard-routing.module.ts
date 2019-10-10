@@ -21,9 +21,13 @@ import { PostProcessProfileComponent } from '../../components/post-process-profi
 import { PostProcessProfileItemComponent } from '../../components/post-process-profile-item/post-process-profile-item.component';
 import { PostProcessPricingComponent } from '../../components/post-process-pricing/post-process-pricing.component';
 import { PostProcessPricingItemComponent } from '../../components/post-process-pricing-item/post-process-pricing-item.component';
-import { AdminComponent } from 'src/app/components/admin/container/admin.component';
-import { ApproveVendorComponent } from 'src/app/components/admin/approve-vendor/approve-vendor.component';
-import { AdminVendorDetailsComponent } from 'src/app/components/admin/vendor-details/vendor-details.component';
+import { AdminComponent } from '../../components/admin/container/admin.component';
+import { ApproveVendorComponent } from '../../components/admin/approve-vendor/approve-vendor.component';
+import { AdminVendorDetailsComponent } from '../../components/admin/vendor-details/vendor-details.component';
+
+import { AdminVendorDetailsUserComponent } from '../../components/admin/vendor-details-user/vendor-details-user.component';
+import { AdminVendorDetailsVendorComponent } from '../../components/admin/vendor-details-vendor/vendor-details-vendor.component';
+import { AdminVendorDetailsMachineComponent } from '../../components/admin/vendor-details-machine/vendor-details-machine.component';
 
 const routes: Routes = [
   {
@@ -90,6 +94,11 @@ const routes: Routes = [
           },
           {
             path: 'vendor-details/:vendorId', component: AdminVendorDetailsComponent,
+            children: [
+              { path: 'user', component: AdminVendorDetailsUserComponent },
+              { path: 'vendor', component: AdminVendorDetailsVendorComponent },
+              { path: 'machine', component: AdminVendorDetailsMachineComponent },
+            ]
           },
           { path: '', pathMatch: 'full', redirectTo: 'approve-vendor' },
           { path: '**', pathMatch: 'full', redirectTo: 'approve-vendor' }

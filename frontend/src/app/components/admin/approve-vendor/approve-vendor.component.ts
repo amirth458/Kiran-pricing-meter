@@ -9,7 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subscription } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
-import { AppFields } from 'src/app/store';
+import { AppFields, AppTypes } from 'src/app/store';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { count } from 'rxjs/operators';
@@ -249,6 +249,10 @@ export class ApproveVendorComponent implements OnInit {
       onRowClicked: (event) => {
         // this.onRowClick(event);
       },
+      onCellDoubleClicked: (param) => {
+        const userId = param.data.id;
+        this.route.navigateByUrl(`/admin/vendor-details/${userId}/user`);
+      },
       rowClassRules: {
         'non-approved': (params) => {
           if ( params.data.vendor ) {
@@ -337,10 +341,6 @@ export class ApproveVendorComponent implements OnInit {
     }
   }
 
-  editRow(event) {
-    this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
-  }
-
   async approveUsers(event) {
     const data = this.gridOptions.api.getSelectedNodes();
     let userIds = data.map(node => {
@@ -360,9 +360,9 @@ export class ApproveVendorComponent implements OnInit {
         await this.userService.approveUsers(userIds).toPromise();
         await this.getAllUsers();
         this.vendorStatusChanged(this.vendorStatus);
-        this.toastr.success('Approve is done.');
+        this.toastr.success('Vendors are approved.');
       } catch (e) {
-        this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+        this.toastr.error('We are sorry, Vendors are not approved with some error. Please try again later.');
       } finally {
         this.spineer.hide();
       }
@@ -388,9 +388,9 @@ export class ApproveVendorComponent implements OnInit {
         await this.userService.declineUsers(userIds).toPromise();
         await this.getAllUsers();
         this.vendorStatusChanged(this.vendorStatus);
-        this.toastr.success('Decline is done.');
+        this.toastr.success('Vendors are declined.');
       } catch (e) {
-        this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+        this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
       } finally {
         this.spineer.hide();
       }
@@ -403,9 +403,9 @@ export class ApproveVendorComponent implements OnInit {
       await this.userService.declineUser(id).toPromise();
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
-      this.toastr.success('Decline is done.');
+      this.toastr.success('Vendor is decliend.');
     } catch (e) {
-      this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
     } finally {
       this.spineer.hide();
     }
@@ -415,12 +415,11 @@ export class ApproveVendorComponent implements OnInit {
     this.spineer.show();
     try {
       await this.userService.approveUser(id).toPromise();
-      console.log('aaaa');
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
-      this.toastr.success('Approve is done.');
+      this.toastr.success('Vendor is approved.');
     } catch (e) {
-      this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
+      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
     } finally {
       this.spineer.hide();
     }

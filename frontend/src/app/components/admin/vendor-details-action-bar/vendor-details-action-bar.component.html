@@ -1,0 +1,22 @@
+<div class="wrapper shadow">
+  <ul>
+    <li *ngFor="let menu of menus">
+      <div>
+        <span (click)="selectTab(menu)" class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
+        <span class="icon" data-toggle="tooltip" data-placement="right" [title]="menu.tooltipMessage">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </div>
+    </li>
+  </ul>
+  <div class="action-button"
+    *ngIf="menus[activeTabIndex].actions.length">
+    <button type="button" class="btn btn-primary theme white" (click)="backButton()">
+      <i class="fas fa-chevron-left"></i>
+      <span>
+        Back
+      </span>
+    </button>
+  </div>
+
+</div>

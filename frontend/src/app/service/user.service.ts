@@ -212,7 +212,7 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: true,
-        vendorIds: [id]
+        vendorIds: [Number(id)]
       },
       {
         headers
@@ -228,8 +228,21 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: false,
-        vendorIds: [id]
+        vendorIds: [Number(id)]
       },
+      {
+        headers
+      });
+  }
+
+  getUserDetails(id) {
+    const url = `${environment.apiBaseUrl}/users/${id}`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<any>(url,
       {
         headers
       });
