@@ -12,12 +12,10 @@
     <!-- Column Filter -->
     <div class="filter" *ngIf="activeTab == 'filter'">
       <div class="form-row input">
-
         <div class="form-group theme col">
           <input required type="text" class="form-control shadow" id="search_query" name="search_query"
             placeholder="Columns" (keyup)="search($event, 'filter')">
         </div>
-
       </div>
 
       <div class="column-container" [style.height]="height">
@@ -34,7 +32,7 @@
           </div>
 
           <div class="col-sm-10 column-name">
-            <span>
+            <span style="margin-top: -3px">
               {{column.name}}
             </span>
           </div>
@@ -71,10 +69,8 @@
 
           <div class="col-sm-10 column-name">
             <div class="container-fluid">
-
-              <span class="row name">{{column.name}}</span>
+              <span class="row name" style="margin-top: -8px">{{column.name}}</span>
               <span class="row options" *ngIf="column.checked">
-
                 <div class="form-group ">
                   <select required id="option" [(ngModel)]="searchColumns[column.id].query.type"
                     (ngModelChange)="searchColumnsChange.emit(searchColumns)" name="option" class="form-control">

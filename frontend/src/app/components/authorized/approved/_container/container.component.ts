@@ -69,7 +69,6 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
           this.submenus = [];
         }
       } else {
-        this.route.navigateByUrl('/profile/unapproved');
         this.submenus = [];
       }
     });
