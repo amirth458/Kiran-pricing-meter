@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-unapproved',
@@ -26,7 +27,25 @@ export class UnapprovedComponent implements OnInit {
   selectedTab = 'User Details';
 
   constructor(private route: Router) {
-
+    this.route.events.pipe(
+      filter(event => event instanceof NavigationEnd)  
+    ).subscribe((event: NavigationEnd) => {
+      const routeArr = this.route.url.slice(this.route.url.indexOf('unapproved/') + 'unapproved/'.length).split('/');
+      switch (routeArr[0]) {
+        case 'register':
+          this.selectedTab = 'User Details';
+          break;
+        case 'vendor-register':
+          this.selectedTab = 'Vendor Details';
+          break;
+        case 'machine-register':
+          this.selectedTab = 'Machine Details';
+          break;
+        default:
+          this.selectedTab = 'User Details';
+          break;
+      }
+    });
   }
 
   ngOnInit() {

@@ -36,6 +36,8 @@ import { RouterModule } from '@angular/router';
 
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
+import { AdminComponent } from './admin/container/admin.component';
+import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/
     TopMenuComponent,
     VendorComponent,
     ShippingItemComponent,
+    AdminComponent,
+    ApproveVendorComponent,
 
   ],
   imports: [
@@ -114,6 +118,8 @@ import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/
     TopMenuComponent,
     VendorComponent,
     ShippingItemComponent,
+    AdminComponent,
+    ApproveVendorComponent,
   ]
 })
 export class ComponentsModule { }

@@ -2,10 +2,6 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../service/user.service';
-import { AuthService } from '../../service/auth.service';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Store } from '@ngrx/store';
-import { AppTypes } from 'src/app/store';
 import { RegisterUser } from 'src/app/model/user.model';
 @Component({
   selector: 'app-register',
@@ -28,9 +24,6 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private spineer: NgxSpinnerService,
-    private authService: AuthService,
-    private store: Store<any>,
     private userService: UserService
   ) { }
 
@@ -44,16 +37,6 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    const validation = Array.prototype.filter.call(forms, (form) => {
-      form.addEventListener('submit', (event) => {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
   }
 
   initUser(user: RegisterUser): void {
@@ -92,11 +75,6 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
       ...this.form.value
     };
     this.userService.setRegisterUserInfo(user);
-    this.store.dispatch({
-      type: AppTypes.RegisterStatus,
-      payload: {
-        userDetails: 1,
-      }
-    });
+    this.router.navigateByUrl('/unapproved/vendor-register');
   }
 }

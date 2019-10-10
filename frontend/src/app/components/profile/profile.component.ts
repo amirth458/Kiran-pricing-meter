@@ -187,6 +187,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     });
     this.selectedSubmenu = this.baseURL + '/vendor';
+    const authData = this.authService.getAuthData();
+    if (authData.is_admin) {
+      this.route.navigate(['/admin']);
+    }
   }
 
   ngOnDestroy() {

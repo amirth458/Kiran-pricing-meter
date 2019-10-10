@@ -397,3 +397,26 @@ international-phone-number.ng-invalid .input-group .ng-valid {
   padding: 0 20px;
   background: var(--theme-green-grey-bg);
 }
+
+
+.approved {
+  background-color: #E0F0C9 !important;
+}
+.non-approved {
+  background-color: #FFF !important;
+}
+.declined {
+  background-color: #F5DDD1 !important;
+}
+
+
+.approve {
+  font-size: 14px;
+  background: transparent;
+  color: #89D818 !important;
+}
+.decline {
+  font-size: 14px;
+  background: transparent;
+  color: #EF773F !important;
+}

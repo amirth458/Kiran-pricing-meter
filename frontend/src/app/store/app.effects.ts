@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Action, Effect, ofType, switchMap, map, AppTypes, AppFields,
-  CreateVendorInfo, Actions, UpdateVendorInfo, GetVendorInfo, GetUserInfo, GetRegisterStatus } from './app.models';
+  CreateVendorInfo, Actions, UpdateVendorInfo, GetVendorInfo, GetUserInfo, GetRegisterStatus, UpdateAuthInfo } from './app.models';
 import { VendorService } from '../service/vendor.service';
 import { AuthService } from '../service/auth.service';
 import { UserService } from '../service/user.service';
@@ -77,6 +77,20 @@ import { UserService } from '../service/user.service';
         type: AppTypes.UpdateState,
         payload: {
           [AppFields.RegisterStatus]: res
+        }
+      };
+    })
+  );
+
+  @Effect() UpdateAuthInfo: Observable<Action> = this.as.pipe(
+    ofType(AppTypes.UpdateAuthInfo),
+    switchMap((a: UpdateAuthInfo) => [a.payload]),
+    map((res: any) => {
+      this.authService.setAuthData(res);
+      return {
+        type: AppTypes.UpdateState,
+        payload: {
+          [AppFields.AuthInfo]: res
         }
       };
     })
