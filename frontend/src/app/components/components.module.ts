@@ -37,6 +37,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { RouterModule } from '@angular/router';
 
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 import { AdminComponent } from './admin/container/admin.component';
 import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
 import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-details.component';
@@ -44,6 +45,7 @@ import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-detai
   declarations: [
     ActionBarComponent,
     ActionCellRendererComponent,
+    DropdownCellRendererComponent,
     ActionCellApproveRendererComponent,
     BasicDetailsComponent,
     CarrierCellRendererComponent,
@@ -80,6 +82,7 @@ import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-detai
     AgGridModule.withComponents([
       ActionCellRendererComponent,
       CarrierCellRendererComponent,
+      DropdownCellRendererComponent,
       ActionCellApproveRendererComponent,
     ]),
     NgSelectModule,

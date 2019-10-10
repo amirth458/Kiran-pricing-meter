@@ -1,0 +1,16 @@
+<div class="action-column">
+  <div class="form-group">
+    <select name="value" id="value" [(ngModel)]="value" (change)="onChange()" class="form-control">
+      <option value="">Choose...</option>
+      <option *ngFor="let option of options" [value]="option.id">
+        <ng-container *ngIf="params.colDef.field == 'unit'">
+          {{option.displayName}}
+
+        </ng-container>
+        <ng-container *ngIf="params.colDef.field != 'unit'">
+          {{option.name}}
+        </ng-container>
+      </option>
+    </select>
+  </div>
+</div>
