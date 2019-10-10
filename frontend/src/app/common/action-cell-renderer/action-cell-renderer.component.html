@@ -3,6 +3,6 @@
   <span #copyIcon class="copy" (click)="onCopy()" *ngIf="params.action.canCopy"><i class="far fa-copy"></i></span>
   <span #deleteIcon class="delete" (click)="onDelete()" *ngIf="params.action.canDelete"><i
       class="fas fa-trash"></i></span>
-  <span #approve class="approve" (click)="onApprove()" *ngIf="params.action.canApprove(params)">Approve</span>
-  <span #decline class="decline" (click)="onDecline()" *ngIf="params.action.canDecline(params)">Decline</span>
+  <span #approve class="approve" (click)="onApprove()" *ngIf="params.action.canApprove">Approve</span>
+  <span #decline class="decline" (click)="onDecline()" *ngIf="params.action.canDecline">Decline</span>
 </div>
