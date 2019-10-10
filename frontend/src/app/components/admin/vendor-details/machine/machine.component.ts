@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./machine.component.css']
 })
 export class AdminVendorDetailsMachineComponent implements OnInit {
-
+  @ViewChild('modal') modal;
   columnDefs = [
     { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false },
     { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: false },
@@ -45,6 +45,9 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
   };
   vendorId = 0;
   status = 0;
+  approveComments = '';
+  declineComments = '';
+  primaryContactName = '';
 
   constructor(
     public route: Router,
@@ -68,6 +71,7 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.rowData = res.machines;
     if (res.vendor) {
       this.vendorId = res.vendor.id;
+      this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
       if (res.vendor.approved) {
         this.status = 1; // approved
       } else {
@@ -102,10 +106,18 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     }
   }
 
+  onDeclineUser(event) {
+    this.modal.nativeElement.click();
+  }
+
   async declineUser() {
+    if (this.declineComments === '') {
+      return;
+    }
+    this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService.declineUser(this.vendorId).toPromise();
+      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
       this.route.navigateByUrl('/admin/approve');
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');

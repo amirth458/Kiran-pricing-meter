@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
@@ -28,7 +28,7 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
   ) {
 
   }
-
+  @ViewChild('modal') modal;
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
   vendorIndustries: VendorMetaData[] = [];
@@ -64,13 +64,16 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
 
   status = 0;
   vendorId = 0;
-
+  approveComments = '';
+  declineComments = '';
+  primaryContactName = '';
   async ngOnInit() {
     await this.getVendorMetaDatas();
     try {
       const userId = this.router.url.split('/')[3];
       const res = await this.userService.getUserDetails(userId).toPromise();
       if (res.vendor) {
+        this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
         const vendor = {
           id: res.vendor.id,
           name: res.vendor.name,
@@ -176,10 +179,18 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
     }
   }
 
+  onDeclineUser(event) {
+    this.modal.nativeElement.click();
+  }
+
   async declineUser() {
+    if (this.declineComments === '') {
+      return;
+    }
+    this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService.declineUser(this.vendorId).toPromise();
+      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
       this.router.navigateByUrl('/admin/approve');
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');

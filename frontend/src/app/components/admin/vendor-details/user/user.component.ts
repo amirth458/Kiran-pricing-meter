@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../../service/user.service';
@@ -11,16 +11,18 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./user.component.css']
 })
 export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked {
+  @ViewChild('modal') modal;
   form: FormGroup = this.fb.group({
     email: [null, Validators.required],
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
     phone: [null, Validators.required],
-    company: [null, Validators.required],
-    department: [null],
   });
   status = 0;
   vendorId = 0;
+  approveComments = '';
+  declineComments = '';
+  primaryContactName = '';
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -37,13 +39,12 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
         email: res.email,
         firstName: res.firstName,
         lastName: res.lastName,
-        company: res.companyName,
-        department: res.department,
         phone: res.phoneNo,
       };
       this.initUser(user);
       if (res.vendor) {
         this.vendorId = res.vendor.id;
+        this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
         if (res.vendor.approved) {
           this.status = 1; // approved
         } else {
@@ -95,7 +96,7 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
   async approveUser() {
     this.spinner.show();
     try {
-      await this.userService.approveUser(this.vendorId).toPromise();
+      await this.userService.approveUser(this.vendorId, this.approveComments).toPromise();
       this.router.navigateByUrl('/admin/approve');
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
@@ -104,10 +105,18 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
     }
   }
 
+  onDeclineUser(event) {
+    this.modal.nativeElement.click();
+  }
+
   async declineUser() {
+    if (this.declineComments === '') {
+      return;
+    }
+    this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService.declineUser(this.vendorId).toPromise();
+      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
       this.router.navigateByUrl('/admin/approve');
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
