@@ -61,16 +61,4 @@ export class RegisterActionBarComponent implements OnChanges, OnInit {
         }
       });
   }
-
-  addButton(route) {
-    this.route.navigateByUrl(this.route.url + '/' + route);
-  }
-
-  backButton() {
-    let gotoURL = '/profile/vendor/basics';
-    const urlArray = this.route.url.split('/');
-    gotoURL = `/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`;
-    this.route.navigateByUrl(gotoURL);
-  }
-
 }

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActionBarComponent } from '../common/action-bar/action-bar.component';
 import { ActionCellRendererComponent } from '../common/action-cell-renderer/action-cell-renderer.component';
+import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
+
 import { BasicDetailsComponent } from './basic-details/basic-details.component';
 import { CarrierCellRendererComponent } from '../common/carrier-cell-renderer/carrier-cell-renderer.component';
 import { ColumnSearchFilterComponent } from '../common/column-search-filter/column-search-filter.component';
@@ -37,7 +39,7 @@ import { RouterModule } from '@angular/router';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { AdminComponent } from './admin/container/admin.component';
 import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
-
+import { AdminVendorDetailsComponent } from 'src/app/components/admin/vendor-details/vendor-details.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -69,6 +71,8 @@ import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.co
     ShippingItemComponent,
     AdminComponent,
     ApproveVendorComponent,
+    AdminVendorDetailsComponent,
+    ActionCellApproveRendererComponent
 
   ],
   imports: [
@@ -90,6 +94,7 @@ import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.co
     ActionBarComponent,
     AgGridModule,
     ActionCellRendererComponent,
+    ActionCellApproveRendererComponent,
     BasicDetailsComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
@@ -117,6 +122,7 @@ import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.co
     ShippingItemComponent,
     AdminComponent,
     ApproveVendorComponent,
+    AdminVendorDetailsComponent
   ]
 })
 export class ComponentsModule { }
