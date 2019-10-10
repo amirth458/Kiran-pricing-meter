@@ -5,12 +5,11 @@ import { ProcessMetadataService } from 'src/app/service/process-metadata.service
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
-import { ProcessProfileService } from 'src/app/service/process-profile.service';
-import { ProcessPricingService } from 'src/app/service/process-pricing.service';
 import { PricingMetadataService } from 'src/app/service/pricing-metadata.service';
 import { GridOptions } from 'ag-grid-community';
 import { DropdownCellRendererComponent } from 'src/app/common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { MultiSelectCellRendererComponent } from 'src/app/common/multi-select-cell-renderer/multi-select-cell-renderer.component';
 import { PostProcessPricingService } from 'src/app/service/post-process-pricing.service';
 import { PostProcessProfileService } from 'src/app/service/post-process-profile.service';
 
@@ -92,11 +91,13 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   };
   multiplierConditions = {
     invoiceItem: [],
+    filteredInvoiceItem: [],
     invoiceLineItems: []
   };
 
 
   frameworkComponents = {
+    multiselectCellRenderer: MultiSelectCellRendererComponent,
     dropdownCellRenderer: DropdownCellRendererComponent,
     actionCellRenderer: ActionCellRendererComponent
   };
@@ -128,7 +129,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       const conditionParameters = await this.pricingMetaDataService.getConditionParameters(true).toPromise();
       // const pricingParameterGroup = await this.pricingMetaDataService.getParameterGroup().toPromise();
       // const conditionParameters = await this.pricingMetaDataService.getConditionParameters().toPromise();
-      const invoiceItems = await this.pricingMetaDataService.getInvoiceItems(true).toPromise();
+      // const invoiceItems = await this.pricingMetaDataService.getInvoiceItems(true).toPromise();
       const invoiceLineItems = await this.pricingMetaDataService.getInvoiceLineItems(true).toPromise();
 
       // this.conditionTypes = conditionTypes.metadataList;
@@ -146,18 +147,33 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         }
       });
 
-      this.flatConditions.invoiceItem = invoiceItems.metadataList;
-      this.variableConditions.invoiceItem = invoiceItems.metadataList;
-      this.multiplierConditions.invoiceItem = invoiceItems.metadataList;
+      const foundInvoiceItems = [];
+      const invoiceItems = [];
+      invoiceLineItems.metadataList.map(item => {
+        if (!foundInvoiceItems.includes(item.invoiceItem.name)) {
+          foundInvoiceItems.push(item.invoiceItem.name);
+          invoiceItems.push({
+            ...item.invoiceItem,
+            processPricingParameterGroup: item.processPricingParameterGroup
+          });
+        }
+      });
 
-      this.flatConditions.invoiceLineItems = invoiceLineItems.metadataList;
-      this.variableConditions.invoiceLineItems = invoiceLineItems.metadataList;
-      this.multiplierConditions.invoiceLineItems = invoiceLineItems.metadataList;
+      this.flatConditions.invoiceItem = invoiceItems.filter(item => item.processPricingParameterGroup.name === 'flat_charges');
+      this.variableConditions.invoiceItem = invoiceItems.filter(item => item.processPricingParameterGroup.name === 'variable_charges');
+      this.multiplierConditions.invoiceItem = invoiceItems.filter(item => item.processPricingParameterGroup.name === 'multipliers');
+
+      this.flatConditions.invoiceLineItems = invoiceLineItems.metadataList
+        .filter(item => item.processPricingParameterGroup.name === 'flat_charges');
+      this.variableConditions.invoiceLineItems = invoiceLineItems.metadataList
+        .filter(item => item.processPricingParameterGroup.name === 'variable_charges');
+      this.multiplierConditions.invoiceLineItems = invoiceLineItems.metadataList
+        .filter(item => item.processPricingParameterGroup.name === 'multipliers');
 
       this.conditionParameters = conditionParameters.metadataList;
 
       this.variableConditions.conditionTypes = [];
-      this.variableConditions.unit = units.metadataList;;
+      this.variableConditions.unit = units.metadataList;
 
       this.conditionTypes = conditionTypes.metadataList;
       this.filteredPricingConditionTypes = this.conditionTypes;
@@ -232,6 +248,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     });
     return name;
   }
+
   onPropertyChange(conditionId, index) {
     let signTypeId = null;
 
@@ -265,8 +282,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     const processTypeId = selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id;
     this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id == processTypeId);
     const temp = this.getRowData('variableCharges').map(row => new Object({
-      ...row,
-      partValueOptions: this.variableConditions.conditionTypes
+      ...row
     }));
     this.variableRowData = temp;
   }
@@ -412,10 +428,10 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         }
       },
       { headerName: 'Value ($)', field: 'value', hide: false, sortable: false, filter: false, editable: true },
-      { headerName: 'Per', field: 'per', hide: false, sortable: false, filter: false, editable: false, width: 60 },
-      { headerName: 'Quantity', field: 'quantity', hide: false, sortable: false, filter: false, editable: true },
+      // { headerName: 'Per', field: 'per', hide: false, sortable: false, filter: false, editable: false, width: 60 },
+      { headerName: '( Per ) Quantity', field: 'quantity', hide: false, sortable: false, filter: false, editable: true },
       {
-        headerName: 'Units', field: 'unit', hide: false, sortable: false, filter: false,
+        headerName: 'Part Value', field: 'partValue', hide: false, sortable: false, filter: false,
         cellRenderer: 'dropdownCellRenderer',
         cellRendererParams: {
           data: {
@@ -423,8 +439,9 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
-      }, {
-        headerName: 'Part Value', field: 'partValue', hide: false, sortable: false, filter: false,
+      },
+      {
+        headerName: 'Units', field: 'unit', hide: false, sortable: false, filter: false,
         cellRenderer: 'dropdownCellRenderer',
         cellRendererParams: {
           data: {
@@ -470,7 +487,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       },
       { headerName: 'Multiplier', field: 'multiplier', hide: false, sortable: false, filter: false, editable: true },
       {
-        headerName: 'Multiplier Value', field: 'unit', hide: false, sortable: false, filter: false, editable: true,
+        headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
         cellRenderer: 'dropdownCellRenderer',
         cellRendererParams: {
           data: {
@@ -563,19 +580,32 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
 
 
   dropdownValueChanged(param, value) {
+    const rowData = this.getRowData(param.data.section);
     switch (param.colDef.field) {
       case 'invoiceItem':
-        const rowData = this.getRowData(param.data.section);
+        this.getRowData(param.data.section)[param.rowIndex].invoiceItem = value;
         if (rowData.length) {
           rowData[param.rowIndex].invoiceItem = value;
           if (param.data.section === 'flatCharges') {
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'flat_charges');
+
+            this.multiplierRowData = this.getRowData('multiplierCharges').map(row => new Object(
+              { ...row, valueOptions: [...this.unitForMultiplier] }
+            ));
+
             this.flatRowData = [...rowData];
           }
           if (param.data.section === 'variableCharges') {
+            const invoiceItem = rowData[param.rowIndex].invoiceItem;
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'variable_charges');
+
+            rowData[param.rowIndex].partValueOptions = rowData[param.rowIndex].invoiceLineItemOptions
+              .filter(item => item.invoiceItem.id == invoiceItem)[0].processPricingConditionTypeList;
+            // rowData[param.rowIndex].unitOptions = [];
+
+
             this.variableRowData = [...rowData];
           }
           if (param.data.section === 'multiplierCharges') {
@@ -587,12 +617,39 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         break;
       case 'invoiceLineItem':
         this.getRowData(param.data.section)[param.rowIndex].invoiceLineItem = value;
+
+        if (param.data.section === 'variableCharges') {
+          const lineItem = rowData[param.rowIndex].invoiceLineItem;
+
+          rowData[param.rowIndex].partValueOptions = rowData[param.rowIndex].invoiceLineItemOptions
+            .filter(item => item.id == lineItem)[0].processPricingConditionTypeList;
+          // rowData[param.rowIndex].unitOptions = [];
+
+          this.variableRowData = [...rowData];
+        }
+
+        if (param.data.section != 'multiplierCharges') {
+          this.multiplierRowData = this.getRowData('multiplierCharges').map(row => new Object(
+            { ...row, valueOptions: [...this.unitForMultiplier] }
+          ));
+
+        }
         break;
       case 'unit':
         this.getRowData(param.data.section)[param.rowIndex].unit = value;
         break;
       case 'partValue':
         this.getRowData(param.data.section)[param.rowIndex].partValue = value;
+        if (param.data.section === 'variableCharges') {
+          const partValueOptions = rowData[param.rowIndex].partValueOptions;
+          const partValue = rowData[param.rowIndex].partValue;
+
+          const measurementType = partValueOptions.filter(option => option.id == partValue)[0].measurementType;
+
+          rowData[param.rowIndex].unitOptions = this.units.filter(unit => unit.measurementType.id == measurementType.id);
+
+          this.variableRowData = [...rowData];
+        }
         break;
       case 'multiplier':
         this.getRowData(param.data.section)[param.rowIndex].multiplier = value;
@@ -665,22 +722,26 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         });
         break;
       case 'variableCharges':
+        let measurementType = '';
+        if (data) {
+          measurementType =
+            data
+              .processPricingConditionType
+              .measurementType
+              .id;
+        }
         this.variableGridOptions.api.updateRowData({
           add: [{
             invoiceItem: data ? data.invoiceLineItem.invoiceItem.id : '',
             invoiceLineItem: data ? data.invoiceLineItem.id : '',
             value: data ? data.price : '',
-            per: '',
             quantity: data ? data.quantity : '',
             unit: data ? data.quantityUnitType.id : '',
             partValue: data ? data.processPricingConditionType.id : '',
             invoiceItemOptions: this.variableConditions.invoiceItem,
-            // invoiceLineItemOptions: this.variableConditions.invoiceLineItems,
             invoiceLineItemOptions: [],
-            // unitOptions: this.variableConditions.unit,
-            unitOptions: this.variableConditions.unit,
-            partValueOptions: this.variableConditions.conditionTypes
-            // partValueOptions: this.variableConditions.conditionTypes,
+            unitOptions: data ? this.units.filter(unit => unit.measurementType.id == measurementType) : [],
+            partValueOptions: data ? data.invoiceLineItem.processPricingConditionTypeList : [],
           }]
         });
         break;
@@ -689,11 +750,17 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           add: [{
             invoiceItem: data ? data.invoiceLineItem.invoiceItem.id : '',
             invoiceLineItem: data ? data.invoiceLineItem.id : '',
-            value: data ? data.price : '',
+            // value: data ? data.price : '',
             multiplier: data ? data.multiplier : '',
             invoiceItemOptions: this.multiplierConditions.invoiceItem,
-            unit: data ? data.multiplierProcessPricingParameter.id : '',
-            unitOptions: this.variableConditions.unit,
+            value: data ? data.multiplierProcessPricingParameter.invoiceLineItem.id : '',
+            // valueOptions: [
+            //   ...this.variableConditions.invoiceLineItems,
+            //   ...this.flatConditions.invoiceLineItems,
+            //   // ...this.variableConditions.invoiceItem,
+            //   // ...this.flatConditions.invoiceItem
+            // ],
+            valueOptions: [...this.unitForMultiplier],
             invoiceLineItemOptions: [],
           }]
         });
@@ -704,6 +771,33 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     }
   }
 
+  get unitForMultiplier() {
+    const flatData = this.getRowData('flatCharges');
+    const flatLineItem = [];
+    const variableLineItem = [];
+    const visitedFlatLineItem = [];
+    const visitedVariableLineItem = [];
+    flatData.map(item => {
+      const res = item.invoiceLineItemOptions.filter(e => e.id == item.invoiceLineItem);
+      res.map(r => {
+        if (!visitedFlatLineItem.includes(r.name)) {
+          visitedFlatLineItem.push(r.name);
+          flatLineItem.push(r);
+        }
+      });
+    });
+    const variableData = this.getRowData('variableCharges');
+    variableData.map(item => {
+      const res = item.invoiceLineItemOptions.filter(e => e.id == item.invoiceLineItem);
+      res.map(r => {
+        if (!visitedVariableLineItem.includes(r.name)) {
+          visitedVariableLineItem.push(r.name);
+          variableLineItem.push(r);
+        }
+      });
+    });
+    return [...flatLineItem, ...variableLineItem];
+  }
 
   addParameterCondition() {
     this.selectedPricingConditionList.push({
@@ -767,20 +861,29 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       processPricingConditionType: { id: row.partValue }
     }));
 
-    // TODO: Format this for API consumption
-    const multiplierCharges = this.getRowData('multiplierCharges');
+    const multiplierCharges = this.getRowData('multiplierCharges').map(row => new Object({
+      invoiceLineItem: {
+        id: row.invoiceLineItem
+      },
+      multiplier: row.multiplier,
+      multiplierProcessPricingParameter: {
+        invoiceLineItem: {
+          id: row.value
+        }
+      }
+
+    }));
 
     const postData = {
       id: this.form.value.id || '',
       name: this.form.value.pricingProfileName || 'Process Pricing - ' + this.getRandomString(7),
       processPricingConditionList: this.selectedPricingConditionList,
-      processPricingParameterList: [...flatCharges, ...variableCharges],
+      processPricingParameterList: [...flatCharges, ...variableCharges, ...multiplierCharges],
       processProfile: { id: this.form.value.processProfileId },
       processProfileType: {
-        id: 2
+        id: 1
       }
     };
-
     return postData;
   }
 
