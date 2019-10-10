@@ -370,7 +370,7 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
 
       setTimeout(() => {
         this.userService.resetRegisterInfo();
-        this.route.navigateByUrl('/register-completed');
+        this.route.navigateByUrl('/siginup-completed');
       }, 2000);
 
     } catch (e) {

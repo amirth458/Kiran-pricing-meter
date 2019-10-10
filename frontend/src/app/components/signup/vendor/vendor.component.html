@@ -94,7 +94,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group theme col-md-12">
+          <div class="form-group theme col-md-6">
             <label style="margin-bottom: 0">
               Confidentiality
             </label>
@@ -109,18 +109,14 @@
                 </a>
               </div>
             </div>
-
-          </div>
-          <div class="form-group theme col-md-6">
+          
             <select formControlName="confidentiality" (change)="onChangeConfidentiality($event)" class="form-control">
               <option selected value="0" [disabled]="disableConfidentiality">Choose...</option>
               <option *ngFor="let item of confidentialities" [disabled]="disableConfidentiality" [value]="item.id">
                 {{item.name}}</option>
             </select>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group theme col-md-12">
+          <div class="form-group theme col-md-6" style="padding-top: 27px">
             <label>Certifications</label>
             <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
               placeholder="Certifications" [selectOnTab]="true" [(ngModel)]="selectedCertifications"

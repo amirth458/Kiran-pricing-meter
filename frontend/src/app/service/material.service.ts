@@ -21,10 +21,6 @@ export class MaterialService {
       params = params.append('sort', filterOption.sort.toString());
       params = params.append('q', filterOption.q.toString());
     }
-    const data = JSON.parse(localStorage.getItem('auth'));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken
-    });
-    return this.http.get<any>(url, { params, headers });
+    return this.http.get<any>(url, { params });
   }
 }
