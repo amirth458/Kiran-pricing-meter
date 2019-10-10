@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
 
-import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subscription } from 'rxjs';
@@ -100,7 +100,7 @@ export class ApproveVendorComponent implements OnInit {
   type = ['search', 'filter'];
 
   frameworkComponents = {
-    actionCellRenderer: ActionCellRendererComponent,
+    actionCellRenderer: ActionCellApproveRendererComponent,
   };
 
   columnDefs = [{
@@ -205,23 +205,6 @@ export class ApproveVendorComponent implements OnInit {
         },
       }
     }
-    // cellRenderer(params) {
-    //   if (params.data.vendor) {
-    //     if (params.data.vendor.approved) {
-    //       return 'Approved';
-    //     } else {
-    //       if (params.data.vendor.approvedAt === null) {
-    //         return '<div><span (click)="approveUser(' + params.data.vendor.id +
-    //           ')" class="btn-approve-in-row">Approve</span>' +
-    //           '<span (click)="declineUser(' + params.data.vendor.id +
-    //           ')" class="btn-decline-in-row">Decline</span></div>';
-    //       } else {
-    //         return 'Declined';
-    //       }
-    //     }
-    //   }
-    //   return '';
-    // },
   }
   ];
 
@@ -231,7 +214,7 @@ export class ApproveVendorComponent implements OnInit {
   pageSize = 10;
   vendor: Observable<Vendor>;
   sub: Subscription;
-  vendorStatus = 0;
+  vendorStatus = 1;
   navigation;
   infoText = '';
 
@@ -248,6 +231,7 @@ export class ApproveVendorComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUsers();
+
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
@@ -288,14 +272,6 @@ export class ApproveVendorComponent implements OnInit {
     };
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
-      // if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
-      //   const toastInfo = this.navigation.extras.state.toast;
-      //   if (toastInfo.type === 'success') {
-      //     this.toastr.success(toastInfo.body);
-      //   } else {
-      //     this.toastr.error(toastInfo.body);
-      //   }
-      // }
     }, 50);
   }
 
@@ -303,7 +279,7 @@ export class ApproveVendorComponent implements OnInit {
     this.spineer.show();
     try {
       this.allUsers = await this.userService.getAllUsers().toPromise();
-      this.rowData = this.allUsers;
+      this.vendorStatusChanged(this.vendorStatus);
     } catch (e) {
       this.spineer.hide();
       console.log(e);
@@ -383,6 +359,7 @@ export class ApproveVendorComponent implements OnInit {
         this.spineer.show();
         await this.userService.approveUsers(userIds).toPromise();
         await this.getAllUsers();
+        this.vendorStatusChanged(this.vendorStatus);
         this.toastr.success('Approve is done.');
       } catch (e) {
         this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
@@ -410,6 +387,7 @@ export class ApproveVendorComponent implements OnInit {
         this.spineer.show();
         await this.userService.declineUsers(userIds).toPromise();
         await this.getAllUsers();
+        this.vendorStatusChanged(this.vendorStatus);
         this.toastr.success('Decline is done.');
       } catch (e) {
         this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
@@ -424,8 +402,8 @@ export class ApproveVendorComponent implements OnInit {
     try {
       await this.userService.declineUser(id).toPromise();
       await this.getAllUsers();
+      this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Decline is done.');
-      this.toastr.success(this.selectedFacility.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
     } finally {
@@ -439,8 +417,8 @@ export class ApproveVendorComponent implements OnInit {
       await this.userService.approveUser(id).toPromise();
       console.log('aaaa');
       await this.getAllUsers();
+      this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Approve is done.');
-      this.toastr.success(this.selectedFacility.name + ' deleted.');
     } catch (e) {
       this.toastr.error('We are sorry, ' + this.selectedFacility.name + ' delete failed. Please try again later.');
     } finally {

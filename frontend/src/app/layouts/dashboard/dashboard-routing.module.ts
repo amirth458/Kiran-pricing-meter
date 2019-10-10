@@ -23,6 +23,7 @@ import { PostProcessPricingComponent } from '../../components/post-process-prici
 import { PostProcessPricingItemComponent } from '../../components/post-process-pricing-item/post-process-pricing-item.component';
 import { AdminComponent } from 'src/app/components/admin/container/admin.component';
 import { ApproveVendorComponent } from 'src/app/components/admin/approve-vendor/approve-vendor.component';
+import { AdminVendorDetailsComponent } from 'src/app/components/admin/vendor-details/vendor-details.component';
 
 const routes: Routes = [
   {
@@ -86,9 +87,9 @@ const routes: Routes = [
         children: [
           {
             path: 'approve-vendor', component: ApproveVendorComponent,
-            children: [
-              { path: ':vendorId', component: BasicDetailsComponent },
-            ]
+          },
+          {
+            path: 'vendor-details/:vendorId', component: AdminVendorDetailsComponent,
           },
           { path: '', pathMatch: 'full', redirectTo: 'approve-vendor' },
           { path: '**', pathMatch: 'full', redirectTo: 'approve-vendor' }
