@@ -32,13 +32,5 @@ export class ActionCellRendererComponent implements ICellRendererAngularComp {
   refresh(): boolean {
     return false;
   }
-
-  onApprove(): void {
-    this.params.action.approve(this.params);
-  }
-
-  onDecline(): void {
-    this.params.action.decline(this.params);
-  }
 }
 export type CellAction = (params) => void;
