@@ -475,3 +475,7 @@ international-phone-number.readonly .dropdown .dropbtn {
   border: 1px solid var(--theme-orange) !important;
   width: 140px !important;
 }
+
+.form-notification {
+  color: var(--theme-light-green);
+}
