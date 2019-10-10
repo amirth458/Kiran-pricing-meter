@@ -3,22 +3,30 @@
     {{error}}
   </div>
 
+  <div class="title-bar">
+    <!-- Parameter set nick name -->
+    <h4>{{name}}</h4>
+    <!-- parameter details -->
+    <span>{{parameterDetails}}</span>
+  </div>
+
   <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">
     <div class="form-row">
 
-      <div class="form-group theme col-md-6">
-        <label for="pricingProfileName">Pricing Profile Name</label>
+      <div class="form-group theme col-md-6 p-0">
+        <label for="pricingProfileName">Pricing Profile Nickname</label>
         <input type="text" formControlName="pricingProfileName" class="form-control" id="pricingProfileName"
           name="pricingProfileName" placeholder="Pricing Profile Name">
         <span class="footnote">* If left blank, we will auto-generate one for you.</span>
       </div>
 
+
       <div class="form-group theme col-md-6">
         <label for="processProfileId">Process Profile Name</label>
-        <select (change)="processProfileChanged()" required id="processProfileId" name="processProfileId"
-          formControlName="processProfileId" class="form-control">
+        <select required id="processProfileId" name="processProfileId" formControlName="processProfileId"
+          (change)="processProfileChanged()" class="form-control">
           <option selected value=''>Choose...</option>
-          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}}</option>
+          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}} {{item.parameterNickName}}</option>
         </select>
         <div class="invalid-feedback">
           Please choose a process profile.
@@ -27,8 +35,9 @@
       </div>
     </div>
 
+
     <div class="form-row">
-      <div class="form-group theme col-md-6 conditionLabel">
+      <div class="form-group theme col-md-6 conditionLabel pl-4">
         <label for="conditionLabel">Conditions</label>
       </div>
     </div>
@@ -39,15 +48,15 @@
         <span>
           Define the condition under which this profile should be used.
         </span>
-        <span class="add" (click)="addCondition()">
+        <span class="add" (click)="addParameterCondition()">
           <i class="fas fa-plus"></i>
         </span>
 
       </div>
       <div class="condition-wrapper">
-        <span>
+        <!-- <span>
           If
-        </span>
+        </span> -->
 
         <div class="input-wrapper">
 
@@ -81,7 +90,8 @@
             </div>
 
             <div class="form-group theme col-md-3">
-              <input required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+              <input [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
+                required type="number" step="0.00001" maxlength="4" min="0" max="9999"
                 [(ngModel)]="selectedPricingConditionList[index].value" [ngModelOptions]="{standalone: true}"
                 class="form-control" id="value" name="value" placeholder="Value">
               <div class="invalid-feedback">
@@ -91,11 +101,11 @@
 
             <div class="form-group theme col-md-3 icon-attached">
               <div>
-                <select required id="condition" name="condition"
-                  [(ngModel)]="selectedPricingConditionList[index].unitType.id" [ngModelOptions]="{standalone: true}"
-                  class="form-control">
+                <select [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
+                  required id="condition" name="condition" [(ngModel)]="selectedPricingConditionList[index].unitType.id"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
                   <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">
+                  <option *ngFor="let item of selectedPricingConditionList[index].units" [value]="item.id">
                     {{item.displayName}}
                   </option>
                 </select>
@@ -105,7 +115,7 @@
 
               </div>
 
-              <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index, 'Condition')">
+              <span *ngIf="index !== 0" class="minus" (click)="removeParameterCondition(index)">
                 <i class="fas fa-minus"></i>
               </span>
 
@@ -120,126 +130,112 @@
         </div>
 
         <!-- <span class="add" (click)="addCondition()">
-          <i class="fas fa-plus"></i>
-        </span> -->
+              <i class="fas fa-plus"></i>
+            </span> -->
 
       </div>
     </div>
 
 
-    <div class="form-row">
-      <div class="form-group theme col-md-6 pricingParameter">
-        <label for="pricingParameter">Pricing Parameters</label>
-      </div>
-    </div>
+    <!-- Process Parameters -->
 
+    <div *ngIf="isDataLoaded" class="tab-container card">
 
-    <div id="pricingParameter" class="conditions">
-      <div class="info">
-        <span>
-          Define the Pricing Parameters for this Process Profile.
-        </span>
-        <span class="add" (click)="addPricingParameter()">
-          <i class="fas fa-plus"></i>
-        </span>
+      <div class="card-header">
+        <div class="menu-item active">
+          Process Parameters
+        </div>
       </div>
 
-      <div class="condition-wrapper">
-        <!-- <span>
-          If
-        </span> -->
 
+      <!-- Flat Charges -->
+      <div class="form-row">
+        <div class="form-group theme col-md-6 conditionLabel pl-4">
+          <label for="conditionLabel">Flat Charges</label>
+        </div>
+      </div>
+
+
+      <div id="conditionLabel" class="conditions">
+        <div class="controls d-flex justify-content-end mb-2">
+          <span class="add" (click)="addCondition('flatCharges')">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <!-- Insert Table here -->
         <div class="input-wrapper">
-
-          <div *ngFor="let item of selectedParameterList; let index = index" class="form-row">
-
-            <div class="form-group theme col-md-2">
-              <select required id="name" name="name" [(ngModel)]="selectedParameterList[index].currency.id"
-                [ngModelOptions]="{standalone: true}" class="form-control">
-                <option selected value="">Choose...</option>
-                <option *ngFor="let item of currencyList" [selected]="item.symbole == $" [value]="item.id">
-                  {{item.symbol}}</option>
-              </select>
-              <div class="invalid-feedback">
-                Required.
-              </div>
-            </div>
-
-            <div class="form-group theme col-md-2">
-              <input required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                [(ngModel)]="selectedParameterList[index].price" [ngModelOptions]="{standalone: true}"
-                class="form-control" id="price" name="price" placeholder="Value">
-              <div class="invalid-feedback">
-                Required.
-              </div>
-            </div>
-
-            <div class="form-group col-md-1">
-
-              <div class="text-center d-flex justify-content-center align-items-flex-start h-100">Per</div>
-
-            </div>
-
-            <div class="form-group theme col-md-2">
-              <input required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                [(ngModel)]="selectedParameterList[index].quantity" [ngModelOptions]="{standalone: true}"
-                class="form-control" id="quantity" name="quantity" placeholder="Value">
-              <div class="invalid-feedback">
-                Required.
-              </div>
-            </div>
-
-            <div class="form-group theme col-md-2 icon-attached">
-              <div>
-
-                <select required id="condition" name="condition"
-                  [(ngModel)]="selectedParameterList[index].quantityUnitType.id" [ngModelOptions]="{standalone: true}"
-                  class="form-control">
-                  <option selected value="">Choose...</option>
-                  <option *ngFor="let item of units" [value]="item.id">
-                    {{item.displayName}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Required.
-                </div>
-              </div>
-
-            </div>
-
-            <div class="form-group theme col-md-3 icon-attached">
-              <div>
-
-                <select required id="type" name="type"
-                  [(ngModel)]="selectedParameterList[index].processPricingParameterType.id"
-                  [ngModelOptions]="{standalone: true}" class="form-control">
-                  <option selected value="">Choose...</option>
-                  <option *ngFor="let item of filteredProcessPricingParameterTypeList" [value]="item.id">{{item.name}}
-                  </option>
-                </select>
-                <div class="invalid-feedback">
-                  Required.
-                </div>
-              </div>
-
-              <span *ngIf="index === 0" class="minus invisible">
-                <i class=""></i>
-              </span>
-
-              <span *ngIf="index !== 0" class="minus" (click)="removeCondition(index, 'Parameter')">
-                <i class="fas fa-minus"></i>
-              </span>
-
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="flatRowData"
+                [gridOptions]="flatGridOptions" (gridReady)="autoSizeColumns('flatCharges')">
+              </ag-grid-angular>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- End of Flat Charges -->
+
+      <!-- Variable Charges -->
+      <div class="form-row">
+        <div class="form-group theme col-md-6 conditionLabel pl-4">
+          <label for="conditionLabel">Variable Charges</label>
+        </div>
+      </div>
+
+
+      <div id="conditionLabel" class="conditions">
+        <div class="controls d-flex justify-content-end mb-2">
+          <span class="add" (click)="addCondition('variableCharges')">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="variableRowData"
+                [gridOptions]="variableGridOptions" (gridReady)="autoSizeColumns('variableCharges')">
+              </ag-grid-angular>
+            </div>
+          </div>
+        </div>
+        <!-- Insert Table here -->
 
       </div>
-      <div class="info">Adjust the generic characteristics for this build to match your internal capability, as
-        necessary.</div>
+      <!-- End of Variable Charges -->
+
+      <!-- Multiplier Charges -->
+      <div class="form-row">
+        <div class="form-group theme col-md-6 conditionLabel pl-4">
+          <label for="conditionLabel">Multiplier Charges</label>
+        </div>
+      </div>
+
+
+      <div id="conditionLabel" class="conditions">
+        <div class="controls d-flex justify-content-end mb-2">
+          <span class="add" (click)="addCondition('multiplierCharges')">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="multiplierRowData"
+                [gridOptions]="multiplierGridOptions" (gridReady)="autoSizeColumns('multiplierCharges')">
+              </ag-grid-angular>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of Multiplier Charges -->
+
 
     </div>
 
+    <!-- End of Process Parameters -->
 
     <div class="row button-section">
 

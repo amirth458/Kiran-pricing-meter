@@ -46,6 +46,7 @@ import { RouterModule } from '@angular/router';
 
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { AdminContainerComponent } from './admin/_container/container.component';
+import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
 import { AdminVendorDetailsContainerComponent } from './admin/vendor-details/_container/container.component';
 import { AdminVendorDetailsActionBarComponent } from './admin/vendor-details/action-bar/action-bar.component';
@@ -57,6 +58,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
   declarations: [
     ActionBarComponent,
     ActionCellRendererComponent,
+    DropdownCellRendererComponent,
     ActionCellApproveRendererComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
@@ -105,6 +107,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     AgGridModule.withComponents([
       ActionCellRendererComponent,
       CarrierCellRendererComponent,
+      DropdownCellRendererComponent,
       ActionCellApproveRendererComponent,
     ]),
     NgSelectModule,
