@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActionBarComponent } from '../common/action-bar/action-bar.component';
 import { ActionCellRendererComponent } from '../common/action-cell-renderer/action-cell-renderer.component';
-import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
+import { ActionCellApproveRendererComponent } from '../common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { BasicDetailsComponent } from './basic-details/basic-details.component';
 import { CarrierCellRendererComponent } from '../common/carrier-cell-renderer/carrier-cell-renderer.component';
@@ -39,11 +39,12 @@ import { RouterModule } from '@angular/router';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { AdminComponent } from './admin/container/admin.component';
 import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
-import { AdminVendorDetailsComponent } from 'src/app/components/admin/vendor-details/vendor-details.component';
+import { AdminVendorDetailsComponent } from './admin/vendor-details/vendor-details.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
     ActionCellRendererComponent,
+    ActionCellApproveRendererComponent,
     BasicDetailsComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
@@ -72,14 +73,14 @@ import { AdminVendorDetailsComponent } from 'src/app/components/admin/vendor-det
     AdminComponent,
     ApproveVendorComponent,
     AdminVendorDetailsComponent,
-    ActionCellApproveRendererComponent
 
   ],
   imports: [
     CommonModule,
     AgGridModule.withComponents([
       ActionCellRendererComponent,
-      CarrierCellRendererComponent
+      CarrierCellRendererComponent,
+      ActionCellApproveRendererComponent,
     ]),
     NgSelectModule,
     FormsModule,
