@@ -32,7 +32,11 @@ export class VendorService {
 
   getVendorDetail(id: number): Observable < Vendor > {
     const url = `${environment.apiBaseUrl}/vendors/${id}`;
-    return this.http.get < Vendor > (url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get < Vendor > (url, { headers });
   }
 
   createVendorProfile(profile: Vendor) {

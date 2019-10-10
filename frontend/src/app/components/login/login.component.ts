@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         type: AppTypes.UpdateAuthInfo,
         payload: res
       });
-      console.log(res);
+
       if (this.userForm.value.remember_me) {
         localStorage.setItem('remember_me', '1');
         localStorage.setItem('email', this.userForm.value.email);

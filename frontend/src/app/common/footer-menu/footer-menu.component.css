@@ -7,3 +7,12 @@
 .align-center {
   text-align: center
 }
+
+
+.align-right {
+  text-align: right;
+}
+
+.light-green-color {
+  color: #89D818 !important;
+}
