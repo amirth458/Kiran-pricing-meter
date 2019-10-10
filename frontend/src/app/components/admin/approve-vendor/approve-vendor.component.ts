@@ -9,10 +9,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subscription } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
-import { AppFields, AppTypes } from 'src/app/store';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
-import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-approve-vendor',

@@ -37,8 +37,6 @@ export class TopMenuComponent implements OnInit {
         ...this.sub
       };
     }
-
-    console.log({ user: this.userInfo });
   }
 
   onLogout() {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { FilterOption } from '../model/vendor.model';
@@ -24,28 +24,46 @@ export class ShippingService {
       params = params.append('sort', filterOption.sort.toString());
       params = params.append('q', filterOption.q.toString());
     }
-    return this.http.get<any>(url, { params });
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get<any>(url, { params, headers });
   }
 
   getShipping(vendorId: number, id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/vendor-shipping-provider/${id}`;
-
-    return this.http.get(url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get(url, { headers });
   }
 
   createShipping(vendorId: number, shipping: Shipping): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/vendor-shipping-provider`;
-
-    return this.http.post(url, shipping);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.post(url, shipping, { headers });
   }
 
   updateShipping(vendorId: number, id: number, shipping: Shipping): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/vendor-shipping-provider/${id}`;
-    return this.http.put(url, shipping);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.put(url, shipping, { headers });
   }
 
   deleteShipping(vendorId: number, id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/vendor-shipping-provider/${id}`;
-    return this.http.delete(url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.delete(url, { headers });
   }
 }
