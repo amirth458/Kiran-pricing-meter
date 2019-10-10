@@ -8,7 +8,7 @@ import { RegisterContainerComponent } from './components/signup/_container/conta
 import { RegisterUserComponent } from './components/signup/user/user.component';
 import { RegisterVendorComponent } from './components/signup/vendor/vendor.component';
 import { RegisterMachineComponent } from './components/signup/machine/machine.component';
-import { RegisterCompletedComponent } from './components/signup/completed/completed.component';
+import { RegisterCompletedComponent } from './components/signup-completed/completed.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'profile', pathMatch: 'full' },
@@ -24,9 +24,9 @@ const routes: Routes = [
       { path: 'user', component: RegisterUserComponent },
       { path: 'vendor', component: RegisterVendorComponent },
       { path: 'machine', component: RegisterMachineComponent },
-      { path: 'completed', component: RegisterCompletedComponent },
     ]
   },
+  { path: 'signup-completed', component: RegisterCompletedComponent },
   { path: '**',  pathMatch: 'full', redirectTo: 'profile',
     canActivate: [AuthGuard]
   }
