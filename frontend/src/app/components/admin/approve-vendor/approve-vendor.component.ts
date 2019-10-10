@@ -102,7 +102,7 @@ export class ApproveVendorComponent implements OnInit {
   };
 
   columnDefs = [{
-    headerName: '',
+    headerName: '^',
     field: 'chooseall',
     headerCheckboxSelection: true,
     checkboxSelection: true,

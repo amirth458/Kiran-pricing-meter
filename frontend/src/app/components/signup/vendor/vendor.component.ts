@@ -239,7 +239,7 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
       }],
     };
     this.userService.setRegisterVendorInfo(vendorProfile);
-    this.router.navigateByUrl('/unapproved/machine-register');
+    this.router.navigateByUrl('/signup/machine');
   }
 
   htmlDecode(input) {

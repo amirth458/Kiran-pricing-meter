@@ -1,9 +1,10 @@
 <div class="wrapper shadow">
+  <span class="form-notification"><i>Tell us more about your company.</i></span>
   <form [formGroup]="detailForm" class="needs-validation" (submit)="onSaveVendorInformation($event)">
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Vendor Name</label>
-        <input required readonly formControlName="name" class="form-control" placeholder="Vendor Name">
+        <input required formControlName="name" class="form-control" placeholder="Vendor Name">
         <span *ngIf="showRequired('name', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
@@ -28,7 +29,7 @@
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label>Primary Contact Name</label>
-        <input readonly required formControlName="primaryContactFirstName" class="form-control" placeholder="First Name">
+        <input required formControlName="primaryContactFirstName" class="form-control" placeholder="First Name">
         <span *ngIf="showRequired('primaryContactFirstName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
@@ -38,12 +39,12 @@
       </div>
       <div class="form-group theme col-md-3">
         <label>Email</label>
-        <input readonly required type="email" formControlName="email" class="form-control" placeholder="Email">
+        <input required type="email" formControlName="email" class="form-control" placeholder="Email">
         <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3 phone">
         <label>Phone</label>
-        <international-phone-number readonly class="readonly" formControlName="phone" placeholder="Enter phone number"
+        <international-phone-number formControlName="phone" placeholder="Enter phone number"
           [required]="true" name="phone_number"></international-phone-number>
         <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
         <span *ngIf="!showRequired('phone', 1) && detailForm.controls.phone.status === 'INVALID'" class="footnote red">*
@@ -53,16 +54,16 @@
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label>Street 1</label>
-        <input readonly required formControlName="street1" class="form-control" placeholder="1234 Main St">
+        <input required formControlName="street1" class="form-control" placeholder="1234 Main St">
         <span *ngIf="showRequired('street1', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Street 2</label>
-        <input readonly formControlName="street2" class="form-control" placeholder="1234 Main St">
+        <input formControlName="street2" class="form-control" placeholder="1234 Main St">
       </div>
       <div class="form-group theme col-md-6">
         <label>City</label>
-        <input readonly required formControlName="city" class="form-control">
+        <input required formControlName="city" class="form-control">
         <span *ngIf="showRequired('city', 1)" class="footnote red">* Required</span>
       </div>
 
@@ -71,17 +72,17 @@
 
       <div class="form-group theme col-md-3">
         <label>State/Territory/Region</label>
-        <input readonly required formControlName="state" class="form-control">
+        <input required formControlName="state" class="form-control">
         <span *ngIf="showRequired('state', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Zip</label>
-        <input readonly required formControlName="zipCode" class="form-control" placeholder="Zip Code" pattern="^[0-9\s]{5}$">
+        <input required formControlName="zipCode" class="form-control" placeholder="Zip Code" pattern="^[0-9\s]{5}$">
         <span *ngIf="showRequired('zipCode', 1)" class="footnote red">* Required</span>
       </div>
       <div id="countryComponent" class="form-group theme col-md-6">
         <label>Country</label>
-        <select readonly required formControlName="country" class="form-control">
+        <select required formControlName="country" class="form-control">
           <option selected value="0">Choose...</option>
           <option *ngFor="let item of countries" [value]="item.id">{{item.name}}</option>
         </select>
@@ -93,7 +94,7 @@
         <label>
           Confidentiality
         </label>
-        <select readonly formControlName="confidentiality" (change)="onChangeConfidentiality($event)" class="form-control">
+        <select formControlName="confidentiality" (change)="onChangeConfidentiality($event)" class="form-control">
           <option selected value="0" [disabled]="disableConfidentiality">Choose...</option>
           <option *ngFor="let item of confidentialities" [disabled]="disableConfidentiality" [value]="item.id">
             {{item.name}}</option>
@@ -101,7 +102,7 @@
       </div>
       <div class="form-group theme col-md-6">
         <label>Certifications</label>
-        <ng-select readonly [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+        <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
           placeholder="Certifications" [selectOnTab]="true" [(ngModel)]="selectedCertifications"
           [ngModelOptions]="{standalone: true}">
           <ng-option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</ng-option>

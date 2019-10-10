@@ -75,6 +75,6 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
       ...this.form.value
     };
     this.userService.setRegisterUserInfo(user);
-    this.router.navigateByUrl('/unapproved/vendor-register');
+    this.router.navigateByUrl('/signup/vendor');
   }
 }
