@@ -35,11 +35,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { RouterModule } from '@angular/router';
 
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 
 @NgModule({
   declarations: [
     ActionBarComponent,
     ActionCellRendererComponent,
+    DropdownCellRendererComponent,
     BasicDetailsComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
@@ -71,7 +73,8 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     CommonModule,
     AgGridModule.withComponents([
       ActionCellRendererComponent,
-      CarrierCellRendererComponent
+      CarrierCellRendererComponent,
+      DropdownCellRendererComponent
     ]),
     NgSelectModule,
     FormsModule,

@@ -22,4 +22,25 @@ export class PricingMetadataService {
     }
     return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_type?processProfileTypeId=1');
   }
+
+  getInvoiceItems(postProcess?): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/invoice_item?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/invoice_item?processProfileTypeId=1');
+  }
+
+  getInvoiceLineItems(postProcess?): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/invoice_line_item?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/invoice_line_item?processProfileTypeId=1');
+  }
+
+  getParameterGroup(postProcess?): Observable<{ metadataList: any, metadataType: any }> {
+    if (postProcess) {
+      return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_group?processProfileTypeId=2');
+    }
+    return this.http.get<any>(environment.apiBaseUrl + '/process-metadata/process_pricing_parameter_group?processProfileTypeId=1');
+  }
 }
