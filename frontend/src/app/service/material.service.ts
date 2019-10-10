@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { FilterOption } from '../model/vendor.model';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';

@@ -1,0 +1,84 @@
+<div class="wrapper shadow">
+  <form [formGroup]="form" class="needs-validation">
+    <div class="form-row">
+      <div class="form-group theme col-md-12">
+        <label>Email Address (username)</label>
+        <input required readonly type="email" formControlName="email" class="form-control" placeholder="Email">
+        <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>First Name</label>
+        <input required readonly formControlName="firstName" class="form-control" placeholder="First Name">
+        <span *ngIf="showRequired('firstName', 1)" class="footnote red">* Required</span>
+      </div>
+      <div class="form-group theme col-md-6">
+        <label> Last Name </label>
+        <input required readonly formControlName="lastName" class="form-control" placeholder="Last Name">
+        <span *ngIf="showRequired('lastName', 1)" class="footnote red">* Required</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-12 phone">
+        <label>Phone</label>
+        <international-phone-number class="readonly" formControlName="phone" placeholder="Enter phone number"
+          [required]="true" name="phone_number"></international-phone-number>
+        <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 1) && form.controls.phone.status === 'INVALID'" class="footnote red">* Phone
+          number is invalid.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group theme col-md-6" *ngIf="status !== 1">
+        <label>Comment</label>
+        <textarea class="form-control" [(ngModel)]="approveComments" [ngModelOptions]="{standalone: true}" placeholder="Please describe here message to approve."></textarea>
+      </div>
+      <div class="form-group theme col-md-6" *ngIf="status === 1">
+        &nbsp;
+      </div>
+      <div class="form-group col-md-6" style="justify-content: flex-end; align-items: flex-end; display: flex;">
+          <button type="button" (click) = "approveUser()" *ngIf="status === 3 || status === 2" class="btn btn-approve theme">Approve</button>
+          <button type="button" *ngIf="status === 1" class="btn btn-approved theme">Approved</button>
+          <button type="button" (click) = "onDeclineUser($event)" *ngIf="status === 3 || status === 1" class="btn btn-decline theme">Decline</button>
+          <button type="button" *ngIf="status === 2" class="btn btn-declined theme">Declined</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Button trigger modal -->
+<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#declineModal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade theme" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="declineModalLabel">Decline Comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group theme col-md-12">
+            <label>Primary Contact Name</label>
+            <input class="form-control" readonly [(ngModel)]="primaryContactName" placeholder="Primary Contact Name" />
+          </div>
+          <div class="form-group theme col-md-12">
+            <label>Comment</label>
+            <textarea required class="form-control" [(ngModel)]="declineComments" placeholder="Please describe here message to decline."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="declineUser()">Decline</button>
+      </div>
+    </div>
+  </div>
+</div>

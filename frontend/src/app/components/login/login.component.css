@@ -93,3 +93,7 @@
 .errorContainer .error {
   color: var(--red);
 }
+
+.login-background {
+  background: #EFEFEF !important;
+}

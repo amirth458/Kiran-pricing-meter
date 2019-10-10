@@ -13,8 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 // Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { UnapprovedComponent } from './components/unapproved/unapproved.component';
-import { RegisterComponent } from './components/register/register.component';
 
 import { FooterMenuComponent } from './common/footer-menu/footer-menu.component';
 
@@ -22,9 +20,12 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.reducer';
 import { AppEffects } from './store/app.effects';
+import { RegisterContainerComponent } from './components/signup/_container/container.component';
+import { RegisterUserComponent } from './components/signup/user/user.component';
 import { RegisterActionBarComponent } from './common/register-action-bar/register-action-bar.component';
-import { RegisterVendorComponent } from './components/register-vendor/register-vendor.component';
-import { RegisterMachineComponent } from './components/register-machine/register-machine.component';
+import { RegisterVendorComponent } from './components/signup/vendor/vendor.component';
+import { RegisterMachineComponent } from './components/signup/machine/machine.component';
+import { RegisterCompletedComponent } from './components/signup-completed/completed.component';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
@@ -56,13 +57,14 @@ import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
   ],
   declarations: [
     LoginComponent,
-    UnapprovedComponent,
+    RegisterContainerComponent,
     AppComponent,
     FooterMenuComponent,
     RegisterActionBarComponent,
-    RegisterComponent,
+    RegisterUserComponent,
     RegisterVendorComponent,
-    RegisterMachineComponent
+    RegisterMachineComponent,
+    RegisterCompletedComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

@@ -1,8 +1,11 @@
 .button-wrapper {
+  height: 90px;
   background: white;
-  border-radius: 4px;
-  padding: 40px 40px 0 40px;
+  color: var(--theme-dark-blue-opaque);
   display: flex;
+  align-items: center;
+  padding: 0px 40px;
+  margin-bottom: 10px;
   justify-content: flex-end;
 }
 .wrapper {
@@ -15,17 +18,19 @@
   justify-content: space-between;
 }
 .button-approve {
-  padding: 5px 30px;
+  padding: 10px 30px;
   margin-right: 40px;
   color: white !important;
   background: #89D818;
   border: none;
+  font-size: 14px;
 }
 .button-decline {
-  padding: 5px 30px;
+  padding: 10px 30px;
   color: white !important;
   background: #EF773F;
   border: none;
+  font-size: 14px;
 }
 .table-control {
   width: 220px;

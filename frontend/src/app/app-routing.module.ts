@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoggedInGuard as AuthGuard } from './guard/logged-in.guard';
+
 import { LoginComponent } from './components/login/login.component';
-import { UnapprovedComponent } from './components/unapproved/unapproved.component';
-import { RegisterComponent } from './components/register/register.component';
-import { RegisterVendorComponent } from './components/register-vendor/register-vendor.component';
-import { RegisterMachineComponent } from './components/register-machine/register-machine.component';
+
+import { RegisterContainerComponent } from './components/signup/_container/container.component';
+import { RegisterUserComponent } from './components/signup/user/user.component';
+import { RegisterVendorComponent } from './components/signup/vendor/vendor.component';
+import { RegisterMachineComponent } from './components/signup/machine/machine.component';
+import { RegisterCompletedComponent } from './components/signup-completed/completed.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'profile', pathMatch: 'full' },
@@ -16,13 +19,14 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent, pathMatch: 'full' },
   {
-    path: 'unapproved', component: UnapprovedComponent,
+    path: 'signup', component: RegisterContainerComponent,
     children: [
-      { path: 'register', component: RegisterComponent },
-      { path: 'vendor-register', component: RegisterVendorComponent },
-      { path: 'machine-register', component: RegisterMachineComponent },
+      { path: 'user', component: RegisterUserComponent },
+      { path: 'vendor', component: RegisterVendorComponent },
+      { path: 'machine', component: RegisterMachineComponent },
     ]
   },
+  { path: 'signup-completed', component: RegisterCompletedComponent },
   { path: '**',  pathMatch: 'full', redirectTo: 'profile',
     canActivate: [AuthGuard]
   }

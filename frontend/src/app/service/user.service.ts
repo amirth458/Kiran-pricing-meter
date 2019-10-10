@@ -203,7 +203,7 @@ export class UserService {
       });
   }
 
-  approveUser(id) {
+  approveUser(id, approveMessage = '') {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem('auth'));
     const headers = new HttpHeaders({
@@ -212,14 +212,15 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: true,
-        vendorIds: [id]
+        vendorIds: [Number(id)],
+        approveMessage
       },
       {
         headers
       });
   }
 
-  declineUser(id) {
+  declineUser(id, declineMessage = '') {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem('auth'));
     const headers = new HttpHeaders({
@@ -228,8 +229,22 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: false,
-        vendorIds: [id]
+        vendorIds: [Number(id)],
+        declineMessage
       },
+      {
+        headers
+      });
+  }
+
+  getUserDetails(id) {
+    const url = `${environment.apiBaseUrl}/users/${id}`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<any>(url,
       {
         headers
       });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FilterOption } from '../model/vendor.model';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
@@ -23,28 +23,47 @@ export class MachineService {
       params = params.append('size', filterOption.size.toString());
       params = params.append('sort', filterOption.sort.toString());
     }
-    return this.http.get<any>(url, { params });
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get<any>(url, { params,  headers });
   }
 
 
   getMachine(vendorId: number, id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/machineries/${id}`;
-
-    return this.http.get(url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get(url, { headers });
   }
 
   createMachine(vendorId: number, machine): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/machineries`;
-    return this.http.post(url, machine);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.post(url, machine, { headers });
   }
 
   updateMachine(vendorId: number, id: number, machine): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/machineries/${id}`;
-    return this.http.put(url, machine);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.put(url, machine, { headers });
   }
 
   deleteMachine(vendorId: number, id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${vendorId}/machineries/${id}`;
-    return this.http.delete(url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.delete(url, { headers });
   }
 }

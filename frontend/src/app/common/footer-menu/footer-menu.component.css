@@ -1,9 +1,19 @@
 .footer {
-  padding: 0 20px;
+  padding: 14px 20px;
+  background: white;
 }
 .footer-menu {
   min-width: 150px;
 }
 .align-center {
   text-align: center
+}
+
+
+.align-right {
+  text-align: right;
+}
+
+.light-green-color {
+  color: #89D818 !important;
 }

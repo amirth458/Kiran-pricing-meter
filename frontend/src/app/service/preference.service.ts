@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Preference, VendorPreference } from '../model/preferences.model';
 import { environment } from 'src/environments/environment';
@@ -15,21 +15,37 @@ export class PreferenceService {
 
   getPreference(id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/preferences/${id}`;
-    return this.http.get<any>(url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get<any>(url, { headers });
   }
 
   getPreferenceByVendorId(id: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${id}/preferences`;
-    return this.http.get<any>(url);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get<any>(url, { headers });
   }
 
   createPreference(preference: VendorPreference): Observable<any> {
     const url = `${environment.apiBaseUrl}/preferences`;
-    return this.http.post<any>(url, preference);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.post<any>(url, preference, { headers });
   }
 
   updatePreference(preference: Preference): Observable<any> {
     const url = `${environment.apiBaseUrl}/vendors/${preference.vendorId}/preferences`;
-    return this.http.put<any>(url, preference);
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.put<any>(url, preference, { headers });
   }
 }

@@ -5,7 +5,7 @@
 
 .tabs {
   margin-bottom: 10px;
-  color: var(--theme-secondary-blue);
+  color: var(--theme-light-green);
   font-size: 19px;
   text-align: center;
   height: 36px;
@@ -20,7 +20,7 @@
 }
 
 .tabs div.active {
-  background: var(--theme-secondary-blue);
+  background: var(--theme-light-green);
   color: white;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .column-container .icon {
-  color: var(--theme-secondary-blue);
+  color: var(--theme-light-green);
   font-size: 22px;
 }
 
