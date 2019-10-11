@@ -47,6 +47,8 @@ import { RouterModule } from '@angular/router';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { AdminContainerComponent } from './admin/_container/container.component';
 import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
+import { DropdownHeaderRendererComponent } from '../common/dropdown-header-renderer/dropdown-header-renderer.component';
+
 import { MultiSelectCellRendererComponent } from '../common/multi-select-cell-renderer/multi-select-cell-renderer.component';
 import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
 import { AdminVendorDetailsContainerComponent } from './admin/vendor-details/_container/container.component';
@@ -60,6 +62,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     ActionBarComponent,
     ActionCellRendererComponent,
     DropdownCellRendererComponent,
+    DropdownHeaderRendererComponent,
     MultiSelectCellRendererComponent,
     ActionCellApproveRendererComponent,
     CarrierCellRendererComponent,
@@ -110,6 +113,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
       ActionCellRendererComponent,
       CarrierCellRendererComponent,
       DropdownCellRendererComponent,
+      DropdownHeaderRendererComponent,
       MultiSelectCellRendererComponent,
       ActionCellApproveRendererComponent,
     ]),

@@ -10,15 +10,6 @@
     </app-column-search-filter>
   </div>
   <div class="table theme-table">
-    <div class="vendor-status">
-      Vendor Status:
-      <select id="page-size" [(ngModel)]="vendorStatus" (ngModelChange)="vendorStatusChanged($event)">
-        <option  value="0">All</option>
-        <option selected value="1">Not Approved</option>
-        <option value="2">Approved</option>
-        <option value="3">Declined</option>
-      </select>
-    </div>
     <div class="page-size">
       Page Size:
       <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
@@ -32,9 +23,17 @@
     <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
       [gridOptions]="gridOptions">
     </ag-grid-angular>
+    <div class="dropdown-menu ag-grid-dropdown" *ngIf="showTypeDropDown">
+      <div (click)="vendorStatusChanged(1)" class="dropdown-item" [ngClass]="{'active': vendorStatus===1}" href="#">Not Approved</div>
+      <div class="ag-grid-dropdown-divider"></div>
+      <div (click)="vendorStatusChanged(0)" class="dropdown-item" [ngClass]="{'active': vendorStatus===0}" href="#">All</div>
+      <div class="ag-grid-dropdown-divider"></div>
+      <div (click)="vendorStatusChanged(2)" class="dropdown-item" [ngClass]="{'active': vendorStatus===2}" href="#">Approved</div>
+      <div class="ag-grid-dropdown-divider"></div>
+      <div (click)="vendorStatusChanged(3)" class="dropdown-item" [ngClass]="{'active': vendorStatus===3}" href="#">Declined</div>
+    </div>
   </div>
 </div>
-
 
 
 
