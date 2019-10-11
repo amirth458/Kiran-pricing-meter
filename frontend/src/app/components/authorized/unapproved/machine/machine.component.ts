@@ -19,7 +19,7 @@ import { FilterOption } from 'src/app/model/vendor.model';
 })
 export class UnapprovedVendorMachineComponent implements OnInit {
   @ViewChild('modal') modal;
-
+  @ViewChild('modalSubmit') modalSubmit;
   selectedMachine = null;
   equipments = [{ id: '', name: 'more than 2 characters to start search' }];
   materials = [{ id: '', name: 'more than 2 characters to start search' }];
@@ -368,6 +368,6 @@ export class UnapprovedVendorMachineComponent implements OnInit {
   }
 
   onSaveMachineInformation(event) {
-    this.toastr.success('Thank you for your submitting.');
+    this.modalSubmit.nativeElement.click();
   }
 }
