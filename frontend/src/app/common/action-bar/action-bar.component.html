@@ -11,7 +11,7 @@
   </ul>
   <div class="action-button"
     *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') )">
-    <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn btn-add theme white"
+    <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn btn-primary theme"
       (click)="addButton(item.route)">
       {{item.name}}
     </button>

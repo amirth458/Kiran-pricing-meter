@@ -248,7 +248,8 @@ button.theme.theme-reverse:hover {
 
 .theme-table .ag-theme-balham .ag-cell {
   font-size: 13px;
-  
+  display: flex;
+  align-items: center;
 }
 .theme-table .ag-theme-balham .ag-cell span {
   height: 100%;
@@ -262,13 +263,19 @@ button.theme.theme-reverse:hover {
   display: flex;
   justify-content: space-between;
 }
+.theme-table .ag-theme-balham .action-column .edit {
+  margin-right: 10px;
+}
+.theme-table .ag-theme-balham .action-column .copy {
+  margin-right: 10px;
+}
 
 .theme-table .ag-theme-balham .action-column span:hover {
   cursor: pointer;
 }
 
 .theme-table .ag-theme-balham .action-column .delete {
-  color: red !important;
+  color: var(--theme-orange) !important;
 }
 
 /* End of Overriding Ag-grid style */
@@ -392,6 +399,9 @@ international-phone-number.ng-invalid .input-group .ng-valid {
 }
 
 international-phone-number.readonly .dropdown .dropbtn {
+  pointer-events: none !important;
+}
+international-phone-number.readonly input {
   pointer-events: none !important;
 }
 

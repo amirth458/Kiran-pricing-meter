@@ -98,27 +98,56 @@
 
 <!-- Button trigger modal -->
 <button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#machineModal">
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade theme" id="machineModal" tabindex="-1" role="dialog" aria-labelledby="machineModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="machineModalLabel">Confirm Action</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to delete the machine ?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-danger" (click)="deleteMachine()">Delete</button>
-        </div>
+</button>
+
+<!-- Modal -->
+<div class="modal fade theme" id="machineModal" tabindex="-1" role="dialog" aria-labelledby="machineModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="machineModalLabel">Confirm Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the machine ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deleteMachine()">Delete</button>
       </div>
     </div>
   </div>
+</div>
   
+
+<!-- Button trigger modal -->
+<button #modalSubmit type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#submitModal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade theme" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background: white !important;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="registered-check">
+          <i class="far fa-check-circle"></i>
+        </p>
+        <p class="registered-notification">
+          Your information has been saved!
+        </p>
+        <p style="text-align: center" class="admin-notification">
+          Our team will review your profile and be in touch as soon as possible.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
