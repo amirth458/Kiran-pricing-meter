@@ -33,7 +33,7 @@
       </div>
       <div class="form-group theme col-md-3">
         <label> &nbsp; </label>
-        <input required formControlName="primaryContactLastName" class="form-control" placeholder="Last Name">
+        <input readonly required formControlName="primaryContactLastName" class="form-control" placeholder="Last Name">
         <span *ngIf="showRequired('primaryContactLastName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
@@ -101,11 +101,9 @@
       </div>
       <div class="form-group theme col-md-6">
         <label>Certifications</label>
-        <ng-select readonly [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
-          placeholder="Certifications" [selectOnTab]="true" [(ngModel)]="selectedCertifications"
-          [ngModelOptions]="{standalone: true}">
-          <ng-option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</ng-option>
-        </ng-select>
+        <ul class="disabled-certifications">
+          <li *ngFor="let item of selectedCertifications">{{item.name}}</li>
+        </ul>
       </div>
     </div>
     <div class="form-row">

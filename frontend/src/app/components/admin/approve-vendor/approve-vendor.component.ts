@@ -11,7 +11,7 @@ import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
-
+import * as internationalCode from '../../../../assets/static/internationalCode';
 @Component({
   selector: 'app-approve-vendor',
   templateUrl: './approve-vendor.component.html',
@@ -109,13 +109,23 @@ export class ApproveVendorComponent implements OnInit {
     hide: false,
     sortable: false,
     filter: false,
+    width: 80,
   },
   {
     headerName: 'Vendor Name',
     field: 'vendorName',
     hide: false,
     sortable: true,
-    filter: false
+    filter: false,
+    cellRenderer(params) {
+      let vendorName = '';
+      try {
+        vendorName = params.data.vendor.name;
+      } catch (e) {
+
+      }
+      return vendorName;
+    },
   },
   {
     headerName: 'Company Name',
@@ -129,7 +139,16 @@ export class ApproveVendorComponent implements OnInit {
     field: 'email',
     hide: false,
     sortable: true,
-    filter: false
+    filter: false,
+    cellRenderer(params) {
+      let email = '';
+      try {
+        email = params.data.vendor.email;
+      } catch (e) {
+
+      }
+      return email;
+    },
   },
   {
     headerName: 'Country',
@@ -141,9 +160,7 @@ export class ApproveVendorComponent implements OnInit {
       let country = '';
       try {
         country = params.data.vendor.country.name;
-      } catch (e) {
-
-      }
+      } catch (e) { }
       return country;
     },
   },
@@ -153,6 +170,7 @@ export class ApproveVendorComponent implements OnInit {
     hide: false,
     sortable: true,
     filter: false,
+    width: 120,
     cellRenderer(params) {
       let confidentiality = '';
       try {
@@ -166,7 +184,7 @@ export class ApproveVendorComponent implements OnInit {
   {
     headerName: 'Actions',
     filter: false,
-    width: 250,
+    width: 150,
     cellRenderer: 'actionCellRenderer',
     cellRendererParams: {
       action: {
@@ -203,8 +221,7 @@ export class ApproveVendorComponent implements OnInit {
         },
       }
     }
-  }
-  ];
+  }];
 
   gridOptions: GridOptions;
   allUsers = [];
@@ -240,7 +257,7 @@ export class ApproveVendorComponent implements OnInit {
       pagination: true,
       paginationPageSize: 10,
       enableColResize: true,
-      rowHeight: 35,
+      rowHeight: 50,
       headerHeight: 35,
       rowSelection: 'multiple',
 

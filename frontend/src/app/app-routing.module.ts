@@ -26,7 +26,7 @@ const routes: Routes = [
       { path: 'machine', component: RegisterMachineComponent },
     ]
   },
-  { path: 'signup-completed', component: RegisterCompletedComponent },
+  { path: 'signup-completed', component: RegisterCompletedComponent, pathMatch: 'full'  },
   { path: '**',  pathMatch: 'full', redirectTo: 'profile',
     canActivate: [AuthGuard]
   }
