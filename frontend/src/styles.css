@@ -253,6 +253,7 @@ button.theme.theme-reverse:hover {
 .theme-table .ag-theme-balham .ag-cell span {
   height: 100%;
   display: flex;
+  background: transparent;
   align-items: center;
 }
 

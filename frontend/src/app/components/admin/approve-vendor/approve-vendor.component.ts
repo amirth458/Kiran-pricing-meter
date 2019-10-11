@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
@@ -11,7 +11,9 @@ import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
-import * as internationalCode from '../../../../assets/static/internationalCode';
+import { DropdownHeaderRendererComponent } from 'src/app/common/dropdown-header-renderer/dropdown-header-renderer.component';
+import { ThrowStmt } from '@angular/compiler';
+
 @Component({
   selector: 'app-approve-vendor',
   templateUrl: './approve-vendor.component.html',
@@ -99,10 +101,12 @@ export class ApproveVendorComponent implements OnInit {
 
   frameworkComponents = {
     actionCellRenderer: ActionCellApproveRendererComponent,
+    headerRenderer: DropdownHeaderRendererComponent,
   };
 
   columnDefs = [{
-    headerName: '^',
+    headerName: '',
+    headerComponentFramework: DropdownHeaderRendererComponent,
     field: 'chooseall',
     headerCheckboxSelection: true,
     checkboxSelection: true,
@@ -110,6 +114,15 @@ export class ApproveVendorComponent implements OnInit {
     sortable: false,
     filter: false,
     width: 80,
+    headerRendererParams: {
+      action: {
+        dropdown: (param) => {
+          event.stopPropagation();
+          this.showTypeDropDown = !this.showTypeDropDown;
+          console.log(this.showTypeDropDown);
+        },
+      }
+    }
   },
   {
     headerName: 'Vendor Name',
@@ -232,7 +245,7 @@ export class ApproveVendorComponent implements OnInit {
   vendorStatus = 1;
   navigation;
   infoText = '';
-
+  showTypeDropDown = false;
   constructor(
     private route: Router,
     private userService: UserService,
@@ -294,6 +307,10 @@ export class ApproveVendorComponent implements OnInit {
     }, 50);
   }
 
+  @HostListener('document:click')
+  clickout() {
+    this.showTypeDropDown = false;
+  }
   async getAllUsers() {
     this.spineer.show();
     try {
@@ -323,7 +340,9 @@ export class ApproveVendorComponent implements OnInit {
   }
 
   vendorStatusChanged(value) {
+    this.showTypeDropDown = false;
     const status = Number(value);
+    this.vendorStatus = status;
     if (status === 0) {
       this.rowData = this.allUsers;
     } else if (status === 1) {
