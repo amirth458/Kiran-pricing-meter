@@ -19,7 +19,8 @@
         <label>Vendor Industry</label>
         <select required formControlName="vendorIndustry" class="form-control">
           <option selected value="0">Choose...</option>
-          <option *ngFor="let item of vendorIndustries" [value]="item.id">
+          <option *ngFor="let item of vendorIndustries" [value]="item.id"
+          [disabled]="checkDisable(item.id)">
             {{item.name}}</option>
         </select>
         <span *ngIf="showRequired('vendorIndustry', 2)" class="footnote red">* Required</span>
@@ -110,7 +111,7 @@
       </div>
     </div>
     <div class="form-row " style="justify-content: center">
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-3 container-continue">
         <button type="button" (click)="onSaveVendorInformation($event)" class="btn btn-primary theme">Continue</button>
       </div>
     </div>
