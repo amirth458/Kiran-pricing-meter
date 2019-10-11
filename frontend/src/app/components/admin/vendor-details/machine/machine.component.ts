@@ -45,7 +45,6 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
   };
   vendorId = 0;
   status = 0;
-  approveComments = '';
   declineComments = '';
   primaryContactName = '';
 

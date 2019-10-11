@@ -203,7 +203,7 @@ export class UserService {
       });
   }
 
-  approveUser(id, approveMessage = '') {
+  approveUser(id) {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem('auth'));
     const headers = new HttpHeaders({
@@ -212,8 +212,7 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: true,
-        vendorIds: [Number(id)],
-        approveMessage
+        vendorIds: [Number(id)]
       },
       {
         headers
