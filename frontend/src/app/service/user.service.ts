@@ -230,7 +230,7 @@ export class UserService {
     return this.http.patch<any>(url, {
         approved: false,
         vendorIds: [Number(id)],
-        declineMessage
+        comment: declineMessage
       },
       {
         headers
