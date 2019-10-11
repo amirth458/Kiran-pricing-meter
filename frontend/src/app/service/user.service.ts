@@ -226,6 +226,7 @@ export class UserService {
       Authorization: data.tokenType + ' ' + data.accessToken,
       'Content-Type': 'application/json'
     });
+
     return this.http.patch<any>(url, {
         approved: false,
         vendorIds: [Number(id)],
