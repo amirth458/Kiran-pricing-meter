@@ -343,7 +343,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             section: 'flatCharges'
           },
           rowIndex: flatChargesFound
-        }, parameter.invoiceLineItem.invoiceItem.id);
+        }, parameter.invoiceLineItem.invoiceItem.id, true);
         flatChargesFound++;
       }
       if (section === 'variableCharges') {
@@ -354,9 +354,33 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             section: 'variableCharges'
           },
           rowIndex: variableChargesFound
-        }, parameter.invoiceLineItem.invoiceItem.id);
+        }, parameter.invoiceLineItem.invoiceItem.id, true);
         variableChargesFound++;
       }
+      // if (section === 'multiplierCharges') {
+      //   this.addCondition('multiplierCharges', parameter);
+      //   this.dropdownValueChanged({
+      //     colDef: { field: 'invoiceItem' },
+      //     data: {
+      //       section: 'multiplierCharges'
+      //     },
+      //     rowIndex: multiplierChargesFound
+      //   }, parameter.invoiceLineItem.invoiceItem.id);
+      //   multiplierChargesFound++;
+      // }
+    });
+
+    pricingProfile.processPricingParameterList.map((parameter, index) => {
+      let section = '';
+
+      if (parameter.currency.id &&
+        parameter.multiplier &&
+        parameter.multiplierProcessPricingParameter &&
+        parameter.multiplierProcessPricingParameter.invoiceLineItem &&
+        parameter.multiplierProcessPricingParameter.invoiceLineItem.id) {
+        section = 'multiplierCharges';
+      }
+
       if (section === 'multiplierCharges') {
         this.addCondition('multiplierCharges', parameter);
         this.dropdownValueChanged({
@@ -365,7 +389,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             section: 'multiplierCharges'
           },
           rowIndex: multiplierChargesFound
-        }, parameter.invoiceLineItem.invoiceItem.id);
+        }, parameter.invoiceLineItem.invoiceItem.id, true);
         multiplierChargesFound++;
       }
     });
@@ -585,7 +609,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   }
 
 
-  dropdownValueChanged(param, value) {
+  dropdownValueChanged(param, value, edit = false) {
     const rowData = this.getRowData(param.data.section);
     switch (param.colDef.field) {
       case 'invoiceItem':
@@ -595,10 +619,11 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           if (param.data.section === 'flatCharges') {
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'flat_charges');
-
-            this.multiplierRowData = this.getRowData('multiplierCharges').map(row => new Object(
-              { ...row, valueOptions: [...this.unitForMultiplier] }
-            ));
+            if (!edit) {
+              this.multiplierRowData = this.getRowData('multiplierCharges').map(row => new Object(
+                { ...row, valueOptions: [...this.unitForMultiplier] }
+              ));
+            }
 
             this.flatRowData = [...rowData];
           }
@@ -610,10 +635,12 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             rowData[param.rowIndex].partValueOptions = rowData[param.rowIndex].invoiceLineItemOptions
               .filter(item => item.invoiceItem.id == invoiceItem)[0].processPricingConditionTypeList;
             // rowData[param.rowIndex].unitOptions = [];
+            if (!edit) {
 
-            this.multiplierRowData = this.getRowData('multiplierCharges').map(row => new Object(
-              { ...row, valueOptions: [...this.unitForMultiplier] }
-            ));
+              this.multiplierRowData = this.getRowData('multiplierCharges').map(row => new Object(
+                { ...row, valueOptions: [...this.unitForMultiplier] }
+              ));
+            }
 
             this.variableRowData = [...rowData];
           }
