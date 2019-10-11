@@ -147,15 +147,13 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         }
       });
 
-      const foundInvoiceItems = [];
       const invoiceItems = [];
+      const visitedInvoiceItems = [];
       invoiceLineItems.metadataList.map(item => {
-        if (!foundInvoiceItems.includes(item.invoiceItem.name)) {
-          foundInvoiceItems.push(item.invoiceItem.name);
-          invoiceItems.push({
-            ...item.invoiceItem,
-            processPricingParameterGroup: item.processPricingParameterGroup
-          });
+        const identifier = JSON.stringify(JSON.stringify(item.invoiceItem) + JSON.stringify(item.processPricingParameterGroup));
+        if (!visitedInvoiceItems.includes(identifier)) {
+          visitedInvoiceItems.push(identifier);
+          invoiceItems.push({ ...item.invoiceItem, processPricingParameterGroup: item.processPricingParameterGroup });
         }
       });
 
