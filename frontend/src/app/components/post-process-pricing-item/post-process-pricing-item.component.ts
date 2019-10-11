@@ -525,6 +525,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      stopEditingWhenGridLosesFocus: true,
     };
     this.variableGridOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -533,7 +534,8 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       paginationPageSize: 5,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35
+      headerHeight: 35,
+      stopEditingWhenGridLosesFocus: true
     };
     this.multiplierGridOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -542,7 +544,8 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       paginationPageSize: 5,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35
+      headerHeight: 35,
+      stopEditingWhenGridLosesFocus: true
     };
 
   }
