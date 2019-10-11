@@ -155,7 +155,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       serialNumber: initValue.serialNumber,
       equipment: this.selectedEquipment,
       material: this.selectedMaterials,
-      vendorFacility: initValue.vendorFacility.id
+      vendorFacility: initValue.vendorFacility ? initValue.vendorFacility.id : ''
     });
   }
 
@@ -259,7 +259,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
           const gotoURL = `/profile/vendor/machines`;
           this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" created.' } } });
         } catch (e) {
-          this.toastr.error('We are sorry, ' +  postData.name + ' creation failed. Please try again later.');
+          this.toastr.error('We are sorry, ' + postData.name + ' creation failed. Please try again later.');
           this.error = e.error.message;
           console.log(e);
         } finally {
@@ -273,7 +273,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
           const gotoURL = `/profile/vendor/machines`;
           this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: '"' + postData.name + '" updated.' } } });
         } catch (e) {
-          this.toastr.error('We are sorry, ' +  postData.name + ' update failed. Please try again later.');
+          this.toastr.error('We are sorry, ' + postData.name + ' update failed. Please try again later.');
           this.error = e.error.message;
           console.log(e);
         } finally {

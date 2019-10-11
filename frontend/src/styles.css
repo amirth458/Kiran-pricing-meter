@@ -93,7 +93,7 @@ a.link {
 }
 
 button.theme {
-  background: var(--theme-secondary-blue);
+  background: var(--theme-light-green);
   color: white;
   width: 100%;
   padding: 10px 8px;
@@ -164,7 +164,7 @@ button.theme.theme-reverse:hover {
 }
 .btn-white:hover {
   background: #F8FDF0 !important;
-  
+
   color: var(--theme-btn-hover)!important;
   border-radius: 4px;
   box-shadow: 0 .2rem 0.2rem rgba(0, 0, 0, .15) !important;
@@ -234,7 +234,7 @@ button.theme.theme-reverse:hover {
 
 .theme-table .ag-theme-balham .ag-header-icon .ag-icon {
   font-size: 22px;
-  color: white;
+  color: var(--theme-light-green);
 }
 
 .theme-table .ag-theme-balham .ag-paging-panel {
