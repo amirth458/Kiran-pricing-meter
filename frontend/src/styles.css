@@ -486,6 +486,8 @@ international-phone-number.readonly .dropdown .dropbtn {
 
 .form-notification {
   color: var(--theme-light-green);
+  padding-bottom: 20px;
+  display: block;
 }
 .container-continue {
   max-width: 150px;

@@ -20,7 +20,6 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
   });
   status = 0;
   vendorId = 0;
-  approveComments = '';
   declineComments = '';
   primaryContactName = '';
   constructor(
@@ -96,7 +95,7 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
   async approveUser() {
     this.spinner.show();
     try {
-      await this.userService.approveUser(this.vendorId, this.approveComments).toPromise();
+      await this.userService.approveUser(this.vendorId).toPromise();
       this.router.navigateByUrl('/admin/approve');
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');

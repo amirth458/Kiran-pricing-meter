@@ -368,6 +368,6 @@ export class UnapprovedVendorMachineComponent implements OnInit {
   }
 
   onSaveMachineInformation(event) {
-
+    this.toastr.success('Thank you for your submitting.');
   }
 }

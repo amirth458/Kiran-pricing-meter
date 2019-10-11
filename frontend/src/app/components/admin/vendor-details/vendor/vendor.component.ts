@@ -64,7 +64,6 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
 
   status = 0;
   vendorId = 0;
-  approveComments = '';
   declineComments = '';
   primaryContactName = '';
   async ngOnInit() {
