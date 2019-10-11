@@ -21,6 +21,19 @@
       </div>
     </div>
     <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>Password</label>
+        <input type="password" required formControlName="password" class="form-control" placeholder="First Name">
+        <span *ngIf="showRequired('password', 1)" class="footnote red">* Required</span>
+      </div>
+      <div class="form-group theme col-md-6">
+        <label> Password Confirm </label>
+        <input type="password" required formControlName="passwordConfirm" class="form-control" placeholder="Last Name">
+        <span *ngIf="showRequired('passwordConfirm', 1)" class="footnote red">* Required</span>
+        <span *ngIf="samePassword()" class="footnote red">* Password does not match</span>
+      </div>
+    </div>
+    <div class="form-row">
       <div class="form-group theme col-md-12 phone">
         <label>Phone</label>
         <international-phone-number formControlName="phone" placeholder="Enter phone number"
@@ -30,18 +43,6 @@
           number is invalid.</span>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group theme col-md-6">
-        <label>Company</label>
-        <input required  formControlName="company" class="form-control" placeholder="Company">
-        <span *ngIf="showRequired('company', 1)" class="footnote red">* Required</span>
-      </div>
-      <div class="form-group theme col-md-6">
-        <label>Department</label>
-        <input  formControlName="department" class="form-control" placeholder="Department" />
-      </div>
-    </div>
-
     <div class="form-row " style="justify-content: center">
       <div class="form-group col-md-3">
         <button type="button" (click)="onSaveUserInformation($event)" class="btn btn-primary theme">Continue</button>

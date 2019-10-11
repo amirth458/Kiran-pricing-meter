@@ -370,12 +370,12 @@ export class RegisterMachineComponent implements OnInit, AfterViewChecked {
 
       setTimeout(() => {
         this.userService.resetRegisterInfo();
-        this.route.navigateByUrl('/siginup-completed');
+        this.route.navigateByUrl('/signup-completed');
       }, 2000);
 
     } catch (e) {
       console.log(e);
-      this.toastr.error('We are sorry, Corporate details update failed. Please try again later. "' + e.error.message + '"');
+      this.toastr.error('We are sorry, User registration failed. Please try again later. "' + e.error.message + '"');
     } finally {
       this.spinner.hide();
     }

@@ -16,8 +16,6 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
     password: [null, Validators.required],
     passwordConfirm: [null, Validators.required],
     phone: [null, Validators.required],
-    company: [null, Validators.required],
-    department: [null],
   });
   isLoadedUser = false;
   errorMessage = '';
@@ -72,7 +70,9 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
       return;
     }
     const user: RegisterUser = {
-      ...this.form.value
+      ...this.form.value,
+      company: '',
+      department: '',
     };
     this.userService.setRegisterUserInfo(user);
     this.router.navigateByUrl('/signup/vendor');

@@ -50,15 +50,15 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
     primaryContactLastName: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
     phone: [null, [Validators.required ]],
-    vendorType: [null, Validators.required],
-    vendorIndustry: [null],
+    vendorType: [{value: '0', disabled: true}, Validators.required],
+    vendorIndustry: [{value: '0', disabled: true}],
     city: [null, Validators.required],
     state: [null, Validators.required],
-    country: [null, Validators.required],
+    country: [{value: '0', disabled: true}, Validators.required],
     street1: [null, Validators.required],
     street2: [null],
     zipCode: [null, [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]],
-    confidentiality: null,
+    confidentiality: {value: '0', disabled: true},
     vendorCertificates: null
   });
 
@@ -130,7 +130,7 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
   }
 
   initForm(initValue) {
-    this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
+    this.selectedCertifications = initValue.vendorCertificates;
     this.disableConfidentiality = Number(initValue.confidentiality.id) === 2;
 
     this.detailForm.setValue({

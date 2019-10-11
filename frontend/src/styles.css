@@ -248,8 +248,13 @@ button.theme.theme-reverse:hover {
 
 .theme-table .ag-theme-balham .ag-cell {
   font-size: 13px;
+  
 }
-
+.theme-table .ag-theme-balham .ag-cell span {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
 
 .theme-table .ag-theme-balham .action-column {
   font-size: 16px;
@@ -445,8 +450,10 @@ international-phone-number.readonly .dropdown .dropbtn {
   font-size: 14px;
   background: transparent;
   color: var(--theme-light-green) !important;
+  padding-top: 7px;
 }
 .decline {
+  padding-top: 7px;
   font-size: 14px;
   background: transparent;
   color: var(--theme-orange) !important;
