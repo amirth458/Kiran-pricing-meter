@@ -329,37 +329,37 @@ export class PostProcessPricingComponent implements OnInit {
       });
 
     }
-    for (let index = 0; index < maxComponent; index++) {
-      this.filterColumns.push(
-        {
-          name: `Pricing Component ${index + 1}`, checked: false, field: `pricingComponent${index + 1}`
-        });
-      this.columnDefs.push({
-        headerName: `Pricing Component ${index + 1}`,
-        field: `pricingComponent${index + 1}`,
-        hide: true,
-        sortable: true,
-        filter: false,
-        cellRenderer(params: any): any {
-          let value = '';
-          params.data.processPricingParameterList.map((item, innerIndex) => {
-            if (innerIndex == index) {
-              value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
-            }
-          });
-          return value;
-        },
-        valueGetter: (params: any) => {
-          let value = '';
-          params.data.processPricingParameterList.map((item, innerIndex) => {
-            if (innerIndex == index) {
-              value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
-            }
-          });
-          return value;
-        }
-      });
-    }
+    // for (let index = 0; index < maxComponent; index++) {
+    //   this.filterColumns.push(
+    //     {
+    //       name: `Pricing Component ${index + 1}`, checked: false, field: `pricingComponent${index + 1}`
+    //     });
+    //   this.columnDefs.push({
+    //     headerName: `Pricing Component ${index + 1}`,
+    //     field: `pricingComponent${index + 1}`,
+    //     hide: true,
+    //     sortable: true,
+    //     filter: false,
+    //     cellRenderer(params: any): any {
+    //       let value = '';
+    //       params.data.processPricingParameterList.map((item, innerIndex) => {
+    //         if (innerIndex == index) {
+    //           value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
+    //         }
+    //       });
+    //       return value;
+    //     },
+    //     valueGetter: (params: any) => {
+    //       let value = '';
+    //       params.data.processPricingParameterList.map((item, innerIndex) => {
+    //         if (innerIndex == index) {
+    //           value = `${item.currency.symbol}${item.price} / ${item.quantityUnitType.name}`;
+    //         }
+    //       });
+    //       return value;
+    //     }
+    //   });
+    // }
 
 
     this.columnDefs.push({
