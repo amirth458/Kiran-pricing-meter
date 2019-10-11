@@ -241,8 +241,6 @@ export class MachinesComponent implements OnInit {
     } finally {
       this.spineer.hide();
     }
-
-
   }
 
   configureColumnDefs() {

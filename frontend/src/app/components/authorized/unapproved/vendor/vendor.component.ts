@@ -8,6 +8,10 @@ import { Vendor, VendorMetaData, Country } from '../../../../model/vendor.model'
 import { VendorMetaDataTypes } from '../../../../mockData/vendor';
 import { UserService } from '../../../../service/user.service';
 import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { AppFields, Store, AppTypes } from 'src/app/store';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-unapproved-vendor-vendor',
@@ -21,8 +25,11 @@ export class UnapprovedVendorDetailsComponent implements OnInit {
     private router: Router,
     private vendorService: VendorService,
     private userService: UserService,
+    private store: Store<any>,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
   ) {
-
+    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
   }
 
   internationalCode = internationalCode;
@@ -35,6 +42,11 @@ export class UnapprovedVendorDetailsComponent implements OnInit {
   isNewPhone = false;
   phoneUtil = PhoneNumberUtil.getInstance();
   disableConfidentiality = false;
+  vendorId = 0;
+  status = 0;
+  primaryContactName = '';
+  vendor: Observable<any>;
+  sub: Subscription;
 
   detailForm: FormGroup = this.fb.group({
     id: [null],
@@ -55,15 +67,30 @@ export class UnapprovedVendorDetailsComponent implements OnInit {
     vendorCertificates: null
   });
 
-  ngOnInit() {
-    this.getVendorMetaDatas();
-
-    const vendor  = this.userService.getRegisterVendorInfo();
-    this.isNewPhone = true;
-    if ( vendor ) {
-      this.initForm(vendor);
-      this.isNewPhone = false;
-    }
+  async ngOnInit() {
+    await this.getVendorMetaDatas();
+    this.sub = this.vendor.subscribe(res => {
+      if (res) {
+        this.initForm(res);
+        this.vendorId = Number(res.id);
+        if (res.approved) {
+          this.status = 1; // approved
+        } else {
+          if (res.approvedAt !== null) {
+            this.status = 2; // declined
+          } else {
+            this.status = 3; // non-approved
+          }
+        }
+      } else {
+        this.vendorId = 0;
+        this.status = 0; // can't approve, decline
+        this.detailForm.setValue({
+          ...this.detailForm.value,
+          confidentiality: 1,
+        });
+      }
+    });
     this.onValueChanges();
   }
 
@@ -157,7 +184,7 @@ export class UnapprovedVendorDetailsComponent implements OnInit {
     this.disableConfidentiality = Number(e.target.value) === 2;
   }
 
-  initForm(initValue: Vendor) {
+  initForm(initValue) {
     this.selectedCertifications = initValue.vendorCertificates.map(x => x.id) || [];
     this.disableConfidentiality = Number(initValue.confidentiality.id) === 2;
 
@@ -221,5 +248,75 @@ export class UnapprovedVendorDetailsComponent implements OnInit {
   }
 
   async onSaveVendorInformation(event) {
+    if (this.detailForm.valid) {
+      const userId = this.userService.getUserInfo().id;
+
+      // const certFiles = this.certDocuments.filter((item) => item.saved === 0 || item.saved === 1);
+      this.spinner.show();
+      const vendorProfile = {
+        ...this.detailForm.value,
+        vendorType: {
+          id: this.detailForm.value.vendorType
+        },
+        vendorIndustry: {
+          id: this.detailForm.value.vendorIndustry
+        },
+        country: {
+          id: this.detailForm.value.country
+        },
+        confidentiality: {
+          id: this.detailForm.value.confidentiality
+        },
+        vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
+        vendorIndustries: [{
+          id: this.detailForm.value.vendorIndustry
+        }],
+        // certificateURLs: certFiles.map((item) => item.name)
+      };
+
+      if (this.vendorId > 0) {
+        try {
+          const res = await this.vendorService.updateVendorProfile(vendorProfile).toPromise();
+          this.toastr.success('Vendor details updated Successfully');
+          this.store.dispatch({
+            type: AppTypes.UpdateVendorInfo,
+            payload: res
+          });
+          setTimeout(() => {
+            this.router.navigateByUrl('/profile/unapproved/machine');
+          }, 1000);
+        } catch (e) {
+          this.toastr.error('We are sorry, Vendor details update failed. Please try again later.');
+        } finally {
+          this.spinner.hide();
+        }
+      } else {
+        try {
+          const res = await this.vendorService.createVendorProfile(vendorProfile).toPromise();
+          this.toastr.success('Vendor details created Successfully');
+          this.store.dispatch({
+            type: AppTypes.CreateVendorInfo,
+            payload: res
+          });
+          setTimeout(() => {
+            this.router.navigateByUrl('/profile/unapproved/machine');
+          }, 1000);
+        } catch (e) {
+          this.toastr.error('We are sorry, Vendor details creation failed. Please try again later.');
+        } finally {
+          this.spinner.hide();
+        }
+      }
+      // const deletedFiles = this.certDocuments.filter((item) => item.saved === 2 || item.saved === 3);
+
+      // if (this.vendorId > 0) {
+      //   for ( const file of deletedFiles) {
+      //     const s3URL = this.fileService.getS3URL(file.name);
+      //     await this.fileService.fileDelete(userId, this.vendorId, s3URL).toPromise();
+      //   }
+      // }
+
+      this.spinner.hide();
+    }
   }
 }

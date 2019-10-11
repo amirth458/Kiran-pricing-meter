@@ -16,8 +16,6 @@ export class UnapprovedVendorUserComponent implements OnInit, AfterViewChecked {
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
     phone: [null, Validators.required],
-    password: [null, Validators.required],
-    passwordConfirm: [null, Validators.required],
   });
   status = 0;
   vendorId = 0;
@@ -36,8 +34,6 @@ export class UnapprovedVendorUserComponent implements OnInit, AfterViewChecked {
         email: res.email,
         firstName: res.firstName,
         lastName: res.lastName,
-        password: '',
-        passwordConfirm: '',
         phone: res.phoneNo,
       };
       this.initUser(user);
@@ -92,8 +88,6 @@ export class UnapprovedVendorUserComponent implements OnInit, AfterViewChecked {
   }
 
   async onSaveUserInformation(event) {
-    if(!this.form.valid) {
-      return;
-    }
+    this.router.navigateByUrl('/profile/unapproved/vendor');
   }
 }

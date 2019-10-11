@@ -45,11 +45,11 @@ export class UnapprovedVendorMachineComponent implements OnInit {
       cellRenderer(params) {
         const data = params.data;
         let materials = '';
-        data.materialList.map((x, index) => {
+        data.machineServingMaterialList.map((x, index) => {
           if (index === 0) {
-            materials = x.name;
+            materials = x.material.name;
           } else {
-            materials = materials + ',' + x.name;
+            materials = materials + ',' + x.material.name;
           }
         });
         return `${materials}`;
@@ -78,6 +78,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
   gridOptions: GridOptions;
   rowData = [];
   pageSize = 10;
+  machineId = 0;
 
   form: FormGroup = this.fb.group({
     id: [null],
@@ -113,11 +114,8 @@ export class UnapprovedVendorMachineComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
     };
+    this.getMachinery();
 
-    const data = this.userService.getRegisterMachineInfo();
-    if (data) {
-      this.rowData = data;
-    }
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
@@ -132,7 +130,28 @@ export class UnapprovedVendorMachineComponent implements OnInit {
       return this.form.value[field] === null || this.form.value[field].length === 0;
     }
   }
-
+  async getMachinery() {
+    this.spinner.show();
+    let page = 0;
+    const rows = [];
+    try {
+      while (true) {
+        const param: FilterOption = { size: 1000, sort: 'id,ASC', page, q: '' };
+        const res = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
+        if (!res.content || res.content.length === 0) {
+          break;
+        }
+        page++;
+        rows.push(...res.content);
+      }
+      this.rowData = rows;
+    } catch (e) {
+      this.spinner.hide();
+      console.log(e);
+    } finally {
+      this.spinner.hide();
+    }
+  }
   async getMaterials(q) {
     let page = 0;
     const rows = [];
@@ -180,8 +199,11 @@ export class UnapprovedVendorMachineComponent implements OnInit {
   }
 
   initForm(initValue) {
-    this.materials = initValue.materialList || [];
+    this.materials = initValue.machineServingMaterialList.map(mat => {
+      return mat.material;
+    }) || [];
     this.equipments = [ initValue.equipment ];
+    this.machineId = initValue.id;
     this.form.setValue({
       id: initValue.id,
       name: initValue.name,
@@ -217,11 +239,20 @@ export class UnapprovedVendorMachineComponent implements OnInit {
     this.initForm(event.data);
   }
 
-  deleteMachine() {
+  async deleteMachine() {
+    this.spinner.show();
+    try {
+      await this.machineService.deleteMachine(this.userService.getVendorInfo().id, this.selectedMachine.id).toPromise();
+      this.toastr.success(this.selectedMachine.name + ' deleted.');
+    } catch (e) {
+      this.toastr.error('We are sorry, ' + this.selectedMachine.name + ' delete failed. Please try again later.');
+      console.log(e);
+    } finally {
+      this.spinner.hide();
+    }
     const filteredData = this.rowData.filter(x => x.id !== this.selectedMachine.id);
     this.rowData = filteredData;
     this.modal.nativeElement.click();
-    this.userService.setRegisterMachineInfo(this.rowData);
     this.isUpdate = false;
   }
 
@@ -264,20 +295,32 @@ export class UnapprovedVendorMachineComponent implements OnInit {
       this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
     }
   }
-
-  prepareData() {
-    const arr = $('#materialInput .ng-value-label').map(function() {
-      return $(this).html();
-    }).get();
+  prepareDataServer() {
     const postData = {
       id: this.form.value.id,
+      vendorId: this.userService.getVendorInfo().id,
       name: this.form.value.name,
       serialNumber: this.form.value.serialNumber,
-      equipment: { id: this.form.value.equipment, name: $('#equipmentInput .ng-value-label').html()},
-      materialList: [...this.form.value.material.map((materialId, index) => {
-        return { id: materialId, name: arr[index]};
-      })]
+      equipment: { id: this.form.value.equipment },
+      // materialList: this.form.value.material ? [...this.form.value.material.map((materialId) => {
+      //   return { id: materialId };
+      // })] : [],
+      materialList: [...this.form.value.material.map((materialId) => {
+        return { id: materialId };
+      })],
+      vendorFacility: { id: this.form.value.vendorFacility },
+      updatedDate: '',
+      createdBy: '',
+      createdDate: '',
     };
+
+    postData.updatedDate = new Date().toString();
+    if (!this.isUpdate) {
+      postData.createdBy = String(this.userService.getVendorInfo().id);
+      postData.createdDate = new Date().toString();
+    } else {
+      postData.updatedDate = new Date().toString();
+    }
     return postData;
   }
 
@@ -286,27 +329,42 @@ export class UnapprovedVendorMachineComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
-    this.duplicated = 0;
+
     this.error = '';
-    const postData = this.prepareData();
-    if (this.isUpdate ) {
-      this.rowData = this.rowData.map((item) => {
-        if ( item.id === postData.id) {
-          return {...postData};
-        } else {
-          return {...item};
-        }
-      });
+    const postData = this.prepareDataServer();
+    const vendorId = this.userService.getVendorInfo().id;
+    if (!this.isUpdate) {
+      this.spinner.show();
+      try {
+        await this.machineService.createMachine(vendorId, postData).toPromise();
+        this.form.reset();
+        this.isUpdate = false;
+        await this.getMachinery();
+      } catch (e) {
+        this.toastr.error('We are sorry, ' +  postData.name + ' creation failed. Please try again later.');
+        this.error = e.error.message;
+        console.log(e);
+      } finally {
+        this.spinner.hide();
+      }
+
     } else {
-      this.rowData = this.rowData.map((item, index) => {
-        return {id: index + 1, ...item};
-      });
-      postData.id = this.rowData.length + 1;
-      this.rowData = [...this.rowData, postData];
+      this.spinner.show();
+      try {
+        await this.machineService.updateMachine(vendorId, this.machineId, postData).toPromise();
+        this.form.reset();
+        this.isUpdate = false;
+        await this.getMachinery();
+      } catch (e) {
+        this.toastr.error('We are sorry, ' +  postData.name + ' update failed. Please try again later.');
+        this.error = e.error.message;
+        console.log(e);
+      } finally {
+        this.spinner.hide();
+      }
     }
-    this.userService.setRegisterMachineInfo(this.rowData);
-    this.isUpdate = false;
-    this.form.reset();
+
+
   }
 
   onSaveMachineInformation(event) {
