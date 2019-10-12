@@ -74,7 +74,6 @@ export class ProfileContainerComponent implements OnInit, OnDestroy {
     });
     this.selectedSubmenu = this.baseURL + '/vendor';
     const authData = this.authService.getAuthData();
-    console.log(authData);
     if (authData.is_admin) {
       this.route.navigate(['/admin']);
     }
