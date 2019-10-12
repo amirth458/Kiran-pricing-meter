@@ -22,8 +22,8 @@ import { ThrowStmt } from '@angular/compiler';
 export class ApproveVendorComponent implements OnInit {
 
   @ViewChild('infoModal') infoModal;
+  @ViewChild('modal') modal;
   selectedFacility = null;
-
 
   searchColumns = [{
     name: 'Vendor Name',
@@ -243,9 +243,12 @@ export class ApproveVendorComponent implements OnInit {
   vendor: Observable<Vendor>;
   sub: Subscription;
   vendorStatus = 1;
+  selectedUserIds = [];
   navigation;
   infoText = '';
   showTypeDropDown = false;
+  declineComments = '';
+  primaryContactName = '';
   constructor(
     private route: Router,
     private userService: UserService,
@@ -403,10 +406,12 @@ export class ApproveVendorComponent implements OnInit {
     }
   }
 
-  async declineUsers(event) {
+  onDeclineUsers(event) {
     const data = this.gridOptions.api.getSelectedNodes();
+    const name = [];
     let userIds = data.map(node => {
       if (node.data.vendor) {
+        name.push(`${node.data.vendor.primaryContactFirstName} ${node.data.vendor.primaryContactLastName}`);
         return node.data.vendor.id;
       } else {
         return null;
@@ -417,17 +422,24 @@ export class ApproveVendorComponent implements OnInit {
       this.infoText = 'decline';
       this.infoModal.nativeElement.click();
     } else {
-      try {
-        this.spineer.show();
-        await this.userService.declineUsers(userIds).toPromise();
-        await this.getAllUsers();
-        this.vendorStatusChanged(this.vendorStatus);
-        this.toastr.success('Vendors are declined.');
-      } catch (e) {
-        this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
-      } finally {
-        this.spineer.hide();
-      }
+      this.selectedUserIds = userIds;
+      this.primaryContactName = name.join(', ');
+      this.modal.nativeElement.click();
+    }
+  }
+
+  async declineUsers(event) {
+    if (this.declineComments === '') { return; }
+    try {
+      this.spineer.show();
+      await this.userService.declineUsers(this.selectedUserIds, this.declineComments).toPromise();
+      await this.getAllUsers();
+      this.vendorStatusChanged(this.vendorStatus);
+      this.toastr.success('Vendors are declined.');
+    } catch (e) {
+      this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
+    } finally {
+      this.spineer.hide();
     }
   }
 

@@ -180,14 +180,15 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: true,
-        vendorIds: ids
+        vendorIds: ids,
+        comment: 'Approved at ' + new Date().toISOString()
       },
       {
         headers
       });
   }
 
-  declineUsers(ids) {
+  declineUsers(ids, comment = '') {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem('auth'));
     const headers = new HttpHeaders({
@@ -196,7 +197,8 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: false,
-        vendorIds: ids
+        vendorIds: ids,
+        comment
       },
       {
         headers
@@ -212,7 +214,8 @@ export class UserService {
     });
     return this.http.patch<any>(url, {
         approved: true,
-        vendorIds: [Number(id)]
+        vendorIds: [Number(id)],
+        comment: 'Approved at ' + new Date().toISOString()
       },
       {
         headers
