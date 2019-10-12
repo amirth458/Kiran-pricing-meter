@@ -35,15 +35,6 @@ export class ApproveVendorComponent implements OnInit {
     }
   },
   {
-    name: 'Company Name',
-    checked: false,
-    field: 'companyName',
-    query: {
-      type: '',
-      filter: '',
-    }
-  },
-  {
     name: 'Email Address',
     checked: false,
     field: 'email',
@@ -75,11 +66,6 @@ export class ApproveVendorComponent implements OnInit {
     name: 'Vendor Name',
     checked: true,
     field: 'vendorName'
-  },
-  {
-    name: 'Company Name',
-    checked: true,
-    field: 'companyName'
   },
   {
     name: 'Email Address',
@@ -139,13 +125,6 @@ export class ApproveVendorComponent implements OnInit {
       }
       return vendorName;
     },
-  },
-  {
-    headerName: 'Company Name',
-    field: 'companyName',
-    hide: false,
-    sortable: true,
-    filter: false
   },
   {
     headerName: 'Email Address',
