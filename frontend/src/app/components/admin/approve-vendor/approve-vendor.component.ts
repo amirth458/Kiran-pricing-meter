@@ -436,8 +436,10 @@ export class ApproveVendorComponent implements OnInit {
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendors are declined.');
+      this.modal.nativeElement.click();
     } catch (e) {
       this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
+      this.modal.nativeElement.click();
     } finally {
       this.spineer.hide();
     }
