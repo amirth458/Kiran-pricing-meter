@@ -110,32 +110,28 @@ export class PostProcessPricingComponent implements OnInit {
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         let value = '';
-        if (param.data.processProfile.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
-            if (index == 0) {
-              value += material.name;
+        if (param.data.processProfile.processMachineServingMaterialList.length > 0) {
+          param.data.processProfile.processMachineServingMaterialList.map((mat, index) => {
+            if (index === 0) {
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       },
       valueGetter: (param) => {
         let value = '';
-        if (param.data.processProfile.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
-            if (index == 0) {
-              value += material.name;
+        if (param.data.processProfile.processMachineServingMaterialList.length > 0) {
+          param.data.processProfile.processMachineServingMaterialList.map((mat, index) => {
+            if (index === 0) {
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       }
     }

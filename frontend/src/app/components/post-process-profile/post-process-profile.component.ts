@@ -139,7 +139,7 @@ export class PostProcessProfileComponent implements OnInit {
         });
         return `
         <div>
-        <a href="#" data-toggle="tooltip" title="${materials}">${materials}</a>
+        <a data-toggle="tooltip" title="${materials}">${materials}</a>
 
         <div class="tooltip bs-tooltip-top" role="tooltip">
           <div class="arrow"></div>
