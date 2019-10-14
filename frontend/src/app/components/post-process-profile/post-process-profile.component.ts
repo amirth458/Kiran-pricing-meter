@@ -39,14 +39,14 @@ export class PostProcessProfileComponent implements OnInit {
       }
     },
     {
-      name: 'Post-Process Name', checked: false,
+      name: 'Profile Name', checked: false,
       field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Post-Process Nickname', checked: false,
+      name: 'Profile Nickname', checked: false,
       field: 'parameterNickName', query: {
         type: '',
         filter: '',
@@ -87,10 +87,10 @@ export class PostProcessProfileComponent implements OnInit {
       name: 'Post-Process No', checked: true, field: 'id'
     },
     {
-      name: 'Post-Process Name', checked: true, field: 'name'
+      name: 'Profile Name', checked: true, field: 'name'
     },
     {
-      name: 'Post-Process Nickname', checked: true, field: 'parameterNickName'
+      name: 'Profile Nickname', checked: true, field: 'parameterNickName'
     },
     {
       name: 'Equipment/Asset', checked: true, field: 'asset'
@@ -115,8 +115,8 @@ export class PostProcessProfileComponent implements OnInit {
 
   columnDefs: Array<any> = [
     { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false },
-    { headerName: 'Post-Process Name', field: 'name', hide: false, sortable: true, filter: false },
-    { headerName: 'Post-Process Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
+    { headerName: 'Profile Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Profile Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {
       headerName: 'Equipment/Asset', field: 'asset', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
