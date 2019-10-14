@@ -34,20 +34,20 @@ export class ProcessProfileComponent implements OnInit {
 
   searchColumns = [
     {
-      name: 'Process Profile No', checked: false, field: 'id', query: {
+      name: 'Profile No', checked: false, field: 'id', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Process Name', checked: false,
+      name: 'Profile Name', checked: false,
       field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Process Nickname', checked: false,
+      name: 'Profile Nickname', checked: false,
       field: 'parameterNickName', query: {
         type: '',
         filter: '',
@@ -78,13 +78,13 @@ export class ProcessProfileComponent implements OnInit {
 
   filterColumns = [
     {
-      name: 'Process Profile No', checked: true, field: 'id'
+      name: 'Profile No', checked: true, field: 'id'
     },
     {
-      name: 'Process Name', checked: true, field: 'name'
+      name: 'Profile Name', checked: true, field: 'name'
     },
     {
-      name: 'Process Nickname', checked: true, field: 'parameterNickName'
+      name: 'Profile Nickname', checked: true, field: 'parameterNickName'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -105,10 +105,10 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: false },
-    { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
-    { headerName: 'Process Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
-    // tslint:disable-next-line:max-line-length
+    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Profile Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Profile Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
+    // tslint:disabProfile-next-line:max-line-length
     {
       headerName: 'Equipment', field: 'equipment',
       hide: false, sortable: true, filter: false,
@@ -129,32 +129,28 @@ export class ProcessProfileComponent implements OnInit {
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         let value = '';
-        if (param.data.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
-            if (index == 0) {
-              value += material.name;
+        if (param.data.processMachineServingMaterialList.length > 0) {
+          param.data.processMachineServingMaterialList.map((mat, index) => {
+            if (index === 0) {
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       },
       valueGetter: (param) => {
         let value = '';
-        if (param.data.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
-            if (index == 0) {
-              value += material.name;
+        if (param.data.processMachineServingMaterialList.length > 0) {
+          param.data.processMachineServingMaterialList.map((mat, index) => {
+            if (index === 0) {
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       }
 

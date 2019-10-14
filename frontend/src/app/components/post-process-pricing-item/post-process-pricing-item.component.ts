@@ -216,6 +216,15 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     return this.form.value.pricingProfileName;
   }
 
+  get profileName() {
+    let name = '';
+    if (this.form.value.processProfileId) {
+      const profile = this.processProfiles.filter(p => p.id == this.form.value.processProfileId);
+      name = profile.length ? profile[0].name : '';
+    }
+    return name;
+  }
+
   get parameterDetails() {
     let name = '';
     this.selectedPricingConditionList.map(row => {

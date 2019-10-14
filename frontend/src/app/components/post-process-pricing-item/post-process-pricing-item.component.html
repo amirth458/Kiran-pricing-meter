@@ -4,8 +4,8 @@
   </div>
 
   <div class="title-bar">
-    <!-- Parameter set nick name -->
-    <h4>{{name}}</h4>
+    <!-- Profile Name: Parameter set nick name -->
+    <h4>{{profileName}}<span *ngIf="name">: {{name}}</span></h4>
     <!-- parameter details -->
     <span>{{parameterDetails}}</span>
   </div>
@@ -26,7 +26,7 @@
         <select required id="processProfileId" name="processProfileId" formControlName="processProfileId"
           (change)="processProfileChanged()" class="form-control">
           <option selected value=''>Choose...</option>
-          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}} {{item.parameterNickName}}
+          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.parameterNickName}} : {{item.name}}
           </option>
         </select>
         <div class="invalid-feedback">
