@@ -27,6 +27,7 @@ export class ColumnSearchFilterComponent implements OnInit {
   @Input('options') options: Array<string>;
   @Input('searchColumns') searchColumns: Array<{
     name: string,
+    field: string,
     checked: boolean,
     query: {
       type: string,
@@ -36,6 +37,7 @@ export class ColumnSearchFilterComponent implements OnInit {
   @Input('filterColumns') filterColumns: Array<
     {
       name: string,
+      field: string,
       checked: boolean,
     }>;
   @Input('type') type: Array<string>;
@@ -47,8 +49,8 @@ export class ColumnSearchFilterComponent implements OnInit {
   showBothTab = false;
 
   // Storage
-  searchColumnsStrorage;
-  filterColumnsStrorage;
+  searchColumnsStorage;
+  filterColumnsStorage;
   constructor() { }
 
   ngOnInit() {
@@ -70,7 +72,7 @@ export class ColumnSearchFilterComponent implements OnInit {
         id: index
       });
     });
-    this.searchColumnsStrorage = this.searchColumnsClone;
+    this.searchColumnsStorage = this.searchColumnsClone;
 
     this.filterColumns.map((column, index) => {
       this.filterColumnsClone.push({
@@ -78,18 +80,26 @@ export class ColumnSearchFilterComponent implements OnInit {
         id: index
       });
     });
-    this.filterColumnsStrorage = this.filterColumnsClone;
+    this.filterColumnsStorage = this.filterColumnsClone;
 
   }
 
   toggleCheck(index, type) {
     if (type === 'search') {
-      this.searchColumns[index].checked = !this.searchColumns[index].checked;
       this.searchColumnsClone[index].checked = !this.searchColumnsClone[index].checked;
+      this.searchColumns.map((item, i) => {
+        if (item.field === this.searchColumnsClone[index].field) {
+          this.searchColumns[i].checked = !this.searchColumns[i].checked;
+        }
+      });
       this.searchColumnsChange.emit(this.searchColumns);
     } else {
-      this.filterColumns[index].checked = !this.filterColumns[index].checked;
       this.filterColumnsClone[index].checked = !this.filterColumnsClone[index].checked;
+      this.filterColumns.map((item, i) => {
+        if (item.field === this.filterColumnsClone[index].field) {
+          this.filterColumns[i].checked = !this.filterColumns[i].checked;
+        }
+      });
       this.filterColumnsChange.emit(this.filterColumns);
 
     }
@@ -103,10 +113,10 @@ export class ColumnSearchFilterComponent implements OnInit {
     const query = event.target.value;
     if (type === 'search') {
       this.searchColumnsClone =
-        this.searchColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
+        this.searchColumnsStorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
     } else {
       this.filterColumnsClone =
-        this.filterColumnsStrorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
+        this.filterColumnsStorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
     }
   }
 }
