@@ -66,4 +66,23 @@ export class MachineService {
     });
     return this.http.delete(url, { headers });
   }
+
+  getEquipmentFeatureType(processTypeId): Observable<any> {
+    const url = `${environment.apiBaseUrl}/equipment-feature-type/process-type/${processTypeId}`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get(url, { headers });
+  }
+
+  getUnits(): Observable<any> {
+    const url = `${environment.apiBaseUrl}/process-metadata/measurement_unit_type`;
+    const data = JSON.parse(localStorage.getItem('auth'));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + ' ' + data.accessToken
+    });
+    return this.http.get(url, { headers });
+  }
+
 }

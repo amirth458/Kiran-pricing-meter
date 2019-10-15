@@ -28,9 +28,18 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
   isMaterialLoading = false;
   isEquipmentLoading = false;
-
+  equipmentList = [];
   error = '';
-
+  units = [];
+  selectedUnits = [];
+  featureTypes = [];
+  featureShow = false;
+  allowedFeatureList = [
+    'Injection Molding',
+    '3D Printing',
+    'CNC Machining',
+    'Casting',
+  ];
   @ViewChild('materialInput') materialInput;
   @ViewChild('equipmentInput') equipmentInput;
 
@@ -60,12 +69,25 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     this.spinner.show();
     try {
       await this.getFacilities();
+      const response = await this.machineService.getUnits().toPromise();
+      this.units = response.metadataList;
       if (this.route.url.includes('edit')) {
         this.isNew = false;
         this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
         this.machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, this.machineId).toPromise();
         this.materials = this.machine.machineServingMaterialList.map(x => x.material);
         this.equipments = [this.machine.equipment];
+        console.log(this.machine);
+        const equipment: any = this.equipments[0];
+        const processTypeId = equipment.processFamily.processType.id;
+        this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
+        if (this.featureTypes.length > 0) {
+          this.featureShow = true;
+          this.equipmentList = [];
+        } else {
+          this.featureShow = false;
+          this.equipmentList = [];
+        }
         this.initForm(this.machine);
       }
       this.spinner.hide();
@@ -175,11 +197,23 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  async clearStoreEquipment() {
+    const equipmentId = this.form.value.equipment;
+    const equipment: any = this.equipments.find(equip => equip.id === equipmentId);
+    const processTypeId = equipment.processFamily.processType.id;
+    this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
+    if (this.featureTypes.length > 0) {
+      this.featureShow = true;
+      this.equipmentList = [];
+    } else {
+      this.featureShow = false;
+      this.equipmentList = [];
+    }
+    this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
+  }
+
   clearStore() {
     this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
-    this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
-    // this.materials = [];
-    // this.equipments = [];
   }
 
   async onMaterialSearch(event) {
@@ -246,6 +280,40 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     return postData;
   }
 
+  addEquipment(event) {
+    this.equipmentList.push(
+      {
+        id: '',
+        featureType: {
+          id: ''
+        },
+        unitType: {
+          id: ''
+        },
+        value: '',
+        featureTypeList: [...this.featureTypes],
+        units: []
+      }
+    );
+  }
+  onChangeFeatureType(event) {
+    const featureType = $(event.target).val();
+    if ( featureType === '') {
+      this.selectedUnits = [];
+    } else {
+      const feature = this.featureTypes.find(item => item.id === Number(featureType));
+      const unitId = feature.measurementType.id;
+      this.selectedUnits = this.units.filter(item => item.measurementType.id === unitId);
+      console.log(this.selectedUnits);
+    }
+  }
+
+  removeFeature(index) {
+    const frontSlice = this.equipmentList.slice(0, index);
+    const endSlice = this.equipmentList.slice(index + 1);
+    this.equipmentList = frontSlice.concat(endSlice);
+  }
+
   async save(event) {
     event.preventDefault();
     if (this.form.valid) {
@@ -282,6 +350,5 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
       }
     }
-
   }
 }
