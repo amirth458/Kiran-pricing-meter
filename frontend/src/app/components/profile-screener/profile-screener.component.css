@@ -1,0 +1,140 @@
+.wrapper {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+select {
+  height: 100%;
+  width: 100%;
+  font-size: 12px;
+}
+
+table>tbody>tr>td:first-child {
+  background: var(--theme-light-blue);
+  color: white;
+}
+
+table>tbody>tr>td:last-child {
+  color: var(--theme-light-blue);
+}
+
+table>tbody>tr>td {
+  padding: .15rem;
+  font-size: 13px;
+  ;
+}
+
+table>tbody>tr>td:first-child {
+  padding-left: 15px
+}
+
+table .form-control {
+  height: 28px;
+  font-size: 15px;
+}
+
+
+.upload button.back {
+  color: var(--theme-btn-primary);
+  width: 40%;
+  margin: 10px;
+}
+
+.upload button.back:hover {
+  color: var(--theme-light-blue);
+}
+
+
+.upload ul li>span {
+  margin-right: 10px;
+  font-weight: 200;
+  font-size: 12px;
+  color: var(--theme-light-blue);
+}
+
+.detail-info {
+  color: var(--theme-light-blue);
+  margin-top: 35px;
+}
+
+.detail-info>p {
+  font-weight: bold;
+}
+
+.detail-info .details {
+  border: 1px solid #09284659;
+  border-radius: 5px;
+  padding: 20px 0px;
+}
+
+.detail-info .details .title {
+  color: var(--theme-light-green);
+}
+
+.rfq-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.detail-info .details .title,
+.detail-info .details .quantity,
+.rfq-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.detail-info .details .image-info {
+  font-size: 14px;
+}
+
+.detail-info .details .image-details ul {
+  list-style: none;
+}
+
+.detail-info .details .image-details ul li::before {
+  content: "\2022";
+  color: var(--theme-sky-blue);
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.detail-info .details .image-details ul li span {
+  font-weight: bold;
+  font-size: 13px;
+  min-width: 100px;
+}
+
+.detail-info .details .image-details ul li,
+.detail-info .details .image-details ul li>div>div.inputs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.detail-info .details .image-details ul li>div.flex-column {
+  text-align: center;
+}
+
+.detail-info .details .image-details ul li .inputs {
+  display: flex;
+  justify-content: space-around;
+  margin-left: 16px;
+}
+
+.detail-info .details .image-details ul li .inputs input,
+.detail-info .details .image-details ul li .inputs div.theme {
+  display: flex;
+  height: 28px;
+  width: 40%;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+
+
+}

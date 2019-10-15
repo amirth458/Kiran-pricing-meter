@@ -52,12 +52,17 @@ ul li .name:hover {
 
 
 .action-button {
-  width: 15%;
+  width: 100%;
 }
 
 .action-button button {
   font-weight: 100;
   font-size: 14px;
+  min-width: 25%;
+  width: fit-content;
+  float: right;
+  margin-right: 10px;
+  padding: 10px 20px;
 }
 
 .action-button span {
@@ -65,6 +70,16 @@ ul li .name:hover {
 }
 
 
+.info-section {
+  width: 500px;
+  display: flex;
+  align-items: center;
+}
+.info-section h6{
+  color: var(--theme-light-green);
+  font-size: 20px;
+
+}
 @media(max-width: 1200px) {
   ul li {
     font-size: 15px;
