@@ -11,16 +11,18 @@ import { MachineItemComponent } from '../../components/authorized/approved/vendo
 import { PreferencesComponent } from '../../components/authorized/approved/vendor/preferences/preferences.component';
 import { ShippingComponent } from '../../components/authorized/approved/vendor/shipping/shipping.component';
 import { ShippingItemComponent } from '../../components/authorized/approved/vendor/shipping-item/shipping-item.component';
-import { ProcessComponent } from '../../components/process/process.component';
-import { ProcessProfileComponent } from '../../components/process-profile/process-profile.component';
-import { ProcessProfileItemComponent } from '../../components/process-profile-item/process-profile-item.component';
-import { ProcessPricingComponent } from '../../components/process-pricing/process-pricing.component';
-import { ProcessPricingItemComponent } from '../../components/process-pricing-item/process-pricing-item.component';
 import { PostProcessComponent } from '../../components/post-process/post-process.component';
 import { PostProcessProfileComponent } from '../../components/post-process-profile/post-process-profile.component';
 import { PostProcessProfileItemComponent } from '../../components/post-process-profile-item/post-process-profile-item.component';
 import { PostProcessPricingComponent } from '../../components/post-process-pricing/post-process-pricing.component';
 import { PostProcessPricingItemComponent } from '../../components/post-process-pricing-item/post-process-pricing-item.component';
+import { ProcessComponent } from '../../components/process/process.component';
+import { ProcessProfileComponent } from '../../components/process-profile/process-profile.component';
+import { ProcessProfileItemComponent } from '../../components/process-profile-item/process-profile-item.component';
+import { ProcessPricingComponent } from '../../components/process-pricing/process-pricing.component';
+import { ProcessPricingItemComponent } from '../../components/process-pricing-item/process-pricing-item.component';
+import { ProfileScreenerComponent } from 'src/app/components/profile-screener/profile-screener.component';
+
 
 import { UnapprovedVendorContainerComponent } from '../../components/authorized/unapproved/_container/container.component';
 import { UnapprovedVendorUserComponent } from '../../components/authorized/unapproved/user/user.component';
@@ -75,6 +77,7 @@ const routes: Routes = [
             path: 'processes', component: ProcessComponent,
             children: [
               { path: 'profile', component: ProcessProfileComponent },
+              { path: 'profile/profile-screener', component: ProfileScreenerComponent },
               { path: 'profile/add', component: ProcessProfileItemComponent },
               { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
               { path: 'pricing', component: ProcessPricingComponent },

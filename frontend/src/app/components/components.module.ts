@@ -56,6 +56,7 @@ import { AdminVendorDetailsActionBarComponent } from './admin/vendor-details/act
 import { AdminVendorDetailsUserComponent } from './admin/vendor-details/user/user.component';
 import { AdminVendorDetailsVendorComponent } from './admin/vendor-details/vendor/vendor.component';
 import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machine/machine.component';
+import { ProfileScreenerComponent } from './profile-screener/profile-screener.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     AdminVendorDetailsActionBarComponent,
     AdminVendorDetailsUserComponent,
     AdminVendorDetailsVendorComponent,
-    AdminVendorDetailsMachineComponent
+    AdminVendorDetailsMachineComponent,
+    ProfileScreenerComponent
   ],
   imports: [
     CommonModule,

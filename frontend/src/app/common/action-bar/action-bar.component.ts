@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 declare var $: any;
 @Component({
@@ -17,6 +17,8 @@ export class ActionBarComponent implements OnChanges, OnInit {
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
+  isProfileScreener = false;
+  modifiedItem = { index: null, value: [] };
   constructor(public route: Router) { }
 
   ngOnInit() {
@@ -33,6 +35,37 @@ export class ActionBarComponent implements OnChanges, OnInit {
         }
       });
     }
+
+    if (routeArray.includes('profile-screener')) {
+      this.isProfileScreener = true;
+      this.menus.map((menu, index) => {
+        if (menu.name == this.selectedTab) {
+          this.menus[index].actions = [{ name: 'Process', route: 'process' }]
+        }
+      });
+    }
+
+    this.route.events.subscribe(e => {
+
+      if (e instanceof NavigationEnd) {
+        if (e.url.includes('profile-screener')) {
+          this.isProfileScreener = true;
+          this.menus.map((menu, index) => {
+            if (menu.name == this.selectedTab) {
+              this.modifiedItem.index = index;
+              this.modifiedItem.value = this.menus[index].actions;
+              this.menus[index].actions = [{ name: 'Process', route: 'process' }]
+            }
+          });
+        } else {
+          this.isProfileScreener = false;
+          if (this.modifiedItem.index !== null) {
+            this.menus[this.modifiedItem.index].actions = this.modifiedItem.value;
+          }
+        }
+      }
+    });
+
   }
 
   ngOnChanges(changes: SimpleChanges) {

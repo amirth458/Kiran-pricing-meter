@@ -18,7 +18,10 @@ export class ProcessComponent implements OnInit {
         name: 'Profile',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'profile',
-        actions: [{ name: 'Add Process Profile', route: 'add' }]
+        actions: [
+          { name: 'Add Process Profile', route: 'add' },
+          { name: 'Profile Screener', route: 'profile-screener' }
+        ]
       },
       {
         name: 'Pricing',

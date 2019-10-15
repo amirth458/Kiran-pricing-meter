@@ -1,0 +1,244 @@
+<div class="wrapper shadow">
+  <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+
+  <div class="row" [formGroup]="form">
+    <div class="col-md-7">
+
+      <div class="upload">
+        <p>Please, select the file</p>
+        <button type="file" class="btn btn-add theme white back">
+          Upload a Reference File
+        </button>
+        <ul>
+          <li><span>Brake rotor no logo.step </span> <i class="fas fa-trash"></i></li>
+        </ul>
+      </div>
+
+      <div class="detail-info">
+        <p>Detail Information</p>
+        <div class="row details">
+          <div class="col-md-4 d-flex align-items-center">
+            <img [src]="uploadImage" height="200px" width="200px" alt="">
+          </div>
+
+          <div class="col-md-8 d-flex flex-column">
+            <span class="title">Demo 1</span>
+            <span class="quantity">Quantity : 25</span>
+
+            <div class="image-info d-flex flex-column">
+              <span>
+                Part Dimensions: 12.36mm x 4.50mm x 4.73mm
+              </span>
+              <span>
+                Files: Brake rotor no logo.step
+              </span>
+            </div>
+
+            <div class="image-details">
+              <!-- <ul>
+                <li><span>Volume</span> - 3.15cc</li>
+                <li><span>Extents</span> - 25.2mm x 25.00mm x 12.8mm </li>
+                <li><span>Bounding box</span> - 6.22cc</li>
+                <li><span>Surface area</span> - 8.1cm2</li>
+                <li><span>Thinnest wall</span> - 1.4mm</li>
+              </ul> -->
+              <ul>
+                <li><span>Volume</span> -
+                  <div class="inputs">
+                    <input class="form-control" required type="text" id="design" name="design"
+                      [(ngModel)]="details.volume.value" [ngModelOptions]="{standalone: true}">
+                    <div class="theme">
+                      <select required id="value" name="value" class="form-control" [(ngModel)]="details.volume.unit"
+                        [ngModelOptions]="{standalone: true}">
+                        <option selected value="">Choose...</option>
+                        <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </li>
+                <li><span>Extents</span> -
+                  <div class="d-flex flex-column">
+                    <div class="inputs">
+                      <input class="form-control" required type="text" id="design" name="design"
+                        [(ngModel)]="details.extents[0].value" [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="unit" name="unit" class="form-control"
+                          [(ngModel)]="details.extents[0].unit" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    x
+                    <div class="inputs">
+                      <input class="form-control" required type="text" id="design" name="design"
+                        [(ngModel)]="details.extents[1].value" [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="value" name="value" class="form-control"
+                          [(ngModel)]="details.extents[1].unit" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    x
+                    <div class="inputs">
+                      <input class="form-control" required type="text" id="design" name="design"
+                        [(ngModel)]="details.extents[2].value" [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="unit" name="unit" class="form-control"
+                          [(ngModel)]="details.extents[2].unit" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li><span>Bounding box</span> -
+                  <div class="inputs">
+                    <input class="form-control" required type="text" id="design" name="design"
+                      [(ngModel)]="details.boundingBox.value" [ngModelOptions]="{standalone: true}">
+                    <div class="theme">
+                      <select required id="value" name="value" class="form-control"
+                        [(ngModel)]="details.boundingBox.unit" [ngModelOptions]="{standalone: true}">
+                        <option selected value="">Choose...</option>
+                        <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </li>
+                <li><span>Surface area</span> - <div class="inputs">
+                    <input class="form-control" required type="text" id="design" name="design"
+                      [(ngModel)]="details.surfaceArea.value" [ngModelOptions]="{standalone: true}">
+                    <div class="theme">
+                      <select required id="unit" name="unit" class="form-control" [(ngModel)]="details.surfaceArea.unit"
+                        [ngModelOptions]="{standalone: true}">
+                        <option selected value="">Choose...</option>
+                        <option *ngFor="let unit of areaUnits" [value]="unit.id">{{unit.symbol}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </li>
+                <li><span>Thinnest wall</span> - <div class="inputs">
+                    <input class="form-control" required type="text" id="design" name="design"
+                      [(ngModel)]="details.thinnestWall.value" [ngModelOptions]="{standalone: true}">
+                    <div class="theme">
+                      <select required id="unit" name="unit" class="form-control"
+                        [(ngModel)]="details.thinnestWall.unit" [ngModelOptions]="{standalone: true}">
+                        <option selected value="">Choose...</option>
+                        <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <h6 class="rfq-title">RFQ Information</h6>
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+        </thead>
+        <tbody>
+          <tr>
+            <td>Required Certificates</td>
+            <td>
+              <div class="theme">
+                <select required id="requiredCets" name="requiredCets" class="form-control"
+                  formControlName="certification">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>NDA</td>
+            <td>
+              <div class="theme">
+                <select required id="nda" name="nda" class="form-control" formControlName="NDA">
+                  <option selected value="">Choose...</option>
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Design</td>
+            <td>
+              <input class="form-control" required type="text" id="design" name="design">
+            </td>
+          </tr>
+
+
+          <tr>
+            <td>Process/Equipment</td>
+            <td>
+              <ng-select (change)="equipmentChanged()" #equipmentInput placeholder="Add Equipment"
+                placeholder="Add Materials" [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true"
+                [hideSelected]="true" [selectOnTab]="true" formControlName="equipment">
+                <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
+              </ng-select>
+          </tr>
+
+
+          <tr>
+            <td>Material</td>
+            <td>
+              <ng-select style="width: 100%;" #materialInput (change)="materialChanged()" placeholder="Add Materials"
+                [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+                [selectOnTab]="true" formControlName="materialList">
+                <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
+              </ng-select>
+            </td>
+          </tr>
+          <tr>
+            <td>Tolerance</td>
+            <td>
+              <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                id="tolerance" name="tolerance" formControlName="tolerance">
+            </td>
+          </tr>
+
+          <tr>
+            <td>Surface Roughness(Ra)</td>
+            <td>
+              <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughness">
+            </td>
+          </tr>
+
+
+          <tr>
+            <td>Surface Finish</td>
+            <td>
+              <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                id="surface-finish" name="surface-finish" formContolName="surfaceFinish">
+            </td>
+          </tr>
+
+          <tr>
+            <td>Time to Ship</td>
+            <td>
+              <div class=" theme">
+                <select required id="time-to-ship" name="time-to-ship" class="form-control"
+                  formControlName="timeToShip">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of timeToShip" [value]="item.id">{{item.name}}</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
