@@ -10,6 +10,7 @@
   --them-dark-blue-opaque: #092846;
   --theme-secondary-blue: rgba(9, 40, 70, .74);
   --theme-secondary-blue-solid: #607181;
+  --theme-light-blue: #194B7C;
   --theme-grid-header: #194B7C;
   --theme-light-green: #74BF09;
   --theme-input-bg: rgba(196, 196, 196, .13);
@@ -104,10 +105,20 @@ button.theme.dim {
   background: var(--theme-secondary-blue);
 }
 
-button.theme.white {
+button.theme.white,
+button.theme.pricing-screener {
   background: white;
   color: var(--theme-secondary-blue);
   box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+button.theme.pricing-screener {
+  color: var(--theme-light-green);
+}
+
+button.theme.pricing-screener:hover {
+  color: var(--theme-dark-blue);
+  background: white;
 }
 
 button.theme:active,
@@ -172,6 +183,10 @@ button.theme.theme-reverse:hover {
   color: var(--theme-btn-hover) !important;
   border-radius: 4px;
   box-shadow: 0 .2rem 0.2rem rgba(0, 0, 0, .15) !important;
+}
+
+.fa-trash {
+  color: var(--theme-orange);
 }
 
 .modal.theme .modal-title {
@@ -327,6 +342,10 @@ button.theme.theme-reverse:hover {
 }
 
 /* NON Ag-grid table style */
+app-dropdown-cell-renderer {
+  width: 100%;
+  height: 100%;
+}
 
 .inputfile {
   width: 0.1px;
