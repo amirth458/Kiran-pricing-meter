@@ -53,10 +53,7 @@ export class ColumnSearchFilterComponent implements OnInit {
 
   ngOnInit() {
     this.generateSchema();
-    console.log('activeTab', this.activeTab);
-    console.log('type', this.type);
     if (this.type.length > 0) {
-      // this.activeTab = this.type[0];
       this.activeTab = 'search';
     }
 
