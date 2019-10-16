@@ -3,6 +3,7 @@
   background: white;
   color: var(--theme-dark-blue-opaque);
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0px 40px;
   margin-bottom: 10px;
@@ -13,16 +14,15 @@ ul {
   list-style: none;
   margin: unset;
   padding: unset;
-  width: 90%;
+  flex-grow: 1;
   display: inline-flex;
 }
 
 ul li {
   display: inline-flex;
   justify-content: flex-start;
-  align-items: center;
-  min-width: 150px;
-  font-size: 25px;
+  align-items: center;  
+  font-size: 18px;
   font-weight: bold;
   padding-left: 10px;
   margin-right: 47px;
@@ -54,22 +54,17 @@ ul li .name:hover {
 }
 
 
-.action-button {
-  width: 100%;
-}
-
 .action-button button {
   font-weight: 100;
   font-size: 14px;
-  min-width: 25%;
-  width: fit-content;
+  width: 160px;
   float: right;
-  margin-right: 10px;
-  padding: 10px 20px;
+  margin-left: 10px;
+  padding: 10px 10px;
 }
 
 .action-button span {
-  margin-left: 0px;
+  margin-left: 10px;
 }
 
 
