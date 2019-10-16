@@ -94,7 +94,7 @@
 
             <div *ngFor="let item of equipmentList; let index = index" class="form-row">
               <div class="form-group theme col-md-4">
-                  <select required id="name" name="name" (change)="onChangeFeatureType($event)" [(ngModel)]="equipmentList[index].featureType.id"
+                  <select required id="name" name="name" (change)="onChangeFeatureType($event, index)" [(ngModel)]="equipmentList[index].equipmentFeatureType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of featureTypes" [value]="item.id">
@@ -120,7 +120,7 @@
                   <select required id="measureUnit" name="measureUnit" [(ngModel)]="equipmentList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of selectedUnits" [value]="item.id">
+                    <option *ngFor="let item of getFeatureUnits(equipmentList[index].equipmentFeatureType)" [value]="item.id">
                       {{item.symbol}}
                     </option>
                   </select>
