@@ -22,8 +22,8 @@
   --theme-btn-primary: #74BF09;
   --theme-btn-hover: #558B09;
   --theme-action-bar-color: #46637E;
-  --theme-btn-back-color: #f8fdf0;
-  --theme-btn-back-hover-color: #FFFFFF;
+  --theme-btn-back-color: #FFFFFF;
+  --theme-btn-back-hover-color: #f8fdf0;
 }
 
 * {
@@ -118,9 +118,6 @@ button.theme.pricing-screener {
   width: 166px;
 }
 
-button.theme.white span {
-  font-size: 22px;
-}
 
 button.theme.pricing-screener {
   color: var(--theme-light-green);

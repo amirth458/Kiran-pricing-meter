@@ -294,7 +294,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   }
 
   processProfileChanged() {
-    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id === this.form.value.processProfileId)[0];
+    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id === Number(this.form.value.processProfileId))[0];
     // tslint:disable-next-line:max-line-length
     const processTypeId = selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id;
     this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id === processTypeId);
@@ -307,6 +307,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
 
   initForm(pricingProfile) {
+    console.log(pricingProfile);
     let flatChargesFound = 0;
     let variableChargesFound = 0;
     let multiplierChargesFound = 0;
@@ -964,10 +965,9 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         });
       }
     });
-
     const postData = {
       id: this.form.value.id || '',
-      name: this.form.value.pricingProfileName || 'Process Pricing - ' + this.getRandomString(7),
+      name: this.form.value.pricingProfileName,
       processPricingConditionList: this.selectedPricingConditionList,
       processPricingParameterList: [...flatCharges, ...variableCharges, ...multiplierCharges],
       processProfile: { id: this.form.value.processProfileId },

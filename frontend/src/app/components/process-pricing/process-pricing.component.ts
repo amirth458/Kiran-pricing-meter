@@ -86,7 +86,11 @@ export class ProcessPricingComponent implements OnInit {
 
   columnDefs: Array<any> = [
     { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, },
-    { headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false,
+      cellRenderer(param): any {
+        return param.data.processProfile.name + ': ' + param.data.name;
+      },
+    },
     { headerName: 'Profile Name', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
