@@ -10,6 +10,8 @@
   --them-dark-blue-opaque: #092846;
   --theme-secondary-blue: rgba(9, 40, 70, .74);
   --theme-secondary-blue-solid: #607181;
+  --theme-sky-blue: #31B0D6;
+  --theme-light-blue: #194B7C;
   --theme-grid-header: #194B7C;
   --theme-light-green: #74BF09;
   --theme-input-bg: rgba(196, 196, 196, .13);
@@ -107,7 +109,8 @@ button.theme.dim {
   background: var(--theme-secondary-blue);
 }
 
-button.theme.white {
+button.theme.white,
+button.theme.pricing-screener {
   font-size: 22px;
   background: var(--theme-btn-back-color);
   color: var(--theme-light-green);
@@ -117,6 +120,15 @@ button.theme.white {
 
 button.theme.white span {
   font-size: 22px;
+}
+
+button.theme.pricing-screener {
+  color: var(--theme-light-green);
+}
+
+button.theme.pricing-screener:hover {
+  color: var(--theme-dark-blue);
+  background: white;
 }
 
 button.theme:active,
@@ -155,28 +167,36 @@ button.theme.theme-reverse:hover {
   background-color: rgba(0, 0, 0, 0.5) !important;
   cursor: not-allowed;
 }
+
 .btn-primary,
 .btn-contniue {
-  background: var(--theme-btn-primary)!important;
+  background: var(--theme-btn-primary) !important;
   color: white;
 }
+
 .btn-primary:hover,
 .btn-contniue:hover {
   background: var(--theme-btn-hover) !important;
   color: white;
 }
+
 .btn-white {
   background: white !important;
   border-radius: 4px;
-  color: var(--theme-btn-primary)!important;
+  color: var(--theme-btn-primary) !important;
   box-shadow: 0 .2rem 0.2rem rgba(0, 0, 0, .15) !important;
 }
+
 .btn-white:hover {
   background: #F8FDF0 !important;
 
-  color: var(--theme-btn-hover)!important;
+  color: var(--theme-btn-hover) !important;
   border-radius: 4px;
   box-shadow: 0 .2rem 0.2rem rgba(0, 0, 0, .15) !important;
+}
+
+.fa-trash {
+  color: var(--theme-orange);
 }
 
 .modal.theme .modal-title {
@@ -252,7 +272,7 @@ button.theme.theme-reverse:hover {
 }
 
 .theme-table .ag-theme-balham .ag-paging-panel .ag-icon {
-  color: var(--them-dark-blue-opaque);
+  color: var(--theme-light-green);
 }
 
 .theme-table .ag-theme-balham .ag-cell {
@@ -260,6 +280,7 @@ button.theme.theme-reverse:hover {
   display: flex;
   align-items: center;
 }
+
 .theme-table .ag-theme-balham .ag-cell span {
   height: 100%;
   display: flex;
@@ -272,9 +293,12 @@ button.theme.theme-reverse:hover {
   display: flex;
   justify-content: space-between;
 }
+
 .theme-table .ag-theme-balham .action-column .edit {
   margin-right: 10px;
+  color: var(--theme-grid-header);
 }
+
 .theme-table .ag-theme-balham .action-column .copy {
   margin-right: 10px;
 }
@@ -328,6 +352,10 @@ button.theme.theme-reverse:hover {
 }
 
 /* NON Ag-grid table style */
+app-dropdown-cell-renderer {
+  width: 100%;
+  height: 100%;
+}
 
 .inputfile {
   width: 0.1px;
@@ -410,6 +438,7 @@ international-phone-number.ng-invalid .input-group .ng-valid {
 international-phone-number.readonly .dropdown .dropbtn {
   pointer-events: none !important;
 }
+
 international-phone-number.readonly input {
   pointer-events: none !important;
 }
@@ -436,11 +465,12 @@ international-phone-number.readonly input {
   height: 12px;
   margin-right: 13px;
 }
+
 .ag-cell span {
   line-height: 34px;
 }
 
-::placeholder{
+::placeholder {
   color: #607181 !important;
   opacity: 0.4 !important;
 }
@@ -458,9 +488,11 @@ international-phone-number.readonly input {
 .approved {
   background-color: #E0F0C9 !important;
 }
+
 .non-approved {
   background-color: #FFF !important;
 }
+
 .declined {
   background-color: #F5DDD1 !important;
 }
@@ -472,18 +504,21 @@ international-phone-number.readonly input {
   color: var(--theme-light-green) !important;
   padding-top: 7px;
 }
+
 .decline {
   padding-top: 7px;
   font-size: 14px;
   background: transparent;
   color: var(--theme-orange) !important;
 }
+
 .btn-approve {
   background: var(--theme-light-green) !important;
   color: white;
   width: 140px !important;
   margin-right: 40px;
 }
+
 .btn-approved {
   background: transparent !important;
   color: var(--theme-light-green) !important;
@@ -491,11 +526,13 @@ international-phone-number.readonly input {
   width: 140px !important;
   margin-right: 40px;
 }
+
 .btn-decline {
   background: var(--theme-orange) !important;
   color: white;
   width: 140px !important;
 }
+
 .btn-declined {
   background: transparent !important;
   color: var(--theme-orange) !important;
@@ -508,6 +545,12 @@ international-phone-number.readonly input {
   padding-bottom: 20px;
   display: block;
 }
+
 .container-continue {
   max-width: 150px;
+}
+
+
+.conditions .minus {
+  color: var(--theme-orange);
 }

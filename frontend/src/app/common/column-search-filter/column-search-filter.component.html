@@ -9,7 +9,7 @@
         [class.active]="activeTab === 'filter'"><i class="fas fa-columns"></i></div>
     </div>
     <!-- Column Filter -->
-    <div class="filter" *ngIf="activeTab === 'filter'">
+    <div class="filter" [class.d-none]="activeTab != 'filter'">
       <div class="form-row input">
         <div class="form-group theme col">
           <input required type="text" class="form-control shadow" id="search_query" name="search_query"
@@ -43,10 +43,14 @@
     </div>
 
     <!-- Search -->
+<<<<<<< HEAD
     <div class="search" *ngIf="activeTab === 'search'">
+=======
+    <div class="search" [class.d-none]="activeTab != 'search'">
+>>>>>>> master
       <div class="form-row input">
         <div class="form-group theme col">
-          <input required type="text" class="form-control shadow" id="search_query" name="search_query"
+          <input required type="text" class="form-control shadow" id="search_query1" name="search_query1"
             placeholder="Search" (keyup)="search($event, 'search')">
         </div>
 

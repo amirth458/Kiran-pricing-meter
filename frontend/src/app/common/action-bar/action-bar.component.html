@@ -9,6 +9,9 @@
       </div>
     </li>
   </ul>
+  <div *ngIf="isProfileScreener" class="info-section">
+    <h6>Profile Screener</h6>
+  </div>
   <div class="action-button"
     *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') && !route.url.includes('clone') )">
     <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn btn-primary theme"

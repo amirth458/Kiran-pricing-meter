@@ -33,14 +33,14 @@ export class PostProcessPricingComponent implements OnInit {
       }
     },
     {
-      name: 'Pricing Profile', checked: false,
+      name: 'Pricing Name', checked: false,
       field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Post-Process Profile', checked: false,
+      name: 'Post-Process Profile Name', checked: false,
       field: 'processProfile.name', query: {
         type: '',
         filter: '',
@@ -67,10 +67,10 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Pricing No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Profile', checked: true, field: 'name'
+      name: 'Pricing Name', checked: true, field: 'name'
     },
     {
-      name: 'Post-Process Profile', checked: true, field: 'processProfile.name'
+      name: 'Post-Process Profile Name', checked: true, field: 'processProfile.name'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -87,8 +87,8 @@ export class PostProcessPricingComponent implements OnInit {
 
   columnDefs: Array<any> = [
     { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, },
-    { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
-    { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
+    { headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Post-Process Profile Name', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Equipment', field: 'equipment',
@@ -110,32 +110,28 @@ export class PostProcessPricingComponent implements OnInit {
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         let value = '';
-        if (param.data.processProfile.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
-            if (index == 0) {
-              value += material.name;
+        if (param.data.processProfile.processMachineServingMaterialList.length > 0) {
+          param.data.processProfile.processMachineServingMaterialList.map((mat, index) => {
+            if (index === 0) {
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       },
       valueGetter: (param) => {
         let value = '';
-        if (param.data.processProfile.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
-            if (index == 0) {
-              value += material.name;
+        if (param.data.processProfile.processMachineServingMaterialList.length > 0) {
+          param.data.processProfile.processMachineServingMaterialList.map((mat, index) => {
+            if (index === 0) {
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       }
     }

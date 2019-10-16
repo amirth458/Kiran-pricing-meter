@@ -34,13 +34,13 @@ export class ProcessProfileComponent implements OnInit {
 
   searchColumns = [
     {
-      name: 'Process Profile No', checked: false, field: 'id', query: {
+      name: 'Profile No', checked: false, field: 'id', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Process Name', checked: false,
+      name: 'Profile Name', checked: false,
       field: 'name', query: {
         type: '',
         filter: '',
@@ -78,10 +78,10 @@ export class ProcessProfileComponent implements OnInit {
 
   filterColumns = [
     {
-      name: 'Process Profile No', checked: true, field: 'id'
+      name: 'Profile No', checked: true, field: 'id'
     },
     {
-      name: 'Process Name', checked: true, field: 'name'
+      name: 'Profile Name', checked: true, field: 'name'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -128,32 +128,28 @@ export class ProcessProfileComponent implements OnInit {
       hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         let value = '';
-        if (param.data.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
+        if (param.data.processMachineServingMaterialList.length > 0) {
+          param.data.processMachineServingMaterialList.map((mat, index) => {
             if (index === 0) {
-              value += material.name;
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       },
       valueGetter: (param) => {
         let value = '';
-        if (param.data.processMachineServingMaterialList[0]) {
-          // tslint:disable-next-line:max-line-length
-          param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.materialList.map((material, index) => {
+        if (param.data.processMachineServingMaterialList.length > 0) {
+          param.data.processMachineServingMaterialList.map((mat, index) => {
             if (index === 0) {
-              value += material.name;
+              value += mat.machineServingMaterial.material.name;
             } else {
-              value += ', ' + material.name;
+              value += ', ' + mat.machineServingMaterial.material.name;
             }
           });
         }
-
         return value;
       }
 

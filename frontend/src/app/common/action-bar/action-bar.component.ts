@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 declare var $: any;
@@ -17,6 +17,10 @@ export class ActionBarComponent implements OnInit {
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
+
+  isProfileScreener = false;
+  modifiedItem = { index: null, value: [] };
+
   constructor(public route: Router) {
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
