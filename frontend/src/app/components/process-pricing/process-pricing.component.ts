@@ -20,7 +20,7 @@ export class ProcessPricingComponent implements OnInit {
   @ViewChild('deleteModal') deleteModal;
 
   tableControlReady = false;
-
+  cloneData = {};
   processPricingParameterList: any = [];
   processPricingConditionListprocessDimensionalPropertyList: any = [];
 
@@ -215,7 +215,10 @@ export class ProcessPricingComponent implements OnInit {
   editRow(event) {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
-
+  async copyRow() {
+    this.processPricingService.storeCloneData(this.cloneData);
+    this.route.navigateByUrl(this.route.url + '/clone');
+  }
   async deleteRow(event) {
     this.spineer.show();
     try {
@@ -369,13 +372,15 @@ export class ProcessPricingComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           copy: (param) => {
+            this.cloneData = JSON.parse(JSON.stringify(param.data));
+            this.copyRow();
           },
           delete: async (param) => {
             this.deleteModal.nativeElement.click();
             this.selectedProfileId = param.data;
           },
           canEdit: true,
-          canCopy: false,
+          canCopy: true,
           canDelete: true,
         }
       }

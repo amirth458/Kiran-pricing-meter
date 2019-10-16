@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 declare var $: any;
 @Component({
@@ -7,7 +7,7 @@ declare var $: any;
   templateUrl: './action-bar.component.html',
   styleUrls: ['./action-bar.component.css']
 })
-export class ActionBarComponent implements OnChanges, OnInit {
+export class ActionBarComponent implements OnInit {
   @Input('menus') menus: Array<{
     name: string,
     tooltipMessage: string,
@@ -17,35 +17,29 @@ export class ActionBarComponent implements OnChanges, OnInit {
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
-  constructor(public route: Router) { }
+  constructor(public route: Router) {
+    route.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const routeArray = this.route.url.split('/');
+        this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
+        if (routeArray.length > 2) {
+          if (this.menus) {
+            this.menus.map((x, index) => {
+              if (x.route === routeArray[3]) {
+                this.activeTabIndex = index;
+                this.selectedTab = x.name;
+              }
+            });
+          }
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     $(() => {
       $('[data-toggle="tooltip"]').tooltip();
     });
-    const routeArray = this.route.url.split('/');
-    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
-    if (routeArray.length > 2) {
-      this.menus.map((x, index) => {
-        if (x.route === routeArray[3]) {
-          this.activeTabIndex = index;
-          this.selectedTab = x.name;
-        }
-      });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    const routeArray = this.route.url.split('/');
-    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
-    if (routeArray.length > 2) {
-      this.menus.map((x, index) => {
-        if (x.route === routeArray[3]) {
-          this.activeTabIndex = index;
-          this.selectedTab = x.name;
-        }
-      });
-    }
   }
 
   selectTab(tab) {

@@ -37,4 +37,12 @@ export class ProcessPricingService {
       }
     });
   }
+
+  storeCloneData(cloneData: any) {
+    localStorage.setItem('processPriceCloneData', JSON.stringify(cloneData));
+  }
+
+  getCloneData(): any {
+    return JSON.parse(localStorage.getItem('processPriceCloneData'));
+  }
 }
