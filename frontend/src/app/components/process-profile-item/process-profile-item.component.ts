@@ -154,8 +154,11 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     }
 
     if (this.route.url.includes('edit')) {
+      this.spinner.show();
       this.isNew = false;
-      const processProfile = this.processProfileService.getCloneData();
+      this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+      // tslint:disable-next-line:max-line-length
+      const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
       this.initForm(processProfile);
       this.materialChanged(true);
       this.spinner.hide();
