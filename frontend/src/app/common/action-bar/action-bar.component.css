@@ -19,12 +19,15 @@ ul {
 
 ul li {
   display: inline-flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  font-size: 19px;
+  min-width: 150px;
+  font-size: 25px;
+  font-weight: bold;
   padding-left: 10px;
   margin-right: 47px;
   height: 100%;
+  color: var(--theme-action-bar-color);
   border-left: 6px solid rgba(9, 40, 70, .36);
   user-select: none;
 }
@@ -66,7 +69,7 @@ ul li .name:hover {
 }
 
 .action-button span {
-  margin-left: 10px;
+  margin-left: 0px;
 }
 
 

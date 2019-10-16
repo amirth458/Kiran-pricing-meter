@@ -63,7 +63,9 @@ a:hover {
 }
 
 #sidebar.active ul li .menu-text {
-  font-size: 12px
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: -0.4px;
 }
 
 #sidebar ul li.active>a,

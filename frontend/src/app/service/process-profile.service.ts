@@ -37,4 +37,12 @@ export class ProcessProfileService {
       }
     });
   }
+
+  storeCloneData(cloneData: any) {
+    localStorage.setItem('processProfileCloneData', JSON.stringify(cloneData));
+  }
+
+  getCloneData(): any {
+    return JSON.parse(localStorage.getItem('processProfileCloneData'));
+  }
 }

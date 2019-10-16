@@ -47,13 +47,6 @@ export class ProcessProfileComponent implements OnInit {
       }
     },
     {
-      name: 'Profile Nickname', checked: false,
-      field: 'parameterNickName', query: {
-        type: '',
-        filter: '',
-      }
-    },
-    {
       name: 'Equipment', checked: false,
       field: 'equipment', query: {
         type: '',
@@ -63,6 +56,13 @@ export class ProcessProfileComponent implements OnInit {
     {
       name: 'Materials', checked: false,
       field: 'materials', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
+      name: 'Parameter Nickname', checked: false,
+      field: 'parameterNickName', query: {
         type: '',
         filter: '',
       }
@@ -84,13 +84,13 @@ export class ProcessProfileComponent implements OnInit {
       name: 'Profile Name', checked: true, field: 'name'
     },
     {
-      name: 'Profile Nickname', checked: true, field: 'parameterNickName'
-    },
-    {
       name: 'Equipment', checked: true, field: 'equipment'
     },
     {
       name: 'Materials', checked: true, field: 'materials'
+    },
+    {
+      name: 'Parameter Nickname', checked: true, field: 'parameterNickName'
     },
     {
       name: 'Process Type', checked: true, field: 'processProfileType.name'
@@ -105,10 +105,9 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false },
-    { headerName: 'Profile Name', field: 'name', hide: false, sortable: true, filter: false },
-    { headerName: 'Profile Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
-    // tslint:disabProfile-next-line:max-line-length
+    { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
+    // tslint:disable-next-line:max-line-length
     {
       headerName: 'Equipment', field: 'equipment',
       hide: false, sortable: true, filter: false,
@@ -155,6 +154,7 @@ export class ProcessProfileComponent implements OnInit {
       }
 
     },
+    { headerName: 'Parameter Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {
       headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
@@ -216,7 +216,7 @@ export class ProcessProfileComponent implements OnInit {
     }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
-      if (toastInfo.type == 'success') {
+      if (toastInfo.type === 'success') {
         this.toastr.success(toastInfo.body);
       } else {
         this.toastr.error(toastInfo.body);
@@ -244,22 +244,8 @@ export class ProcessProfileComponent implements OnInit {
   }
 
   async copyRow() {
-    this.spineer.show();
-    const postData = {
-      ...this.cloneData,
-      name: this.newProfileName || 'Process Profile - ' + this.getRandomString(7),
-    };
-    // tslint:disable-next-line:max-line-length
-    const res = await this.processService.saveProfile(this.userService.getVendorInfo().id, postData).toPromise();
-    const startIndex = this.rowData.indexOf(this.cloneData);
-    const frontSlice = this.rowData.slice(0, startIndex + 1);
-    const endSlice = this.rowData.slice(startIndex + 1);
-    // this.rowData = frontSlice.concat([{ ...this.cloneData, name: this.cloneData.name + ' - COPY', id: '-' }].concat(endSlice));
-    this.rowData = frontSlice.concat([res].concat(endSlice));
-    this.gridOptions.api.setRowData(this.rowData);
-    this.spineer.hide();
-    this.copyModal.nativeElement.click();
-
+    this.processService.storeCloneData(this.cloneData);
+    this.route.navigateByUrl(this.route.url + '/clone');
   }
 
   async deleteProfile() {
@@ -494,8 +480,9 @@ export class ProcessProfileComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           copy: (param) => {
-            this.copyModal.nativeElement.click();
-            this.cloneData = param.data;
+            // this.copyModal.nativeElement.click();
+            this.cloneData = JSON.parse(JSON.stringify(param.data));
+            this.copyRow();
           },
           delete: async (param) => {
             this.deleteModal.nativeElement.click();

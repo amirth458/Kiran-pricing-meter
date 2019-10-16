@@ -13,17 +13,15 @@
     <h6>Profile Screener</h6>
   </div>
   <div class="action-button"
-    *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') )">
-    <ng-container *ngFor="let item of menus[activeTabIndex].actions">
-      <button type="button" class="btn btn-add theme" [class.pricing-screener]="item.name == 'Profile Screener'"
-        (click)="addButton(item.route)">
-        {{item.name}}
-      </button>
-    </ng-container>
+    *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') && !route.url.includes('clone') )">
+    <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn btn-primary theme"
+      (click)="addButton(item.route)">
+      {{item.name}}
+    </button>
   </div>
 
   <div class="action-button"
-    *ngIf="menus[activeTabIndex].actions.length && ( route.url.includes('add') || route.url.includes('edit') )">
+    *ngIf="menus[activeTabIndex].actions.length && ( route.url.includes('add') || route.url.includes('edit') || route.url.includes('clone') )">
     <button type="button" class="btn btn-add theme white" (click)="backButton()">
       <i class="fas fa-chevron-left"></i>
       <span>

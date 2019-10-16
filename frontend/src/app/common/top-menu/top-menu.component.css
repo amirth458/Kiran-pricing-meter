@@ -68,9 +68,12 @@
   color: white;
   font-weight: normal;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
-
+.menu-icon {
+  margin-top: 5px;
+  color: var(--theme-light-green);
+}
 .dropdown .dropdown-menu .dropdown-item:hover {
   background: rgba(255, 255, 255, 0.336);
   /* color: var(--theme-dark-blue); */

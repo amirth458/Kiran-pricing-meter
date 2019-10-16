@@ -18,6 +18,16 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./machine-item.component.css']
 })
 export class MachineItemComponent implements OnInit, AfterViewChecked {
+  constructor(
+    public route: Router,
+    public fb: FormBuilder,
+    public spinner: NgxSpinnerService,
+    public machineService: MachineService,
+    public materialService: MaterialService,
+    public equipmentService: EquipmentService,
+    public facilityService: FacilityService,
+    public userService: UserService,
+    private toastr: ToastrService) { }
 
   facilities = [];
   equipments = [{ id: '', name: 'more than 2 characters to start search' }];
@@ -28,9 +38,18 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
   isMaterialLoading = false;
   isEquipmentLoading = false;
-
+  equipmentList = [];
   error = '';
-
+  units = [];
+  selectedUnits = [];
+  featureTypes = [];
+  featureShow = false;
+  allowedFeatureList = [
+    'Injection Molding',
+    '3D Printing',
+    'CNC Machining',
+    'Casting',
+  ];
   @ViewChild('materialInput') materialInput;
   @ViewChild('equipmentInput') equipmentInput;
 
@@ -45,27 +64,32 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     vendorFacility: ['', Validators.required]
   });
   machineId = null;
-  constructor(
-    public route: Router,
-    public fb: FormBuilder,
-    public spinner: NgxSpinnerService,
-    public machineService: MachineService,
-    public materialService: MaterialService,
-    public equipmentService: EquipmentService,
-    public facilityService: FacilityService,
-    public userService: UserService,
-    private toastr: ToastrService) { }
+  measureTypeId = '';
 
   async ngOnInit() {
     this.spinner.show();
     try {
       await this.getFacilities();
+      const response = await this.machineService.getUnits().toPromise();
+      this.units = response.metadataList;
       if (this.route.url.includes('edit')) {
         this.isNew = false;
         this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
         this.machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, this.machineId).toPromise();
         this.materials = this.machine.machineServingMaterialList.map(x => x.material);
         this.equipments = [this.machine.equipment];
+        const equipment: any = this.equipments[0];
+        const processTypeId = equipment.processFamily.processType.id;
+        this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
+
+        if (this.featureTypes.length > 0) {
+          this.featureShow = true;
+          this.equipmentList = this.machine.vendorMachineryEquipmentFeatureList;
+        } else {
+          this.featureShow = false;
+          this.equipmentList = [];
+        }
+
         this.initForm(this.machine);
       }
       this.spinner.hide();
@@ -175,11 +199,24 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  async clearStoreEquipment() {
+    const equipmentId = this.form.value.equipment;
+    const equipment: any = this.equipments.find(equip => equip.id === equipmentId);
+    const processTypeId = equipment.processFamily.processType.id;
+    this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
+    console.log(this.featureTypes);
+    if (this.featureTypes.length > 0) {
+      this.featureShow = true;
+      this.equipmentList = [];
+    } else {
+      this.featureShow = false;
+      this.equipmentList = [];
+    }
+    this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
+  }
+
   clearStore() {
     this.materials = [{ id: '', name: 'more than 2 characters to start search' }];
-    this.equipments = [{ id: '', name: 'more than 2 characters to start search' }];
-    // this.materials = [];
-    // this.equipments = [];
   }
 
   async onMaterialSearch(event) {
@@ -234,8 +271,8 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
       updatedDate: '',
       createdBy: '',
       createdDate: '',
+      vendorMachineryEquipmentFeatureList: this.equipmentList,
     };
-
     postData.updatedDate = new Date().toString();
     if (this.isNew) {
       postData.createdBy = String(this.userService.getVendorInfo().id);
@@ -246,9 +283,58 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     return postData;
   }
 
+  addEquipment(event) {
+    this.equipmentList.push(
+      {
+        id: '',
+        equipmentFeatureType: {
+          id: '',
+          measurementType: {
+            id: '',
+          }
+        },
+        unitType: {
+          id: ''
+        },
+        value: '',
+      }
+    );
+  }
+
+  onChangeFeatureType(event, index) {
+    const featureType = $(event.target).val();
+    if ( featureType === '') {
+      this.equipmentList[index].equipmentFeatureType.measurementType.id = '';
+    } else {
+      const feature = this.featureTypes.find(item => item.id === Number(featureType));
+      this.equipmentList[index].equipmentFeatureType.measurementType.id = feature.measurementType.id;
+    }
+  }
+
+  getFeatureUnits(equipmentFeatureType) {
+    const measurementTypeId = equipmentFeatureType.measurementType.id;
+    return this.units.filter(item => item.measurementType.id === measurementTypeId);
+  }
+
+  removeFeature(index) {
+    const frontSlice = this.equipmentList.slice(0, index);
+    const endSlice = this.equipmentList.slice(index + 1);
+    this.equipmentList = frontSlice.concat(endSlice);
+  }
+
   async save(event) {
     event.preventDefault();
     if (this.form.valid) {
+      if (this.equipmentList.length > 0) {
+        const errors = this.equipmentList.map(equip => {
+          return equip.equipmentFeatureType.id !== '' &&
+            equip.unitType.id !== '' &&
+            equip.value !== '';
+        });
+        if ( errors.filter(error => error === false).length > 0) {
+          return;
+        }
+      }
       this.error = '';
       const postData = this.prepareData();
       const vendorId = this.userService.getVendorInfo().id;
@@ -282,6 +368,5 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
       }
     }
-
   }
 }

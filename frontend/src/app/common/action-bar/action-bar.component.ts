@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 declare var $: any;
@@ -7,7 +7,7 @@ declare var $: any;
   templateUrl: './action-bar.component.html',
   styleUrls: ['./action-bar.component.css']
 })
-export class ActionBarComponent implements OnChanges, OnInit {
+export class ActionBarComponent implements OnInit {
   @Input('menus') menus: Array<{
     name: string,
     tooltipMessage: string,
@@ -17,68 +17,33 @@ export class ActionBarComponent implements OnChanges, OnInit {
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
+
   isProfileScreener = false;
   modifiedItem = { index: null, value: [] };
-  constructor(public route: Router) { }
+
+  constructor(public route: Router) {
+    route.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const routeArray = this.route.url.split('/');
+        this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
+        if (routeArray.length > 2) {
+          if (this.menus) {
+            this.menus.map((x, index) => {
+              if (x.route === routeArray[3]) {
+                this.activeTabIndex = index;
+                this.selectedTab = x.name;
+              }
+            });
+          }
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     $(() => {
       $('[data-toggle="tooltip"]').tooltip();
     });
-    const routeArray = this.route.url.split('/');
-    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
-    if (routeArray.length > 2) {
-      this.menus.map((x, index) => {
-        if (x.route === routeArray[3]) {
-          this.activeTabIndex = index;
-          this.selectedTab = x.name;
-        }
-      });
-    }
-
-    if (routeArray.includes('profile-screener')) {
-      this.isProfileScreener = true;
-      this.menus.map((menu, index) => {
-        if (menu.name == this.selectedTab) {
-          this.menus[index].actions = [{ name: 'Process', route: 'process' }]
-        }
-      });
-    }
-
-    this.route.events.subscribe(e => {
-
-      if (e instanceof NavigationEnd) {
-        if (e.url.includes('profile-screener')) {
-          this.isProfileScreener = true;
-          this.menus.map((menu, index) => {
-            if (menu.name == this.selectedTab) {
-              this.modifiedItem.index = index;
-              this.modifiedItem.value = this.menus[index].actions;
-              this.menus[index].actions = [{ name: 'Process', route: 'process' }]
-            }
-          });
-        } else {
-          this.isProfileScreener = false;
-          if (this.modifiedItem.index !== null) {
-            this.menus[this.modifiedItem.index].actions = this.modifiedItem.value;
-          }
-        }
-      }
-    });
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    const routeArray = this.route.url.split('/');
-    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
-    if (routeArray.length > 2) {
-      this.menus.map((x, index) => {
-        if (x.route === routeArray[3]) {
-          this.activeTabIndex = index;
-          this.selectedTab = x.name;
-        }
-      });
-    }
   }
 
   selectTab(tab) {

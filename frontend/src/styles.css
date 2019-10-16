@@ -20,11 +20,14 @@
   --theme-error-color: #dc3545;
   --theme-orange: #EF773F;
   --theme-btn-primary: #74BF09;
-  --theme-btn-hover: #64A506;
+  --theme-btn-hover: #558B09;
+  --theme-action-bar-color: #46637E;
+  --theme-btn-back-color: #f8fdf0;
+  --theme-btn-back-hover-color: #FFFFFF;
 }
 
 * {
-  font-family: 'Heebo', sans-serif;
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
 .bg-dark-blue {
@@ -50,8 +53,8 @@ a.link {
 }
 
 .form-group.theme label {
-  color: var(--theme-secondary-blue-solid);
-  font-weight: 500;
+  color: var(--theme-action-bar-color)!important; 
+  font-weight: bold;
 }
 
 .form-group.theme input,
@@ -108,9 +111,15 @@ button.theme.dim {
 
 button.theme.white,
 button.theme.pricing-screener {
-  background: white;
-  color: var(--theme-secondary-blue);
-  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+  font-size: 22px;
+  background: var(--theme-btn-back-color);
+  color: var(--theme-light-green);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .16) !important;
+  width: 166px;
+}
+
+button.theme.white span {
+  font-size: 22px;
 }
 
 button.theme.pricing-screener {
@@ -133,8 +142,8 @@ button.theme.dim:hover {
 }
 
 button.theme.white:hover {
-  color: var(--theme-dark-blue);
-  background: unset;
+  color: var(--theme-light-green);
+  background: var(--theme-btn-back-hover-color);
 }
 
 button.theme.theme-reverse {
@@ -385,7 +394,7 @@ app-dropdown-cell-renderer {
 }
 
 .upload-section {
-  width: 155px;
+  width: 165px;
 }
 
 .uploaded_files {

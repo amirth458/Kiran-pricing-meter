@@ -3,12 +3,11 @@
   <div class="container">
 
     <div class="row tabs" *ngIf="showBothTab">
-      <div *ngIf="activeTab == 'search' || showBothTab" class="col" (click)="toggleTab('search')"
-        [class.active]="activeTab == 'search'"><i class="fas fa-filter"></i></div>
-      <div *ngIf="activeTab == 'filter' || showBothTab" class="col" (click)="toggleTab('filter')"
-        [class.active]="activeTab == 'filter'"><i class="fas fa-columns"></i></div>
+      <div *ngIf="activeTab === 'search' || showBothTab" class="col" (click)="toggleTab('search')"
+        [class.active]="activeTab === 'search'"><i class="fas fa-filter"></i></div>
+      <div *ngIf="activeTab === 'filter' || showBothTab" class="col" (click)="toggleTab('filter')"
+        [class.active]="activeTab === 'filter'"><i class="fas fa-columns"></i></div>
     </div>
-
     <!-- Column Filter -->
     <div class="filter" [class.d-none]="activeTab != 'filter'">
       <div class="form-row input">
@@ -44,9 +43,12 @@
     </div>
 
     <!-- Search -->
+<<<<<<< HEAD
+    <div class="search" *ngIf="activeTab === 'search'">
+=======
     <div class="search" [class.d-none]="activeTab != 'search'">
+>>>>>>> master
       <div class="form-row input">
-
         <div class="form-group theme col">
           <input required type="text" class="form-control shadow" id="search_query1" name="search_query1"
             placeholder="Search" (keyup)="search($event, 'search')">

@@ -79,9 +79,11 @@ const routes: Routes = [
               { path: 'profile', component: ProcessProfileComponent },
               { path: 'profile/profile-screener', component: ProfileScreenerComponent },
               { path: 'profile/add', component: ProcessProfileItemComponent },
+              { path: 'profile/clone', component: ProcessProfileItemComponent },
               { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
               { path: 'pricing', component: ProcessPricingComponent },
               { path: 'pricing/add', component: ProcessPricingItemComponent },
+              { path: 'pricing/clone', component: ProcessPricingItemComponent },
               { path: 'pricing/edit/:id', component: ProcessPricingItemComponent },
               { path: '', redirectTo: 'profile', pathMatch: 'full' },
               { path: '**', redirectTo: 'profile', pathMatch: 'full' }

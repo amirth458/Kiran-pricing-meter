@@ -154,14 +154,19 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     }
 
     if (this.route.url.includes('edit')) {
-      this.spinner.show();
       this.isNew = false;
-      this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // tslint:disable-next-line:max-line-length
-      const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
+      const processProfile = this.processProfileService.getCloneData();
       this.initForm(processProfile);
       this.materialChanged(true);
       this.spinner.hide();
+    }
+
+    if (this.route.url.includes('clone')) {
+      this.isNew = true;
+      const processProfile = this.processProfileService.getCloneData();
+      processProfile.id = 0;
+      this.initForm(processProfile);
+      this.materialChanged(true);
     }
   }
 
@@ -381,10 +386,10 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         this.selectedProcessDimensionalPropertyList[index].unitType.id = '';
       }
 
-      if (operandTypeName == 'absolute') {
-        signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+      if (operandTypeName === 'absolute') {
+        signTypeId = this.signTypes.filter(x => x.name === 'absolute')[0].id;
       } else {
-        signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+        signTypeId = this.signTypes.filter(x => x.name === 'positive')[0].id;
       }
       this.selectedProcessDimensionalPropertyList[index].valueSignType = {
         id: signTypeId
@@ -404,10 +409,10 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         this.selectedProcessMaterialCharacteristicList[index].unitType.id = '';
       }
 
-      if (operandTypeName == 'absolute') {
-        signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+      if (operandTypeName === 'absolute') {
+        signTypeId = this.signTypes.filter(x => x.name === 'absolute')[0].id;
       } else {
-        signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+        signTypeId = this.signTypes.filter(x => x.name === 'positive')[0].id;
       }
       this.selectedProcessMaterialCharacteristicList[index].valueSignType = {
         id: signTypeId
@@ -556,7 +561,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       while (true) {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
         const res = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
-        if (!res.content || res.content.length == 0) {
+        if (!res.content || res.content.length === 0) {
           break;
         }
         rows.push(...res.content);
@@ -575,7 +580,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.form.setValue({ ...this.form.value, materialList: [] });
     this.materials = [];
     this.equipments.map(x => {
-      if (x.id == equipmentId) {
+      if (Number(x.id) === Number(equipmentId)) {
         this.materials = [{ id: 'all-materials', material: { name: 'All Materials' } }, ...x.machineServingMaterialList];
         this.filteredProcessParameterList = this.processParameterList.filter(item => item.processType.name == x.equipment.processTypeName);
       }
@@ -586,7 +591,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     const materialList = this.form.value.materialList;
     if (materialList.length) {
 
-      if (editScreen && materialList.length == this.materials.length - 1) {
+      if (editScreen && materialList.length === this.materials.length - 1) {
         this.form.setValue({
           ...this.form.value,
           materialList: ['all-materials']
@@ -670,9 +675,13 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   prepareData() {
+    let name = this.equipmentName + ' - ' + this.materialName;
+    if ( this.form.value.parameterNickName.length > 0) {
+      name += '-' + this.form.value.parameterNickName;
+    }
     const postData = {
       parameterNickName: this.form.value.parameterNickName,
-      name: this.equipmentName + ' - ' + this.materialName,
+      name,
       processMachineServingMaterialList: [...this.getProperMaterialList()],
       // machineServingMaterial: { id: this.form.value.materialList },
       processParameterList: [...this.selectedProcessParameterList],

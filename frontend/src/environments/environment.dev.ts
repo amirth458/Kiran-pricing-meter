@@ -20,7 +20,7 @@ export const environment = {
       active: true
     },
     {
-      name: 'Fleet Control',
+      name: 'Fleet Management',
       route: '/fleet',
       icon: 'fas fa-wrench',
       visible: true,

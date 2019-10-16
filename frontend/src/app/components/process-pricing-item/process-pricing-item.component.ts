@@ -186,7 +186,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       // this.pricingParameterGroup = pricingParameterGroup.metadataList;
       this.setColumnDefs();
       this.setGridOptions();
-
       this.isDataLoaded = true;
 
     } catch (e) {
@@ -194,13 +193,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     } finally {
 
       this.spinner.hide();
-
-
-
     }
     if (this.route.url.includes('edit')) {
-      this.isNew = false;
-      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
       // Make API request
       this.isNew = false;
       this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
@@ -209,6 +203,17 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       this.initForm(processProfile);
       this.processProfileChanged();
       this.spinner.hide();
+    }
+
+    if (this.route.url.includes('clone')) {
+      this.isNew = true;
+      // tslint:disable-next-line:max-line-length
+      const processProfile = this.processPricingService.getCloneData();
+      // processProfile.id = 0;
+      setTimeout(() => {
+        this.initForm(processProfile);
+        this.processProfileChanged();
+      }, 100);
     }
   }
 
@@ -234,21 +239,21 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         row.unitType.id &&
         row.value
       ) {
-        const parameter = this.conditionTypes.filter(item => item.id == row.processPricingConditionType.id)[0];
+        const parameter = this.conditionTypes.filter(item => item.id === row.processPricingConditionType.id)[0];
         const parameterName = parameter.name;
-        const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0];
-        const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
+        const operator = row.operandTypeList.filter(operand => operand.id === row.operatorType.id)[0];
+        const unit = row.units.filter(unitItem => unitItem.id === row.unitType.id)[0];
         if (parameter && unit && operator) {
           const operatorSymbol = operator.symbol;
 
           if (name.length > 1) {
-            if (operatorSymbol == '=') {
+            if (operatorSymbol === '=') {
               name += ', ' + row.value + ' ' + unit.displayName + ' ' + parameterName;
             } else {
               name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
             }
           } else {
-            if (operatorSymbol == '=') {
+            if (operatorSymbol === '=') {
               name += row.value + ' ' + unit.displayName + ' ' + parameterName;
             } else {
               name += operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
@@ -264,22 +269,22 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   onPropertyChange(conditionId, index) {
     let signTypeId = null;
 
-    const operand = this.conditionTypes.filter(condition => condition.id == conditionId)[0];
+    const operand = this.conditionTypes.filter(condition => condition.id === conditionId)[0];
     const operandTypeName = operand ? operand.operandType.name : null;
     const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
     this.selectedPricingConditionList[index].operandTypeList = options;
     // tslint:disable-next-line:max-line-length
-    this.selectedPricingConditionList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
+    this.selectedPricingConditionList[index].units = operand ? this.units.filter(unit => unit.measurementType.id === operand.measurementType.id) : [];
     // tslint:disable-next-line:max-line-length
-    const isSelectedUnitValid = this.selectedPricingConditionList[index].units.filter(u => u.id == this.selectedPricingConditionList[index].unitType.id).length > 0;
+    const isSelectedUnitValid = this.selectedPricingConditionList[index].units.filter(u => u.id === this.selectedPricingConditionList[index].unitType.id).length > 0;
     if (!isSelectedUnitValid) {
       this.selectedPricingConditionList[index].unitType.id = '';
     }
 
-    if (operandTypeName == 'absolute') {
-      signTypeId = this.signTypes.filter(x => x.name == 'absolute')[0].id;
+    if (operandTypeName === 'absolute') {
+      signTypeId = this.signTypes.filter(x => x.name === 'absolute')[0].id;
     } else {
-      signTypeId = this.signTypes.filter(x => x.name == 'positive')[0].id;
+      signTypeId = this.signTypes.filter(x => x.name === 'positive')[0].id;
     }
     this.selectedPricingConditionList[index].valueSignType = {
       id: signTypeId
@@ -289,10 +294,11 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   }
 
   processProfileChanged() {
-    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id == this.form.value.processProfileId)[0];
+    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id === this.form.value.processProfileId)[0];
     // tslint:disable-next-line:max-line-length
     const processTypeId = selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id;
-    this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id == processTypeId);
+    this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id === processTypeId);
+
     const temp = this.getRowData('variableCharges').map(row => new Object({
       ...row
     }));
@@ -304,7 +310,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     let flatChargesFound = 0;
     let variableChargesFound = 0;
     let multiplierChargesFound = 0;
-
     this.form.setValue({
       id: pricingProfile.id,
       pricingProfileName: pricingProfile.name,
@@ -312,6 +317,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       processPricingConditionList: pricingProfile.processPricingConditionList,
       processPricingParameterList: pricingProfile.processPricingParameterList,
     });
+
     this.selectedPricingConditionList = [];
     pricingProfile.processPricingConditionList.map((condition, index) => {
       this.selectedPricingConditionList.push({
