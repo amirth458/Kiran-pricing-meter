@@ -1,25 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
-import { GridOptions } from 'ag-grid-community';
-
-import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { GridOptions } from 'ag-grid-community';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FilterOption } from 'src/app/model/vendor.model';
-import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { UserService } from 'src/app/service/user.service';
+import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-process-profile',
-  templateUrl: './process-profile.component.html',
-  styleUrls: ['./process-profile.component.css']
+  selector: 'app-profile-screener-estimator',
+  templateUrl: './profile-screener-estimator.component.html',
+  styleUrls: ['./profile-screener-estimator.component.css']
 })
-export class ProcessProfileComponent implements OnInit {
+export class ProfileScreenerEstimatorComponent implements OnInit {
 
   @ViewChild('copyModal') copyModal;
-  @ViewChild('deleteModal') deleteModal;
+
 
   newProfileName = '';
   cloneData;
@@ -105,7 +102,7 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Profile No', field: 'id', hide: false, sortable: true, filter: false },
     { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
@@ -177,6 +174,7 @@ export class ProcessProfileComponent implements OnInit {
   pageSize = 10;
 
   navigation;
+  highlightedRows = [192, 2];
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,
@@ -196,7 +194,6 @@ export class ProcessProfileComponent implements OnInit {
     await this.getProfiles();
     this.createColumns();
 
-    this.tableControlReady = true;
 
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
@@ -209,19 +206,15 @@ export class ProcessProfileComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35
+      headerHeight: 35,
+      rowSelection: 'multiple'
     };
+    this.tableControlReady = true;
+    this.spineer.hide();
+
     setTimeout(() => {
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
-    if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
-      const toastInfo = this.navigation.extras.state.toast;
-      if (toastInfo.type === 'success') {
-        this.toastr.success(toastInfo.body);
-      } else {
-        this.toastr.error(toastInfo.body);
-      }
-    }
   }
 
   configureColumnDefs() {
@@ -239,6 +232,16 @@ export class ProcessProfileComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
+  onGridReady(event) {
+    this.gridOptions.api.forEachNode(node => {
+      const data = node.data;
+      if (this.highlightedRows.includes(data.id)) {
+        node.selectThisNode(true);
+      }
+
+    });
+  }
+
   editRow(event) {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
   }
@@ -246,23 +249,6 @@ export class ProcessProfileComponent implements OnInit {
   async copyRow() {
     this.processService.storeCloneData(this.cloneData);
     this.route.navigateByUrl(this.route.url + '/clone');
-  }
-
-  async deleteProfile() {
-    this.spineer.show();
-    try {
-      await this.processService.deleteProfile(this.userService.getVendorInfo().id, this.selectedProfile.id).toPromise();
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.spineer.hide();
-    }
-
-    // tslint:disable-next-line:triple-equals
-    const filteredData = this.rowData.filter(x => x.id != this.selectedProfile.id);
-    this.rowData = filteredData;
-    this.deleteModal.nativeElement.click();
-
   }
 
   searchColumnsChange(event) {
@@ -297,10 +283,8 @@ export class ProcessProfileComponent implements OnInit {
       this.rowData = res || [];
     } catch (e) {
       console.log(e);
-    } finally {
       this.spineer.hide();
     }
-
   }
 
   async getMetaColumns() {
@@ -480,17 +464,16 @@ export class ProcessProfileComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           copy: (param) => {
-            // this.copyModal.nativeElement.click();
-            this.cloneData = JSON.parse(JSON.stringify(param.data));
-            this.copyRow();
           },
           delete: async (param) => {
-            this.deleteModal.nativeElement.click();
-            this.selectedProfile = param.data;
           },
-          canEdit: true,
-          canCopy: true,
-          canDelete: true,
+          view: async (param) => {
+            window.alert('view');
+          },
+          canEdit: false,
+          canCopy: false,
+          canDelete: false,
+          canView: true,
         }
       }
     });

@@ -239,10 +239,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         row.unitType.id &&
         row.value
       ) {
-        const parameter = this.conditionTypes.filter(item => item.id === row.processPricingConditionType.id)[0];
+        const parameter = this.conditionTypes.filter(item => item.id == row.processPricingConditionType.id)[0];
         const parameterName = parameter.name;
-        const operator = row.operandTypeList.filter(operand => operand.id === row.operatorType.id)[0];
-        const unit = row.units.filter(unitItem => unitItem.id === row.unitType.id)[0];
+        const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0];
+        const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
         if (parameter && unit && operator) {
           const operatorSymbol = operator.symbol;
 
@@ -269,14 +269,14 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   onPropertyChange(conditionId, index) {
     let signTypeId = null;
 
-    const operand = this.conditionTypes.filter(condition => condition.id === conditionId)[0];
+    const operand = this.conditionTypes.filter(condition => condition.id == conditionId)[0];
     const operandTypeName = operand ? operand.operandType.name : null;
     const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
     this.selectedPricingConditionList[index].operandTypeList = options;
     // tslint:disable-next-line:max-line-length
-    this.selectedPricingConditionList[index].units = operand ? this.units.filter(unit => unit.measurementType.id === operand.measurementType.id) : [];
+    this.selectedPricingConditionList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
     // tslint:disable-next-line:max-line-length
-    const isSelectedUnitValid = this.selectedPricingConditionList[index].units.filter(u => u.id === this.selectedPricingConditionList[index].unitType.id).length > 0;
+    const isSelectedUnitValid = this.selectedPricingConditionList[index].units.filter(u => u.id == this.selectedPricingConditionList[index].unitType.id).length > 0;
     if (!isSelectedUnitValid) {
       this.selectedPricingConditionList[index].unitType.id = '';
     }
@@ -294,10 +294,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   }
 
   processProfileChanged() {
-    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id === Number(this.form.value.processProfileId))[0];
+    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id == this.form.value.processProfileId)[0];
     // tslint:disable-next-line:max-line-length
     const processTypeId = selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id;
-    this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id === processTypeId);
+    this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id == processTypeId);
 
     const temp = this.getRowData('variableCharges').map(row => new Object({
       ...row

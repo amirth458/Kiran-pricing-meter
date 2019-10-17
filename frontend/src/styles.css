@@ -14,6 +14,7 @@
   --theme-light-blue: #194B7C;
   --theme-grid-header: #194B7C;
   --theme-light-green: #74BF09;
+  --theme-light-green-with-opacity: rgba(115, 191, 9, 0.23);
   --theme-input-bg: rgba(196, 196, 196, .13);
   --theme-green-grey-bg: #F9FAF7;
   --theme-table-border: rgba(112, 112, 112, .39);
@@ -26,14 +27,19 @@
   --theme-btn-back-hover-color: #f8fdf0;
 }
 
-* {
-  
-}
 
 .bg-dark-blue {
   background: var(--theme-dark-blue);
   display: flex;
   color: white;
+}
+
+.text-theme {
+  color: var(--theme-light-blue);
+}
+
+.text-highlight {
+  color: var(--theme-light-green);
 }
 
 a,
@@ -53,8 +59,8 @@ a.link {
 }
 
 .form-group.theme label {
-  color: var(--theme-action-bar-color)!important; 
-  font-weight: bold;
+  color: var(--theme-action-bar-color) !important;
+  font-weight: 500;
 }
 
 .form-group.theme input,
@@ -111,7 +117,7 @@ button.theme.dim {
 
 button.theme.white,
 button.theme.pricing-screener {
-  font-size: 22px;
+  font-size: 16px;
   background: var(--theme-btn-back-color);
   color: var(--theme-light-green);
   box-shadow: 0 3px 6px rgba(0, 0, 0, .16) !important;
@@ -253,6 +259,10 @@ button.theme.theme-reverse:hover {
   font-weight: 300;
 }
 
+.theme-table .ag-theme-balham .ag-header-row .ag-header-cell-label {
+  font-weight: 500;
+}
+
 .theme-table .ag-theme-balham .ag-row {
   border-color: var(--theme-table-border);
   color: var(--theme-secondary-blue-solid)
@@ -300,12 +310,21 @@ button.theme.theme-reverse:hover {
   margin-right: 10px;
 }
 
+.theme-table .ag-theme-balham .action-column .view {
+  margin-right: 10px;
+  color: var(--theme-orange);
+}
+
 .theme-table .ag-theme-balham .action-column span:hover {
   cursor: pointer;
 }
 
 .theme-table .ag-theme-balham .action-column .delete {
   color: var(--theme-orange) !important;
+}
+
+.ag-theme-balham .ag-row-selected {
+  background-color: var(--theme-light-green-with-opacity)
 }
 
 /* End of Overriding Ag-grid style */

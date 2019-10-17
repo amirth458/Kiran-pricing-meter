@@ -29,6 +29,10 @@ export class ActionCellRendererComponent implements ICellRendererAngularComp {
   onDelete(): void {
     this.params.action.delete(this.params);
   }
+
+  onView(): void {
+    this.params.action.view(this.params);
+  }
   refresh(): boolean {
     return false;
   }
