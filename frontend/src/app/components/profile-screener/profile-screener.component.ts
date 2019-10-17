@@ -7,6 +7,7 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { MachineService } from 'src/app/service/machine.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
+import { ConnectorService } from 'src/app/service/connector.service';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -74,18 +75,23 @@ export class ProfileScreenerComponent implements OnInit {
     { name: '10 business days', value: '10' }
   ];
 
+  uploadedDocuments = [];
+  selectedDocumentIndex = -1;
+  uploading = false;
+  uploadResponse: any;
   processProfiles = [];
   activeMode = 'default';
 
   constructor(
-    public fb: FormBuilder,
+    private fb: FormBuilder,
     private vendorService: VendorService,
     private spineer: NgxSpinnerService,
-    public userService: UserService,
-    public machineService: MachineService,
-    public processMetaData: ProcessMetadataService,
-    public processProfileService: ProcessProfileService,
-    public route: Router
+    private userService: UserService,
+    private machineService: MachineService,
+    private processMetaData: ProcessMetadataService,
+    private connectorService: ConnectorService,
+    private processProfileService: ProcessProfileService,
+    private route: Router
   ) {
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
@@ -198,6 +204,48 @@ export class ProfileScreenerComponent implements OnInit {
           }
         }
       }
+    }
+  }
+
+  isSelectedDocument(): boolean {
+    let selected = false;
+    if ( this.selectedDocumentIndex === -1 || this.uploadedDocuments.length === 0) {
+      selected = false;
+    }
+    if ( this.selectedDocumentIndex >= 0 && this.uploadedDocuments.length > this.selectedDocumentIndex) {
+      selected = true;
+    }
+    return selected;
+  }
+  onOpenFile(event) {
+    // tslint:disable-next-line: deprecation
+    $('#file').click();
+  }
+
+  onRemoveFile(name) {
+    const uploadedFiles = this.uploadedDocuments.filter((item) => item.name === name);
+    if (uploadedFiles[0].saved === 3) {
+      uploadedFiles[0].saved = 0;
+    } else if (uploadedFiles[0].saved === 2) {
+      uploadedFiles[0].saved = 1;
+    } else if (uploadedFiles[0].saved === 1) {
+      uploadedFiles[0].saved = 2;
+    } else {
+      uploadedFiles[0].saved = 3;
+    }
+  }
+
+  onFileChange(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      const file = fileInput.target.files.item(0);
+      this.uploading = true;
+      this.connectorService.fileUploadForProcessScreener(file).subscribe(data => {
+        this.uploadResponse = data;
+        // do something, if upload success
+        console.log(data);
+      }, error => {
+        console.log(error);
+      });
     }
   }
 

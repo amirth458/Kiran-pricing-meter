@@ -32,23 +32,36 @@
 
 
       <div class="upload text-theme">
-        <p>Please, select the file</p>
+        <label>Please, select the file</label>
         <button type="file" class="btn btn-add theme white back">
           Upload a Reference File
         </button>
-        <ul>
-          <li><span>Brake rotor no logo.step </span> <i class="fas fa-trash"></i></li>
+        <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile" 
+        accept="*" />
+        <ul class="uploaded_files"  *ngIf="vendorId > 0">
+          <li *ngFor="let item of certDocuments">
+            <a href="{{item.name}}" target="_blank">
+              <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
+              <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
+            </a>
+            <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fas fa-trash" color="red" aria-hidden="true"></i></button>
+          </li>
         </ul>
       </div>
 
       <div class="detail-info">
         <p>Detail Information</p>
         <div class="row details">
+          <div class="col-md-4 d-flex align-items-center">
+            <div *ngIf="!isSelectedDocument()" class="no-image">
+              No Photo
+            </div>
+            <img *ngIf="isSelectedDocument()" [src]="uploadImage" height="200px" width="200px" alt="">
           <div class="col-md-4 d-flex align-items-center" (click)="toggleModal()">
             <img [src]="uploadImage" height="200px" width="200px" alt="">
           </div>
 
-          <div class="col-md-8 d-flex flex-column">
+          <div class="col-md-8 d-flex flex-column" *ngIf="isSelectedDocument() && !uploading">
             <span class="title">Demo 1</span>
             <span class="quantity">Quantity : 25</span>
 
@@ -162,6 +175,16 @@
               </ul>
             </div>
           </div>
+
+          <div class="col-md-8 d-flex flex-column" *ngIf="!isSelectedDocument() && !uploading">
+            <span class="title">No Information</span>
+          </div>
+          <!-- <div class="col-md-8 d-flex flex-column" *ngIf="uploading">
+            <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+              {{uploadResponse.message}}% 
+            </div>
+          </div> -->
+          
         </div>
       </div>
     </div>
