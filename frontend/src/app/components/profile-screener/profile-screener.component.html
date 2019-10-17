@@ -36,10 +36,10 @@
         <button type="file" class="btn btn-add theme white back">
           Upload a Reference File
         </button>
-        <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile" 
-        accept="*" />
-        <ul class="uploaded_files"  *ngIf="vendorId > 0">
-          <li *ngFor="let item of certDocuments">
+        <input type="file" name="file" (change)="onFileChange($event)" id="file"
+          class="inputfile" accept="*" />
+        <ul class="uploaded_files">
+          <li *ngFor="let item of uploadedDocuments">
             <a href="{{item.name}}" target="_blank">
               <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
               <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
