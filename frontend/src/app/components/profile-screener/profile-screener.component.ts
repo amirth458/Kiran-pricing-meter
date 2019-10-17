@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorService } from 'src/app/service/vendor.service';
 import { VendorMetaDataTypes } from 'src/app/mockData/vendor';
@@ -9,6 +9,8 @@ import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
+import { EventEmitterService } from '../event-emitter.service';
 
 @Component({
   selector: 'app-profile-screener',
@@ -50,13 +52,17 @@ export class ProfileScreenerComponent implements OnInit {
 
 
   form: FormGroup = this.fb.group({
-    certification: '',
-    NDA: '',
-    equipment: null,
-    materialList: [[]],
-    tolerance: null,
-    surfaceRoughness: null,
-    timeToShip: '',
+    requiredCertificateId: ['', Validators.required],
+    materialId: [null, Validators.required],
+    equipmentId: [null, Validators.required],
+    confidentialityId: ['', Validators.required],
+
+    quantity: ['', Validators.required],
+
+    deliveryStatementId: ['', Validators.required],
+    tolerance: [null, Validators.required],
+    surfaceRoughness: [null, Validators.required],
+    surfaceFinish: [null, Validators.required],
   });
 
   units = [];
@@ -67,15 +73,16 @@ export class ProfileScreenerComponent implements OnInit {
   materials = [];
   equipments = [];
   timeToShip = [
-    { name: '1 business day', value: '1' },
-    { name: '3 business days', value: '3' },
-    { name: '5 business days', value: '5' },
-    { name: '7 business days', value: '7' },
-    { name: '10 business days', value: '10' }
+    { name: '1 business day', id: '1' },
+    { name: '3 business days', id: '3' },
+    { name: '5 business days', id: '5' },
+    { name: '7 business days', id: '7' },
+    { name: '10 business days', id: '10' }
   ];
 
   processProfiles = [];
   activeMode = 'default';
+  isFormValid = false;
 
   constructor(
     public fb: FormBuilder,
@@ -85,7 +92,9 @@ export class ProfileScreenerComponent implements OnInit {
     public machineService: MachineService,
     public processMetaData: ProcessMetadataService,
     public processProfileService: ProcessProfileService,
-    public route: Router
+    public route: Router,
+    public profileScreererService: ProfileScreenerService,
+    public eventEmitterService: EventEmitterService
   ) {
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
@@ -100,6 +109,12 @@ export class ProfileScreenerComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if (this.eventEmitterService.subsVar == undefined) {
+      this.eventEmitterService.subsVar = this.eventEmitterService.
+        processScreenEvent.subscribe((name: string) => {
+          this.save();
+        });
+    }
     try {
       this.spineer.show();
       await this.getInputValues();
@@ -115,9 +130,9 @@ export class ProfileScreenerComponent implements OnInit {
 
       const units = await this.processMetaData.getMeasurementUnitType().toPromise();
       this.units = units.metadataList;
-      this.volumeUnits = this.units.filter(unit => unit.measurementType.name == 'volume');
-      this.lengthUnits = this.units.filter(unit => unit.measurementType.name == 'length');
-      this.areaUnits = this.units.filter(unit => unit.measurementType.name == 'area');
+      this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
+      this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
+      this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
 
     } catch (e) {
       console.log(e);
@@ -159,46 +174,14 @@ export class ProfileScreenerComponent implements OnInit {
 
 
   equipmentChanged() {
-    const equipmentId = this.form.value.equipment;
-    this.form.setValue({ ...this.form.value, materialList: [] });
+    const equipmentId = this.form.value.equipmentId;
+    this.form.setValue({ ...this.form.value, materialId: null });
     this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
         this.materials = [...x.machineServingMaterialList];
       }
     });
-  }
-
-  materialChanged(editScreen = false) {
-    const materialList = this.form.value.materialList;
-    if (materialList.length) {
-
-      if (editScreen && materialList.length == this.materials.length - 1) {
-        this.form.setValue({
-          ...this.form.value
-        });
-        return this.materials;
-      } else {
-        const lastInput = materialList[materialList.length - 1];
-        if (lastInput === 'all-materials') {
-          this.form.setValue({
-            ...this.form.value
-          });
-          return this.materials;
-        } else {
-          if (materialList.includes('all-materials')) {
-            const startIndex = materialList.indexOf('all-materials');
-            const frontSlice = materialList.slice(0, startIndex);
-            const endSlice = materialList.slice(startIndex + 1);
-            this.form.setValue({
-              ...this.form.value,
-              materialList: [...frontSlice, ...endSlice]
-            });
-            return [...frontSlice, ...endSlice];
-          }
-        }
-      }
-    }
   }
 
   htmlDecode(input) {
@@ -214,5 +197,38 @@ export class ProfileScreenerComponent implements OnInit {
 
   toggleModal() {
     this.infoModal.nativeElement.click();
+  }
+
+  save() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    const validation = Array.prototype.filter.call(forms, (form) => {
+
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.isFormValid = false;
+      } else {
+        this.isFormValid = true;
+      }
+      form.classList.add('was-validated');
+
+    });
+
+    console.log(this.form.value);
+    if (this.form.valid && this.isFormValid) {
+      const postData = this.form.value;
+      console.log({ postData });
+      this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
+        .subscribe(res => {
+          console.log(res);
+          alert(33)
+          // SAVE IT IN STORE
+        });
+      this.route.navigateByUrl('/profile/processes/profile/profile-screener/process');
+    } else {
+      console.log('not valid');
+    }
   }
 }

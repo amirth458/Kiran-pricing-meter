@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ContentChild, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { ProfileScreenerComponent } from 'src/app/components/profile-screener/profile-screener.component';
+import { EventEmitterService } from 'src/app/components/event-emitter.service';
 
 declare var $: any;
 @Component({
@@ -22,7 +24,10 @@ export class ActionBarComponent implements OnInit {
 
   modifiedItem = { index: null, value: [] };
 
-  constructor(public route: Router) {
+  constructor(
+    public route: Router,
+    private eventEmitterService: EventEmitterService
+  ) {
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         const routeArray = this.route.url.split('/');
@@ -113,5 +118,7 @@ export class ActionBarComponent implements OnInit {
     this.route.navigateByUrl(gotoURL);
   }
 
-
+  startProfileScreening() {
+    this.eventEmitterService.onProcessScreen();
+  }
 }
