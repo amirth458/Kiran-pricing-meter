@@ -35,6 +35,7 @@ import { ProcessProfileComponent } from './process-profile/process-profile.compo
 import { ProcessProfileItemComponent } from './process-profile-item/process-profile-item.component';
 import { ProfileScreenerComponent } from './profile-screener/profile-screener.component';
 import { ProfileScreenerEstimatorComponent } from './profile-screener-estimator/profile-screener-estimator.component';
+import { PricingEstimatorComponent } from './pricing-estimator/pricing-estimator.component';
 import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
@@ -82,6 +83,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     ProcessProfileItemComponent,
     ProfileScreenerComponent,
     ProfileScreenerEstimatorComponent,
+    PricingEstimatorComponent,
 
     ProfileContainerComponent,
     ProfileVendorContainerComponent,
@@ -150,6 +152,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     ProcessProfileItemComponent,
     ProfileScreenerComponent,
     ProfileScreenerEstimatorComponent,
+    PricingEstimatorComponent,
 
     ProfileContainerComponent,
     ProfileVendorContainerComponent,
