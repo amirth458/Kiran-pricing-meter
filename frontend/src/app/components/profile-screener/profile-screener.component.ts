@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorService } from 'src/app/service/vendor.service';
@@ -8,6 +8,8 @@ import { MachineService } from 'src/app/service/machine.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ConnectorService } from 'src/app/service/connector.service';
+import { ProcessProfileService } from 'src/app/service/process-profile.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-profile-screener',
@@ -16,6 +18,7 @@ import { ConnectorService } from 'src/app/service/connector.service';
 })
 export class ProfileScreenerComponent implements OnInit {
 
+  @ViewChild('infoModal') infoModal: ElementRef;
   error = '';
   uploadImage = '../../../assets/image/example_machine.png';
   details = {
@@ -76,18 +79,35 @@ export class ProfileScreenerComponent implements OnInit {
   selectedDocumentIndex = -1;
   uploading = false;
   uploadResponse: any;
+  processProfiles = [];
+  activeMode = 'default';
+
   constructor(
-    public fb: FormBuilder,
+    private fb: FormBuilder,
     private vendorService: VendorService,
     private spineer: NgxSpinnerService,
-    public userService: UserService,
-    public machineService: MachineService,
-    public processMetaData: ProcessMetadataService,
-    private connectorService: ConnectorService
-  ) { }
+    private userService: UserService,
+    private machineService: MachineService,
+    private processMetaData: ProcessMetadataService,
+    private connectorService: ConnectorService,
+    private processProfileService: ProcessProfileService,
+    private route: Router
+  ) {
+    route.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const routeArray = this.route.url.split('/');
+        if (routeArray.includes('pricing') && routeArray.includes('estimator')) {
+          this.activeMode = 'pricing-estimator';
+        } else {
+          this.activeMode = 'default';
+        }
+      }
+    });
+  }
 
   async ngOnInit() {
     try {
+      this.spineer.show();
       await this.getInputValues();
 
       const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
@@ -115,18 +135,27 @@ export class ProfileScreenerComponent implements OnInit {
 
   async getInputValues() {
     let page = 0;
-    const rows = [];
+    const machines = [];
+    const processProfiles = [];
     try {
       while (true) {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
-        const res = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
-        if (!res.content || res.content.length == 0) {
+        const machineRes = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
+
+        if (!machineRes.content || machineRes.content.length == 0) {
           break;
         }
-        rows.push(...res.content);
+        machines.push(...machineRes.content);
         page++;
       }
-      rows.map(machine => {
+      if (this.activeMode === 'pricing-estimator') {
+        const profileRes = await this.processProfileService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
+        this.processProfiles = profileRes.map(profile => {
+          return { ...profile, checked: false };
+        });
+      }
+
+      machines.map(machine => {
         this.equipments.push(machine);
       });
     } catch (e) {
@@ -224,5 +253,14 @@ export class ProfileScreenerComponent implements OnInit {
     const str = input;
     str.replace(/[&amp;]/g, '&#38;');
     return str;
+  }
+
+  toggleCheck(index) {
+    console.log(this.processProfiles, index);
+    this.processProfiles[index].checked = !this.processProfiles[index].checked;
+  }
+
+  toggleModal() {
+    this.infoModal.nativeElement.click();
   }
 }

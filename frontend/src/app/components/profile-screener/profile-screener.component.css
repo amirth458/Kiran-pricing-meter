@@ -35,6 +35,32 @@ table .form-control {
   font-size: 15px;
 }
 
+.profile-list {
+  width: 50%;
+}
+
+.profile-list .card {
+  height: 170px;
+  overflow-y: scroll;
+}
+
+.profile-list .icon {
+  margin-right: 10px;
+  font-size: 19px;
+  color: var(--theme-light-green);
+}
+
+.profile-list .icon:hover {
+  cursor: pointer;
+}
+
+.profile-list .column-name {
+  font-size: 13px;
+}
+
+.upload {
+  margin-top: 20px;
+}
 
 .upload button.back {
   color: var(--theme-btn-primary);
@@ -134,6 +160,21 @@ table .form-control {
   display: flex;
   height: 28px;
   width: 40%;
+}
+
+
+
+.modal .image-details ul li {
+  font-size: 13px;
+}
+
+.modal .detail-info .details {
+  border: unset !important;
+}
+
+.modal .modal-title {
+  border-left: 6px solid rgba(9, 40, 70, .36);
+  padding-left: 11px;
 }
 
 @media (max-width: 768px) {

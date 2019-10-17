@@ -18,8 +18,8 @@ export class ActionBarComponent implements OnInit {
   baseURL;
   activeTabIndex = 0;
 
-  isProfileScreener = false;
-  isProfileScreenerProfile = false;
+  activeMode = 'default';
+
   modifiedItem = { index: null, value: [] };
 
   constructor(public route: Router) {
@@ -43,17 +43,24 @@ export class ActionBarComponent implements OnInit {
           }
 
           if (routeArray.includes('profile-screener') && routeArray.includes('process')) {
-            this.isProfileScreenerProfile = true;
-            this.isProfileScreener = false;
+            this.activeMode = 'profile-screener-process';
           } else {
             if (routeArray.includes('profile-screener')) {
-              this.isProfileScreener = true;
-              this.isProfileScreenerProfile = false;
+              this.activeMode = 'profile-screener';
             } else {
-              this.isProfileScreener = false;
-              this.isProfileScreenerProfile = false;
+              this.activeMode = 'default';
             }
           }
+
+
+          if (routeArray.includes('pricing') && routeArray.includes('estimator') && routeArray.includes('process')) {
+            this.activeMode = 'pricing-estimator-process';
+            console.log('activated');
+
+          } else if (routeArray.includes('pricing') && routeArray.includes('estimator')) {
+            this.activeMode = 'pricing-estimator';
+          }
+
         }
       }
     });
@@ -93,6 +100,16 @@ export class ActionBarComponent implements OnInit {
 
   navigateToProfile() {
     const gotoURL = '/profile/processes/profile';
+    this.route.navigateByUrl(gotoURL);
+  }
+
+  navigateToPricing() {
+    const gotoURL = '/profile/processes/pricing/estimator';
+    this.route.navigateByUrl(gotoURL);
+  }
+
+  navigateToPricingEstimator() {
+    const gotoURL = '/profile/processes/pricing/estimator/process';
     this.route.navigateByUrl(gotoURL);
   }
 

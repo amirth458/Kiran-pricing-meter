@@ -11,7 +11,7 @@
   </ul>
 
   <!-- Profile Screener -->
-  <ng-container *ngIf="isProfileScreener">
+  <ng-container *ngIf="activeMode == 'profile-screener'">
     <div class="info-section">
       <h6>Profile Screener</h6>
     </div>
@@ -27,15 +27,15 @@
 
 
 
-  <!-- Profile Screener : Profile -->
+  <!-- Profile Screener : Process -->
 
-  <ng-container *ngIf="isProfileScreenerProfile">
+  <ng-container *ngIf="activeMode == 'profile-screener-process'">
     <div class="info-section profile d-flex flex-column text-theme font-italic">
       <p class="mb-0">
         <span class="font-weight-bold">3 process</span> profiles were deemed eligable for your test RFQ
       </p>
       <p class="font-weight-bold mb-0">
-        Click <span class="text-highlight">here</span> to calculate the price
+        Click <span class="text-highlight" (click)="navigateToPricingEstimator()">here</span> to calculate the price
       </p>
     </div>
 
@@ -51,16 +51,56 @@
   </ng-container>
 
 
-  <!-- End of Profile Screener : Profile  -->
+  <!-- End of Profile Screener : Process  -->
 
 
 
+  <!-- Pricing Estimator -->
+  <ng-container *ngIf="activeMode == 'pricing-estimator'">
+    <div class="info-section">
+      <h6>Pricing Estimator</h6>
+    </div>
 
-  <ng-container *ngIf="!isProfileScreener && !isProfileScreenerProfile">
+    <div class="action-button">
+      <button type="button" class="btn theme btn-primary" (click)="addButton('process')">
+        Process
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- End of Pricing Estimator -->
+
+
+
+  <!-- Pricing Estimator : Process -->
+
+  <ng-container *ngIf="activeMode == 'pricing-estimator-process'">
+    <div class="info-section profile d-flex flex-column text-theme font-italic">
+      <p class="mb-0">
+        Of your pricing profile, 4 qualified. The best price is <span class="font-weight-bold">$375</span>
+      </p>
+    </div>
+
+    <div class="action-button">
+      <button type="button" class="btn theme btn-primary" (click)="navigateToPricing()">
+        Done
+      </button>
+
+      <button type="button" class="btn theme white" (click)="navigateToPricingEstimator()">
+        Edit Pricing Estimator
+      </button>
+    </div>
+  </ng-container>
+
+
+  <!-- End of Edit Pricing Estimator : Process  -->
+
+
+  <ng-container *ngIf="activeMode == 'default'">
     <div class="action-button"
       *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') && !route.url.includes('clone') )">
       <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn theme"
-        [ngClass]="{white: item.name==='Profile Screener', 'btn-primary': item.name!=='Profile Screener'}"
+        [ngClass]="item.name==='Profile Screener' || item.name==='Pricing Estimator'?'white':'btn-primary'"
         (click)="addButton(item.route)">
         {{item.name}}
       </button>
