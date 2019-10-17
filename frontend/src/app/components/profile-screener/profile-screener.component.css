@@ -37,15 +37,19 @@ table .form-control {
 
 
 .upload button.back {
-  color: var(--theme-btn-primary);
-  width: 40%;
-  margin: 10px;
+  width: 40% !important;
+  font-size: 14px;
 }
 
 .upload button.back:hover {
   color: var(--theme-light-blue);
 }
 
+.upload label {
+  color: var(--theme-action-bar-color)!important;
+  font-weight: bold;
+  font-size: 14px;
+}
 
 .upload ul li>span {
   margin-right: 10px;
@@ -66,7 +70,7 @@ table .form-control {
 .detail-info .details {
   border: 1px solid #09284659;
   border-radius: 5px;
-  padding: 20px 0px;
+  padding: 15px 0px;
 }
 
 .detail-info .details .title {
@@ -137,4 +141,15 @@ table .form-control {
   }
 
 
+}
+
+.no-image {
+  width: 200px;
+  height: 200px;
+  background-color: var(--theme-table-border);
+  color: var(--theme-white-color);
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-size: 24px;
 }

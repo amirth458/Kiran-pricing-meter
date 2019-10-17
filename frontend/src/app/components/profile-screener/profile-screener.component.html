@@ -7,12 +7,21 @@
     <div class="col-md-7">
 
       <div class="upload">
-        <p>Please, select the file</p>
-        <button type="file" class="btn btn-add theme white back">
+        <div><label>Please, select the file</label></div>
+        <button type="file" class="btn theme white"  (click)="onOpenFile($event)" style="width: 200px">
+          <i class="fa fa-upload"></i>
           Upload a Reference File
         </button>
-        <ul>
-          <li><span>Brake rotor no logo.step </span> <i class="fas fa-trash"></i></li>
+        <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile" 
+        accept="*" />
+        <ul class="uploaded_files"  *ngIf="vendorId > 0">
+          <li *ngFor="let item of certDocuments">
+            <a href="{{item.name}}" target="_blank">
+              <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
+              <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
+            </a>
+            <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fas fa-trash" color="red" aria-hidden="true"></i></button>
+          </li>
         </ul>
       </div>
 
@@ -20,10 +29,13 @@
         <p>Detail Information</p>
         <div class="row details">
           <div class="col-md-4 d-flex align-items-center">
-            <img [src]="uploadImage" height="200px" width="200px" alt="">
+            <div *ngIf="!isSelectedDocument()" class="no-image">
+              No Photo
+            </div>
+            <img *ngIf="isSelectedDocument()" [src]="uploadImage" height="200px" width="200px" alt="">
           </div>
 
-          <div class="col-md-8 d-flex flex-column">
+          <div class="col-md-8 d-flex flex-column" *ngIf="isSelectedDocument()">
             <span class="title">Demo 1</span>
             <span class="quantity">Quantity : 25</span>
 
@@ -136,6 +148,10 @@
                 </li>
               </ul>
             </div>
+          </div>
+
+          <div class="col-md-8 d-flex flex-column" *ngIf="!isSelectedDocument()">
+            <span class="title">No Information</span>
           </div>
         </div>
       </div>

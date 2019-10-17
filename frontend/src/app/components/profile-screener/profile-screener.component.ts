@@ -71,6 +71,8 @@ export class ProfileScreenerComponent implements OnInit {
     { name: '10 business days', value: '10' }
   ];
 
+  uploadedDocuments = [];
+  selectedDocumentIndex = -1;
   constructor(
     public fb: FormBuilder,
     private vendorService: VendorService,
@@ -170,6 +172,63 @@ export class ProfileScreenerComponent implements OnInit {
         }
       }
     }
+  }
+
+  isSelectedDocument(): boolean {
+    let selected = false;
+    if ( this.selectedDocumentIndex === -1 || this.uploadedDocuments.length === 0) {
+      selected = false;
+    }
+    if ( this.selectedDocumentIndex >= 0 && this.uploadedDocuments.length > this.selectedDocumentIndex) {
+      selected = true;
+    }
+    return selected;
+  }
+  onOpenFile(event) {
+    // tslint:disable-next-line: deprecation
+    $('#file').click();
+  }
+
+  onRemoveFile(name) {
+    const uploadedFiles = this.uploadedDocuments.filter((item) => item.name === name);
+    if (uploadedFiles[0].saved === 3) {
+      uploadedFiles[0].saved = 0;
+    } else if (uploadedFiles[0].saved === 2) {
+      uploadedFiles[0].saved = 1;
+    } else if (uploadedFiles[0].saved === 1) {
+      uploadedFiles[0].saved = 2;
+    } else {
+      uploadedFiles[0].saved = 3;
+    }
+  }
+
+  onFileChange(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      const file = fileInput.target.files[0];
+      this.upload(file);
+    }
+  }
+
+  upload = (file) => {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        // const userId = this.userService.getUserInfo().id;
+        // const s3KeyFile = `u/${userId}/v/${this.vendorId}/certifications/${file.name}`;
+        // const certFile = {
+        //   s3Key: s3KeyFile,
+        //   fileType: 'PDF',
+        //   base64: reader.result,
+        // };
+        // this.fileService.fileUpload(userId, this.vendorId, certFile).subscribe(res => {
+        //   this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
+        // }, error => {
+        //   console.log(error);
+        // });
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   htmlDecode(input) {

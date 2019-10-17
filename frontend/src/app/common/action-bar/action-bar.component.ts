@@ -24,6 +24,11 @@ export class ActionBarComponent implements OnInit {
   constructor(public route: Router) {
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
+        if (this.route.url.includes('/profile-screener')) {
+          this.isProfileScreener = true;
+        } else {
+          this.isProfileScreener = false;
+        }
         const routeArray = this.route.url.split('/');
         this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
         if (routeArray.length > 2) {
@@ -72,4 +77,18 @@ export class ActionBarComponent implements OnInit {
     this.route.navigateByUrl(gotoURL);
   }
 
+  isActionButton() {
+    return this.menus[this.activeTabIndex].actions.length &&
+      ( !this.route.url.includes('add') &&
+        !this.route.url.includes('edit') &&
+        !this.route.url.includes('clone') &&
+        !this.route.url.includes('profile-screener'));
+  }
+
+  isBackButton() {
+    return this.menus[this.activeTabIndex].actions.length &&
+      ( this.route.url.includes('add') ||
+        this.route.url.includes('edit') ||
+        this.route.url.includes('clone'));
+  }
 }
