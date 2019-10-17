@@ -47,10 +47,19 @@ table .form-control {
 .profile-list .icon {
   margin-right: 10px;
   font-size: 19px;
+  color: var(--theme-light-green);
+}
+
+.profile-list .icon:hover {
+  cursor: pointer;
 }
 
 .profile-list .column-name {
   font-size: 13px;
+}
+
+.upload {
+  margin-top: 20px;
 }
 
 .upload button.back {
@@ -158,8 +167,8 @@ table .form-control {
 }
 
 .modal .modal-title {
-    border-left: 6px solid rgba(9, 40, 70, .36);
-    padding-left: 11px;
+  border-left: 6px solid rgba(9, 40, 70, .36);
+  padding-left: 11px;
 }
 
 @media (max-width: 768px) {
