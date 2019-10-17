@@ -17,7 +17,7 @@ export class ActionBarComponent implements OnInit {
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
-
+  isProfileScreener = false;
   activeMode = 'default';
 
   modifiedItem = { index: null, value: [] };
