@@ -16,6 +16,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RequestMapping("/api/v1/connector")
 @RestController
+@CrossOrigin("*")
 public class ConnectorController {
     private final static String CATALINA_HOME = System.getenv("CATALINA_HOME") != null ? System.getenv("CATALINA_HOME") : (System.getProperty("CATALINA_HOME") != null ? System.getProperty("CATALINA_HOME") : "/tmp");
 
