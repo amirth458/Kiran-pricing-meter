@@ -27,7 +27,10 @@ export class ProcessComponent implements OnInit {
         name: 'Pricing',
         tooltipMessage: 'At vero eos et accusamus et',
         route: 'pricing',
-        actions: [{ name: 'Add Pricing', route: 'add' }]
+        actions: [
+          { name: 'Add Pricing', route: 'add' },
+          { name: 'Pricing Estimator', route: 'estimator' }
+        ]
       }
     ];
   selectedTab = this.actionbarMenu[0].name;

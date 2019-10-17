@@ -6,7 +6,32 @@
   <div class="row" [formGroup]="form">
     <div class="col-md-7">
 
-      <div class="upload">
+      <div *ngIf="activeMode =='pricing-estimator'" class="profile-list text-theme">
+        <p><b>Process Profile Name</b></p>
+        <div class="container card profiles p-3">
+          <div *ngFor="let profile of processProfiles; let index = index" class="d-flex">
+
+            <span class="icon" *ngIf="profile.checked" (click)="toggleCheck(index)">
+              <i class="fas fa-check-square"></i>
+            </span>
+
+            <span class="icon" *ngIf="!profile.checked" (click)="toggleCheck(index)">
+              <i class="far fa-square"></i>
+            </span>
+
+
+            <div class="column-name">
+              <span style="margin-top: -3px">
+                {{profile.name}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="upload text-theme">
         <p>Please, select the file</p>
         <button type="file" class="btn btn-add theme white back">
           Upload a Reference File
@@ -141,7 +166,7 @@
       </div>
     </div>
     <div class="col-md-5">
-      <h6 class="rfq-title">RFQ Information</h6>
+      <h6 class="rfq-title text-theme">RFQ Information</h6>
       <table class="table table-bordered">
         <thead class="thead-dark">
         </thead>
