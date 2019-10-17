@@ -17,7 +17,7 @@
         <select required id="processProfileId" name="processProfileId" formControlName="processProfileId"
           (change)="processProfileChanged()" class="form-control">
           <option selected value=''>Choose...</option>
-          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.parameterNickName}} : {{item.name}}
+          <option *ngFor="let item of processProfiles" [value]="item.id">{{item.name}}
           </option>
         </select>
         <div class="invalid-feedback">

@@ -37,8 +37,9 @@ table .form-control {
 
 
 .upload button.back {
-  width: 40% !important;
-  font-size: 14px;
+  color: var(--theme-btn-primary);
+  width: 30%;
+  margin: 10px;
 }
 
 .upload button.back:hover {

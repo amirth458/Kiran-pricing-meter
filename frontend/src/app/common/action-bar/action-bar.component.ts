@@ -19,6 +19,7 @@ export class ActionBarComponent implements OnInit {
   activeTabIndex = 0;
 
   isProfileScreener = false;
+  isProfileScreenerProfile = false;
   modifiedItem = { index: null, value: [] };
 
   constructor(public route: Router) {
@@ -39,6 +40,19 @@ export class ActionBarComponent implements OnInit {
                 this.selectedTab = x.name;
               }
             });
+          }
+
+          if (routeArray.includes('profile-screener') && routeArray.includes('process')) {
+            this.isProfileScreenerProfile = true;
+            this.isProfileScreener = false;
+          } else {
+            if (routeArray.includes('profile-screener')) {
+              this.isProfileScreener = true;
+              this.isProfileScreenerProfile = false;
+            } else {
+              this.isProfileScreener = false;
+              this.isProfileScreenerProfile = false;
+            }
           }
         }
       }
@@ -76,6 +90,17 @@ export class ActionBarComponent implements OnInit {
     gotoURL = `/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`;
     this.route.navigateByUrl(gotoURL);
   }
+
+  navigateToProfile() {
+    const gotoURL = '/profile/processes/profile';
+    this.route.navigateByUrl(gotoURL);
+  }
+
+  navigateToProfileScreener() {
+    const gotoURL = '/profile/processes/profile/profile-screener';
+    this.route.navigateByUrl(gotoURL);
+  }
+
 
   isActionButton() {
     return this.menus[this.activeTabIndex].actions.length &&

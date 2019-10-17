@@ -22,6 +22,7 @@ import { ProcessProfileItemComponent } from '../../components/process-profile-it
 import { ProcessPricingComponent } from '../../components/process-pricing/process-pricing.component';
 import { ProcessPricingItemComponent } from '../../components/process-pricing-item/process-pricing-item.component';
 import { ProfileScreenerComponent } from 'src/app/components/profile-screener/profile-screener.component';
+import { ProfileScreenerEstimatorComponent } from 'src/app/components/profile-screener-estimator/profile-screener-estimator.component';
 
 
 import { UnapprovedVendorContainerComponent } from '../../components/authorized/unapproved/_container/container.component';
@@ -77,10 +78,11 @@ const routes: Routes = [
             path: 'processes', component: ProcessComponent,
             children: [
               { path: 'profile', component: ProcessProfileComponent },
-              { path: 'profile/profile-screener', component: ProfileScreenerComponent },
               { path: 'profile/add', component: ProcessProfileItemComponent },
               { path: 'profile/clone', component: ProcessProfileItemComponent },
               { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
+              { path: 'profile/profile-screener', component: ProfileScreenerComponent },
+              { path: 'profile/profile-screener/process', component: ProfileScreenerEstimatorComponent },
               { path: 'pricing', component: ProcessPricingComponent },
               { path: 'pricing/add', component: ProcessPricingItemComponent },
               { path: 'pricing/clone', component: ProcessPricingItemComponent },
