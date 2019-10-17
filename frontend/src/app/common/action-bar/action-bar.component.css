@@ -73,11 +73,22 @@ ul li .name:hover {
   display: flex;
   align-items: center;
 }
-.info-section h6{
+
+.info-section.profile {
+  font-size: 13px;
+}
+
+.info-section.profile .text-highlight:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.info-section h6 {
   color: var(--theme-light-green);
   font-size: 20px;
 
 }
+
 @media(max-width: 1200px) {
   ul li {
     font-size: 15px;
