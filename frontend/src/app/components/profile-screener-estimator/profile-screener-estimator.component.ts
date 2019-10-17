@@ -206,8 +206,7 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35,
-      rowSelection: 'multiple'
+      headerHeight: 35
     };
     this.tableControlReady = true;
     this.spineer.hide();
