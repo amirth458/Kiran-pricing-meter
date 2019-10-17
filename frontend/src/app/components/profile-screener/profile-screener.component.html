@@ -44,7 +44,7 @@
       <div class="detail-info">
         <p>Detail Information</p>
         <div class="row details">
-          <div class="col-md-4 d-flex align-items-center">
+          <div class="col-md-4 d-flex align-items-center" (click)="toggleModal()">
             <img [src]="uploadImage" height="200px" width="200px" alt="">
           </div>
 
@@ -264,6 +264,58 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Large modal -->
+<button #infoModal type="button" class="btn btn-primary d-none" data-toggle="modal"
+  data-target=".info-modal">Large</button>
+
+<div class="modal fade info-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-theme" id="processProfileModalLabel">Demo 1</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-info">
+          <div class="row details">
+            <div class="col-md-6 d-flex align-items-center">
+              <img [src]="uploadImage" height="340px" width="340px" alt="">
+            </div>
+
+            <div class="col-md-6 d-flex flex-column">
+              <span class="title">Demo 1</span>
+              <span class="quantity">Quantity : 25</span>
+
+              <div class="image-info d-flex flex-column">
+                <span>
+                  Part Dimensions: 12.36mm x 4.50mm x 4.73mm
+                </span>
+                <span>
+                  Files: Brake rotor no logo.step
+                </span>
+              </div>
+
+              <div class="image-details">
+                <ul>
+                  <li><span>Volume</span> - 3.15cc</li>
+                  <li><span>Extents</span> - 25.2mm x 25.00mm x 12.8mm </li>
+                  <li><span>Bounding box</span> - 6.22cc</li>
+                  <li><span>Surface area</span> - 8.1cm2</li>
+                  <li><span>Thinnest wall</span> - 1.4mm</li>
+                </ul>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorService } from 'src/app/service/vendor.service';
@@ -17,6 +17,7 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class ProfileScreenerComponent implements OnInit {
 
+  @ViewChild('infoModal') infoModal: ElementRef;
   error = '';
   uploadImage = '../../../assets/image/example_machine.png';
   details = {
@@ -209,5 +210,9 @@ export class ProfileScreenerComponent implements OnInit {
   toggleCheck(index) {
     console.log(this.processProfiles, index);
     this.processProfiles[index].checked = !this.processProfiles[index].checked;
+  }
+
+  toggleModal() {
+    this.infoModal.nativeElement.click();
   }
 }

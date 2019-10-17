@@ -63,7 +63,6 @@ table .form-control {
   color: var(--theme-light-blue);
 }
 
-
 .upload ul li>span {
   margin-right: 10px;
   font-weight: 200;
@@ -146,6 +145,21 @@ table .form-control {
   display: flex;
   height: 28px;
   width: 40%;
+}
+
+
+
+.modal .image-details ul li {
+  font-size: 13px;
+}
+
+.modal .detail-info .details {
+  border: unset !important;
+}
+
+.modal .modal-title {
+    border-left: 6px solid rgba(9, 40, 70, .36);
+    padding-left: 11px;
 }
 
 @media (max-width: 768px) {
