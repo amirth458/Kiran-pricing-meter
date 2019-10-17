@@ -9,20 +9,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Random;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RequestMapping("/api/v1/connector")
 @RestController
+@CrossOrigin("*")
 public class ConnectorController {
     private final static String CATALINA_HOME = System.getenv("CATALINA_HOME") != null ? System.getenv("CATALINA_HOME") : (System.getProperty("CATALINA_HOME") != null ? System.getProperty("CATALINA_HOME") : "/tmp");
 
     private ConnectorService connectorService;
+    private Random random;
 
     @Autowired
     public ConnectorController(ConnectorService connectorService) {
         this.connectorService = connectorService;
+        this.random = new Random();
     }
 
     @PostMapping("/upload-file")
@@ -36,7 +40,7 @@ public class ConnectorController {
 
         file.delete();*/
         ConnectorUploadFileResponse connectorUploadFileResponse = ConnectorUploadFileResponse.builder()
-                .id(1L)
+                .id(random.nextLong())
                 .fileName(multipartFile.getOriginalFilename())
                 .s3URL("https://3diligent-connector-dev.s3.us-west-2.amazonaws.com/2/2019/10/15/2019-10-15_15-29-12-designjawoptimizedv2_1556302223718.step")
                 .presignedS3URL("https://3diligent-connector-dev.s3.us-west-2.amazonaws.com/2/2019/10/15/2019-10-15_15-29-12-designjawoptimizedv2_1556302223718.step?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191015T152912Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAXDHQUQPKFHB64HM4%2F20191015%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=c11050c3967ccb382a99176e06035cfa9a9d1755d026d68a5d0d86ef21439a3f")
@@ -49,6 +53,7 @@ public class ConnectorController {
     public ResponseEntity getMetadata(@PathVariable("id") Long id) {
         ConnectorGetMetadataResponse connectorGetMetadataResponse = ConnectorGetMetadataResponse.builder()
                 .id(id)
+                .status("COMPLETED")
                 .smallImage("http://d3-lo-dev.s3.amazonaws.com/design_jaw_optimized_v2_1556302223718.svf.png01_thumb_400x400.png")
                 .mediumImage("http://d3-lo-dev.s3.amazonaws.com/design_jaw_optimized_v2_1556302223718.svf.png01_thumb_400x400.png")
                 .largeImage("http://d3-lo-dev.s3.amazonaws.com/design_jaw_optimized_v2_1556302223718.svf.png01_thumb_400x400.png")
