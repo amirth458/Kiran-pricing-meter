@@ -33,6 +33,8 @@ import { ProcessPricingComponent } from './process-pricing/process-pricing.compo
 import { ProcessPricingItemComponent } from './process-pricing-item/process-pricing-item.component';
 import { ProcessProfileComponent } from './process-profile/process-profile.component';
 import { ProcessProfileItemComponent } from './process-profile-item/process-profile-item.component';
+import { ProfileScreenerComponent } from './profile-screener/profile-screener.component';
+import { ProfileScreenerEstimatorComponent } from './profile-screener-estimator/profile-screener-estimator.component';
 import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
@@ -56,7 +58,6 @@ import { AdminVendorDetailsActionBarComponent } from './admin/vendor-details/act
 import { AdminVendorDetailsUserComponent } from './admin/vendor-details/user/user.component';
 import { AdminVendorDetailsVendorComponent } from './admin/vendor-details/vendor/vendor.component';
 import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machine/machine.component';
-import { ProfileScreenerComponent } from './profile-screener/profile-screener.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,8 @@ import { ProfileScreenerComponent } from './profile-screener/profile-screener.co
     ProcessPricingItemComponent,
     ProcessProfileComponent,
     ProcessProfileItemComponent,
+    ProfileScreenerComponent,
+    ProfileScreenerEstimatorComponent,
 
     ProfileContainerComponent,
     ProfileVendorContainerComponent,
@@ -107,7 +110,6 @@ import { ProfileScreenerComponent } from './profile-screener/profile-screener.co
     AdminVendorDetailsUserComponent,
     AdminVendorDetailsVendorComponent,
     AdminVendorDetailsMachineComponent,
-    ProfileScreenerComponent
   ],
   imports: [
     CommonModule,
@@ -146,6 +148,8 @@ import { ProfileScreenerComponent } from './profile-screener/profile-screener.co
     ProcessPricingItemComponent,
     ProcessProfileComponent,
     ProcessProfileItemComponent,
+    ProfileScreenerComponent,
+    ProfileScreenerEstimatorComponent,
 
     ProfileContainerComponent,
     ProfileVendorContainerComponent,
