@@ -91,4 +91,9 @@ export class ActionBarComponent implements OnInit {
         this.route.url.includes('edit') ||
         this.route.url.includes('clone'));
   }
+
+  settingOnProfileScreener() {
+    const gotoURL = '/profile/processes/profile/screener-setting';
+    this.route.navigateByUrl(gotoURL);
+  }
 }
