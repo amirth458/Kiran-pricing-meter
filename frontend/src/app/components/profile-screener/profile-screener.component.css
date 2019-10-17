@@ -76,6 +76,7 @@ table .form-control {
   color: var(--theme-action-bar-color)!important;
   font-weight: bold;
   font-size: 14px;
+  display: block; 
 }
 
 .upload ul li>span {
