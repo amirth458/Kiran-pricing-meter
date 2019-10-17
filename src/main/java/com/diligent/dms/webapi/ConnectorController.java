@@ -49,6 +49,7 @@ public class ConnectorController {
     public ResponseEntity getMetadata(@PathVariable("id") Long id) {
         ConnectorGetMetadataResponse connectorGetMetadataResponse = ConnectorGetMetadataResponse.builder()
                 .id(id)
+                .status("COMPLETED")
                 .smallImage("http://d3-lo-dev.s3.amazonaws.com/design_jaw_optimized_v2_1556302223718.svf.png01_thumb_400x400.png")
                 .mediumImage("http://d3-lo-dev.s3.amazonaws.com/design_jaw_optimized_v2_1556302223718.svf.png01_thumb_400x400.png")
                 .largeImage("http://d3-lo-dev.s3.amazonaws.com/design_jaw_optimized_v2_1556302223718.svf.png01_thumb_400x400.png")

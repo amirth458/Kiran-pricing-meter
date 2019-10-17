@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConnectorGetMetadataResponse {
     private Long id;
+    private String status;
 
     private String smallImage;
     private String mediumImage;
