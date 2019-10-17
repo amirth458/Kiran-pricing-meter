@@ -21,9 +21,9 @@ ul {
 ul li {
   display: inline-flex;
   justify-content: flex-start;
-  align-items: center;  
-  font-size: 18px;
-  font-weight: bold;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 500;
   padding-left: 10px;
   margin-right: 47px;
   height: 100%;
@@ -55,7 +55,7 @@ ul li .name:hover {
 
 
 .action-button button {
-  font-weight: 100;
+  font-weight: 400;
   font-size: 14px;
   width: 160px;
   float: right;

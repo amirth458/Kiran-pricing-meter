@@ -26,9 +26,6 @@
   --theme-btn-back-hover-color: #f8fdf0;
 }
 
-* {
-  
-}
 
 .bg-dark-blue {
   background: var(--theme-dark-blue);
@@ -53,8 +50,8 @@ a.link {
 }
 
 .form-group.theme label {
-  color: var(--theme-action-bar-color)!important; 
-  font-weight: bold;
+  color: var(--theme-action-bar-color) !important;
+  font-weight: 500;
 }
 
 .form-group.theme input,
@@ -251,6 +248,10 @@ button.theme.theme-reverse:hover {
   color: white;
   font-size: 12px;
   font-weight: 300;
+}
+
+.theme-table .ag-theme-balham .ag-header-row .ag-header-cell-label {
+  font-weight: 500;
 }
 
 .theme-table .ag-theme-balham .ag-row {
