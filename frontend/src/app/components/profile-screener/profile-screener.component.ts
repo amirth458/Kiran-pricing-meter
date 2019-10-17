@@ -7,6 +7,7 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { MachineService } from 'src/app/service/machine.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
+import { ConnectorService } from 'src/app/service/connector.service';
 
 @Component({
   selector: 'app-profile-screener',
@@ -73,13 +74,16 @@ export class ProfileScreenerComponent implements OnInit {
 
   uploadedDocuments = [];
   selectedDocumentIndex = -1;
+  uploading = false;
+  uploadResponse: any;
   constructor(
     public fb: FormBuilder,
     private vendorService: VendorService,
     private spineer: NgxSpinnerService,
     public userService: UserService,
     public machineService: MachineService,
-    public processMetaData: ProcessMetadataService
+    public processMetaData: ProcessMetadataService,
+    private connectorService: ConnectorService
   ) { }
 
   async ngOnInit() {
@@ -204,31 +208,16 @@ export class ProfileScreenerComponent implements OnInit {
 
   onFileChange(fileInput) {
     if (fileInput.target.files && fileInput.target.files[0]) {
-      const file = fileInput.target.files[0];
-      this.upload(file);
+      const file = fileInput.target.files.item(0);
+      this.uploading = true;
+      this.connectorService.fileUploadForProcessScreener(file).subscribe(data => {
+        this.uploadResponse = data;
+        // do something, if upload success
+        console.log(data);
+      }, error => {
+        console.log(error);
+      });
     }
-  }
-
-  upload = (file) => {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        // const userId = this.userService.getUserInfo().id;
-        // const s3KeyFile = `u/${userId}/v/${this.vendorId}/certifications/${file.name}`;
-        // const certFile = {
-        //   s3Key: s3KeyFile,
-        //   fileType: 'PDF',
-        //   base64: reader.result,
-        // };
-        // this.fileService.fileUpload(userId, this.vendorId, certFile).subscribe(res => {
-        //   this.certDocuments.push({name: res.s3URL, fileName: file.name, saved: 0});
-        // }, error => {
-        //   console.log(error);
-        // });
-        resolve(reader.result);
-      };
-      reader.readAsDataURL(file);
-    });
   }
 
   htmlDecode(input) {
