@@ -31,7 +31,7 @@
 
       <div class="upload text-theme">
         <label>Please, select the file</label>
-        <button type="file" class="btn btn-add theme white back">
+        <button type="file" class="btn btn-add theme white back" (click)="onOpenFile($event)">
           Upload a Reference File
         </button>
         <input type="file" name="file" (change)="onFileChange($event)" id="file"
