@@ -29,8 +29,6 @@
         </div>
       </div>
 
-
-
       <div class="upload text-theme">
         <label>Please, select the file</label>
         <button type="file" class="btn btn-add theme white back">
@@ -56,10 +54,8 @@
             <div *ngIf="!isSelectedDocument()" class="no-image">
               No Photo
             </div>
-            <img *ngIf="isSelectedDocument()" [src]="uploadImage" height="200px" width="200px" alt="">
-          <div class="col-md-4 d-flex align-items-center" (click)="toggleModal()">
-            <img [src]="uploadImage" height="200px" width="200px" alt="">
-          </div>
+            <img *ngIf="isSelectedDocument()" [src]="uploadImage" (click)="toggleModal()" height="200px" width="200px" alt="">
+          </div>  
 
           <div class="col-md-8 d-flex flex-column" *ngIf="isSelectedDocument() && !uploading">
             <span class="title">Demo 1</span>
