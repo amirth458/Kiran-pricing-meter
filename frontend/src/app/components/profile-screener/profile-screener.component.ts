@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorService } from 'src/app/service/vendor.service';
 import { VendorMetaDataTypes } from 'src/app/mockData/vendor';
@@ -10,8 +10,18 @@ import { ProcessMetadataService } from 'src/app/service/process-metadata.service
 import { ConnectorService } from 'src/app/service/connector.service';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
+import { EventEmitterService } from '../event-emitter.service';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import {
+  SetRFQInfo,
+  SetScreenedProfiles,
+  SetStatus
+} from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 import { HttpEventType } from '@angular/common/http';
+import { map } from 'src/app/store';
+
 @Component({
   selector: 'app-profile-screener',
   templateUrl: './profile-screener.component.html',
@@ -19,28 +29,6 @@ import { HttpEventType } from '@angular/common/http';
 })
 export class ProfileScreenerComponent implements OnInit {
 
-  constructor(
-    private fb: FormBuilder,
-    private vendorService: VendorService,
-    private spineer: NgxSpinnerService,
-    private userService: UserService,
-    private machineService: MachineService,
-    private processMetaData: ProcessMetadataService,
-    private connectorService: ConnectorService,
-    private processProfileService: ProcessProfileService,
-    private route: Router
-  ) {
-    route.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        const routeArray = this.route.url.split('/');
-        if (routeArray.includes('pricing') && routeArray.includes('estimator')) {
-          this.activeMode = 'pricing-estimator';
-        } else {
-          this.activeMode = 'default';
-        }
-      }
-    });
-  }
 
   @ViewChild('infoModal') infoModal: ElementRef;
   error = '';
@@ -75,13 +63,17 @@ export class ProfileScreenerComponent implements OnInit {
 
 
   form: FormGroup = this.fb.group({
-    certification: '',
-    NDA: '',
-    equipment: null,
-    materialList: [[]],
-    tolerance: null,
-    surfaceRoughness: null,
-    timeToShip: '',
+    requiredCertificateId: ['', Validators.required],
+    materialId: [null, Validators.required],
+    equipmentId: [null, Validators.required],
+    confidentialityId: ['', Validators.required],
+
+    quantity: ['', Validators.required],
+
+    deliveryStatementId: ['', Validators.required],
+    tolerance: [null, Validators.required],
+    surfaceRoughness: [null, Validators.required],
+    surfaceFinish: [null, Validators.required],
   });
 
   units = [];
@@ -92,21 +84,77 @@ export class ProfileScreenerComponent implements OnInit {
   materials = [];
   equipments = [];
   timeToShip = [
-    { name: '1 business day', value: '1' },
-    { name: '3 business days', value: '3' },
-    { name: '5 business days', value: '5' },
-    { name: '7 business days', value: '7' },
-    { name: '10 business days', value: '10' }
+    { name: '1 business day', id: '1' },
+    { name: '3 business days', id: '3' },
+    { name: '5 business days', id: '5' },
+    { name: '7 business days', id: '7' },
+    { name: '10 business days', id: '10' }
   ];
 
   uploadedDocuments = [];
   selectedDocument = null;
   uploading = false;
-  processProfiles = [];
-  activeMode = 'default';
+
+
   uploadResponse = { status: '', message: '', filePath: '' };
   pendingDocumentIds = [];
   pendingTimer = false;
+
+
+  RFQData: any = {};
+  screenedProfiles = [];
+
+  processProfiles = [];
+  activeMode = 'default';
+  isFormValid = false;
+
+  screenerEstimatorStore$: Observable<any>;
+
+  constructor(
+    public fb: FormBuilder,
+    public vendorService: VendorService,
+    public spineer: NgxSpinnerService,
+    public userService: UserService,
+    public machineService: MachineService,
+    public processMetaData: ProcessMetadataService,
+    public processProfileService: ProcessProfileService,
+    public route: Router,
+    public profileScreererService: ProfileScreenerService,
+    public eventEmitterService: EventEmitterService,
+    public store: Store<any>,
+    public connectorService: ConnectorService
+  ) {
+
+    this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
+    this.screenerEstimatorStore$.subscribe(result => {
+      this.RFQData = result.RFQInfo;
+      this.screenedProfiles = result.screenedProfiles;
+
+      this.form.setValue({
+        requiredCertificateId: this.RFQData.requiredCertificateId || '',
+        materialId: this.RFQData.materialId || null,
+        equipmentId: this.RFQData.equipmentId || null,
+        confidentialityId: this.RFQData.confidentialityId || '',
+        quantity: this.RFQData.quantity || '',
+        deliveryStatementId: this.RFQData.deliveryStatementId || '',
+        tolerance: this.RFQData.tolerance || null,
+        surfaceRoughness: this.RFQData.surfaceRoughness || null,
+        surfaceFinish: this.RFQData.surfaceFinish || null,
+      });
+
+    });
+
+    route.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const routeArray = this.route.url.split('/');
+        if (routeArray.includes('pricing') && routeArray.includes('estimator')) {
+          this.activeMode = 'pricing-estimator';
+        } else {
+          this.activeMode = 'default';
+        }
+      }
+    });
+  }
 
   async ngOnInit() {
     try {
@@ -128,6 +176,15 @@ export class ProfileScreenerComponent implements OnInit {
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
 
+      // console.log(this.eventEmitterService.subsVar, this.eventEmitterService.subsVar == undefined);
+      if (this.eventEmitterService.subsVar == undefined) {
+        this.eventEmitterService.subsVar = this.eventEmitterService.
+          processScreenEvent.subscribe((url: string) => {
+            this.save(url);
+          });
+      }
+
+
     } catch (e) {
       console.log(e);
     } finally {
@@ -135,6 +192,9 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
+  get quantity() {
+    return this.form.value.quantity;
+  }
 
   async getInputValues() {
     let page = 0;
@@ -156,6 +216,15 @@ export class ProfileScreenerComponent implements OnInit {
         this.processProfiles = profileRes.map(profile => {
           return { ...profile, checked: false };
         });
+
+        if (this.screenedProfiles.length > 0) {
+          this.processProfiles.map((item, index) => {
+            if (this.screenedProfiles.filter(i => i == item.id).length) {
+              this.processProfiles[index].checked = true;
+            }
+          });
+        }
+
       }
 
       machines.map(machine => {
@@ -168,8 +237,8 @@ export class ProfileScreenerComponent implements OnInit {
 
 
   equipmentChanged() {
-    const equipmentId = this.form.value.equipment;
-    this.form.setValue({ ...this.form.value, materialList: [] });
+    const equipmentId = this.form.value.equipmentId;
+    this.form.setValue({ ...this.form.value, materialId: null });
     this.materials = [];
     this.equipments.map(x => {
       if (x.id == equipmentId) {
@@ -212,7 +281,7 @@ export class ProfileScreenerComponent implements OnInit {
 
   isSelectedDocument(): boolean {
     let selected = false;
-    if ( this.selectedDocument ) {
+    if (this.selectedDocument) {
       selected = true;
     }
     return selected;
@@ -249,12 +318,12 @@ export class ProfileScreenerComponent implements OnInit {
           }
         }))
         .subscribe(
-          (res) => {
+          (res: any) => {
             this.uploadResponse = res;
             if (res.fileName) {
               this.uploading = false;
-              this.uploadedDocuments = this.uploadedDocuments.map(item => ({...item, selected: 0}));
-              this.uploadedDocuments.push({...res, selected: 1});
+              this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
+              this.uploadedDocuments.push({ ...res, selected: 1 });
               this.pendingDocumentIds.push(res.id);
               this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
               console.log(this.selectedDocument);
@@ -277,9 +346,9 @@ export class ProfileScreenerComponent implements OnInit {
       if (resp.status === 'COMPLETED') {
         this.uploadedDocuments = this.uploadedDocuments.map((item) => {
           if (item.id === id) {
-            return {...item, ...resp};
+            return { ...item, ...resp };
           } else {
-            return {...item};
+            return { ...item };
           }
         });
         this.pendingDocumentIds = this.pendingDocumentIds.filter((pendingId) => pendingId !== id);
@@ -322,11 +391,54 @@ export class ProfileScreenerComponent implements OnInit {
   }
 
   toggleCheck(index) {
-    console.log(this.processProfiles, index);
     this.processProfiles[index].checked = !this.processProfiles[index].checked;
   }
 
   toggleModal() {
     this.infoModal.nativeElement.click();
+  }
+
+  save(url) {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    const validation = Array.prototype.filter.call(forms, (form) => {
+
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.isFormValid = false;
+      } else {
+        this.isFormValid = true;
+      }
+      form.classList.add('was-validated');
+
+    });
+
+    console.log(this.form.value);
+    if (this.form.valid && this.isFormValid) {
+      const postData = {
+        ...this.form.value, processProfileIdList: [
+          ...this.processProfiles
+            .filter(profile => profile.checked)
+            .map(profile => profile.id)]
+      };
+
+      this.store.dispatch(new SetRFQInfo(postData));
+      this.store.dispatch(new SetStatus('PENDING'));
+
+      if (!url.includes('estimator')) {
+        this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
+          .subscribe(res => {
+            this.store.dispatch(new SetScreenedProfiles(res));
+            this.store.dispatch(new SetStatus('DONE'));
+          });
+      } else {
+        this.store.dispatch(new SetScreenedProfiles(postData.processProfileIdList));
+      }
+      this.route.navigateByUrl(url);
+    } else {
+      console.log('not valid');
+    }
   }
 }

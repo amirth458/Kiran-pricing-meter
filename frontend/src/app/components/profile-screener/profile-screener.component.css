@@ -119,6 +119,7 @@ table .form-control {
 
 .detail-info .details .image-info {
   font-size: 14px;
+  margin: 20px 0px;
 }
 
 .detail-info .details .image-details ul {
@@ -157,12 +158,16 @@ table .form-control {
 }
 
 .detail-info .details .image-details ul li .inputs input,
-.detail-info .details .image-details ul li .inputs div.theme {
+.detail-info .details .image-details ul li .inputs div.theme,
+.quantity input {
   display: flex;
   height: 28px;
   width: 40%;
 }
 
+.quantity input {
+  width: 100%;
+}
 
 
 .modal .image-details ul li {

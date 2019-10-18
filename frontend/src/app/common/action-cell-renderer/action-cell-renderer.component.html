@@ -1,6 +1,10 @@
 <div class="action-column">
-  <span #editIcon class="view" (click)="onView()" *ngIf="params.action.canView"><i class="fas fa-eye"></i></span>
-  <span #editIcon class="edit" (click)="onEdit()" *ngIf="params.action.canEdit"><i class="fas fa-edit"></i></span>
+  <span #editIcon class="view" (click)="onView()" *ngIf="params.action.canView && !params.data.valid"><i
+      class="fas fa-eye"></i></span>
+  <span #editIcon class="view text-theme-green" (click)="onView()" *ngIf="params.action.canView && params.data.valid && params.data.price">
+      ${{params.data.price || ''}}
+  </span>
+  <span #editIcon class="edit" (click)="onEdit()" *ngIf="params.action.canEdit "><i class="fas fa-edit"></i></span>
   <span #copyIcon class="copy" (click)="onCopy()" *ngIf="params.action.canCopy"><i class="far fa-copy"></i></span>
   <span #deleteIcon class="delete" (click)="onDelete()" *ngIf="params.action.canDelete"><i
       class="fas fa-trash"></i></span>

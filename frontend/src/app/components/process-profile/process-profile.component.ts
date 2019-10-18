@@ -333,17 +333,17 @@ export class ProcessProfileComponent implements OnInit {
                 let value = '';
                 params.data.processParameterList.map(item => {
                   if (item.processParameterType.name === x.processParameterType.name) {
-                    if (item.valueSignType.symbol === '+') {
-                      if (item.operatorType.name === 'is equal to') {
-                        value = item.value.toString() + ' ' + item.unitType.symbol;
-                      } else {
-                        value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
-                      }
-                    } else {
+                    if (item.valueSignType.symbol === '-') {
                       if (item.operatorType.name === 'is equal to') {
                         value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
                       } else {
                         value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                      }
+                    } else {
+                      if (item.operatorType.name === 'is equal to') {
+                        value = item.value.toString() + ' ' + item.unitType.symbol;
+                      } else {
+                        value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
                       }
                     }
                   }
@@ -354,17 +354,17 @@ export class ProcessProfileComponent implements OnInit {
                 let value = '';
                 params.data.processParameterList.map(item => {
                   if (item.processParameterType.name === x.processParameterType.name) {
-                    if (item.valueSignType.symbol === '+') {
-                      if (item.operatorType.name === 'is equal to') {
-                        value = item.value.toString() + ' ' + item.unitType.symbol;
-                      } else {
-                        value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
-                      }
-                    } else {
+                    if (item.valueSignType.symbol === '-') {
                       if (item.operatorType.name === 'is equal to') {
                         value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
                       } else {
                         value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                      }
+                    } else {
+                      if (item.operatorType.name === 'is equal to') {
+                        value = item.value.toString() + ' ' + item.unitType.symbol;
+                      } else {
+                        value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
                       }
                     }
                   }
@@ -393,17 +393,17 @@ export class ProcessProfileComponent implements OnInit {
                   // if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
                   //   value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
                   // }
-                  if (item.valueSignType.symbol === '+') {
-                    if (item.operatorType.name === 'is equal to') {
-                      value = item.value.toString() + ' ' + item.unitType.symbol;
-                    } else {
-                      value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
-                    }
-                  } else {
+                  if (item.valueSignType.symbol === '-') {
                     if (item.operatorType.name === 'is equal to') {
                       value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
                     } else {
                       value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                    }
+                  } else {
+                    if (item.operatorType.name === 'is equal to') {
+                      value = item.value.toString() + ' ' + item.unitType.symbol;
+                    } else {
+                      value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
                     }
                   }
                 });
@@ -415,17 +415,17 @@ export class ProcessProfileComponent implements OnInit {
                   // if (item.processDimensionalPropertyType.name === x.processDimensionalPropertyType.name) {
                   //   value = item.valueSignType.symbol === '+' ? item.value.toString() : '-' + item.value.toString();
                   // }
-                  if (item.valueSignType.symbol === '+') {
-                    if (item.operatorType.name === 'is equal to') {
-                      value = item.value.toString() + ' ' + item.unitType.symbol;
-                    } else {
-                      value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
-                    }
-                  } else {
+                  if (item.valueSignType.symbol === '-') {
                     if (item.operatorType.name === 'is equal to') {
                       value = '-' + item.value.toString() + ' ' + item.unitType.symbol;
                     } else {
                       value = item.operatorType.symbol + ' -' + item.value.toString() + ' ' + item.unitType.symbol;
+                    }
+                  } else {
+                    if (item.operatorType.name === 'is equal to') {
+                      value = item.value.toString() + ' ' + item.unitType.symbol;
+                    } else {
+                      value = item.operatorType.symbol + ' ' + item.value.toString() + ' ' + item.unitType.symbol;
                     }
                   }
                 });

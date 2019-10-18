@@ -5,6 +5,13 @@ import { UserService } from 'src/app/service/user.service';
 import { ProcessPricingService } from 'src/app/service/process-pricing.service';
 import { GridOptions } from 'ag-grid-community';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
+import {
+  SetStatus,
+  SetEstimatedPrices
+} from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 
 @Component({
   selector: 'app-pricing-estimator',
@@ -54,6 +61,13 @@ export class PricingEstimatorComponent implements OnInit {
         type: '',
         filter: '',
       }
+    },
+    {
+      name: 'Price', checked: false,
+      field: 'price', query: {
+        type: '',
+        filter: '',
+      }
     }
   ];
   filterColumns = [
@@ -71,6 +85,9 @@ export class PricingEstimatorComponent implements OnInit {
     },
     {
       name: 'Material', checked: true, field: 'material'
+    },
+    {
+      name: 'Price', checked: true, field: 'price'
     }
   ];
   type = ['search', 'filter'];
@@ -134,6 +151,7 @@ export class PricingEstimatorComponent implements OnInit {
         return value;
       }
     }
+
   ];
 
   gridOptions: GridOptions;
@@ -145,12 +163,55 @@ export class PricingEstimatorComponent implements OnInit {
 
   navigation;
 
+  screenerEstimatorStore$: Observable<any>;
+  pageState = 'NULL';
+  RFQInfo: any = {};
+  screenedProfiles = [];
+  estimatedPrices = [];
+  firedRequest = false;
+
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,
     public userService: UserService,
-    public processPricingService: ProcessPricingService
+    public processPricingService: ProcessPricingService,
+    public profileScreererService: ProfileScreenerService,
+    public store: Store<any>
   ) {
+
+    this.screenerEstimatorStore$ = this.store.pipe(select('screenerEstimator'));
+    this.screenerEstimatorStore$.subscribe(data => {
+      this.pageState = data.status;
+      this.RFQInfo = data.RFQInfo;
+      this.screenedProfiles = data.screenedProfiles;
+      this.estimatedPrices = data.estimatedPrices;
+
+      // this.estimatedPrices.push({ pricingProfileId: 55, quotePrice: '15.5' });
+
+      // console.log(this.RFQInfo, 'RFQ');
+      // console.log(this.estimatedPrices, 'estimation');
+      // console.log(this.screenedProfiles, 'profiles');
+
+
+      if (this.screenedProfiles && !this.firedRequest) {
+        this.firedRequest = true;
+        this.store.dispatch(new SetStatus('PENDING'));
+        this.profileScreererService.estimatePrice(this.userService.getVendorInfo().id, this.RFQInfo)
+          .subscribe(res => {
+            // console.log(res, 'estimated price response');
+            this.store.dispatch(new SetEstimatedPrices(res));
+            this.store.dispatch(new SetStatus('DONE'));
+          });
+      }
+
+      const checkInterval = setInterval(() => {
+        if (this.tableControlReady && this.gridOptions.api) {
+          this.onGridReady({});
+          clearInterval(checkInterval);
+        }
+      }, 1000);
+    });
+
     this.navigation = this.route.getCurrentNavigation();
   }
 
@@ -179,10 +240,6 @@ export class PricingEstimatorComponent implements OnInit {
 
     };
 
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
-
   }
 
   configureColumnDefs() {
@@ -193,6 +250,30 @@ export class PricingEstimatorComponent implements OnInit {
         }
       });
     });
+  }
+
+  onGridReady(event) {
+    const rowData = [];
+    this.gridOptions.api.forEachNode(node => {
+      const data = node.data;
+      const filter = this.estimatedPrices.filter(item => item.pricingProfileId == data.id);
+      if (filter.length) {
+        node.setData({ ...data, valid: true, price: filter[0].quotePrice });
+      } else {
+        node.setData({ ...data, valid: false, price: null });
+      }
+      rowData.push(node.data);
+    });
+
+    this.gridOptions.api.setRowData(rowData);
+
+    this.gridOptions.api.forEachNode(node => {
+      node.selectThisNode(node.data.price !== null);
+    });
+
+    this.gridOptions.api.sizeColumnsToFit();
+
+
   }
 
   pageSizeChanged(value) {
@@ -297,6 +378,28 @@ export class PricingEstimatorComponent implements OnInit {
 
     }
 
+    this.columnDefs.push({
+      headerName: 'Price', field: 'price', hide: false, sortable: true, filter: false,
+      cellRenderer: 'actionCellRenderer',
+      cellRendererParams: {
+        action: {
+          edit: (param) => {
+            console.log(param);
+          },
+          copy: (param) => {
+          },
+          delete: async (param) => {
+          },
+          view: async (param) => {
+            // window.alert('view');
+          },
+          canEdit: false,
+          canCopy: false,
+          canDelete: false,
+          canView: true,
+        }
+      }
+    });
 
     let conditionActive = false;
     let componentActive = false;

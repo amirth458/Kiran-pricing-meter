@@ -20,6 +20,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.reducer';
 import { AppEffects } from './store/app.effects';
+import { screenerEstimatorReducer } from './store/profile-screener-estimator/profile-screener-estimator.reducer';
+
+
 import { RegisterContainerComponent } from './components/signup/_container/container.component';
 import { RegisterUserComponent } from './components/signup/user/user.component';
 import { RegisterActionBarComponent } from './common/register-action-bar/register-action-bar.component';
@@ -41,7 +44,7 @@ import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
     NgxSpinnerModule,
     // ApiModule.forRoot({ rootUrl: 'localhost:4000' }),
     InternationalPhoneNumberModule,
-    StoreModule.forRoot({ app: appReducer }),
+    StoreModule.forRoot({ app: appReducer, screenerEstimator: screenerEstimatorReducer }),
     EffectsModule.forRoot([AppEffects]),
     ToastrModule.forRoot({
       closeButton: true,

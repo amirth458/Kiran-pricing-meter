@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ContentChild, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { EventEmitterService } from 'src/app/components/event-emitter.service';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
 
 declare var $: any;
 @Component({
@@ -22,7 +26,37 @@ export class ActionBarComponent implements OnInit {
 
   modifiedItem = { index: null, value: [] };
 
-  constructor(public route: Router) {
+  screenerEstimatorStore$: Observable<any>;
+  pageState = 'NULL';
+  screenedProfiles = [];
+  estimatedPrices = [];
+  bestPrice = 0;
+
+  constructor(
+    public route: Router,
+    public eventEmitterService: EventEmitterService,
+    public store: Store<any>,
+    public estimationAPI: ProfileScreenerService
+  ) {
+    this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
+
+    // this.pageState = 'PENDING';
+
+    // setTimeout(() => {
+    this.screenerEstimatorStore$.subscribe(data => {
+      this.pageState = data.status;
+      this.screenedProfiles = data.screenedProfiles;
+      this.estimatedPrices = data.estimatedPrices;
+
+      this.estimatedPrices.map(item => {
+        if (this.bestPrice < item.quotePrice) {
+          this.bestPrice = item.quotePrice;
+        }
+      });
+    });
+
+    // }, 2000);
+
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         if (this.route.url.includes('/profile-screener')) {
@@ -108,20 +142,33 @@ export class ActionBarComponent implements OnInit {
     this.route.navigateByUrl(gotoURL);
   }
 
-  navigateToPricingEstimator() {
+  navigateToPricingProfile() {
+    const gotoURL = '/profile/processes/pricing';
+    this.route.navigateByUrl(gotoURL);
+  }
+
+  startPriceEstimation() {
     const gotoURL = '/profile/processes/pricing/estimator/process';
     this.route.navigateByUrl(gotoURL);
   }
 
+  saveAndStartPriceEstimation() {
+    const gotoURL = '/profile/processes/pricing/estimator/process';
+    this.eventEmitterService.onProcessScreen(gotoURL);
+  }
   navigateToProfileScreener() {
     const gotoURL = '/profile/processes/profile/profile-screener';
     this.route.navigateByUrl(gotoURL);
   }
 
+  startProfileScreening() {
+    const gotoURL = '/profile/processes/profile/profile-screener/process';
+    this.eventEmitterService.onProcessScreen(gotoURL);
+  }
 
   isActionButton() {
     return this.menus[this.activeTabIndex].actions.length &&
-      ( !this.route.url.includes('add') &&
+      (!this.route.url.includes('add') &&
         !this.route.url.includes('edit') &&
         !this.route.url.includes('clone') &&
         !this.route.url.includes('profile-screener'));
@@ -129,7 +176,7 @@ export class ActionBarComponent implements OnInit {
 
   isBackButton() {
     return this.menus[this.activeTabIndex].actions.length &&
-      ( this.route.url.includes('add') ||
+      (this.route.url.includes('add') ||
         this.route.url.includes('edit') ||
         this.route.url.includes('clone'));
   }

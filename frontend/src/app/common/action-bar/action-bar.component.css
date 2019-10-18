@@ -69,6 +69,9 @@ ul li .name:hover {
   margin-left: 10px;
 }
 
+.progress-section {
+  width: 50%;
+}
 
 .info-section {
   display: flex;
