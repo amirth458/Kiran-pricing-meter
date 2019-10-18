@@ -24,7 +24,6 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
   ) {
 
   }
-  @ViewChild('infoModal') infoModal;
 
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
@@ -78,13 +77,6 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    if (this.detailForm.valid) {
-      this.saveInformation();
-    }
-    if (this.isValid !== this.detailForm.valid) {
-      this.isValid = this.detailForm.valid;
-      this.userService.setVendorFormStatus(this.detailForm.valid ? 1 : 0);
-    }
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
     Array.prototype.filter.call(forms, (form) => {
@@ -122,7 +114,17 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
     console.log(vendorProfile);
     this.userService.setRegisterVendorInfo(vendorProfile);
   }
+
   onValueChanges(): void {
+    this.detailForm.valueChanges.subscribe(val => {
+      this.saveInformation();
+
+      if (this.isValid !== this.detailForm.valid) {
+        this.isValid = this.detailForm.valid;
+        this.userService.setVendorFormStatus(this.detailForm.valid ? 1 : 0);
+      }
+    });
+
     this.detailForm.get('phone').valueChanges.subscribe(val => {
       try {
         const phoneNumber = this.phoneUtil.parseAndKeepRawInput(val);
@@ -254,7 +256,6 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
 
   async saveVenorInformation(event) {
     if (!this.detailForm.valid) {
-      this.infoModal.nativeElement.click();
       return;
     }
 
