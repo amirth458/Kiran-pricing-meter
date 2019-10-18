@@ -17,7 +17,6 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
     passwordConfirm: [null, Validators.required],
     phone: [null, Validators.required],
   });
-  @ViewChild('infoModal') infoModal;
   isLoadedUser = false;
   errorMessage = '';
   isValid = false;
@@ -26,17 +25,7 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
     private router: Router,
     private userService: UserService
   ) { }
-  @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any) {
-    if (this.form.valid) {
-      const user: RegisterUser = {
-        ...this.form.value,
-      };
-      this.userService.setRegisterUserInfo(user);
-      return true;
-    }
-    return false;
-  }
+
   ngOnInit() {
     const user: RegisterUser = this.userService.getRegisterUserInfo();
     if (user) {
@@ -46,12 +35,12 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
   }
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    if (this.form.valid) {
-      const user: RegisterUser = {
-        ...this.form.value,
-      };
-      this.userService.setRegisterUserInfo(user);
-    }
+
+    const user: RegisterUser = {
+      ...this.form.value,
+    };
+    this.userService.setRegisterUserInfo(user);
+
     if (this.isValid !== this.form.valid) {
       this.isValid = this.form.valid;
       this.userService.setUserFormStatus(this.form.valid ? 1 : 0);
@@ -88,7 +77,6 @@ export class RegisterUserComponent implements OnInit, AfterViewChecked {
 
     this.errorMessage = '';
     if (!(this.form.valid)) {
-      this.infoModal.nativeElement.click();
       return;
     }
     this.router.navigateByUrl('/signup/vendor');

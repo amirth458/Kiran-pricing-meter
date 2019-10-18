@@ -9,7 +9,6 @@ declare var $: any;
   styleUrls: ['./register-action-bar.component.css']
 })
 export class RegisterActionBarComponent implements OnChanges, OnInit {
-  @ViewChild('infoModal') infoModal;
   @Input('menus') menus: Array<{
     name: string,
     tooltipMessage: string,
@@ -54,21 +53,6 @@ export class RegisterActionBarComponent implements OnChanges, OnInit {
     const prevRoute = prevURL.split('/')[2];
     if (prevRoute === tab.route) {
       return;
-    }
-    if (prevRoute === 'user') {
-      const valid = this.userService.getUserFormStatus();
-      if (valid !== 1) {
-        this.infoModal.nativeElement.click();
-        return;
-      }
-    }
-
-    if (prevRoute === 'vendor') {
-      const valid = this.userService.getVendorFormStatus();
-      if (valid !== 1) {
-        this.infoModal.nativeElement.click();
-        return;
-      }
     }
 
     this.route.navigateByUrl(`/${this.baseURL}/${tab.route}`)

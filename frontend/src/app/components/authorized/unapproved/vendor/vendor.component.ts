@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./vendor.component.css']
 })
 
-export class UnapprovedVendorDetailsComponent implements OnInit {
+export class UnapprovedVendorDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -93,7 +93,11 @@ export class UnapprovedVendorDetailsComponent implements OnInit {
     });
     this.onValueChanges();
   }
-
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');

@@ -45,11 +45,13 @@ export class AuthService {
   getAuthData() {
     return JSON.parse(localStorage.getItem('auth'));
   }
+
   logout(): any {
     localStorage.removeItem('auth');
     localStorage.removeItem('remember_me');
     localStorage.removeItem('email');
     localStorage.removeItem('password');
+    localStorage.removeItem('user');
 
     this.store.dispatch({
       type: AppTypes.UpdateState,
