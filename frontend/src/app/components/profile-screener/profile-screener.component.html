@@ -33,23 +33,39 @@
 
 
         <div class="upload text-theme">
-          <p>Please, select the file</p>
-          <button type="file" class="btn btn-add theme white back">
+          <label>Please, select the file</label>
+          <button type="file" class="btn btn-add theme white back" (click)="onOpenFile($event)">
             Upload a Reference File
           </button>
-          <ul>
-            <li><span>Brake rotor no logo.step </span> <i class="fas fa-trash"></i></li>
+          <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile" accept="*" />
+          <ul class="uploaded_files" style="padding-left: 0; margin-top: 10px;">
+            <li *ngFor="let item of uploadedDocuments" style="width: 350px;cursor: pointer;">
+              <i class="fa {{item.selected? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp;
+              <span (click)="onSelectFile(item.id)"
+                [ngClass]="{'style-bold': item.selected === 1}">{{item.fileName}}</span>
+
+              <button class="close" type="button" (click)="onRemoveFile(item.id)"><i class="fas fa-trash" color="red"
+                  aria-hidden="true"></i></button>
+            </li>
           </ul>
         </div>
 
         <div class="detail-info">
           <p>Detail Information</p>
           <div class="row details">
-            <div class="col-md-4 d-flex align-items-center" (click)="toggleModal()">
-              <img [src]="uploadImage" height="200px" width="200px" alt="">
+            <div class="col-md-4 d-flex align-items-center">
+              <div *ngIf="!selectedDocument || !selectedDocument.smallImage" class="no-image">
+                No Photo
+              </div>
+              <div *ngIf="isSelectedDocument()">
+                <img *ngIf="selectedDocument.smallImage" [src]="selectedDocument.smallImage" (click)="toggleModal()"
+                  height="200px" width="200px" alt="">
+              </div>
+
             </div>
 
-            <div class="col-md-8 d-flex flex-column">
+
+            <div class="col-md-8 d-flex flex-column" *ngIf="selectedDocument && selectedDocument.smallImage">
               <span class="title" (click)="save()">Demo 1</span>
               <span class="quantity d-flex ">
                 <div>
@@ -180,9 +196,18 @@
 
 
               </div>
+
+
+              <div class="col-md-8 d-flex flex-column" *ngIf="!isSelectedDocument() && !uploading">
+                <span class="title">No Information</span>
+              </div>
+            </div>
+            <div class="col-md-8 d-flex flex-column" *ngIf="uploading && uploadResponse.status === 'progress'">
+              <app-progress-bar text="Uploading... Please wait" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
           </div>
         </div>
+
       </div>
       <div class="col-md-5">
         <h6 class="rfq-title text-theme">RFQ Information</h6>
@@ -237,9 +262,9 @@
             <tr>
               <td>Material</td>
               <td>
-                <ng-select style="width: 100%;" #materialInput placeholder="Add Materials"
-                  [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
-                  [selectOnTab]="true" formControlName="materialId">
+                <ng-select style="width: 100%;" #materialInput placeholder="Add Materials" [multiple]="false"
+                  dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
+                  formControlName="materialId">
                   <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
                 </ng-select>
               </td>
@@ -291,8 +316,7 @@
 
 
 <!-- Large modal -->
-<button #infoModal type="button" class="btn btn-primary d-none" data-toggle="modal"
-  data-target=".info-modal"></button>
+<button #infoModal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target=".info-modal"></button>
 
 <div class="modal fade info-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -307,7 +331,8 @@
         <div class="detail-info">
           <div class="row details">
             <div class="col-md-6 d-flex align-items-center">
-              <img [src]="uploadImage" height="340px" width="340px" alt="">
+              <img *ngIf="selectedDocument && selectedDocument.largeImage" [src]="selectedDocument.largeImage"
+                height="340px" width="340px" alt="">
             </div>
 
             <div class="col-md-6 d-flex flex-column">
@@ -326,7 +351,8 @@
               <div class="image-details">
                 <ul>
                   <li><span>Volume</span> - {{details.volume.value}}cc</li>
-                  <li><span>Extents</span> - {{details.extents[0].value}}mm x {{details.extents[1].value}}mm x {{details.extents[2].value}}mm </li>
+                  <li><span>Extents</span> - {{details.extents[0].value}}mm x {{details.extents[1].value}}mm x
+                    {{details.extents[2].value}}mm </li>
                   <li><span>Bounding box</span> - {{details.boundingBox.value}}cc</li>
                   <li><span>Surface area</span> - {{details.surfaceArea.value}}cm2</li>
                   <li><span>Thinnest wall</span> - {{details.thinnestWall.value}}mm</li>

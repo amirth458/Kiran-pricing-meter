@@ -1,5 +1,5 @@
 <div class="wrapper shadow">
-  <ul>
+  <ul style="z-index: 90;">
     <li *ngFor="let menu of menus">
       <div>
         <span (click)="selectTab(menu)" class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>

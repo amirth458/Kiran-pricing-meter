@@ -7,6 +7,7 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { MachineService } from 'src/app/service/machine.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
+import { ConnectorService } from 'src/app/service/connector.service';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
@@ -18,6 +19,8 @@ import {
   SetScreenedProfiles,
   SetStatus
 } from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
+import { HttpEventType } from '@angular/common/http';
+import { map } from 'src/app/store';
 
 @Component({
   selector: 'app-profile-screener',
@@ -25,6 +28,7 @@ import {
   styleUrls: ['./profile-screener.component.css']
 })
 export class ProfileScreenerComponent implements OnInit {
+
 
   @ViewChild('infoModal') infoModal: ElementRef;
   error = '';
@@ -87,6 +91,16 @@ export class ProfileScreenerComponent implements OnInit {
     { name: '10 business days', id: '10' }
   ];
 
+  uploadedDocuments = [];
+  selectedDocument = null;
+  uploading = false;
+
+
+  uploadResponse = { status: '', message: '', filePath: '' };
+  pendingDocumentIds = [];
+  pendingTimer = false;
+
+
   RFQData: any = {};
   screenedProfiles = [];
 
@@ -98,8 +112,8 @@ export class ProfileScreenerComponent implements OnInit {
 
   constructor(
     public fb: FormBuilder,
-    private vendorService: VendorService,
-    private spineer: NgxSpinnerService,
+    public vendorService: VendorService,
+    public spineer: NgxSpinnerService,
     public userService: UserService,
     public machineService: MachineService,
     public processMetaData: ProcessMetadataService,
@@ -107,7 +121,8 @@ export class ProfileScreenerComponent implements OnInit {
     public route: Router,
     public profileScreererService: ProfileScreenerService,
     public eventEmitterService: EventEmitterService,
-    public store: Store<any>
+    public store: Store<any>,
+    public connectorService: ConnectorService
   ) {
 
     this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
@@ -228,6 +243,143 @@ export class ProfileScreenerComponent implements OnInit {
     this.equipments.map(x => {
       if (x.id == equipmentId) {
         this.materials = [...x.machineServingMaterialList];
+      }
+    });
+  }
+
+  materialChanged(editScreen = false) {
+    const materialList = this.form.value.materialList;
+    if (materialList.length) {
+
+      if (editScreen && materialList.length === this.materials.length - 1) {
+        this.form.setValue({
+          ...this.form.value
+        });
+        return this.materials;
+      } else {
+        const lastInput = materialList[materialList.length - 1];
+        if (lastInput === 'all-materials') {
+          this.form.setValue({
+            ...this.form.value
+          });
+          return this.materials;
+        } else {
+          if (materialList.includes('all-materials')) {
+            const startIndex = materialList.indexOf('all-materials');
+            const frontSlice = materialList.slice(0, startIndex);
+            const endSlice = materialList.slice(startIndex + 1);
+            this.form.setValue({
+              ...this.form.value,
+              materialList: [...frontSlice, ...endSlice]
+            });
+            return [...frontSlice, ...endSlice];
+          }
+        }
+      }
+    }
+  }
+
+  isSelectedDocument(): boolean {
+    let selected = false;
+    if (this.selectedDocument) {
+      selected = true;
+    }
+    return selected;
+  }
+
+  onOpenFile(event) {
+    // tslint:disable-next-line: deprecation
+    $('#file').click();
+  }
+
+  onRemoveFile(id) {
+    this.uploadedDocuments = this.uploadedDocuments.filter((item) => item.id !== id);
+    if (this.selectedDocument) {
+      if (id === this.selectedDocument.id) {
+        this.selectedDocument = null;
+      }
+    }
+  }
+
+  onFileChange(fileInput) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      const file = fileInput.target.files.item(0);
+      this.uploading = true;
+      this.connectorService.fileUploadForProcessScreener(file)
+        .pipe(map((event) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              const progress = Math.round(100 * event.loaded / event.total);
+              return { status: 'progress', message: progress };
+            case HttpEventType.Response:
+              return event.body;
+            default:
+              return `Unhandled event: ${event.type}`;
+          }
+        }))
+        .subscribe(
+          (res: any) => {
+            this.uploadResponse = res;
+            if (res.fileName) {
+              this.uploading = false;
+              this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
+              this.uploadedDocuments.push({ ...res, selected: 1 });
+              this.pendingDocumentIds.push(res.id);
+              this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
+              console.log(this.selectedDocument);
+              if (!this.pendingTimer) {
+                this.pendingTimer = true;
+                setTimeout(async () => {
+                  await this.getDetailedInformation();
+                }, 3000);
+              }
+            }
+          },
+          (err) => this.error = err
+        );
+    }
+  }
+
+  async getDetailedInformation() {
+    this.pendingDocumentIds.map(async (id) => {
+      const resp = await this.connectorService.getMetaDataForProcessScreener(id).toPromise();
+      if (resp.status === 'COMPLETED') {
+        this.uploadedDocuments = this.uploadedDocuments.map((item) => {
+          if (item.id === id) {
+            return { ...item, ...resp };
+          } else {
+            return { ...item };
+          }
+        });
+        this.pendingDocumentIds = this.pendingDocumentIds.filter((pendingId) => pendingId !== id);
+        if (this.selectedDocument) {
+          const selectedId = this.selectedDocument.id;
+          this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
+        }
+      }
+    });
+    if (this.pendingDocumentIds.length === 0) {
+      this.pendingTimer = false;
+    } else {
+      setTimeout(async () => {
+        await this.getDetailedInformation();
+      }, 3000);
+    }
+  }
+
+  onSelectFile(fileId) {
+    this.uploadedDocuments = this.uploadedDocuments.map(item => {
+      if (item.id === fileId) {
+        this.selectedDocument = item;
+        return {
+          ...item,
+          selected: 1,
+        };
+      } else {
+        return {
+          ...item,
+          selected: 0,
+        };
       }
     });
   }
