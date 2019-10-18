@@ -54,7 +54,9 @@ ul li .name:hover {
   margin-top: -8px;
 }
 
-
+.action-button {
+  z-index: 100;
+}
 .action-button button {
   font-weight: 400;
   font-size: 14px;
