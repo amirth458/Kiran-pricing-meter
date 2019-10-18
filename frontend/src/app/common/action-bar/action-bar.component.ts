@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ContentChild, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { ProfileScreenerComponent } from 'src/app/components/profile-screener/profile-screener.component';
 import { EventEmitterService } from 'src/app/components/event-emitter.service';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
 declare var $: any;
 @Component({
@@ -24,10 +25,26 @@ export class ActionBarComponent implements OnInit {
 
   modifiedItem = { index: null, value: [] };
 
+  screenerEstimatorStore$: Observable<any>;
+  pageState = 'NULL';
+  screenedProfiles = [];
   constructor(
     public route: Router,
-    private eventEmitterService: EventEmitterService
+    public eventEmitterService: EventEmitterService,
+    public store: Store<any>,
   ) {
+    this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
+
+    // this.pageState = 'PENDING';
+
+    // setTimeout(() => {
+    this.screenerEstimatorStore$.subscribe(data => {
+      this.pageState = data.status;
+      this.screenedProfiles = data.screenedProfiles;
+    });
+
+    // }, 2000);
+
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         const routeArray = this.route.url.split('/');

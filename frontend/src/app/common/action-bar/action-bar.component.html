@@ -10,14 +10,29 @@
     </li>
   </ul>
 
+  <ng-container *ngIf="pageState == 'PENDING'">
+    <div class="progress-section">
+      <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </ng-container>
+
   <!-- Profile Screener -->
-  <ng-container *ngIf="activeMode == 'profile-screener'">
+  <ng-container *ngIf="activeMode == 'profile-screener' && pageState == 'DONE'">
     <div class="info-section">
       <h6>Profile Screener</h6>
     </div>
 
     <div class="action-button">
-    <button type="button" class="btn theme btn-primary" (click)="startProfileScreening()">
+      <button type="button" class="btn theme btn-primary" (click)="startProfileScreening()">
         Process
       </button>
     </div>
@@ -29,10 +44,11 @@
 
   <!-- Profile Screener : Process -->
 
-  <ng-container *ngIf="activeMode == 'profile-screener-process'">
+  <ng-container *ngIf="activeMode == 'profile-screener-process' && pageState == 'DONE'">
+
     <div class="info-section profile d-flex flex-column text-theme font-italic">
       <p class="mb-0">
-        <span class="font-weight-bold">3 process</span> profiles were deemed eligable for your test RFQ
+        <span class="font-weight-bold">{{screenedProfiles.length}} process profiles</span>  were deemed eligable for your test RFQ
       </p>
       <p class="font-weight-bold mb-0">
         Click <span class="text-highlight" (click)="navigateToPricingEstimator()">here</span> to calculate the price
@@ -48,6 +64,8 @@
         Edit Profile Screener
       </button>
     </div>
+
+
   </ng-container>
 
 
@@ -56,7 +74,7 @@
 
 
   <!-- Pricing Estimator -->
-  <ng-container *ngIf="activeMode == 'pricing-estimator'">
+  <ng-container *ngIf="activeMode == 'pricing-estimator' && pageState == 'DONE'">
     <div class="info-section">
       <h6>Pricing Estimator</h6>
     </div>
@@ -74,7 +92,7 @@
 
   <!-- Pricing Estimator : Process -->
 
-  <ng-container *ngIf="activeMode == 'pricing-estimator-process'">
+  <ng-container *ngIf="activeMode == 'pricing-estimator-process' && pageState == 'DONE'">
     <div class="info-section profile d-flex flex-column text-theme font-italic">
       <p class="mb-0">
         Of your pricing profile, 4 qualified. The best price is <span class="font-weight-bold">$375</span>
