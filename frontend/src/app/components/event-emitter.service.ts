@@ -11,7 +11,7 @@ export class EventEmitterService {
 
     constructor() { }
 
-    onProcessScreen() {
-        this.processScreenEvent.emit();
+    onProcessScreen(url) {
+        this.processScreenEvent.emit(url);
     }
 }
