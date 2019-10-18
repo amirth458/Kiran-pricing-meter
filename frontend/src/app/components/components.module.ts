@@ -60,6 +60,8 @@ import { AdminVendorDetailsUserComponent } from './admin/vendor-details/user/use
 import { AdminVendorDetailsVendorComponent } from './admin/vendor-details/vendor/vendor.component';
 import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machine/machine.component';
 
+import { ProgressBarComponent } from '../common/progress-bar/progress-bar.component';
+
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -70,6 +72,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     ActionCellApproveRendererComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
+    ProgressBarComponent,
 
     PostProcessComponent,
     PostProcessPricingComponent,
@@ -139,6 +142,7 @@ import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machi
     ActionCellApproveRendererComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
+    ProgressBarComponent,
 
     PostProcessComponent,
     PostProcessPricingComponent,

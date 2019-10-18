@@ -20,14 +20,14 @@ export class ConnectorService {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
+    return this.http.post<any>(url, formData, {
+      reportProgress: true,
+      observe: 'events'
     });
-    return this.http.post<any>(url, formData, { headers });
   }
 
   getMetaDataForProcessScreener(id: number) {
-    const url = `${environment.apiBaseUrl}/connector/metadata/${id}`;
+    const url = `${environment.CONNECTOR_HOST_URL}/connector/metadata/${id}`;
     return this.http.get<any>(url);
   }
 }

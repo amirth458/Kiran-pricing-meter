@@ -36,13 +36,12 @@
         </button>
         <input type="file" name="file" (change)="onFileChange($event)" id="file"
           class="inputfile" accept="*" />
-        <ul class="uploaded_files">
-          <li *ngFor="let item of uploadedDocuments">
-            <a href="{{item.name}}" target="_blank">
-              <i class="fa {{item.saved? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
-              <span [ngClass]="{'line-through': item.saved === 2 || item.saved === 3}">{{item.fileName}}</span>
-            </a>
-            <button class="close" type="button" (click)="onRemoveFile(item.name)"><i class="fas fa-trash" color="red" aria-hidden="true"></i></button>
+        <ul class="uploaded_files" style="padding-left: 0; margin-top: 10px;">
+          <li *ngFor="let item of uploadedDocuments" style="width: 350px;cursor: pointer;" >
+            <i class="fa {{item.selected? 'fa-check-circle': 'fa-question-circle-o'}}"></i>&nbsp;&nbsp; 
+            <span (click)="onSelectFile(item.id)" [ngClass]="{'style-bold': item.selected === 1}">{{item.fileName}}</span>
+          
+            <button class="close" type="button" (click)="onRemoveFile(item.id)"><i class="fas fa-trash" color="red" aria-hidden="true"></i></button>
           </li>
         </ul>
       </div>
@@ -51,13 +50,16 @@
         <p>Detail Information</p>
         <div class="row details">
           <div class="col-md-4 d-flex align-items-center">
-            <div *ngIf="!isSelectedDocument()" class="no-image">
+            <div *ngIf="!selectedDocument || !selectedDocument.smallImage" class="no-image">
               No Photo
             </div>
-            <img *ngIf="isSelectedDocument()" [src]="uploadImage" (click)="toggleModal()" height="200px" width="200px" alt="">
+            <div *ngIf="isSelectedDocument()">
+              <img *ngIf="selectedDocument.smallImage" [src]="selectedDocument.smallImage" (click)="toggleModal()" height="200px" width="200px" alt="">
+            </div>
+            
           </div>  
 
-          <div class="col-md-8 d-flex flex-column" *ngIf="isSelectedDocument() && !uploading">
+          <div class="col-md-8 d-flex flex-column" *ngIf="selectedDocument && selectedDocument.smallImage">
             <span class="title">Demo 1</span>
             <span class="quantity">Quantity : 25</span>
 
@@ -92,7 +94,8 @@
                     </div>
                   </div>
                 </li>
-                <li><span>Extents</span> -
+                <li>
+                <span>Extents</span> -
                   <div class="d-flex flex-column">
                     <div class="inputs">
                       <input class="form-control" required type="text" id="design" name="design"
@@ -175,12 +178,9 @@
           <div class="col-md-8 d-flex flex-column" *ngIf="!isSelectedDocument() && !uploading">
             <span class="title">No Information</span>
           </div>
-          <!-- <div class="col-md-8 d-flex flex-column" *ngIf="uploading">
-            <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-              {{uploadResponse.message}}% 
-            </div>
-          </div> -->
-          
+          <div class="col-md-8 d-flex flex-column" *ngIf="uploading && uploadResponse.status === 'progress'">
+            <app-progress-bar text="Uploading... Please wait" [percent]="uploadResponse.message" ></app-progress-bar>
+          </div>
         </div>
       </div>
     </div>
