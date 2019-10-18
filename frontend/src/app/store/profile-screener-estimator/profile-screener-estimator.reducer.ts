@@ -3,6 +3,7 @@ import * as  ActionTypes from './profile-screener-estimator.actions';
 const defaultAction = {
   RFQInfo: {},
   screenedProfiles: [],
+  estimatedPrices: [],
   status: 'DONE'
 };
 
@@ -18,6 +19,8 @@ export function screenerEstimatorReducer(state = defaultAction, action: Action) 
       return newState(state, { RFQInfo: action.payload });
     case ActionTypes.Types.SetScreenedProfiles:
       return newState(state, { screenedProfiles: action.payload });
+    case ActionTypes.Types.SetEstimatedPrices:
+      return newState(state, { estimatedPrices: action.payload });
     case ActionTypes.Types.Status:
       return newState(state, { status: action.payload });
     default:
