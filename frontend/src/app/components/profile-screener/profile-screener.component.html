@@ -292,7 +292,7 @@
 
 <!-- Large modal -->
 <button #infoModal type="button" class="btn btn-primary d-none" data-toggle="modal"
-  data-target=".info-modal">Large</button>
+  data-target=".info-modal"></button>
 
 <div class="modal fade info-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -312,7 +312,7 @@
 
             <div class="col-md-6 d-flex flex-column">
               <span class="title">Demo 1</span>
-              <span class="quantity">Quantity : 25</span>
+              <span class="quantity">Quantity : {{quantity}}</span>
 
               <div class="image-info d-flex flex-column">
                 <span>
@@ -325,11 +325,11 @@
 
               <div class="image-details">
                 <ul>
-                  <li><span>Volume</span> - 3.15cc</li>
-                  <li><span>Extents</span> - 25.2mm x 25.00mm x 12.8mm </li>
-                  <li><span>Bounding box</span> - 6.22cc</li>
-                  <li><span>Surface area</span> - 8.1cm2</li>
-                  <li><span>Thinnest wall</span> - 1.4mm</li>
+                  <li><span>Volume</span> - {{details.volume.value}}cc</li>
+                  <li><span>Extents</span> - {{details.extents[0].value}}mm x {{details.extents[1].value}}mm x {{details.extents[2].value}}mm </li>
+                  <li><span>Bounding box</span> - {{details.boundingBox.value}}cc</li>
+                  <li><span>Surface area</span> - {{details.surfaceArea.value}}cm2</li>
+                  <li><span>Thinnest wall</span> - {{details.thinnestWall.value}}mm</li>
                 </ul>
 
               </div>

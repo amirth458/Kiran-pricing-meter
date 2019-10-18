@@ -191,12 +191,15 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
   ) {
     this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
     this.screenerEstimatorStore$.subscribe(data => {
-      console.log(data);
       this.highlightedRows = data.screenedProfiles.map(d => d.screenedProfiles);
       // this.highlightedRows.push(192);
-      if (this.tableControlReady) {
-        this.onGridReady({});
-      }
+      // console.log(data);
+      const checkInterval = setInterval(() => {
+        if (this.tableControlReady && this.gridOptions.api) {
+          this.onGridReady({});
+          clearInterval(checkInterval);
+        }
+      }, 1000);
     });
     this.navigation = this.route.getCurrentNavigation();
   }
@@ -226,9 +229,6 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
     this.tableControlReady = true;
     this.spineer.hide();
 
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
   }
 
   configureColumnDefs() {
@@ -269,6 +269,8 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
         this.filterColumns[index].checked = true;
       }
     });
+
+    this.gridOptions.api.sizeColumnsToFit();
 
   }
 

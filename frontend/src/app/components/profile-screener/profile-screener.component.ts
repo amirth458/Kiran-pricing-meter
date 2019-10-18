@@ -13,7 +13,11 @@ import { ProfileScreenerService } from 'src/app/service/profile-screener.service
 import { EventEmitterService } from '../event-emitter.service';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { SetRFQInfo, SetScreenedProfiles, SetStatus } from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
+import {
+  SetRFQInfo,
+  SetScreenedProfiles,
+  SetStatus
+} from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 
 @Component({
   selector: 'app-profile-screener',
@@ -83,6 +87,9 @@ export class ProfileScreenerComponent implements OnInit {
     { name: '10 business days', id: '10' }
   ];
 
+  RFQData: any = {};
+  screenedProfiles = [];
+
   processProfiles = [];
   activeMode = 'default';
   isFormValid = false;
@@ -104,6 +111,23 @@ export class ProfileScreenerComponent implements OnInit {
   ) {
 
     this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
+    this.screenerEstimatorStore$.subscribe(result => {
+      this.RFQData = result.RFQInfo;
+      this.screenedProfiles = result.screenedProfiles;
+
+      this.form.setValue({
+        requiredCertificateId: this.RFQData.requiredCertificateId || '',
+        materialId: this.RFQData.materialId || null,
+        equipmentId: this.RFQData.equipmentId || null,
+        confidentialityId: this.RFQData.confidentialityId || '',
+        quantity: this.RFQData.quantity || '',
+        deliveryStatementId: this.RFQData.deliveryStatementId || '',
+        tolerance: this.RFQData.tolerance || null,
+        surfaceRoughness: this.RFQData.surfaceRoughness || null,
+        surfaceFinish: this.RFQData.surfaceFinish || null,
+      });
+
+    });
 
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
@@ -118,12 +142,6 @@ export class ProfileScreenerComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if (this.eventEmitterService.subsVar == undefined) {
-      this.eventEmitterService.subsVar = this.eventEmitterService.
-        processScreenEvent.subscribe((name: string) => {
-          this.save();
-        });
-    }
     try {
       this.spineer.show();
       await this.getInputValues();
@@ -143,6 +161,15 @@ export class ProfileScreenerComponent implements OnInit {
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
 
+      // console.log(this.eventEmitterService.subsVar, this.eventEmitterService.subsVar == undefined);
+      if (this.eventEmitterService.subsVar == undefined) {
+        this.eventEmitterService.subsVar = this.eventEmitterService.
+          processScreenEvent.subscribe((url: string) => {
+            this.save(url);
+          });
+      }
+
+
     } catch (e) {
       console.log(e);
     } finally {
@@ -150,6 +177,9 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
+  get quantity() {
+    return this.form.value.quantity;
+  }
 
   async getInputValues() {
     let page = 0;
@@ -160,7 +190,7 @@ export class ProfileScreenerComponent implements OnInit {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
         const machineRes = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
 
-        if (!machineRes.content || machineRes.content.length == 0) {
+        if (!machineRes.content || machineRes.content.length === 0) {
           break;
         }
         machines.push(...machineRes.content);
@@ -171,6 +201,15 @@ export class ProfileScreenerComponent implements OnInit {
         this.processProfiles = profileRes.map(profile => {
           return { ...profile, checked: false };
         });
+
+        if (this.screenedProfiles.length > 0) {
+          this.processProfiles.map((item, index) => {
+            if (this.screenedProfiles.filter(i => i == item.id).length) {
+              this.processProfiles[index].checked = true;
+            }
+          });
+        }
+
       }
 
       machines.map(machine => {
@@ -200,7 +239,6 @@ export class ProfileScreenerComponent implements OnInit {
   }
 
   toggleCheck(index) {
-    console.log(this.processProfiles, index);
     this.processProfiles[index].checked = !this.processProfiles[index].checked;
   }
 
@@ -208,7 +246,7 @@ export class ProfileScreenerComponent implements OnInit {
     this.infoModal.nativeElement.click();
   }
 
-  save() {
+  save(url) {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
@@ -227,16 +265,26 @@ export class ProfileScreenerComponent implements OnInit {
 
     console.log(this.form.value);
     if (this.form.valid && this.isFormValid) {
-      const postData = this.form.value;
+      const postData = {
+        ...this.form.value, processProfileIdList: [
+          ...this.processProfiles
+            .filter(profile => profile.checked)
+            .map(profile => profile.id)]
+      };
 
       this.store.dispatch(new SetRFQInfo(postData));
       this.store.dispatch(new SetStatus('PENDING'));
-      this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
-        .subscribe(res => {
-          this.store.dispatch(new SetScreenedProfiles(res));
-          this.store.dispatch(new SetStatus('DONE'));
-        });
-      this.route.navigateByUrl('/profile/processes/profile/profile-screener/process');
+
+      if (!url.includes('estimator')) {
+        this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
+          .subscribe(res => {
+            this.store.dispatch(new SetScreenedProfiles(res));
+            this.store.dispatch(new SetStatus('DONE'));
+          });
+      } else {
+        this.store.dispatch(new SetScreenedProfiles(postData.processProfileIdList));
+      }
+      this.route.navigateByUrl(url);
     } else {
       console.log('not valid');
     }
