@@ -1,0 +1,27 @@
+
+.progress-wrapper .text-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-wrapper .text-section label {
+  color: var(--theme-light-blue);
+  font-weight: bold;
+}
+
+.progress-wrapper .text-section span {
+  color: var(--theme-light-green);
+  font-weight: bold;
+}
+
+.progress-wrapper .bar-section {
+  background-color: #EFEFEF;
+  height: 13px;
+  border-radius: 13px;
+}
+
+.progress-wrapper .bar-section .percent {
+  background-color: var(--theme-light-green);
+  height: 13px;
+  border-radius: 13px;
+}

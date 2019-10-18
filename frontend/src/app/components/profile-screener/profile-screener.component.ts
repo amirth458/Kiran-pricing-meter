@@ -10,13 +10,37 @@ import { ProcessMetadataService } from 'src/app/service/process-metadata.service
 import { ConnectorService } from 'src/app/service/connector.service';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { Router, NavigationEnd } from '@angular/router';
-
+import { map } from 'rxjs/operators';
+import { HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-profile-screener',
   templateUrl: './profile-screener.component.html',
   styleUrls: ['./profile-screener.component.css']
 })
 export class ProfileScreenerComponent implements OnInit {
+
+  constructor(
+    private fb: FormBuilder,
+    private vendorService: VendorService,
+    private spineer: NgxSpinnerService,
+    private userService: UserService,
+    private machineService: MachineService,
+    private processMetaData: ProcessMetadataService,
+    private connectorService: ConnectorService,
+    private processProfileService: ProcessProfileService,
+    private route: Router
+  ) {
+    route.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const routeArray = this.route.url.split('/');
+        if (routeArray.includes('pricing') && routeArray.includes('estimator')) {
+          this.activeMode = 'pricing-estimator';
+        } else {
+          this.activeMode = 'default';
+        }
+      }
+    });
+  }
 
   @ViewChild('infoModal') infoModal: ElementRef;
   error = '';
@@ -76,34 +100,13 @@ export class ProfileScreenerComponent implements OnInit {
   ];
 
   uploadedDocuments = [];
-  selectedDocumentIndex = -1;
+  selectedDocument = null;
   uploading = false;
-  uploadResponse: any;
   processProfiles = [];
   activeMode = 'default';
-
-  constructor(
-    private fb: FormBuilder,
-    private vendorService: VendorService,
-    private spineer: NgxSpinnerService,
-    private userService: UserService,
-    private machineService: MachineService,
-    private processMetaData: ProcessMetadataService,
-    private connectorService: ConnectorService,
-    private processProfileService: ProcessProfileService,
-    private route: Router
-  ) {
-    route.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        const routeArray = this.route.url.split('/');
-        if (routeArray.includes('pricing') && routeArray.includes('estimator')) {
-          this.activeMode = 'pricing-estimator';
-        } else {
-          this.activeMode = 'default';
-        }
-      }
-    });
-  }
+  uploadResponse = { status: '', message: '', filePath: '' };
+  pendingDocumentIds = [];
+  pendingTimer = false;
 
   async ngOnInit() {
     try {
@@ -121,9 +124,9 @@ export class ProfileScreenerComponent implements OnInit {
 
       const units = await this.processMetaData.getMeasurementUnitType().toPromise();
       this.units = units.metadataList;
-      this.volumeUnits = this.units.filter(unit => unit.measurementType.name == 'volume');
-      this.lengthUnits = this.units.filter(unit => unit.measurementType.name == 'length');
-      this.areaUnits = this.units.filter(unit => unit.measurementType.name == 'area');
+      this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
+      this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
+      this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
 
     } catch (e) {
       console.log(e);
@@ -142,7 +145,7 @@ export class ProfileScreenerComponent implements OnInit {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
         const machineRes = await this.machineService.getMachinery(this.userService.getVendorInfo().id, param).toPromise();
 
-        if (!machineRes.content || machineRes.content.length == 0) {
+        if (!machineRes.content || machineRes.content.length === 0) {
           break;
         }
         machines.push(...machineRes.content);
@@ -179,7 +182,7 @@ export class ProfileScreenerComponent implements OnInit {
     const materialList = this.form.value.materialList;
     if (materialList.length) {
 
-      if (editScreen && materialList.length == this.materials.length - 1) {
+      if (editScreen && materialList.length === this.materials.length - 1) {
         this.form.setValue({
           ...this.form.value
         });
@@ -209,29 +212,23 @@ export class ProfileScreenerComponent implements OnInit {
 
   isSelectedDocument(): boolean {
     let selected = false;
-    if ( this.selectedDocumentIndex === -1 || this.uploadedDocuments.length === 0) {
-      selected = false;
-    }
-    if ( this.selectedDocumentIndex >= 0 && this.uploadedDocuments.length > this.selectedDocumentIndex) {
+    if ( this.selectedDocument ) {
       selected = true;
     }
     return selected;
   }
+
   onOpenFile(event) {
     // tslint:disable-next-line: deprecation
     $('#file').click();
   }
 
-  onRemoveFile(name) {
-    const uploadedFiles = this.uploadedDocuments.filter((item) => item.name === name);
-    if (uploadedFiles[0].saved === 3) {
-      uploadedFiles[0].saved = 0;
-    } else if (uploadedFiles[0].saved === 2) {
-      uploadedFiles[0].saved = 1;
-    } else if (uploadedFiles[0].saved === 1) {
-      uploadedFiles[0].saved = 2;
-    } else {
-      uploadedFiles[0].saved = 3;
+  onRemoveFile(id) {
+    this.uploadedDocuments = this.uploadedDocuments.filter((item) => item.id !== id);
+    if (this.selectedDocument) {
+      if (id === this.selectedDocument.id) {
+        this.selectedDocument = null;
+      }
     }
   }
 
@@ -239,14 +236,83 @@ export class ProfileScreenerComponent implements OnInit {
     if (fileInput.target.files && fileInput.target.files[0]) {
       const file = fileInput.target.files.item(0);
       this.uploading = true;
-      this.connectorService.fileUploadForProcessScreener(file).subscribe(data => {
-        this.uploadResponse = data;
-        // do something, if upload success
-        console.log(data);
-      }, error => {
-        console.log(error);
-      });
+      this.connectorService.fileUploadForProcessScreener(file)
+        .pipe(map((event) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              const progress = Math.round(100 * event.loaded / event.total);
+              return { status: 'progress', message: progress };
+            case HttpEventType.Response:
+              return event.body;
+            default:
+              return `Unhandled event: ${event.type}`;
+          }
+        }))
+        .subscribe(
+          (res) => {
+            this.uploadResponse = res;
+            if (res.fileName) {
+              this.uploading = false;
+              this.uploadedDocuments = this.uploadedDocuments.map(item => ({...item, selected: 0}));
+              this.uploadedDocuments.push({...res, selected: 1});
+              this.pendingDocumentIds.push(res.id);
+              this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
+              console.log(this.selectedDocument);
+              if (!this.pendingTimer) {
+                this.pendingTimer = true;
+                setTimeout(async () => {
+                  await this.getDetailedInformation();
+                }, 3000);
+              }
+            }
+          },
+          (err) => this.error = err
+        );
     }
+  }
+
+  async getDetailedInformation() {
+    this.pendingDocumentIds.map(async (id) => {
+      const resp = await this.connectorService.getMetaDataForProcessScreener(id).toPromise();
+      if (resp.status === 'COMPLETED') {
+        this.uploadedDocuments = this.uploadedDocuments.map((item) => {
+          if (item.id === id) {
+            return {...item, ...resp};
+          } else {
+            return {...item};
+          }
+        });
+        this.pendingDocumentIds = this.pendingDocumentIds.filter((pendingId) => pendingId !== id);
+        if (this.selectedDocument) {
+          const selectedId = this.selectedDocument.id;
+          this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
+        }
+      }
+    });
+    if (this.pendingDocumentIds.length === 0) {
+      this.pendingTimer = false;
+    } else {
+      setTimeout(async () => {
+        await this.getDetailedInformation();
+      }, 3000);
+    }
+  }
+
+  onSelectFile(fileId) {
+    this.uploadedDocuments = this.uploadedDocuments.map(item => {
+      if (item.id === fileId) {
+        this.selectedDocument = item;
+        return {
+          ...item,
+          selected: 1,
+        };
+      } else {
+        return {
+          ...item,
+          selected: 0,
+        };
+      }
+    });
   }
 
   htmlDecode(input) {

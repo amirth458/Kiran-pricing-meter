@@ -571,3 +571,8 @@ international-phone-number.readonly input {
 .conditions .minus {
   color: var(--theme-orange);
 }
+
+
+.style-bold {
+  font-weight: bold !important;
+}
