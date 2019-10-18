@@ -7,6 +7,8 @@ import { UserService } from 'src/app/service/user.service';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ToastrService } from 'ngx-toastr';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile-screener-estimator',
@@ -174,15 +176,31 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
   pageSize = 10;
 
   navigation;
-  highlightedRows = [192, 2];
+  highlightedRows = []; // 192
+
+  screenerEstimatorStore$: Observable<any>;
+
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,
     public userService: UserService,
     public processService: ProcessProfileService,
     public processMetaData: ProcessMetadataService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    public store: Store<any>
   ) {
+    this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
+    this.screenerEstimatorStore$.subscribe(data => {
+      this.highlightedRows = data.screenedProfiles.map(d => d.screenedProfiles);
+      // this.highlightedRows.push(192);
+      // console.log(data);
+      const checkInterval = setInterval(() => {
+        if (this.tableControlReady && this.gridOptions.api) {
+          this.onGridReady({});
+          clearInterval(checkInterval);
+        }
+      }, 1000);
+    });
     this.navigation = this.route.getCurrentNavigation();
   }
 
@@ -206,15 +224,11 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
       paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35,
-      rowSelection: 'multiple'
+      headerHeight: 35
     };
     this.tableControlReady = true;
     this.spineer.hide();
 
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
   }
 
   configureColumnDefs() {
@@ -233,13 +247,31 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
   }
 
   onGridReady(event) {
+    const rowData = [];
     this.gridOptions.api.forEachNode(node => {
       const data = node.data;
       if (this.highlightedRows.includes(data.id)) {
-        node.selectThisNode(true);
+        node.setData({ ...data, valid: true });
+      } else {
+        node.setData({ ...data, valid: false });
       }
-
+      rowData.push(node.data);
     });
+
+    this.gridOptions.api.setRowData(rowData);
+
+    this.gridOptions.api.forEachNode(node => {
+      node.selectThisNode(node.data.valid);
+    });
+
+    this.filterColumns.map((item, index) => {
+      if (item.name === 'Action') {
+        this.filterColumns[index].checked = true;
+      }
+    });
+
+    this.gridOptions.api.sizeColumnsToFit();
+
   }
 
   editRow(event) {
@@ -280,7 +312,7 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
   async getProfiles() {
     try {
       const res = await this.processService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
-      this.rowData = res || [];
+      this.rowData = res ? res.map(r => new Object({ ...r, valid: false })) : [];
     } catch (e) {
       console.log(e);
       this.spineer.hide();
@@ -468,7 +500,7 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
           delete: async (param) => {
           },
           view: async (param) => {
-            window.alert('view');
+            // window.alert('view');
           },
           canEdit: false,
           canCopy: false,
