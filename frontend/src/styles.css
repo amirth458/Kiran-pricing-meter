@@ -38,6 +38,10 @@
   color: var(--theme-light-blue);
 }
 
+.text-theme-green {
+  color: var(--theme-light-green);
+}
+
 .text-highlight {
   color: var(--theme-light-green);
 }
@@ -313,6 +317,10 @@ button.theme.theme-reverse:hover {
 .theme-table .ag-theme-balham .action-column .view {
   margin-right: 10px;
   color: var(--theme-orange);
+}
+
+.theme-table .ag-theme-balham .action-column .view.text-theme-green {
+  color: var(--theme-light-green);
 }
 
 .theme-table .ag-theme-balham .action-column span:hover {
