@@ -11,6 +11,9 @@ import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
 import { EventEmitterService } from '../event-emitter.service';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { SetRFQInfo, SetScreenedProfiles, SetStatus } from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 
 @Component({
   selector: 'app-profile-screener',
@@ -84,6 +87,8 @@ export class ProfileScreenerComponent implements OnInit {
   activeMode = 'default';
   isFormValid = false;
 
+  screenerEstimatorStore$: Observable<any>;
+
   constructor(
     public fb: FormBuilder,
     private vendorService: VendorService,
@@ -94,8 +99,12 @@ export class ProfileScreenerComponent implements OnInit {
     public processProfileService: ProcessProfileService,
     public route: Router,
     public profileScreererService: ProfileScreenerService,
-    public eventEmitterService: EventEmitterService
+    public eventEmitterService: EventEmitterService,
+    public store: Store<any>
   ) {
+
+    this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
+
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         const routeArray = this.route.url.split('/');
@@ -219,12 +228,13 @@ export class ProfileScreenerComponent implements OnInit {
     console.log(this.form.value);
     if (this.form.valid && this.isFormValid) {
       const postData = this.form.value;
-      console.log({ postData });
+
+      this.store.dispatch(new SetRFQInfo(postData));
+      this.store.dispatch(new SetStatus('PENDING'));
       this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
         .subscribe(res => {
-          console.log(res);
-          alert(33)
-          // SAVE IT IN STORE
+          this.store.dispatch(new SetScreenedProfiles(res));
+          this.store.dispatch(new SetStatus('DONE'));
         });
       this.route.navigateByUrl('/profile/processes/profile/profile-screener/process');
     } else {
