@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
@@ -24,6 +24,7 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
   ) {
 
   }
+  @ViewChild('infoModal') infoModal;
 
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
@@ -54,6 +55,7 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
     confidentiality: null,
     vendorCertificates: null
   });
+  isValid = false;
 
   ngOnInit() {
     this.getVendorMetaDatas();
@@ -63,12 +65,26 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
     if ( vendor ) {
       this.initForm(vendor);
       this.isNewPhone = false;
+    } else {
+      const user = this.userService.getRegisterUserInfo();
+      this.detailForm.patchValue({
+        primaryContactFirstName: user.firstName,
+        primaryContactLastName: user.lastName,
+        email: user.email,
+      });
     }
     this.onValueChanges();
   }
 
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    if (this.detailForm.valid) {
+      this.saveInformation();
+    }
+    if (this.isValid !== this.detailForm.valid) {
+      this.isValid = this.detailForm.valid;
+      this.userService.setVendorFormStatus(this.detailForm.valid ? 1 : 0);
+    }
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
     Array.prototype.filter.call(forms, (form) => {
@@ -83,7 +99,29 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
       }, false);
     });
   }
-
+  saveInformation() {
+    const vendorProfile = {
+      ...this.detailForm.value,
+      vendorType: {
+        id: this.detailForm.value.vendorType
+      },
+      vendorIndustry: {
+        id: this.detailForm.value.vendorIndustry
+      },
+      country: {
+        id: this.detailForm.value.country
+      },
+      confidentiality: {
+        id: this.detailForm.value.confidentiality
+      },
+      vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
+      vendorIndustries: [{
+        id: this.detailForm.value.vendorIndustry
+      }],
+    };
+    console.log(vendorProfile);
+    this.userService.setRegisterVendorInfo(vendorProfile);
+  }
   onValueChanges(): void {
     this.detailForm.get('phone').valueChanges.subscribe(val => {
       try {
@@ -216,29 +254,11 @@ export class RegisterVendorComponent implements OnInit, AfterViewChecked {
 
   async saveVenorInformation(event) {
     if (!this.detailForm.valid) {
+      this.infoModal.nativeElement.click();
       return;
     }
 
-    const vendorProfile = {
-      ...this.detailForm.value,
-      vendorType: {
-        id: this.detailForm.value.vendorType
-      },
-      vendorIndustry: {
-        id: this.detailForm.value.vendorIndustry
-      },
-      country: {
-        id: this.detailForm.value.country
-      },
-      confidentiality: {
-        id: this.detailForm.value.confidentiality
-      },
-      vendorCertificates: this.certifications.filter((item) => this.selectedCertifications.includes(item.id)),
-      vendorIndustries: [{
-        id: this.detailForm.value.vendorIndustry
-      }],
-    };
-    this.userService.setRegisterVendorInfo(vendorProfile);
+    this.saveInformation();
     this.router.navigateByUrl('/signup/machine');
   }
 

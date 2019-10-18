@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/service/user.service';
 
 declare var $: any;
 @Component({
@@ -8,6 +9,7 @@ declare var $: any;
   styleUrls: ['./register-action-bar.component.css']
 })
 export class RegisterActionBarComponent implements OnChanges, OnInit {
+  @ViewChild('infoModal') infoModal;
   @Input('menus') menus: Array<{
     name: string,
     tooltipMessage: string,
@@ -17,7 +19,7 @@ export class RegisterActionBarComponent implements OnChanges, OnInit {
   @Input('selectedTab') selectedTab: string;
   baseURL = '';
   activeTabIndex = 0;
-  constructor(public route: Router) { }
+  constructor(private route: Router, private userService: UserService) { }
 
   ngOnInit() {
     $(() => {
@@ -49,6 +51,26 @@ export class RegisterActionBarComponent implements OnChanges, OnInit {
 
   selectTab(tab) {
     const prevURL = this.route.url;
+    const prevRoute = prevURL.split('/')[2];
+    if (prevRoute === tab.route) {
+      return;
+    }
+    if (prevRoute === 'user') {
+      const valid = this.userService.getUserFormStatus();
+      if (valid !== 1) {
+        this.infoModal.nativeElement.click();
+        return;
+      }
+    }
+
+    if (prevRoute === 'vendor') {
+      const valid = this.userService.getVendorFormStatus();
+      if (valid !== 1) {
+        this.infoModal.nativeElement.click();
+        return;
+      }
+    }
+
     this.route.navigateByUrl(`/${this.baseURL}/${tab.route}`)
       .then((res) => {
         if (this.route.url !== prevURL && this.route.url.includes(tab.route)) {

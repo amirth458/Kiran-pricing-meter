@@ -148,7 +148,6 @@ export class UserService {
   }
 
   registerUser(user) {
-    console.log(JSON.stringify(user));
     const url = `${environment.apiBaseUrl}/users/signup`;
     return this.http.post(url, user);
   }
@@ -251,5 +250,21 @@ export class UserService {
       {
         headers
       });
+  }
+
+  setUserFormStatus(id) {
+    localStorage.setItem('validInUserForm', String(id));
+  }
+
+  getUserFormStatus() {
+    return Number(localStorage.getItem('validInUserForm'));
+  }
+
+  setVendorFormStatus(id) {
+    localStorage.setItem('validInVendorForm', String(id));
+  }
+
+  getVendorFormStatus() {
+    return Number(localStorage.getItem('validInVendorForm'));
   }
 }
