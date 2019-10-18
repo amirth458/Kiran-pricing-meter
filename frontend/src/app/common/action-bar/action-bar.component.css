@@ -15,7 +15,6 @@ ul {
   list-style: none;
   margin: unset;
   padding: unset;
-  flex-grow: 1;
   display: inline-flex;
 }
 
