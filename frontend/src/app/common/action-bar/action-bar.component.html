@@ -48,7 +48,8 @@
 
     <div class="info-section profile d-flex flex-column text-theme font-italic">
       <p class="mb-0">
-        <span class="font-weight-bold">{{screenedProfiles.length}} process profiles</span>  were deemed eligable for your test RFQ
+        <span class="font-weight-bold">{{screenedProfiles.length}} process profiles</span> were deemed eligable for your
+        test RFQ
       </p>
       <p class="font-weight-bold mb-0" *ngIf="screenedProfiles.length > 0">
         Click <span class="text-highlight" (click)="startPriceEstimation()">here</span> to calculate the price
@@ -95,7 +96,10 @@
   <ng-container *ngIf="activeMode == 'pricing-estimator-process' && pageState == 'DONE'">
     <div class="info-section profile d-flex flex-column text-theme font-italic">
       <p class="mb-0">
-        Of your pricing profile, {{estimatedPrices.length}} qualified. The best price is <span class="font-weight-bold">${{bestPrice}}</span>
+        Of your pricing profile, {{estimatedPrices.length}} qualified.
+        <ng-container *ngIf="estimatedPrices.length > 0">
+          The best price is <span class="font-weight-bold">${{bestPrice}}</span>
+        </ng-container>
       </p>
     </div>
 
