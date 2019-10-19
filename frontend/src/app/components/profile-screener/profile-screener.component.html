@@ -82,7 +82,7 @@
                   Part Dimensions: 12.36mm x 4.50mm x 4.73mm
                 </span>
                 <span>
-                  Files: Brake rotor no logo.step
+                  Files: {{fileNames}}
                 </span>
               </div>
 
@@ -102,8 +102,8 @@
                         id="design" name="design" [(ngModel)]="details.volume.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="value" name="value" class="form-control" [(ngModel)]="details.volume.unit"
-                          [ngModelOptions]="{standalone: true}">
+                        <select required id="value" name="value" class="form-control"
+                          [(ngModel)]="details.volume.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -114,11 +114,11 @@
                     <div class="d-flex flex-column">
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="design" name="design" [(ngModel)]="details.extents[0].value"
+                          max="9999" id="design" name="design" [(ngModel)]="details.extents.buildingX.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
                           <select required id="unit" name="unit" class="form-control"
-                            [(ngModel)]="details.extents[0].unit" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="details.extents.buildingX.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
                             <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                           </select>
@@ -127,11 +127,11 @@
                       x
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="design" name="design" [(ngModel)]="details.extents[1].value"
+                          max="9999" id="design" name="design" [(ngModel)]="details.extents.buildingY.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
                           <select required id="value" name="value" class="form-control"
-                            [(ngModel)]="details.extents[1].unit" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="details.extents.buildingY.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
                             <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                           </select>
@@ -140,11 +140,11 @@
                       x
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="design" name="design" [(ngModel)]="details.extents[2].value"
+                          max="9999" id="design" name="design" [(ngModel)]="details.extents.buildingZ.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
                           <select required id="unit" name="unit" class="form-control"
-                            [(ngModel)]="details.extents[2].unit" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="details.extents.buildingZ.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
                             <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                           </select>
@@ -159,7 +159,7 @@
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="value" name="value" class="form-control"
-                          [(ngModel)]="details.boundingBox.unit" [ngModelOptions]="{standalone: true}">
+                          [(ngModel)]="details.boundingBox.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -172,7 +172,7 @@
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="unit" name="unit" class="form-control"
-                          [(ngModel)]="details.surfaceArea.unit" [ngModelOptions]="{standalone: true}">
+                          [(ngModel)]="details.surfaceArea.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of areaUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -181,11 +181,11 @@
                   </li>
                   <li><span>Thinnest wall</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                        id="design" name="design" [(ngModel)]="details.thinnestWall.value"
+                        id="design" name="design" [(ngModel)]="details.minWallThickness.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="unit" name="unit" class="form-control"
-                          [(ngModel)]="details.thinnestWall.unit" [ngModelOptions]="{standalone: true}">
+                          [(ngModel)]="details.minWallThickness.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -243,7 +243,7 @@
             <tr>
               <td>Design</td>
               <td>
-                <input class="form-control" disabled required type="text" id="design" name="design">
+                <input class="form-control" disabled required type="text" id="design" name="design" [value]="fileNames">
               </td>
             </tr>
 
@@ -344,18 +344,25 @@
                   Part Dimensions: 12.36mm x 4.50mm x 4.73mm
                 </span>
                 <span>
-                  Files: Brake rotor no logo.step
+                  Files: {{fileNames}}
                 </span>
               </div>
 
               <div class="image-details">
                 <ul>
-                  <li><span>Volume</span> - {{details.volume.value}}cc</li>
-                  <li><span>Extents</span> - {{details.extents[0].value}}mm x {{details.extents[1].value}}mm x
-                    {{details.extents[2].value}}mm </li>
-                  <li><span>Bounding box</span> - {{details.boundingBox.value}}cc</li>
-                  <li><span>Surface area</span> - {{details.surfaceArea.value}}cm2</li>
-                  <li><span>Thinnest wall</span> - {{details.thinnestWall.value}}mm</li>
+                  <li><span>Volume</span> - {{details.volume.value}} {{getUnitName(details.volume.unitId)}}</li>
+                  <li><span>Extents</span> - {{details.extents.buildingX.value}}
+                    {{getUnitName(details.extents.buildingX.unitId)}} <ng-container
+                      *ngIf="details.extents.buildingY.value">x</ng-container>
+                    {{details.extents.buildingY.value}} {{getUnitName(details.extents.buildingY.unitId)}} <ng-container
+                      *ngIf="details.extents.buildingZ.value">x</ng-container>
+                    {{details.extents.buildingZ.value}} {{getUnitName(details.extents.buildingZ.unitId)}} </li>
+                  <li><span>Bounding box</span> - {{details.boundingBox.value}}
+                    {{getUnitName(details.boundingBox.unitId)}}</li>
+                  <li><span>Surface area</span> - {{details.surfaceArea.value}}
+                    {{getUnitName(details.surfaceArea.unitId)}}</li>
+                  <li><span>Thinnest wall</span> - {{details.minWallThickness.value}}
+                    {{getUnitName(details.minWallThickness.unitId)}}</li>
                 </ul>
 
               </div>

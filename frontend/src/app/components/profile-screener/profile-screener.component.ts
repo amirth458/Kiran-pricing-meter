@@ -36,28 +36,33 @@ export class ProfileScreenerComponent implements OnInit {
   details = {
     volume: {
       value: '',
-      unit: ''
+      unitId: ''
     },
-    extents: [{
-      value: '',
-      unit: ''
-    }, {
-      value: '',
-      unit: ''
-    }, {
-      value: '',
-      unit: ''
-    }],
+    extents: {
+      buildingX: {
+        value: '',
+        unitId: ''
+      },
+      buildingY: {
+        value: '',
+        unitId: ''
+      },
+      buildingZ: {
+        value: '',
+        unitId: ''
+      }
+    },
     boundingBox: {
       value: '',
-      unit: ''
-    }, surfaceArea: {
-      value: '',
-      unit: ''
+      unitId: ''
     },
-    thinnestWall: {
+    surfaceArea: {
       value: '',
-      unit: ''
+      unitId: ''
+    },
+    minWallThickness: {
+      value: '',
+      unitId: ''
     }
   };
 
@@ -105,6 +110,7 @@ export class ProfileScreenerComponent implements OnInit {
   screenedProfiles = [];
 
   processProfiles = [];
+  profileTypes = [];
   activeMode = 'default';
   isFormValid = false;
 
@@ -130,6 +136,18 @@ export class ProfileScreenerComponent implements OnInit {
       this.RFQData = result.RFQInfo;
       this.screenedProfiles = result.screenedProfiles;
 
+      if (this.RFQData.partMetadata) {
+        this.details = this.RFQData.partMetadata;
+      }
+
+      if (this.RFQData.fileInfo) {
+        this.selectedDocument = this.RFQData.fileInfo;
+      }
+
+      if (this.RFQData.fileInfo && this.RFQData.fileInfo.uploadedDocuments) {
+        this.uploadedDocuments = this.RFQData.fileInfo.uploadedDocuments;
+      }
+
       this.form.setValue({
         requiredCertificateId: this.RFQData.requiredCertificateId || '',
         materialId: this.RFQData.materialId || null,
@@ -141,6 +159,7 @@ export class ProfileScreenerComponent implements OnInit {
         surfaceRoughness: this.RFQData.surfaceRoughness || null,
         surfaceFinish: this.RFQData.surfaceFinish || null,
       });
+
 
     });
 
@@ -170,6 +189,12 @@ export class ProfileScreenerComponent implements OnInit {
         };
       });
 
+
+
+      const res = await this.processMetaData.getProcessProfileType().toPromise();
+      this.profileTypes = res.metadataList;
+
+
       const units = await this.processMetaData.getMeasurementUnitType().toPromise();
       this.units = units.metadataList;
       this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
@@ -196,10 +221,22 @@ export class ProfileScreenerComponent implements OnInit {
     return this.form.value.quantity;
   }
 
+  get fileNames() {
+    let name = '';
+    this.uploadedDocuments.map((file, index) => {
+      if (index === 0) {
+        name += file.fileName;
+      } else {
+        name += ', ' + file.fileName;
+
+      }
+    });
+    return name;
+  }
+
   async getInputValues() {
     let page = 0;
     const machines = [];
-    const processProfiles = [];
     try {
       while (true) {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
@@ -235,6 +272,13 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
+  getUnitName(id) {
+    const unit = this.units.filter(u => u.id == id);
+    if (unit.length) {
+      return unit[0].symbol || unit[0].displayName;
+    }
+    return '';
+  }
 
   equipmentChanged() {
     const equipmentId = this.form.value.equipmentId;
@@ -326,7 +370,6 @@ export class ProfileScreenerComponent implements OnInit {
               this.uploadedDocuments.push({ ...res, selected: 1 });
               this.pendingDocumentIds.push(res.id);
               this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
-              console.log(this.selectedDocument);
               if (!this.pendingTimer) {
                 this.pendingTimer = true;
                 setTimeout(async () => {
@@ -421,14 +464,25 @@ export class ProfileScreenerComponent implements OnInit {
         ...this.form.value, processProfileIdList: [
           ...this.processProfiles
             .filter(profile => profile.checked)
-            .map(profile => profile.id)]
+            .map(profile => profile.id)],
+        partMetadata: this.details
       };
 
-      this.store.dispatch(new SetRFQInfo(postData));
+      postData.processType = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
+
+
+
+      this.store.dispatch(new SetRFQInfo({
+        ...postData,
+        fileInfo: {
+          ...this.selectedDocument,
+          uploadedDocuments: this.uploadedDocuments
+        }
+      }));
       this.store.dispatch(new SetStatus('PENDING'));
 
       if (!url.includes('estimator')) {
-        this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
+        this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
           .subscribe(res => {
             this.store.dispatch(new SetScreenedProfiles(res));
             this.store.dispatch(new SetStatus('DONE'));
