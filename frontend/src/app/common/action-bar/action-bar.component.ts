@@ -4,6 +4,7 @@ import { EventEmitterService } from 'src/app/components/event-emitter.service';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ProfileScreenerService } from 'src/app/service/profile-screener.service';
+import { SetRFQInfo, SetScreenedProfiles } from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 
 declare var $: any;
 @Component({
@@ -122,6 +123,11 @@ export class ActionBarComponent implements OnInit {
   }
 
   addButton(route) {
+
+    if (route === 'profile-screener') {
+      this.store.dispatch(new SetRFQInfo({}));
+      this.store.dispatch(new SetScreenedProfiles([]));
+    }
     this.route.navigateByUrl(this.route.url + '/' + route);
   }
 
