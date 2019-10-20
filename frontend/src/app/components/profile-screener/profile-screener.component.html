@@ -192,6 +192,20 @@
                       </div>
                     </div>
                   </li>
+
+                  <li><span>Estimated Machine Time</span> - <div class="inputs">
+                      <input class="form-control" required type="number" maxlength="4" min="0" max="9999"
+                        id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estimatedMachineTime.value"
+                        [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="unit" name="unit" class="form-control"
+                          [(ngModel)]="details.estimatedMachineTime.unitId" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">{{unit.symbol}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
 
 
@@ -233,8 +247,8 @@
                 <div class="theme">
                   <select required id="nda" name="nda" class="form-control" formControlName="confidentialityId">
                     <option selected value="">Choose...</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
                   </select>
                 </div>
               </td>

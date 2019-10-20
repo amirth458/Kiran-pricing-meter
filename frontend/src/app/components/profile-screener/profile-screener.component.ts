@@ -63,6 +63,10 @@ export class ProfileScreenerComponent implements OnInit {
     minWallThickness: {
       value: '',
       unitId: ''
+    },
+    estimatedMachineTime: {
+      value: '',
+      unitId: ''
     }
   };
 
@@ -85,6 +89,7 @@ export class ProfileScreenerComponent implements OnInit {
   volumeUnits = [];
   lengthUnits = [];
   areaUnits = [];
+  estimatedMachineTimeUnits = [];
   certifications = [];
   materials = [];
   equipments = [];
@@ -200,6 +205,7 @@ export class ProfileScreenerComponent implements OnInit {
       this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
+      this.estimatedMachineTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
 
       // console.log(this.eventEmitterService.subsVar, this.eventEmitterService.subsVar == undefined);
       if (this.eventEmitterService.subsVar == undefined) {
@@ -356,6 +362,7 @@ export class ProfileScreenerComponent implements OnInit {
               const progress = Math.round(100 * event.loaded / event.total);
               return { status: 'progress', message: progress };
             case HttpEventType.Response:
+              console.log(event.body);
               return event.body;
             default:
               return `Unhandled event: ${event.type}`;
