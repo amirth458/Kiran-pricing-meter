@@ -185,7 +185,7 @@ export class ProfileScreenerComponent implements OnInit {
       this.spineer.show();
       await this.getInputValues();
 
-      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.FacilityCertificate).toPromise();
       this.certifications = certifications.map((x) => {
         const name = this.htmlDecode(x.name);
         return {
