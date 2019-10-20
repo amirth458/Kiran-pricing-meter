@@ -154,7 +154,9 @@
                   </li>
                   <li><span>Bounding box</span> -
                     <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                      <input class="form-control" disabled required type="number" step="0.00001" maxlength="4" min="0"
+                        max="9999"
+                        [value]="details.extents.buildingX.value*details.extents.buildingY.value*details.extents.buildingZ.value"
                         id="design" name="design" [(ngModel)]="details.boundingBox.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
@@ -192,6 +194,21 @@
                       </div>
                     </div>
                   </li>
+
+                  <li><span>Est Machine Time</span> - <div class="inputs">
+                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                        id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estMachineTime.value"
+                        [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="unit" name="unit" class="form-control"
+                          [(ngModel)]="details.estMachineTime.unitId" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">{{unit.symbol}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
 
 
@@ -202,8 +219,9 @@
                 <span class="title">No Information</span>
               </div>
             </div>
-            <div class="col-md-8 d-flex flex-column" *ngIf="uploading && uploadResponse.status === 'progress'">
-              <app-progress-bar text="Uploading... Please wait" [percent]="uploadResponse.message"></app-progress-bar>
+            <div class="col-md-8 d-flex flex-column"
+              *ngIf="(uploading && uploadResponse.status === 'progress') || (selectedDocument && !selectedDocument.smallImage)">
+              <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
           </div>
         </div>
@@ -233,8 +251,8 @@
                 <div class="theme">
                   <select required id="nda" name="nda" class="form-control" formControlName="confidentialityId">
                     <option selected value="">Choose...</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
                   </select>
                 </div>
               </td>
@@ -296,14 +314,22 @@
 
             <tr>
               <td>Time to Ship</td>
-              <td>
-                <div class=" theme">
+              <td class="d-flex">
+                <!-- <div class=" theme">
                   <select required id="time-to-ship" name="time-to-ship" class="form-control"
                     formControlName="deliveryStatementId">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of timeToShip" [value]="item.id">{{item.name}}</option>
                   </select>
+                </div> -->
+                <div class="theme flex-grow-1">
+
+                  <input class="form-control" required type="number"  maxlength="4" min="0" max="9999"
+                    id="surface-finish" name="surface-finish" formControlName="surfaceFinish">
                 </div>
+                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
+                  Days
+                </span>
               </td>
             </tr>
           </tbody>

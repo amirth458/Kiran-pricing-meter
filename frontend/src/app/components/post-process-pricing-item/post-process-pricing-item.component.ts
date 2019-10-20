@@ -465,7 +465,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       },
       { headerName: 'Value ($)', field: 'value', hide: false, sortable: false, filter: false, editable: true },
       // { headerName: 'Per', field: 'per', hide: false, sortable: false, filter: false, editable: false, width: 60 },
-      { headerName: '( Per ) Quantity', field: 'quantity', hide: false, sortable: false, filter: false, editable: true },
+      { headerName: 'Per', field: 'quantity', hide: false, sortable: false, filter: false, editable: true },
       {
         headerName: 'Part Value', field: 'partValue', hide: false, sortable: false, filter: false,
         cellRenderer: 'dropdownCellRenderer',

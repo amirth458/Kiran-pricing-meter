@@ -63,6 +63,10 @@ export class ProfileScreenerComponent implements OnInit {
     minWallThickness: {
       value: '',
       unitId: ''
+    },
+    estMachineTime: {
+      value: '',
+      unitId: ''
     }
   };
 
@@ -85,6 +89,7 @@ export class ProfileScreenerComponent implements OnInit {
   volumeUnits = [];
   lengthUnits = [];
   areaUnits = [];
+  estimatedMachineTimeUnits = [];
   certifications = [];
   materials = [];
   equipments = [];
@@ -104,7 +109,7 @@ export class ProfileScreenerComponent implements OnInit {
   uploadResponse = { status: '', message: '', filePath: '' };
   pendingDocumentIds = [];
   pendingTimer = false;
-
+  progressMessage = 'Uploading...';
 
   RFQData: any = {};
   screenedProfiles = [];
@@ -180,7 +185,7 @@ export class ProfileScreenerComponent implements OnInit {
       this.spineer.show();
       await this.getInputValues();
 
-      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.FacilityCertificate).toPromise();
       this.certifications = certifications.map((x) => {
         const name = this.htmlDecode(x.name);
         return {
@@ -200,6 +205,7 @@ export class ProfileScreenerComponent implements OnInit {
       this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
+      this.estimatedMachineTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
 
       // console.log(this.eventEmitterService.subsVar, this.eventEmitterService.subsVar == undefined);
       if (this.eventEmitterService.subsVar == undefined) {
@@ -356,7 +362,7 @@ export class ProfileScreenerComponent implements OnInit {
               const progress = Math.round(100 * event.loaded / event.total);
               return { status: 'progress', message: progress };
             case HttpEventType.Response:
-              return event.body;
+              return { ...event.body, message: 50 };
             default:
               return `Unhandled event: ${event.type}`;
           }
@@ -365,6 +371,7 @@ export class ProfileScreenerComponent implements OnInit {
           (res: any) => {
             this.uploadResponse = res;
             if (res.fileName) {
+              this.progressMessage = 'Analyzing File...';
               this.uploading = false;
               this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
               this.uploadedDocuments.push({ ...res, selected: 1 });
