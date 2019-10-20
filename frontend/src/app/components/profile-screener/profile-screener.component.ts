@@ -64,7 +64,7 @@ export class ProfileScreenerComponent implements OnInit {
       value: '',
       unitId: ''
     },
-    estimatedMachineTime: {
+    estMachineTime: {
       value: '',
       unitId: ''
     }
@@ -109,7 +109,7 @@ export class ProfileScreenerComponent implements OnInit {
   uploadResponse = { status: '', message: '', filePath: '' };
   pendingDocumentIds = [];
   pendingTimer = false;
-
+  progressMessage = 'Uploading...';
 
   RFQData: any = {};
   screenedProfiles = [];
@@ -362,8 +362,7 @@ export class ProfileScreenerComponent implements OnInit {
               const progress = Math.round(100 * event.loaded / event.total);
               return { status: 'progress', message: progress };
             case HttpEventType.Response:
-              console.log(event.body);
-              return event.body;
+              return { ...event.body, message: 50 };
             default:
               return `Unhandled event: ${event.type}`;
           }
@@ -372,6 +371,7 @@ export class ProfileScreenerComponent implements OnInit {
           (res: any) => {
             this.uploadResponse = res;
             if (res.fileName) {
+              this.progressMessage = 'Analyzing File...';
               this.uploading = false;
               this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
               this.uploadedDocuments.push({ ...res, selected: 1 });

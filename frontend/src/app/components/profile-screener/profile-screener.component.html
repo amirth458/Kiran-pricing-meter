@@ -158,7 +158,7 @@
                         id="design" name="design" [(ngModel)]="details.boundingBox.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="value" name="value" class="form-control"
+                        <select required id="value" name="value" class="form-control" [value]="details.extents.buildingX.value*details.extents.buildingY.value*details.extents.buildingZ.value"
                           [(ngModel)]="details.boundingBox.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
@@ -195,11 +195,11 @@
 
                   <li><span>Estimated Machine Time</span> - <div class="inputs">
                       <input class="form-control" required type="number" maxlength="4" min="0" max="9999"
-                        id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estimatedMachineTime.value"
+                        id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estMachineTime.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="unit" name="unit" class="form-control"
-                          [(ngModel)]="details.estimatedMachineTime.unitId" [ngModelOptions]="{standalone: true}">
+                          [(ngModel)]="details.estMachineTime.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -216,8 +216,8 @@
                 <span class="title">No Information</span>
               </div>
             </div>
-            <div class="col-md-8 d-flex flex-column" *ngIf="uploading && uploadResponse.status === 'progress'">
-              <app-progress-bar text="Uploading... Please wait" [percent]="uploadResponse.message"></app-progress-bar>
+            <div class="col-md-8 d-flex flex-column" *ngIf="(uploading && uploadResponse.status === 'progress') || (selectedDocument && !selectedDocument.smallImage)">
+              <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
           </div>
         </div>
