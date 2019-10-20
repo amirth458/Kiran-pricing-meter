@@ -34,24 +34,25 @@ export class ProfileScreenerComponent implements OnInit {
   error = '';
   uploadImage = '../../../assets/image/example_machine.png';
   details = {
+    quantity: '',
     volume: {
       value: '',
       unitId: ''
     },
-    extents: {
-      buildingX: {
-        value: '',
-        unitId: ''
-      },
-      buildingY: {
-        value: '',
-        unitId: ''
-      },
-      buildingZ: {
-        value: '',
-        unitId: ''
-      }
+
+    buildingX: {
+      value: '',
+      unitId: ''
     },
+    buildingY: {
+      value: '',
+      unitId: ''
+    },
+    buildingZ: {
+      value: '',
+      unitId: ''
+    }
+    ,
     boundingBox: {
       value: '',
       unitId: ''
@@ -77,7 +78,7 @@ export class ProfileScreenerComponent implements OnInit {
     equipmentId: [null, Validators.required],
     confidentialityId: ['', Validators.required],
 
-    quantity: ['', Validators.required],
+    // quantity: ['', Validators.required],
 
     deliveryStatementId: ['', Validators.required],
     tolerance: [null, Validators.required],
@@ -158,7 +159,7 @@ export class ProfileScreenerComponent implements OnInit {
         materialId: this.RFQData.materialId || null,
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
-        quantity: this.RFQData.quantity || '',
+        // quantity: this.RFQData.quantity || '',
         deliveryStatementId: this.RFQData.deliveryStatementId || '',
         tolerance: this.RFQData.tolerance || null,
         surfaceRoughness: this.RFQData.surfaceRoughness || null,
@@ -223,9 +224,6 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
-  get quantity() {
-    return this.form.value.quantity;
-  }
 
   get fileNames() {
     let name = '';
@@ -467,6 +465,13 @@ export class ProfileScreenerComponent implements OnInit {
 
     console.log(this.form.value);
     if (this.form.valid && this.isFormValid) {
+
+      // tslint:disable-next-line:max-line-length
+      this.details.boundingBox.value = (
+        Number(this.details.buildingX.value) *
+        Number(this.details.buildingY.value) *
+        Number(this.details.buildingZ.value)).toString();
+
       const postData = {
         ...this.form.value, processProfileIdList: [
           ...this.processProfiles
@@ -475,7 +480,7 @@ export class ProfileScreenerComponent implements OnInit {
         partMetadata: this.details
       };
 
-      postData.processType = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
+      postData.processTypeId = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
 
 
 

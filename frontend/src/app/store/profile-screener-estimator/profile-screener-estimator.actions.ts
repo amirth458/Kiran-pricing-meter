@@ -11,7 +11,7 @@ export enum Types {
 
 export class SetRFQInfo implements Action {
     readonly type = Types.SetRFQInfo;
-    constructor(public payload: Model.RFQInfo) { }
+    constructor(public payload: any) { }
 }
 
 export class SetScreenedProfiles implements Action {
