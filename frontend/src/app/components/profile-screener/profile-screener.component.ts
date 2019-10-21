@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorService } from 'src/app/service/vendor.service';
@@ -27,7 +27,7 @@ import { map } from 'src/app/store';
   templateUrl: './profile-screener.component.html',
   styleUrls: ['./profile-screener.component.css']
 })
-export class ProfileScreenerComponent implements OnInit {
+export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild('infoModal') infoModal: ElementRef;
@@ -208,14 +208,6 @@ export class ProfileScreenerComponent implements OnInit {
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
       this.estimatedMachineTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
 
-      // console.log(this.eventEmitterService.subsVar, this.eventEmitterService.subsVar == undefined);
-      if (this.eventEmitterService.subsVar == undefined) {
-        this.eventEmitterService.subsVar = this.eventEmitterService.
-          processScreenEvent.subscribe((url: string) => {
-            this.save(url);
-          });
-      }
-
 
     } catch (e) {
       console.log(e);
@@ -224,6 +216,15 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    if (this.eventEmitterService.subsVar == undefined) {
+      this.eventEmitterService.subsVar = this.eventEmitterService.
+        processScreenEvent.subscribe((url: string) => {
+          this.save(url);
+        });
+    }
+
+  }
 
   get fileNames() {
     let name = '';
