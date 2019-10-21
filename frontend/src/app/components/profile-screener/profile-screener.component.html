@@ -384,7 +384,10 @@
                     <ng-container *ngIf="details.buildingZ.value">x</ng-container>
                     {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
                   </li>
-                  <li><span>Bounding box</span> - {{details.buildingX.value * details.buildingY.value * details.buildingZ.value}}
+                  <li><span>Bounding box</span> -
+                    <ng-container *ngIf="details.buildingX.value && details.buildingY.value && details.buildingZ.value">
+                      {{details.buildingX.value * details.buildingY.value * details.buildingZ.value}}
+                    </ng-container>
                     {{getUnitName(details.boundingBox.unitId)}}</li>
                   <li><span>Surface area</span> - {{details.surfaceArea.value}}
                     {{getUnitName(details.surfaceArea.unitId)}}</li>
