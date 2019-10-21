@@ -844,7 +844,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         }
         if (!visitedInvoiceItem.includes(r.invoiceItem.name)) {
           visitedInvoiceItem.push(r.invoiceItem.name);
-          this.invoiceItems.push({ ...{ ...r.invoiceItem, id: r.id + 'invoiceItem' } });
+          this.invoiceItems.push({ ...r.invoiceItem, id: r.invoiceItem.id + 'invoiceItem' });
         }
       });
     });
@@ -857,15 +857,20 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         }
         if (!visitedInvoiceItem.includes(r.invoiceItem.name)) {
           visitedInvoiceItem.push(r.invoiceItem.name);
-          this.invoiceItems.push({ ...{ ...r.invoiceItem, id: r.id + 'invoiceItem' } });
+          this.invoiceItems.push({ ...r.invoiceItem, id: r.invoiceItem.id + 'invoiceItem' });
         }
       });
     });
-    return [
+    let result = [
       ...this.flatLineItem,
       ...this.variableLineItem,
       ...this.invoiceItems,
     ];
+    if (result.length > 0) {
+      result = [{ id: 'all-line-items', name: 'All line item' }, ...result];
+    }
+
+    return result;
   }
 
   addParameterCondition() {
@@ -933,7 +938,25 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
       const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
-      if (selectedValue.id.toString().includes('invoiceItem')) {
+      if (selectedValue.id.toString() === 'all-line-items') {
+        row.valueOptions
+          .filter(val => val.invoiceItem && val.invoiceItem.id)
+          .map(v => {
+            multiplierCharges.push({
+              invoiceLineItem: {
+                id: row.invoiceLineItem
+              },
+              multiplier: row.multiplier,
+              multiplierProcessPricingParameter: {
+                invoiceLineItem: {
+                  id: v.id
+                }
+              }
+
+            });
+
+          });
+      } else if (selectedValue.id.toString().includes('invoiceItem')) {
         row.valueOptions
           .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue.id)
           .map(v => {
