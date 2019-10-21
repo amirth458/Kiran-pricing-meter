@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { VendorService } from 'src/app/service/vendor.service';
@@ -27,37 +27,47 @@ import { map } from 'src/app/store';
   templateUrl: './profile-screener.component.html',
   styleUrls: ['./profile-screener.component.css']
 })
-export class ProfileScreenerComponent implements OnInit {
+export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild('infoModal') infoModal: ElementRef;
   error = '';
   uploadImage = '../../../assets/image/example_machine.png';
   details = {
+    quantity: '',
     volume: {
       value: '',
-      unit: ''
+      unitId: ''
     },
-    extents: [{
-      value: '',
-      unit: ''
-    }, {
-      value: '',
-      unit: ''
-    }, {
-      value: '',
-      unit: ''
-    }],
+
+    buildingX: {
+      value: 0,
+      unitId: ''
+    },
+    buildingY: {
+      value: 0,
+      unitId: ''
+    },
+    buildingZ: {
+      value: 0,
+      unitId: ''
+    }
+    ,
     boundingBox: {
       value: '',
-      unit: ''
-    }, surfaceArea: {
-      value: '',
-      unit: ''
+      unitId: ''
     },
-    thinnestWall: {
+    surfaceArea: {
       value: '',
-      unit: ''
+      unitId: ''
+    },
+    minWallThickness: {
+      value: '',
+      unitId: ''
+    },
+    estMachineTime: {
+      value: '',
+      unitId: ''
     }
   };
 
@@ -68,7 +78,7 @@ export class ProfileScreenerComponent implements OnInit {
     equipmentId: [null, Validators.required],
     confidentialityId: ['', Validators.required],
 
-    quantity: ['', Validators.required],
+    // quantity: ['', Validators.required],
 
     deliveryStatementId: ['', Validators.required],
     tolerance: [null, Validators.required],
@@ -80,6 +90,7 @@ export class ProfileScreenerComponent implements OnInit {
   volumeUnits = [];
   lengthUnits = [];
   areaUnits = [];
+  estimatedMachineTimeUnits = [];
   certifications = [];
   materials = [];
   equipments = [];
@@ -99,12 +110,13 @@ export class ProfileScreenerComponent implements OnInit {
   uploadResponse = { status: '', message: '', filePath: '' };
   pendingDocumentIds = [];
   pendingTimer = false;
-
+  progressMessage = 'Uploading...';
 
   RFQData: any = {};
   screenedProfiles = [];
 
   processProfiles = [];
+  profileTypes = [];
   activeMode = 'default';
   isFormValid = false;
 
@@ -130,17 +142,30 @@ export class ProfileScreenerComponent implements OnInit {
       this.RFQData = result.RFQInfo;
       this.screenedProfiles = result.screenedProfiles;
 
+      if (this.RFQData.partMetadata) {
+        this.details = this.RFQData.partMetadata;
+      }
+
+      if (this.RFQData.fileInfo) {
+        this.selectedDocument = this.RFQData.fileInfo;
+      }
+
+      if (this.RFQData.fileInfo && this.RFQData.fileInfo.uploadedDocuments) {
+        this.uploadedDocuments = this.RFQData.fileInfo.uploadedDocuments;
+      }
+
       this.form.setValue({
         requiredCertificateId: this.RFQData.requiredCertificateId || '',
         materialId: this.RFQData.materialId || null,
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
-        quantity: this.RFQData.quantity || '',
+        // quantity: this.RFQData.quantity || '',
         deliveryStatementId: this.RFQData.deliveryStatementId || '',
         tolerance: this.RFQData.tolerance || null,
         surfaceRoughness: this.RFQData.surfaceRoughness || null,
         surfaceFinish: this.RFQData.surfaceFinish || null,
       });
+
 
     });
 
@@ -161,7 +186,7 @@ export class ProfileScreenerComponent implements OnInit {
       this.spineer.show();
       await this.getInputValues();
 
-      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
+      const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.FacilityCertificate).toPromise();
       this.certifications = certifications.map((x) => {
         const name = this.htmlDecode(x.name);
         return {
@@ -170,19 +195,18 @@ export class ProfileScreenerComponent implements OnInit {
         };
       });
 
+
+
+      const res = await this.processMetaData.getProcessProfileType().toPromise();
+      this.profileTypes = res.metadataList;
+
+
       const units = await this.processMetaData.getMeasurementUnitType().toPromise();
       this.units = units.metadataList;
       this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
-
-      // console.log(this.eventEmitterService.subsVar, this.eventEmitterService.subsVar == undefined);
-      if (this.eventEmitterService.subsVar == undefined) {
-        this.eventEmitterService.subsVar = this.eventEmitterService.
-          processScreenEvent.subscribe((url: string) => {
-            this.save(url);
-          });
-      }
+      this.estimatedMachineTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
 
 
     } catch (e) {
@@ -192,14 +216,32 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
-  get quantity() {
-    return this.form.value.quantity;
+  ngAfterViewInit(): void {
+    if (this.eventEmitterService.subsVar == undefined) {
+      this.eventEmitterService.subsVar = this.eventEmitterService.
+        processScreenEvent.subscribe((url: string) => {
+          this.save(url);
+        });
+    }
+
+  }
+
+  get fileNames() {
+    let name = '';
+    this.uploadedDocuments.map((file, index) => {
+      if (index === 0) {
+        name += file.fileName;
+      } else {
+        name += ', ' + file.fileName;
+
+      }
+    });
+    return name;
   }
 
   async getInputValues() {
     let page = 0;
     const machines = [];
-    const processProfiles = [];
     try {
       while (true) {
         const param: FilterOption = { size: 5000, sort: 'name,ASC', page, q: '' };
@@ -235,6 +277,13 @@ export class ProfileScreenerComponent implements OnInit {
     }
   }
 
+  getUnitName(id) {
+    const unit = this.units.filter(u => u.id == id);
+    if (unit.length) {
+      return unit[0].symbol || unit[0].displayName;
+    }
+    return '';
+  }
 
   equipmentChanged() {
     const equipmentId = this.form.value.equipmentId;
@@ -312,7 +361,7 @@ export class ProfileScreenerComponent implements OnInit {
               const progress = Math.round(100 * event.loaded / event.total);
               return { status: 'progress', message: progress };
             case HttpEventType.Response:
-              return event.body;
+              return { ...event.body, message: 50 };
             default:
               return `Unhandled event: ${event.type}`;
           }
@@ -321,12 +370,12 @@ export class ProfileScreenerComponent implements OnInit {
           (res: any) => {
             this.uploadResponse = res;
             if (res.fileName) {
+              this.progressMessage = 'Analyzing File...';
               this.uploading = false;
               this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
               this.uploadedDocuments.push({ ...res, selected: 1 });
               this.pendingDocumentIds.push(res.id);
               this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
-              console.log(this.selectedDocument);
               if (!this.pendingTimer) {
                 this.pendingTimer = true;
                 setTimeout(async () => {
@@ -398,7 +447,7 @@ export class ProfileScreenerComponent implements OnInit {
     this.infoModal.nativeElement.click();
   }
 
-  save(url) {
+  save(url = '') {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
@@ -417,18 +466,36 @@ export class ProfileScreenerComponent implements OnInit {
 
     console.log(this.form.value);
     if (this.form.valid && this.isFormValid) {
+
+      // tslint:disable-next-line:max-line-length
+      this.details.boundingBox.value = (
+        Number(this.details.buildingX.value) *
+        Number(this.details.buildingY.value) *
+        Number(this.details.buildingZ.value)).toString();
+
       const postData = {
         ...this.form.value, processProfileIdList: [
           ...this.processProfiles
             .filter(profile => profile.checked)
-            .map(profile => profile.id)]
+            .map(profile => profile.id)],
+        partMetadata: this.details
       };
 
-      this.store.dispatch(new SetRFQInfo(postData));
+      postData.processTypeId = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
+
+
+
+      this.store.dispatch(new SetRFQInfo({
+        ...postData,
+        fileInfo: {
+          ...this.selectedDocument,
+          uploadedDocuments: this.uploadedDocuments
+        }
+      }));
       this.store.dispatch(new SetStatus('PENDING'));
 
       if (!url.includes('estimator')) {
-        this.profileScreererService.screenProfiles(this.userService.getVendorInfo().id, postData)
+        this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
           .subscribe(res => {
             this.store.dispatch(new SetScreenedProfiles(res));
             this.store.dispatch(new SetStatus('DONE'));

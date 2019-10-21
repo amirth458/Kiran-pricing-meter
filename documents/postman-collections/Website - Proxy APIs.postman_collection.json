@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "ddde6075-e7ea-48e7-a1e2-63efd5bb5b38",
+		"name": "Website - Proxy APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Upload File to Connector Service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "STEP-Files/Kinechek-3in stroke.STEP"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{WEBSITE_HOST_URL}}/api/v1/connector/upload-file",
+					"host": [
+						"{{WEBSITE_HOST_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"connector",
+						"upload-file"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Metadata API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{WEBSITE_HOST_URL}}/api/v1/connector/metadata/11",
+					"host": [
+						"{{WEBSITE_HOST_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"connector",
+						"metadata",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

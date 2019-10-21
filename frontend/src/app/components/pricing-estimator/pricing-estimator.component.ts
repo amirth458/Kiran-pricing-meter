@@ -196,7 +196,7 @@ export class PricingEstimatorComponent implements OnInit {
       if (this.screenedProfiles && !this.firedRequest) {
         this.firedRequest = true;
         this.store.dispatch(new SetStatus('PENDING'));
-        this.profileScreererService.estimatePrice(this.userService.getVendorInfo().id, this.RFQInfo)
+        this.profileScreererService.estimatePrice(this.userService.getUserInfo().id, this.RFQInfo)
           .subscribe(res => {
             // console.log(res, 'estimated price response');
             this.store.dispatch(new SetEstimatedPrices(res));

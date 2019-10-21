@@ -65,7 +65,7 @@
             </div>
 
 
-            <div class="col-md-8 d-flex flex-column" *ngIf="selectedDocument && selectedDocument.smallImage">
+            <div class="col-md-8 d-flex flex-column d-none" [class.d-flex]="selectedDocument && selectedDocument.smallImage">
               <span class="title" (click)="save()">Demo 1</span>
               <span class="quantity d-flex ">
                 <div>
@@ -73,7 +73,7 @@
                 </div>
                 <div>
                   <input class="form-control" required type="number" maxlength="4" min="0" max="9999" id="quantity"
-                    name="quantity" formControlName="quantity">
+                    name="quantity" [(ngModel)]="details.quantity" [ngModelOptions]="{standalone: true}">
                 </div>
               </span>
 
@@ -82,7 +82,7 @@
                   Part Dimensions: 12.36mm x 4.50mm x 4.73mm
                 </span>
                 <span>
-                  Files: Brake rotor no logo.step
+                  Files: {{fileNames}}
                 </span>
               </div>
 
@@ -99,11 +99,11 @@
                   <li><span>Volume</span> -
                     <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                        id="design" name="design" [(ngModel)]="details.volume.value"
+                        id="volumeId" name="volumeId" [(ngModel)]="details.volume.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="value" name="value" class="form-control" [(ngModel)]="details.volume.unit"
-                          [ngModelOptions]="{standalone: true}">
+                        <select required id="volumeValue" name="volumeValue" class="form-control"
+                          [(ngModel)]="details.volume.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -114,11 +114,11 @@
                     <div class="d-flex flex-column">
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="design" name="design" [(ngModel)]="details.extents[0].value"
+                          max="9999" id="extentsIdX" name="extentsIdX" [(ngModel)]="details.buildingX.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
-                          <select required id="unit" name="unit" class="form-control"
-                            [(ngModel)]="details.extents[0].unit" [ngModelOptions]="{standalone: true}">
+                          <select required id="extentsValueX" name="extentsValueX" class="form-control"
+                            [(ngModel)]="details.buildingX.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
                             <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                           </select>
@@ -127,11 +127,11 @@
                       x
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="design" name="design" [(ngModel)]="details.extents[1].value"
+                          max="9999" id="extentsIdY" name="extentsIdY" [(ngModel)]="details.buildingY.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
-                          <select required id="value" name="value" class="form-control"
-                            [(ngModel)]="details.extents[1].unit" [ngModelOptions]="{standalone: true}">
+                          <select required id="extentsValueY" name="extentsValueY" class="form-control"
+                            [(ngModel)]="details.buildingY.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
                             <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                           </select>
@@ -140,11 +140,11 @@
                       x
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="design" name="design" [(ngModel)]="details.extents[2].value"
+                          max="9999" id="extentsIdZ" name="extentsIdZ" [(ngModel)]="details.buildingZ.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
-                          <select required id="unit" name="unit" class="form-control"
-                            [(ngModel)]="details.extents[2].unit" [ngModelOptions]="{standalone: true}">
+                          <select required id="extentsValueZ" name="extentsValueZ" class="form-control"
+                            [(ngModel)]="details.buildingZ.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
                             <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
                           </select>
@@ -154,12 +154,14 @@
                   </li>
                   <li><span>Bounding box</span> -
                     <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                        id="design" name="design" [(ngModel)]="details.boundingBox.value"
+                      <input class="form-control" disabled required type="number" step="0.00001" maxlength="4" min="0"
+                        max="9999"
+                        [value]="details.buildingX.value*details.buildingY.value*details.buildingZ.value"
+                        id="boundingBoxId" name="boundingBoxId" [(ngModel)]="details.boundingBox.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="value" name="value" class="form-control"
-                          [(ngModel)]="details.boundingBox.unit" [ngModelOptions]="{standalone: true}">
+                        <select required id="boundingBoxValue" name="boundingBoxValue" class="form-control"
+                          [(ngModel)]="details.boundingBox.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -168,11 +170,11 @@
                   </li>
                   <li><span>Surface area</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                        id="design" name="design" [(ngModel)]="details.surfaceArea.value"
+                        id="surfaceAreaId" name="surfaceAreaId" [(ngModel)]="details.surfaceArea.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="unit" name="unit" class="form-control"
-                          [(ngModel)]="details.surfaceArea.unit" [ngModelOptions]="{standalone: true}">
+                        <select required id="surfaceAreaValue" name="surfaceAreaValue" class="form-control"
+                          [(ngModel)]="details.surfaceArea.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of areaUnits" [value]="unit.id">{{unit.symbol}}</option>
                         </select>
@@ -181,13 +183,28 @@
                   </li>
                   <li><span>Thinnest wall</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                        id="design" name="design" [(ngModel)]="details.thinnestWall.value"
+                        id="minWallThicknessId" name="minWallThicknessId" [(ngModel)]="details.minWallThickness.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="unit" name="unit" class="form-control"
-                          [(ngModel)]="details.thinnestWall.unit" [ngModelOptions]="{standalone: true}">
+                        <select required id="minWallThicknessValue" name="minWallThicknessValue" class="form-control"
+                          [(ngModel)]="details.minWallThickness.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li><span>Est Machine Time</span> - <div class="inputs">
+                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                        id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estMachineTime.value"
+                        [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="estimatedMachineTimeValue" name="estimatedMachineTimeValue" class="form-control"
+                          [(ngModel)]="details.estMachineTime.unitId" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">{{unit.symbol}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -202,8 +219,9 @@
                 <span class="title">No Information</span>
               </div>
             </div>
-            <div class="col-md-8 d-flex flex-column" *ngIf="uploading && uploadResponse.status === 'progress'">
-              <app-progress-bar text="Uploading... Please wait" [percent]="uploadResponse.message"></app-progress-bar>
+            <div class="col-md-8 d-flex flex-column"
+              *ngIf="(uploading && uploadResponse.status === 'progress') || (selectedDocument && !selectedDocument.smallImage)">
+              <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
           </div>
         </div>
@@ -243,7 +261,7 @@
             <tr>
               <td>Design</td>
               <td>
-                <input class="form-control" disabled required type="text" id="design" name="design">
+                <input class="form-control" disabled required type="text" id="design" name="design" [value]="fileNames">
               </td>
             </tr>
 
@@ -296,14 +314,22 @@
 
             <tr>
               <td>Time to Ship</td>
-              <td>
-                <div class=" theme">
+              <td class="d-flex">
+                <!-- <div class=" theme">
                   <select required id="time-to-ship" name="time-to-ship" class="form-control"
                     formControlName="deliveryStatementId">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of timeToShip" [value]="item.id">{{item.name}}</option>
                   </select>
+                </div> -->
+                <div class="theme flex-grow-1">
+
+                  <input class="form-control" required type="number" maxlength="4" min="0" max="9999"
+                    id="deliveryStatementId" name="deliveryStatementId" formControlName="deliveryStatementId">
                 </div>
+                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
+                  Days
+                </span>
               </td>
             </tr>
           </tbody>
@@ -337,25 +363,36 @@
 
             <div class="col-md-6 d-flex flex-column">
               <span class="title">Demo 1</span>
-              <span class="quantity">Quantity : {{quantity}}</span>
+              <span class="quantity">Quantity : {{details.quantity}}</span>
 
               <div class="image-info d-flex flex-column">
                 <span>
                   Part Dimensions: 12.36mm x 4.50mm x 4.73mm
                 </span>
                 <span>
-                  Files: Brake rotor no logo.step
+                  Files: {{fileNames}}
                 </span>
               </div>
 
               <div class="image-details">
                 <ul>
-                  <li><span>Volume</span> - {{details.volume.value}}cc</li>
-                  <li><span>Extents</span> - {{details.extents[0].value}}mm x {{details.extents[1].value}}mm x
-                    {{details.extents[2].value}}mm </li>
-                  <li><span>Bounding box</span> - {{details.boundingBox.value}}cc</li>
-                  <li><span>Surface area</span> - {{details.surfaceArea.value}}cm2</li>
-                  <li><span>Thinnest wall</span> - {{details.thinnestWall.value}}mm</li>
+                  <li><span>Volume</span> - {{details.volume.value}} {{getUnitName(details.volume.unitId)}}</li>
+                  <li><span>Extents</span> - {{details.buildingX.value}}
+                    {{getUnitName(details.buildingX.unitId)}} <ng-container
+                      *ngIf="details.buildingY.value">x</ng-container>
+                    {{details.buildingY.value}} {{getUnitName(details.buildingY.unitId)}}
+                    <ng-container *ngIf="details.buildingZ.value">x</ng-container>
+                    {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
+                  </li>
+                  <li><span>Bounding box</span> -
+                    <ng-container *ngIf="details.buildingX.value && details.buildingY.value && details.buildingZ.value">
+                      {{details.buildingX.value * details.buildingY.value * details.buildingZ.value}}
+                    </ng-container>
+                    {{getUnitName(details.boundingBox.unitId)}}</li>
+                  <li><span>Surface area</span> - {{details.surfaceArea.value}}
+                    {{getUnitName(details.surfaceArea.unitId)}}</li>
+                  <li><span>Thinnest wall</span> - {{details.minWallThickness.value}}
+                    {{getUnitName(details.minWallThickness.unitId)}}</li>
                 </ul>
 
               </div>

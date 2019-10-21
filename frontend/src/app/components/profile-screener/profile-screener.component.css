@@ -76,7 +76,7 @@ table .form-control {
   color: var(--theme-action-bar-color)!important;
   font-weight: bold;
   font-size: 14px;
-  display: block; 
+  display: block;
 }
 
 .upload ul li>span {
@@ -138,7 +138,7 @@ table .form-control {
 .detail-info .details .image-details ul li span {
   font-weight: bold;
   font-size: 13px;
-  min-width: 100px;
+  min-width: 120px;
 }
 
 .detail-info .details .image-details ul li,

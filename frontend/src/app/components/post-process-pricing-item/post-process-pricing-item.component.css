@@ -25,6 +25,16 @@
   overflow: visible;
 }
 
+.table .ag-header-cell {
+  font-size: 14px !important;
+}
+
+.table select,
+.table input {
+  font-size: 15px !important;
+}
+
+
 .table-control {
   width: 220px;
   height: 400px;
