@@ -41,15 +41,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     },
 
     buildingX: {
-      value: '',
+      value: 0,
       unitId: ''
     },
     buildingY: {
-      value: '',
+      value: 0,
       unitId: ''
     },
     buildingZ: {
-      value: '',
+      value: 0,
       unitId: ''
     }
     ,
