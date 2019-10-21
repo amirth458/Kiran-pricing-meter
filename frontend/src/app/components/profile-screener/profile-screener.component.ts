@@ -447,7 +447,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     this.infoModal.nativeElement.click();
   }
 
-  save(url) {
+  save(url = '') {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
