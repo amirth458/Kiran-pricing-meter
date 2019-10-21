@@ -15,4 +15,5 @@ public class MetadataView {
     private String s3Url;
     private String status;
     private Map<String, Object> forgeAPIMetadata;
+    private String errorMessage;
 }

@@ -16,6 +16,7 @@ public class ConnectorGetMetadataResponse {
     private Long id;
     private String cadFileS3URL;
     private String status;
+    private String errorMessage;
 
     private String smallImage;
     private String mediumImage;
@@ -36,6 +37,7 @@ public class ConnectorGetMetadataResponse {
         return ConnectorGetMetadataResponse.builder()
                 .id(metadataView.getId())
                 .status(metadataView.getStatus())
+                .errorMessage(metadataView.getErrorMessage())
                 .cadFileS3URL(metadataView.getS3Url())
 
                 .smallImage(getThumbnail(thumbnails, "100x100"))
