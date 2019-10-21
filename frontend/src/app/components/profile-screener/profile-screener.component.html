@@ -65,7 +65,7 @@
             </div>
 
 
-            <div class="col-md-8 d-flex flex-column" *ngIf="selectedDocument && selectedDocument.smallImage">
+            <div class="col-md-8 d-flex flex-column d-none" [class.d-flex]="selectedDocument && selectedDocument.smallImage">
               <span class="title" (click)="save()">Demo 1</span>
               <span class="quantity d-flex ">
                 <div>
