@@ -38,25 +38,25 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   conditions = [];
   filteredPricingConditionTypes = [];
   selectedPricingConditionList = [
-    {
-      operatorType: {
-        id: ''
-      },
+    // {
+    //   operatorType: {
+    //     id: ''
+    //   },
 
-      processPricingConditionType: {
-        id: ''
-      },
-      unitType: {
-        id: ''
-      },
-      value: '',
-      valueInDefaultUnit: '',
-      valueSignType: {
-        id: ''
-      },
-      operandTypeList: [],
-      units: []
-    }
+    //   processPricingConditionType: {
+    //     id: ''
+    //   },
+    //   unitType: {
+    //     id: ''
+    //   },
+    //   value: '',
+    //   valueInDefaultUnit: '',
+    //   valueSignType: {
+    //     id: ''
+    //   },
+    //   operandTypeList: [],
+    //   units: []
+    // }
   ];
 
   conditionTypes = [];
