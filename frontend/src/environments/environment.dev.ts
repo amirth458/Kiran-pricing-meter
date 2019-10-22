@@ -61,10 +61,8 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
   ],
   apiBaseUrl: 'http://dev-manage-api.3diligent.com/api/v1',
-
   PPE_HOST_URL: 'http://dev-ppe-api.3diligent.com/api/v1',
   CONNECTOR_HOST_URL: 'http://dev-manage.3diligent.com/api/v1',
-
   encryptionKey: '1Kf@%4%3ADfEafw'
 };
 

@@ -58,7 +58,7 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Appointments', icon: 'fa-calendar-check-o', path: '/appointment' }
   ],
   apiBaseUrl: 'http://manage-api.3diligent.com/api/v1',
-  CONNECTOR_HOST_URL: 'http://connector-service-2.us-west-2.elasticbeanstalk.com',
-  PPE_HOST_URL: 'http://dev-ppe-api.3diligent.com/api/v1',
+  CONNECTOR_HOST_URL: 'http://manage.3diligent.com/api/v1',
+  PPE_HOST_URL: ' http://ppe-api.3diligent.com/api/v1',
   encryptionKey: '1Kf@%4%3ADfEafw'
 };
