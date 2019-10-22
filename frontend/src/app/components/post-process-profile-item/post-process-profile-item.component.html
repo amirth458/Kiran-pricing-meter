@@ -134,7 +134,7 @@
 
               <div class="form-group theme col-md-3">
                 <input [disabled]="selectedProcessParameterList[index].processParameterType.id.length == 0" required
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessParameterList[index].value" [ngModelOptions]="{standalone: true}"
                   class="form-control" id="value" name="value" placeholder="Value">
                 <div class="invalid-feedback">
@@ -290,7 +290,7 @@
 
                 <input
                   [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
@@ -302,7 +302,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
@@ -314,7 +314,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
@@ -326,7 +326,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
@@ -338,7 +338,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessDimensionalPropertyList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
@@ -443,7 +443,7 @@
 
                 <input
                   [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMinValue" name="beforeMinValue"
                   placeholder="Value">
@@ -455,7 +455,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].beforeMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="beforeMaxValue" name="beforeMaxValue"
                   placeholder="Value">
@@ -467,7 +467,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMinValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMinValue" name="afterMinValue"
                   placeholder="Value">
@@ -479,7 +479,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterExpectedValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterExpectedValue"
                   name="afterExpectedValue" placeholder="Value">
@@ -491,7 +491,7 @@
               <div class="form-group ignore-validation-style  theme col-md-1">
                 <input
                   [disabled]="selectedProcessMaterialCharacteristicList[index].processMaterialCharacteristicType.id.length == 0"
-                  type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
+                  type="number" step="0.00001" maxlength="5" min="0" min="0" max="99999"
                   [(ngModel)]="selectedProcessMaterialCharacteristicList[index].afterMaxValue"
                   [ngModelOptions]="{standalone: true}" class="form-control" id="afterMaxValue" name="afterMaxValue"
                   placeholder="Value">
