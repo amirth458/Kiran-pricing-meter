@@ -65,7 +65,7 @@
             </div>
 
 
-            <div class="col-md-8 d-flex flex-column d-none"
+            <div class="col-md-8 d-flex flex-column flex-grow-1 d-none"
               [class.d-flex]="selectedDocument && selectedDocument.smallImage">
               <span class="title" (click)="save()">Demo 1</span>
               <span class="quantity d-flex ">
@@ -73,7 +73,7 @@
                   Quantity :&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
                 <div>
-                  <input class="form-control" required type="number" maxlength="4" min="0" max="9999" id="quantity"
+                  <input class="form-control" required type="number" maxlength="5" min="0" max="99999" id="quantity"
                     name="quantity" [(ngModel)]="details.quantity" [ngModelOptions]="{standalone: true}">
                 </div>
               </span>
@@ -106,7 +106,7 @@
                 <ul>
                   <li><span>Volume</span> -
                     <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
                         id="volumeId" name="volumeId" [(ngModel)]="details.volume.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
@@ -122,8 +122,8 @@
                   <li><span>Extents</span> -
                     <div class="d-flex flex-column">
                       <div class="inputs">
-                        <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="extentsIdX" name="extentsIdX" [(ngModel)]="details.buildingX.value"
+                        <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                          max="99999" id="extentsIdX" name="extentsIdX" [(ngModel)]="details.buildingX.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
                           <select required id="extentsValueX" name="extentsValueX" class="form-control"
@@ -136,8 +136,8 @@
                       </div>
                       x
                       <div class="inputs">
-                        <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="extentsIdY" name="extentsIdY" [(ngModel)]="details.buildingY.value"
+                        <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                          max="99999" id="extentsIdY" name="extentsIdY" [(ngModel)]="details.buildingY.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
                           <select required id="extentsValueY" name="extentsValueY" class="form-control"
@@ -150,8 +150,8 @@
                       </div>
                       x
                       <div class="inputs">
-                        <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0"
-                          max="9999" id="extentsIdZ" name="extentsIdZ" [(ngModel)]="details.buildingZ.value"
+                        <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                          max="99999" id="extentsIdZ" name="extentsIdZ" [(ngModel)]="details.buildingZ.value"
                           [ngModelOptions]="{standalone: true}">
                         <div class="theme">
                           <select required id="extentsValueZ" name="extentsValueZ" class="form-control"
@@ -166,8 +166,8 @@
                   </li>
                   <li><span>Bounding box</span> -
                     <div class="inputs">
-                      <input class="form-control" disabled required type="number" step="0.00001" maxlength="4" min="0"
-                        max="9999" [value]="details.buildingX.value*details.buildingY.value*details.buildingZ.value"
+                      <input class="form-control" disabled required type="number" step="0.00001" maxlength="5" min="0"
+                        max="99999" [value]="details.buildingX.value*details.buildingY.value*details.buildingZ.value"
                         id="boundingBoxId" name="boundingBoxId" [(ngModel)]="details.boundingBox.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
@@ -181,7 +181,7 @@
                     </div>
                   </li>
                   <li><span>Surface area</span> - <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
                         id="surfaceAreaId" name="surfaceAreaId" [(ngModel)]="details.surfaceArea.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
@@ -195,7 +195,7 @@
                     </div>
                   </li>
                   <li><span>Thinnest wall</span> - <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
                         id="minWallThicknessId" name="minWallThicknessId" [(ngModel)]="details.minWallThickness.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
@@ -210,7 +210,7 @@
                   </li>
 
                   <li><span>Est Machine Time</span> - <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
                         id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estMachineTime.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
@@ -307,7 +307,7 @@
               <td>Tolerance</td>
               <td class="d-flex section">
                 <div class="theme flex-grow-1">
-                  <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                  <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
                     id="tolerance" name="tolerance" formControlName="tolerance">
                 </div>
 
@@ -322,7 +322,7 @@
               <td class="d-flex section">
 
                 <div class="theme flex-grow-1">
-                  <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                  <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
                     id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughness">
                 </div>
                 <span class="d-flext align-items-center mr-4 ml-4 mt-1">
@@ -335,7 +335,7 @@
             <tr class="d-none">
               <td>Surface Finish</td>
               <td>
-                <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
                   id="surface-finish" name="surface-finish" formControlName="surfaceFinish">
               </td>
             </tr>
@@ -352,7 +352,7 @@
                 </div> -->
                 <div class="theme flex-grow-1">
 
-                  <input class="form-control" type="number" maxlength="4" min="0" max="9999" id="deliveryStatementId"
+                  <input class="form-control" type="number" maxlength="5" min="0" max="99999" id="deliveryStatementId"
                     name="deliveryStatementId" formControlName="deliveryStatementId">
                 </div>
                 <span class="d-flext align-items-center mr-4 ml-4 mt-1">

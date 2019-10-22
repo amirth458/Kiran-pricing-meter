@@ -155,10 +155,20 @@ table .form-control {
   text-align: center;
 }
 
+/*
+.detail-info .details .image-details ul li>div>div.inputs>input {
+  flex-grow: 50%;
+
+}
+
+.detail-info .details .image-details ul li>div>div.theme {
+  flex-grow: 50%;
+} */
 .detail-info .details .image-details ul li .inputs {
   display: flex;
   justify-content: space-around;
-  margin-left: 16px;
+  /* margin-left: 70px; */
+  width: 100%;
 }
 
 .detail-info .details .image-details ul li .inputs input,
