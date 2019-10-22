@@ -22,7 +22,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
   form: FormGroup = this.fb.group({
     id: '',
-    pricingProfileName: [null],
+    pricingProfileName: [null, Validators.required],
     processProfileId: ['', Validators.required],
     processPricingConditionList: [[]],
     processPricingParameterList: [[]]

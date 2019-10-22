@@ -113,7 +113,8 @@
                         <select required id="volumeValue" name="volumeValue" class="form-control"
                           [(ngModel)]="details.volume.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
-                          <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
+                          <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.displayName || unit.symbol}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -128,7 +129,8 @@
                           <select required id="extentsValueX" name="extentsValueX" class="form-control"
                             [(ngModel)]="details.buildingX.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
-                            <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                            <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                              {{unit.displayName || unit.symbol}}</option>
                           </select>
                         </div>
                       </div>
@@ -141,7 +143,8 @@
                           <select required id="extentsValueY" name="extentsValueY" class="form-control"
                             [(ngModel)]="details.buildingY.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
-                            <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                            <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                              {{unit.displayName || unit.symbol}}</option>
                           </select>
                         </div>
                       </div>
@@ -154,7 +157,8 @@
                           <select required id="extentsValueZ" name="extentsValueZ" class="form-control"
                             [(ngModel)]="details.buildingZ.unitId" [ngModelOptions]="{standalone: true}">
                             <option selected value="">Choose...</option>
-                            <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                            <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                              {{unit.displayName || unit.symbol}}</option>
                           </select>
                         </div>
                       </div>
@@ -170,7 +174,8 @@
                         <select required id="boundingBoxValue" name="boundingBoxValue" class="form-control"
                           [(ngModel)]="details.boundingBox.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
-                          <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.symbol}}</option>
+                          <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.displayName || unit.symbol}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -183,7 +188,8 @@
                         <select required id="surfaceAreaValue" name="surfaceAreaValue" class="form-control"
                           [(ngModel)]="details.surfaceArea.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
-                          <option *ngFor="let unit of areaUnits" [value]="unit.id">{{unit.symbol}}</option>
+                          <option *ngFor="let unit of areaUnits" [value]="unit.id">{{unit.displayName || unit.symbol}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -196,7 +202,8 @@
                         <select required id="minWallThicknessValue" name="minWallThicknessValue" class="form-control"
                           [(ngModel)]="details.minWallThickness.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
-                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.symbol}}</option>
+                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">{{unit.displayName || unit.symbol}}
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -211,7 +218,8 @@
                           class="form-control" [(ngModel)]="details.estMachineTime.unitId"
                           [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
-                          <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">{{unit.symbol}}
+                          <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">
+                            {{unit.displayName || unit.symbol}}
                           </option>
                         </select>
                       </div>
@@ -266,7 +274,7 @@
               </td>
             </tr>
 
-            <tr>
+            <tr class="d-none">
               <td>Design</td>
               <td>
                 <input class="form-control" disabled type="text" id="design" name="design" [value]="fileNames">
@@ -297,22 +305,34 @@
             </tr>
             <tr>
               <td>Tolerance</td>
-              <td>
-                <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999" id="tolerance"
-                  name="tolerance" formControlName="tolerance">
+              <td class="d-flex section">
+                <div class="theme flex-grow-1">
+                  <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                    id="tolerance" name="tolerance" formControlName="tolerance">
+                </div>
+
+                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
+                  mm
+                </span>
               </td>
             </tr>
 
             <tr>
-              <td>Surface Roughness(Ra)</td>
-              <td>
-                <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
-                  id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughness">
+              <td>Surface Roughness</td>
+              <td class="d-flex section">
+
+                <div class="theme flex-grow-1">
+                  <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                    id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughness">
+                </div>
+                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
+                  Ra µm
+                </span>
               </td>
             </tr>
 
 
-            <tr>
+            <tr class="d-none">
               <td>Surface Finish</td>
               <td>
                 <input class="form-control" type="number" step="0.00001" maxlength="4" min="0" max="9999"
@@ -322,7 +342,7 @@
 
             <tr>
               <td>Time to Ship</td>
-              <td class="d-flex">
+              <td class="d-flex section">
                 <!-- <div class=" theme">
                   <select  id="time-to-ship" name="time-to-ship" class="form-control"
                     formControlName="deliveryStatementId">
