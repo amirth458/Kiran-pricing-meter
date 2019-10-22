@@ -73,17 +73,17 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
 
   form: FormGroup = this.fb.group({
-    requiredCertificateId: ['', Validators.required],
-    materialId: [null, Validators.required],
-    equipmentId: [null, Validators.required],
-    confidentialityId: ['', Validators.required],
+    requiredCertificateId: [''],
+    materialId: [null],
+    equipmentId: [null],
+    confidentialityId: [''],
 
     // quantity: ['', Validators.required],
 
-    deliveryStatementId: ['', Validators.required],
-    tolerance: [null, Validators.required],
-    surfaceRoughness: [null, Validators.required],
-    surfaceFinish: [null, Validators.required],
+    deliveryStatementId: [''],
+    tolerance: [null],
+    surfaceRoughness: [null],
+    surfaceFinish: [null],
   });
 
   units = [];
