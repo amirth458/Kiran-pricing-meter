@@ -10,6 +10,8 @@ import { GridOptions } from 'ag-grid-community';
 import { DropdownCellRendererComponent } from 'src/app/common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { MultiSelectCellRendererComponent } from 'src/app/common/multi-select-cell-renderer/multi-select-cell-renderer.component';
+import { MultiSelectCellEditorComponent } from 'src/app/common/multi-select-cell-editor/multi-select-cell-editor.component';
+
 import { PostProcessPricingService } from 'src/app/service/post-process-pricing.service';
 import { PostProcessProfileService } from 'src/app/service/post-process-profile.service';
 
@@ -97,6 +99,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
 
   frameworkComponents = {
     multiselectCellRenderer: MultiSelectCellRendererComponent,
+    multiselectCellEditor: MultiSelectCellEditorComponent,
     dropdownCellRenderer: DropdownCellRendererComponent,
     actionCellRenderer: ActionCellRendererComponent
   };
@@ -524,7 +527,9 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       { headerName: 'Multiplier', field: 'multiplier', hide: false, sortable: false, filter: false, editable: true },
       {
         headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
-        cellRenderer: 'dropdownCellRenderer',
+        cellRenderer: 'multiselectCellRenderer',
+        cellEditor: 'multiselectCellEditor',
+        editable: true,
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',

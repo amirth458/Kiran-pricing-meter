@@ -332,6 +332,10 @@ button.theme.theme-reverse:hover {
   color: var(--theme-orange) !important;
 }
 
+.theme-table .ag-theme-balham .action-column .approve{
+  margin-right: 10px;
+}
+
 .ag-theme-balham .ag-row-selected {
   background-color: var(--theme-light-green-with-opacity)
 }

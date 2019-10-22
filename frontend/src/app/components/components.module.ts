@@ -5,6 +5,7 @@ import { ActionCellRendererComponent } from '../common/action-cell-renderer/acti
 import { ActionCellApproveRendererComponent } from '../common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 import { CarrierCellRendererComponent } from '../common/carrier-cell-renderer/carrier-cell-renderer.component';
 import { ColumnSearchFilterComponent } from '../common/column-search-filter/column-search-filter.component';
+import { MultiSelectCellEditorComponent } from '../common/multi-select-cell-editor/multi-select-cell-editor.component';
 
 import { ProfileContainerComponent } from './authorized/approved/_container/container.component';
 import { ProfileVendorContainerComponent } from './authorized/approved/vendor/_container/container.component';
@@ -69,6 +70,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
     DropdownCellRendererComponent,
     DropdownHeaderRendererComponent,
     MultiSelectCellRendererComponent,
+    MultiSelectCellEditorComponent,
     ActionCellApproveRendererComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
@@ -124,6 +126,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
       DropdownCellRendererComponent,
       DropdownHeaderRendererComponent,
       MultiSelectCellRendererComponent,
+      MultiSelectCellEditorComponent,
       ActionCellApproveRendererComponent,
     ]),
     NgSelectModule,
@@ -140,6 +143,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
     AgGridModule,
     ActionCellRendererComponent,
     ActionCellApproveRendererComponent,
+    MultiSelectCellRendererComponent,
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
     ProgressBarComponent,
