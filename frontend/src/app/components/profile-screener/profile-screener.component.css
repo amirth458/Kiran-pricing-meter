@@ -184,6 +184,10 @@ table .form-control {
   width: 100%;
 }
 
+.theme.unit {
+  margin-left: 10px;
+  width: 40%;
+}
 
 .modal .image-details ul li {
   font-size: 13px;
