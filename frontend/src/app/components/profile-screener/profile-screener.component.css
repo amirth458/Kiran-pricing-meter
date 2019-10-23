@@ -153,6 +153,7 @@ table .form-control {
 
 .detail-info .details .image-details ul li>div.flex-column {
   text-align: center;
+  width: 100%;
 }
 
 /*
