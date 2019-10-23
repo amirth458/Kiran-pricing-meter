@@ -170,17 +170,17 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
         // quantity: this.RFQData.quantity || '',
-        timeToShipValue: this.RFQData.timeToShip ? this.RFQData.timeToShip.value : '',
-        timeToShipUnit: this.RFQData.timeToShip ? this.RFQData.timeToShip.unit : '',
+        timeToShipValue: this.RFQData ? this.RFQData.timeToShipValue : '',
+        timeToShipUnit: this.RFQData ? this.RFQData.timeToShipUnit : '',
 
-        toleranceValue: this.RFQData.tolerance ? this.RFQData.tolerance.value : null,
-        toleranceUnit: this.RFQData.tolerance ? this.RFQData.tolerance.unit : '',
+        toleranceValue: this.RFQData ? this.RFQData.toleranceValue : null,
+        toleranceUnit: this.RFQData ? this.RFQData.toleranceUnit : '',
 
-        surfaceRoughnessValue: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.value : null,
-        surfaceRoughnessUnit: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unit : '',
+        surfaceRoughnessValue: this.RFQData ? this.RFQData.surfaceRoughnessValue : null,
+        surfaceRoughnessUnit: this.RFQData ? this.RFQData.surfaceRoughnessUnit : '',
 
-        surfaceFinishValue: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
-        surfaceFinishUnit: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unit : '',
+        surfaceFinishValue: this.RFQData ? this.RFQData.surfaceFinishValue : null,
+        surfaceFinishUnit: this.RFQData ? this.RFQData.surfaceFinishUnit : '',
       });
 
 
