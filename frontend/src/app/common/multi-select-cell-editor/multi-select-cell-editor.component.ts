@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, ViewChild, ViewContainerRef} from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ViewContainerRef } from '@angular/core';
 
-import {ICellEditorAngularComp} from 'ag-grid-angular';
+import { ICellEditorAngularComp } from 'ag-grid-angular';
 
 @Component({
-  selector: 'app-multi-select-cell-editor',
-  styleUrls: ['./multi-select-cell-editor.component.css'],
-  templateUrl: './multi-select-cell-editor.component.html',
+    selector: 'app-multi-select-cell-editor',
+    styleUrls: ['./multi-select-cell-editor.component.css'],
+    templateUrl: './multi-select-cell-editor.component.html',
 })
-export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, AfterViewInit  {
+export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, AfterViewInit {
 
     private params: any;
     @ViewChild('modal') modal;
@@ -28,11 +28,11 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
 
     agInit(params: any): void {
         this.params = params;
+        console.log(this.params, 'editor');
         this.options = params.data.valueOptions;
-        if (params.data.value.length > 0) {
-            this.selectedValues = params.data.value;
-        } else {
-            this.selectedValues = [];
+        this.selectedValues = [];
+        if (params.data.value > 0) {
+            this.selectedValues = [params.data.value];
         }
     }
 

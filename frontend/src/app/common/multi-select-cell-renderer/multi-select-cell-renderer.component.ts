@@ -25,12 +25,16 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
       throw new Error('Missing change handler for DropdownCellRendererComponent');
     }
     if (this.params.data[this.params.colDef.field]) {
-      this.value = [this.params.data[this.params.colDef.field]];
+      if (Array.isArray(this.params.data[this.params.colDef.field])) {
+        this.value = [...this.params.data[this.params.colDef.field]];
+      } else {
+        this.value = [this.params.data[this.params.colDef.field]];
+      }
     }
     // console.log({ options: this.options });
     this.items = [];
     this.value.map(item => {
-      this.items.push(this.options.find(option => option.id === item));
+      this.items.push(this.options.find(option => option.id == item));
     });
 
     console.log('value', this.value);
