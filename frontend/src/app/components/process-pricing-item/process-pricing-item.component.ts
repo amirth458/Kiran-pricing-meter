@@ -531,14 +531,19 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       },
       { headerName: 'Multiplier', field: 'multiplier', hide: false, sortable: false, filter: false, editable: true },
       {
-        headerName: 'Multiplier Value',
-        field: 'value',
-        hide: false,
-        sortable: false,
-        filter: false,
+        headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
         cellRenderer: 'multiselectCellRenderer',
         cellEditor: 'multiselectCellEditor',
-        editable: true
+        suppressKeyboardEvent: suppressEnter,
+        editable: true,
+        cellRendererParams: {
+          data: {
+            section: 'multiplierCharges',
+          },
+          change: (param, value) => {
+            param.selectedValue = value;
+          },
+        }
       },
       {
         headerName: '',
@@ -1064,4 +1069,12 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     }
     return result;
   }
+}
+
+function suppressEnter(params) {
+  const KEY_ENTER = 13;
+  const event = params.event;
+  const key = event.which;
+  const suppress = key === KEY_ENTER;
+  return suppress;
 }
