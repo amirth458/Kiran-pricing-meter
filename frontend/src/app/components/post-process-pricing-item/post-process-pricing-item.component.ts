@@ -529,12 +529,15 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
         cellRenderer: 'multiselectCellRenderer',
         cellEditor: 'multiselectCellEditor',
+        suppressKeyboardEvent: suppressEnter,
         editable: true,
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
           },
-          change: (param, value) => this.dropdownValueChanged(param, value),
+          change: (param, value) => {
+            param.selectedValue = value;
+          },
         }
       },
       {
@@ -930,6 +933,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
 
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
+      console.log(row);
       const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
       if (selectedValue.id.toString().includes('invoiceItem')) {
         row.valueOptions
@@ -1039,4 +1043,12 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     }
     return result;
   }
+}
+
+function suppressEnter(params) {
+  const KEY_ENTER = 13;
+  const event = params.event;
+  const key = event.which;
+  const suppress = key === KEY_ENTER;
+  return suppress;
 }

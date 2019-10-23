@@ -23,6 +23,17 @@ select:hover {
   height: 100%;
 }
 
+.action-column .selected-value {
+  background-color: var(--theme-light-green);
+  color: #fff;
+  font-size: 12px;
+  padding: 0 5px;
+  margin-right: 5px;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+}
+
 .form-group {
   width: 100%;
   height: 100%

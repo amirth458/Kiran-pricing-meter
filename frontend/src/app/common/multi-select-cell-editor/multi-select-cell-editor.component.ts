@@ -9,41 +9,48 @@ import {ICellEditorAngularComp} from 'ag-grid-angular';
 })
 export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, AfterViewInit  {
 
-  private params: any;
-
-    @ViewChild('container', {read: ViewContainerRef}) public container;
-    public happy = false;
-
+    private params: any;
+    @ViewChild('modal') modal;
+    selectedValues = [];
+    options = [];
     // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
     ngAfterViewInit() {
         window.setTimeout(() => {
             // this.container.element.nativeElement.focus();
+            this.modal.nativeElement.click();
+            $('.modal-backdrop').removeClass('show');
+            $('.modal-backdrop').css('left', '0');
+            $('.modal-backdrop').css('top', '0');
+            $('.modal-backdrop').css('width', '1');
+            $('.modal-backdrop').css('height', '1');
         });
     }
 
     agInit(params: any): void {
         this.params = params;
-        this.setHappy(params.value === 'Happy');
+        this.options = params.data.valueOptions;
+        if (params.data.value.length > 0) {
+            this.selectedValues = params.data.value;
+        } else {
+            this.selectedValues = [];
+        }
     }
 
     getValue(): any {
-        return this.happy ? 'Happy' : 'Sad';
+        return this.selectedValues;
     }
 
     isPopup(): boolean {
         return true;
     }
 
-    setHappy(happy: boolean): void {
-        this.happy = happy;
-    }
-
-    toggleMood(): void {
-        this.setHappy(!this.happy);
-    }
-
     onClick(happy: boolean) {
-        this.setHappy(happy);
+        console.log("click");
+        // this.params.api.stopEditing();
+    }
+
+    onSave() {
         this.params.api.stopEditing();
+        this.params.colDef.cellRendererParams.change(this.params, this.selectedValues);
     }
 }

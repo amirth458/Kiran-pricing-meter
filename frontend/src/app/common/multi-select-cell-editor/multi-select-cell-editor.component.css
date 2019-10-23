@@ -1,8 +1,14 @@
-.multiple-editor {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: RGBA(0,0,0,0.3);
+.modal-title {
+  border-left: 6px solid rgba(9, 40, 70, .36);
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 40px;
+}
+
+#addMultiplier {
+  background: RGBA(0,0,0,0.5);
+}
+.modal-dialog {
+  max-width: 80% !important;
 }

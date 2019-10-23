@@ -1,11 +1,5 @@
-<!-- <div class="action-column">
-  <div class="form-group">
-    <ng-select [multiple]="true" dropdownPosition="" [virtualScroll]=" true" [hideSelected]="true"
-      [selectOnTab]="true" [(ngModel)]="equipment">
-      <ng-container *ngFor="let item of options">
-        <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
-      </ng-container>
-    </ng-select>
-
-  </div>
-</div> -->
+<div class="action-column">
+    <span class="selected-value" *ngFor="let item of items">
+      {{item.name}}
+    </span>
+</div>
