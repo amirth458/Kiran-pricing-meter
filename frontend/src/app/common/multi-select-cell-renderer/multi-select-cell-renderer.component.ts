@@ -25,7 +25,7 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
       throw new Error('Missing change handler for DropdownCellRendererComponent');
     }
     if (this.params.data[this.params.colDef.field]) {
-      this.value = this.params.data[this.params.colDef.field];
+      this.value = [this.params.data[this.params.colDef.field]];
     }
     // console.log({ options: this.options });
     this.items = [];
