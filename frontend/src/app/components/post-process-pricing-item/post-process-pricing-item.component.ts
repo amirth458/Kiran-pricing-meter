@@ -934,38 +934,45 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
       console.log(row);
-      const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
-      if (selectedValue.id.toString().includes('invoiceItem')) {
-        row.valueOptions
-          .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue.id)
-          .map(v => {
-            multiplierCharges.push({
-              invoiceLineItem: {
-                id: row.invoiceLineItem
-              },
-              multiplier: row.multiplier,
-              multiplierProcessPricingParameter: {
+
+      const values = row.value;
+      //const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
+      values.map(item => {
+        const selectedValue = { id: item };
+
+        if (selectedValue.id.toString().includes('invoiceItem')) {
+          row.valueOptions
+            .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue.id)
+            .map(v => {
+              multiplierCharges.push({
                 invoiceLineItem: {
-                  id: v.id
+                  id: row.invoiceLineItem
+                },
+                multiplier: row.multiplier,
+                multiplierProcessPricingParameter: {
+                  invoiceLineItem: {
+                    id: v.id
+                  }
                 }
-              }
 
+              });
             });
-          });
-      } else {
-        multiplierCharges.push({
-          invoiceLineItem: {
-            id: row.invoiceLineItem
-          },
-          multiplier: row.multiplier,
-          multiplierProcessPricingParameter: {
+        } else {
+          multiplierCharges.push({
             invoiceLineItem: {
-              id: row.value
+              id: row.invoiceLineItem
+            },
+            multiplier: row.multiplier,
+            multiplierProcessPricingParameter: {
+              invoiceLineItem: {
+                id: row.value
+              }
             }
-          }
 
-        });
-      }
+          });
+        }
+
+      });
     });
 
     const postData = {
