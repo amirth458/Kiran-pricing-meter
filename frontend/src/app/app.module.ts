@@ -32,6 +32,7 @@ import { RegisterCompletedComponent } from './components/signup-completed/comple
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
+import { EventEmitterService } from './components/event-emitter.service';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -70,7 +71,8 @@ import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
     RegisterCompletedComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    EventEmitterService
   ],
   bootstrap: [AppComponent]
 })

@@ -91,6 +91,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   lengthUnits = [];
   areaUnits = [];
   estimatedMachineTimeUnits = [];
+  confidentialities = [];
   certifications = [];
   materials = [];
   equipments = [];
@@ -182,9 +183,19 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+    if (this.eventEmitterService.subsVar == undefined) {
+      this.eventEmitterService.subsVar = this.eventEmitterService.
+        processScreenEvent.subscribe((url: string) => {
+          this.save(url);
+        });
+    }
     try {
       this.spineer.show();
       await this.getInputValues();
+
+      const confidentialityList = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+      this.confidentialities = confidentialityList;
+
 
       const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.FacilityCertificate).toPromise();
       this.certifications = certifications.map((x) => {
@@ -217,12 +228,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.eventEmitterService.subsVar == undefined) {
-      this.eventEmitterService.subsVar = this.eventEmitterService.
-        processScreenEvent.subscribe((url: string) => {
-          this.save(url);
-        });
-    }
+
 
   }
 
@@ -290,7 +296,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     this.form.setValue({ ...this.form.value, materialId: null });
     this.materials = [];
     this.equipments.map(x => {
-      if (x.id == equipmentId) {
+      if (x.equipment.id == equipmentId) {
         this.materials = [...x.machineServingMaterialList];
       }
     });
@@ -494,7 +500,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         }
       }));
       this.store.dispatch(new SetStatus('PENDING'));
-
       if (!url.includes('estimator')) {
         this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
           .subscribe(res => {
