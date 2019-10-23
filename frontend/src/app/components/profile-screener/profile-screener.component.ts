@@ -506,19 +506,19 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
         timeToShip: {
           value: this.form.value.timeToShipValue,
-          unit: this.form.value.timeToShipUnit
+          unitId: this.form.value.timeToShipUnit
         },
         tolerance: {
           value: this.form.value.toleranceValue,
-          unit: this.form.value.toleranceUnit
+          unitId: this.form.value.toleranceUnit
         },
         surfaceRoughness: {
           value: this.form.value.surfaceRoughnessValue,
-          unit: this.form.value.surfaceRoughnessUnit
+          unitId: this.form.value.surfaceRoughnessUnit
         },
         surfaceFinish: {
           value: this.form.value.surfaceFinishValue,
-          unit: this.form.value.surfaceFinishUnit
+          unitId: this.form.value.surfaceFinishUnit
         },
 
         processProfileIdList: [
