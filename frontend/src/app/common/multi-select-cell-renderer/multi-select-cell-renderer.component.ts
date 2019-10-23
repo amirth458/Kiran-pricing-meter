@@ -12,6 +12,7 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
   options = [];
   value = [];
   equipment = '';
+  items = [];
   constructor() { }
 
   agInit(params): void {
@@ -26,13 +27,13 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
     if (this.params.data[this.params.colDef.field]) {
       this.value = this.params.data[this.params.colDef.field];
     }
+    // console.log({ options: this.options });
+    this.items = [];
+    this.value.map(item => {
+      this.items.push(this.options.find(option => option.id === item));
+    });
 
-
-    console.log({ options: this.options });
-  }
-
-  onChange(): void {
-    this.params.change(this.params, this.value);
+    console.log(this.items);
   }
 
   refresh(): boolean {

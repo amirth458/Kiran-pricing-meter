@@ -353,6 +353,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   onFileChange(fileInput) {
     if (fileInput.target.files && fileInput.target.files[0]) {
       const file = fileInput.target.files.item(0);
+
       this.uploading = true;
       this.connectorService.fileUploadForProcessScreener(file)
         .pipe(map((event) => {
@@ -373,7 +374,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
               this.progressMessage = 'Analyzing File...';
               this.uploading = false;
               this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
-              this.uploadedDocuments.push({ ...res, selected: 1 });
+              this.uploadedDocuments.push({ ...res, selected: 1, fileName: file.name });
               this.pendingDocumentIds.push(res.id);
               this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
               if (!this.pendingTimer) {
