@@ -40,25 +40,25 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   conditions = [];
   filteredPricingConditionTypes = [];
   selectedPricingConditionList = [
-    {
-      operatorType: {
-        id: ''
-      },
+    // {
+    //   operatorType: {
+    //     id: ''
+    //   },
 
-      processPricingConditionType: {
-        id: ''
-      },
-      unitType: {
-        id: ''
-      },
-      value: '',
-      valueInDefaultUnit: '',
-      valueSignType: {
-        id: ''
-      },
-      operandTypeList: [],
-      units: []
-    }
+    //   processPricingConditionType: {
+    //     id: ''
+    //   },
+    //   unitType: {
+    //     id: ''
+    //   },
+    //   value: '',
+    //   valueInDefaultUnit: '',
+    //   valueSignType: {
+    //     id: ''
+    //   },
+    //   operandTypeList: [],
+    //   units: []
+    // }
   ];
 
   conditionTypes = [];
@@ -197,8 +197,6 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     } finally {
 
       this.spinner.hide();
-
-
 
     }
     if (this.route.url.includes('edit')) {
@@ -845,7 +843,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         }
         if (!visitedInvoiceItem.includes(r.invoiceItem.name)) {
           visitedInvoiceItem.push(r.invoiceItem.name);
-          this.invoiceItems.push({ ...{ ...r.invoiceItem, id: r.id + 'invoiceItem' } });
+          this.invoiceItems.push({ ...r.invoiceItem, id: r.invoiceItem.id + 'invoiceItem' });
         }
       });
     });
@@ -858,15 +856,20 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         }
         if (!visitedInvoiceItem.includes(r.invoiceItem.name)) {
           visitedInvoiceItem.push(r.invoiceItem.name);
-          this.invoiceItems.push({ ...{ ...r.invoiceItem, id: r.id + 'invoiceItem' } });
+          this.invoiceItems.push({ ...r.invoiceItem, id: r.invoiceItem.id + 'invoiceItem' });
         }
       });
     });
-    return [
+    let result = [
       ...this.flatLineItem,
       ...this.variableLineItem,
       ...this.invoiceItems,
     ];
+    if (result.length > 0) {
+      result = [{ id: 'all-line-items', name: 'All line item' }, ...result];
+    }
+
+    return result;
   }
 
   addParameterCondition() {

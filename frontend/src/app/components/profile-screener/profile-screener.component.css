@@ -31,7 +31,7 @@ table>tbody>tr>td:first-child {
 }
 
 table .form-control {
-  height: 28px;
+  height: 32px;
   font-size: 15px;
 }
 
@@ -54,6 +54,10 @@ table .form-control {
   cursor: pointer;
 }
 
+.section span {
+  width: 40px;
+}
+
 .profile-list .column-name {
   font-size: 13px;
 }
@@ -73,7 +77,7 @@ table .form-control {
 }
 
 .upload label {
-  color: var(--theme-action-bar-color)!important;
+  color: var(--theme-action-bar-color) !important;
   font-weight: bold;
   font-size: 14px;
   display: block;
@@ -149,12 +153,23 @@ table .form-control {
 
 .detail-info .details .image-details ul li>div.flex-column {
   text-align: center;
+  width: 100%;
 }
 
+/*
+.detail-info .details .image-details ul li>div>div.inputs>input {
+  flex-grow: 50%;
+
+}
+
+.detail-info .details .image-details ul li>div>div.theme {
+  flex-grow: 50%;
+} */
 .detail-info .details .image-details ul li .inputs {
   display: flex;
   justify-content: space-around;
-  margin-left: 16px;
+  /* margin-left: 70px; */
+  width: 100%;
 }
 
 .detail-info .details .image-details ul li .inputs input,

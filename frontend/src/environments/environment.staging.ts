@@ -61,8 +61,8 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
   ],
   apiBaseUrl: 'http://stage-manage-api.3diligent.com/api/v1',
-  CONNECTOR_HOST_URL: 'http://connector-service-2.us-west-2.elasticbeanstalk.com',
-  PPE_HOST_URL: ' http://dev-ppe-api.3diligent.com/api/v1',
+  PPE_HOST_URL: ' http://stage-ppe-api.3diligent.com/api/v1',
+  CONNECTOR_HOST_URL: 'http://stage-manage.3diligent.com/api/v1',
   encryptionKey: '1Kf@%4%3ADfEafw'
 };
 

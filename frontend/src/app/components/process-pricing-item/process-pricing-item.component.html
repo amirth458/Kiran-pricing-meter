@@ -28,7 +28,7 @@
 
       <div class="form-group theme col-md-6">
         <label for="pricingProfileName">Pricing Profile Nickname</label>
-        <input type="text" formControlName="pricingProfileName" class="form-control" id="pricingProfileName"
+        <input type="text" required formControlName="pricingProfileName" class="form-control" id="pricingProfileName"
           name="pricingProfileName" placeholder="Pricing Profile Name">
         <span class="footnote">* If left blank, we will auto-generate one for you.</span>
       </div>
@@ -90,7 +90,7 @@
 
             <div class="form-group theme col-md-3">
               <input [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
-                required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                required type="number" step="0.00001" maxlength="5" min="0" max="99999"
                 [(ngModel)]="selectedPricingConditionList[index].value" [ngModelOptions]="{standalone: true}"
                 class="form-control" id="value" name="value" placeholder="Value">
               <div class="invalid-feedback">

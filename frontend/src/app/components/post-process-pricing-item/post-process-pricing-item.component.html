@@ -92,7 +92,7 @@
 
             <div class="form-group theme col-md-3">
               <input [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
-                required type="number" step="0.00001" maxlength="4" min="0" max="9999"
+                required type="number" step="0.00001" maxlength="5" min="0" max="99999"
                 [(ngModel)]="selectedPricingConditionList[index].value" [ngModelOptions]="{standalone: true}"
                 class="form-control" id="value" name="value" placeholder="Value">
               <div class="invalid-feedback">

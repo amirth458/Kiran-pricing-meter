@@ -61,7 +61,7 @@ export class ProcessProfileComponent implements OnInit {
       }
     },
     {
-      name: 'Parameter Nickname', checked: false,
+      name: 'Parameter Set Nickname', checked: false,
       field: 'parameterNickName', query: {
         type: '',
         filter: '',
@@ -90,7 +90,7 @@ export class ProcessProfileComponent implements OnInit {
       name: 'Materials', checked: true, field: 'materials'
     },
     {
-      name: 'Parameter Nickname', checked: true, field: 'parameterNickName'
+      name: 'Parameter Set Nickname', checked: true, field: 'parameterNickName'
     },
     {
       name: 'Process Type', checked: true, field: 'processProfileType.name'
@@ -154,7 +154,7 @@ export class ProcessProfileComponent implements OnInit {
       }
 
     },
-    { headerName: 'Parameter Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
+    { headerName: 'Parameter Set Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {
       headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
