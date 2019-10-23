@@ -33,6 +33,7 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
       this.items.push(this.options.find(option => option.id === item));
     });
 
+    console.log('value', this.value);
     console.log(this.items);
   }
 
