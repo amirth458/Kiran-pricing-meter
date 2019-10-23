@@ -86,15 +86,19 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     surfaceFinishValue: [null],
 
     timeToShipUnit: [''],
-    toleranceUnit: [null],
-    surfaceRoughnessUnit: [null],
-    surfaceFinishUnit: [null],
+    toleranceUnit: [''],
+    surfaceRoughnessUnit: [''],
+    surfaceFinishUnit: [''],
   });
 
   units = [];
+
   volumeUnits = [];
   lengthUnits = [];
   areaUnits = [];
+  dateTimeUnits = [];
+  surfaceRoughnessUnits = [];
+
   estimatedMachineTimeUnits = [];
   confidentialities = [];
   certifications = [];
@@ -170,13 +174,13 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         timeToShipUnit: this.RFQData.timeToShip ? this.RFQData.timeToShip.unit : '',
 
         toleranceValue: this.RFQData.tolerance ? this.RFQData.tolerance.value : null,
-        toleranceUnit: this.RFQData.tolerance ? this.RFQData.tolerance.unit : null,
+        toleranceUnit: this.RFQData.tolerance ? this.RFQData.tolerance.unit : '',
 
         surfaceRoughnessValue: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.value : null,
-        surfaceRoughnessUnit: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unit : null,
+        surfaceRoughnessUnit: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unit : '',
 
         surfaceFinishValue: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
-        surfaceFinishUnit: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unit : null,
+        surfaceFinishUnit: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unit : '',
       });
 
 
@@ -229,8 +233,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
-      this.estimatedMachineTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
-
+      this.dateTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
+      this.surfaceRoughnessUnits = this.units.filter(unit => unit.measurementType.name === 'surface roughness');
 
     } catch (e) {
       console.log(e);
@@ -536,6 +540,9 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           uploadedDocuments: this.uploadedDocuments
         }
       }));
+
+      console.log({ postData })
+
       this.store.dispatch(new SetStatus('PENDING'));
       if (!url.includes('estimator')) {
         this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
