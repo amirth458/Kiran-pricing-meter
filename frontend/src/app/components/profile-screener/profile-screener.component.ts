@@ -80,10 +80,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     // quantity: ['', Validators.required],
 
-    deliveryStatementId: [''],
-    tolerance: [null],
-    surfaceRoughness: [null],
-    surfaceFinish: [null],
+    timeToShipValue: [''],
+    toleranceValue: [null],
+    surfaceRoughnessValue: [null],
+    surfaceFinishValue: [null],
+
+    timeToShipUnit: [''],
+    toleranceUnit: [null],
+    surfaceRoughnessUnit: [null],
+    surfaceFinishUnit: [null],
   });
 
   units = [];
@@ -161,10 +166,17 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
         // quantity: this.RFQData.quantity || '',
-        deliveryStatementId: this.RFQData.deliveryStatementId || '',
-        tolerance: this.RFQData.tolerance || null,
-        surfaceRoughness: this.RFQData.surfaceRoughness || null,
-        surfaceFinish: this.RFQData.surfaceFinish || null,
+        timeToShipValue: this.RFQData.timeToShip ? this.RFQData.timeToShip.value : '',
+        timeToShipUnit: this.RFQData.timeToShip ? this.RFQData.timeToShip.unit : '',
+
+        toleranceValue: this.RFQData.tolerance ? this.RFQData.tolerance.value : null,
+        toleranceUnit: this.RFQData.tolerance ? this.RFQData.tolerance.unit : null,
+
+        surfaceRoughnessValue: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.value : null,
+        surfaceRoughnessUnit: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unit : null,
+
+        surfaceFinishValue: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
+        surfaceFinishUnit: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unit : null,
       });
 
 
@@ -481,11 +493,36 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         Number(this.details.buildingZ.value)).toString();
 
       const postData = {
-        ...this.form.value, processProfileIdList: [
+        // ...this.form.value,
+        requiredCertificateId: this.form.value.requiredCertificateId,
+        materialId: this.form.value.materialId,
+        equipmentId: this.form.value.equipmentId,
+        confidentialityId: this.form.value.confidentialityId,
+
+
+        timeToShip: {
+          value: this.form.value.timeToShipValue,
+          unit: this.form.value.timeToShipUnit
+        },
+        tolerance: {
+          value: this.form.value.toleranceValue,
+          unit: this.form.value.toleranceUnit
+        },
+        surfaceRoughness: {
+          value: this.form.value.surfaceRoughnessValue,
+          unit: this.form.value.surfaceRoughnessUnit
+        },
+        surfaceFinish: {
+          value: this.form.value.surfaceFinishValue,
+          unit: this.form.value.surfaceFinishUnit
+        },
+
+        processProfileIdList: [
           ...this.processProfiles
             .filter(profile => profile.checked)
             .map(profile => profile.id)],
-        partMetadata: this.details
+        partMetadata: this.details,
+        processTypeId: ''
       };
 
       postData.processTypeId = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
