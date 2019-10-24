@@ -183,7 +183,7 @@ export class PricingEstimatorComponent implements OnInit {
     this.screenerEstimatorStore$.subscribe(data => {
       this.pageState = data.status;
       this.RFQInfo = data.RFQInfo;
-      this.screenedProfiles = data.screenedProfiles;
+      this.screenedProfiles = data.screenedProfiles.map(d => d.profileId);
       this.estimatedPrices = data.estimatedPrices;
 
       // this.estimatedPrices.push({ pricingProfileId: 55, quotePrice: '15.5' });
