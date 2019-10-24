@@ -127,6 +127,7 @@ export class ShippingComponent implements OnInit {
     {
       headerName: 'Actions',
       width: 50,
+      pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
