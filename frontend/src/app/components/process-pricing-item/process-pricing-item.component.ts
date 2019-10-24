@@ -12,7 +12,7 @@ import { GridOptions } from 'ag-grid-community';
 import { DropdownCellRendererComponent } from 'src/app/common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { MultiSelectCellRendererComponent } from 'src/app/common/multi-select-cell-renderer/multi-select-cell-renderer.component';
-import { MultiSelectCellEditorComponent } from 'src/app/common/multi-select-cell-editor/multi-select-cell-editor.component';
+
 @Component({
   selector: 'app-process-pricing-item',
   templateUrl: './process-pricing-item.component.html',
@@ -97,7 +97,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
   frameworkComponents = {
     multiselectCellRenderer: MultiSelectCellRendererComponent,
-    multiselectCellEditor: MultiSelectCellEditorComponent,
     dropdownCellRenderer: DropdownCellRendererComponent,
     actionCellRenderer: ActionCellRendererComponent
   };
@@ -532,17 +531,12 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       { headerName: 'Multiplier', field: 'multiplier', hide: false, sortable: false, filter: false, editable: true },
       {
         headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
-        cellRenderer: 'multiselectCellRenderer',
-        cellEditor: 'multiselectCellEditor',
-        suppressKeyboardEvent: suppressEnter,
-        editable: true,
+        cellRenderer: 'dropdownCellRenderer',
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
           },
-          change: (param, value) => {
-            param.selectedValue = value;
-          },
+          change: (param, value) => this.dropdownValueChanged(param, value),
         }
       },
       {
@@ -1069,12 +1063,4 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     }
     return result;
   }
-}
-
-function suppressEnter(params) {
-  const KEY_ENTER = 13;
-  const event = params.event;
-  const key = event.which;
-  const suppress = key === KEY_ENTER;
-  return suppress;
 }

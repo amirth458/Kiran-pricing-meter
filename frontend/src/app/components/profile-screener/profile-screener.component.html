@@ -106,8 +106,8 @@
                 <ul>
                   <li><span>Volume</span> -
                     <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                        id="volumeId" name="volumeId" [(ngModel)]="details.volume.value"
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                        max="99999" id="volumeId" name="volumeId" [(ngModel)]="details.volume.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="volumeValue" name="volumeValue" class="form-control"
@@ -181,8 +181,8 @@
                     </div>
                   </li>
                   <li><span>Surface area</span> - <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                        id="surfaceAreaId" name="surfaceAreaId" [(ngModel)]="details.surfaceArea.value"
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                        max="99999" id="surfaceAreaId" name="surfaceAreaId" [(ngModel)]="details.surfaceArea.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="surfaceAreaValue" name="surfaceAreaValue" class="form-control"
@@ -195,9 +195,9 @@
                     </div>
                   </li>
                   <li><span>Thinnest wall</span> - <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                        id="minWallThicknessId" name="minWallThicknessId" [(ngModel)]="details.minWallThickness.value"
-                        [ngModelOptions]="{standalone: true}">
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                        max="99999" id="minWallThicknessId" name="minWallThicknessId"
+                        [(ngModel)]="details.minWallThickness.value" [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="minWallThicknessValue" name="minWallThicknessValue" class="form-control"
                           [(ngModel)]="details.minWallThickness.unitId" [ngModelOptions]="{standalone: true}">
@@ -210,15 +210,15 @@
                   </li>
 
                   <li><span>Est Machine Time</span> - <div class="inputs">
-                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                        id="estimatedMachineTime" name="estimatedMachineTime" [(ngModel)]="details.estMachineTime.value"
-                        [ngModelOptions]="{standalone: true}">
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                        max="99999" id="estimatedMachineTime" name="estimatedMachineTime"
+                        [(ngModel)]="details.estMachineTime.value" [ngModelOptions]="{standalone: true}">
                       <div class="theme">
                         <select required id="estimatedMachineTimeValue" name="estimatedMachineTimeValue"
                           class="form-control" [(ngModel)]="details.estMachineTime.unitId"
                           [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
-                          <option *ngFor="let unit of estimatedMachineTimeUnits" [value]="unit.id">
+                          <option *ngFor="let unit of dateTimeUnits" [value]="unit.id">
                             {{unit.displayName || unit.symbol}}
                           </option>
                         </select>
@@ -267,8 +267,7 @@
                 <div class="theme">
                   <select id="nda" name="nda" class="form-control" formControlName="confidentialityId">
                     <option selected value="">Choose...</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option *ngFor="let item of confidentialities" [value]="item.id">{{item.name}}</option>
                   </select>
                 </div>
               </td>
@@ -283,12 +282,13 @@
 
 
             <tr>
-              <td>Process/Equipment</td>
+              <td>Process</td>
               <td>
                 <ng-select #equipmentInput placeholder="Add Equipment" placeholder="Add Equipment" [multiple]="false"
                   dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
                   formControlName="equipmentId" (change)="equipmentChanged()">
-                  <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
+                  <ng-option *ngFor="let item of equipments" [value]="item.equipment.id">{{item.equipment.name}}
+                  </ng-option>
                 </ng-select>
             </tr>
 
@@ -299,7 +299,8 @@
                 <ng-select style="width: 100%;" #materialInput placeholder="Add Materials" [multiple]="false"
                   dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
                   formControlName="materialId">
-                  <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
+                  <ng-option *ngFor="let item of materials" [value]="item.material.id">{{item.material.name}}
+                  </ng-option>
                 </ng-select>
               </td>
             </tr>
@@ -308,12 +309,21 @@
               <td class="d-flex section">
                 <div class="theme flex-grow-1">
                   <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                    id="tolerance" name="tolerance" formControlName="tolerance">
+                    id="tolerance" name="tolerance" formControlName="toleranceValue">
                 </div>
 
-                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
-                  mm
-                </span>
+                <div class="theme unit">
+                  <select id="nda" name="nda" class="form-control" formControlName="toleranceUnit">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                      {{unit.displayName || unit.symbol}}
+                    </option>
+                  </select>
+                </div>
+
+                <!-- <span class="d-flext align-items-center mr-4 ml-4 mt-1"> -->
+                <!-- mm -->
+                <!-- </span> -->
               </td>
             </tr>
 
@@ -323,11 +333,20 @@
 
                 <div class="theme flex-grow-1">
                   <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                    id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughness">
+                    id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughnessValue">
                 </div>
-                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
+
+                <div class="theme unit">
+                  <select id="nda" name="nda" class="form-control" formControlName="surfaceRoughnessUnit">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let unit of surfaceRoughnessUnits" [value]="unit.id">
+                      {{unit.displayName || unit.symbol}}
+                    </option>
+                  </select>
+                </div>
+                <!-- <span class="d-flext align-items-center mr-4 ml-4 mt-1">
                   Ra µm
-                </span>
+                </span> -->
               </td>
             </tr>
 
@@ -336,7 +355,7 @@
               <td>Surface Finish</td>
               <td>
                 <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                  id="surface-finish" name="surface-finish" formControlName="surfaceFinish">
+                  id="surface-finish" name="surface-finish" formControlName="surfaceFinishValue">
               </td>
             </tr>
 
@@ -345,19 +364,28 @@
               <td class="d-flex section">
                 <!-- <div class=" theme">
                   <select  id="time-to-ship" name="time-to-ship" class="form-control"
-                    formControlName="deliveryStatementId">
+                    formControlName="timeToShip">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of timeToShip" [value]="item.id">{{item.name}}</option>
                   </select>
                 </div> -->
                 <div class="theme flex-grow-1">
 
-                  <input class="form-control" type="number" maxlength="5" min="0" max="99999" id="deliveryStatementId"
-                    name="deliveryStatementId" formControlName="deliveryStatementId">
+                  <input class="form-control" type="number" maxlength="5" min="0" max="99999" id="timeToShip"
+                    name="timeToShip" formControlName="timeToShipValue">
                 </div>
-                <span class="d-flext align-items-center mr-4 ml-4 mt-1">
-                  Days
-                </span>
+
+                <div class="theme unit">
+                  <select id="nda" name="nda" class="form-control" formControlName="timeToShipUnit">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let unit of dateTimeUnits" [value]="unit.id">
+                      {{unit.displayName || unit.symbol}}
+                    </option>
+                  </select>
+                </div>
+                <!-- <span class="d-flext align-items-center mr-4 ml-4 mt-1"> -->
+                <!-- Days -->
+                <!-- </span> -->
               </td>
             </tr>
           </tbody>

@@ -5,9 +5,13 @@
 
   <div class="title-bar">
     <!-- Profile Name: Parameter set nick name -->
+    <!-- <h4>{{profileName}}<span *ngIf="name">: {{form.value.pricingProfileName}}</span></h4> -->
     <h4>{{form.value.pricingProfileName}}</h4>
+
     <!-- parameter details -->
+    <!-- <span>{{parameterDetails}}</span> -->
     <span>{{profileName}}</span>
+
   </div>
 
   <form [formGroup]="form" novalidate class="needs-validation" (submit)="save($event)">

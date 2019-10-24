@@ -80,17 +80,27 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     // quantity: ['', Validators.required],
 
-    deliveryStatementId: [''],
-    tolerance: [null],
-    surfaceRoughness: [null],
-    surfaceFinish: [null],
+    timeToShipValue: [''],
+    toleranceValue: [null],
+    surfaceRoughnessValue: [null],
+    surfaceFinishValue: [null],
+
+    timeToShipUnit: [''],
+    toleranceUnit: [''],
+    surfaceRoughnessUnit: [''],
+    surfaceFinishUnit: [''],
   });
 
   units = [];
+
   volumeUnits = [];
   lengthUnits = [];
   areaUnits = [];
+  dateTimeUnits = [];
+  surfaceRoughnessUnits = [];
+
   estimatedMachineTimeUnits = [];
+  confidentialities = [];
   certifications = [];
   materials = [];
   equipments = [];
@@ -160,10 +170,17 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
         // quantity: this.RFQData.quantity || '',
-        deliveryStatementId: this.RFQData.deliveryStatementId || '',
-        tolerance: this.RFQData.tolerance || null,
-        surfaceRoughness: this.RFQData.surfaceRoughness || null,
-        surfaceFinish: this.RFQData.surfaceFinish || null,
+        timeToShipValue: this.RFQData.timeToShip ? this.RFQData.timeToShip.value : '',
+        timeToShipUnit: this.RFQData.timeToShip ? this.RFQData.timeToShip.unit : '',
+
+        toleranceValue: this.RFQData.tolerance ? this.RFQData.tolerance.value : null,
+        toleranceUnit: this.RFQData.tolerance ? this.RFQData.tolerance.unit : '',
+
+        surfaceRoughnessValue: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.value : null,
+        surfaceRoughnessUnit: this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unit : '',
+
+        surfaceFinishValue: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
+        surfaceFinishUnit: this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unit : '',
       });
 
 
@@ -182,9 +199,19 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+    if (this.eventEmitterService.subsVar == undefined) {
+      this.eventEmitterService.subsVar = this.eventEmitterService.
+        processScreenEvent.subscribe((url: string) => {
+          this.save(url);
+        });
+    }
     try {
       this.spineer.show();
       await this.getInputValues();
+
+      const confidentialityList = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+      this.confidentialities = confidentialityList;
+
 
       const certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.FacilityCertificate).toPromise();
       this.certifications = certifications.map((x) => {
@@ -206,8 +233,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       this.volumeUnits = this.units.filter(unit => unit.measurementType.name === 'volume');
       this.lengthUnits = this.units.filter(unit => unit.measurementType.name === 'length');
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
-      this.estimatedMachineTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
-
+      this.dateTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
+      this.surfaceRoughnessUnits = this.units.filter(unit => unit.measurementType.name === 'surface roughness');
 
     } catch (e) {
       console.log(e);
@@ -217,12 +244,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.eventEmitterService.subsVar == undefined) {
-      this.eventEmitterService.subsVar = this.eventEmitterService.
-        processScreenEvent.subscribe((url: string) => {
-          this.save(url);
-        });
-    }
+
 
   }
 
@@ -290,7 +312,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     this.form.setValue({ ...this.form.value, materialId: null });
     this.materials = [];
     this.equipments.map(x => {
-      if (x.id == equipmentId) {
+      if (x.equipment.id == equipmentId) {
         this.materials = [...x.machineServingMaterialList];
       }
     });
@@ -475,11 +497,36 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         Number(this.details.buildingZ.value)).toString();
 
       const postData = {
-        ...this.form.value, processProfileIdList: [
+        // ...this.form.value,
+        requiredCertificateId: this.form.value.requiredCertificateId,
+        materialId: this.form.value.materialId,
+        equipmentId: this.form.value.equipmentId,
+        confidentialityId: this.form.value.confidentialityId,
+
+
+        timeToShip: {
+          value: this.form.value.timeToShipValue,
+          unitId: this.form.value.timeToShipUnit
+        },
+        tolerance: {
+          value: this.form.value.toleranceValue,
+          unitId: this.form.value.toleranceUnit
+        },
+        surfaceRoughness: {
+          value: this.form.value.surfaceRoughnessValue,
+          unitId: this.form.value.surfaceRoughnessUnit
+        },
+        surfaceFinish: {
+          value: this.form.value.surfaceFinishValue,
+          unitId: this.form.value.surfaceFinishUnit
+        },
+
+        processProfileIdList: [
           ...this.processProfiles
             .filter(profile => profile.checked)
             .map(profile => profile.id)],
-        partMetadata: this.details
+        partMetadata: this.details,
+        processTypeId: ''
       };
 
       postData.processTypeId = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
@@ -493,8 +540,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           uploadedDocuments: this.uploadedDocuments
         }
       }));
-      this.store.dispatch(new SetStatus('PENDING'));
 
+      console.log({ postData })
+
+      this.store.dispatch(new SetStatus('PENDING'));
       if (!url.includes('estimator')) {
         this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
           .subscribe(res => {
