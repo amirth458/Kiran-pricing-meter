@@ -291,6 +291,15 @@ button.theme.theme-reverse:hover {
   font-size: 13px;
   display: flex;
   align-items: center;
+  padding: 0 !important;
+}
+
+.theme-table .ag-theme-balham .ag-cell.ag-cell-inline-editing {
+  height: 100%;
+}
+.theme-table .ag-theme-balham .ag-cell select {
+  margin: 0;
+  height: 100% !important;
 }
 
 .theme-table .ag-theme-balham .ag-cell span {
