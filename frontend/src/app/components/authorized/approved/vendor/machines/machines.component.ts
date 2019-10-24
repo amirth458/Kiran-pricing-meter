@@ -104,7 +104,7 @@ export class MachinesComponent implements OnInit {
   };
 
   columnDefs = [
-    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false, width: 120 },
     { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Facility', field: 'vendorFacility.name', hide: false, sortable: true, filter: false },
     {
@@ -151,6 +151,7 @@ export class MachinesComponent implements OnInit {
     {
       headerName: 'Actions',
       width: 100,
+      pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

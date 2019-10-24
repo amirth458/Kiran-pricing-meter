@@ -179,7 +179,8 @@ export class FacilityComponent implements OnInit {
     field: 'id',
     hide: false,
     sortable: true,
-    filter: false
+    filter: false,
+    width: 100
   },
   {
     headerName: 'Facility Name',
@@ -253,6 +254,7 @@ export class FacilityComponent implements OnInit {
     headerName: 'Actions',
     filter: false,
     width: 100,
+    pinned: 'right',
     cellRenderer: 'actionCellRenderer',
     cellRendererParams: {
       action: {

@@ -93,7 +93,7 @@ export class ProcessProfileComponent implements OnInit {
       name: 'Parameter Set Nickname', checked: true, field: 'parameterNickName'
     },
     {
-      name: 'Process Type', checked: true, field: 'processProfileType.name'
+      name: 'Process Type', checked: false, field: 'processProfileType.name'
     },
   ];
 
@@ -105,7 +105,7 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
     { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
@@ -156,7 +156,8 @@ export class ProcessProfileComponent implements OnInit {
     },
     { headerName: 'Parameter Set Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {
-      headerName: 'Process Type', field: 'processProfileType.name', hide: false, sortable: true, filter: false,
+      headerName: 'Process Type', field: 'processProfileType.name', hide: true, sortable: true, filter: false,
+
       cellRenderer(param): any {
         // tslint:disable-next-line:max-line-length
         const value = param.data.processMachineServingMaterialList[0] ? param.data.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processTypeName : '';
@@ -474,7 +475,8 @@ export class ProcessProfileComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 140,
+      width: 90,
+      pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

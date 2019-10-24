@@ -68,7 +68,7 @@
 
     </div>
     <!-- Features Parameters  -->
-    <div class="tab-container card"  *ngIf="featureShow">
+    <div class="tab-container card" *ngIf="featureShow">
 
       <div class="card-header">
         <div class="menu-item active">
@@ -77,12 +77,12 @@
       </div>
 
       <div id="conditionLabel" class="conditions">
-        
+
 
         <div class="default">
-            <div class="form-group nickname theme col">
-              <label for="parameterNickName">Enter your equirement features</label>
-            </div>
+          <div class="form-group nickname theme col">
+            <label for="parameterNickName">Enter your equirement features</label>
+          </div>
           <span class="add" (click)="addEquipment()">
             <i class="fas fa-plus"></i>
           </span>
@@ -94,21 +94,22 @@
 
             <div *ngFor="let item of equipmentList; let index = index" class="form-row">
               <div class="form-group theme col-md-4">
-                  <select required id="name" name="name" (change)="onChangeFeatureType($event, index)" [(ngModel)]="equipmentList[index].equipmentFeatureType.id"
-                    [ngModelOptions]="{standalone: true}" class="form-control">
-                    <option selected value="">Choose...</option>
-                    <option *ngFor="let item of featureTypes" [value]="item.id">
-                      {{item.name}}
-                    </option>
-                  </select>
+                <select required id="name" name="name" [(ngModel)]="equipmentList[index].equipmentFeatureType.id"
+                  (ngModelChange)="onChangeFeatureType(equipmentList[index].equipmentFeatureType.id, index)"
+                  [ngModelOptions]="{standalone: true}" class="form-control">
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of featureTypes" [value]="item.id">
+                    {{item.name}}
+                  </option>
+                </select>
                 <div class="invalid-feedback">
                   Required.
                 </div>
               </div>
               <div class="form-group theme col-md-4">
                 <input required type="number" step="0.00001" maxlength="4" min="0" min="0" max="9999"
-                  [(ngModel)]="equipmentList[index].value" [ngModelOptions]="{standalone: true}"
-                  class="form-control" id="value" name="value" placeholder="Value">
+                  [(ngModel)]="equipmentList[index].value" [ngModelOptions]="{standalone: true}" class="form-control"
+                  id="value" name="value" placeholder="Value">
                 <div class="invalid-feedback">
                   Required.
                 </div>
@@ -120,7 +121,8 @@
                   <select required id="measureUnit" name="measureUnit" [(ngModel)]="equipmentList[index].unitType.id"
                     [ngModelOptions]="{standalone: true}" class="form-control">
                     <option selected value="">Choose...</option>
-                    <option *ngFor="let item of getFeatureUnits(equipmentList[index].equipmentFeatureType)" [value]="item.id">
+                    <option *ngFor="let item of getFeatureUnits(equipmentList[index].equipmentFeatureType)"
+                      [value]="item.id">
                       {{item.symbol}}
                     </option>
                   </select>
