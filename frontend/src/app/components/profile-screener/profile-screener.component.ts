@@ -80,7 +80,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     // quantity: ['', Validators.required],
 
-    timeToShipValue: [''],
+    timeToShipValue: [null],
     toleranceValue: [null],
     surfaceRoughnessValue: [null],
     surfaceFinishValue: [null],
@@ -170,17 +170,17 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
         // quantity: this.RFQData.quantity || '',
-        timeToShipValue: this.RFQData ? this.RFQData.timeToShipValue : '',
-        timeToShipUnit: this.RFQData ? this.RFQData.timeToShipUnit : '',
+        timeToShipValue: this.RFQData && this.RFQData.timeToShipValue ? this.RFQData.timeToShipValue : null,
+        timeToShipUnit: this.RFQData && this.RFQData.timeToShipUnit ? this.RFQData.timeToShipUnit : '',
 
-        toleranceValue: this.RFQData ? this.RFQData.toleranceValue : null,
-        toleranceUnit: this.RFQData ? this.RFQData.toleranceUnit : '',
+        toleranceValue: this.RFQData && this.RFQData.toleranceValue ? this.RFQData.toleranceValue : null,
+        toleranceUnit: this.RFQData && this.RFQData.toleranceUnit ? this.RFQData.toleranceUnit : '',
 
-        surfaceRoughnessValue: this.RFQData ? this.RFQData.surfaceRoughnessValue : null,
-        surfaceRoughnessUnit: this.RFQData ? this.RFQData.surfaceRoughnessUnit : '',
+        surfaceRoughnessValue: this.RFQData && this.RFQData.surfaceRoughnessValue ? this.RFQData.surfaceRoughnessValue : null,
+        surfaceRoughnessUnit: this.RFQData && this.RFQData.surfaceRoughnessUnit ? this.RFQData.surfaceRoughnessUnit : '',
 
-        surfaceFinishValue: this.RFQData ? this.RFQData.surfaceFinishValue : null,
-        surfaceFinishUnit: this.RFQData ? this.RFQData.surfaceFinishUnit : '',
+        surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinishValue ? this.RFQData.surfaceFinishValue : null,
+        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinishUnit ? this.RFQData.surfaceFinishUnit : '',
       });
 
 
@@ -373,6 +373,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   onFileChange(fileInput) {
+    this.progressMessage = 'Uploading...';
+
     if (fileInput.target.files && fileInput.target.files[0]) {
       const file = fileInput.target.files.item(0);
 

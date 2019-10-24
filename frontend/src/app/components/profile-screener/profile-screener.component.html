@@ -34,7 +34,8 @@
 
         <div class="upload text-theme">
           <label>Please, select the file</label>
-          <button type="file" class="btn btn-add theme white back" (click)="onOpenFile($event)">
+          <button [disabled]="uploadedDocuments.length != 0" type="file" class="btn btn-add theme white back"
+            (click)="onOpenFile($event)">
             Upload a Reference File
           </button>
           <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile" accept="*" />
@@ -54,19 +55,20 @@
           <p>Detail Information</p>
           <div class="row details">
             <div class="col-md-4 d-flex align-items-center">
-              <div *ngIf="!selectedDocument || !selectedDocument.smallImage" class="no-image">
+              <div *ngIf="!selectedDocument || !selectedDocument.largeImage" class="no-image">
                 No Photo
               </div>
               <div *ngIf="isSelectedDocument()">
-                <img *ngIf="selectedDocument.smallImage" [src]="selectedDocument.smallImage" (click)="toggleModal()"
-                  height="200px" width="200px" alt="">
+
+                <img *ngIf="selectedDocument && selectedDocument.largeImage" [src]="selectedDocument.largeImage"
+                  (click)="toggleModal()" height="200px" width="200px" alt="">
               </div>
 
             </div>
 
 
             <div class="col-md-8 d-flex flex-column flex-grow-1 d-none"
-              [class.d-flex]="selectedDocument && selectedDocument.smallImage">
+              [class.d-flex]="selectedDocument && selectedDocument.largeImage">
               <span class="title" (click)="save()">Demo 1</span>
               <span class="quantity d-flex ">
                 <div>
@@ -209,7 +211,7 @@
                     </div>
                   </li>
 
-                  <li><span>Est Machine Time</span> - <div class="inputs">
+                  <!-- <li><span>Est Machine Time</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
                         max="99999" id="estimatedMachineTime" name="estimatedMachineTime"
                         [(ngModel)]="details.estMachineTime.value" [ngModelOptions]="{standalone: true}">
@@ -224,7 +226,7 @@
                         </select>
                       </div>
                     </div>
-                  </li>
+                  </li> -->
                 </ul>
 
 
@@ -236,7 +238,7 @@
               </div>
             </div>
             <div class="col-md-8 d-flex flex-column"
-              *ngIf="(uploading && uploadResponse.status === 'progress') || (selectedDocument && !selectedDocument.smallImage)">
+              *ngIf="(uploading && uploadResponse.status === 'progress') || (selectedDocument && !selectedDocument.largeImage)">
               <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
           </div>
@@ -282,7 +284,7 @@
 
 
             <tr>
-              <td>Process</td>
+              <td>Equipment</td>
               <td>
                 <ng-select #equipmentInput placeholder="Add Equipment" placeholder="Add Equipment" [multiple]="false"
                   dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"

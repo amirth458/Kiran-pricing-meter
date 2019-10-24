@@ -72,7 +72,7 @@ table .form-control {
   margin: 10px;
 }
 
-.upload button.back:hover {
+.upload button.back:not(:disabled):hover {
   color: var(--theme-light-blue);
 }
 
