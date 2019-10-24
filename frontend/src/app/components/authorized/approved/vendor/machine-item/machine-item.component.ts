@@ -202,12 +202,18 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   async clearStoreEquipment() {
     const equipmentId = this.form.value.equipment;
     const equipment: any = this.equipments.find(equip => equip.id === equipmentId);
-    const processTypeId = equipment.processFamily.processType.id;
-    this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
-    console.log(this.featureTypes);
-    if (this.featureTypes.length > 0) {
-      this.featureShow = true;
-      this.equipmentList = [];
+    if (equipment && equipment.processFamily && equipment.processFamily.processType) {
+
+      const processTypeId = equipment.processFamily.processType.id;
+      this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
+      if (this.featureTypes.length > 0) {
+        this.featureShow = true;
+        this.equipmentList = [];
+        this.addAllFeatureTypes(null);
+      } else {
+        this.featureShow = false;
+        this.equipmentList = [];
+      }
     } else {
       this.featureShow = false;
       this.equipmentList = [];
@@ -301,9 +307,34 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     );
   }
 
+  addAllFeatureTypes(event) {
+    this.featureTypes.map(featureType => {
+      // equipmentList[index].equipmentFeatureType.id
+      this.equipmentList.push(
+        {
+          id: '',
+          equipmentFeatureType: {
+            id: featureType.id,
+            measurementType: {
+              id: '',
+            }
+          },
+          unitType: {
+            id: ''
+          },
+          value: '',
+        }
+      );
+      const featureTypeListIndex = this.equipmentList.length - 1;
+      this.onChangeFeatureType(featureType.id, featureTypeListIndex);
+    });
+
+  }
+
   onChangeFeatureType(event, index) {
-    const featureType = $(event.target).val();
-    if ( featureType === '') {
+    // const featureType = $(event.target).val();
+    const featureType = event;
+    if (featureType === '') {
       this.equipmentList[index].equipmentFeatureType.measurementType.id = '';
     } else {
       const feature = this.featureTypes.find(item => item.id === Number(featureType));
@@ -331,7 +362,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
             equip.unitType.id !== '' &&
             equip.value !== '';
         });
-        if ( errors.filter(error => error === false).length > 0) {
+        if (errors.filter(error => error === false).length > 0) {
           return;
         }
       }
