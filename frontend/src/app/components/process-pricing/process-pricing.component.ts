@@ -85,8 +85,9 @@ export class ProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, },
-    { headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false,
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    {
+      headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         return param.data.processProfile.name + ': ' + param.data.name;
       },
@@ -366,7 +367,8 @@ export class ProcessPricingComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 140,
+      pinned: 'right',
+      width: 100,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

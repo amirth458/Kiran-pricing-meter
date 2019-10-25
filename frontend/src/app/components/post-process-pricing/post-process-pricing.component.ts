@@ -86,7 +86,7 @@ export class PostProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, },
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
     { headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Post-Process Profile Name', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     {
@@ -360,7 +360,8 @@ export class PostProcessPricingComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 140,
+      width: 90,
+      pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

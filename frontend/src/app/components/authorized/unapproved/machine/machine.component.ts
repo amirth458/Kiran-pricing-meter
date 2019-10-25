@@ -35,7 +35,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
   @ViewChild('materialInput') materialInput;
   @ViewChild('equipmentInput') equipmentInput;
   columnDefs = [
-    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
     { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: false },
     {
       headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: false
@@ -59,6 +59,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
     {
       headerName: 'Actions',
       width: 100,
+      pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
@@ -202,7 +203,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
     this.materials = initValue.machineServingMaterialList.map(mat => {
       return mat.material;
     }) || [];
-    this.equipments = [ initValue.equipment ];
+    this.equipments = [initValue.equipment];
     this.machineId = initValue.id;
     this.form.setValue({
       id: initValue.id,
@@ -210,7 +211,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
       serialNumber: initValue.serialNumber,
       equipment: initValue.equipment.id,
       material: this.materials.map(mat => mat.id) || []
-     });
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -341,7 +342,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
         this.isUpdate = false;
         await this.getMachinery();
       } catch (e) {
-        this.toastr.error('We are sorry, ' +  postData.name + ' creation failed. Please try again later.');
+        this.toastr.error('We are sorry, ' + postData.name + ' creation failed. Please try again later.');
         this.error = e.error.message;
         console.log(e);
       } finally {
@@ -356,7 +357,7 @@ export class UnapprovedVendorMachineComponent implements OnInit {
         this.isUpdate = false;
         await this.getMachinery();
       } catch (e) {
-        this.toastr.error('We are sorry, ' +  postData.name + ' update failed. Please try again later.');
+        this.toastr.error('We are sorry, ' + postData.name + ' update failed. Please try again later.');
         this.error = e.error.message;
         console.log(e);
       } finally {

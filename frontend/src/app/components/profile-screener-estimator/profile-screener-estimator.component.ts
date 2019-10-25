@@ -191,9 +191,7 @@ export class ProfileScreenerEstimatorComponent implements OnInit {
   ) {
     this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
     this.screenerEstimatorStore$.subscribe(data => {
-      this.highlightedRows = data.screenedProfiles.map(d => d.screenedProfiles);
-      // this.highlightedRows.push(192);
-      // console.log(data);
+      this.highlightedRows = data.screenedProfiles.map(d => d.profileId);
       const checkInterval = setInterval(() => {
         if (this.tableControlReady && this.gridOptions.api) {
           this.onGridReady({});

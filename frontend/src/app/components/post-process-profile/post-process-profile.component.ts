@@ -102,7 +102,7 @@ export class PostProcessProfileComponent implements OnInit {
       name: 'Post-Process Family', checked: true, field: 'family'
     },
     {
-      name: 'Post-Process Type', checked: true, field: 'postProcessType'
+      name: 'Post-Process Type', checked: false, field: 'postProcessType'
     }
   ];
 
@@ -114,7 +114,7 @@ export class PostProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false },
+    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
     { headerName: 'Profile Name', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Profile Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {
@@ -179,7 +179,7 @@ export class PostProcessProfileComponent implements OnInit {
       }
     },
     {
-      headerName: 'Post-Process Type', field: 'postProcessType', hide: false, sortable: true, filter: false,
+      headerName: 'Post-Process Type', field: 'postProcessType', hide: true, sortable: true, filter: false,
       cellRenderer(param): any {
         const machineList = param.data.processMachineServingMaterialList[0];
         if (machineList) {
@@ -427,7 +427,8 @@ export class PostProcessProfileComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 140,
+      pinned: 'right',
+      width: 90,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

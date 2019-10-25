@@ -85,7 +85,7 @@
 
               <span class="row query" *ngIf="column.checked">
                 <div class="form-group">
-                  <input required type="text" class="form-control" [(ngModel)]="searchColumns[column.id].query.filter"
+                  <input required [disabled]="searchColumns[column.id].query.type == ''" type="text" class="form-control" [(ngModel)]="searchColumns[column.id].query.filter"
                     (ngModelChange)="searchColumnsChange.emit(searchColumns)" id="search_query" name="search_query"
                     placeholder="">
                 </div>
