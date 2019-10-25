@@ -85,4 +85,11 @@ export class MachineService {
     return this.http.get(url, { headers });
   }
 
+  storeCloneData(cloneData: any) {
+    localStorage.setItem('machineCloneData', JSON.stringify(cloneData));
+  }
+
+  getCloneData(): any {
+    return JSON.parse(localStorage.getItem('machineCloneData'));
+  }
 }

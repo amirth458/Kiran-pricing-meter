@@ -92,6 +92,32 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
 
         this.initForm(this.machine);
       }
+
+      if (this.route.url.includes('clone')) {
+        this.isNew = true;
+        this.machine = this.machineService.getCloneData();
+        // processProfile.id = 0;
+        // this.machineId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        
+        this.materials = this.machine.machineServingMaterialList.map(x => x.material);
+        this.equipments = [this.machine.equipment];
+        const equipment: any = this.equipments[0];
+        const processTypeId = equipment.processFamily.processType.id;
+        this.featureTypes = await this.machineService.getEquipmentFeatureType(processTypeId).toPromise();
+
+        if (this.featureTypes.length > 0) {
+          this.featureShow = true;
+          this.equipmentList = this.machine.vendorMachineryEquipmentFeatureList;
+        } else {
+          this.featureShow = false;
+          this.equipmentList = [];
+        }
+
+        setTimeout(() => {
+          this.initForm(this.machine);
+        }, 100);
+      }
+
       this.spinner.hide();
     } catch (e) {
       this.spinner.hide();

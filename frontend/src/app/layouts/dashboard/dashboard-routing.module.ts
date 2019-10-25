@@ -57,6 +57,7 @@ const routes: Routes = [
               { path: 'machines', component: MachinesComponent },
               { path: 'machines/add', component: MachineItemComponent },
               { path: 'machines/edit/:id', component: MachineItemComponent },
+              { path: 'machines/clone', component: MachineItemComponent },
               { path: 'preferences', component: PreferencesComponent },
               { path: 'shipping', component: ShippingComponent },
               { path: 'shipping/add', component: ShippingItemComponent },

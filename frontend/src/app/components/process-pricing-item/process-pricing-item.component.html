@@ -169,7 +169,8 @@
         <div class="input-wrapper">
           <div class="form-row">
             <div class="table theme-table">
-              <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="flatRowData"
+              <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="flatRowData" 
+                [editType]="fullRow"
                 [gridOptions]="flatGridOptions" (gridReady)="autoSizeColumns('flatCharges')">
               </ag-grid-angular>
             </div>
@@ -198,6 +199,7 @@
           <div class="form-row">
             <div class="table theme-table">
               <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="variableRowData"
+                [editType]="editType"
                 [gridOptions]="variableGridOptions" (gridReady)="autoSizeColumns('variableCharges')">
               </ag-grid-angular>
             </div>

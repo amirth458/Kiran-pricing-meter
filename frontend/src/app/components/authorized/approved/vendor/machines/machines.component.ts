@@ -20,7 +20,7 @@ export class MachinesComponent implements OnInit {
 
   @ViewChild('modal') modal;
   selectedMachine = null;
-
+  cloneData = null;
 
   searchColumns = [
     {
@@ -159,8 +159,12 @@ export class MachinesComponent implements OnInit {
             this.modal.nativeElement.click();
             this.selectedMachine = param.data;
           },
+          copy: (param) => {
+            this.cloneData = JSON.parse(JSON.stringify(param.data));
+            this.copyRow();
+          },
           canEdit: true,
-          canCopy: false,
+          canCopy: true,
           canDelete: true,
         }
       }
@@ -218,6 +222,11 @@ export class MachinesComponent implements OnInit {
         }
       }
     }, 50);
+  }
+
+  async copyRow() {
+    this.machineService.storeCloneData(this.cloneData);
+    this.route.navigateByUrl(this.route.url + '/clone');
   }
 
   async getMachinery() {

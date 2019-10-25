@@ -30,8 +30,6 @@
           </div>
         </div>
 
-
-
         <div class="upload text-theme">
           <label>Please, select the file</label>
           <button type="file" class="btn btn-add theme white back" (click)="onOpenFile($event)">
@@ -236,9 +234,14 @@
               </div>
             </div>
             <div class="col-md-8 d-flex flex-column"
-              *ngIf="(uploading && uploadResponse.status === 'progress') || (selectedDocument && !selectedDocument.smallImage)">
+              *ngIf="(uploading && uploadResponse.status === 'progress')">
               <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
+            <div class="col-md-8 d-flex flex-column"
+              *ngIf="selectedDocument && selectedDocument.analyzing < 100">
+              <app-progress-bar [(text)]="analyzingText" [percent]="selectedDocument.analyzing"></app-progress-bar>
+            </div>
+            
           </div>
         </div>
 

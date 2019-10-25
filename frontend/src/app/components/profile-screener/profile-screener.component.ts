@@ -121,7 +121,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   pendingDocumentIds = [];
   pendingTimer = false;
   progressMessage = 'Uploading...';
-
+  analyzingText = 'Analyzing...';
+  progressAnalysis = 0;
   RFQData: any = {};
   screenedProfiles = [];
 
@@ -393,10 +394,9 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           (res: any) => {
             this.uploadResponse = res;
             if (res.fileName) {
-              this.progressMessage = 'Analyzing File...';
               this.uploading = false;
               this.uploadedDocuments = this.uploadedDocuments.map(item => ({ ...item, selected: 0 }));
-              this.uploadedDocuments.push({ ...res, selected: 1, fileName: file.name });
+              this.uploadedDocuments.push({ ...res, selected: 1, fileName: file.name, analyzing: 0 });
               this.pendingDocumentIds.push(res.id);
               this.selectedDocument = this.uploadedDocuments[this.uploadedDocuments.length - 1];
               if (!this.pendingTimer) {
@@ -418,9 +418,9 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       if (resp.status === 'COMPLETED') {
         this.uploadedDocuments = this.uploadedDocuments.map((item) => {
           if (item.id === id) {
-            return { ...item, ...resp };
+            return { ...item, ...resp, analyzing: 100 };
           } else {
-            return { ...item };
+            return { ...item};
           }
         });
         this.pendingDocumentIds = this.pendingDocumentIds.filter((pendingId) => pendingId !== id);
@@ -428,6 +428,20 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           const selectedId = this.selectedDocument.id;
           this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
         }
+      } else if (resp.status === 'RUNNING') {
+        this.uploadedDocuments = this.uploadedDocuments.map((item) => {
+          if (item.id === id) {
+            if (item.analyzing < 90) {
+              return { ...item, ...resp, analyzing: item.analyzing + 10 };
+            } else {
+              return { ...item};
+            }
+          } else {
+            return { ...item};
+          }
+        });
+        const selectedId = this.selectedDocument.id;
+        this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
       }
     });
     if (this.pendingDocumentIds.length === 0) {

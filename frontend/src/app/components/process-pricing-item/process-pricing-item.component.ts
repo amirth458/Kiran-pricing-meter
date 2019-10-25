@@ -93,7 +93,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     filteredInvoiceItem: [],
     invoiceLineItems: []
   };
-
+  editType = 'fullRow';
 
   frameworkComponents = {
     multiselectCellRenderer: MultiSelectCellRendererComponent,
@@ -452,6 +452,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.variableColumnDefs = [
       {
         headerName: 'Invoice Item', field: 'invoiceItem', hide: false, sortable: false, filter: false,
+        // cellEditor: 'agSelectCellEditor',
+        // cellEditorParams: {
+        //   values: ["Porsche", "Toyota", "Ford", "AAA", "BBB", "CCC"]
+        // }
         cellRenderer: 'dropdownCellRenderer',
         cellRendererParams: {
           data: {
