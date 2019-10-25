@@ -114,6 +114,18 @@ table .form-control {
   margin-bottom: 20px;
 }
 
+.action-button {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0px;
+}
+
+.action-button button {
+  width: fit-content;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
 .detail-info .details .title,
 .detail-info .details .quantity,
 .rfq-title {

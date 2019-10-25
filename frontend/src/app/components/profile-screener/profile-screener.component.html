@@ -2,7 +2,7 @@
   <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
     {{error}}
   </div>
-  <form [formGroup]="form" novalidate class="needs-validation">
+  <form novalidate class="needs-validation">
 
     <div class="row">
       <div class="col-md-7">
@@ -208,8 +208,8 @@
                       </div>
                     </div>
                   </li>
-
-                  <!-- <li><span>Est Machine Time</span> - <div class="inputs">
+                  <!--
+                  <li><span>Est Machine Time</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
                         max="99999" id="estimatedMachineTime" name="estimatedMachineTime"
                         [(ngModel)]="details.estMachineTime.value" [ngModelOptions]="{standalone: true}">
@@ -235,15 +235,13 @@
                 <span class="title">No Information</span>
               </div>
             </div>
-            <div class="col-md-8 d-flex flex-column"
-              *ngIf="(uploading && uploadResponse.status === 'progress')">
+            <div class="col-md-8 d-flex flex-column" *ngIf="(uploading && uploadResponse.status === 'progress')">
               <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
-            <div class="col-md-8 d-flex flex-column"
-              *ngIf="selectedDocument && selectedDocument.analyzing < 100">
+            <div class="col-md-8 d-flex flex-column" *ngIf="selectedDocument && selectedDocument.analyzing < 100">
               <app-progress-bar [(text)]="analyzingText" [percent]="selectedDocument.analyzing"></app-progress-bar>
             </div>
-            
+
           </div>
         </div>
 
@@ -259,7 +257,7 @@
               <td>
                 <div class="theme">
                   <select id="requiredCets" name="requiredCets" class="form-control"
-                    formControlName="requiredCertificateId">
+                    [(ngModel)]="form.requiredCertificateId" [ngModelOptions]="{standalone: true}">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of certifications" [value]="item.id">{{item.name}}</option>
                   </select>
@@ -270,7 +268,8 @@
               <td>NDA</td>
               <td>
                 <div class="theme">
-                  <select id="nda" name="nda" class="form-control" formControlName="confidentialityId">
+                  <select id="nda" name="nda" class="form-control" [(ngModel)]="form.confidentialityId"
+                    [ngModelOptions]="{standalone: true}">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of confidentialities" [value]="item.id">{{item.name}}</option>
                   </select>
@@ -291,7 +290,7 @@
               <td>
                 <ng-select #equipmentInput placeholder="Add Equipment" placeholder="Add Equipment" [multiple]="false"
                   dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
-                  formControlName="equipmentId" (change)="equipmentChanged()">
+                  [(ngModel)]="form.equipmentId" [ngModelOptions]="{standalone: true}" (change)="equipmentChanged()">
                   <ng-option *ngFor="let item of equipments" [value]="item.equipment.id">{{item.equipment.name}}
                   </ng-option>
                 </ng-select>
@@ -303,7 +302,7 @@
               <td>
                 <ng-select style="width: 100%;" #materialInput placeholder="Add Materials" [multiple]="false"
                   dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
-                  formControlName="materialId">
+                  [(ngModel)]="form.materialId" [ngModelOptions]="{standalone: true}">
                   <ng-option *ngFor="let item of materials" [value]="item.material.id">{{item.material.name}}
                   </ng-option>
                 </ng-select>
@@ -314,17 +313,28 @@
               <td class="d-flex section">
                 <div class="theme flex-grow-1">
                   <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                    id="tolerance" name="tolerance" formControlName="toleranceValue">
+                    id="tolerance" name="tolerance" [(ngModel)]="form.toleranceValue"
+                    [ngModelOptions]="{standalone: true}">
                 </div>
 
                 <div class="theme unit">
-                  <select id="nda" name="nda" class="form-control" formControlName="toleranceUnit">
+                  <select id="nda" name="nda" class="form-control" [(ngModel)]="form.toleranceUnit"
+                    [ngModelOptions]="{standalone: true}">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let unit of lengthUnits" [value]="unit.id">
                       {{unit.displayName || unit.symbol}}
                     </option>
                   </select>
                 </div>
+
+                <!-- <div class="theme unit">
+                  <select id="nda" name="nda" class="form-control" formControlName="toleranceUnit">
+                    <option selected value="">Choose...</option>
+                    <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                      {{unit.displayName || unit.symbol}}
+                    </option>
+                  </select>
+                </div> -->
 
                 <!-- <span class="d-flext align-items-center mr-4 ml-4 mt-1"> -->
                 <!-- mm -->
@@ -338,11 +348,13 @@
 
                 <div class="theme flex-grow-1">
                   <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                    id="surface-roughness" name="surface-roughness" formControlName="surfaceRoughnessValue">
+                    id="surface-roughness" name="surface-roughness" [(ngModel)]="form.surfaceRoughnessValue"
+                    [ngModelOptions]="{standalone: true}">
                 </div>
 
                 <div class="theme unit">
-                  <select id="nda" name="nda" class="form-control" formControlName="surfaceRoughnessUnit">
+                  <select id="nda" name="nda" class="form-control" [(ngModel)]="form.surfaceRoughnessUnit"
+                    [ngModelOptions]="{standalone: true}">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let unit of surfaceRoughnessUnits" [value]="unit.id">
                       {{unit.displayName || unit.symbol}}
@@ -360,7 +372,8 @@
               <td>Surface Finish</td>
               <td>
                 <input class="form-control" type="number" step="0.00001" maxlength="5" min="0" max="99999"
-                  id="surface-finish" name="surface-finish" formControlName="surfaceFinishValue">
+                  id="surface-finish" name="surface-finish" [(ngModel)]="form.surfaceFinishValue"
+                  [ngModelOptions]="{standalone: true}">
               </td>
             </tr>
 
@@ -369,7 +382,7 @@
               <td class="d-flex section">
                 <!-- <div class=" theme">
                   <select  id="time-to-ship" name="time-to-ship" class="form-control"
-                    formControlName="timeToShip">
+                    [(ngModel)]="form.timeToShip" [ngModelOptions]="{standalone: true}">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let item of timeToShip" [value]="item.id">{{item.name}}</option>
                   </select>
@@ -377,11 +390,12 @@
                 <div class="theme flex-grow-1">
 
                   <input class="form-control" type="number" maxlength="5" min="0" max="99999" id="timeToShip"
-                    name="timeToShip" formControlName="timeToShipValue">
+                    name="timeToShip" [(ngModel)]="form.timeToShipValue" [ngModelOptions]="{standalone: true}">
                 </div>
 
                 <div class="theme unit">
-                  <select id="nda" name="nda" class="form-control" formControlName="timeToShipUnit">
+                  <select id="nda" name="nda" class="form-control" [(ngModel)]="form.timeToShipUnit"
+                    [ngModelOptions]="{standalone: true}">
                     <option selected value="">Choose...</option>
                     <option *ngFor="let unit of dateTimeUnits" [value]="unit.id">
                       {{unit.displayName || unit.symbol}}
@@ -395,7 +409,14 @@
             </tr>
           </tbody>
         </table>
+        <div class="action-button">
+          <button type="button" class="btn theme btn-primary" (click)="save()">
+            Process
+          </button>
+        </div>
       </div>
+
+
     </div>
 
   </form>
