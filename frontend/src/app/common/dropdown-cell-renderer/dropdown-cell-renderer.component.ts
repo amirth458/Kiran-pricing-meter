@@ -31,6 +31,10 @@ export class DropdownCellRendererComponent implements ICellRendererAngularComp {
     this.params.change(this.params, this.value);
   }
 
+  focusIn(): void {
+    console.log('focusIn');
+  }
+
   refresh(): boolean {
     return false;
   }
