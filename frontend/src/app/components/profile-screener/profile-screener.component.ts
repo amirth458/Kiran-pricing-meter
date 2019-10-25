@@ -17,7 +17,8 @@ import { Store, select } from '@ngrx/store';
 import {
   SetRFQInfo,
   SetScreenedProfiles,
-  SetStatus
+  SetStatus,
+  SetEstimatedPrices
 } from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 import { HttpEventType } from '@angular/common/http';
 import { map } from 'src/app/store';
@@ -72,24 +73,43 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   };
 
 
-  form: FormGroup = this.fb.group({
-    requiredCertificateId: [''],
-    materialId: [null],
-    equipmentId: [null],
-    confidentialityId: [''],
+  // form: FormGroup = this.fb.group({
+  //   requiredCertificateId: [''],
+  //   materialId: [null],
+  //   equipmentId: [null],
+  //   confidentialityId: [''],
 
-    // quantity: ['', Validators.required],
+  //   // quantity: ['', Validators.required],
 
-    timeToShipValue: [null],
-    toleranceValue: [null],
-    surfaceRoughnessValue: [null],
-    surfaceFinishValue: [null],
+  //   timeToShipValue: [null],
+  //   toleranceValue: [null],
+  //   surfaceRoughnessValue: [null],
+  //   surfaceFinishValue: [null],
 
-    timeToShipUnit: [''],
-    toleranceUnit: [''],
-    surfaceRoughnessUnit: [''],
-    surfaceFinishUnit: [''],
-  });
+  //   timeToShipUnit: [''],
+  //   toleranceUnit: [''],
+  //   surfaceRoughnessUnit: [''],
+  //   surfaceFinishUnit: [''],
+  // });
+
+  form = {
+    requiredCertificateId: null,
+    materialId: null,
+    equipmentId: null,
+    confidentialityId: null,
+
+
+
+    timeToShipValue: null,
+    toleranceValue: null,
+    surfaceRoughnessValue: null,
+    surfaceFinishValue: null,
+
+    timeToShipUnit: '',
+    toleranceUnit: '',
+    surfaceRoughnessUnit: '',
+    surfaceFinishUnit: ''
+  };
 
   units = [];
 
@@ -151,7 +171,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
     this.screenerEstimatorStore$.subscribe(result => {
       this.RFQData = result.RFQInfo;
-      this.screenedProfiles = result.screenedProfiles;
+      this.screenedProfiles = result.screenedProfiles.map(item => item.profileId);
 
       if (this.RFQData.partMetadata) {
         this.details = this.RFQData.partMetadata;
@@ -165,7 +185,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         this.uploadedDocuments = this.RFQData.fileInfo.uploadedDocuments;
       }
 
-      this.form.setValue({
+
+      this.form = {
         requiredCertificateId: this.RFQData.requiredCertificateId || '',
         materialId: this.RFQData.materialId || null,
         equipmentId: this.RFQData.equipmentId || null,
@@ -181,8 +202,12 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         surfaceRoughnessUnit: this.RFQData && this.RFQData.surfaceRoughnessUnit ? this.RFQData.surfaceRoughnessUnit : '',
 
         surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinishValue ? this.RFQData.surfaceFinishValue : null,
-        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinishUnit ? this.RFQData.surfaceFinishUnit : '',
-      });
+        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinishUnit ? this.RFQData.surfaceFinishUnit : ''
+      };
+
+      if (this.RFQData.equipmentId) {
+        this.equipmentChanged();
+      }
 
 
     });
@@ -309,8 +334,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   equipmentChanged() {
-    const equipmentId = this.form.value.equipmentId;
-    this.form.setValue({ ...this.form.value, materialId: null });
+    const equipmentId = this.form.equipmentId;
+    this.form = { ...this.form, materialId: null };
     this.materials = [];
     this.equipments.map(x => {
       if (x.equipment.id == equipmentId) {
@@ -320,30 +345,30 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   materialChanged(editScreen = false) {
-    const materialList = this.form.value.materialList;
+    const materialList = [this.form.materialId];
     if (materialList.length) {
 
       if (editScreen && materialList.length === this.materials.length - 1) {
-        this.form.setValue({
-          ...this.form.value
-        });
+        this.form = {
+          ...this.form
+        };
         return this.materials;
       } else {
         const lastInput = materialList[materialList.length - 1];
         if (lastInput === 'all-materials') {
-          this.form.setValue({
-            ...this.form.value
-          });
+          this.form = {
+            ...this.form
+          };
           return this.materials;
         } else {
           if (materialList.includes('all-materials')) {
             const startIndex = materialList.indexOf('all-materials');
             const frontSlice = materialList.slice(0, startIndex);
             const endSlice = materialList.slice(startIndex + 1);
-            this.form.setValue({
-              ...this.form.value,
-              materialList: [...frontSlice, ...endSlice]
-            });
+            this.form = {
+              ...this.form,
+              // materialList: [...frontSlice, ...endSlice]
+            };
             return [...frontSlice, ...endSlice];
           }
         }
@@ -422,7 +447,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           if (item.id === id) {
             return { ...item, ...resp, analyzing: 100 };
           } else {
-            return { ...item};
+            return { ...item };
           }
         });
         this.pendingDocumentIds = this.pendingDocumentIds.filter((pendingId) => pendingId !== id);
@@ -436,10 +461,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
             if (item.analyzing < 90) {
               return { ...item, ...resp, analyzing: item.analyzing + 10 };
             } else {
-              return { ...item};
+              return { ...item };
             }
           } else {
-            return { ...item};
+            return { ...item };
           }
         });
         const selectedId = this.selectedDocument.id;
@@ -487,6 +512,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   save(url = '') {
+    let gotoURL = '';
+
+    if (this.activeMode === 'pricing-estimator') {
+      gotoURL = '/profile/processes/pricing/estimator/process';
+    }
+    if (this.activeMode === 'default') {
+      gotoURL = '/profile/processes/profile/profile-screener/process';
+    }
+
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
@@ -503,8 +537,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     });
 
-    console.log(this.form.value);
-    if (this.form.valid && this.isFormValid) {
+    console.log(this.form);
+    if (this.isFormValid) {
 
       // tslint:disable-next-line:max-line-length
       this.details.boundingBox.value = (
@@ -513,28 +547,28 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         Number(this.details.buildingZ.value)).toString();
 
       const postData = {
-        // ...this.form.value,
-        requiredCertificateId: this.form.value.requiredCertificateId,
-        materialId: this.form.value.materialId,
-        equipmentId: this.form.value.equipmentId,
-        confidentialityId: this.form.value.confidentialityId,
+        // ...this.form,
+        requiredCertificateId: this.form.requiredCertificateId,
+        materialId: this.form.materialId,
+        equipmentId: this.form.equipmentId,
+        confidentialityId: this.form.confidentialityId,
 
 
         timeToShip: {
-          value: this.form.value.timeToShipValue,
-          unitId: this.form.value.timeToShipUnit
+          value: this.form.timeToShipValue,
+          unitId: this.form.timeToShipUnit
         },
         tolerance: {
-          value: this.form.value.toleranceValue,
-          unitId: this.form.value.toleranceUnit
+          value: this.form.toleranceValue,
+          unitId: this.form.toleranceUnit
         },
         surfaceRoughness: {
-          value: this.form.value.surfaceRoughnessValue,
-          unitId: this.form.value.surfaceRoughnessUnit
+          value: this.form.surfaceRoughnessValue,
+          unitId: this.form.surfaceRoughnessUnit
         },
         surfaceFinish: {
-          value: this.form.value.surfaceFinishValue,
-          unitId: this.form.value.surfaceFinishUnit
+          value: this.form.surfaceFinishValue,
+          unitId: this.form.surfaceFinishUnit
         },
 
         processProfileIdList: [
@@ -542,10 +576,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
             .filter(profile => profile.checked)
             .map(profile => profile.id)],
         partMetadata: this.details,
-        processTypeId: ''
+        processTypeId: this.profileTypes.filter(item => item.name === 'Processing')[0].id
+
       };
 
-      postData.processTypeId = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
 
 
 
@@ -557,19 +591,24 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         }
       }));
 
-      console.log({ postData })
-
+      console.log(this.form);
       this.store.dispatch(new SetStatus('PENDING'));
-      if (!url.includes('estimator')) {
+      if (!gotoURL.includes('estimator')) {
+        this.store.dispatch(new SetScreenedProfiles([]));
+        this.store.dispatch(new SetEstimatedPrices([]));
         this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
           .subscribe(res => {
+            console.log({ res });
             this.store.dispatch(new SetScreenedProfiles(res));
             this.store.dispatch(new SetStatus('DONE'));
           });
-      } else {
-        this.store.dispatch(new SetScreenedProfiles(postData.processProfileIdList));
+      } else if (gotoURL.includes('estimator')) {
+        this.store.dispatch(new SetEstimatedPrices([]));
+        this.store.dispatch(new SetScreenedProfiles(postData.processProfileIdList.map(item => {
+          return { profileId: item };
+        })));
       }
-      this.route.navigateByUrl(url);
+      this.route.navigateByUrl(gotoURL);
     } else {
       console.log('not valid');
     }
