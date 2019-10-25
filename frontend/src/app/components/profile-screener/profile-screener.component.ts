@@ -192,22 +192,22 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
         // quantity: this.RFQData.quantity || '',
-        timeToShipValue: this.RFQData && this.RFQData.timeToShipValue ? this.RFQData.timeToShipValue : null,
-        timeToShipUnit: this.RFQData && this.RFQData.timeToShipUnit ? this.RFQData.timeToShipUnit : '',
+        timeToShipValue: this.RFQData && this.RFQData.timeToShip ? this.RFQData.timeToShip.value : null,
+        timeToShipUnit: this.RFQData && this.RFQData.timeToShip ? this.RFQData.timeToShip.unitId : '',
 
-        toleranceValue: this.RFQData && this.RFQData.toleranceValue ? this.RFQData.toleranceValue : null,
-        toleranceUnit: this.RFQData && this.RFQData.toleranceUnit ? this.RFQData.toleranceUnit : '',
+        toleranceValue: this.RFQData && this.RFQData.tolerance ? this.RFQData.tolerance.value : null,
+        toleranceUnit: this.RFQData && this.RFQData.tolerance ? this.RFQData.tolerance.unitId : '',
 
-        surfaceRoughnessValue: this.RFQData && this.RFQData.surfaceRoughnessValue ? this.RFQData.surfaceRoughnessValue : null,
-        surfaceRoughnessUnit: this.RFQData && this.RFQData.surfaceRoughnessUnit ? this.RFQData.surfaceRoughnessUnit : '',
+        surfaceRoughnessValue: this.RFQData && this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.value : null,
+        surfaceRoughnessUnit: this.RFQData && this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unitId : '',
 
-        surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinishValue ? this.RFQData.surfaceFinishValue : null,
-        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinishUnit ? this.RFQData.surfaceFinishUnit : ''
+        surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
+        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unitId : ''
       };
 
-      if (this.RFQData.equipmentId) {
-        this.equipmentChanged();
-      }
+
+      console.log(this.RFQData, 'rfg');
+      console.log(this.form, 'form');
 
 
     });
@@ -261,6 +261,13 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       this.areaUnits = this.units.filter(unit => unit.measurementType.name === 'area');
       this.dateTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
       this.surfaceRoughnessUnits = this.units.filter(unit => unit.measurementType.name === 'surface roughness');
+
+
+      if (this.RFQData.equipmentId != null) {
+        this.equipmentChanged();
+      }
+
+      this.form.materialId = this.RFQData.materialId || null;
 
     } catch (e) {
       console.log(e);
@@ -537,7 +544,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     });
 
-    console.log(this.form);
+
     if (this.isFormValid) {
 
       // tslint:disable-next-line:max-line-length
@@ -591,7 +598,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         }
       }));
 
-      console.log(this.form);
       this.store.dispatch(new SetStatus('PENDING'));
       if (!gotoURL.includes('estimator')) {
         this.store.dispatch(new SetScreenedProfiles([]));
