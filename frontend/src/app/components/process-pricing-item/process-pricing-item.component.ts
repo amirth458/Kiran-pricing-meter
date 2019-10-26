@@ -12,6 +12,7 @@ import { GridOptions } from 'ag-grid-community';
 import { DropdownCellRendererComponent } from 'src/app/common/dropdown-cell-renderer/dropdown-cell-renderer.component';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
 import { MultiSelectCellRendererComponent } from 'src/app/common/multi-select-cell-renderer/multi-select-cell-renderer.component';
+import { MultiSelectCellEditorComponent } from 'src/app/common/multi-select-cell-editor/multi-select-cell-editor.component';
 
 @Component({
   selector: 'app-process-pricing-item',
@@ -95,8 +96,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   };
   editType = 'fullRow';
 
+
   frameworkComponents = {
     multiselectCellRenderer: MultiSelectCellRendererComponent,
+    multiselectCellEditor: MultiSelectCellEditorComponent,
     dropdownCellRenderer: DropdownCellRendererComponent,
     actionCellRenderer: ActionCellRendererComponent
   };
@@ -186,34 +189,34 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       // this.pricingParameterGroup = pricingParameterGroup.metadataList;
       this.setColumnDefs();
       this.setGridOptions();
+
       this.isDataLoaded = true;
 
     } catch (e) {
       console.log(e);
     } finally {
 
-      this.spinner.hide();
-    }
-    if (this.route.url.includes('edit')) {
-      // Make API request
-      this.isNew = false;
-      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // tslint:disable-next-line:max-line-length
-      const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
-      this.initForm(processProfile);
-      this.processProfileChanged();
-      this.spinner.hide();
-    }
-
-    if (this.route.url.includes('clone')) {
-      this.isNew = true;
-      // tslint:disable-next-line:max-line-length
-      const processProfile = this.processPricingService.getCloneData();
-      // processProfile.id = 0;
-      setTimeout(() => {
+      if (this.route.url.includes('edit')) {
+        // Make API request
+        this.isNew = false;
+        this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // tslint:disable-next-line:max-line-length
+        const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
         this.initForm(processProfile);
         this.processProfileChanged();
-      }, 100);
+      }
+
+      if (this.route.url.includes('clone')) {
+        this.isNew = true;
+        // tslint:disable-next-line:max-line-length
+        const processProfile = this.processPricingService.getCloneData();
+        // processProfile.id = 0;
+        setTimeout(() => {
+          this.initForm(processProfile);
+          this.processProfileChanged();
+        }, 100);
+      }
+      this.spinner.hide();
     }
   }
 
@@ -298,7 +301,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     // tslint:disable-next-line:max-line-length
     const processTypeId = selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id;
     this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id == processTypeId);
-
     const temp = this.getRowData('variableCharges').map(row => new Object({
       ...row
     }));
@@ -307,7 +309,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
 
   initForm(pricingProfile) {
-    console.log(pricingProfile);
     let flatChargesFound = 0;
     let variableChargesFound = 0;
     let multiplierChargesFound = 0;
@@ -363,6 +364,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         flatChargesFound++;
       }
       if (section === 'variableCharges') {
+        console.log(parameter.invoiceLineItem.id)
+        console.log(this.variableConditions);
         this.addCondition('variableCharges', parameter);
         this.dropdownValueChanged({
           colDef: { field: 'invoiceItem' },
@@ -371,6 +374,13 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           },
           rowIndex: variableChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'variableCharges'
+          },
+          rowIndex: variableChargesFound
+        }, parameter.invoiceLineItem.id, true);
         variableChargesFound++;
       }
       // if (section === 'multiplierCharges') {
@@ -406,6 +416,15 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           },
           rowIndex: multiplierChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'multiplierCharges'
+          },
+          rowIndex: multiplierChargesFound
+        }, parameter.invoiceLineItem.id, true);
+
         multiplierChargesFound++;
       }
     });
@@ -452,10 +471,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     this.variableColumnDefs = [
       {
         headerName: 'Invoice Item', field: 'invoiceItem', hide: false, sortable: false, filter: false,
-        // cellEditor: 'agSelectCellEditor',
-        // cellEditorParams: {
-        //   values: ["Porsche", "Toyota", "Ford", "AAA", "BBB", "CCC"]
-        // }
         cellRenderer: 'dropdownCellRenderer',
         cellRendererParams: {
           data: {
@@ -535,12 +550,17 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       { headerName: 'Multiplier', field: 'multiplier', hide: false, sortable: false, filter: false, editable: true },
       {
         headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
-        cellRenderer: 'dropdownCellRenderer',
+        cellRenderer: 'multiselectCellRenderer',
+        cellEditor: 'multiselectCellEditor',
+        suppressKeyboardEvent: this.suppressEnter,
+        editable: true,
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
           },
-          change: (param, value) => this.dropdownValueChanged(param, value),
+          change: (param, value) => {
+            param.value = value;
+          },
         }
       },
       {
@@ -941,56 +961,55 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
-      const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
-      if (selectedValue.id.toString() === 'all-line-items') {
-        row.valueOptions
-          .filter(val => val.invoiceItem && val.invoiceItem.id)
-          .map(v => {
-            multiplierCharges.push({
-              invoiceLineItem: {
-                id: row.invoiceLineItem
-              },
-              multiplier: row.multiplier,
-              multiplierProcessPricingParameter: {
-                invoiceLineItem: {
-                  id: v.id
-                }
-              }
+      let values = [];
 
-            });
-
-          });
-      } else if (selectedValue.id.toString().includes('invoiceItem')) {
-        row.valueOptions
-          .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue.id)
-          .map(v => {
-            multiplierCharges.push({
-              invoiceLineItem: {
-                id: row.invoiceLineItem
-              },
-              multiplier: row.multiplier,
-              multiplierProcessPricingParameter: {
-                invoiceLineItem: {
-                  id: v.id
-                }
-              }
-
-            });
-          });
+      if (Array.isArray(row.value)) {
+        values = row.value;
       } else {
-        multiplierCharges.push({
-          invoiceLineItem: {
-            id: row.invoiceLineItem
-          },
-          multiplier: row.multiplier,
-          multiplierProcessPricingParameter: {
-            invoiceLineItem: {
-              id: row.value
-            }
-          }
-
-        });
+        values = [row.value];
       }
+
+      if (values.length === 1 && values[0] === 'all-line-items') {
+        values = row.valueOptions.filter(val => val.id.toString().includes('invoiceItem')).map(i => i.id);
+      }
+
+      values.map(item => {
+        const selectedValue = item;
+
+
+        if (selectedValue.toString().includes('invoiceItem')) {
+          row.valueOptions
+            .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue)
+            .map(v => {
+              multiplierCharges.push({
+                invoiceLineItem: {
+                  id: row.invoiceLineItem
+                },
+                multiplier: row.multiplier,
+                multiplierProcessPricingParameter: {
+                  invoiceLineItem: {
+                    id: v.id
+                  }
+                }
+
+              });
+            });
+        } else {
+          multiplierCharges.push({
+            invoiceLineItem: {
+              id: row.invoiceLineItem
+            },
+            multiplier: row.multiplier,
+            multiplierProcessPricingParameter: {
+              invoiceLineItem: {
+                id: selectedValue
+              }
+            }
+
+          });
+        }
+
+      });
     });
     const postData = {
       id: this.form.value.id || '',
@@ -1066,5 +1085,13 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+  }
+
+  suppressEnter(params) {
+    const KEY_ENTER = 13;
+    const event = params.event;
+    const key = event.which;
+    const suppress = key === KEY_ENTER;
+    return suppress;
   }
 }

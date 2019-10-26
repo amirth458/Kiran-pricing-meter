@@ -1,6 +1,6 @@
-
 <!-- Button trigger modal -->
-<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#addMultiplier">
+<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#addMultiplier"
+  data-backdrop="static" data-keyboard="false">
 </button>
 
 <!-- Modal -->
@@ -19,7 +19,8 @@
           <div class="form-group theme col-md-12" style="padding: 0px 40px;">
             <label for="certifications" style="margin-bottom: 20px;">Multiplier Value</label>
             <ng-select [multiple]="true" dropdownPosition="bottom" [virtualScroll]="true" [hideSelected]="true"
-              [selectOnTab]="true" [(ngModel)]="selectedValues" [ngModelOptions]="{standalone: true}">
+              [selectOnTab]="true" [(ngModel)]="selectedValues" [ngModelOptions]="{standalone: true}"
+              (ngModelChange)="onValueChange()">
               <ng-option *ngFor="let item of options" [value]="item.id">{{item.name}}</ng-option>
             </ng-select>
           </div>

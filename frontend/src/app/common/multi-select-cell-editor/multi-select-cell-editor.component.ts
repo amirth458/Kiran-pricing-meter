@@ -28,11 +28,16 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
 
     agInit(params: any): void {
         this.params = params;
-        console.log(this.params, 'editor');
         this.options = params.data.valueOptions;
         this.selectedValues = [];
-        if (params.data.value > 0) {
+        if (Array.isArray(params.data.value)) {
+            this.selectedValues = [...params.data.value];
+        } else if (params.data.value > 0) {
             this.selectedValues = [params.data.value];
+        }
+
+        if (this.selectedValues.length > 0 && this.selectedValues.includes('all-line-item')) {
+            this.selectedValues = ['all-line-items'];
         }
     }
 
@@ -40,16 +45,22 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
         return this.selectedValues;
     }
 
+    onValueChange() {
+        if (this.selectedValues.length > 0 && this.selectedValues.includes('all-line-items')) {
+            this.selectedValues = ['all-line-items'];
+        }
+    }
+
     isPopup(): boolean {
         return true;
     }
 
     onClick(happy: boolean) {
-        console.log("click");
         // this.params.api.stopEditing();
     }
 
     onSave() {
+        this.modal.nativeElement.click();
         this.params.api.stopEditing();
         this.params.colDef.cellRendererParams.change(this.params, this.selectedValues);
     }
