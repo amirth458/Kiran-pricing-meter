@@ -135,7 +135,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   uploadedDocuments = [];
   selectedDocument = null;
   uploading = false;
-
+  triedToSubmit = false;
 
   uploadResponse = { status: '', message: '', filePath: '' };
   pendingDocumentIds = [];
@@ -544,6 +544,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     });
 
+
+    this.triedToSubmit = true;
 
     if (this.isFormValid) {
 

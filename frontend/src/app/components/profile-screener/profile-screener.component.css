@@ -76,6 +76,14 @@ table .form-control {
   color: var(--theme-light-blue);
 }
 
+.upload .form-group.theme {
+  margin: 0px 10px;
+}
+
+.upload .form-group.theme .footnote{
+  font-size: 14px;
+}
+
 .upload label {
   color: var(--theme-action-bar-color) !important;
   font-weight: bold;

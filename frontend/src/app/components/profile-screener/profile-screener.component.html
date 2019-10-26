@@ -36,6 +36,10 @@
             (click)="onOpenFile($event)">
             Upload a Reference File
           </button>
+          <div class="form-group theme">
+            <span *ngIf="!uploadedDocuments.length && triedToSubmit" class="footnote red">* Required</span>
+          </div>
+
           <input type="file" name="file" (change)="onFileChange($event)" id="file" class="inputfile" accept="*" />
           <ul class="uploaded_files" style="padding-left: 0; margin-top: 10px;">
             <li *ngFor="let item of uploadedDocuments" style="width: 350px;cursor: pointer;">
