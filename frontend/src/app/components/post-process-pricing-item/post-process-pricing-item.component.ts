@@ -196,19 +196,26 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       console.log(e);
     } finally {
 
-      this.spinner.hide();
 
-    }
-    if (this.route.url.includes('edit')) {
-      this.isNew = false;
-      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // Make API request
-      this.isNew = false;
-      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // tslint:disable-next-line:max-line-length
-      const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
-      this.initForm(processProfile);
-      this.processProfileChanged();
+      if (this.route.url.includes('edit')) {
+        this.isNew = false;
+        this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // Make API request
+        this.isNew = false;
+        this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // tslint:disable-next-line:max-line-length
+        const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
+        this.initForm(processProfile);
+        this.processProfileChanged();
+
+
+
+
+
+
+
+
+      }
       this.spinner.hide();
     }
   }
@@ -527,14 +534,14 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
         cellRenderer: 'multiselectCellRenderer',
         cellEditor: 'multiselectCellEditor',
-        suppressKeyboardEvent: suppressEnter,
+        suppressKeyboardEvent: this.suppressEnter,
         editable: true,
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
           },
           change: (param, value) => {
-            param.selectedValue = value;
+            param.value = value;
           },
         }
       },
@@ -936,16 +943,25 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
 
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
-      console.log(row);
+      let values = [];
 
-      const values = row.value;
-      //const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
+      if (Array.isArray(row.value)) {
+        values = row.value;
+      } else {
+        values = [row.value];
+      }
+
+      if (values.length === 1 && values[0] === 'all-line-items') {
+        values = row.valueOptions.filter(val => val.id.toString().includes('invoiceItem')).map(i => i.id);
+      }
+
       values.map(item => {
-        const selectedValue = { id: item };
+        const selectedValue = item;
 
-        if (selectedValue.id.toString().includes('invoiceItem')) {
+
+        if (selectedValue.toString().includes('invoiceItem')) {
           row.valueOptions
-            .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue.id)
+            .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue)
             .map(v => {
               multiplierCharges.push({
                 invoiceLineItem: {
@@ -968,7 +984,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             multiplier: row.multiplier,
             multiplierProcessPricingParameter: {
               invoiceLineItem: {
-                id: row.value
+                id: selectedValue
               }
             }
 
@@ -1053,12 +1069,13 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     }
     return result;
   }
+
+  suppressEnter(params) {
+    const KEY_ENTER = 13;
+    const event = params.event;
+    const key = event.which;
+    const suppress = key === KEY_ENTER;
+    return suppress;
+  }
 }
 
-function suppressEnter(params) {
-  const KEY_ENTER = 13;
-  const event = params.event;
-  const key = event.which;
-  const suppress = key === KEY_ENTER;
-  return suppress;
-}
