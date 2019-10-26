@@ -372,6 +372,15 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           },
           rowIndex: variableChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'variableCharges'
+          },
+          rowIndex: variableChargesFound
+        }, parameter.invoiceLineItem.id, true);
+
         variableChargesFound++;
       }
       // if (section === 'multiplierCharges') {
@@ -407,6 +416,16 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           },
           rowIndex: multiplierChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'multiplierCharges'
+          },
+          rowIndex: multiplierChargesFound
+        }, parameter.invoiceLineItem.id, true);
+
+
         multiplierChargesFound++;
       }
     });

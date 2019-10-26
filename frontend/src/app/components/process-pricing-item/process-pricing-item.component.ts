@@ -364,6 +364,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         flatChargesFound++;
       }
       if (section === 'variableCharges') {
+        console.log(parameter.invoiceLineItem.id)
+        console.log(this.variableConditions);
         this.addCondition('variableCharges', parameter);
         this.dropdownValueChanged({
           colDef: { field: 'invoiceItem' },
@@ -372,6 +374,13 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           },
           rowIndex: variableChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'variableCharges'
+          },
+          rowIndex: variableChargesFound
+        }, parameter.invoiceLineItem.id, true);
         variableChargesFound++;
       }
       // if (section === 'multiplierCharges') {
@@ -407,6 +416,15 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           },
           rowIndex: multiplierChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'multiplierCharges'
+          },
+          rowIndex: multiplierChargesFound
+        }, parameter.invoiceLineItem.id, true);
+
         multiplierChargesFound++;
       }
     });
