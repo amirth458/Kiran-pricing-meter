@@ -41,7 +41,7 @@ table .form-control {
 
 .profile-list .card {
   height: 170px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .profile-list .icon {
@@ -56,6 +56,11 @@ table .form-control {
 
 .section span {
   width: 40px;
+}
+
+
+.search input{
+  font-size: 13px;
 }
 
 .profile-list .column-name {
