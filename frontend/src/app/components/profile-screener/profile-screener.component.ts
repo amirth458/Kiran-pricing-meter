@@ -206,8 +206,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       };
 
 
-      console.log(this.RFQData, 'rfg');
-      console.log(this.form, 'form');
 
 
     });
@@ -277,8 +275,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-
   }
 
   get fileNames() {
@@ -338,6 +334,36 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       return unit[0].symbol || unit[0].displayName;
     }
     return '';
+  }
+
+
+  extentUnitSet() {
+
+    const unitMapping = {
+      centimetres: 'cubic centimetre',
+      feet: 'cubic foot',
+      inch: 'cubic inch',
+      metre: 'cubic centimetre',
+      'micro-Inch': 'cubic inch',
+      micrometre: 'cubic centimetre',
+      millimetre: 'cubic centimetre',
+    };
+
+    const unitId = this.details.buildingX.unitId;
+    this.details.buildingY.unitId = unitId;
+    this.details.buildingZ.unitId = unitId;
+    if (unitId) {
+      const unit = this.lengthUnits.filter(item => item.id == unitId);
+      const volumeUnit = this.volumeUnits.filter(u => u.name == unitMapping[unit[0].name]);
+      if (volumeUnit.length > 0) {
+        this.details.boundingBox.unitId = volumeUnit[0].id;
+      } else {
+        this.details.boundingBox.unitId = '';
+      }
+    } else {
+      this.details.boundingBox.unitId = '';
+    }
+
   }
 
   equipmentChanged() {

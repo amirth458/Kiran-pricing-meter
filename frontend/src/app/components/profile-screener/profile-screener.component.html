@@ -87,9 +87,9 @@
                   Part Dimensions:
                   {{details.buildingX.value}}
                   {{getUnitName(details.buildingX.unitId)}}
-                  <ng-container *ngIf="details.buildingY.value">x</ng-container>
+                  x
                   {{details.buildingY.value}} {{getUnitName(details.buildingY.unitId)}}
-                  <ng-container *ngIf="details.buildingZ.value">x</ng-container>
+                  x
                   {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
                   <!-- 12.36mm x 4.50mm x 4.73mm -->
                 </span>
@@ -123,7 +123,58 @@
                       </div>
                     </div>
                   </li>
-                  <li><span>Extents</span> -
+                  <li class="extents"><span>Extents</span> -
+                    <div class="d-flex flex-column">
+                      <div class="d-flex flex-row">
+                        <div class="inputs">
+                          <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                            max="99999" id="extentsIdX" name="extentsIdX" [(ngModel)]="details.buildingX.value"
+                            [ngModelOptions]="{standalone: true}">
+
+                        </div>
+
+                        x
+
+                        <div class="inputs">
+                          <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                            max="99999" id="extentsIdY" name="extentsIdY" [(ngModel)]="details.buildingY.value"
+                            [ngModelOptions]="{standalone: true}">
+
+                        </div>
+
+                        x
+
+                        <div class="inputs">
+                          <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                            max="99999" id="extentsIdZ" name="extentsIdZ" [(ngModel)]="details.buildingZ.value"
+                            [ngModelOptions]="{standalone: true}">
+                        </div>
+                      </div>
+
+                      <div class="theme">
+
+                        <select required id="extentsValueX" name="extentsValueX" class="form-control"
+                          [(ngModel)]="details.buildingX.unitId" [ngModelOptions]="{standalone: true}" (ngModelChange)="extentUnitSet()">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                            {{unit.displayName || unit.symbol}}</option>
+                        </select>
+
+
+                      </div>
+
+                    </div>
+                  </li>
+
+
+
+
+
+
+
+
+
+                  <!-- <li><span>Extents</span> -
                     <div class="d-flex flex-column">
                       <div class="inputs">
                         <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
@@ -167,7 +218,7 @@
                         </div>
                       </div>
                     </div>
-                  </li>
+                  </li> -->
                   <li><span>Bounding box</span> -
                     <div class="inputs">
                       <input class="form-control" disabled required type="number" step="0.00001" maxlength="5" min="0"
@@ -175,7 +226,7 @@
                         id="boundingBoxId" name="boundingBoxId" [(ngModel)]="details.boundingBox.value"
                         [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="boundingBoxValue" name="boundingBoxValue" class="form-control"
+                        <select required disabled id="boundingBoxValue" name="boundingBoxValue" class="form-control"
                           [(ngModel)]="details.boundingBox.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of volumeUnits" [value]="unit.id">{{unit.displayName || unit.symbol}}
@@ -456,9 +507,9 @@
                   Part Dimensions:
                   {{details.buildingX.value}}
                   {{getUnitName(details.buildingX.unitId)}}
-                  <ng-container *ngIf="details.buildingY.value">x</ng-container>
+                  x
                   {{details.buildingY.value}} {{getUnitName(details.buildingY.unitId)}}
-                  <ng-container *ngIf="details.buildingZ.value">x</ng-container>
+                  x
                   {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
                   <!-- 12.36mm x 4.50mm x 4.73mm -->
                 </span>
@@ -471,10 +522,10 @@
                 <ul>
                   <li><span>Volume</span> - {{details.volume.value}} {{getUnitName(details.volume.unitId)}}</li>
                   <li><span>Extents</span> - {{details.buildingX.value}}
-                    {{getUnitName(details.buildingX.unitId)}} <ng-container *ngIf="details.buildingY.value">x
-                    </ng-container>
+                    {{getUnitName(details.buildingX.unitId)}} x
+
                     {{details.buildingY.value}} {{getUnitName(details.buildingY.unitId)}}
-                    <ng-container *ngIf="details.buildingZ.value">x</ng-container>
+                    x
                     {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
                   </li>
                   <li><span>Bounding box</span> -
