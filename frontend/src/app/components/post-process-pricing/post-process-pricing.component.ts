@@ -86,7 +86,7 @@ export class PostProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    { headerName: 'Post-Process Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 160 },
     { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     {

@@ -85,7 +85,7 @@ export class ProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 100 },
     {
       headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
