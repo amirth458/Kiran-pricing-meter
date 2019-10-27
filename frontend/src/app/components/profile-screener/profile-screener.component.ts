@@ -320,9 +320,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
       }
 
+      const equipmentId = [];
+
       machines.map(machine => {
-        this.equipments.push(machine);
+        if (!equipmentId.includes(machine.equipment.id)) {
+          this.equipments.push(machine);
+          equipmentId.push(machine.equipment.id);
+        }
       });
+
     } catch (e) {
       console.log(e);
     }
