@@ -100,6 +100,11 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
   isFormValid = false;
 
+
+  toleranceBaseId = '';
+  toleranceIncrementId = '';
+
+
   constructor(
     public route: Router,
     public fb: FormBuilder,
@@ -140,6 +145,17 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       this.processParameterList = processParameterType.metadataList;
       this.processDimensionalPropertyList = processDimensionalPropertyType.metadataList;
       this.processMaterialCharacteristicList = processMaterialCharacteristicType.metadataList;
+
+
+      this.processDimensionalPropertyList.map(property => {
+        if (property.name === 'Tolerance base Expected') {
+          this.toleranceBaseId = property.id;
+        }
+
+        if (property.name === 'Tolerance Increment Expected') {
+          this.toleranceIncrementId = property.id;
+        }
+      });
 
       // console.log({
       //   conditions: this.conditions,

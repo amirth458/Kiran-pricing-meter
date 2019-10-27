@@ -151,6 +151,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   activeMode = 'default';
   isFormValid = false;
 
+  searchQuery = '';
+
   screenerEstimatorStore$: Observable<any>;
 
   constructor(
@@ -307,7 +309,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       if (this.activeMode === 'pricing-estimator') {
         const profileRes = await this.processProfileService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
         this.processProfiles = profileRes.map(profile => {
-          return { ...profile, checked: false };
+          return { ...profile, checked: false, show: true };
         });
 
         if (this.screenedProfiles.length > 0) {
@@ -536,14 +538,29 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  onProcessProfileSearch() {
+    this.processProfiles.map((profile, index) => {
+      if (!profile.name.toLocaleLowerCase().includes(this.searchQuery)) {
+        this.processProfiles[index].show = false;
+      } else {
+        this.processProfiles[index].show = true;
+      }
+    });
+  }
+
   htmlDecode(input) {
     const str = input;
     str.replace(/[&amp;]/g, '&#38;');
     return str;
   }
 
-  toggleCheck(index) {
-    this.processProfiles[index].checked = !this.processProfiles[index].checked;
+  toggleCheck(profileId) {
+    this.processProfiles.map((profile, index) => {
+      if (profile.id == profileId) {
+        this.processProfiles[index].checked = !this.processProfiles[index].checked;
+      }
+    });
   }
 
   toggleModal() {
