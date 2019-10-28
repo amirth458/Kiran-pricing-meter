@@ -307,7 +307,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
 
   initForm(pricingProfile) {
-    console.log(pricingProfile);
     let flatChargesFound = 0;
     let variableChargesFound = 0;
     let multiplierChargesFound = 0;
@@ -1037,6 +1036,58 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
             await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
             const gotoURL = `/profile/processes/pricing`;
             this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Process Pricing Edited!' } } });
+          } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              // this.error = e.error.message;
+              this.error = 'Please check your inputs';
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
+            this.spinner.hide();
+            // this.submitActive = true;
+
+          }
+        }
+      } else {
+        // this.submitActive = true;
+      }
+
+    }, 100);
+  }
+
+  async onSaveAndCreateAnother(event) {
+    event.preventDefault();
+    // this.submitActive = false;
+    setTimeout(async () => {
+      if (this.form.valid) {
+        this.error = '';
+        const vendorId = this.userService.getVendorInfo().id;
+        const postData = this.prepareData();
+        if (this.isNew) {
+          this.spinner.show();
+          try {
+            const serverData = await this.processPricingService.saveProfile(vendorId, postData).toPromise();
+            this.processPricingService.storeCloneData(serverData);
+            this.route.navigateByUrl('/profile/processes/pricing/clone');
+          } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              // this.error = e.error.message;
+              this.error = 'Please check your inputs';
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
+            this.spinner.hide();
+          }
+        } else {
+          this.spinner.show();
+          try {
+            const serverData = await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
+            this.processPricingService.storeCloneData(serverData);
+            this.route.navigateByUrl('/profile/processes/pricing/clone');
           } catch (e) {
             console.log(e);
             if (e.error && e.error.message) {

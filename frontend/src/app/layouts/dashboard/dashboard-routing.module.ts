@@ -104,6 +104,7 @@ const routes: Routes = [
               { path: 'pricing', component: PostProcessPricingComponent },
               { path: 'pricing/add', component: PostProcessPricingItemComponent },
               { path: 'pricing/edit/:id', component: PostProcessPricingItemComponent },
+              { path: 'pricing/clone', component: PostProcessPricingItemComponent },
               { path: '', redirectTo: 'profile', pathMatch: 'full' },
               { path: '**', redirectTo: 'profile', pathMatch: 'full' }
             ]

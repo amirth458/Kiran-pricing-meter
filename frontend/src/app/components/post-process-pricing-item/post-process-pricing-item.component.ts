@@ -211,6 +211,18 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       this.processProfileChanged();
       this.spinner.hide();
     }
+
+    if (this.route.url.includes('clone')) {
+      this.isNew = true;
+      // tslint:disable-next-line:max-line-length
+      const postProcessPrice = this.processPricingService.getCloneData();
+      // processProfile.id = 0;
+      setTimeout(() => {
+        this.initForm(postProcessPrice);
+        this.processProfileChanged();
+      }, 100);
+      this.spinner.hide();
+    }
   }
 
   get name() {
@@ -1023,6 +1035,58 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
             const gotoURL = `/profile/post-processes/pricing`;
             this.route.navigateByUrl(gotoURL, { state: { toast: { type: 'success', body: 'Post-Process Pricing Edited!' } } });
+          } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              // this.error = e.error.message;
+              this.error = 'Please check your inputs';
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
+            this.spinner.hide();
+            // this.submitActive = true;
+
+          }
+        }
+      } else {
+        // this.submitActive = true;
+      }
+
+    }, 100);
+  }
+
+  onSaveAndCreateAnother(event) {
+    event.preventDefault();
+    // this.submitActive = false;
+    setTimeout(async () => {
+      if (this.form.valid) {
+        this.error = '';
+        const vendorId = this.userService.getVendorInfo().id;
+        const postData = this.prepareData();
+        if (this.isNew) {
+          this.spinner.show();
+          try {
+            const serverData = await this.processPricingService.saveProfile(vendorId, postData).toPromise();
+            this.processPricingService.storeCloneData(serverData);
+            this.route.navigateByUrl('/profile/post-processes/pricing/clone');
+          } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              // this.error = e.error.message;
+              this.error = 'Please check your inputs';
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
+            this.spinner.hide();
+          }
+        } else {
+          this.spinner.show();
+          try {
+            const serverData = await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
+            this.processPricingService.storeCloneData(serverData);
+            this.route.navigateByUrl('/profile/post-processes/pricing/clone');
           } catch (e) {
             console.log(e);
             if (e.error && e.error.message) {
