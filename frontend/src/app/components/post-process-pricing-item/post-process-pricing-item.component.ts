@@ -207,14 +207,6 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
         this.initForm(processProfile);
         this.processProfileChanged();
-
-
-
-
-
-
-
-
       }
       this.spinner.hide();
     }
