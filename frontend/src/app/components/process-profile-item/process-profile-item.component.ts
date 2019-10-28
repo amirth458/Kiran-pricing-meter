@@ -698,7 +698,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     let name = this.equipmentName + ' - ' + this.materialName;
-    if (this.form.value.parameterNickName.length > 0) {
+    if (this.form.value.parameterNickName && this.form.value.parameterNickName.length > 0) {
       name += ' - ' + this.form.value.parameterNickName;
     }
     const postData = {
