@@ -69,6 +69,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     estMachineTime: {
       value: '',
       unitId: ''
+    },
+    maxToleranceLength: {
+      value: '',
+      unitId: ''
     }
   };
 

@@ -280,6 +280,24 @@
                       </div>
                     </div>
                   </li>
+
+
+                  <li><span>Max tolerance length</span> - <div class="inputs">
+                      <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
+                        max="99999" id="maxToleranceLengthId" name="maxToleranceLengthId"
+                        [(ngModel)]="details.maxToleranceLength.value" [ngModelOptions]="{standalone: true}">
+                      <div class="theme">
+                        <select required id="maxToleranceLengthValue" name="maxToleranceLengthValue" class="form-control"
+                          [(ngModel)]="details.maxToleranceLength.unitId" [ngModelOptions]="{standalone: true}">
+                          <option selected value="">Choose...</option>
+                          <option *ngFor="let unit of lengthUnits" [value]="unit.id">
+                            {{unit.displayName || unit.symbol}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </li>
+
                   <!--
                   <li><span>Est Machine Time</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
