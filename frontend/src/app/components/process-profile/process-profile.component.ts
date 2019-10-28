@@ -44,7 +44,8 @@ export class ProcessProfileComponent implements OnInit {
       field: 'name', query: {
         type: '',
         filter: '',
-      }
+      },
+      resizeable: true,
     },
     {
       name: 'Equipment', checked: false,
@@ -213,6 +214,7 @@ export class ProcessProfileComponent implements OnInit {
       headerHeight: 35
     };
     setTimeout(() => {
+      this.gridOptions.columnApi.autoSizeColumns(['name']);
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {

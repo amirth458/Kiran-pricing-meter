@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-process',
   templateUrl: './process.component.html',
@@ -34,7 +36,21 @@ export class ProcessComponent implements OnInit {
       }
     ];
   selectedTab = this.actionbarMenu[0].name;
-  constructor() { }
+  constructor(private route: Router) {
+    this.route.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const routeArr = this.route.url.slice(this.route.url.indexOf('/profile/processes/') + '/profile/processes/'.length).split('/');
+      switch (routeArr[0]) {
+        case 'profile':
+          this.selectedTab = 'Profile';
+          break;
+        case 'pricing':
+          this.selectedTab = 'Pricing';
+          break;
+      }
+    });
+   }
 
   ngOnInit() {
   }
