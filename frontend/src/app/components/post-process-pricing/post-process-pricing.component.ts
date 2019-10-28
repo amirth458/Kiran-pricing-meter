@@ -151,7 +151,7 @@ export class PostProcessPricingComponent implements OnInit {
   gridOptions: GridOptions;
 
   selectedProfileId = null;
-
+  cloneData = null;
   rowData;
   pageSize = 10;
 
@@ -378,13 +378,14 @@ export class PostProcessPricingComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           copy: (param) => {
+            this.copyRow(param.data);
           },
           delete: async (param) => {
             this.deleteModal.nativeElement.click();
             this.selectedProfileId = param.data;
           },
           canEdit: true,
-          canCopy: false,
+          canCopy: true,
           canDelete: true,
         }
       }
@@ -410,6 +411,12 @@ export class PostProcessPricingComponent implements OnInit {
 
   }
 
+  copyRow(data) {
+    const clonedData = JSON.parse(JSON.stringify(data));
+    this.processPricingService.storeCloneData(clonedData);
+    console.log(clonedData);
+    this.route.navigateByUrl(this.route.url + '/clone');
+  }
   async deletePricing() {
     this.spineer.show();
     try {

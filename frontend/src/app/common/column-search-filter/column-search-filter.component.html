@@ -20,7 +20,7 @@
       <div class="column-container" [style.height]="height">
 
         <div class="row" *ngFor="let column of filterColumnsClone; let index=index">
-          <div class="col-sm-2">
+          <div class="col-2">
             <span class="icon" *ngIf="column.checked" (click)="toggleCheck(index, 'filter')">
               <i class="fas fa-check-square"></i>
             </span>
@@ -30,8 +30,8 @@
             </span>
           </div>
 
-          <div class="col-sm-10 column-name">
-            <span style="margin-top: -3px">
+          <div class="col-10 column-name">
+            <span style="margin-top: -3px" title="{{column.name}}">
               {{column.name}}
             </span>
           </div>
@@ -55,7 +55,7 @@
       <div class="column-container" [style.height]="height">
 
         <div class="row" *ngFor="let column of searchColumnsClone; let index=index">
-          <div class="col-sm-2">
+          <div class="col-2">
             <span class="icon" *ngIf="column.checked" (click)="toggleCheck(index, 'search')">
               <i class="fas fa-check-square"></i>
             </span>
@@ -65,13 +65,13 @@
             </span>
           </div>
 
-          <div class="col-sm-10 column-name">
+          <div class="col-10 column-name">
             <div class="container-fluid">
-              <span class="row name" style="margin-top: -8px">{{column.name}}</span>
+              <span class="row name" style="margin-top: -8px"  title="{{column.name}}">{{column.name}}</span>
               <span class="row options" *ngIf="column.checked">
                 <div class="form-group ">
                   <select required id="option" [(ngModel)]="searchColumns[column.id].query.type"
-                    (ngModelChange)="searchColumnsChange.emit(searchColumns)" name="option" class="form-control">
+                    (ngModelChange)="searchColumnsChange.emit(searchColumns)" name="option" class="form-control full-width">
                     <option value="">Choose...</option>
                     <option value="contains">Contains</option>
                     <option value="notContains">Not contains</option>
