@@ -36,6 +36,7 @@
           formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
+        {{getMaterials().length}}
         <span *ngIf="submitClicked && !getMaterials().length" class="footnote red">* Required</span>
         <span *ngIf="!equipments.length" class="footnote red">*You need to add machines in <a
             class="link font-weight-bold" href="profile/vendor/machines">here</a> </span>
