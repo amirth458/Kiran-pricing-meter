@@ -291,7 +291,7 @@ button.theme.theme-reverse:hover {
   font-size: 13px;
   display: block;
   align-items: center;
-  padding: 3px !important;
+  /* padding: 3px !important; */
 
 }
 
