@@ -289,9 +289,10 @@ button.theme.theme-reverse:hover {
 
 .theme-table .ag-theme-balham .ag-cell {
   font-size: 13px;
-  display: flex;
+  display: block;
   align-items: center;
-  /* padding: 0 !important; */
+  padding: 3px !important;
+
 }
 
 .theme-table .ag-theme-balham .ag-cell.ag-cell-inline-editing {
@@ -314,7 +315,8 @@ button.theme.theme-reverse:hover {
 .theme-table .ag-theme-balham .action-column {
   font-size: 16px;
   display: flex;
-  justify-content: space-between;
+  padding-top: 5px;
+  justify-content: center;
 }
 
 .theme-table .ag-theme-balham .action-column .edit {

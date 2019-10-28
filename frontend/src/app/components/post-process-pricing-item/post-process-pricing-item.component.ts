@@ -196,19 +196,30 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
       console.log(e);
     } finally {
 
-      this.spinner.hide();
 
+      if (this.route.url.includes('edit')) {
+        this.isNew = false;
+        this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // Make API request
+        this.isNew = false;
+        this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // tslint:disable-next-line:max-line-length
+        const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
+        this.initForm(processProfile);
+        this.processProfileChanged();
+      }
+      this.spinner.hide();
     }
-    if (this.route.url.includes('edit')) {
-      this.isNew = false;
-      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // Make API request
-      this.isNew = false;
-      this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+
+    if (this.route.url.includes('clone')) {
+      this.isNew = true;
       // tslint:disable-next-line:max-line-length
-      const processProfile = await this.processPricingService.getProfile(this.userService.getVendorInfo().id, this.processPricingId).toPromise();
-      this.initForm(processProfile);
-      this.processProfileChanged();
+      const postProcessPrice = this.processPricingService.getCloneData();
+      // processProfile.id = 0;
+      setTimeout(() => {
+        this.initForm(postProcessPrice);
+        this.processProfileChanged();
+      }, 100);
       this.spinner.hide();
     }
   }
@@ -365,6 +376,15 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           },
           rowIndex: variableChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'variableCharges'
+          },
+          rowIndex: variableChargesFound
+        }, parameter.invoiceLineItem.id, true);
+
         variableChargesFound++;
       }
       // if (section === 'multiplierCharges') {
@@ -400,6 +420,16 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
           },
           rowIndex: multiplierChargesFound
         }, parameter.invoiceLineItem.invoiceItem.id, true);
+
+        this.dropdownValueChanged({
+          colDef: { field: 'invoiceLineItem' },
+          data: {
+            section: 'multiplierCharges'
+          },
+          rowIndex: multiplierChargesFound
+        }, parameter.invoiceLineItem.id, true);
+
+
         multiplierChargesFound++;
       }
     });
@@ -527,14 +557,14 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
         headerName: 'Multiplier Value', field: 'value', hide: false, sortable: false, filter: false,
         cellRenderer: 'multiselectCellRenderer',
         cellEditor: 'multiselectCellEditor',
-        suppressKeyboardEvent: suppressEnter,
+        suppressKeyboardEvent: this.suppressEnter,
         editable: true,
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
           },
           change: (param, value) => {
-            param.selectedValue = value;
+            param.value = value;
           },
         }
       },
@@ -936,16 +966,25 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
 
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
-      console.log(row);
+      let values = [];
 
-      const values = row.value;
-      //const selectedValue = row.valueOptions.filter(v => v.id == row.value)[0];
+      if (Array.isArray(row.value)) {
+        values = row.value;
+      } else {
+        values = [row.value];
+      }
+
+      if (values.length === 1 && values[0] === 'all-line-items') {
+        values = row.valueOptions.filter(val => val.id.toString().includes('invoiceItem')).map(i => i.id);
+      }
+
       values.map(item => {
-        const selectedValue = { id: item };
+        const selectedValue = item;
 
-        if (selectedValue.id.toString().includes('invoiceItem')) {
+
+        if (selectedValue.toString().includes('invoiceItem')) {
           row.valueOptions
-            .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue.id)
+            .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue)
             .map(v => {
               multiplierCharges.push({
                 invoiceLineItem: {
@@ -968,7 +1007,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
             multiplier: row.multiplier,
             multiplierProcessPricingParameter: {
               invoiceLineItem: {
-                id: row.value
+                id: selectedValue
               }
             }
 
@@ -1044,6 +1083,58 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     }, 100);
   }
 
+  onSaveAndCreateAnother(event) {
+    event.preventDefault();
+    // this.submitActive = false;
+    setTimeout(async () => {
+      if (this.form.valid) {
+        this.error = '';
+        const vendorId = this.userService.getVendorInfo().id;
+        const postData = this.prepareData();
+        if (this.isNew) {
+          this.spinner.show();
+          try {
+            const serverData = await this.processPricingService.saveProfile(vendorId, postData).toPromise();
+            this.processPricingService.storeCloneData(serverData);
+            this.route.navigateByUrl('/profile/post-processes/pricing/clone');
+          } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              // this.error = e.error.message;
+              this.error = 'Please check your inputs';
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
+            this.spinner.hide();
+          }
+        } else {
+          this.spinner.show();
+          try {
+            const serverData = await this.processPricingService.updateProfile(vendorId, this.processPricingId, postData).toPromise();
+            this.processPricingService.storeCloneData(serverData);
+            this.route.navigateByUrl('/profile/post-processes/pricing/clone');
+          } catch (e) {
+            console.log(e);
+            if (e.error && e.error.message) {
+              // this.error = e.error.message;
+              this.error = 'Please check your inputs';
+            } else {
+              this.error = 'An error occured while talking to our server.';
+            }
+          } finally {
+            this.spinner.hide();
+            // this.submitActive = true;
+
+          }
+        }
+      } else {
+        // this.submitActive = true;
+      }
+
+    }, 100);
+  }
+
   getRandomString(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -1053,12 +1144,13 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
     }
     return result;
   }
+
+  suppressEnter(params) {
+    const KEY_ENTER = 13;
+    const event = params.event;
+    const key = event.which;
+    const suppress = key === KEY_ENTER;
+    return suppress;
+  }
 }
 
-function suppressEnter(params) {
-  const KEY_ENTER = 13;
-  const event = params.event;
-  const key = event.which;
-  const suppress = key === KEY_ENTER;
-  return suppress;
-}

@@ -41,7 +41,7 @@ table .form-control {
 
 .profile-list .card {
   height: 170px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .profile-list .icon {
@@ -56,6 +56,11 @@ table .form-control {
 
 .section span {
   width: 40px;
+}
+
+
+.search input{
+  font-size: 13px;
 }
 
 .profile-list .column-name {
@@ -74,6 +79,14 @@ table .form-control {
 
 .upload button.back:not(:disabled):hover {
   color: var(--theme-light-blue);
+}
+
+.upload .form-group.theme {
+  margin: 0px 10px;
+}
+
+.upload .form-group.theme . {
+  font-size: 14px;
 }
 
 .upload label {
@@ -112,6 +125,23 @@ table .form-control {
 .rfq-title {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.action-button {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0px;
+}
+
+.action-button button {
+  width: fit-content;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.detail-info .details>div:last-child,
+.detail-info .details div ul {
+  padding: unset;
 }
 
 .detail-info .details .title,
@@ -154,6 +184,7 @@ table .form-control {
 .detail-info .details .image-details ul li>div.flex-column {
   text-align: center;
   width: 100%;
+  padding: 0px .5rem
 }
 
 /*
@@ -178,6 +209,24 @@ table .form-control {
   display: flex;
   height: 28px;
   width: 40%;
+}
+
+.detail-info .details .image-details ul li.extents .inputs input,
+.detail-info .details .image-details ul li.extents div.theme {
+  width: 80%;
+}
+
+.detail-info .details .image-details ul li.extents div.theme {
+  height: 28px;
+  margin: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.detail-info .details .image-details ul li.extents div.theme select {
+  width: 50%;
+
 }
 
 .quantity input {

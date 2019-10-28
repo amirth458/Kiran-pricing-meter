@@ -33,15 +33,22 @@ export class PostProcessPricingComponent implements OnInit {
       }
     },
     {
-      name: 'Pricing Name', checked: false,
+      name: 'Pricing Profile', checked: false,
       field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Post-Process Profile Name', checked: false,
+      name: 'Post-Process Profile', checked: false,
       field: 'processProfile.name', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
+      name: 'Parameter Set Nickname', checked: false,
+      field: 'name', query: {
         type: '',
         filter: '',
       }
@@ -67,10 +74,13 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Pricing No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Name', checked: true, field: 'name'
+      name: 'Pricing Profile', checked: true, field: 'name'
     },
     {
-      name: 'Post-Process Profile Name', checked: true, field: 'processProfile.name'
+      name: 'Post-Process Profile', checked: true, field: 'processProfile.name'
+    },
+    {
+      name: 'Parameter Set Nickname', checked: true, field: 'name'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -86,9 +96,10 @@ export class PostProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
-    { headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false },
-    { headerName: 'Post-Process Profile Name', field: 'processProfile.name', hide: false, sortable: true, filter: false },
+    { headerName: 'Post-Process Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 160 },
+    { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
+    { headerName: 'Parameter Set Nickname', field: 'name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Equipment', field: 'equipment',
@@ -140,7 +151,7 @@ export class PostProcessPricingComponent implements OnInit {
   gridOptions: GridOptions;
 
   selectedProfileId = null;
-
+  cloneData = null;
   rowData;
   pageSize = 10;
 
@@ -367,13 +378,14 @@ export class PostProcessPricingComponent implements OnInit {
         action: {
           edit: (param) => this.editRow(param),
           copy: (param) => {
+            this.copyRow(param.data);
           },
           delete: async (param) => {
             this.deleteModal.nativeElement.click();
             this.selectedProfileId = param.data;
           },
           canEdit: true,
-          canCopy: false,
+          canCopy: true,
           canDelete: true,
         }
       }
@@ -399,6 +411,12 @@ export class PostProcessPricingComponent implements OnInit {
 
   }
 
+  copyRow(data) {
+    const clonedData = JSON.parse(JSON.stringify(data));
+    this.processPricingService.storeCloneData(clonedData);
+    console.log(clonedData);
+    this.route.navigateByUrl(this.route.url + '/clone');
+  }
   async deletePricing() {
     this.spineer.show();
     try {

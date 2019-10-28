@@ -139,6 +139,7 @@
 .info-bar {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .info-bar p {

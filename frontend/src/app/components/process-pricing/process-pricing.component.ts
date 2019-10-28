@@ -32,15 +32,22 @@ export class ProcessPricingComponent implements OnInit {
       }
     },
     {
-      name: 'Pricing Name', checked: false,
+      name: 'Pricing Profile', checked: false,
       field: 'name', query: {
         type: '',
         filter: '',
       }
     },
     {
-      name: 'Profile Name', checked: false,
+      name: 'Process Profile', checked: false,
       field: 'processProfile.name', query: {
+        type: '',
+        filter: '',
+      }
+    },
+    {
+      name: 'Parameter Set Nickname', checked: false,
+      field: 'name', query: {
         type: '',
         filter: '',
       }
@@ -66,10 +73,13 @@ export class ProcessPricingComponent implements OnInit {
       name: 'Pricing No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Name', checked: true, field: 'name'
+      name: 'Pricing Profile', checked: true, field: 'name'
     },
     {
-      name: 'Profile Name', checked: true, field: 'processProfile.name'
+      name: 'Process Profile', checked: true, field: 'processProfile.name'
+    },
+    {
+      name: 'Parameter Set Nickname', checked: true, field: 'name'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -85,14 +95,15 @@ export class ProcessPricingComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 100 },
     {
-      headerName: 'Pricing Name', field: 'name', hide: false, sortable: true, filter: false,
+      headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         return param.data.processProfile.name + ': ' + param.data.name;
       },
     },
-    { headerName: 'Profile Name', field: 'processProfile.name', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
+    { headerName: 'Parameter Set Nickname', field: 'name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Equipment', field: 'equipment',
@@ -186,6 +197,7 @@ export class ProcessPricingComponent implements OnInit {
     };
 
     setTimeout(() => {
+      this.gridOptions.columnApi.autoSizeColumns(['name']);
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {

@@ -44,7 +44,8 @@ export class ProcessProfileComponent implements OnInit {
       field: 'name', query: {
         type: '',
         filter: '',
-      }
+      },
+      resizeable: true,
     },
     {
       name: 'Equipment', checked: false,
@@ -105,7 +106,7 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false, width: 80 },
     { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
@@ -213,6 +214,7 @@ export class ProcessProfileComponent implements OnInit {
       headerHeight: 35
     };
     setTimeout(() => {
+      this.gridOptions.columnApi.autoSizeColumns(['name']);
       this.gridOptions.api.sizeColumnsToFit();
     }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {

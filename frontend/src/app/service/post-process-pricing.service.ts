@@ -37,4 +37,12 @@ export class PostProcessPricingService {
       }
     });
   }
+
+  storeCloneData(cloneData: any) {
+    localStorage.setItem('postProcessPriceCloneData', JSON.stringify(cloneData));
+  }
+
+  getCloneData(): any {
+    return JSON.parse(localStorage.getItem('postProcessPriceCloneData'));
+  }
 }

@@ -100,6 +100,11 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   isNew = true;
   isFormValid = false;
 
+
+  toleranceBaseId = '';
+  toleranceIncrementId = '';
+
+
   constructor(
     public route: Router,
     public fb: FormBuilder,
@@ -141,6 +146,17 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
       this.processDimensionalPropertyList = processDimensionalPropertyType.metadataList;
       this.processMaterialCharacteristicList = processMaterialCharacteristicType.metadataList;
 
+
+      this.processDimensionalPropertyList.map(property => {
+        if (property.name === 'Tolerance base Expected') {
+          this.toleranceBaseId = property.id;
+        }
+
+        if (property.name === 'Tolerance Increment Expected') {
+          this.toleranceIncrementId = property.id;
+        }
+      });
+
       // console.log({
       //   conditions: this.conditions,
       //   processParameterList: this.processParameterList,
@@ -150,28 +166,31 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     } catch (e) {
       console.log(e);
     } finally {
-      this.spinner.hide();
-    }
 
-    if (this.route.url.includes('edit')) {
-      this.spinner.show();
-      this.isNew = false;
-      this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // tslint:disable-next-line:max-line-length
-      const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
-      this.initForm(processProfile);
-      this.materialChanged(true);
-      this.spinner.hide();
-    }
 
-    if (this.route.url.includes('clone')) {
-      this.isNew = true;
-      const processProfile = this.processProfileService.getCloneData();
-      processProfile.id = 0;
-      this.initForm(processProfile);
-      this.materialChanged(true);
+      if (this.route.url.includes('edit')) {
+        this.spinner.show();
+        this.isNew = false;
+        this.processProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // tslint:disable-next-line:max-line-length
+        const processProfile = await this.processProfileService.getProfile(this.userService.getVendorInfo().id, this.processProfileId).toPromise();
+        this.initForm(processProfile);
+        this.materialChanged(true);
+
+      }
+
+      if (this.route.url.includes('clone')) {
+        this.isNew = true;
+        const processProfile = this.processProfileService.getCloneData();
+        processProfile.id = 0;
+        this.initForm(processProfile);
+        this.materialChanged(true);
+      }
+      this.spinner.hide();
     }
   }
+
+
 
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -640,8 +659,13 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
 
     this.equipmentChanged();
+    this.submitClicked = true;
+    const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
+      const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
+      return index >= 0;
+    });
     this.form.setValue({
-      ...this.form.value, materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)]
+      ...this.form.value, materialList: [...pmsmList.map(x => x.machineServingMaterial.id)]
     });
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
@@ -679,7 +703,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     let name = this.equipmentName + ' - ' + this.materialName;
-    if ( this.form.value.parameterNickName.length > 0) {
+    if (this.form.value.parameterNickName && this.form.value.parameterNickName.length > 0) {
       name += ' - ' + this.form.value.parameterNickName;
     }
     const postData = {

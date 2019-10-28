@@ -47,7 +47,7 @@ export class ProfileScreenerService {
         1, 2
       ]
     };
-    return this.http.post(environment.PPE_HOST_URL + '/profile', { ...body, userId: vendorId });
+    return this.http.post(environment.PPE_HOST_URL + '/pre-quote', { ...body, userId: vendorId });
     // return this.http.post(environment.PPE_HOST_URL + '/pre-quote', { ...fakeBody });
   }
 

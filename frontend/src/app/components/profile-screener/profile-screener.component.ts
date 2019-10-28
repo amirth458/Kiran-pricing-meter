@@ -17,7 +17,8 @@ import { Store, select } from '@ngrx/store';
 import {
   SetRFQInfo,
   SetScreenedProfiles,
-  SetStatus
+  SetStatus,
+  SetEstimatedPrices
 } from 'src/app/store/profile-screener-estimator/profile-screener-estimator.actions';
 import { HttpEventType } from '@angular/common/http';
 import { map } from 'src/app/store';
@@ -68,28 +69,51 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     estMachineTime: {
       value: '',
       unitId: ''
+    },
+    maxToleranceLength: {
+      value: '',
+      unitId: ''
     }
   };
 
 
-  form: FormGroup = this.fb.group({
-    requiredCertificateId: [''],
-    materialId: [null],
-    equipmentId: [null],
-    confidentialityId: [''],
+  // form: FormGroup = this.fb.group({
+  //   requiredCertificateId: [''],
+  //   materialId: [null],
+  //   equipmentId: [null],
+  //   confidentialityId: [''],
 
-    // quantity: ['', Validators.required],
+  //   // quantity: ['', Validators.required],
 
-    timeToShipValue: [null],
-    toleranceValue: [null],
-    surfaceRoughnessValue: [null],
-    surfaceFinishValue: [null],
+  //   timeToShipValue: [null],
+  //   toleranceValue: [null],
+  //   surfaceRoughnessValue: [null],
+  //   surfaceFinishValue: [null],
 
-    timeToShipUnit: [''],
-    toleranceUnit: [''],
-    surfaceRoughnessUnit: [''],
-    surfaceFinishUnit: [''],
-  });
+  //   timeToShipUnit: [''],
+  //   toleranceUnit: [''],
+  //   surfaceRoughnessUnit: [''],
+  //   surfaceFinishUnit: [''],
+  // });
+
+  form = {
+    requiredCertificateId: null,
+    materialId: null,
+    equipmentId: null,
+    confidentialityId: null,
+
+
+
+    timeToShipValue: null,
+    toleranceValue: null,
+    surfaceRoughnessValue: null,
+    surfaceFinishValue: null,
+
+    timeToShipUnit: '',
+    toleranceUnit: '',
+    surfaceRoughnessUnit: '',
+    surfaceFinishUnit: ''
+  };
 
   units = [];
 
@@ -115,7 +139,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   uploadedDocuments = [];
   selectedDocument = null;
   uploading = false;
-
+  triedToSubmit = false;
 
   uploadResponse = { status: '', message: '', filePath: '' };
   pendingDocumentIds = [];
@@ -130,6 +154,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   profileTypes = [];
   activeMode = 'default';
   isFormValid = false;
+
+  searchQuery = '';
 
   screenerEstimatorStore$: Observable<any>;
 
@@ -151,7 +177,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     this.screenerEstimatorStore$ = store.pipe(select('screenerEstimator'));
     this.screenerEstimatorStore$.subscribe(result => {
       this.RFQData = result.RFQInfo;
-      this.screenedProfiles = result.screenedProfiles;
+      this.screenedProfiles = result.screenedProfiles.map(item => item.profileId);
 
       if (this.RFQData.partMetadata) {
         this.details = this.RFQData.partMetadata;
@@ -165,24 +191,27 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         this.uploadedDocuments = this.RFQData.fileInfo.uploadedDocuments;
       }
 
-      this.form.setValue({
+
+      this.form = {
         requiredCertificateId: this.RFQData.requiredCertificateId || '',
         materialId: this.RFQData.materialId || null,
         equipmentId: this.RFQData.equipmentId || null,
         confidentialityId: this.RFQData.confidentialityId || '',
         // quantity: this.RFQData.quantity || '',
-        timeToShipValue: this.RFQData && this.RFQData.timeToShipValue ? this.RFQData.timeToShipValue : null,
-        timeToShipUnit: this.RFQData && this.RFQData.timeToShipUnit ? this.RFQData.timeToShipUnit : '',
+        timeToShipValue: this.RFQData && this.RFQData.timeToShip ? this.RFQData.timeToShip.value : null,
+        timeToShipUnit: this.RFQData && this.RFQData.timeToShip ? this.RFQData.timeToShip.unitId : '',
 
-        toleranceValue: this.RFQData && this.RFQData.toleranceValue ? this.RFQData.toleranceValue : null,
-        toleranceUnit: this.RFQData && this.RFQData.toleranceUnit ? this.RFQData.toleranceUnit : '',
+        toleranceValue: this.RFQData && this.RFQData.tolerance ? this.RFQData.tolerance.value : null,
+        toleranceUnit: this.RFQData && this.RFQData.tolerance ? this.RFQData.tolerance.unitId : '',
 
-        surfaceRoughnessValue: this.RFQData && this.RFQData.surfaceRoughnessValue ? this.RFQData.surfaceRoughnessValue : null,
-        surfaceRoughnessUnit: this.RFQData && this.RFQData.surfaceRoughnessUnit ? this.RFQData.surfaceRoughnessUnit : '',
+        surfaceRoughnessValue: this.RFQData && this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.value : null,
+        surfaceRoughnessUnit: this.RFQData && this.RFQData.surfaceRoughness ? this.RFQData.surfaceRoughness.unitId : '',
 
-        surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinishValue ? this.RFQData.surfaceFinishValue : null,
-        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinishUnit ? this.RFQData.surfaceFinishUnit : '',
-      });
+        surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
+        surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unitId : ''
+      };
+
+
 
 
     });
@@ -237,6 +266,13 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       this.dateTimeUnits = this.units.filter(unit => unit.measurementType.name === 'datetime');
       this.surfaceRoughnessUnits = this.units.filter(unit => unit.measurementType.name === 'surface roughness');
 
+
+      if (this.RFQData.equipmentId != null) {
+        this.equipmentChanged();
+      }
+
+      this.form.materialId = this.RFQData.materialId || null;
+
     } catch (e) {
       console.log(e);
     } finally {
@@ -245,8 +281,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-
   }
 
   get fileNames() {
@@ -279,7 +313,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       if (this.activeMode === 'pricing-estimator') {
         const profileRes = await this.processProfileService.getAllProfiles(this.userService.getVendorInfo().id).toPromise();
         this.processProfiles = profileRes.map(profile => {
-          return { ...profile, checked: false };
+          return { ...profile, checked: false, show: true };
         });
 
         if (this.screenedProfiles.length > 0) {
@@ -292,9 +326,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
       }
 
+      const equipmentId = [];
+
       machines.map(machine => {
-        this.equipments.push(machine);
+        if (!equipmentId.includes(machine.equipment.id)) {
+          this.equipments.push(machine);
+          equipmentId.push(machine.equipment.id);
+        }
       });
+
     } catch (e) {
       console.log(e);
     }
@@ -308,9 +348,39 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     return '';
   }
 
+
+  extentUnitSet() {
+
+    const unitMapping = {
+      centimetres: 'cubic centimetre',
+      feet: 'cubic foot',
+      inch: 'cubic inch',
+      metre: 'cubic centimetre',
+      'micro-Inch': 'cubic inch',
+      micrometre: 'cubic centimetre',
+      millimetre: 'cubic centimetre',
+    };
+
+    const unitId = this.details.buildingX.unitId;
+    this.details.buildingY.unitId = unitId;
+    this.details.buildingZ.unitId = unitId;
+    if (unitId) {
+      const unit = this.lengthUnits.filter(item => item.id == unitId);
+      const volumeUnit = this.volumeUnits.filter(u => u.name == unitMapping[unit[0].name]);
+      if (volumeUnit.length > 0) {
+        this.details.boundingBox.unitId = volumeUnit[0].id;
+      } else {
+        this.details.boundingBox.unitId = '';
+      }
+    } else {
+      this.details.boundingBox.unitId = '';
+    }
+
+  }
+
   equipmentChanged() {
-    const equipmentId = this.form.value.equipmentId;
-    this.form.setValue({ ...this.form.value, materialId: null });
+    const equipmentId = this.form.equipmentId;
+    this.form = { ...this.form, materialId: null };
     this.materials = [];
     this.equipments.map(x => {
       if (x.equipment.id == equipmentId) {
@@ -320,30 +390,30 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   materialChanged(editScreen = false) {
-    const materialList = this.form.value.materialList;
+    const materialList = [this.form.materialId];
     if (materialList.length) {
 
       if (editScreen && materialList.length === this.materials.length - 1) {
-        this.form.setValue({
-          ...this.form.value
-        });
+        this.form = {
+          ...this.form
+        };
         return this.materials;
       } else {
         const lastInput = materialList[materialList.length - 1];
         if (lastInput === 'all-materials') {
-          this.form.setValue({
-            ...this.form.value
-          });
+          this.form = {
+            ...this.form
+          };
           return this.materials;
         } else {
           if (materialList.includes('all-materials')) {
             const startIndex = materialList.indexOf('all-materials');
             const frontSlice = materialList.slice(0, startIndex);
             const endSlice = materialList.slice(startIndex + 1);
-            this.form.setValue({
-              ...this.form.value,
-              materialList: [...frontSlice, ...endSlice]
-            });
+            this.form = {
+              ...this.form,
+              // materialList: [...frontSlice, ...endSlice]
+            };
             return [...frontSlice, ...endSlice];
           }
         }
@@ -422,7 +492,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           if (item.id === id) {
             return { ...item, ...resp, analyzing: 100 };
           } else {
-            return { ...item};
+            return { ...item };
           }
         });
         this.pendingDocumentIds = this.pendingDocumentIds.filter((pendingId) => pendingId !== id);
@@ -436,10 +506,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
             if (item.analyzing < 90) {
               return { ...item, ...resp, analyzing: item.analyzing + 10 };
             } else {
-              return { ...item};
+              return { ...item };
             }
           } else {
-            return { ...item};
+            return { ...item };
           }
         });
         const selectedId = this.selectedDocument.id;
@@ -472,14 +542,29 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  onProcessProfileSearch() {
+    this.processProfiles.map((profile, index) => {
+      if (!profile.name.toLocaleLowerCase().includes(this.searchQuery)) {
+        this.processProfiles[index].show = false;
+      } else {
+        this.processProfiles[index].show = true;
+      }
+    });
+  }
+
   htmlDecode(input) {
     const str = input;
     str.replace(/[&amp;]/g, '&#38;');
     return str;
   }
 
-  toggleCheck(index) {
-    this.processProfiles[index].checked = !this.processProfiles[index].checked;
+  toggleCheck(profileId) {
+    this.processProfiles.map((profile, index) => {
+      if (profile.id == profileId) {
+        this.processProfiles[index].checked = !this.processProfiles[index].checked;
+      }
+    });
   }
 
   toggleModal() {
@@ -487,6 +572,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   save(url = '') {
+    let gotoURL = '';
+
+    if (this.activeMode === 'pricing-estimator') {
+      gotoURL = '/profile/processes/pricing/estimator/process';
+    }
+    if (this.activeMode === 'default') {
+      gotoURL = '/profile/processes/profile/profile-screener/process';
+    }
+
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
@@ -503,8 +597,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
 
     });
 
-    console.log(this.form.value);
-    if (this.form.valid && this.isFormValid) {
+
+    this.triedToSubmit = true;
+
+    if (this.isFormValid) {
 
       // tslint:disable-next-line:max-line-length
       this.details.boundingBox.value = (
@@ -513,28 +609,28 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         Number(this.details.buildingZ.value)).toString();
 
       const postData = {
-        // ...this.form.value,
-        requiredCertificateId: this.form.value.requiredCertificateId,
-        materialId: this.form.value.materialId,
-        equipmentId: this.form.value.equipmentId,
-        confidentialityId: this.form.value.confidentialityId,
+        // ...this.form,
+        requiredCertificateId: this.form.requiredCertificateId,
+        materialId: this.form.materialId,
+        equipmentId: this.form.equipmentId,
+        confidentialityId: this.form.confidentialityId,
 
 
         timeToShip: {
-          value: this.form.value.timeToShipValue,
-          unitId: this.form.value.timeToShipUnit
+          value: this.form.timeToShipValue,
+          unitId: this.form.timeToShipUnit
         },
         tolerance: {
-          value: this.form.value.toleranceValue,
-          unitId: this.form.value.toleranceUnit
+          value: this.form.toleranceValue,
+          unitId: this.form.toleranceUnit
         },
         surfaceRoughness: {
-          value: this.form.value.surfaceRoughnessValue,
-          unitId: this.form.value.surfaceRoughnessUnit
+          value: this.form.surfaceRoughnessValue,
+          unitId: this.form.surfaceRoughnessUnit
         },
         surfaceFinish: {
-          value: this.form.value.surfaceFinishValue,
-          unitId: this.form.value.surfaceFinishUnit
+          value: this.form.surfaceFinishValue,
+          unitId: this.form.surfaceFinishUnit
         },
 
         processProfileIdList: [
@@ -542,10 +638,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
             .filter(profile => profile.checked)
             .map(profile => profile.id)],
         partMetadata: this.details,
-        processTypeId: ''
+        processTypeId: this.profileTypes.filter(item => item.name === 'Processing')[0].id
+
       };
 
-      postData.processTypeId = this.profileTypes.filter(item => item.name === 'Processing')[0].id;
 
 
 
@@ -557,19 +653,23 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         }
       }));
 
-      console.log({ postData })
-
       this.store.dispatch(new SetStatus('PENDING'));
-      if (!url.includes('estimator')) {
+      if (!gotoURL.includes('estimator')) {
+        this.store.dispatch(new SetScreenedProfiles([]));
+        this.store.dispatch(new SetEstimatedPrices([]));
         this.profileScreererService.screenProfiles(this.userService.getUserInfo().id || null, postData)
           .subscribe(res => {
+            console.log({ res });
             this.store.dispatch(new SetScreenedProfiles(res));
             this.store.dispatch(new SetStatus('DONE'));
           });
-      } else {
-        this.store.dispatch(new SetScreenedProfiles(postData.processProfileIdList));
+      } else if (gotoURL.includes('estimator')) {
+        this.store.dispatch(new SetEstimatedPrices([]));
+        this.store.dispatch(new SetScreenedProfiles(postData.processProfileIdList.map(item => {
+          return { profileId: item };
+        })));
       }
-      this.route.navigateByUrl(url);
+      this.route.navigateByUrl(gotoURL);
     } else {
       console.log('not valid');
     }

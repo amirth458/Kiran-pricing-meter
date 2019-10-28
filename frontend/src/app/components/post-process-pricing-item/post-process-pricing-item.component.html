@@ -14,7 +14,7 @@
     <div class="form-row">
 
       <div class="form-group theme col-md-6 p-0">
-        <label for="pricingProfileName">Pricing Profile Nickname</label>
+        <label for="pricingProfileName">Pricing Parameter Set Nickname</label>
         <input type="text" formControlName="pricingProfileName" class="form-control" id="pricingProfileName"
           name="pricingProfileName" placeholder="Pricing Profile Name">
         <span class="footnote">* If left blank, we will auto-generate one for you.</span>
@@ -138,13 +138,13 @@
     </div>
 
 
-    <!-- Process Parameters -->
+    <!-- Pricing Parameters -->
 
     <div *ngIf="isDataLoaded" class="tab-container card">
 
       <div class="card-header">
         <div class="menu-item active">
-          Process Parameters
+          Pricing Parameters
         </div>
       </div>
 
@@ -236,14 +236,17 @@
 
     </div>
 
-    <!-- End of Process Parameters -->
+    <!-- End of Pricing Parameters -->
 
     <div class="row button-section">
 
-      <div class="col-md-10 col-sm-8"></div>
+      <div class="col-md-7 col-sm-4"></div>
 
       <div class="form-group col-md-2 col-sm-4">
         <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+      <div class="form-group col-md-3 col-sm-4">
+        <button type="button" (click)="onSaveAndCreateAnother($event)" class="btn btn-primary theme">Save And Create Another</button>
       </div>
 
     </div>

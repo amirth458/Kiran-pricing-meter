@@ -28,14 +28,21 @@
   <!-- Profile Screener -->
   <ng-container *ngIf="activeMode == 'profile-screener' && pageState == 'DONE'">
     <div class="info-section">
-      <h6>Profile Screener</h6>
+      <div class="d-flex justify-content-end">
+
+        <h6 class="name">Profile Screener</h6>
+        <span class="icon" style="margin-left: 8px" data-toggle="tooltip" data-placement="right"
+          title="The Profile Screener allows you to check whether a given process profile would be considered eligible to complete a given part.  Useful for expediting your own project assessment as well as eliminating any gaps">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </div>
     </div>
 
-    <div class="action-button">
+    <!-- <div class="action-button">
       <button type="button" class="btn theme btn-primary" (click)="startProfileScreening()">
         Process
       </button>
-    </div>
+    </div> -->
   </ng-container>
 
   <!-- End of Profile Screener -->
@@ -80,11 +87,11 @@
       <h6>Pricing Estimator</h6>
     </div>
 
-    <div class="action-button">
+    <!-- <div class="action-button">
       <button type="button" class="btn theme btn-primary" (click)="saveAndStartPriceEstimation()">
         Process
       </button>
-    </div>
+    </div> -->
   </ng-container>
 
   <!-- End of Pricing Estimator -->

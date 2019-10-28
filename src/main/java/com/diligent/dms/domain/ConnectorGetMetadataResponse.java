@@ -30,6 +30,13 @@ public class ConnectorGetMetadataResponse {
     private String title;
     private String name;
 
+    // Autodesk Inventor
+    private Dimensions xExtent;
+    private Dimensions yExtent;
+    private Dimensions zExtent;
+    private Dimensions volume;
+    private Dimensions surface;
+
     public static ConnectorGetMetadataResponse map(MetadataView metadataView) {
         Map<String, Object> fileProperties = getFileProperties(metadataView.getForgeAPIMetadata());
         List<Map<String, Object>> thumbnails = metadataView.getForgeAPIMetadata() != null && metadataView.getForgeAPIMetadata().containsKey("thumbnails") ? (List<Map<String, Object>>) metadataView.getForgeAPIMetadata().get("thumbnails") : new ArrayList<>();
@@ -50,6 +57,13 @@ public class ConnectorGetMetadataResponse {
                 .creationDate(getValue(fileProperties, "Creation Date"))
                 .originalSystem(getValue(fileProperties, "Original System"))
                 .preprocessor(getValue(fileProperties, "Preprocessor"))
+
+                .xExtent(new Dimensions("centimeters", "7.75671955656034")) // Mock Data
+                .yExtent(new Dimensions("centimeters", "2.50000119168908")) // Mock Data
+                .zExtent(new Dimensions("centimeters", "3.39794635208502")) // Mock Data
+                .volume(new Dimensions("centimeters", "17.5213298236635")) // Mock Data
+                .surface(new Dimensions("centimeters", "81.98132047911")) // Mock Data
+
                 .build();
     }
 
