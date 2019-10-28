@@ -114,7 +114,7 @@ export class PostProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false, width: 150 },
     { headerName: 'Profile Name', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Profile Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {

@@ -105,7 +105,7 @@ export class ProcessProfileComponent implements OnInit {
   };
 
   columnDefs: Array<any> = [
-    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false, width: 60 },
+    { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false, width: 80 },
     { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {

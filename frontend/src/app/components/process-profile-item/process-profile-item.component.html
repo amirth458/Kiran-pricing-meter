@@ -4,8 +4,9 @@
   </div>
 
   <div class="title-bar">
-      <!-- Equipment name – Material name – Parameter set nick name -->
-    <h4>{{equipmentName}}<span *ngIf="equipmentName.length"> - </span>{{materialName}}<span *ngIf="materialName.length"> - </span>{{parameterNickName}}</h4>
+    <!-- Equipment name – Material name – Parameter set nick name -->
+    <h4>{{equipmentName}}<span *ngIf="equipmentName.length"> - </span>{{materialName}}<span *ngIf="materialName.length">
+        - </span>{{parameterNickName}}</h4>
     <!-- parameter details -->
     <span>{{parameterDetails}}</span>
   </div>
@@ -266,6 +267,24 @@
                 <span class="minus" (click)="removeCondition(index)">
                   <i class="fas fa-minus"></i>
                 </span>
+              </div>
+
+              <div
+                *ngIf="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id == toleranceBaseId"
+                class="info-bar pl-1">
+                <p>
+                  Tolerance Base: Tolerance for the first unit increment (if entering in inches, the first inch. If
+                  entering in mm, the first mm)
+                </p>
+              </div>
+
+              <div
+                *ngIf="selectedProcessDimensionalPropertyList[index].processDimensionalPropertyType.id == toleranceIncrementId"
+                class="info-bar pl-1">
+                <p>
+                  Tolerance increment: Tolerance for each incremental unit after the first (e.g., if entering in inches,
+                  the increment for each additional inch after the first).
+                </p>
               </div>
 
             </div>

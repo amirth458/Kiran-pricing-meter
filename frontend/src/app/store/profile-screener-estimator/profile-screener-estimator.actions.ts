@@ -21,7 +21,7 @@ export class SetScreenedProfiles implements Action {
 
 export class SetEstimatedPrices implements Action {
     readonly type = Types.SetEstimatedPrices;
-    constructor(public payload: string) { }
+    constructor(public payload: Array<any>) { }
 }
 
 export class SetStatus implements Action {

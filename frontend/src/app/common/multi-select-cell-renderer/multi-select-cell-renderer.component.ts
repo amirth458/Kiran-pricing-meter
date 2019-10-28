@@ -26,7 +26,14 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
     }
     if (this.params.data[this.params.colDef.field]) {
       if (Array.isArray(this.params.data[this.params.colDef.field])) {
-        this.value = [...this.params.data[this.params.colDef.field]];
+        this.params.data[this.params.colDef.field].map(item => {
+          if (Array.isArray(item)) {
+            this.value = [...this.value, ...item];
+          } else {
+            this.value.push(item);
+          }
+        });
+
       } else {
         this.value = [this.params.data[this.params.colDef.field]];
       }
@@ -37,8 +44,7 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
       this.items.push(this.options.find(option => option.id == item));
     });
 
-    console.log('value', this.value);
-    console.log(this.items);
+
   }
 
   refresh(): boolean {

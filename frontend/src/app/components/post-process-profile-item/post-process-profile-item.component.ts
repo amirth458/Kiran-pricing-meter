@@ -154,18 +154,18 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     } catch (e) {
       console.log(e);
     } finally {
+
+
+      if (this.route.url.includes('edit')) {
+        this.spinner.show();
+        this.isNew = false;
+        this.postProcessProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
+        // tslint:disable-next-line:max-line-length
+        const processProfile = await this.postProcessProfileService.getProfile(this.userService.getVendorInfo().id, this.postProcessProfileId).toPromise();
+        this.initForm(processProfile);
+      }
       this.spinner.hide();
     }
-
-    if (this.route.url.includes('edit')) {
-      this.spinner.show();
-      this.isNew = false;
-      this.postProcessProfileId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
-      // tslint:disable-next-line:max-line-length
-      const processProfile = await this.postProcessProfileService.getProfile(this.userService.getVendorInfo().id, this.postProcessProfileId).toPromise();
-      this.initForm(processProfile);
-    }
-    this.spinner.hide();
   }
 
   ngAfterViewChecked(): void {
