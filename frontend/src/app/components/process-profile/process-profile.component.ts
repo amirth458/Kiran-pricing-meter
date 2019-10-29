@@ -477,7 +477,7 @@ export class ProcessProfileComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 90,
+      width: 110,
       pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
