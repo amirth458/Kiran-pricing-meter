@@ -118,13 +118,13 @@
 
               </div>
 
-              <span *ngIf="index !== 0" class="minus" (click)="removeParameterCondition(index)">
+              <span class="minus" (click)="removeParameterCondition(index)">
                 <i class="fas fa-minus"></i>
               </span>
 
-              <span *ngIf="index === 0" class="minus invisible">
+              <!-- <span *ngIf="index === 0" class="minus invisible">
                 <i class=""></i>
-              </span>
+              </span> -->
 
             </div>
 
@@ -170,8 +170,7 @@
           <div class="form-row">
             <div class="table theme-table">
               <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="flatRowData"
-                [editType]="fullRow"
-                [gridOptions]="flatGridOptions" (gridReady)="autoSizeColumns('flatCharges')">
+                [editType]="fullRow" [gridOptions]="flatGridOptions" (gridReady)="autoSizeColumns('flatCharges')">
               </ag-grid-angular>
             </div>
           </div>
@@ -199,8 +198,8 @@
           <div class="form-row">
             <div class="table theme-table">
               <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="variableRowData"
-                [editType]="editType"
-                [gridOptions]="variableGridOptions" (gridReady)="autoSizeColumns('variableCharges')">
+                [editType]="editType" [gridOptions]="variableGridOptions"
+                (gridReady)="autoSizeColumns('variableCharges')">
               </ag-grid-angular>
             </div>
           </div>
@@ -250,7 +249,8 @@
         <button type="submit" class="btn btn-primary theme">Save</button>
       </div>
       <div class="form-group col-md-3 col-sm-4" style="width: 200px;">
-        <button type="button" (click)="onSaveAndCreateAnother($event)" class="btn btn-primary theme">Save And Create Another</button>
+        <button type="button" (click)="onSaveAndCreateAnother($event)" class="btn btn-primary theme">Save And Create
+          Another</button>
       </div>
 
     </div>

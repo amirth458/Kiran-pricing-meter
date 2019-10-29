@@ -927,7 +927,7 @@ export class PostProcessPricingItemComponent implements OnInit, AfterViewChecked
   removeParameterCondition(index) {
     let frontSlice = [];
     let endSlice = [];
-    if (this.selectedPricingConditionList.length !== 1) {
+    if (this.selectedPricingConditionList.length !== 0) {
       frontSlice = this.selectedPricingConditionList.slice(0, index);
       endSlice = this.selectedPricingConditionList.slice(index + 1);
       this.selectedPricingConditionList = frontSlice.concat(endSlice);

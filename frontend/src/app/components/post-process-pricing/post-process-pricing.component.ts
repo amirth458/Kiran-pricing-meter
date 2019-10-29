@@ -48,7 +48,7 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       name: 'Parameter Set Nickname', checked: false,
-      field: 'name', query: {
+      field: 'Nickname', query: {
         type: '',
         filter: '',
       }
@@ -80,7 +80,7 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Post-Process Profile', checked: true, field: 'processProfile.name'
     },
     {
-      name: 'Parameter Set Nickname', checked: true, field: 'name'
+      name: 'Parameter Set Nickname', checked: true, field: 'Nickname'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -99,7 +99,7 @@ export class PostProcessPricingComponent implements OnInit {
     { headerName: 'Post-Process Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 160 },
     { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
-    { headerName: 'Parameter Set Nickname', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Parameter Set Nickname', field: 'Nickname', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Equipment', field: 'equipment',
