@@ -105,6 +105,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   toleranceIncrementId = '';
 
 
+  equipmentRemoved = false;
+  materialRemoved = false;
+
   constructor(
     public route: Router,
     public fb: FormBuilder,
@@ -616,6 +619,13 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
   }
 
   materialChanged(editScreen = false) {
+
+    if (!editScreen) {
+      this.materialRemoved = false;
+      this.equipmentRemoved = false;
+    }
+
+
     const materialList = this.form.value.materialList;
     if (materialList.length) {
 
@@ -656,7 +666,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
     if (tempEquipment !== '') {
       const index = this.equipments.findIndex(item => item.id === tempEquipment);
-      if (index < 0 ) {
+      if (index < 0) {
         tempEquipment = '';
       }
     }
@@ -697,6 +707,21 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     this.selectedProcessDimensionalPropertyList.map((parameter, index) => {
       this.onPropertyChange(parameter.processDimensionalPropertyType.id, index, 'Process Dimensional Properties');
     });
+
+    const equipmentFound = this.equipments.filter(equipment => equipment.id == this.form.value.equipment);
+    const materialFound = this.materials.filter(material => this.form.value.materialList.includes(material.id));
+
+    if (!(materialFound.length > 0)) {
+      this.form.setValue({ ...this.form.value, materialList: [] });
+      this.materialRemoved = !(materialFound.length > 0);
+    }
+
+    if (!(equipmentFound.length > 0)) {
+      this.form.setValue({ ...this.form.value, equipment: null });
+      this.equipmentRemoved = !(equipmentFound.length > 0);
+    }
+
+
   }
 
   getProperMaterialList() {
