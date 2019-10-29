@@ -50,8 +50,8 @@ export class ActionBarComponent implements OnInit {
       this.estimatedPrices = data.estimatedPrices;
 
       this.estimatedPrices.map(item => {
-        if (this.bestPrice < item.quotePrice) {
-          this.bestPrice = item.quotePrice;
+        if (this.bestPrice < item.price) {
+          this.bestPrice = item.price;
         }
       });
     });

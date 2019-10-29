@@ -199,10 +199,18 @@ export class PricingEstimatorComponent implements OnInit {
         this.store.dispatch(new SetStatus('PENDING'));
         console.log(this.RFQInfo, 'pricing rfq info');
         this.profileScreererService.estimatePrice(this.userService.getUserInfo().id, this.RFQInfo)
-          .subscribe(res => {
-            // console.log(res, 'estimated price response');
-            this.store.dispatch(new SetEstimatedPrices(res));
-            this.store.dispatch(new SetStatus('DONE'));
+          .subscribe(result => {
+            this.profileScreererService.estimatePrice(this.userService.getUserInfo().id,
+              {
+                ...this.RFQInfo,
+                page: 0,
+                pageSize: result[0].totalRecords
+              })
+              .subscribe(res => {
+                // console.log(res, 'estimated price response');
+                this.store.dispatch(new SetEstimatedPrices(res.filter(item => item.price && item.price > 0)));
+                this.store.dispatch(new SetStatus('DONE'));
+              });
           });
       }
 
@@ -260,7 +268,7 @@ export class PricingEstimatorComponent implements OnInit {
       const data = node.data;
       const filter = this.estimatedPrices.filter(item => item.pricingProfileId == data.id);
       if (filter.length) {
-        node.setData({ ...data, valid: true, price: filter[0].quotePrice });
+        node.setData({ ...data, valid: true, price: filter[0].price });
       } else {
         node.setData({ ...data, valid: false, price: null });
       }
