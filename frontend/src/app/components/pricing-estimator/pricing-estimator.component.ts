@@ -184,6 +184,7 @@ export class PricingEstimatorComponent implements OnInit {
       this.pageState = data.status;
       this.RFQInfo = data.RFQInfo;
       this.screenedProfiles = data.screenedProfiles.map(d => d.profileId);
+      this.RFQInfo.processProfileIdList = this.screenedProfiles;
       this.estimatedPrices = data.estimatedPrices;
 
       // this.estimatedPrices.push({ pricingProfileId: 55, quotePrice: '15.5' });
@@ -196,6 +197,7 @@ export class PricingEstimatorComponent implements OnInit {
       if (this.screenedProfiles && !this.firedRequest) {
         this.firedRequest = true;
         this.store.dispatch(new SetStatus('PENDING'));
+        console.log(this.RFQInfo, 'pricing rfq info');
         this.profileScreererService.estimatePrice(this.userService.getUserInfo().id, this.RFQInfo)
           .subscribe(res => {
             // console.log(res, 'estimated price response');

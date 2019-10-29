@@ -325,10 +325,10 @@
                 <span class="title">No Information</span>
               </div>
             </div>
-            <div class="col-md-8 d-flex flex-column" *ngIf="(uploading && uploadResponse.status === 'progress')">
+            <div class="col-md-8 d-flex flex-column pl-1 pr-1" *ngIf="(uploading && uploadResponse.status === 'progress')">
               <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>
-            <div class="col-md-8 d-flex flex-column" *ngIf="selectedDocument && selectedDocument.analyzing < 100">
+            <div class="col-md-8 d-flex flex-column pl-1 pr-1" *ngIf="selectedDocument && selectedDocument.analyzing < 100">
               <app-progress-bar [(text)]="analyzingText" [percent]="selectedDocument.analyzing"></app-progress-bar>
             </div>
 
