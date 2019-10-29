@@ -284,11 +284,11 @@
 
                   <li><span>Max tolerance length</span> - <div class="inputs">
                       <input class="form-control" required type="number" step="0.00001" maxlength="5" min="0"
-                        max="99999" id="maxToleranceLengthId" name="maxToleranceLengthId"
-                        [(ngModel)]="details.maxToleranceLength.value" [ngModelOptions]="{standalone: true}">
+                        max="99999" id="toleranceIncrementId" name="toleranceIncrementId"
+                        [(ngModel)]="details.toleranceIncrement.value" [ngModelOptions]="{standalone: true}">
                       <div class="theme">
-                        <select required id="maxToleranceLengthValue" name="maxToleranceLengthValue" class="form-control"
-                          [(ngModel)]="details.maxToleranceLength.unitId" [ngModelOptions]="{standalone: true}">
+                        <select required id="toleranceIncrementValue" name="toleranceIncrementValue" class="form-control"
+                          [(ngModel)]="details.toleranceIncrement.unitId" [ngModelOptions]="{standalone: true}">
                           <option selected value="">Choose...</option>
                           <option *ngFor="let unit of lengthUnits" [value]="unit.id">
                             {{unit.displayName || unit.symbol}}
