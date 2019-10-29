@@ -645,13 +645,22 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
 
   initForm(processProfile) {
+    // tslint:disable-next-line:max-line-length
+    let tempEquipment = processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '';
+
+    if (tempEquipment !== '') {
+      const index = this.equipments.findIndex(item => item.id === tempEquipment);
+      if (index < 0 ) {
+        tempEquipment = '';
+      }
+    }
+
     this.form.setValue({
       id: processProfile.id,
       name: processProfile.name,
       parameterNickName: processProfile.parameterNickName,
       vendorId: processProfile.vendorId,
-      // tslint:disable-next-line:max-line-length
-      equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
+      equipment: tempEquipment,
       materialList: [],
       processParameterList: processProfile.processParameterList,
       processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,
