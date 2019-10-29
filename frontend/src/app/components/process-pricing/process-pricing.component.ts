@@ -380,7 +380,7 @@ export class ProcessPricingComponent implements OnInit {
     this.columnDefs.push({
       headerName: 'Actions',
       pinned: 'right',
-      width: 100,
+      width: 170,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

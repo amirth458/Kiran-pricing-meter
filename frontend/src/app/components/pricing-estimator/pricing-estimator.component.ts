@@ -281,6 +281,7 @@ export class PricingEstimatorComponent implements OnInit {
       node.selectThisNode(node.data.price !== null);
     });
 
+    this.gridOptions.api.setSortModel([{colId: 'price', sort: 'desc'}]);
     this.gridOptions.api.sizeColumnsToFit();
 
 

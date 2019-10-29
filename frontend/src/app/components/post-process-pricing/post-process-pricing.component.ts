@@ -371,7 +371,7 @@ export class PostProcessPricingComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 90,
+      width: 120,
       pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
