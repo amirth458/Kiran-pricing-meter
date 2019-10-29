@@ -635,6 +635,15 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     }];
     const machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, machineId).toPromise();
     this.actionOptions = machine.equipment.processFamily.processAction;
+    
+    // this.submitClicked = true;
+    const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
+      const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
+      return index >= 0;
+    });
+    
+    console.log("pmsmList");
+    console.log(pmsmList);
 
     this.form.setValue({
       id: processProfile.id,
@@ -645,13 +654,13 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
       // tslint:disable-next-line:max-line-length
       equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
-      materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
+      materialList: [...pmsmList.map(x => x.machineServingMaterial.id)],
       processParameterList: processProfile.processParameterList,
       processMaterialCharacteristicList: processProfile.processMaterialCharacteristicList,
       processDimensionalPropertyList: processProfile.processDimensionalPropertyList
     });
 
-    this.equipmentChanged(processProfile);
+    // this.equipmentChanged(processProfile);
 
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
