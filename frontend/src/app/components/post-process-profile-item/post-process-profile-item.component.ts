@@ -584,12 +584,19 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
 
   equipmentChanged(processProfile?) {
     const equipmentId = this.form.value.equipment;
+
+    const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
+      const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
+      return index >= 0;
+    });
+
+
     if (processProfile) {
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
         postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
-        materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)],
+        materialList: [...pmsmList.map(x => x.machineServingMaterial.id)],
       });
     } else {
       this.form.setValue({
@@ -635,15 +642,12 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
     }];
     const machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, machineId).toPromise();
     this.actionOptions = machine.equipment.processFamily.processAction;
-    
-    // this.submitClicked = true;
+
+    this.triedToSubmit = true;
     const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
       const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
       return index >= 0;
     });
-    
-    console.log("pmsmList");
-    console.log(pmsmList);
 
     this.form.setValue({
       id: processProfile.id,
@@ -660,7 +664,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       processDimensionalPropertyList: processProfile.processDimensionalPropertyList
     });
 
-    // this.equipmentChanged(processProfile);
+    this.equipmentChanged(processProfile);
 
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
