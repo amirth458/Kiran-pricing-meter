@@ -42,7 +42,7 @@
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
         <span *ngIf="triedToSubmit && !getMaterials().length && isNew" class="footnote red">* Required</span>
-        <span *ngIf="triedToSubmit && !getMaterials().length && !isNew" class="footnote red">* * Please add your new material to the profile</span>
+        <span *ngIf="triedToSubmit && !getMaterials().length && !isNew" class="footnote red">* Please add your new material to the profile</span>
 
       </div>
 

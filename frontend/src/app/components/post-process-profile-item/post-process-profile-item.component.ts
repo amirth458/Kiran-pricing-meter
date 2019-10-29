@@ -574,6 +574,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
         this.equipments.push(machine);
       });
     } catch (e) {
+      
       console.log(e);
     }
   }
@@ -585,13 +586,12 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
   equipmentChanged(processProfile?) {
     const equipmentId = this.form.value.equipment;
 
-    const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
-      const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
-      return index >= 0;
-    });
-
-
     if (processProfile) {
+      const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
+        const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
+        return index >= 0;
+      });
+
       this.form.setValue({
         ...this.form.value,
         postProcessProfileFamily: '-',
@@ -610,9 +610,15 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       if (x.id == equipmentId) {
         this.materials = x.machineServingMaterialList;
         this.familyOptions = [x.equipment.processFamily];
-        const machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, x.id).toPromise();
-        const processTypeName = machine.equipment.processTypeName;
-        this.actionOptions = machine.equipment.processFamily.processAction;
+        let machine;
+        try {
+          machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, x.id).toPromise();
+          this.actionOptions = machine.equipment.processFamily.processAction;
+        } catch (e) {
+          this.actionOptions = [];
+        }
+
+        const processTypeName = machine ? machine.equipment.processTypeName : '';
 
 
         this.filteredProcessParameterList = this.processParameterList.filter(x => x.processType.name == processTypeName);
@@ -640,8 +646,13 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       id: processProfile.processMachineServingMaterialList[0].machineServingMaterial.materialFamilyName,
       name: processProfile.processMachineServingMaterialList[0].machineServingMaterial.materialFamilyName
     }];
-    const machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, machineId).toPromise();
-    this.actionOptions = machine.equipment.processFamily.processAction;
+    let machine;
+    try {
+      machine = await this.machineService.getMachine(this.userService.getVendorInfo().id, machineId).toPromise();
+      this.actionOptions = machine.equipment.processFamily.processAction;
+    } catch (e) {
+      this.actionOptions = [];
+    }
 
     this.triedToSubmit = true;
     const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
@@ -654,7 +665,7 @@ export class PostProcessProfileItemComponent implements OnInit, AfterViewChecked
       name: processProfile.name,
       parameterNickName: processProfile.parameterNickName,
       vendorId: processProfile.vendorId,
-      postProcessProfileFamily: machine.equipment.processFamily.id,
+      postProcessProfileFamily: machine ? machine.equipment.processFamily.id : '',
       postProcessAction: processProfile.processAction ? processProfile.processAction.id || '' : '',
       // tslint:disable-next-line:max-line-length
       equipment: processProfile.processMachineServingMaterialList[0] ? processProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.id : '',
