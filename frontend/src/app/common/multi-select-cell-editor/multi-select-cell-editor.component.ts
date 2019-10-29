@@ -39,6 +39,14 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
         if (this.selectedValues.length > 0 && this.selectedValues.includes('all-line-item')) {
             this.selectedValues = ['all-line-items'];
         }
+
+        const filteredSelectedValue = [];
+        this.selectedValues.map(value => {
+            if (this.options.filter(option => option.id == value).length > 0) {
+                filteredSelectedValue.push(value);
+            }
+        });
+        this.selectedValues = [...filteredSelectedValue];
     }
 
     getValue(): any {

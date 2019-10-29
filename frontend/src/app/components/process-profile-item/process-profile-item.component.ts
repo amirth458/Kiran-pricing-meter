@@ -328,7 +328,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         !row.operatorType.id ||
         !row.processParameterType.id ||
         !row.unitType.id ||
-        !row.value
+        // !row.value
+        !(typeof row.value === 'number' && (row.value == 0 || row.value > 0))
+
       ) {
         processParameterListStatus.push(false);
       } else {
@@ -341,7 +343,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         !row.operatorType.id ||
         !row.processDimensionalPropertyType.id ||
         !row.unitType.id ||
-        !row.value
+        // !row.value
+        !(typeof row.value === 'number' && (row.value == 0 || row.value > 0))
+
       ) {
         dimensionalPropertyListStatus.push(false);
       } else {
@@ -354,7 +358,9 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
         !row.operatorType.id ||
         !row.processMaterialCharacteristicType.id ||
         !row.unitType.id ||
-        !row.value
+        // !row.value
+        !(typeof row.value === 'number' && (row.value == 0 || row.value > 0))
+
       ) {
         materialCharacteristicListStatus.push(false);
       } else {
@@ -668,13 +674,8 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
     });
 
     this.equipmentChanged();
-    this.submitClicked = true;
-    const pmsmList = processProfile.processMachineServingMaterialList.filter(x => {
-      const index = this.materials.findIndex(y => y.id === x.machineServingMaterial.id);
-      return index >= 0;
-    });
     this.form.setValue({
-      ...this.form.value, materialList: [...pmsmList.map(x => x.machineServingMaterial.id)]
+      ...this.form.value, materialList: [...processProfile.processMachineServingMaterialList.map(x => x.machineServingMaterial.id)]
     });
     this.selectedProcessParameterList = [...processProfile.processParameterList.map(x => { x.operandTypeList = []; return x; })];
     // tslint:disable-next-line:max-line-length
@@ -712,7 +713,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
 
   prepareData() {
     let name = this.equipmentName + ' - ' + this.materialName;
-    if (this.form.value.parameterNickName && this.form.value.parameterNickName.length > 0) {
+    if (this.form.value.parameterNickName.length > 0) {
       name += ' - ' + this.form.value.parameterNickName;
     }
     const postData = {
