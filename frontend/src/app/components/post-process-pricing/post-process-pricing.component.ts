@@ -34,7 +34,7 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       name: 'Pricing Profile', checked: false,
-      field: 'name', query: {
+      field: 'pricingName', query: {
         type: '',
         filter: '',
       }
@@ -48,7 +48,7 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       name: 'Parameter Set Nickname', checked: false,
-      field: 'Nickname', query: {
+      field: 'name', query: {
         type: '',
         filter: '',
       }
@@ -74,13 +74,13 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Pricing No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Profile', checked: true, field: 'name'
+      name: 'Pricing Profile', checked: true, field: 'pricingName'
     },
     {
       name: 'Post-Process Profile', checked: true, field: 'processProfile.name'
     },
     {
-      name: 'Parameter Set Nickname', checked: true, field: 'Nickname'
+      name: 'Parameter Set Nickname', checked: true, field: 'name'
     },
     {
       name: 'Equipment', checked: true, field: 'equipment'
@@ -97,9 +97,14 @@ export class PostProcessPricingComponent implements OnInit {
 
   columnDefs: Array<any> = [
     { headerName: 'Post-Process Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 160 },
-    { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
+    {
+      headerName: 'Pricing Profile', field: 'pricingName', hide: false, sortable: true, filter: false,
+      cellRenderer(param): any {
+        return param.data.processProfile.name + ': ' + param.data.name;
+      },
+    },
     { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
-    { headerName: 'Parameter Set Nickname', field: 'Nickname', hide: false, sortable: true, filter: false },
+    { headerName: 'Parameter Set Nickname', field: 'name', hide: false, sortable: true, filter: false },
     {
       // tslint:disable-next-line:max-line-length
       headerName: 'Equipment', field: 'equipment',
