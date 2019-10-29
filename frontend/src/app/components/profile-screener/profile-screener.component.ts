@@ -358,7 +358,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       metre: 'cubic centimetre',
       'micro-Inch': 'cubic inch',
       micrometre: 'cubic centimetre',
-      millimetre: 'cubic centimetre',
+      millimetre: 'cubic millimetre',
     };
 
     const unitId = this.details.buildingX.unitId;

@@ -7,11 +7,13 @@
 .progress-wrapper .text-section label {
   color: var(--theme-light-blue);
   font-weight: bold;
+  font-size: 15px;
 }
 
 .progress-wrapper .text-section span {
   color: var(--theme-light-green);
   font-weight: bold;
+  font-size: 15px;
 }
 
 .progress-wrapper .bar-section {

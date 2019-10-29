@@ -199,18 +199,20 @@ export class PricingEstimatorComponent implements OnInit {
         this.store.dispatch(new SetStatus('PENDING'));
         console.log(this.RFQInfo, 'pricing rfq info');
         this.profileScreererService.estimatePrice(this.userService.getUserInfo().id, this.RFQInfo)
-          .subscribe(result => {
-            this.profileScreererService.estimatePrice(this.userService.getUserInfo().id,
-              {
-                ...this.RFQInfo,
-                page: 0,
-                pageSize: result[0].totalRecords
-              })
-              .subscribe(res => {
-                // console.log(res, 'estimated price response');
-                this.store.dispatch(new SetEstimatedPrices(res.filter(item => item.price && item.price > 0)));
-                this.store.dispatch(new SetStatus('DONE'));
-              });
+          .subscribe(res => {
+            this.store.dispatch(new SetEstimatedPrices(res.filter(item => item.price && item.price > 0)));
+            this.store.dispatch(new SetStatus('DONE'));
+            // this.profileScreererService.estimatePrice(this.userService.getUserInfo().id,
+            //   {
+            //     ...this.RFQInfo,
+            //     page: 0,
+            //     pageSize: result[0].totalRecords
+            //   })
+            //   .subscribe(res => {
+            //     // console.log(res, 'estimated price response');
+            //     this.store.dispatch(new SetEstimatedPrices(res.filter(item => item.price && item.price > 0)));
+            //     this.store.dispatch(new SetStatus('DONE'));
+            //   });
           });
       }
 
