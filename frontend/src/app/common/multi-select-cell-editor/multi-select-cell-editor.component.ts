@@ -36,9 +36,17 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
             this.selectedValues = [params.data.value];
         }
 
-        if (this.selectedValues.length > 0 && this.selectedValues.includes('all-line-item')) {
+        if (this.selectedValues.length > 0 && this.selectedValues.includes('all-line-items')) {
             this.selectedValues = ['all-line-items'];
         }
+
+        const filteredSelectedValue = [];
+        this.selectedValues.map(value => {
+            if (this.options.filter(option => option.id == value).length > 0) {
+                filteredSelectedValue.push(value);
+            }
+        });
+        this.selectedValues = [...filteredSelectedValue];
     }
 
     getValue(): any {
@@ -46,9 +54,16 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
     }
 
     onValueChange() {
-        if (this.selectedValues.length > 0 && this.selectedValues.includes('all-line-items')) {
+        if (this.selectedValues.length > 0 && this.selectedValues[this.selectedValues.length - 1] === 'all-line-items') {
             this.selectedValues = ['all-line-items'];
         }
+
+        if (this.selectedValues.length > 0 &&
+            this.selectedValues.includes('all-line-items') &&
+            this.selectedValues[this.selectedValues.length - 1] !== 'all-line-items') {
+            this.selectedValues = this.selectedValues.filter(value => value !== 'all-line-items');
+        }
+
     }
 
     isPopup(): boolean {

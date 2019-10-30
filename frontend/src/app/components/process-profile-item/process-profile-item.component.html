@@ -21,11 +21,11 @@
         <ng-select (change)="equipmentChanged()" #equipmentInput placeholder="Add Equipment" loadingText="Searching..."
           [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
           [selectOnTab]="true" formControlName="equipment">
-          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
+          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}} ({{item.name}})</ng-option>
         </ng-select>
-        
-        <span *ngIf="submitClicked && !getEquipment().length" class="footnote red">* Required</span>
-        
+
+        <span *ngIf="(submitClicked && !getEquipment().length) || equipmentRemoved" class="footnote red">* Required</span>
+
         <span *ngIf="!equipments.length" class="footnote red">*You need to add machines in <a
             class="link font-weight-bold" href="profile/vendor/machines">here</a> </span>
       </div>
@@ -38,7 +38,7 @@
           formControlName="materialList">
           <ng-option *ngFor="let item of materials" [value]="item.id">{{item.material.name}}</ng-option>
         </ng-select>
-        <span *ngIf="submitClicked && !getMaterials().length && isNew" class="footnote red">* Required</span>
+        <span *ngIf="(submitClicked && !getMaterials().length && isNew) || materialRemoved" class="footnote red">* Required</span>
         <span *ngIf="submitClicked && !getMaterials().length && !isNew" class="footnote red">* Please add your new material to the profile</span>
       </div>
 

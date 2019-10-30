@@ -69,6 +69,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     estMachineTime: {
       value: '',
       unitId: ''
+    },
+    toleranceIncrement: {
+      value: '',
+      unitId: ''
     }
   };
 
@@ -687,7 +691,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
             .filter(profile => profile.checked)
             .map(profile => profile.id)],
         partMetadata: this.details,
-        processTypeId: this.profileTypes.filter(item => item.name === 'Processing')[0].id
+        profileTypeId: this.profileTypes.filter(item => item.name === 'Processing')[0].id
 
       };
 

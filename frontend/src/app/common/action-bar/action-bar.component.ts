@@ -49,9 +49,10 @@ export class ActionBarComponent implements OnInit {
       this.screenedProfiles = data.screenedProfiles;
       this.estimatedPrices = data.estimatedPrices;
 
+      this.bestPrice = 0;
       this.estimatedPrices.map(item => {
-        if (this.bestPrice < item.quotePrice) {
-          this.bestPrice = item.quotePrice;
+        if (this.bestPrice < item.price) {
+          this.bestPrice = item.price;
         }
       });
     });

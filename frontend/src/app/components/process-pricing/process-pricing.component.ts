@@ -33,7 +33,7 @@ export class ProcessPricingComponent implements OnInit {
     },
     {
       name: 'Pricing Profile', checked: false,
-      field: 'name', query: {
+      field: 'pricingName', query: {
         type: '',
         filter: '',
       }
@@ -73,7 +73,7 @@ export class ProcessPricingComponent implements OnInit {
       name: 'Pricing No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Profile', checked: true, field: 'name'
+      name: 'Pricing Profile', checked: true, field: 'pricingName'
     },
     {
       name: 'Process Profile', checked: true, field: 'processProfile.name'
@@ -97,7 +97,7 @@ export class ProcessPricingComponent implements OnInit {
   columnDefs: Array<any> = [
     { headerName: 'Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 100 },
     {
-      headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false,
+      headerName: 'Pricing Profile', field: 'pricingName', hide: false, sortable: true, filter: false,
       cellRenderer(param): any {
         return param.data.processProfile.name + ': ' + param.data.name;
       },
@@ -196,10 +196,6 @@ export class ProcessPricingComponent implements OnInit {
 
     };
 
-    setTimeout(() => {
-      this.gridOptions.columnApi.autoSizeColumns(['name']);
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type === 'success') {
@@ -218,6 +214,12 @@ export class ProcessPricingComponent implements OnInit {
         }
       });
     });
+  }
+
+
+  autoFitColumns() {
+    this.gridOptions.columnApi.autoSizeColumns(['pricingName']);
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   pageSizeChanged(value) {
@@ -380,7 +382,7 @@ export class ProcessPricingComponent implements OnInit {
     this.columnDefs.push({
       headerName: 'Actions',
       pinned: 'right',
-      width: 100,
+      width: 170,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

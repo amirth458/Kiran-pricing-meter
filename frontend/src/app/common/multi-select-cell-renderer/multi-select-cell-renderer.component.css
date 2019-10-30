@@ -21,6 +21,7 @@ select:hover {
 
 .action-column {
   height: 100%;
+  align-items: center !important;
 }
 
 .action-column .selected-value {

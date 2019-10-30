@@ -34,7 +34,7 @@ export class PostProcessPricingComponent implements OnInit {
     },
     {
       name: 'Pricing Profile', checked: false,
-      field: 'name', query: {
+      field: 'pricingName', query: {
         type: '',
         filter: '',
       }
@@ -74,7 +74,7 @@ export class PostProcessPricingComponent implements OnInit {
       name: 'Pricing No', checked: true, field: 'id'
     },
     {
-      name: 'Pricing Profile', checked: true, field: 'name'
+      name: 'Pricing Profile', checked: true, field: 'pricingName'
     },
     {
       name: 'Post-Process Profile', checked: true, field: 'processProfile.name'
@@ -97,7 +97,12 @@ export class PostProcessPricingComponent implements OnInit {
 
   columnDefs: Array<any> = [
     { headerName: 'Post-Process Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 160 },
-    { headerName: 'Pricing Profile', field: 'name', hide: false, sortable: true, filter: false },
+    {
+      headerName: 'Pricing Profile', field: 'pricingName', hide: false, sortable: true, filter: false,
+      cellRenderer(param): any {
+        return param.data.processProfile.name + ': ' + param.data.name;
+      },
+    },
     { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     { headerName: 'Parameter Set Nickname', field: 'name', hide: false, sortable: true, filter: false },
     {
@@ -191,10 +196,6 @@ export class PostProcessPricingComponent implements OnInit {
       }
 
     };
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-
-    }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type == 'success') {
@@ -214,6 +215,12 @@ export class PostProcessPricingComponent implements OnInit {
       });
     });
   }
+
+
+  autoFitColumns() {
+    this.gridOptions.api.sizeColumnsToFit();
+  }
+
 
   pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));
@@ -371,7 +378,7 @@ export class PostProcessPricingComponent implements OnInit {
 
     this.columnDefs.push({
       headerName: 'Actions',
-      width: 90,
+      width: 120,
       pinned: 'right',
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {

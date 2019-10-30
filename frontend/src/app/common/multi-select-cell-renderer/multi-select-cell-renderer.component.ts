@@ -25,7 +25,9 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
       throw new Error('Missing change handler for DropdownCellRendererComponent');
     }
     if (this.params.data[this.params.colDef.field]) {
+      // console.log('this.params.data[this.params.colDef.field]', this.params.data[this.params.colDef.field]);
       if (Array.isArray(this.params.data[this.params.colDef.field])) {
+        // console.log('this.params.data[this.params.colDef.field]', this.params.data[this.params.colDef.field]);
         this.params.data[this.params.colDef.field].map(item => {
           if (Array.isArray(item)) {
             this.value = [...this.value, ...item];
@@ -35,15 +37,18 @@ export class MultiSelectCellRendererComponent implements ICellEditorAngularComp 
         });
 
       } else {
+        // console.log('second this.params.data[this.params.colDef.field]', this.params.data[this.params.colDef.field]);
         this.value = [this.params.data[this.params.colDef.field]];
       }
     }
     // console.log({ options: this.options });
     this.items = [];
+    // console.log('this.value', this.value);
     this.value.map(item => {
-      this.items.push(this.options.find(option => option.id == item));
+      // console.log('this.options.find(option => option.id == item)', this.options.find(option => option.id == item))
+      this.items.push(...this.options.filter(option => option.id == item));
     });
-
+    // console.log('this.items', this.items);
 
   }
 

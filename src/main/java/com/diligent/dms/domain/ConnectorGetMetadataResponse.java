@@ -30,9 +30,19 @@ public class ConnectorGetMetadataResponse {
     private String title;
     private String name;
 
+    // Autodesk Inventor
+    private Dimensions xExtent;
+    private Dimensions yExtent;
+    private Dimensions zExtent;
+    private Dimensions volume;
+    private Dimensions surface;
+
     public static ConnectorGetMetadataResponse map(MetadataView metadataView) {
         Map<String, Object> fileProperties = getFileProperties(metadataView.getForgeAPIMetadata());
         List<Map<String, Object>> thumbnails = metadataView.getForgeAPIMetadata() != null && metadataView.getForgeAPIMetadata().containsKey("thumbnails") ? (List<Map<String, Object>>) metadataView.getForgeAPIMetadata().get("thumbnails") : new ArrayList<>();
+
+        InventorMetadata inventorMetadata = metadataView.getInventorAPIMetadata();
+
 
         return ConnectorGetMetadataResponse.builder()
                 .id(metadataView.getId())
@@ -50,7 +60,44 @@ public class ConnectorGetMetadataResponse {
                 .creationDate(getValue(fileProperties, "Creation Date"))
                 .originalSystem(getValue(fileProperties, "Original System"))
                 .preprocessor(getValue(fileProperties, "Preprocessor"))
+
+                .xExtent(getInventorProperties(inventorMetadata, "x"))
+                .yExtent(getInventorProperties(inventorMetadata, "y"))
+                .zExtent(getInventorProperties(inventorMetadata, "z"))
+                .volume(getInventorProperties(inventorMetadata, "volume"))
+                .surface(getInventorProperties(inventorMetadata, "surface"))
+
                 .build();
+    }
+
+    private static Dimensions getInventorProperties(InventorMetadata inventorMetadata, String key) {
+        if (inventorMetadata != null) {
+            Extent extent = inventorMetadata.getExtent();
+
+            switch (key) {
+                case "x":
+                    if (extent != null && extent.getX() != null)
+                        return new Dimensions(extent.getX().getUnit(), String.valueOf(extent.getX().getValue()));
+                    break;
+                case "y":
+                    if (extent != null && extent.getY() != null)
+                        return new Dimensions(extent.getY().getUnit(), String.valueOf(extent.getY().getValue()));
+                    break;
+                case "z":
+                    if (extent != null && extent.getZ() != null)
+                        return new Dimensions(extent.getZ().getUnit(), String.valueOf(extent.getZ().getValue()));
+                    break;
+                case "volume":
+                    if (inventorMetadata.getVolume() != null)
+                        return new Dimensions(inventorMetadata.getVolume().getUnit(), String.valueOf(inventorMetadata.getVolume().getValue()));
+                    break;
+                case "surface":
+                    if (inventorMetadata.getSurface() != null)
+                        return new Dimensions(inventorMetadata.getSurface().getUnit(), String.valueOf(inventorMetadata.getSurface().getValue()));
+                    break;
+            }
+        }
+        return null;
     }
 
     private static String getValue(Map<String, Object> map, String key) {
