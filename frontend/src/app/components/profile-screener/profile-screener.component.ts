@@ -76,6 +76,24 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     }
   };
 
+  cubicUnitMapping = {
+    centimetres: 'cubic centimetre',
+    feet: 'cubic foot',
+    inch: 'cubic inch',
+    metre: 'cubic centimetre',
+    'micro-Inch': 'cubic inch',
+    micrometre: 'cubic centimetre',
+    millimetre: 'cubic centimetre',
+  };
+  squareUnitMapping = {
+    centimetres: 'square centimetre',
+    feet: 'square foot',
+    inch: 'square inch',
+    metre: 'square centimetre',
+    'micro-Inch': 'square inch',
+    micrometre: 'square centimetre',
+    millimetre: 'square centimetre',
+  };
 
   // form: FormGroup = this.fb.group({
   //   requiredCertificateId: [''],
@@ -210,10 +228,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         surfaceFinishValue: this.RFQData && this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.value : null,
         surfaceFinishUnit: this.RFQData && this.RFQData.surfaceFinish ? this.RFQData.surfaceFinish.unitId : ''
       };
-
-
-
-
     });
 
     route.events.subscribe((val) => {
@@ -251,12 +265,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           name
         };
       });
-
-
-
       const res = await this.processMetaData.getProcessProfileType().toPromise();
       this.profileTypes = res.metadataList;
-
 
       const units = await this.processMetaData.getMeasurementUnitType().toPromise();
       this.units = units.metadataList;
@@ -348,25 +358,53 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     return '';
   }
 
+  getUnitId(strUnit: string, unitType: number ) {
+    if (strUnit === 'centimeters') {
+      strUnit = 'centimetres';
+    }
+
+    let unitId = 0;
+    switch (unitType) {
+      case 1:
+        // length Unit
+        const unit = this.lengthUnits.find(item => item.name === strUnit);
+        if (unit) {
+          unitId = unit.id;
+        } else {
+          unitId = 0;
+        }
+        break;
+      case 2:
+        // square unit
+        const unitNameL = this.squareUnitMapping[strUnit];
+        const unitL = this.areaUnits.find(item => item.name === unitNameL);
+        if (unitL) {
+          unitId = unitL.id;
+        } else {
+          unitId = 0;
+        }
+        break;
+      case 3:
+        // cubic unit
+        const unitNameC = this.cubicUnitMapping[strUnit];
+        const unitC = this.volumeUnits.find(item => item.name === unitNameC);
+        if (unitC) {
+          unitId = unitC.id;
+        } else {
+          unitId = 0;
+        }
+        break;
+    }
+    return unitId.toString();
+  }
 
   extentUnitSet() {
-
-    const unitMapping = {
-      centimetres: 'cubic centimetre',
-      feet: 'cubic foot',
-      inch: 'cubic inch',
-      metre: 'cubic centimetre',
-      'micro-Inch': 'cubic inch',
-      micrometre: 'cubic centimetre',
-      millimetre: 'cubic millimetre',
-    };
-
     const unitId = this.details.buildingX.unitId;
     this.details.buildingY.unitId = unitId;
     this.details.buildingZ.unitId = unitId;
     if (unitId) {
       const unit = this.lengthUnits.filter(item => item.id == unitId);
-      const volumeUnit = this.volumeUnits.filter(u => u.name == unitMapping[unit[0].name]);
+      const volumeUnit = this.volumeUnits.filter(u => u.name == this.cubicUnitMapping[unit[0].name]);
       if (volumeUnit.length > 0) {
         this.details.boundingBox.unitId = volumeUnit[0].id;
       } else {
@@ -487,7 +525,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   async getDetailedInformation() {
     this.pendingDocumentIds.map(async (id) => {
       const resp = await this.connectorService.getMetaDataForProcessScreener(id).toPromise();
-      if (resp.status === 'COMPLETED') {
+      if (resp.status === 'COMPLETED' || resp.status === 'FAILED' ) {
         this.uploadedDocuments = this.uploadedDocuments.map((item) => {
           if (item.id === id) {
             return { ...item, ...resp, analyzing: 100 };
@@ -499,6 +537,17 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         if (this.selectedDocument) {
           const selectedId = this.selectedDocument.id;
           this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
+          console.log(this.selectedDocument);
+          this.details.volume.value = this.selectedDocument.volume.value;
+          this.details.volume.unitId = this.getUnitId(this.selectedDocument.volume.unit, 3);
+          this.details.buildingX.value = this.selectedDocument.xextent.value;
+          this.details.buildingX.unitId = this.getUnitId(this.selectedDocument.xextent.unit, 1);
+          this.details.buildingY.value = this.selectedDocument.yextent.value;
+          this.details.buildingY.unitId = this.getUnitId(this.selectedDocument.yextent.unit, 1);
+          this.details.buildingZ.value = this.selectedDocument.zextent.value;
+          this.details.buildingZ.unitId = this.getUnitId(this.selectedDocument.zextent.unit, 1);
+          this.details.surfaceArea.value = this.selectedDocument.surface.value;
+          this.details.surfaceArea.unitId = this.getUnitId(this.selectedDocument.surface.unit, 2);
         }
       } else if (resp.status === 'RUNNING') {
         this.uploadedDocuments = this.uploadedDocuments.map((item) => {
@@ -523,6 +572,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         await this.getDetailedInformation();
       }, 3000);
     }
+  }
+
+  formatValue(num): number {
+    return Math.round(num * 1000) / 1000;
   }
 
   onSelectFile(fileId) {
@@ -641,9 +694,6 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
         profileTypeId: this.profileTypes.filter(item => item.name === 'Processing')[0].id
 
       };
-
-
-
 
       this.store.dispatch(new SetRFQInfo({
         ...postData,
