@@ -212,7 +212,6 @@ export class MachinesComponent implements OnInit {
 
     };
     setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
 
       if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
         const toastInfo = this.navigation.extras.state.toast;
@@ -261,6 +260,11 @@ export class MachinesComponent implements OnInit {
         }
       });
     });
+  }
+
+
+  autoFitColumns() {
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   pageSizeChanged(value) {

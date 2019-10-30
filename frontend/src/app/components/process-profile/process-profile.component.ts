@@ -213,10 +213,6 @@ export class ProcessProfileComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
-    setTimeout(() => {
-      this.gridOptions.columnApi.autoSizeColumns(['name']);
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type === 'success') {
@@ -235,6 +231,12 @@ export class ProcessProfileComponent implements OnInit {
         }
       });
     });
+  }
+
+
+  autoFitColumns() {
+    this.gridOptions.columnApi.autoSizeColumns(['name']);
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   pageSizeChanged(value) {
