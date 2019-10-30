@@ -37,7 +37,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   details = {
     quantity: '',
     volume: {
-      value: '',
+      value: 0,
       unitId: ''
     },
 
@@ -55,23 +55,23 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     }
     ,
     boundingBox: {
-      value: '',
+      value: 0,
       unitId: ''
     },
     surfaceArea: {
-      value: '',
+      value: 0,
       unitId: ''
     },
     minWallThickness: {
-      value: '',
+      value: 0,
       unitId: ''
     },
     estMachineTime: {
-      value: '',
+      value: 0,
       unitId: ''
     },
     toleranceIncrement: {
-      value: '',
+      value: 0,
       unitId: ''
     }
   };
@@ -538,15 +538,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           const selectedId = this.selectedDocument.id;
           this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
           console.log(this.selectedDocument);
-          this.details.volume.value = this.selectedDocument.volume.value;
+          this.details.volume.value = Math.round(this.selectedDocument.volume.value * 10000) / 10000;
           this.details.volume.unitId = this.getUnitId(this.selectedDocument.volume.unit, 3);
-          this.details.buildingX.value = this.selectedDocument.xextent.value;
+          this.details.buildingX.value = Math.round(this.selectedDocument.xextent.value * 10000) / 10000;
           this.details.buildingX.unitId = this.getUnitId(this.selectedDocument.xextent.unit, 1);
-          this.details.buildingY.value = this.selectedDocument.yextent.value;
+          this.details.buildingY.value = Math.round(this.selectedDocument.yextent.value * 10000) / 10000;
           this.details.buildingY.unitId = this.getUnitId(this.selectedDocument.yextent.unit, 1);
-          this.details.buildingZ.value = this.selectedDocument.zextent.value;
+          this.details.buildingZ.value = Math.round(this.selectedDocument.zextent.value * 10000) / 10000;
           this.details.buildingZ.unitId = this.getUnitId(this.selectedDocument.zextent.unit, 1);
-          this.details.surfaceArea.value = this.selectedDocument.surface.value;
+          this.details.surfaceArea.value = Math.round(this.selectedDocument.surface.value * 10000) / 10000;
           this.details.surfaceArea.unitId = this.getUnitId(this.selectedDocument.surface.unit, 2);
         }
       } else if (resp.status === 'RUNNING') {
@@ -575,7 +575,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   formatValue(num): number {
-    return Math.round(num * 1000) / 1000;
+    return Math.round(num * 10000) / 10000;
   }
 
   onSelectFile(fileId) {

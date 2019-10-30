@@ -187,7 +187,7 @@
                   <li><span>Bounding box</span> -
                     <div class="inputs">
                       <input class="form-control" disabled required type="number" step="0.00001" maxlength="5" min="0"
-                        max="99999" [value]="details.buildingX.value*details.buildingY.value*details.buildingZ.value"
+                        max="99999" [value]="formatValue(details.buildingX.value*details.buildingY.value*details.buildingZ.value)"
                         id="boundingBoxId" name="boundingBoxId" [(ngModel)]="details.boundingBox.value"
                         [ngModelOptions]="{standalone: true}">
                         <!-- {{formatValue(details.buildingX.value*details.buildingY.value*details.buildingZ.value)}} -->
