@@ -20,7 +20,7 @@
     </div>
 
     <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
-      [gridOptions]="gridOptions">
+      [gridOptions]="gridOptions" (gridReady)="autoFitColumns()">
     </ag-grid-angular>
 
 

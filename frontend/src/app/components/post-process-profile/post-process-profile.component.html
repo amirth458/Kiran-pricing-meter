@@ -18,7 +18,8 @@
       </select>
     </div>
 
-    <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="rowData" [gridOptions]="gridOptions">
+    <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="rowData" [gridOptions]="gridOptions"
+      (gridReady)="autoFitColumns()">
     </ag-grid-angular>
 
 

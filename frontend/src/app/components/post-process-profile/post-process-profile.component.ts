@@ -238,9 +238,7 @@ export class PostProcessProfileComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
+
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type == 'success') {
@@ -265,6 +263,11 @@ export class PostProcessProfileComponent implements OnInit {
     this.gridOptions.api.paginationSetPageSize(Number(value));
     this.gridOptions.api.sizeColumnsToFit();
   }
+
+  autoFitColumns() {
+    this.gridOptions.api.sizeColumnsToFit();
+  }
+
 
   editRow(event) {
     this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);

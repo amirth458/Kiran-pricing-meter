@@ -196,10 +196,6 @@ export class PostProcessPricingComponent implements OnInit {
       }
 
     };
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-
-    }, 50);
     if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type == 'success') {
@@ -219,6 +215,12 @@ export class PostProcessPricingComponent implements OnInit {
       });
     });
   }
+
+
+  autoFitColumns() {
+    this.gridOptions.api.sizeColumnsToFit();
+  }
+
 
   pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));
