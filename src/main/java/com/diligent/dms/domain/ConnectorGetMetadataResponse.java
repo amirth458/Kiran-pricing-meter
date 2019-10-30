@@ -72,7 +72,7 @@ public class ConnectorGetMetadataResponse {
 
     private static Dimensions getInventorProperties(InventorMetadata inventorMetadata, String key) {
         if (inventorMetadata != null) {
-            InventorMetadata.Extent extent = inventorMetadata.getExtent();
+            Extent extent = inventorMetadata.getExtent();
 
             switch (key) {
                 case "x":
