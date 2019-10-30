@@ -114,6 +114,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
   invoiceItems = [];
 
+
+  gridHasInvalidInput = false;
+
+
   constructor(
     public route: Router,
     public fb: FormBuilder,
@@ -242,24 +246,24 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         row.unitType.id &&
         row.value
       ) {
-        const parameter = this.conditionTypes.filter(item => item.id == row.processPricingConditionType.id)[0];
-        const parameterName = parameter.name;
-        const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id)[0];
-        const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id)[0];
-        if (parameter && unit && operator) {
-          const operatorSymbol = operator.symbol;
+        const parameter = this.conditionTypes.filter(item => item.id == row.processPricingConditionType.id);
+        const parameterName = parameter.length ? parameter.length[0].name : '';
+        const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id);
+        const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id);
+        if (parameter.length && unit.length && operator.length) {
+          const operatorSymbol = operator[0].symbol;
 
           if (name.length > 1) {
             if (operatorSymbol === '=') {
-              name += ', ' + row.value + ' ' + unit.displayName + ' ' + parameterName;
+              name += ', ' + row.value + ' ' + unit[0].displayName + ' ' + parameterName;
             } else {
-              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
+              name += ', ' + operatorSymbol + ' ' + + row.value + ' ' + unit[0].displayName + ' ' + parameterName;
             }
           } else {
             if (operatorSymbol === '=') {
-              name += row.value + ' ' + unit.displayName + ' ' + parameterName;
+              name += row.value + ' ' + unit[0].displayName + ' ' + parameterName;
             } else {
-              name += operatorSymbol + ' ' + + row.value + ' ' + unit.displayName + ' ' + parameterName;
+              name += operatorSymbol + ' ' + + row.value + ' ' + unit[0].displayName + ' ' + parameterName;
             }
           }
         }
@@ -272,12 +276,12 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   onPropertyChange(conditionId, index) {
     let signTypeId = null;
 
-    const operand = this.conditionTypes.filter(condition => condition.id == conditionId)[0];
-    const operandTypeName = operand ? operand.operandType.name : null;
+    const operand = this.conditionTypes.filter(condition => condition.id == conditionId);
+    const operandTypeName = operand.length ? operand[0].operandType.name : null;
     const options = operandTypeName ? this.conditions[operandTypeName.toString()] : [];
     this.selectedPricingConditionList[index].operandTypeList = options;
     // tslint:disable-next-line:max-line-length
-    this.selectedPricingConditionList[index].units = operand ? this.units.filter(unit => unit.measurementType.id == operand.measurementType.id) : [];
+    this.selectedPricingConditionList[index].units = operand.length ? this.units.filter(unit => unit.measurementType.id == operand[0].measurementType.id) : [];
     // tslint:disable-next-line:max-line-length
     const isSelectedUnitValid = this.selectedPricingConditionList[index].units.filter(u => u.id == this.selectedPricingConditionList[index].unitType.id).length > 0;
     if (!isSelectedUnitValid) {
@@ -297,9 +301,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
   }
 
   processProfileChanged() {
-    const selectedProcessProfile = this.processProfiles.filter(profile => profile.id == this.form.value.processProfileId)[0];
+    const selectedProcessProfileFilter = this.processProfiles.filter(profile => profile.id == this.form.value.processProfileId);
+    const selectedProcessProfile = selectedProcessProfileFilter.length ? selectedProcessProfileFilter[0] : '';
     // tslint:disable-next-line:max-line-length
-    const processTypeId = selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id;
+    const processTypeId = selectedProcessProfileFilter.length ? selectedProcessProfile.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment.processFamily.processType.id : '';
     this.variableConditions.conditionTypes = this.conditionParameters.filter(param => param.processType.id == processTypeId);
     const temp = this.getRowData('variableCharges').map(row => new Object({
       ...row
@@ -331,24 +336,24 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
     pricingProfile.processPricingParameterList.map((parameter, index) => {
       let section = '';
-      if (parameter.currency && parameter.currency.id && parameter.price) {
+      if (parameter.currency !== null && parameter.currency.id !== null && parameter.price !== null) {
         section = 'flatCharges';
       }
-      if (parameter.currency &&
-        parameter.currency.id &&
-        parameter.price &&
-        parameter.quantity &&
-        parameter.quantityUnitType &&
-        parameter.quantityUnitType.id &&
-        parameter.processPricingConditionType &&
-        parameter.processPricingConditionType.id) {
+      if (parameter.currency !== null &&
+        parameter.currency.id !== null &&
+        parameter.price !== null &&
+        parameter.quantity !== null &&
+        parameter.quantityUnitType !== null &&
+        parameter.quantityUnitType.id !== null &&
+        parameter.processPricingConditionType !== null &&
+        parameter.processPricingConditionType.id !== null) {
         section = 'variableCharges';
       }
-      if (parameter.currency.id &&
-        parameter.multiplier &&
-        parameter.multiplierProcessPricingParameter &&
-        parameter.multiplierProcessPricingParameter.invoiceLineItem &&
-        parameter.multiplierProcessPricingParameter.invoiceLineItem.id) {
+      if (parameter.currency.id !== null &&
+        parameter.multiplier !== null &&
+        parameter.multiplierProcessPricingParameter !== null &&
+        parameter.multiplierProcessPricingParameter.invoiceLineItem !== null &&
+        parameter.multiplierProcessPricingParameter.invoiceLineItem.id !== null) {
         section = 'multiplierCharges';
       }
 
@@ -438,6 +443,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'flatCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -448,6 +454,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'flatCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -461,6 +468,14 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           action: {
             delete: (param) => {
               this.flatRowData = this.getRowData('flatCharges').filter((row, index) => index != param.rowIndex);
+              this.dropdownValueChanged({
+                colDef: {
+                  field: 'multiplierValueRefresh'
+                },
+                data: {
+                  section: 'multiplierCharges'
+                }
+              }, '');
             },
             canDelete: true,
           }
@@ -475,6 +490,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'variableCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -485,6 +501,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'variableCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -498,6 +515,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'variableCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -508,6 +526,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'variableCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -541,6 +560,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -551,6 +571,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         cellRendererParams: {
           data: {
             section: 'multiplierCharges',
+            required: true
           },
           change: (param, value) => this.dropdownValueChanged(param, value),
         }
@@ -659,6 +680,12 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
 
   dropdownValueChanged(param, value, edit = false) {
     const rowData = this.getRowData(param.data.section);
+
+    // Exit all cells from the editing mode
+    this.flatGridOptions.api.stopEditing(false);
+    this.variableGridOptions.api.stopEditing(false);
+    this.multiplierGridOptions.api.stopEditing(false);
+
     switch (param.colDef.field) {
       case 'invoiceItem':
         this.getRowData(param.data.section)[param.rowIndex].invoiceItem = value;
@@ -667,6 +694,12 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           if (param.data.section === 'flatCharges') {
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'flat_charges');
+            const invoiceLineItem = rowData[param.rowIndex].invoiceLineItem;
+
+            if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
+              rowData[param.rowIndex].invoiceLineItem = '';
+            }
+
             if (!edit) {
               const unitList = this.unitForMultiplier;
               this.multiplierRowData = this.getRowData('multiplierCharges').map(row => {
@@ -679,11 +712,42 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           }
           if (param.data.section === 'variableCharges') {
             const invoiceItem = rowData[param.rowIndex].invoiceItem;
+            const invoiceLineItem = rowData[param.rowIndex].invoiceLineItem;
+            const partValue = rowData[param.rowIndex].partValue;
+            const unit = rowData[param.rowIndex].unit;
+
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'variable_charges');
 
-            rowData[param.rowIndex].partValueOptions = rowData[param.rowIndex].invoiceLineItemOptions
-              .filter(item => item.invoiceItem.id == invoiceItem)[0].processPricingConditionTypeList;
+            const filter = rowData[param.rowIndex].invoiceLineItemOptions
+              .filter(item => item.invoiceItem.id == invoiceItem);
+            if (filter.length) {
+              rowData[param.rowIndex].partValueOptions = filter[0].processPricingConditionTypeList;
+            } else {
+              rowData[param.rowIndex].partValueOptions = [];
+            }
+
+            const measurementTypeItem = rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue);
+            if (measurementTypeItem.length) {
+              const measurementType = measurementTypeItem[0].measurementType;
+
+              rowData[param.rowIndex].unitOptions = this.units.filter(unitItem => unitItem.measurementType.id == measurementType.id);
+            } else {
+              rowData[param.rowIndex].unitOptions = [];
+            }
+
+            if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
+              rowData[param.rowIndex].invoiceLineItem = '';
+            }
+
+            if (rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue).length == 0) {
+              rowData[param.rowIndex].partValue = '';
+            }
+
+            if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
+              rowData[param.rowIndex].unit = '';
+            }
+
             // rowData[param.rowIndex].unitOptions = [];
             if (!edit) {
               const unitList = this.unitForMultiplier;
@@ -696,8 +760,14 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
             this.variableRowData = [...rowData];
           }
           if (param.data.section === 'multiplierCharges') {
+            const invoiceLineItem = rowData[param.rowIndex].invoiceLineItem;
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'multipliers');
+
+            if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
+              rowData[param.rowIndex].invoiceLineItem = '';
+            }
+
             this.multiplierRowData = [...rowData];
           }
         }
@@ -708,9 +778,37 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         if (param.data.section === 'variableCharges') {
           const lineItem = rowData[param.rowIndex].invoiceLineItem;
 
-          rowData[param.rowIndex].partValueOptions = rowData[param.rowIndex].invoiceLineItemOptions
-            .filter(item => item.id == lineItem)[0].processPricingConditionTypeList;
-          // rowData[param.rowIndex].unitOptions = [];
+          const invoiceItem = rowData[param.rowIndex].invoiceItem;
+          const partValue = rowData[param.rowIndex].partValue;
+          const unit = rowData[param.rowIndex].unit;
+
+          const filter = rowData[param.rowIndex].invoiceLineItemOptions
+            .filter(item => item.id == lineItem);
+          if (filter.length) {
+            rowData[param.rowIndex].partValueOptions = filter[0].processPricingConditionTypeList;
+            // rowData[param.rowIndex].unitOptions = [];
+          } else {
+            rowData[param.rowIndex].partValueOptions = [];
+          }
+
+          const measurementTypeItem = rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue)
+          if (measurementTypeItem.length) {
+            const measurementType = measurementTypeItem[0].measurementType;
+
+            rowData[param.rowIndex].unitOptions = this.units.filter(unitItem => unitItem.measurementType.id == measurementType.id);
+          } else {
+            rowData[param.rowIndex].unitOptions = [];
+          }
+
+
+          if (rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue).length == 0) {
+            rowData[param.rowIndex].partValue = '';
+          }
+
+          if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
+            rowData[param.rowIndex].unit = '';
+          }
+
 
           this.variableRowData = [...rowData];
         }
@@ -732,10 +830,22 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         if (param.data.section === 'variableCharges') {
           const partValueOptions = rowData[param.rowIndex].partValueOptions;
           const partValue = rowData[param.rowIndex].partValue;
+          const unit = rowData[param.rowIndex].unit;
 
-          const measurementType = partValueOptions.filter(option => option.id == partValue)[0].measurementType;
+          const measurementTypeItem = partValueOptions.filter(option => option.id == partValue)
+          if (measurementTypeItem.length) {
+            const measurementType = measurementTypeItem[0].measurementType;
 
-          rowData[param.rowIndex].unitOptions = this.units.filter(unit => unit.measurementType.id == measurementType.id);
+            rowData[param.rowIndex].unitOptions = this.units.filter(unitItem => unitItem.measurementType.id == measurementType.id);
+          } else {
+            rowData[param.rowIndex].unitOptions = [];
+          }
+
+
+          if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
+            rowData[param.rowIndex].unit = '';
+          }
+
 
           this.variableRowData = [...rowData];
         }
@@ -997,29 +1107,47 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     // const flatChargesId = this.pricingParameterGroup.filter(item => item.name === 'flat_charges');
     // const variableChargesId = this.pricingParameterGroup.filter(item => item.name === 'variable_charges');
     // const multiplierChargesId = this.pricingParameterGroup.filter(item => item.name === 'multipliers');
+    this.gridHasInvalidInput = false;
 
-    const flatCharges = this.getRowData('flatCharges').map(row => new Object({
-      currency: {
-        id: 1
-      },
-
-      price: row.value,
-      invoiceLineItem: {
-        id: row.invoiceLineItem
+    const flatCharges = this.getRowData('flatCharges').map(row => {
+      if (
+        !row.value || !row.invoiceLineItem) {
+        this.gridHasInvalidInput = true;
       }
-    }));
-    const variableCharges = this.getRowData('variableCharges').map(row => new Object({
-      currency: {
-        id: 1
-      },
-      price: row.value,
-      invoiceLineItem: {
-        id: row.invoiceLineItem
-      },
-      quantity: row.quantity,
-      quantityUnitType: { id: row.unit },
-      processPricingConditionType: { id: row.partValue }
-    }));
+      return new Object({
+        currency: {
+          id: 1
+        },
+
+        price: row.value,
+        invoiceLineItem: {
+          id: row.invoiceLineItem
+        }
+      });
+    });
+    const variableCharges = this.getRowData('variableCharges').map(row => {
+      if (
+        !row.value ||
+        !row.invoiceLineItem ||
+        !row.quantity ||
+        !row.unit ||
+        !row.partValue
+      ) {
+        this.gridHasInvalidInput = true;
+      }
+      return new Object({
+        currency: {
+          id: 1
+        },
+        price: row.value,
+        invoiceLineItem: {
+          id: row.invoiceLineItem
+        },
+        quantity: row.quantity,
+        quantityUnitType: { id: row.unit },
+        processPricingConditionType: { id: row.partValue }
+      });
+    });
 
     const multiplierCharges = [];
     this.getRowData('multiplierCharges').map(row => {
@@ -1043,11 +1171,14 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           row.valueOptions
             .filter(val => val.invoiceItem && val.invoiceItem.id + 'invoiceItem' == selectedValue)
             .map(v => {
+              if (!row.invoiceLineItem || !row.multiplier) {
+                this.gridHasInvalidInput = true;
+              }
               multiplierCharges.push({
                 invoiceLineItem: {
-                  id: row.invoiceLineItem
+                  id: row.invoiceLineItem || ''
                 },
-                multiplier: row.multiplier,
+                multiplier: row.multiplier || '',
                 multiplierProcessPricingParameter: {
                   invoiceLineItem: {
                     id: v.id
@@ -1057,6 +1188,9 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
               });
             });
         } else {
+          if (!row.invoiceLineItem || !row.multiplier) {
+            this.gridHasInvalidInput = true;
+          }
           multiplierCharges.push({
             invoiceLineItem: {
               id: row.invoiceLineItem
@@ -1090,6 +1224,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     // this.submitActive = false;
     this.prepareData();
+    if (this.gridHasInvalidInput) {
+      this.error = 'Unexpected error occured. Please check your inputs.';
+      return;
+    }
     setTimeout(async () => {
       if (this.form.valid && this.isFormValid) {
         this.error = '';
