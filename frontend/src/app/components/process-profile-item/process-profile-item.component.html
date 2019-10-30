@@ -21,7 +21,7 @@
         <ng-select (change)="equipmentChanged()" #equipmentInput placeholder="Add Equipment" loadingText="Searching..."
           [multiple]="false" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
           [selectOnTab]="true" formControlName="equipment">
-          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}}</ng-option>
+          <ng-option *ngFor="let item of equipments" [value]="item.id">{{item.equipment.name}} ({{item.name}})</ng-option>
         </ng-select>
 
         <span *ngIf="(submitClicked && !getEquipment().length) || equipmentRemoved" class="footnote red">* Required</span>
