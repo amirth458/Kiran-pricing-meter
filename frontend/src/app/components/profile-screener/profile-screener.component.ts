@@ -659,7 +659,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
       this.details.boundingBox.value = (
         Number(this.details.buildingX.value) *
         Number(this.details.buildingY.value) *
-        Number(this.details.buildingZ.value)).toString();
+        Number(this.details.buildingZ.value));
 
       const postData = {
         // ...this.form,
