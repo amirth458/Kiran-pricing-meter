@@ -538,15 +538,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
           const selectedId = this.selectedDocument.id;
           this.selectedDocument = this.uploadedDocuments.filter(document => document.id === selectedId)[0];
           console.log(this.selectedDocument);
-          this.details.volume.value = Math.round(this.selectedDocument.volume.value * 10000) / 10000;
+          this.details.volume.value = Math.round(this.selectedDocument.volume.value * 100) / 100;
           this.details.volume.unitId = this.getUnitId(this.selectedDocument.volume.unit, 3);
-          this.details.buildingX.value = Math.round(this.selectedDocument.xextent.value * 10000) / 10000;
+          this.details.buildingX.value = Math.round(this.selectedDocument.xextent.value * 100) / 100;
           this.details.buildingX.unitId = this.getUnitId(this.selectedDocument.xextent.unit, 1);
-          this.details.buildingY.value = Math.round(this.selectedDocument.yextent.value * 10000) / 10000;
+          this.details.buildingY.value = Math.round(this.selectedDocument.yextent.value * 100) / 100;
           this.details.buildingY.unitId = this.getUnitId(this.selectedDocument.yextent.unit, 1);
-          this.details.buildingZ.value = Math.round(this.selectedDocument.zextent.value * 10000) / 10000;
+          this.details.buildingZ.value = Math.round(this.selectedDocument.zextent.value * 100) / 100;
           this.details.buildingZ.unitId = this.getUnitId(this.selectedDocument.zextent.unit, 1);
-          this.details.surfaceArea.value = Math.round(this.selectedDocument.surface.value * 10000) / 10000;
+          this.details.surfaceArea.value = Math.round(this.selectedDocument.surface.value * 100) / 100;
           this.details.surfaceArea.unitId = this.getUnitId(this.selectedDocument.surface.unit, 2);
         }
       } else if (resp.status === 'RUNNING') {
@@ -575,7 +575,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   }
 
   formatValue(num): number {
-    return Math.round(num * 10000) / 10000;
+    return Math.round(num * 100) / 100;
   }
 
   onSelectFile(fileId) {
@@ -656,10 +656,10 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     if (this.isFormValid) {
 
       // tslint:disable-next-line:max-line-length
-      this.details.boundingBox.value = (
+      this.details.boundingBox.value = Math.round(
         Number(this.details.buildingX.value) *
         Number(this.details.buildingY.value) *
-        Number(this.details.buildingZ.value));
+        Number(this.details.buildingZ.value) * 100) / 100;
 
       const postData = {
         // ...this.form,
