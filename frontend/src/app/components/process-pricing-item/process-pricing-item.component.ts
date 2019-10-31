@@ -200,8 +200,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       console.log(e);
     } finally {
 
+
       if (this.route.url.includes('edit')) {
-        // Make API request
         this.isNew = false;
         this.processPricingId = this.route.url.slice(this.route.url.lastIndexOf('/')).split('/')[1];
         // tslint:disable-next-line:max-line-length
@@ -247,7 +247,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         row.value
       ) {
         const parameter = this.conditionTypes.filter(item => item.id == row.processPricingConditionType.id);
-        const parameterName = parameter.length ? parameter.length[0].name : '';
+        const parameterName = parameter.length ? parameter[0].name : '';
         const operator = row.operandTypeList.filter(operand => operand.id == row.operatorType.id);
         const unit = row.units.filter(unitItem => unitItem.id == row.unitType.id);
         if (parameter.length && unit.length && operator.length) {
@@ -369,8 +369,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         flatChargesFound++;
       }
       if (section === 'variableCharges') {
-        console.log(parameter.invoiceLineItem.id)
-        console.log(this.variableConditions);
         this.addCondition('variableCharges', parameter);
         this.dropdownValueChanged({
           colDef: { field: 'invoiceItem' },
@@ -386,6 +384,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           },
           rowIndex: variableChargesFound
         }, parameter.invoiceLineItem.id, true);
+
         variableChargesFound++;
       }
       // if (section === 'multiplierCharges') {
@@ -614,7 +613,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.flatColumnDefs,
       pagination: true,
-      paginationPageSize: 5,
+      paginationPageSize: 4,
       enableColResize: true,
       rowHeight: 45,
       headerHeight: 35,
@@ -624,7 +623,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.variableColumnDefs,
       pagination: true,
-      paginationPageSize: 5,
+      paginationPageSize: 4,
       enableColResize: true,
       rowHeight: 45,
       headerHeight: 35,
@@ -634,7 +633,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.multiplierColumnDefs,
       pagination: true,
-      paginationPageSize: 5,
+      paginationPageSize: 4,
       enableColResize: true,
       rowHeight: 45,
       headerHeight: 35,
@@ -696,11 +695,11 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'flat_charges');
             const invoiceLineItem = rowData[param.rowIndex].invoiceLineItem;
 
-            if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
-              rowData[param.rowIndex].invoiceLineItem = '';
-            }
-
             if (!edit) {
+              if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
+                rowData[param.rowIndex].invoiceLineItem = '';
+              }
+
               const unitList = this.unitForMultiplier;
               this.multiplierRowData = this.getRowData('multiplierCharges').map(row => {
                 const valueList = this.getValidRowValue(row, unitList);
@@ -736,20 +735,22 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
               rowData[param.rowIndex].unitOptions = [];
             }
 
-            if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
-              rowData[param.rowIndex].invoiceLineItem = '';
-            }
-
-            if (rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue).length == 0) {
-              rowData[param.rowIndex].partValue = '';
-            }
-
-            if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
-              rowData[param.rowIndex].unit = '';
-            }
-
-            // rowData[param.rowIndex].unitOptions = [];
             if (!edit) {
+
+              if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
+                rowData[param.rowIndex].invoiceLineItem = '';
+              }
+
+              if (rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue).length == 0) {
+                rowData[param.rowIndex].partValue = '';
+              }
+
+              if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
+                rowData[param.rowIndex].unit = '';
+              }
+              // }
+              // rowData[param.rowIndex].unitOptions = [];
+              // if (!edit) {
               const unitList = this.unitForMultiplier;
               this.multiplierRowData = this.getRowData('multiplierCharges').map(row => {
                 const valueList = this.getValidRowValue(row, unitList);
@@ -764,8 +765,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
             // tslint:disable-next-line:max-line-length
             rowData[param.rowIndex].invoiceLineItemOptions = this.getContextInvoiceLineItemOptions(param, value).filter(item => item.processPricingParameterGroup.name == 'multipliers');
 
-            if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
-              rowData[param.rowIndex].invoiceLineItem = '';
+            if (!edit) {
+              if (rowData[param.rowIndex].invoiceLineItemOptions.filter(option => option.id == invoiceLineItem).length == 0) {
+                rowData[param.rowIndex].invoiceLineItem = '';
+              }
             }
 
             this.multiplierRowData = [...rowData];
@@ -790,7 +793,6 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           } else {
             rowData[param.rowIndex].partValueOptions = [];
           }
-
           const measurementTypeItem = rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue)
           if (measurementTypeItem.length) {
             const measurementType = measurementTypeItem[0].measurementType;
@@ -801,12 +803,14 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           }
 
 
-          if (rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue).length == 0) {
-            rowData[param.rowIndex].partValue = '';
-          }
+          if (!edit) {
+            if (rowData[param.rowIndex].partValueOptions.filter(option => option.id == partValue).length == 0) {
+              rowData[param.rowIndex].partValue = '';
+            }
 
-          if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
-            rowData[param.rowIndex].unit = '';
+            if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
+              rowData[param.rowIndex].unit = '';
+            }
           }
 
 
@@ -842,8 +846,10 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           }
 
 
-          if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
-            rowData[param.rowIndex].unit = '';
+          if (!edit) {
+            if (rowData[param.rowIndex].unitOptions.filter(option => option.id == unit).length == 0) {
+              rowData[param.rowIndex].unit = '';
+            }
           }
 
 
