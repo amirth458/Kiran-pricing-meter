@@ -50,9 +50,9 @@ public class ConnectorGetMetadataResponse {
                 .errorMessage(metadataView.getErrorMessage())
                 .cadFileS3URL(metadataView.getS3Url())
 
-                .smallImage(getThumbnail(thumbnails, "100x100"))
-                .mediumImage(getThumbnail(thumbnails, "200x200"))
-                .largeImage(getThumbnail(thumbnails, "400x400"))
+                .smallImage(getThumbnail(inventorMetadata, thumbnails, "100x100"))
+                .mediumImage(getThumbnail(inventorMetadata, thumbnails, "200x200"))
+                .largeImage(getThumbnail(inventorMetadata, thumbnails, "400x400"))
 
                 .name(getValue(fileProperties, "Name"))
                 .title(getValue(fileProperties, "Title"))
@@ -107,7 +107,18 @@ public class ConnectorGetMetadataResponse {
         return null;
     }
 
-    private static String getThumbnail(List<Map<String, Object>> thumbnails, String resolution) {
+    private static String getThumbnail(InventorMetadata inventorMetadata, List<Map<String, Object>> thumbnails, String resolution) {
+        if (inventorMetadata != null) {
+            switch (resolution) {
+                case "100x100":
+                    return inventorMetadata.getThumbnail100();
+                case "200x200":
+                    return inventorMetadata.getThumbnail200();
+                case "400x400":
+                    return inventorMetadata.getThumbnail400();
+            }
+        }
+
         for (Map<String, Object> thumbnail : thumbnails) {
             if (thumbnail.get("resolution").equals(resolution)) {
                 return (String) thumbnail.get("s3URL");
