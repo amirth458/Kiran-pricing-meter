@@ -278,7 +278,7 @@
                 <span class="title">No Information</span>
               </div>
             </div>
-            <div class="col-md-8 d-flex flex-column pl-1 pr-1"
+            <div class="col-md-8 d-flex flex-column pl-1" style="padding-right: 30px"
               *ngIf="(uploading && uploadResponse.status === 'progress')">
               <app-progress-bar [(text)]="progressMessage" [percent]="uploadResponse.message"></app-progress-bar>
             </div>

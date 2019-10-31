@@ -161,7 +161,7 @@ table .form-control {
 }
 
 .detail-info .details .image-details ul li::before {
-  content: "\2022";
+  /* content: "\2022"; */
   color: var(--theme-sky-blue);
   font-weight: bold;
   display: inline-block;
@@ -240,6 +240,7 @@ table .form-control {
 
 .modal .image-details ul li {
   font-size: 13px;
+  list-style-type: none;
 }
 
 .modal .detail-info .details {
