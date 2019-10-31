@@ -513,7 +513,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
                 this.pendingTimer = true;
                 setTimeout(async () => {
                   await this.getDetailedInformation();
-                }, 3000);
+                }, 1000);
               }
             }
           },
@@ -570,7 +570,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     } else {
       setTimeout(async () => {
         await this.getDetailedInformation();
-      }, 3000);
+      }, 1000);
     }
   }
 
