@@ -55,12 +55,16 @@ export class ActionBarComponent implements OnInit {
           this.bestPrice = item.price;
         }
       });
-    });
+    },
+      (error) => {
+        this.pageState = 'Done';
+      });
 
     // }, 2000);
 
     route.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
+        // this.pageState = 'NULL';
         if (this.route.url.includes('/profile-screener')) {
           this.isProfileScreener = true;
         } else {
