@@ -6,6 +6,7 @@ import { ActionCellApproveRendererComponent } from '../common/action-cell-approv
 import { CarrierCellRendererComponent } from '../common/carrier-cell-renderer/carrier-cell-renderer.component';
 import { ColumnSearchFilterComponent } from '../common/column-search-filter/column-search-filter.component';
 import { MultiSelectCellEditorComponent } from '../common/multi-select-cell-editor/multi-select-cell-editor.component';
+import { TooltipCellRendererComponent } from '../common/tooltip-cell-renderer/tooltip-cell-renderer.component';
 
 import { ProfileContainerComponent } from './authorized/approved/_container/container.component';
 import { ProfileVendorContainerComponent } from './authorized/approved/vendor/_container/container.component';
@@ -75,6 +76,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
     CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
     ProgressBarComponent,
+    TooltipCellRendererComponent,
 
     PostProcessComponent,
     PostProcessPricingComponent,
@@ -128,6 +130,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
       MultiSelectCellRendererComponent,
       MultiSelectCellEditorComponent,
       ActionCellApproveRendererComponent,
+      TooltipCellRendererComponent
     ]),
     NgSelectModule,
     FormsModule,
@@ -142,6 +145,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
     ActionBarComponent,
     AgGridModule,
     ActionCellRendererComponent,
+    TooltipCellRendererComponent,
     ActionCellApproveRendererComponent,
     MultiSelectCellRendererComponent,
     CarrierCellRendererComponent,

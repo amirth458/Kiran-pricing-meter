@@ -4,8 +4,8 @@ import { GridOptions } from 'ag-grid-community';
 
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
+import { TooltipCellRendererComponent } from '../../common/tooltip-cell-renderer/tooltip-cell-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FilterOption } from 'src/app/model/vendor.model';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
@@ -103,11 +103,12 @@ export class ProcessProfileComponent implements OnInit {
 
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
+    tooltipCellRenderer: TooltipCellRendererComponent
   };
 
   columnDefs: Array<any> = [
     { headerName: 'Profile No', field: 'id', hide: false, sortable: true, filter: false, width: 80 },
-    { headerName: 'Process Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Process Name', cellRenderer: 'tooltipCellRenderer', field: 'name', hide: false, sortable: true, filter: false },
     // tslint:disable-next-line:max-line-length
     {
       headerName: 'Equipment', field: 'equipment',

@@ -1,0 +1,5 @@
+:host {
+  display: block;
+  box-sizing: content-box;
+  text-overflow: ellipsis;
+}
