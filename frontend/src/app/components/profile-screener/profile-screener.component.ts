@@ -167,7 +167,8 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   progressAnalysis = 0;
   RFQData: any = {};
   screenedProfiles = [];
-
+  intervalsOfDetailedInformation = 4000;
+  
   processProfiles = [];
   profileTypes = [];
   activeMode = 'default';
@@ -513,7 +514,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
                 this.pendingTimer = true;
                 setTimeout(async () => {
                   await this.getDetailedInformation();
-                }, 1000);
+                }, this.intervalsOfDetailedInformation);
               }
             }
           },
@@ -570,7 +571,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     } else {
       setTimeout(async () => {
         await this.getDetailedInformation();
-      }, 1000);
+      }, this.intervalsOfDetailedInformation);
     }
   }
 
