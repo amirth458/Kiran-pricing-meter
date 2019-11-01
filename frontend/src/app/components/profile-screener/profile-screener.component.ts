@@ -598,6 +598,15 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     return Math.round(num * 100) / 100;
   }
 
+  formatName(filename): string {
+    const arr = filename.split('.');
+    if (arr.length === 1) {
+      return arr[0];
+    }
+    arr.pop();
+    return arr.join('.');
+  }
+
   onSelectFile(fileId) {
     this.uploadedDocuments = this.uploadedDocuments.map(item => {
       if (item.id === fileId) {
