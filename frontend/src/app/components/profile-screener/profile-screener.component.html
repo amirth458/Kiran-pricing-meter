@@ -493,12 +493,12 @@
               <div class="image-info d-flex flex-column">
                 <span>
                   Part Dimensions:
-                  {{details.buildingX.value}}
+                  {{formatValue(details.buildingX.value)}}
                   {{getUnitName(details.buildingX.unitId)}}
                   x
-                  {{details.buildingY.value}} {{getUnitName(details.buildingY.unitId)}}
+                  {{formatValue(details.buildingY.value)}} {{getUnitName(details.buildingY.unitId)}}
                   x
-                  {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
+                  {{formatValue(details.buildingZ.value)}} {{getUnitName(details.buildingZ.unitId)}}
                   <!-- 12.36mm x 4.50mm x 4.73mm -->
                 </span>
                 <span>
@@ -508,22 +508,22 @@
 
               <div class="image-details">
                 <ul>
-                  <li><span>Volume</span> - {{details.volume.value}} {{getUnitName(details.volume.unitId)}}</li>
-                  <li><span>Extents</span> - {{details.buildingX.value}}
+                  <li><span>Volume</span> - {{formatValue(details.volume.value)}} {{getUnitName(details.volume.unitId)}}</li>
+                  <li><span>Extents</span> - {{formatValue(details.buildingX.value)}}
                     {{getUnitName(details.buildingX.unitId)}} x
 
-                    {{details.buildingY.value}} {{getUnitName(details.buildingY.unitId)}}
+                    {{formatValue(details.buildingY.value)}} {{getUnitName(details.buildingY.unitId)}}
                     x
-                    {{details.buildingZ.value}} {{getUnitName(details.buildingZ.unitId)}}
+                    {{formatValue(details.buildingZ.value)}} {{getUnitName(details.buildingZ.unitId)}}
                   </li>
                   <li><span>Bounding box</span> -
                     <ng-container *ngIf="details.buildingX.value && details.buildingY.value && details.buildingZ.value">
-                      {{details.buildingX.value * details.buildingY.value * details.buildingZ.value}}
+                      {{formatValue(details.buildingX.value * details.buildingY.value * details.buildingZ.value)}} {{getUnitName(details.volume.unitId)}}
                     </ng-container>
                     {{getUnitName(details.boundingBox.unitId)}}</li>
-                  <li><span>Surface area</span> - {{details.surfaceArea.value}}
+                  <li><span>Surface area</span> - {{formatValue(details.surfaceArea.value)}}
                     {{getUnitName(details.surfaceArea.unitId)}}</li>
-                  <li><span>Thinnest wall</span> - {{details.minWallThickness.value}}
+                  <li><span>Thinnest wall</span> - {{formatValue(details.minWallThickness.value)}}
                     {{getUnitName(details.minWallThickness.unitId)}}</li>
                 </ul>
 
