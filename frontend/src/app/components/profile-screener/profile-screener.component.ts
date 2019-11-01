@@ -168,7 +168,7 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
   RFQData: any = {};
   screenedProfiles = [];
   intervalsOfDetailedInformation = 4000;
-  
+
   processProfiles = [];
   profileTypes = [];
   activeMode = 'default';
@@ -478,6 +478,25 @@ export class ProfileScreenerComponent implements OnInit, AfterViewInit {
     if (this.selectedDocument) {
       if (id === this.selectedDocument.id) {
         this.selectedDocument = null;
+        this.details.quantity = '';
+        this.details.volume.value = 0;
+        this.details.volume.unitId = '';
+        this.details.buildingX.value = 0;
+        this.details.buildingX.unitId = '';
+        this.details.buildingY.value = 0;
+        this.details.buildingY.unitId = '';
+        this.details.buildingZ.value = 0;
+        this.details.buildingZ.unitId = '';
+        this.details.boundingBox.value = 0;
+        this.details.boundingBox.unitId = '';
+        this.details.surfaceArea.value = 0;
+        this.details.surfaceArea.unitId = '';
+        this.details.minWallThickness.value = 0;
+        this.details.minWallThickness.unitId = '';
+        this.details.estMachineTime.value = 0;
+        this.details.estMachineTime.unitId = '';
+        this.details.toleranceIncrement.value = 0;
+        this.details.toleranceIncrement.unitId = '';
       }
     }
   }
