@@ -9,6 +9,7 @@ import { UserService } from 'src/app/service/user.service';
 import { PostProcessProfileService } from 'src/app/service/post-process-profile.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ToastrService } from 'ngx-toastr';
+import {TooltipCellRendererComponent} from "../../common/tooltip-cell-renderer/tooltip-cell-renderer.component";
 
 @Component({
   selector: 'app-post-process-profile',
@@ -111,11 +112,12 @@ export class PostProcessProfileComponent implements OnInit {
 
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
+    tooltipCellRenderer: TooltipCellRendererComponent
   };
 
   columnDefs: Array<any> = [
     { headerName: 'Post-Process No', field: 'id', hide: false, sortable: true, filter: false, width: 150 },
-    { headerName: 'Profile Name', field: 'name', hide: false, sortable: true, filter: false },
+    { headerName: 'Profile Name', cellClass: 'p-0', cellRenderer: 'tooltipCellRenderer', field: 'name', hide: false, sortable: true, filter: false },
     { headerName: 'Profile Nickname', field: 'parameterNickName', hide: false, sortable: true, filter: false },
     {
       headerName: 'Equipment/Asset', field: 'asset', hide: false, sortable: true, filter: false,
