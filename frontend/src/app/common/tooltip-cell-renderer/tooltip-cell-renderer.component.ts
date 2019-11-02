@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef} from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
 
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid';
@@ -24,15 +24,22 @@ export class TooltipCellRendererComponent implements ICellRendererAngularComp, A
     return false;
   }
 
-  scrollableElement() {
-    return this.element.nativeElement.offsetWidth < this.element.nativeElement.scrollWidth
+  refreshCell(): void {
+    const el = this.element.nativeElement.querySelector('div');
+    // determine tooltip popover
+    if (el.offsetWidth < el.scrollWidth) {
+      $(el).popover();
+    } else {
+      $(el).popover('hide');
+      $(el).popover('disable');
+      $(el).popover('dispose');
+    }
   }
 
   ngAfterViewInit(): void {
     $(() => {
-      if (this.scrollableElement()) {
-        $('[data-toggle="popover"]').popover();
-      }
+      this.item.api.addEventListener('columnResized', () => this.refreshCell());
+      this.refreshCell();
     });
   }
 
