@@ -1,4 +1,4 @@
-package com.diligent.dms.webapi;
+package com.diligent.procurement.webapi;
 
 
 import org.slf4j.Logger;

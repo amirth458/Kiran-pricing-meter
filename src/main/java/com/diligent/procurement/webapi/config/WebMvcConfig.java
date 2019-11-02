@@ -1,4 +1,4 @@
-package com.diligent.dms.webapi.config;
+package com.diligent.procurement.webapi.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

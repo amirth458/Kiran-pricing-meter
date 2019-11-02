@@ -1,4 +1,4 @@
-package com.diligent.dms.webapi;
+package com.diligent.procurement.webapi;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;

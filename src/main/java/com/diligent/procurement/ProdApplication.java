@@ -1,4 +1,4 @@
-package com.diligent.dms;
+package com.diligent.procurement;
 
 public class ProdApplication {
     public static void main(String[] args) {
