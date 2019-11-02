@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,14 @@ export class ProcessPricingService {
   constructor(public http: HttpClient) { }
 
   getAllProfiles(vendorId: number): Observable<any> {
-    return this.http.get(environment.apiBaseUrl + `/vendors/${vendorId}/process-pricing?processProfileTypeId=1`);
+    return this.http.get(environment.apiBaseUrl + `/vendors/${vendorId}/process-pricing?processProfileTypeId=1`).pipe(
+      map((profiles: any) => {
+        (profiles || []).map(profile => {
+          profile.pricingFullName = `${profile && profile.processProfile && profile.processProfile.name} : ${profile.name}`
+        });
+        return profiles;
+      })
+    );
   }
 
   getProfile(vendorId: number, profileId: string): Observable<any> {
