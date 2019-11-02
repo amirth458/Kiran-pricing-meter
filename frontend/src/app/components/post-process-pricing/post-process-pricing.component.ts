@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { UserService } from 'src/app/service/user.service';
 import { PostProcessPricingService } from 'src/app/service/post-process-pricing.service';
 import { ToastrService } from 'ngx-toastr';
+import { TooltipCellRendererComponent } from '../../common/tooltip-cell-renderer/tooltip-cell-renderer.component';
 
 
 @Component({
@@ -93,15 +94,13 @@ export class PostProcessPricingComponent implements OnInit {
 
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
+    tooltipCellRenderer: TooltipCellRendererComponent
   };
 
   columnDefs: Array<any> = [
     { headerName: 'Post-Process Pricing No', field: 'id', hide: false, sortable: true, filter: false, width: 160 },
     {
-      headerName: 'Pricing Profile', field: 'pricingName', hide: false, sortable: true, filter: false,
-      cellRenderer(param): any {
-        return param.data.processProfile.name + ': ' + param.data.name;
-      },
+      headerName: 'Pricing Profile', cellClass: 'p-0', cellRenderer: 'tooltipCellRenderer', field: 'pricingFullName', hide: false, sortable: true, filter: false
     },
     { headerName: 'Post-Process Profile', field: 'processProfile.name', hide: false, sortable: true, filter: false },
     { headerName: 'Parameter Set Nickname', field: 'name', hide: false, sortable: true, filter: false },
