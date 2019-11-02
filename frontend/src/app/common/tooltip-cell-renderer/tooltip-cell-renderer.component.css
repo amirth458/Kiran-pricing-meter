@@ -1,0 +1,11 @@
+:host {
+  width: inherit;
+  display: block;
+  padding: .375rem .75rem;
+}
+
+.cell-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
