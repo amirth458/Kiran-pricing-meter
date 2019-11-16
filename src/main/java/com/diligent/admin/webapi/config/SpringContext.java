@@ -1,4 +1,4 @@
-package com.diligent.procurement.webapi.config;
+package com.diligent.admin.webapi.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
