@@ -20,9 +20,7 @@ export class SubSectionMenuComponent implements OnInit {
   }
 
   setSelectedRoute(route) {
-    if (!route.includes('home')) {
-      this.selectedMenu = route;
-      this.route.navigateByUrl(route);
-    }
+    this.selectedMenu = route;
+    this.route.navigateByUrl(route);
   }
 }

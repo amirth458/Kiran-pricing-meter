@@ -1,136 +1,68 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { AgGridModule } from 'ag-grid-angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { RouterModule } from '@angular/router';
+
 import { ActionBarComponent } from '../common/action-bar/action-bar.component';
 import { ActionCellRendererComponent } from '../common/action-cell-renderer/action-cell-renderer.component';
-import { ActionCellApproveRendererComponent } from '../common/action-cell-approve-renderer/action-cell-approve-renderer.component';
-import { CarrierCellRendererComponent } from '../common/carrier-cell-renderer/carrier-cell-renderer.component';
 import { ColumnSearchFilterComponent } from '../common/column-search-filter/column-search-filter.component';
+import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
+import { DropdownHeaderRendererComponent } from '../common/dropdown-header-renderer/dropdown-header-renderer.component';
 import { MultiSelectCellEditorComponent } from '../common/multi-select-cell-editor/multi-select-cell-editor.component';
-import { TooltipCellRendererComponent } from '../common/tooltip-cell-renderer/tooltip-cell-renderer.component';
-
-import { ProfileContainerComponent } from './authorized/approved/_container/container.component';
-import { ProfileVendorContainerComponent } from './authorized/approved/vendor/_container/container.component';
-import { BasicDetailsComponent } from './authorized/approved/vendor/basic-details/basic-details.component';
-import { FacilityComponent } from './authorized/approved/vendor/facility/facility.component';
-import { FacilityItemComponent } from './authorized/approved/vendor/facility-item/facility-item.component';
-import { MachinesComponent } from './authorized/approved/vendor/machines/machines.component';
-import { MachineItemComponent } from './authorized/approved/vendor/machine-item/machine-item.component';
-import { PreferencesComponent } from './authorized/approved/vendor/preferences/preferences.component';
-import { ShippingComponent } from './authorized/approved/vendor/shipping/shipping.component';
-import { ShippingItemComponent } from './authorized/approved/vendor/shipping-item/shipping-item.component';
-
-import { UnapprovedVendorContainerComponent } from './authorized/unapproved/_container/container.component';
-import { UnapprovedVendorUserComponent } from './authorized/unapproved/user/user.component';
-import { UnapprovedVendorMachineComponent } from './authorized/unapproved/machine/machine.component';
-import { UnapprovedVendorDetailsComponent } from './authorized/unapproved/vendor/vendor.component';
-import { UnapprovedVendorActionBarComponent } from './authorized/unapproved/action-bar/action-bar.component';
-
-import { PostProcessComponent } from './post-process/post-process.component';
-import { PostProcessPricingComponent } from './post-process-pricing/post-process-pricing.component';
-import { PostProcessPricingItemComponent } from './post-process-pricing-item/post-process-pricing-item.component';
-import { PostProcessProfileComponent } from './post-process-profile/post-process-profile.component';
-import { PostProcessProfileItemComponent } from './post-process-profile-item/post-process-profile-item.component';
-import { ProcessComponent } from './process/process.component';
-import { ProcessPricingComponent } from './process-pricing/process-pricing.component';
-import { ProcessPricingItemComponent } from './process-pricing-item/process-pricing-item.component';
-import { ProcessProfileComponent } from './process-profile/process-profile.component';
-import { ProcessProfileItemComponent } from './process-profile-item/process-profile-item.component';
-import { ProfileScreenerComponent } from './profile-screener/profile-screener.component';
-import { ProfileScreenerEstimatorComponent } from './profile-screener-estimator/profile-screener-estimator.component';
-import { PricingEstimatorComponent } from './pricing-estimator/pricing-estimator.component';
+import { MultiSelectCellRendererComponent } from '../common/multi-select-cell-renderer/multi-select-cell-renderer.component'
 import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
-
-import { AgGridModule } from 'ag-grid-angular';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { RouterModule } from '@angular/router';
-
-import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
-import { AdminContainerComponent } from './admin/_container/container.component';
-import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/dropdown-cell-renderer.component';
-import { DropdownHeaderRendererComponent } from '../common/dropdown-header-renderer/dropdown-header-renderer.component';
-
-import { MultiSelectCellRendererComponent } from '../common/multi-select-cell-renderer/multi-select-cell-renderer.component';
-import { ApproveVendorComponent } from './admin/approve-vendor/approve-vendor.component';
-import { AdminVendorDetailsContainerComponent } from './admin/vendor-details/_container/container.component';
-import { AdminVendorDetailsActionBarComponent } from './admin/vendor-details/action-bar/action-bar.component';
-import { AdminVendorDetailsUserComponent } from './admin/vendor-details/user/user.component';
-import { AdminVendorDetailsVendorComponent } from './admin/vendor-details/vendor/vendor.component';
-import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machine/machine.component';
-
 import { ProgressBarComponent } from '../common/progress-bar/progress-bar.component';
+
+import { ActiveRfqComponent } from './vendor/active-rfq/active-rfq.component';
+import { ArchivedRfqComponent } from './vendor/archived-rfq/archived-rfq.component';
+import { BasicRfqComponent } from './vendor/basic-rfq/basic-rfq.component';
+import { PartItemComponent } from './vendor/part-item/part-item.component';
+import { ProgramContainerComponent } from './vendor/program-container/program-container.component';
+import { ProgramOverviewComponent } from './vendor/program-overview/program-overview.component';
+import { ProjectProfileComponent } from './vendor/project-profile/project-profile.component';
+import { RfqContainerComponent } from './vendor/rfq-container/rfq-container.component';
 
 @NgModule({
   declarations: [
     ActionBarComponent,
     ActionCellRendererComponent,
+    ColumnSearchFilterComponent,
     DropdownCellRendererComponent,
     DropdownHeaderRendererComponent,
-    MultiSelectCellRendererComponent,
     MultiSelectCellEditorComponent,
-    ActionCellApproveRendererComponent,
-    CarrierCellRendererComponent,
-    ColumnSearchFilterComponent,
-    ProgressBarComponent,
-    TooltipCellRendererComponent,
-
-    PostProcessComponent,
-    PostProcessPricingComponent,
-    PostProcessPricingItemComponent,
-    PostProcessProfileComponent,
-    PostProcessProfileItemComponent,
-    ProcessComponent,
-    ProcessPricingComponent,
-    ProcessPricingItemComponent,
-    ProcessProfileComponent,
-    ProcessProfileItemComponent,
-    ProfileScreenerComponent,
-    ProfileScreenerEstimatorComponent,
-    PricingEstimatorComponent,
-
-    ProfileContainerComponent,
-    ProfileVendorContainerComponent,
-    BasicDetailsComponent,
-    ShippingComponent,
+    MultiSelectCellRendererComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
-    ShippingItemComponent,
-    FacilityComponent,
-    FacilityItemComponent,
-    MachinesComponent,
-    MachineItemComponent,
-    PreferencesComponent,
+    ProgressBarComponent,
 
-    UnapprovedVendorContainerComponent,
-    UnapprovedVendorUserComponent,
-    UnapprovedVendorMachineComponent,
-    UnapprovedVendorDetailsComponent,
-    UnapprovedVendorActionBarComponent,
-
-    AdminContainerComponent,
-    ApproveVendorComponent,
-    AdminVendorDetailsContainerComponent,
-    AdminVendorDetailsActionBarComponent,
-    AdminVendorDetailsUserComponent,
-    AdminVendorDetailsVendorComponent,
-    AdminVendorDetailsMachineComponent,
+    ActiveRfqComponent,
+    ArchivedRfqComponent,
+    BasicRfqComponent,
+    PartItemComponent,
+    ProgramContainerComponent,
+    ProgramOverviewComponent,
+    ProjectProfileComponent,
+    RfqContainerComponent,
   ],
   imports: [
     CommonModule,
+    NgbModule,
     AgGridModule.withComponents([
       ActionCellRendererComponent,
-      CarrierCellRendererComponent,
       DropdownCellRendererComponent,
       DropdownHeaderRendererComponent,
       MultiSelectCellRendererComponent,
-      MultiSelectCellEditorComponent,
-      ActionCellApproveRendererComponent,
-      TooltipCellRendererComponent
+      MultiSelectCellEditorComponent
     ]),
     NgSelectModule,
     FormsModule,
@@ -142,57 +74,16 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
   ],
   exports: [
     NgxSpinnerModule,
-    ActionBarComponent,
     AgGridModule,
+
+    ActionBarComponent,
     ActionCellRendererComponent,
-    TooltipCellRendererComponent,
-    ActionCellApproveRendererComponent,
-    MultiSelectCellRendererComponent,
-    CarrierCellRendererComponent,
     ColumnSearchFilterComponent,
+    MultiSelectCellRendererComponent,
     ProgressBarComponent,
-
-    PostProcessComponent,
-    PostProcessPricingComponent,
-    PostProcessPricingItemComponent,
-    PostProcessProfileComponent,
-    PostProcessProfileItemComponent,
-    ProcessComponent,
-    ProcessPricingComponent,
-    ProcessPricingItemComponent,
-    ProcessProfileComponent,
-    ProcessProfileItemComponent,
-    ProfileScreenerComponent,
-    ProfileScreenerEstimatorComponent,
-    PricingEstimatorComponent,
-
-    ProfileContainerComponent,
-    ProfileVendorContainerComponent,
-    BasicDetailsComponent,
-    ShippingComponent,
-    ShippingItemComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
-    FacilityComponent,
-    FacilityItemComponent,
-    MachinesComponent,
-    MachineItemComponent,
-    PreferencesComponent,
-
-    UnapprovedVendorContainerComponent,
-    UnapprovedVendorUserComponent,
-    UnapprovedVendorMachineComponent,
-    UnapprovedVendorDetailsComponent,
-    UnapprovedVendorActionBarComponent,
-
-    AdminContainerComponent,
-    ApproveVendorComponent,
-    AdminVendorDetailsContainerComponent,
-    AdminVendorDetailsActionBarComponent,
-    AdminVendorDetailsUserComponent,
-    AdminVendorDetailsVendorComponent,
-    AdminVendorDetailsMachineComponent
   ]
 })
 export class ComponentsModule { }

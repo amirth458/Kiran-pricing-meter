@@ -1,0 +1,176 @@
+<div class="wrapper shadow">
+
+  <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+
+  <form [formGroup]="form" class="needs-validation" (submit)="save()">
+
+
+
+    <div class="rfq-profile form-row">
+
+      <div class="form-group theme col-md-9">
+        <label for="rfqProfile">RFQ Profile Name</label>
+        <select required id="rfqProfile" formControlName="rfqProfile" name="rfqProfile" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.rfqProfile.errors }">
+          <option selected value="null">Choose...</option>
+          <option *ngFor="let item of rfqProfileOptions" [value]="item.id">
+            {{item.name}}
+          </option>
+        </select>
+
+        <div *ngIf="submitted && f.rfqProfile.errors" class="invalid-feedback">
+          <div *ngIf="f.rfqProfile.errors.required">* Required</div>
+        </div>
+      </div>
+
+      <div class="form-group theme col-md-3 d-flex align-items-end ">
+        <p class="mb-0 ml-3">
+          <span class="link">
+            Edit Project Profile
+          </span>
+        </p>
+      </div>
+    </div>
+
+
+
+    <div class="tab-container card custom">
+
+      <div class="card-header p-0">
+
+        <ng-container *ngIf="activePage == 'parts'">
+          <div class="tabs d-flex w-100">
+
+
+            <div *ngFor="let part of partList; let index = index"
+              class="menu-item m-0 h-100 d-flex justify-content-center" [ngClass]="{'active': index == activePartIndex}"
+              (click)="toggleTab(index)">
+              {{part}}
+            </div>
+
+          </div>
+
+          <div class="d-flex align-items-center action ">
+            <p class="m-0">
+              <span>
+                <i class="fas fa-plus"></i> Add Parts
+              </span>
+            </p>
+          </div>
+
+        </ng-container>
+
+      </div>
+
+
+
+
+      <!-- Select File -->
+      <div *ngIf="activePage == 'selectFiles'" id="selectFile" class="selectFile">
+
+        <div (ondrop)="onFileChange($event)" draggable="true" (dragover)="onFileDrag($event)"
+          class="upload d-flex flex-column align-items-center justify-content-center mt-5 mb-5">
+          <div class="add">
+            <p class="m-0">
+              <span>
+                <i class="fas fa-plus"></i>
+              </span>
+            </p>
+          </div>
+
+          <p class="text-theme">
+            Drag and Drop STL, STEP,OBJ, 3MF files
+          </p>
+
+        </div>
+        <div class="upload d-flex flex-column align-items-center justify-content-center mb-5">
+          <div class="col-md-2 add">
+
+            <p class="font-weight-bold text-theme ">OR</p>
+            <button type="button" (click)="onOpenFile()" class="btn w-100 theme white">Add Files</button>
+            <input #file type="file" name="file" multiple (change)="onFileChange($event)" id="file"
+              class="inputfile d-none" accept=".stl,.step,.obj,.3mf" />
+          </div>
+
+          <p class="info text-theme">
+            The system will create an unique part for every uploaded file
+          </p>
+
+        </div>
+
+
+
+      </div>
+      <!-- End of Select File -->
+
+
+      <!-- Uploading Files -->
+      <div *ngIf="activePage == 'uploadingFiles'" id="uploadingFiles" class="uploadingFiles">
+
+        <div class="upload h-100 row mt-5">
+
+          <div *ngFor="let file of selectedFiles; let index = index"
+            class="col-md-2 flex-column justify-content-around file-item">
+            <div class="d-flex justify-content-end header">
+              <span class="icon  text-theme-green">
+                <i class="fas fa-check-circle"></i>
+              </span>
+            </div>
+
+            <div class="d-flex justify-content-center body">
+              <span class="icon text-theme-green">
+                <i class="fas fa-file-alt"></i>
+              </span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center footer">
+              <div class="name">
+                {{file.name}}
+              </div>
+
+              <div>
+                <span class="icon" (click)="removeFile(index)">
+                  <i class="fas fa-trash"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="upload d-flex align-items-center justify-content-center mb-5">
+          <div class="col-md-2 add">
+            <button type="button" (click)="onOpenFile()" class="btn w-100 theme white">Upload More Files</button>
+            <input #file type="file" name="file" multiple (change)="onFileChange($event)" id="file"
+              class="inputfile d-none" accept=".stl,.step,.obj" />
+          </div>
+
+          <div class="col-md-2 submit">
+            <button type="button" [disabled]="!selectedFiles.length" (click)="submitUploadedFiles()"
+              class="btn w-100 theme">Submit</button>
+          </div>
+
+        </div>
+
+
+      </div>
+      <!-- Uploading Files -->
+
+
+
+      <!-- Parts -->
+      <div *ngIf="activePage == 'parts'" class="parts">
+
+        <app-part-item></app-part-item>
+
+      </div>
+      <!-- End of Parts -->
+    </div>
+
+
+
+  </form>
+</div>

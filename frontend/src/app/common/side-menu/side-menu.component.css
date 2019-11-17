@@ -4,7 +4,7 @@ a:hover {
 
 
 #sidebar {
-  background: var(--theme-dark-blue);
+  background: var(--theme-main-blue);
   color: white;
   text-align: center;
   transition: all 0.3s;

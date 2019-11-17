@@ -18,11 +18,12 @@ export class MultiSelectCellEditorComponent implements ICellEditorAngularComp, A
         window.setTimeout(() => {
             // this.container.element.nativeElement.focus();
             this.modal.nativeElement.click();
-            $('.modal-backdrop').removeClass('show');
-            $('.modal-backdrop').css('left', '0');
-            $('.modal-backdrop').css('top', '0');
-            $('.modal-backdrop').css('width', '1');
-            $('.modal-backdrop').css('height', '1');
+            // TODO: Change the following to ES6
+            // $('.modal-backdrop').removeClass('show');
+            // $('.modal-backdrop').css('left', '0');
+            // $('.modal-backdrop').css('top', '0');
+            // $('.modal-backdrop').css('width', '1');
+            // $('.modal-backdrop').css('height', '1');
         });
     }
 

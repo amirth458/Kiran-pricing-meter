@@ -1,0 +1,118 @@
+.wrapper {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+
+.rfq-profile .link {
+  color: var(--theme-light-green);
+  text-decoration: underline;
+}
+
+.rfq-profile .link:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.card.custom .card-header {
+  background: rgba(237, 237, 237, 0.6);
+}
+
+.card.custom .card-header .menu-item {
+  width: 120px;
+  color: var(--theme-action-bar-color);
+}
+
+.card.custom .card-header .menu-item.active {
+  background: white;
+  color: var(--theme-light-green);
+}
+
+
+
+.card-header .action {
+  width: 150px;
+  color: var(--theme-light-green);
+  font-size: .9em;
+}
+
+.card-header .action:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+.selectFile .upload .add {
+  font-size: 6em;
+  color: var(--theme-light-green);
+}
+
+.selectFile .upload .add .text-theme {
+  font-size: 20px;
+  text-align: center;
+}
+
+.selectFile .upload .add:hover {
+  cursor: pointer;
+}
+
+.selectFile .upload p.info {
+  font-size: 13px;
+}
+
+
+
+.selectFile .upload .add button {
+  font-size: 13px;
+}
+
+
+
+.uploadingFiles {}
+
+.uploadingFiles .file-item {
+  height: 180px;
+  border: 1px solid var(--theme-table-border);
+  border-radius: 5px;
+  margin: 10px 20px;
+}
+
+
+.uploadingFiles .upload {
+  margin-bottom: 9em;
+  padding: 0px 10px;
+}
+
+.uploadingFiles .file-item .header .icon {
+  font-size: 20px;
+  color: var(--theme-light-green);
+}
+
+.uploadingFiles .file-item .footer .icon {
+  opacity: .7;
+}
+
+.uploadingFiles .file-item .footer .icon:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.uploadingFiles .body .icon {
+  font-size: 5rem;
+}
+
+.uploadingFiles .footer .name {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+.parts {
+  padding: 10px;
+}

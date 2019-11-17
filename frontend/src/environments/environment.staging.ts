@@ -10,28 +10,7 @@ export const environment = {
       route: '/program',
       icon: 'far fa-file-alt',
       visible: true,
-      active: false
-    },
-    {
-      name: 'Profile',
-      route: '/profile',
-      icon: 'far fa-user-circle',
-      visible: true,
       active: true
-    },
-    {
-      name: 'Fleet Management',
-      route: '/fleet',
-      icon: 'fas fa-wrench',
-      visible: true,
-      active: false
-    },
-    {
-      name: 'Material Inventory',
-      route: '/material',
-      icon: 'fas fa-dolly-flatbed',
-      visible: true,
-      active: false
     },
     {
       name: 'Insight',
@@ -46,16 +25,16 @@ export const environment = {
       icon: 'fas fa-cogs',
       visible: true,
       active: false,
-    }
-  ],
-  admin_menus: [
+    },
     {
-      name: 'Admin',
-      route: '/admin',
-      icon: 'fas fa-user-shield',
+      name: 'Design',
+      route: '/design',
+      icon: 'far fa-edit',
       visible: true,
       active: false
     },
+  ],
+  admin_menus: [
   ],
   extendedmenu: [
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },

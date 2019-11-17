@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-declare var $: any;
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',

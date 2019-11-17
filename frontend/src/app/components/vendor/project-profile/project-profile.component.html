@@ -1,0 +1,135 @@
+<div class="wrapper shadow">
+
+  <div *ngIf="error.length>1" class="alert alert-danger" role="alert">
+    {{error}}
+  </div>
+
+  <form [formGroup]="detailForm" class="needs-validation" (submit)="save()">
+
+    <div class="tab-container card custom">
+
+      <div class="card-header">
+        <div class="menu-item active">
+          Project Requirements
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="form-row">
+          <div class="form-group theme col">
+            <label for="name">RFQ Profile Name</label>
+            <input required type="text" formControlName="name" class="form-control" id="name" name="name"
+              placeholder="RFQ Profile Name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">* Required</div>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-row">
+
+          <div class="form-group theme col-md-6">
+            <label for="antiMatch">Anti-Match</label>
+            <ng-select #antiMatchInput (keyup)="onAntiMatchSearch()" placeholder="Anti-Match" loadingText="Searching..."
+              [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true"
+              [selectOnTab]="true" formControlName="antiMatch">
+              <ng-container *ngFor="let item of antiMatchOptions">
+                <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
+              </ng-container>
+            </ng-select>
+            <span *ngIf="showRequired('antiMatch')" class="footnote red">* Required</span>
+          </div>
+
+          <div class="form-group theme col-md-6">
+            <label for="nda">NDA</label>
+            <select required id="nda" formControlName="nda" name="nda" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.nda.errors }">
+              <option selected value="null">Choose...</option>
+              <option *ngFor="let item of ndaOptions" [value]="item.id">
+                {{item.name}}
+              </option>
+            </select>
+
+            <div *ngIf="submitted && f.nda.errors" class="invalid-feedback">
+              <div *ngIf="f.nda.errors.required">* Required</div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="form-row">
+
+
+          <div class="form-group theme col-md-6">
+            <label for="countries">Country (Preferred)</label>
+            <ng-select #countryInput (keyup)="onCountrySearch()" placeholder="Country (Preferred)"
+              loadingText="Searching..." [multiple]="true" dropdownPosition="bottom" [virtualScroll]=" true"
+              [hideSelected]="true" [selectOnTab]="true" formControlName="countries">
+              <ng-container *ngFor="let item of countryOptions">
+                <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
+              </ng-container>
+            </ng-select>
+            <span *ngIf="showRequired('countries')" class="footnote red">* Required</span>
+          </div>
+
+
+          <div class="form-group theme col-md-6">
+            <label for="facilityCertifications">Facility Certifications</label>
+            <ng-select #facilityCertificationsInput (keyup)="onFacilityCertificationSearch()"
+              placeholder="Facility Certifications" loadingText="Searching..." [multiple]="true"
+              dropdownPosition="bottom" [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true"
+              formControlName="facilityCertifications">
+              <ng-container *ngFor="let item of facilityCertificationsOptions">
+                <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
+              </ng-container>
+            </ng-select>
+            <span *ngIf="showRequired('facilityCertifications')" class="footnote red">* Required</span>
+          </div>
+        </div>
+
+
+        <div class="form-row">
+
+          <div class="form-group theme col-md-6">
+            <label for="partCertification">Part Certification</label>
+            <ng-select #facilityCertificationsInput (keyup)="onPartCertificationSearch()"
+              placeholder="Part Certification" loadingText="Searching..." [multiple]="true" dropdownPosition="bottom"
+              [virtualScroll]=" true" [hideSelected]="true" [selectOnTab]="true" formControlName="partCertification">
+              <ng-container *ngFor="let item of partCertificationOptions">
+                <ng-option [disabled]="item.id == ''" [value]="item.id">{{item.name}}</ng-option>
+              </ng-container>
+            </ng-select>
+            <span *ngIf="showRequired('partCertification')" class="footnote red">* Required</span>
+          </div>
+
+
+          <div class="col-md-2"></div>
+          <div class="form-group theme col-md-4 d-flex p-0 align-items-end controls">
+            <div class="d-flex w-100 justify-content-between">
+
+              <div class="col-md-5">
+                <button type="submit" class="btn w-100 theme white">Save</button>
+              </div>
+
+              <div class="col-md-7">
+                <button type="button" class="btn w-100 theme" (click)="saveAsProjectProfile()">Save as Project
+                  Profile</button>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+
+
+</div>

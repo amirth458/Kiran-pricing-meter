@@ -59,7 +59,7 @@
   right: 0;
   left: unset;
   font-size: 15px;
-  background: var(--theme-dark-blue);
+  background: var(--theme-main-blue);
   opacity: 0.9;
   position: absolute;
 }
@@ -76,7 +76,7 @@
 }
 .dropdown .dropdown-menu .dropdown-item:hover {
   background: rgba(255, 255, 255, 0.336);
-  /* color: var(--theme-dark-blue); */
+  /* color: var(--theme-main-blue); */
 }
 
 @media(max-width: 768px) {

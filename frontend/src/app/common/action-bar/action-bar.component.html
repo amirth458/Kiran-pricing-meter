@@ -1,131 +1,19 @@
 <div class="wrapper shadow">
   <ul style="z-index: 90;">
+    <!-- <button type="button" class="btn btn-outline-secondary mr-2" p>
+      Tooltip on right
+    </button> -->
     <li *ngFor="let menu of menus">
       <div>
         <span (click)="selectTab(menu)" class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
-        <span class="icon" data-toggle="tooltip" data-placement="right" [title]="menu.tooltipMessage">
+        <span class="icon" placement="right" [ngbTooltip]="menu.tooltipMessage">
           <i class="fas fa-question-circle"></i>
         </span>
       </div>
     </li>
   </ul>
 
-  <ng-container *ngIf="pageState == 'PENDING'">
-    <div class="progress-section">
-      <div class="lds-roller">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </ng-container>
-
-  <!-- Profile Screener -->
-  <ng-container *ngIf="activeMode == 'profile-screener' && pageState == 'DONE'">
-    <div class="info-section">
-      <div class="d-flex justify-content-end">
-
-        <h6 class="name">Profile Screener</h6>
-        <span class="icon" style="margin-left: 8px" data-toggle="tooltip" data-placement="right"
-          title="The Profile Screener allows you to check whether a given process profile would be considered eligible to complete a given part.  Useful for expediting your own project assessment as well as eliminating any gaps">
-          <i class="fas fa-question-circle"></i>
-        </span>
-      </div>
-    </div>
-
-    <!-- <div class="action-button">
-      <button type="button" class="btn theme btn-primary" (click)="startProfileScreening()">
-        Process
-      </button>
-    </div> -->
-  </ng-container>
-
-  <!-- End of Profile Screener -->
-
-
-
-  <!-- Profile Screener : Process -->
-
-  <ng-container *ngIf="activeMode == 'profile-screener-process' && pageState == 'DONE'">
-
-    <div class="info-section profile d-flex flex-column text-theme font-italic">
-      <p class="mb-0">
-        <span class="font-weight-bold">{{screenedProfiles.length}} process profiles</span> were deemed eligable for your
-        test RFQ
-      </p>
-      <p class="font-weight-bold mb-0" *ngIf="screenedProfiles.length > 0">
-        Click <span class="text-highlight" (click)="startPriceEstimation()">here</span> to calculate the price
-      </p>
-    </div>
-
-    <div class="action-button">
-      <button type="button" class="btn theme btn-primary" (click)="navigateToProfile()">
-        Done
-      </button>
-
-      <button type="button" class="btn theme white" (click)="navigateToProfileScreener()">
-        Edit Profile Screener
-      </button>
-    </div>
-
-
-  </ng-container>
-
-
-  <!-- End of Profile Screener : Process  -->
-
-
-
-  <!-- Pricing Estimator -->
-  <ng-container *ngIf="activeMode == 'pricing-estimator' && pageState == 'DONE'">
-    <div class="info-section">
-      <h6>Pricing Estimator</h6>
-    </div>
-
-    <!-- <div class="action-button">
-      <button type="button" class="btn theme btn-primary" (click)="saveAndStartPriceEstimation()">
-        Process
-      </button>
-    </div> -->
-  </ng-container>
-
-  <!-- End of Pricing Estimator -->
-
-
-
-  <!-- Pricing Estimator : Process -->
-
-  <ng-container *ngIf="activeMode == 'pricing-estimator-process' && pageState == 'DONE'">
-    <div class="info-section profile d-flex flex-column text-theme font-italic">
-      <p class="mb-0">
-        Of your pricing profile, {{estimatedPrices.length}} qualified.
-        <ng-container *ngIf="estimatedPrices.length > 0">
-          The best price is <span class="font-weight-bold">$ {{bestPrice}}</span>
-        </ng-container>
-      </p>
-    </div>
-
-    <div class="action-button">
-      <button type="button" class="btn theme btn-primary" (click)="navigateToPricingProfile()">
-        Done
-      </button>
-
-      <button type="button" class="btn theme white" (click)="navigateToPricing()">
-        Edit Pricing Estimator
-      </button>
-    </div>
-  </ng-container>
-
-
-  <!-- End of Edit Pricing Estimator : Process  -->
-
-
-  <ng-container *ngIf="activeMode == 'default'">
+  <ng-container>
     <div class="action-button"
       *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') && !route.url.includes('clone') )">
       <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn theme"

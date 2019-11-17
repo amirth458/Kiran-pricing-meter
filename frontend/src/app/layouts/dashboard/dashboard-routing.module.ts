@@ -1,42 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { DashboardComponent } from './dashboard.component';
-import { ProfileContainerComponent } from '../../components/authorized/approved/_container/container.component';
-import { ProfileVendorContainerComponent } from '../../components/authorized/approved/vendor/_container/container.component';
-import { BasicDetailsComponent } from '../../components/authorized/approved/vendor/basic-details/basic-details.component';
-import { FacilityComponent } from '../../components/authorized/approved/vendor/facility/facility.component';
-import { FacilityItemComponent } from '../../components/authorized/approved/vendor/facility-item/facility-item.component';
-import { MachinesComponent } from '../../components/authorized/approved/vendor/machines/machines.component';
-import { MachineItemComponent } from '../../components/authorized/approved/vendor/machine-item/machine-item.component';
-import { PreferencesComponent } from '../../components/authorized/approved/vendor/preferences/preferences.component';
-import { ShippingComponent } from '../../components/authorized/approved/vendor/shipping/shipping.component';
-import { ShippingItemComponent } from '../../components/authorized/approved/vendor/shipping-item/shipping-item.component';
-import { PostProcessComponent } from '../../components/post-process/post-process.component';
-import { PostProcessProfileComponent } from '../../components/post-process-profile/post-process-profile.component';
-import { PostProcessProfileItemComponent } from '../../components/post-process-profile-item/post-process-profile-item.component';
-import { PostProcessPricingComponent } from '../../components/post-process-pricing/post-process-pricing.component';
-import { PostProcessPricingItemComponent } from '../../components/post-process-pricing-item/post-process-pricing-item.component';
-import { ProcessComponent } from '../../components/process/process.component';
-import { ProcessProfileComponent } from '../../components/process-profile/process-profile.component';
-import { ProcessProfileItemComponent } from '../../components/process-profile-item/process-profile-item.component';
-import { ProcessPricingComponent } from '../../components/process-pricing/process-pricing.component';
-import { ProcessPricingItemComponent } from '../../components/process-pricing-item/process-pricing-item.component';
-import { ProfileScreenerComponent } from 'src/app/components/profile-screener/profile-screener.component';
-import { ProfileScreenerEstimatorComponent } from 'src/app/components/profile-screener-estimator/profile-screener-estimator.component';
-import { PricingEstimatorComponent } from 'src/app/components/pricing-estimator/pricing-estimator.component';
+
+import { ActiveRfqComponent } from 'src/app/components/vendor/active-rfq/active-rfq.component';
+import { ArchivedRfqComponent } from 'src/app/components/vendor/archived-rfq/archived-rfq.component';
+import { BasicRfqComponent } from 'src/app/components/vendor/basic-rfq/basic-rfq.component';
+
+import { ProgramContainerComponent } from 'src/app/components/vendor/program-container/program-container.component';
+import { ProgramOverviewComponent } from 'src/app/components/vendor/program-overview/program-overview.component';
+import { ProjectProfileComponent } from 'src/app/components/vendor/project-profile/project-profile.component';
+import { RfqContainerComponent } from 'src/app/components/vendor/rfq-container/rfq-container.component';
 
 
-import { UnapprovedVendorContainerComponent } from '../../components/authorized/unapproved/_container/container.component';
-import { UnapprovedVendorUserComponent } from '../../components/authorized/unapproved/user/user.component';
-import { UnapprovedVendorMachineComponent } from '../../components/authorized/unapproved/machine/machine.component';
-import { UnapprovedVendorDetailsComponent } from '../../components/authorized/unapproved/vendor/vendor.component';
-
-import { AdminContainerComponent } from '../../components/admin/_container/container.component';
-import { ApproveVendorComponent } from '../../components/admin/approve-vendor/approve-vendor.component';
-import { AdminVendorDetailsContainerComponent } from '../../components/admin/vendor-details/_container/container.component';
-import { AdminVendorDetailsUserComponent } from '../../components/admin/vendor-details/user/user.component';
-import { AdminVendorDetailsVendorComponent } from '../../components/admin/vendor-details/vendor/vendor.component';
-import { AdminVendorDetailsMachineComponent } from '../../components/admin/vendor-details/machine/machine.component';
 
 const routes: Routes = [
   {
@@ -44,94 +20,33 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
-        path: 'profile', component: ProfileContainerComponent,
+        path: 'program', component: ProgramContainerComponent,
         children: [
           {
-            path: 'vendor', component: ProfileVendorContainerComponent,
+            path: 'overview', component: ProgramOverviewComponent,
             children: [
-              { path: 'basics', component: BasicDetailsComponent },
-              { path: 'basics/:vendorId', component: BasicDetailsComponent },
-              { path: 'facilities', component: FacilityComponent },
-              { path: 'facilities/add', component: FacilityItemComponent },
-              { path: 'facilities/edit/:id', component: FacilityItemComponent },
-              { path: 'machines', component: MachinesComponent },
-              { path: 'machines/add', component: MachineItemComponent },
-              { path: 'machines/edit/:id', component: MachineItemComponent },
-              { path: 'machines/clone', component: MachineItemComponent },
-              { path: 'preferences', component: PreferencesComponent },
-              { path: 'shipping', component: ShippingComponent },
-              { path: 'shipping/add', component: ShippingItemComponent },
-              { path: 'shipping/edit/:id', component: ShippingItemComponent },
               { path: '', pathMatch: 'full', redirectTo: 'basics' },
               { path: '**', pathMatch: 'full', redirectTo: 'basics' }
             ]
           },
           {
-            path: 'unapproved', component: UnapprovedVendorContainerComponent,
+            path: 'rfq', component: RfqContainerComponent,
             children: [
-              { path: 'user', component: UnapprovedVendorUserComponent },
-              { path: 'vendor', component: UnapprovedVendorDetailsComponent },
-              { path: 'machine', component: UnapprovedVendorMachineComponent },
-              { path: '', pathMatch: 'full', redirectTo: 'user' },
-              { path: '**', pathMatch: 'full', redirectTo: 'user' }
+              { path: 'active', pathMatch: 'full', component: ActiveRfqComponent },
+              { path: 'active/add', pathMatch: 'full', component: ProjectProfileComponent },
+              { path: 'active/add/basic', pathMatch: 'full', component: BasicRfqComponent },
+              { path: 'archived', component: ArchivedRfqComponent },
+              { path: 'archived/add', pathMatch: 'full', component: ProjectProfileComponent },
+              { path: 'archived/add/basic', pathMatch: 'full', component: BasicRfqComponent },
+              { path: '', pathMatch: 'full', redirectTo: 'basics' },
+              { path: '**', pathMatch: 'full', redirectTo: 'basics' }
             ]
           },
-          {
-            path: 'processes', component: ProcessComponent,
-            children: [
-              { path: 'profile', component: ProcessProfileComponent },
-              { path: 'profile/add', component: ProcessProfileItemComponent },
-              { path: 'profile/clone', component: ProcessProfileItemComponent },
-              { path: 'profile/edit/:id', component: ProcessProfileItemComponent },
-              { path: 'profile/profile-screener', component: ProfileScreenerComponent },
-              { path: 'profile/profile-screener/process', component: ProfileScreenerEstimatorComponent },
-              { path: 'pricing', component: ProcessPricingComponent },
-              { path: 'pricing/add', component: ProcessPricingItemComponent },
-              { path: 'pricing/clone', component: ProcessPricingItemComponent },
-              { path: 'pricing/edit/:id', component: ProcessPricingItemComponent },
-              { path: 'pricing/estimator', component: ProfileScreenerComponent },
-              { path: 'pricing/estimator/process', component: PricingEstimatorComponent },
-              { path: '', redirectTo: 'profile', pathMatch: 'full' },
-              { path: '**', redirectTo: 'profile', pathMatch: 'full' }
-            ]
-          },
-          {
-            path: 'post-processes', component: PostProcessComponent,
-            children: [
-              { path: 'profile', component: PostProcessProfileComponent },
-              { path: 'profile/add', component: PostProcessProfileItemComponent },
-              { path: 'profile/edit/:id', component: PostProcessProfileItemComponent },
-              { path: 'pricing', component: PostProcessPricingComponent },
-              { path: 'pricing/add', component: PostProcessPricingItemComponent },
-              { path: 'pricing/edit/:id', component: PostProcessPricingItemComponent },
-              { path: 'pricing/clone', component: PostProcessPricingItemComponent },
-              { path: '', redirectTo: 'profile', pathMatch: 'full' },
-              { path: '**', redirectTo: 'profile', pathMatch: 'full' }
-            ]
-          },
-          { path: '', redirectTo: 'vendor', pathMatch: 'full' },
-          { path: '**', redirectTo: 'vendor', pathMatch: 'full' }
+          { path: '', redirectTo: 'overview', pathMatch: 'full' },
+          { path: '**', redirectTo: 'overview', pathMatch: 'full' }
         ],
       },
-      {
-        path: 'admin', component: AdminContainerComponent,
-        children: [
-          {
-            path: 'approve-vendor', component: ApproveVendorComponent,
-          },
-          {
-            path: 'vendor-details/:vendorId', component: AdminVendorDetailsContainerComponent,
-            children: [
-              { path: 'user', component: AdminVendorDetailsUserComponent },
-              { path: 'vendor', component: AdminVendorDetailsVendorComponent },
-              { path: 'machine', component: AdminVendorDetailsMachineComponent },
-            ]
-          },
-          { path: '', pathMatch: 'full', redirectTo: 'approve-vendor' },
-          { path: '**', pathMatch: 'full', redirectTo: 'approve-vendor' }
-        ]
-      },
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: '', redirectTo: 'program', pathMatch: 'full' },
     ]
   },
 ];

@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/service/auth.service';
 import { Observable, Subscription } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppFields } from 'src/app/store';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,37 +10,17 @@ import { AppFields } from 'src/app/store';
 export class DashboardComponent implements OnInit, OnDestroy {
 
   menus: Array<{ name: string, route: string, icon: string, visible: boolean, active: boolean }> = [];
-  selectedMenu = '/profile';
+  selectedMenu = '/program';
   sideMenuOpen = true;
 
   vendor: Observable<any>;
   sub: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    private store: Store<any>,
-  ) {
-    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+  constructor() {
+    this.menus = environment.menus;
   }
 
   ngOnInit(): void {
-    const auth = this.authService.getAuthData();
-    this.sub = this.vendor.subscribe(res => {
-      if (res && res.approved) {
-        this.menus = environment.menus;
-        this.selectedMenu = '/profile';
-      } else {
-        this.menus = [];
-        this.selectedMenu = '';
-      }
-    });
-    if (auth.is_admin) {
-      this.menus = environment.admin_menus;
-      this.selectedMenu = '/admin';
-    } else {
-      this.menus = [];
-      this.selectedMenu = '';
-    }
   }
 
   ngOnDestroy() {

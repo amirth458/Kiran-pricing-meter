@@ -1,7 +1,7 @@
 .wrapper {
   height: 90px;
   background: white;
-  color: var(--theme-dark-blue-opaque);
+  color: var(--theme-main-blue-opaque);
   display: flex;
   justify-content: space-between;
   align-items: center;
