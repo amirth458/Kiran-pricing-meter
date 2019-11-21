@@ -22,14 +22,9 @@ import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
 import { ProgressBarComponent } from '../common/progress-bar/progress-bar.component';
 
-import { ActiveRfqComponent } from './vendor/active-rfq/active-rfq.component';
-import { ArchivedRfqComponent } from './vendor/archived-rfq/archived-rfq.component';
-import { BasicRfqComponent } from './vendor/basic-rfq/basic-rfq.component';
-import { PartItemComponent } from './vendor/part-item/part-item.component';
-import { ProgramContainerComponent } from './vendor/program-container/program-container.component';
-import { ProgramOverviewComponent } from './vendor/program-overview/program-overview.component';
-import { ProjectProfileComponent } from './vendor/project-profile/project-profile.component';
-import { RfqContainerComponent } from './vendor/rfq-container/rfq-container.component';
+import { MarketplaceContainerComponent } from './vendor/marketplace/marketplace-container/marketplace-container.component';
+import { ReferralContainerComponent } from './vendor/marketplace/referral/referral-container/referral-container.component';
+import { ReferralComponent } from './vendor/marketplace/referral/referral/referral.component';
 
 @NgModule({
   declarations: [
@@ -45,14 +40,10 @@ import { RfqContainerComponent } from './vendor/rfq-container/rfq-container.comp
     TopMenuComponent,
     ProgressBarComponent,
 
-    ActiveRfqComponent,
-    ArchivedRfqComponent,
-    BasicRfqComponent,
-    PartItemComponent,
-    ProgramContainerComponent,
-    ProgramOverviewComponent,
-    ProjectProfileComponent,
-    RfqContainerComponent,
+    MarketplaceContainerComponent,
+    ReferralContainerComponent,
+    ReferralComponent,
+
   ],
   imports: [
     CommonModule,

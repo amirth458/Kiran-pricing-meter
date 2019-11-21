@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActiveRfqComponent } from './active-rfq.component';
+import { ReferralContainerComponent } from './referral-container.component';
 
-describe('ActiveRfqComponent', () => {
-  let component: ActiveRfqComponent;
-  let fixture: ComponentFixture<ActiveRfqComponent>;
+describe('ReferralContainerComponent', () => {
+  let component: ReferralContainerComponent;
+  let fixture: ComponentFixture<ReferralContainerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActiveRfqComponent ]
+      declarations: [ ReferralContainerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActiveRfqComponent);
+    fixture = TestBed.createComponent(ReferralContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,10 +6,12 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 :root {
-  --theme-main-blue: #104780;
+  --theme-main-blue: #092846;
+
+  --theme-dark-blue: #092846;
   --them-dark-blue-opaque: #092846;
-  --theme-secondary-blue: rgb(91, 130, 168);
-  --theme-secondary-blue-solid: #5B81A8;
+  --theme-secondary-blue: rgba(9, 40, 70, .74);
+  --theme-secondary-blue-solid: #607181;
   --theme-sky-blue: #31B0D6;
   --theme-light-blue: #194B7C;
   --theme-grid-header: #194B7C;
@@ -17,6 +19,7 @@
   --theme-light-green-with-opacity: rgba(115, 191, 9, 0.23);
   --theme-input-bg: rgba(196, 196, 196, .13);
   --theme-green-grey-bg: #F9FAF7;
+  --theme-grey-bg: #F5F5F8;
   --theme-table-border: rgba(112, 112, 112, .39);
   --theme-error-color: #dc3545;
   --theme-orange: #EF773F;

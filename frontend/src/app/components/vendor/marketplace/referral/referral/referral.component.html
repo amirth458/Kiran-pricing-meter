@@ -1,0 +1,22 @@
+<div class="wrapper">
+  <div class="table theme-table">
+    <div class="page-size">
+      Page Size:
+      <select id="page-size">
+        <option selected value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </div>
+
+    <ag-grid-angular
+      class="ag-theme-balham w-100 h-100"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+</div>

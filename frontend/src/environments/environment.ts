@@ -6,30 +6,30 @@ export const environment = {
   production: false,
   menus: [
     {
-      name: 'Program',
-      route: '/program',
-      icon: 'far fa-file-alt',
+      name: 'User Management',
+      route: '/user',
+      icon: 'fa fa-users',
       visible: true,
       active: true
+    },
+    {
+      name: 'Marketplace',
+      route: '/marketplace',
+      icon: 'fa fa-tools',
+      visible: true,
+      active: false,
+    },
+    {
+      name: 'Pricing',
+      route: '/setting',
+      icon: 'far fa-list-alt',
+      visible: true,
+      active: false,
     },
     {
       name: 'Insight',
       route: '/insight',
       icon: 'far fa-chart-bar',
-      visible: true,
-      active: false,
-    },
-    {
-      name: 'Setting',
-      route: '/setting',
-      icon: 'fas fa-cogs',
-      visible: true,
-      active: false,
-    },
-    {
-      name: 'Design',
-      route: '/design',
-      icon: 'far fa-edit',
       visible: true,
       active: false
     },
