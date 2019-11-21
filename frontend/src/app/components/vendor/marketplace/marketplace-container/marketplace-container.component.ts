@@ -13,6 +13,7 @@ export class MarketplaceContainerComponent implements OnInit {
 
   vendor: Observable<any>;
   sub: Subscription;
+  sidemenuClosed: boolean;
 
   constructor(
     private route: Router,
