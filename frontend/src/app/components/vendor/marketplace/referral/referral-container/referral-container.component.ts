@@ -7,7 +7,8 @@ import { NavigationEnd, Router } from "@angular/router";
   styleUrls: ['./referral-container.component.css']
 })
 export class ReferralContainerComponent implements OnInit {
-
+  sidemenuClosed: boolean;
+  
   actionbarMenu: Array<{
     name: string,
     tooltipMessage: string,
