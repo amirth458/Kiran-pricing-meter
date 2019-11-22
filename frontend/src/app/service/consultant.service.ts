@@ -39,12 +39,12 @@ export class ConsultantService {
     return this.http.get<any>(url);
   }
 
-  createComment(id: number, Comment: string): Observable<any> {
+  createComment(id: number, comment: string): Observable<any> {
     const url = `${environment.apiBaseUrl}/consultation/${id}/comment/`;
     const data = JSON.parse(localStorage.getItem("auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken
     });
-    return this.http.post(url, { Comment }, { headers });
+    return this.http.post(url, { comment }, { headers });
   }
 }
