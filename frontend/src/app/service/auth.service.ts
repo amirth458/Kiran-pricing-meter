@@ -11,7 +11,7 @@ import { Store, AppTypes, AppFields } from '../store';
 export class AuthService {
 
   data: {};
-  url: string = environment.apiBaseUrl + '/auth/signin';
+  url: string = environment.managementBaseUrl + '/auth/signin';
 
   constructor(
     public http: HttpClient,
@@ -67,7 +67,7 @@ export class AuthService {
       Authorization: data.tokenType + ' ' + data.accessToken
     });
 
-    const url = `${environment.apiBaseUrl}/auth/user/me`;
+    const url = `${environment.managementBaseUrl}/auth/user/me`;
     return this.http.get(url, {
       headers
     });
@@ -79,7 +79,7 @@ export class AuthService {
       Authorization: data.tokenType + ' ' + data.accessToken
     });
 
-    const url = `${environment.apiBaseUrl}/vendors`;
+    const url = `${environment.managementBaseUrl}/vendors`;
     return this.http.get(url, {
       headers
     });

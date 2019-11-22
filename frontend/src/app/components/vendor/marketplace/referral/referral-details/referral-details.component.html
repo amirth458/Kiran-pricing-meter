@@ -1,0 +1,91 @@
+<div class="wrapper">
+  <div class="row">
+    <div class="col-12 theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+      ></ag-grid-angular>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-8">
+      <div class="comments p-3">
+        <div class="question">
+          <p class="heading mb-1">Questions:</p>
+          <span class="content">{{ data && data["questions"] }}</span>
+        </div>
+        <div class="comment mt-3" *ngFor="let comment of (data && data['comments'])">
+          <p class="heading mb-1">Comment on {{ dateFormat(comment["commentDate"]) }}:</p>
+          <span class="content">{{ comment["comment"] }}</span>
+        </div>
+      </div>
+      <div class="new-comment mt-3">
+        <form
+          [formGroup]="detailForm"
+          class="needs-validation"
+          (submit)="save($event)"
+        >
+          <div class="form-row">
+            <div class="form-group theme col-md-12">
+              <label>Comment</label>
+              <textarea
+                required
+                formControlName="comment"
+                class="form-control"
+                placeholder="Comment"
+                rows="4"
+                style="resize: none;"
+              ></textarea>
+              <span
+                [ngClass]="{ invisible: !showRequired('comment') }"
+                class="footnote orange"
+                >* Required</span
+              >
+            </div>
+          </div>
+          <div class="d-flex justify-content-end align-items-center">
+            <button type="submit" class="btn btn-primary theme submit-button">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-4 featureDataview p-2">
+      <div class="mt-4 image-container">
+        <img
+          [src]="featureData && featureData.image"
+          alt="Image of an Equipment"
+          height="200px"
+          width="100%"
+        />
+      </div>
+      <div class="">
+        <div class="header">
+          <div
+            class="mt-2 d-flex justify-content-between align-items-center title flex-wrap pb-2"
+          >
+            <h6 class="mb-2 flex-grow-1 heading">
+              {{ featureData && featureData.name }}
+            </h6>
+            <h4 class="mb-2 price flex-grow-1">
+              {{ featureData && featureData.price }}
+            </h4>
+          </div>
+          <p class="text-justify content pb-3">
+            {{ featureData && featureData.description }}
+          </p>
+          <div
+            class="d-flex align-items-center controls justify-content-center"
+          >
+            <button class="btn btn-primary" type="button">
+              View In Marketplace
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

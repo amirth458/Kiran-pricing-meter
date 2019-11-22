@@ -5,7 +5,12 @@
     </button> -->
     <li *ngFor="let menu of menus">
       <div>
-        <span (click)="selectTab(menu)" class="name" [class.active]="selectedTab == menu.name">{{menu.name}}</span>
+        <span
+          (click)="selectTab(menu)"
+          class="name"
+          [class.active]="selectedTab == menu.name"
+          >{{ menu.name }}</span
+        >
         <span class="icon" placement="right" [ngbTooltip]="menu.tooltipMessage">
           <i class="fas fa-question-circle"></i>
         </span>
@@ -14,18 +19,45 @@
   </ul>
 
   <ng-container>
-    <div class="action-button"
-      *ngIf="menus[activeTabIndex].actions.length && ( !route.url.includes('add') && !route.url.includes('edit') && !route.url.includes('clone') )">
-      <button *ngFor="let item of menus[activeTabIndex].actions" type="button" class="btn theme"
-        [ngClass]="item.name==='Profile Screener' || item.name==='Pricing Estimator'?'white':'btn-primary'"
-        (click)="addButton(item.route)">
-        {{item.name}}
+    <div
+      class="action-button"
+      *ngIf="
+        menus[activeTabIndex].actions.length &&
+        !route.url.includes('add') &&
+          !route.url.includes('edit') &&
+          !route.url.includes('clone')
+      "
+    >
+      <button
+        *ngFor="let item of menus[activeTabIndex].actions"
+        type="button"
+        class="btn theme"
+        [ngClass]="
+          item.name === 'Profile Screener' || item.name === 'Pricing Estimator'
+            ? 'white'
+            : 'btn-primary'
+        "
+        (click)="addButton(item.route)"
+      >
+        {{ item.name }}
       </button>
     </div>
 
-    <div class="action-button"
-      *ngIf="menus[activeTabIndex].actions.length && ( route.url.includes('add') || route.url.includes('edit') || route.url.includes('clone') )">
-      <button type="button" class="btn btn-add theme white" (click)="backButton()">
+    <div
+      class="action-button"
+      *ngIf="
+        (menus[activeTabIndex].actions.length &&
+          (route.url.includes('add') ||
+            route.url.includes('edit') ||
+            route.url.includes('clone'))) ||
+        route.url.includes('referral/referral/')
+      "
+    >
+      <button
+        type="button"
+        class="btn btn-add theme white"
+        (click)="backButton()"
+      >
         <i class="fas fa-chevron-left"></i>
         <span>
           Back
@@ -33,5 +65,4 @@
       </button>
     </div>
   </ng-container>
-
 </div>

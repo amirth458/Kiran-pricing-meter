@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       if (res['is_admin']) {
         this.router.navigate(['/admin']);
       } else {
-        this.router.navigate(['/program']);
+        this.router.navigate(['/marketplace']);
       }
       this.spineer.hide();
     }, error => {

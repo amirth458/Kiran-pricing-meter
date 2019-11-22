@@ -25,6 +25,7 @@ import { ProgressBarComponent } from '../common/progress-bar/progress-bar.compon
 import { MarketplaceContainerComponent } from './vendor/marketplace/marketplace-container/marketplace-container.component';
 import { ReferralContainerComponent } from './vendor/marketplace/referral/referral-container/referral-container.component';
 import { ReferralComponent } from './vendor/marketplace/referral/referral/referral.component';
+import { ReferralDetailsComponent } from './vendor/marketplace/referral/referral-details/referral-details.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ReferralComponent } from './vendor/marketplace/referral/referral/referr
     MarketplaceContainerComponent,
     ReferralContainerComponent,
     ReferralComponent,
+    ReferralDetailsComponent,
 
   ],
   imports: [

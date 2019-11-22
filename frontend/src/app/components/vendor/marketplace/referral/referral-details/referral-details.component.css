@@ -4,18 +4,53 @@
   background: white;
   border-radius: 4px;
   padding: 40px;
-  display: flex;
-  justify-content: space-between;
 }
 
-.table-control {
-  width: 220px;
-  height: 400px;
-  margin-right: 10px;
+.theme-table {
+  height: 90px;
 }
 
-.table {
-  height: 430px;
+.featureview {
+  box-shadow: 0 3px 6px #ccc;
+}
+
+.featureview .heading {
+  color: var(--theme-light-green);
+}
+
+.submit-button {
+  width: 200px;
+}
+
+.footnote.orange {
+  color: var(--theme-orange);
+}
+
+.featureview .content {
+  color: var(--theme-light-blue);
+  font-size: 14px;
+}
+.featureview .price {
+  color: var(--theme-light-blue);
+}
+
+.btn-primary {
+  border-color: var(--theme-btn-primary) !important;
+}
+
+.comments {
+  border: 1px solid #0928465C;
+  border-radius: 8px;
+  background-color: var(--theme-grey-bg);
+}
+.comments .question {
+  color: var(--theme-secondary-blue-solid);
+}
+.comments .comment {
+  color: var(--theme-light-blue);
+}
+.comments .content {
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {

@@ -1,8 +1,11 @@
-import { DropdownHeaderRendererComponent } from './../../../../../common/dropdown-header-renderer/dropdown-header-renderer.component';
+import { Router } from "@angular/router";
+import { DropdownHeaderRendererComponent } from "./../../../../../common/dropdown-header-renderer/dropdown-header-renderer.component";
 import { ConsultantService } from "./../../../../../service/consultant.service";
 import { Component, OnInit } from "@angular/core";
 import { GridOptions, GridApi } from "ag-grid-community";
 import { NgxSpinnerService } from "ngx-spinner";
+declare var require: any
+const dayjs = require('dayjs');
 
 @Component({
   selector: "app-referral",
@@ -12,68 +15,74 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class ReferralComponent implements OnInit {
   columnDefs = [
     {
-      headerName: "First",
-      field: "accountId",
+      headerName: "First Name",
+      field: "firstName",
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Last",
-      field: "accountId",
+      headerName: "Last Name",
+      field: "lastName",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Company",
-      field: "accountId",
+      field: "company",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Phone",
-      field: "accountId",
+      field: "phone",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Email",
-      field: "accountId",
+      field: "email",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Questions",
-      field: "accountId",
+      field: "questions",
+      hide: false,
+      sortable: true,
+      filter: false
+    },
+    {
+      headerName: "Material/Equipment Name",
+      field: "featureName",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Request Time",
-      field: "accountId",
+      field: "requestTime",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Timer",
-      field: "accountId",
+      field: "timer",
       hide: false,
       sortable: true,
       filter: false
     },
     {
       headerName: "Status",
-      field: "accountId",
+      field: "status",
       hide: false,
       sortable: true,
-      filter: true,
-      headerRenderer: 'dropdownHeaderRenderer'
+      filter: false
     }
   ];
   gridOptions: GridOptions;
@@ -87,7 +96,8 @@ export class ReferralComponent implements OnInit {
 
   constructor(
     private spinner: NgxSpinnerService,
-    private consultantService: ConsultantService
+    private consultantService: ConsultantService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -101,28 +111,43 @@ export class ReferralComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
+        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
       }
     };
+    this.getConsultants();
   }
 
-  async getVendorShippings() {
+  async getConsultants() {
     this.spinner.show();
     let page = 0;
     const rows = [];
     try {
-      // while (true) {
-      //   const res = await this.consultantService.getReferrals(
-      //     this.userService.getVendorInfo().id,
-      //     { page, size: 1000, sort: 'id,ASC', q: '' }
-      //   ).toPromise();
-      //   rows.push(...res.content);
-      //   if (!res.content) { break; }
-      //   if (res.content.length === 0 || res.content.length < 1000) {
-      //     break;
-      //   }
-      //   page++;
-      // }
-      // this.rowData = rows;
+      while (true) {
+        const res = await this.consultantService
+          .getConsultations({ page, size: 1000, sort: "id,ASC", q: "" })
+          .toPromise();
+
+        if (!res.content) {
+          break;
+        }
+        rows.push(...res.content);
+        rows.forEach(item => {
+          const responseTime = item["firstResponseTime"]
+            ? dayjs(item["firstResponseTime"])
+            : dayjs();
+          item["timer"] = dayjs(
+            responseTime.diff(item["requestTime"])
+          ).format("HH:mm:ss");
+          item["requestTime"] = dayjs(item["requestTime"]).format(
+            "MM/D/YYYY h:mm a"
+          );
+        });
+        if (res.content.length === 0 || res.content.length < 1000) {
+          break;
+        }
+        page++;
+      }
+      this.rowData = rows;
     } catch (e) {
       console.log(e);
     } finally {
@@ -131,5 +156,10 @@ export class ReferralComponent implements OnInit {
   }
   onGridReady(ev) {
     this.gridOptions = ev;
+  }
+
+  onPageSizeChange(ev) {
+    this.pageSize = ev.target.value;
+    this.gridOptions.api.paginationSetPageSize(this.pageSize);
   }
 }
