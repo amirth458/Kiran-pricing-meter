@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
       // tslint:disable-next-line: no-string-literal
       if (res['is_admin']) {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/marketplace']);
       } else {
         this.router.navigate(['/marketplace']);
       }

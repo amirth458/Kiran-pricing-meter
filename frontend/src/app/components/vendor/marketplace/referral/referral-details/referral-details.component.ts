@@ -101,7 +101,8 @@ export class ReferralDetailsComponent implements OnInit {
     private router: ActivatedRoute,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: Router
   ) {
     this.router.params.subscribe(params => {
       this.selectedId = params.id;
@@ -131,15 +132,13 @@ export class ReferralDetailsComponent implements OnInit {
           this.spinner.hide();
           this.toastr
             .success(
-              "Comment added Successfully. Please click here to refresh the page or after 5 seconds."
+              "Comment added Successfully."
             )
             .onTap.pipe(take(1))
             .subscribe(() => {
               location.href = location.href;
             });
-          setTimeout(() => {
-            location.href = location.href;
-          }, 5000);
+          location.href = location.href;
         });
     }
   }

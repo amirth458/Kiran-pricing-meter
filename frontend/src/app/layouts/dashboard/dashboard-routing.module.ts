@@ -1,4 +1,4 @@
-import { ReferralDetailsComponent } from './../../components/vendor/marketplace/referral/referral-details/referral-details.component';
+import { ReferralDetailsComponent } from "./../../components/vendor/marketplace/referral/referral-details/referral-details.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -15,18 +15,10 @@ const routes: Routes = [
     children: [
       {
         path: "marketplace",
-        component: MarketplaceContainerComponent,
+        component: ReferralContainerComponent,
         children: [
-          {
-            path: "referral",
-            component: ReferralContainerComponent,
-            children: [
-              { path: "referral", component: ReferralComponent },
-              { path: "referral/:id", component: ReferralDetailsComponent },
-              { path: "", redirectTo: "referral", pathMatch: "full" },
-              { path: "**", redirectTo: "referral", pathMatch: "full" }
-            ]
-          },
+          { path: "referral", component: ReferralComponent },
+          { path: "referral/:id", component: ReferralDetailsComponent },
           { path: "", redirectTo: "referral", pathMatch: "full" },
           { path: "**", redirectTo: "referral", pathMatch: "full" }
         ]
