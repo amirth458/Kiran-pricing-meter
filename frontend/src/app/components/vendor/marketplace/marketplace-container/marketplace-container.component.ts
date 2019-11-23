@@ -11,8 +11,6 @@ export class MarketplaceContainerComponent implements OnInit {
 
   baseURL = '';
 
-  vendor: Observable<any>;
-  sub: Subscription;
   sidemenuClosed: boolean;
 
   constructor(

@@ -21,7 +21,7 @@ export class ReferralContainerComponent implements OnInit {
     {
       name: 'Referral',
       tooltipMessage: 'Referral Information',
-      route: 'referral',
+      route: '/',
       actions: []
     }
   ];

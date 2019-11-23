@@ -1,11 +1,12 @@
+import { StatusDropdownFilterComponent } from './../../../../../common/status-dropdown-filter/status-dropdown-filter.component';
 import { Router } from "@angular/router";
 import { DropdownHeaderRendererComponent } from "./../../../../../common/dropdown-header-renderer/dropdown-header-renderer.component";
 import { ConsultantService } from "./../../../../../service/consultant.service";
 import { Component, OnInit } from "@angular/core";
 import { GridOptions, GridApi } from "ag-grid-community";
 import { NgxSpinnerService } from "ngx-spinner";
-declare var require: any
-const dayjs = require('dayjs');
+declare var require: any;
+const dayjs = require("dayjs");
 
 @Component({
   selector: "app-referral",
@@ -75,14 +76,14 @@ export class ReferralComponent implements OnInit {
       field: "timer",
       hide: false,
       sortable: true,
-      filter: false
+      filter: true
     },
     {
       headerName: "Status",
       field: "status",
       hide: false,
       sortable: true,
-      filter: false
+      filter: "statusFilter",
     }
   ];
   gridOptions: GridOptions;
@@ -91,7 +92,7 @@ export class ReferralComponent implements OnInit {
   pageSize = 10;
   navigation;
   frameworkComponents = {
-    dropdownHeaderRenderer: DropdownHeaderRendererComponent
+    statusFilter: StatusDropdownFilterComponent
   };
 
   constructor(
@@ -112,19 +113,19 @@ export class ReferralComponent implements OnInit {
       onRowClicked: event => {
         // this.onRowClick(event);
         this.router.navigateByUrl(this.router.url + "/" + event.data.id);
-      }
+      },
     };
     this.getConsultants();
   }
 
-  async getConsultants() {
+  async getConsultants(q = null) {
     this.spinner.show();
     let page = 0;
     const rows = [];
     try {
       while (true) {
         const res = await this.consultantService
-          .getConsultations({ page, size: 1000, sort: "id,ASC", q: "" })
+          .getConsultations({ page, size: 1000, sort: "id,ASC", q })
           .toPromise();
 
         if (!res.content) {
@@ -135,9 +136,9 @@ export class ReferralComponent implements OnInit {
           const responseTime = item["firstResponseTime"]
             ? dayjs(item["firstResponseTime"])
             : dayjs();
-          item["timer"] = dayjs(
-            responseTime.diff(item["requestTime"])
-          ).format("HH:mm:ss");
+          item["timer"] = dayjs(responseTime.diff(item["requestTime"])).format(
+            "HH:mm:ss"
+          );
           item["requestTime"] = dayjs(item["requestTime"]).format(
             "MM/D/YYYY h:mm a"
           );
@@ -156,6 +157,7 @@ export class ReferralComponent implements OnInit {
   }
   onGridReady(ev) {
     this.gridOptions = ev;
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   onPageSizeChange(ev) {

@@ -1,0 +1,23 @@
+.ag-grid-dropdown {
+  background: var(--theme-grid-header);
+}
+.ag-grid-dropdown-divider {
+  height: 0;
+  overflow: hidden;
+  border-top: 1px solid #e9ecef
+}
+.dropdown-item {
+  color: white !important;
+  cursor: pointer;
+}
+.dropdown-item.active {
+  color: var(--theme-light-green) !important;
+  cursor: pointer;
+}
+.dropdown-item:hover {
+  background: var(--them-dark-blue-opaque);
+  color: var(--theme-light-green);
+}
+.menu {
+  padding: 0 !important;
+}

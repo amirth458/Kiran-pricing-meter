@@ -67,7 +67,11 @@ export class ActionBarComponent implements OnInit {
 
   backButton() {
     const urlArray = this.route.url.split('/');
-    this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
+    if (urlArray[1] === 'marketplace') {
+      this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);  
+    } else {
+      this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
+    }
   }
 
 

@@ -1,3 +1,5 @@
+import { AppModule } from './../app.module';
+import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -40,11 +42,13 @@ import { ReferralDetailsComponent } from './vendor/marketplace/referral/referral
     SubSectionMenuComponent,
     TopMenuComponent,
     ProgressBarComponent,
+    StatusDropdownFilterComponent,
 
     MarketplaceContainerComponent,
     ReferralContainerComponent,
     ReferralComponent,
     ReferralDetailsComponent,
+    
 
   ],
   imports: [
@@ -55,7 +59,8 @@ import { ReferralDetailsComponent } from './vendor/marketplace/referral/referral
       DropdownCellRendererComponent,
       DropdownHeaderRendererComponent,
       MultiSelectCellRendererComponent,
-      MultiSelectCellEditorComponent
+      MultiSelectCellEditorComponent,
+      StatusDropdownFilterComponent,
     ]),
     NgSelectModule,
     FormsModule,
