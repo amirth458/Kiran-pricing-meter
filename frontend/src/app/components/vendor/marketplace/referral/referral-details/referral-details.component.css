@@ -38,6 +38,11 @@
   border-color: var(--theme-btn-primary) !important;
 }
 
+.btn-viewbutton {
+  border-color: var(--theme-light-blue) !important;
+  background-color: var(--theme-light-blue) !important;
+}
+
 .comments {
   border: 1px solid #0928465C;
   border-radius: 8px;

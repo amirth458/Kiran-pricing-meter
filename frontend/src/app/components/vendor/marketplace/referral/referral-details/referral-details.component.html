@@ -16,8 +16,13 @@
           <p class="heading mb-1">Questions:</p>
           <span class="content">{{ data && data["questions"] }}</span>
         </div>
-        <div class="comment mt-3" *ngFor="let comment of (data && data['comments'])">
-          <p class="heading mb-1">Comment on {{ dateFormat(comment["commentDate"]) }}:</p>
+        <div
+          class="comment mt-3"
+          *ngFor="let comment of data && data['comments']"
+        >
+          <p class="heading mb-1">
+            Comment on {{ dateFormat(comment["commentDate"]) }}:
+          </p>
           <span class="content">{{ comment["comment"] }}</span>
         </div>
       </div>
@@ -53,7 +58,7 @@
         </form>
       </div>
     </div>
-    <div class="col-4 featureDataview p-2">
+    <div class="col-4 featureview p-3 d-flex flex-column">
       <div class="mt-4 image-container">
         <img
           [src]="featureData && featureData.image"
@@ -62,7 +67,7 @@
           width="100%"
         />
       </div>
-      <div class="">
+      <div class="d-flex flex-grow-1 flex-column">
         <div class="header">
           <div
             class="mt-2 d-flex justify-content-between align-items-center title flex-wrap pb-2"
@@ -74,16 +79,14 @@
               {{ featureData && featureData.price }}
             </h4>
           </div>
-          <p class="text-justify content pb-3">
-            {{ featureData && featureData.description }}
-          </p>
-          <div
-            class="d-flex align-items-center controls justify-content-center"
-          >
-            <button class="btn btn-primary" type="button">
-              View In Marketplace
-            </button>
-          </div>
+        </div>
+        <p class="text-justify flex-grow-1 content pb-3">
+          {{ featureData && featureData.description }}
+        </p>
+        <div class="d-flex align-items-center controls justify-content-center">
+          <button class="btn btn-primary btn-viewbutton" type="button" (click)="viewMarketplace()">
+            View In Marketplace
+          </button>
         </div>
       </div>
     </div>

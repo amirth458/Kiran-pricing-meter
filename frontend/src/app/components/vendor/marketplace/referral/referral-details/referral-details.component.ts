@@ -1,3 +1,4 @@
+import { environment } from './../../../../../../environments/environment';
 import { NgxSpinnerService } from "ngx-spinner";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -149,6 +150,10 @@ export class ReferralDetailsComponent implements OnInit {
     return throwError("Error");
   }
 
+  viewMarketplace() {
+    window.open(`${environment.MARKETPLACE_URL}${this.featureData.type}/${this.featureData.name}`);
+  }
+
   ngOnInit() {
     this.gridOptions = {
       columnDefs: this.columnDefs,
@@ -178,14 +183,16 @@ export class ReferralDetailsComponent implements OnInit {
         image: this.data["materialMasterView"]["Raw Image"],
         name: this.data["materialMasterView"]["Material"],
         price: this.data["materialMasterView"]["materialPrice"],
-        description: this.data["materialMasterView"]["OEM Description"]
+        description: this.data["materialMasterView"]["OEM Description"],
+        type: 'material'
       };
     } else {
       this.featureData = {
         image: this.data["equipmentMasterView"]["Raw Image"],
         name: this.data["equipmentMasterView"]["Equipment"],
         price: this.data["equipmentMasterView"]["equipmentPrice"],
-        description: this.data["equipmentMasterView"]["OEM Description"]
+        description: this.data["equipmentMasterView"]["OEM Description"],
+        type: 'equipment'
       };
     }
   }

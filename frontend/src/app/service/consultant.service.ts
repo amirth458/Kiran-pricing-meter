@@ -15,7 +15,9 @@ export class ConsultantService {
     let url = `${environment.apiBaseUrl}/consultation/search`;
     const data = JSON.parse(localStorage.getItem("auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken
+      Authorization: data.tokenType + " " + data.accessToken,
+      '3d-application-token': environment.adminAPIToken,
+      'device-info': navigator.userAgent
     });
     const body = {
       query: null
@@ -43,7 +45,8 @@ export class ConsultantService {
     const url = `${environment.apiBaseUrl}/consultation/${id}/comment/`;
     const data = JSON.parse(localStorage.getItem("auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken
+      Authorization: data.tokenType + " " + data.accessToken,
+      '3d-application-token': environment.adminAPIToken,
     });
     return this.http.post(url, { comment }, { headers });
   }
