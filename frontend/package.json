@@ -33,9 +33,11 @@
     "csv-parser": "^2.3.0",
     "dayjs": "^1.8.17",
     "google-libphonenumber": "^3.2.5",
+    "jquery": "^3.4.1",
     "ngx-international-phone-number": "^1.0.4",
     "ngx-spinner": "^7.2.0",
     "ngx-toastr": "^10.1.0",
+    "popper.js": "^1.16.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
