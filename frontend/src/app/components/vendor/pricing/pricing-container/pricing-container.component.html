@@ -1,0 +1,7 @@
+<app-sub-section-menu [submenus]="subMenus" [(selectedMenu)]="selectedSubmenu"></app-sub-section-menu>
+
+<div [class]="sidemenuClosed? 'playground wide':'playground'">
+  <div class="wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</div>

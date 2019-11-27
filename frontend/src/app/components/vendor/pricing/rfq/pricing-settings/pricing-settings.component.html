@@ -1,0 +1,177 @@
+<div class="wrapper">
+  <form class="table" [formGroup]="detailForm" (submit)="save($event)">
+    <div class="row header p-3">Pricing Information</div>
+    <div
+      class="row mb-2 dropdown"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="manualPricingDropdown"
+    >
+      <div class="setting-name p-3 col-6">Cutoff for Manual Pricing</div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div
+          class="d-flex align-items-center flex-4"
+          [ngClass]="{ invisible: manualPricingSection === 2 }"
+        >
+          <input
+            required
+            formControlName="eligibleProcessProfile"
+            type="number"
+            class="setting-input"
+            (click)="$event.stopPropagation()"
+          />
+          <span>Eligible Process Profiles</span>
+        </div>
+        <div
+          class="d-flex align-items-center flex-5"
+          [ngClass]="{ invisible: manualPricingSection === 1 }"
+        >
+          <input
+            required
+            type="number"
+            formControlName="eligiblePricingProfile"
+            class="setting-input"
+            (click)="$event.stopPropagation()"
+          />
+          <span>Eligible Pricing Profiles</span>
+        </div>
+        <div class="icon">
+          <i class="fa fa-chevron-down"></i>
+        </div>
+        <ul class="popup dropdown-menu" aria-labelledby="manualPricingDropdown">
+          <li
+            class="dropdown-item"
+            (click)="setManualPricingSection(1)"
+            [ngClass]="{ active: manualPricingSection === 1 }"
+          >
+            Eligible Process Profile
+          </li>
+          <li
+            class="dropdown-item"
+            (click)="setManualPricingSection(2)"
+            [ngClass]="{ active: manualPricingSection === 2 }"
+          >
+            Eligible Pricing Profile
+          </li>
+          <li
+            class="dropdown-item"
+            (click)="setManualPricingSection(3)"
+            [ngClass]="{ active: manualPricingSection === 3 }"
+          >
+            Eligible Process Profiles & Eligible Pricing Profiles
+          </li>
+          <div class="icon">
+            <i class="fa fa-chevron-up"></i>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Of eligible pricing profile, present Bid No
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="presentBidNo"
+            class="setting-input"
+          />
+          <span>(from bottom - 5<sup>th</sup> price)</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Add what % Incremental Margin to Bid No 5
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="percentIncremental"
+            class="setting-input"
+          />
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Add what $ Incremental Margin to Bid No 5
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="amountIncremental"
+            class="setting-input"
+          />
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Default Eligibiligy for auto-pricing approach
+      </div>
+      <div class="auto-pricing-control col-6 d-flex">
+        <div
+          class="col-6 dropdown d-flex align-items-center justify-content-center"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          id="autoPricingApproach"
+        >
+          {{ defaultEligibilities[selectedEligibility].name }}
+          <div class="icon">
+            <i class="fa fa-chevron-down"></i>
+          </div>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-center">
+          {{ defaultEligibilities[selectedEligibility].description }}
+        </div>
+        <ul class="popup dropdown-menu" aria-labelledby="autoPricingApproach">
+          <li
+            class="dropdown-item d-flex auto-pricing-control"
+            (click)="setEligibility(index)"
+            [ngClass]="{ active: selectedEligibility === index }"
+            *ngFor="let item of defaultEligibilities; index as index"
+          >
+              <div class="col-6 p-3">
+                {{ item.name }}
+                <div class="icon" *ngIf="index === 0">
+                    <i class="fa fa-chevron-up"></i>
+                  </div>
+              </div>
+              <div class="col-6">
+                {{ item.description }}
+              </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">Specificity Premium</div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="percentOfSpecificity"
+            class="setting-input"
+          />
+          <span>% per level of specificity</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

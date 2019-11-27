@@ -1,3 +1,8 @@
+import { QueuedManualPriceComponent } from "./../../components/vendor/pricing/rfq/queued-manual-price/queued-manual-price.component";
+import { RecentAutoPricesComponent } from "./../../components/vendor/pricing/rfq/recent-auto-prices/recent-auto-prices.component";
+import { PricingSettingsComponent } from "./../../components/vendor/pricing/rfq/pricing-settings/pricing-settings.component";
+import { RfqContainerComponent } from "./../../components/vendor/pricing/rfq/rfq-container/rfq-container.component";
+import { PricingContainerComponent } from "./../../components/vendor/pricing/pricing-container/pricing-container.component";
 import { ReferralDetailsComponent } from "./../../components/vendor/marketplace/referral/referral-details/referral-details.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -21,6 +26,25 @@ const routes: Routes = [
           { path: "referral/:id", component: ReferralDetailsComponent },
           { path: "", redirectTo: "referral", pathMatch: "full" },
           { path: "**", redirectTo: "referral", pathMatch: "full" }
+        ]
+      },
+      {
+        path: "pricing",
+        component: PricingContainerComponent,
+        children: [
+          {
+            path: "rfq",
+            component: RfqContainerComponent,
+            children: [
+              { path: "pricing-settings", component: PricingSettingsComponent },
+              { path: "auto-prices", component: RecentAutoPricesComponent },
+              { path: "manual-price", component: QueuedManualPriceComponent },
+              { path: "", redirectTo: "pricing-settings", pathMatch: "full" },
+              { path: "**", redirectTo: "pricing-settings", pathMatch: "full" }
+            ]
+          },
+          { path: "", redirectTo: "rfq", pathMatch: "full" },
+          { path: "**", redirectTo: "rfq", pathMatch: "full" }
         ]
       },
       { path: "", redirectTo: "marketplace", pathMatch: "full" }

@@ -32,11 +32,6 @@
         *ngFor="let item of menus[activeTabIndex].actions"
         type="button"
         class="btn theme"
-        [ngClass]="
-          item.name === 'Profile Screener' || item.name === 'Pricing Estimator'
-            ? 'white'
-            : 'btn-primary'
-        "
         (click)="addButton(item.route)"
       >
         {{ item.name }}

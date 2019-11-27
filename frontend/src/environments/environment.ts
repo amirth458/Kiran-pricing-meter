@@ -17,14 +17,14 @@ export const environment = {
       route: '/marketplace',
       icon: 'fa fa-tools',
       visible: true,
-      active: false,
+      active: true,
     },
     {
       name: 'Pricing',
-      route: '/setting',
+      route: '/pricing',
       icon: 'far fa-list-alt',
       visible: true,
-      active: false,
+      active: true,
     },
     {
       name: 'Insight',
