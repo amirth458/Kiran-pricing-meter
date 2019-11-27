@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -15,7 +16,7 @@ export class SideMenuComponent implements OnInit {
 
   sidemenuClosed = false;
 
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit() {
     if (this.menuOpen) {
@@ -37,7 +38,7 @@ export class SideMenuComponent implements OnInit {
   }
   navigateTo(route: string, index: number) {
     if (this.menus[index].active) {
-      this.selectedMenu = route;
+      this.router.navigateByUrl(route);
     }
   }
 }

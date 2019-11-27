@@ -28,6 +28,11 @@ import { MarketplaceContainerComponent } from './vendor/marketplace/marketplace-
 import { ReferralContainerComponent } from './vendor/marketplace/referral/referral-container/referral-container.component';
 import { ReferralComponent } from './vendor/marketplace/referral/referral/referral.component';
 import { ReferralDetailsComponent } from './vendor/marketplace/referral/referral-details/referral-details.component';
+import { PricingContainerComponent } from './vendor/pricing/pricing-container/pricing-container.component';
+import { RfqContainerComponent } from './vendor/pricing/rfq/rfq-container/rfq-container.component';
+import { PricingSettingsComponent } from './vendor/pricing/rfq/pricing-settings/pricing-settings.component';
+import { RecentAutoPricesComponent } from './vendor/pricing/rfq/recent-auto-prices/recent-auto-prices.component';
+import { QueuedManualPriceComponent } from './vendor/pricing/rfq/queued-manual-price/queued-manual-price.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +53,11 @@ import { ReferralDetailsComponent } from './vendor/marketplace/referral/referral
     ReferralContainerComponent,
     ReferralComponent,
     ReferralDetailsComponent,
+    PricingContainerComponent,
+    RfqContainerComponent,
+    PricingSettingsComponent,
+    RecentAutoPricesComponent,
+    QueuedManualPriceComponent,
     
 
   ],
