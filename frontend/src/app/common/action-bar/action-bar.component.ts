@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 import { EventEmitterService } from "src/app/components/event-emitter.service";
 
@@ -7,7 +7,7 @@ import { EventEmitterService } from "src/app/components/event-emitter.service";
   templateUrl: "./action-bar.component.html",
   styleUrls: ["./action-bar.component.css"]
 })
-export class ActionBarComponent implements OnInit {
+export class ActionBarComponent implements OnInit, OnChanges {
   @Input("menus") menus: Array<{
     name: string;
     tooltipMessage: string;
@@ -70,6 +70,16 @@ export class ActionBarComponent implements OnInit {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
     } else {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
+    }
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.selectedTab && changes.selectedTab.currentValue) {
+      this.selectedTab = changes.selectedTab.currentValue;
+      this.menus.map((x, index) => {
+        if (x.name === this.selectedTab) {
+          this.activeTabIndex = index;
+        }
+      });
     }
   }
 }
