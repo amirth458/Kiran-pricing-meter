@@ -1,0 +1,27 @@
+.tab-close {
+  color: gray;
+  text-align: right;
+  cursor: pointer;
+}
+
+:host .nav-tabs .nav-item {
+  cursor: pointer;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom: none;
+  color: var(--theme-light-blue);
+}
+
+:host .nav-tabs .nav-item .active {
+  border-top: 4px solid #74BF09;
+  color: var(--theme-light-green);
+}
+
+:host .nav-tabs .nav-item .nav-link:hover {
+  height: 100%;
+}
+
+:host .nav-tabs {
+  background: #fafafa 0 0 no-repeat padding-box;
+  border-radius: 0 0 0 3px;
+}
