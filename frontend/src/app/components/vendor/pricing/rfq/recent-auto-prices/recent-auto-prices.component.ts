@@ -1,8 +1,10 @@
+import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
 import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
 import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { GridOptions, GridApi } from "ag-grid-community";
 import { NgxSpinnerService } from "ngx-spinner";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-recent-auto-prices',
@@ -10,97 +12,111 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./recent-auto-prices.component.css']
 })
 export class RecentAutoPricesComponent implements OnInit {
-  columnDefs = [
-    {
-      headerName: "Customer",
-      field: "customer",
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: "RFQ",
-      field: "rfq",
-      hide: false,
-      sortable: true,
-      filter: false,
-      cellClass: 'text-center'
-    },
-    {
-      headerName: "Part",
-      field: "part",
-      hide: false,
-      sortable: true,
-      filter: false,
-      cellClass: 'text-center'
-    },
-    {
-      headerName: "File Name",
-      field: "filename",
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: "Quantity",
-      field: "quantity",
-      hide: false,
-      sortable: true,
-      filter: false,
-      cellClass: 'text-center'
-    },
-    {
-      headerName: "Material",
-      field: "material",
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: "Process",
-      field: "process",
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: "Roughness",
-      field: "roughness",
-      hide: false,
-      sortable: true,
-      filter: false,
-      cellClass: 'text-center'
-    },
-    {
-      headerName: "Post-Process",
-      field: "postProcess",
-      hide: false,
-      sortable: true,
-      filter: true,
-      cellClass: 'text-center'
-    },
-    {
-      headerName: "Price",
-      field: "price",
-      hide: false,
-      sortable: true,
-      cellClass: 'text-center'
-    }
-  ];
+
+  @ViewChild('fileCell') fileCell: TemplateRef<any>;
+
+  columnDefs = [];
   gridOptions: GridOptions;
-  gridApi: GridApi;
   rowData = [];
   pageSize = 10;
   navigation;
 
+  frameworkComponents = {
+    templateRenderer: TemplateRendererComponent
+  };
+
   constructor(
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit() {
+    this.columnDefs = [
+      {
+        headerName: "Customer",
+        field: "customer",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "RFQ",
+        field: "rfq",
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellClass: 'text-center'
+      },
+      {
+        headerName: "Part",
+        field: "part",
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellClass: 'text-center'
+      },
+      {
+        headerName: "File Name",
+        field: "filename",
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.fileCell
+        }
+      },
+      {
+        headerName: "Quantity",
+        field: "quantity",
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellClass: 'text-center'
+      },
+      {
+        headerName: "Material",
+        field: "material",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Process",
+        field: "process",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Roughness",
+        field: "roughness",
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellClass: 'text-center'
+      },
+      {
+        headerName: "Post-Process",
+        field: "postProcess",
+        hide: false,
+        sortable: true,
+        filter: true,
+        cellClass: 'text-center'
+      },
+      {
+        headerName: "Price",
+        field: "price",
+        hide: false,
+        sortable: true,
+        cellClass: 'text-center'
+      }
+    ];
+
     this.gridOptions = {
+      frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       pagination: true,
       paginationPageSize: 10,
@@ -109,7 +125,7 @@ export class RecentAutoPricesComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+        console.log('row click', event.data.id);
       },
     };
     this.getRows();
@@ -149,5 +165,11 @@ export class RecentAutoPricesComponent implements OnInit {
   onPageSizeChange(ev) {
     this.pageSize = ev.target.value;
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
+  }
+
+  onFileClicked(event, row, content) {
+    event.stopPropagation();
+    console.log(row);
+    this.modalService.open(content, { centered: true, windowClass: 'file-viewer-modal' });
   }
 }

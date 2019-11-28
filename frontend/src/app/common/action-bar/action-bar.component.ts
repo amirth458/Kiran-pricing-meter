@@ -44,7 +44,6 @@ export class ActionBarComponent implements OnInit {
   
 
   ngOnInit() {
-    console.log('aa', this.menus);
   }
 
   selectTab(tab) {

@@ -34,6 +34,10 @@ import { PricingSettingsComponent } from './vendor/pricing/rfq/pricing-settings/
 import { RecentAutoPricesComponent } from './vendor/pricing/rfq/recent-auto-prices/recent-auto-prices.component';
 import { QueuedManualPriceComponent } from './vendor/pricing/rfq/queued-manual-price/queued-manual-price.component';
 
+import { TabItemComponent } from './../common/tabs/tab-item/tab-item.component';
+import { TabComponent } from './../common/tabs/tab/tab.component';
+import { FileViewerComponent } from './../common/file-viewer/file-viewer.component';
+import { TemplateRendererComponent } from './../common/template-renderer/template-renderer.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -48,6 +52,10 @@ import { QueuedManualPriceComponent } from './vendor/pricing/rfq/queued-manual-p
     TopMenuComponent,
     ProgressBarComponent,
     StatusDropdownFilterComponent,
+    TabComponent,
+    TabItemComponent,
+    TemplateRendererComponent,
+    FileViewerComponent,
 
     MarketplaceContainerComponent,
     ReferralContainerComponent,
@@ -59,7 +67,6 @@ import { QueuedManualPriceComponent } from './vendor/pricing/rfq/queued-manual-p
     RecentAutoPricesComponent,
     QueuedManualPriceComponent,
     
-
   ],
   imports: [
     CommonModule,
@@ -71,6 +78,7 @@ import { QueuedManualPriceComponent } from './vendor/pricing/rfq/queued-manual-p
       MultiSelectCellRendererComponent,
       MultiSelectCellEditorComponent,
       StatusDropdownFilterComponent,
+      TemplateRendererComponent,
     ]),
     NgSelectModule,
     FormsModule,

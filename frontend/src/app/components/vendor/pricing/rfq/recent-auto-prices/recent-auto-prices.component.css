@@ -24,34 +24,9 @@
   }
 }
 
-.ag-grid-dropdown {
-  top: 33px;
-  left: 0px;
-  background: var(--theme-grid-header);
-  display: inline;
-}
-.ag-grid-dropdown-divider {
-  height: 0;
-  overflow: hidden;
-  border-top: 1px solid #e9ecef
-}
-.dropdown-item {
-  color: white !important;
+
+.file-viewer {
+  text-decoration: underline;
+  color: var(--theme-sky-blue);
   cursor: pointer;
-}
-.dropdown-item.active {
-  color: var(--theme-light-green) !important;
-  cursor: pointer;
-}
-.dropdown-item:hover {
-  background: var(--them-dark-blue-opaque);
-  color: var(--theme-light-green);
-}
-.dropdown-menu {
-  padding: 0 !important;
-}
-@media (max-width: 768px) {
-  .wrapper {
-    padding: 40px 20px;
-  }
 }

@@ -1,3 +1,42 @@
-<p>
-  queued-manual-price works!
-</p>
+<div class="wrapper p-5">
+  <app-tab (valueChange)="selectedTabId$.next($event.value)">
+    <app-tab-item
+      *ngFor="let tab of tabs"
+      [value]="tab.id"
+      [tabTitle]="tab.title"
+      [active]="(selectedTabId$ | async) === tab.id"
+    ></app-tab-item>
+    <div class="content px-3 py-5">
+      <div class="table theme-table">
+        <div class="page-size">
+          Page Size:
+          <select id="page-size" (change)="onPageSizeChange($event)">
+            <option selected value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+          </select>
+        </div>
+
+        <ag-grid-angular
+          class="ag-theme-balham w-100 h-100"
+          [rowData]="rowData[(selectedTabId$ | async)]"
+          [gridOptions]="gridOptions"
+          (gridReady)="onGridReady($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </app-tab>
+</div>
+
+<ng-template #fileCell let-row>
+  <span class="file-viewer">
+    <a (click)="onFileClicked($event, row, content)">{{row.filename}}</a>
+  </span>
+</ng-template>
+
+<ng-template #content let-modal>
+  <app-file-viewer (close)="modal.close('')"></app-file-viewer>
+</ng-template>
+  
