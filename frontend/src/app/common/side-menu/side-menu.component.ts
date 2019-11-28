@@ -38,6 +38,7 @@ export class SideMenuComponent implements OnInit {
   }
   navigateTo(route: string, index: number) {
     if (this.menus[index].active) {
+      this.selectedMenu = route;
       this.router.navigateByUrl(route);
     }
   }
