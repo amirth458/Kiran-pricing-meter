@@ -8,7 +8,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ["./file-view-renderer.component.css"]
 })
 export class FileViewRendererComponent implements ICellRendererAngularComp {
-  private params: any;
+  params: any;
   constructor(private modalService: NgbModal) {}
 
   agInit(params: any): void {

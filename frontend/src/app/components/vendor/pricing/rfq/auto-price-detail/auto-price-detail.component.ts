@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class AutoPriceDetailComponent implements OnInit {
   selectedId: number;
-  details = {};
+  details: any;
 
   tabs = [
     {
