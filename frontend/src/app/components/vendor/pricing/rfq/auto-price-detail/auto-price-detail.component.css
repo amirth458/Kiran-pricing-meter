@@ -4,22 +4,19 @@
   background: white;
   border-radius: 4px;
   padding: 40px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.table-control {
-  width: 220px;
-  height: 400px;
-  margin-right: 10px;
-}
-
-.table {
-  height: 430px;
 }
 
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
   }
+}
+
+.content {
+  border: 1px solid var(--theme-tab-border);
+  border-top: none;
+}
+
+.header {
+  color: var(--theme-sky-blue);
 }

@@ -305,4 +305,21 @@ export class RfqPricingService {
     };
     return of(data);
   }
+
+  getAutoPricingDetail(id: number): Observable<any> {
+    const data = {
+      id,
+      customer: "DetailCo",
+      rfq: "58200",
+      part: "58200.1",
+      filename: "Rotor_No_Logo.stl",
+      quantity: 25,
+      material: "ABS M30",
+      process: "3D Printing",
+      roughness: 1,
+      postProcess: "Sand",
+      price: "$ 1200"
+    };
+    return of(data);
+  }
 }

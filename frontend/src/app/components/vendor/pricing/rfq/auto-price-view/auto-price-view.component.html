@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-12 theme-table">
+    <ag-grid-angular
+      class="ag-theme-balham w-100 h-100"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+  </div>
+</div>
+<div class="row mt-4">
+  <div class="col-md-6 col-sm-12">
+    <div class="table">
+      <h6 class="header mb-3"><strong>Price Detail</strong></h6>
+      <table class="w-100 table table-borderless pricing-table">
+        <thead>
+          <tr>
+            <th class="text-center">Line Item</th>
+            <th class="text-center">Unit Count</th>
+            <th class="text-center">Unit Price</th>
+            <th class="text-center">Extended</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center font-weight-bold">Tooling</td>
+            <td class="text-center">1</td>
+            <td class="text-center">0</td>
+            <td class="text-center">0</td>
+          </tr>
+          <tr>
+            <td class="text-center font-weight-bold">Parts</td>
+            <td class="text-center">25</td>
+            <td class="text-center">50</td>
+            <td class="text-center">1250</td>
+          </tr>
+          <tr>
+            <td class="text-center"></td>
+            <td class="text-center"></td>
+            <td class="text-center font-weight-bold">Subtotal</td>
+            <td class="text-center font-weight-bold">1250</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <div class="table">
+      <h6 class="header mb-3"><strong>Shipping Detail</strong></h6>
+      <table class="w-100 shipping-table table-sm">
+        <thead>
+          <tr>
+            <th>Shipment</th>
+            <th>QTY</th>
+            <th>Address</th>
+            <th>Target Delivery</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center">1</td>
+            <td class="text-center">30</td>
+            <td>620 Atlantic Ave, Brooklyn, NY 11217, USA</td>
+            <td>10/05/2019</td>
+          </tr>
+          <tr>
+            <td class="text-center">2</td>
+            <td class="text-center">120</td>
+            <td>620 Atlantic Ave, Brooklyn, NY 11217, USA</td>
+            <td>2 weeks after First Article Approval</td>
+          </tr>
+          <tr>
+            <td class="text-center">3</td>
+            <td class="text-center">200</td>
+            <td>620 Atlantic Ave, Brooklyn, NY 11217, USA</td>
+            <td>2 weeks after Second Article Approval</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

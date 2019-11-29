@@ -1,3 +1,4 @@
+import { FileViewRendererComponent } from './../common/file-view-renderer/file-view-renderer.component';
 import { AppModule } from './../app.module';
 import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
@@ -38,6 +39,10 @@ import { TabItemComponent } from './../common/tabs/tab-item/tab-item.component';
 import { TabComponent } from './../common/tabs/tab/tab.component';
 import { FileViewerComponent } from './../common/file-viewer/file-viewer.component';
 import { TemplateRendererComponent } from './../common/template-renderer/template-renderer.component';
+import { AutoPriceDetailComponent } from './vendor/pricing/rfq/auto-price-detail/auto-price-detail.component';
+import { AutoPriceViewComponent } from './vendor/pricing/rfq/auto-price-view/auto-price-view.component';
+import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
+import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pricing-profile.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -56,6 +61,7 @@ import { TemplateRendererComponent } from './../common/template-renderer/templat
     TabItemComponent,
     TemplateRendererComponent,
     FileViewerComponent,
+    FileViewRendererComponent,
 
     MarketplaceContainerComponent,
     ReferralContainerComponent,
@@ -66,6 +72,10 @@ import { TemplateRendererComponent } from './../common/template-renderer/templat
     PricingSettingsComponent,
     RecentAutoPricesComponent,
     QueuedManualPriceComponent,
+    AutoPriceDetailComponent,
+    AutoPriceViewComponent,
+    PartInformationComponent,
+    PricingProfileComponent,
     
   ],
   imports: [
@@ -79,6 +89,7 @@ import { TemplateRendererComponent } from './../common/template-renderer/templat
       MultiSelectCellEditorComponent,
       StatusDropdownFilterComponent,
       TemplateRendererComponent,
+      FileViewRendererComponent,
     ]),
     NgSelectModule,
     FormsModule,

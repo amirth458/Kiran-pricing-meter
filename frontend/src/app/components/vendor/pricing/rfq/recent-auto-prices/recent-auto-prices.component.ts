@@ -1,10 +1,9 @@
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
+import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
 import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
 import { Router } from "@angular/router";
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { GridOptions, GridApi } from "ag-grid-community";
 import { NgxSpinnerService } from "ngx-spinner";
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-recent-auto-prices',
@@ -13,8 +12,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RecentAutoPricesComponent implements OnInit {
 
-  @ViewChild('fileCell') fileCell: TemplateRef<any>;
-
   columnDefs = [];
   gridOptions: GridOptions;
   rowData = [];
@@ -22,14 +19,13 @@ export class RecentAutoPricesComponent implements OnInit {
   navigation;
 
   frameworkComponents = {
-    templateRenderer: TemplateRendererComponent
+    fileViewRenderer: FileViewRendererComponent
   };
 
   constructor(
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
     private router: Router,
-    private modalService: NgbModal,
   ) {}
 
   ngOnInit() {
@@ -63,10 +59,7 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.fileCell
-        }
+        cellRenderer: 'fileViewRenderer',
       },
       {
         headerName: "Quantity",
@@ -125,7 +118,8 @@ export class RecentAutoPricesComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        console.log('row click', event.data.id);
+        //console.log('row click', event.data.id);
+        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
       },
     };
     this.getRows();
@@ -165,11 +159,5 @@ export class RecentAutoPricesComponent implements OnInit {
   onPageSizeChange(ev) {
     this.pageSize = ev.target.value;
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
-  }
-
-  onFileClicked(event, row, content) {
-    event.stopPropagation();
-    console.log(row);
-    this.modalService.open(content, { centered: true, windowClass: 'file-viewer-modal' });
   }
 }

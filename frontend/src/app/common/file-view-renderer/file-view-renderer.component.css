@@ -1,0 +1,5 @@
+.file-viewer {
+  text-decoration: underline;
+  color: var(--theme-sky-blue);
+  cursor: pointer;
+}

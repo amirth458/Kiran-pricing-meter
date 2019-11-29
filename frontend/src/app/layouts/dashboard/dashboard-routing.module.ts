@@ -1,3 +1,4 @@
+import { AutoPriceDetailComponent } from './../../components/vendor/pricing/rfq/auto-price-detail/auto-price-detail.component';
 import { QueuedManualPriceComponent } from "./../../components/vendor/pricing/rfq/queued-manual-price/queued-manual-price.component";
 import { RecentAutoPricesComponent } from "./../../components/vendor/pricing/rfq/recent-auto-prices/recent-auto-prices.component";
 import { PricingSettingsComponent } from "./../../components/vendor/pricing/rfq/pricing-settings/pricing-settings.component";
@@ -38,6 +39,7 @@ const routes: Routes = [
             children: [
               { path: "pricing-settings", component: PricingSettingsComponent },
               { path: "auto-prices", component: RecentAutoPricesComponent },
+              { path: "auto-prices/:id", component: AutoPriceDetailComponent },
               { path: "manual-price", component: QueuedManualPriceComponent },
               { path: "", redirectTo: "pricing-settings", pathMatch: "full" },
               { path: "**", redirectTo: "pricing-settings", pathMatch: "full" }

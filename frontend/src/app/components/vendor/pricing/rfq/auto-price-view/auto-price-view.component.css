@@ -1,0 +1,23 @@
+.theme-table {
+  height: 90px;
+}
+
+.pricing-table tbody {
+  border: 1px solid var(--theme-table-border);
+}
+.pricing-table thead {
+  background-color: var(--theme-light-sky-blue);
+  border-radius: 2px;
+}
+
+.shipping-table tbody {
+  font-size: 14px;
+  border: 1px solid var(--theme-table-border);
+}
+.shipping-table thead th {
+  padding: 12px;
+  border: none;
+}
+.shipping-table thead {
+  background-color: var(--theme-light-input-bg);
+}

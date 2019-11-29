@@ -1,10 +1,11 @@
-import { TemplateRendererComponent } from "./../../../../../common/template-renderer/template-renderer.component";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { NgxSpinnerService } from "ngx-spinner";
-import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { BehaviorSubject } from "rxjs";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
 
 @Component({
   selector: "app-queued-manual-price",
@@ -12,8 +13,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ["./queued-manual-price.component.css"]
 })
 export class QueuedManualPriceComponent implements OnInit {
-  @ViewChild("fileCell") fileCell: TemplateRef<any>;
-
   tabs = [
     {
       id: 0,
@@ -27,7 +26,7 @@ export class QueuedManualPriceComponent implements OnInit {
   selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   frameworkComponents = {
-    templateRenderer: TemplateRendererComponent
+    fileViewRenderer: FileViewRendererComponent
   };
 
   columnDefs = [[],[]];
@@ -74,10 +73,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "templateRenderer",
-          cellRendererParams: {
-            ngTemplate: this.fileCell
-          }
+          cellRenderer: "fileViewRenderer",
         },
         {
           headerName: "Quantity",
@@ -155,10 +151,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "templateRenderer",
-          cellRendererParams: {
-            ngTemplate: this.fileCell
-          }
+          cellRenderer: "fileViewRenderer",
         },
         {
           headerName: "Material",

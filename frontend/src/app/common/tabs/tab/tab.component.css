@@ -8,13 +8,8 @@
   cursor: pointer;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
-  border-bottom: none;
+  border: none;
   color: var(--theme-light-blue);
-}
-
-:host .nav-tabs .nav-item .active {
-  border-top: 4px solid #74BF09;
-  color: var(--theme-light-green);
 }
 
 :host .nav-tabs .nav-item .nav-link:hover {
@@ -24,4 +19,17 @@
 :host .nav-tabs {
   background: #fafafa 0 0 no-repeat padding-box;
   border-radius: 0 0 0 3px;
+  border: 1px solid #dee2e6;
+  border-bottom: none;
+}
+
+:host .nav-tabs .nav-item .nav-link {
+  border: none;
+  border-top: 4px solid transparent;
+  margin-top: -1px;
+}
+:host .nav-tabs .nav-item .nav-link.active {
+  border-top: 4px solid #74BF09;
+  color: var(--theme-light-green);
+  margin-top: -1px;
 }

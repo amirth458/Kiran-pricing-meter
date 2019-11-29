@@ -29,14 +29,3 @@
     </div>
   </app-tab>
 </div>
-
-<ng-template #fileCell let-row>
-  <span class="file-viewer">
-    <a (click)="onFileClicked($event, row, content)">{{row.filename}}</a>
-  </span>
-</ng-template>
-
-<ng-template #content let-modal>
-  <app-file-viewer (close)="modal.close('')"></app-file-viewer>
-</ng-template>
-  

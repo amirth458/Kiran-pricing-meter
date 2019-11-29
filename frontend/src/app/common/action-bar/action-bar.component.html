@@ -41,11 +41,8 @@
     <div
       class="action-button"
       *ngIf="
-        (menus[activeTabIndex].actions.length &&
-          (route.url.includes('add') ||
-            route.url.includes('edit') ||
-            route.url.includes('clone'))) ||
-        route.url.includes('referral/')
+        route.url.includes('referral/') ||
+        route.url.includes('auto-prices/')
       "
     >
       <button

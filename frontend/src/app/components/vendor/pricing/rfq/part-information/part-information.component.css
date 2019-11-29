@@ -1,0 +1,142 @@
+.wrapper {
+  border: 1px solid var(--theme-table-border);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.border-white {
+  border: 1px solid white;
+}
+
+.image-section {
+  border-right: 1px solid var(--theme-table-border);
+}
+
+.image-section>p {
+  color: var(--theme-sky-blue);
+}
+
+.image-section>p:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tabs .tab-header {
+  height: 35px;
+  color: var(--theme-main-blue);
+}
+
+.tabs .tab-header .tab {
+  padding: 0px 25px;
+  height: 100%;
+  flex-grow: .5;
+  min-width: fit-content;
+}
+
+.tabs .tab-header .tab.active {
+  background: rgba(113, 171, 228, 0.353);
+}
+
+.tabs .tab-header .tab:hover {
+  cursor: pointer;
+}
+
+.tab-body {
+  padding: 10px;
+  font-size: 12px;
+}
+
+
+.tab-body .normal {}
+
+.tab-body .normal table td {
+  padding: 5px 10px;
+}
+
+
+.tab-body .tolerances {}
+
+
+.files .delete {
+  font-size: 17px;
+}
+
+table.rfq-table tbody {
+  font-size: .8rem;
+}
+
+table.rfq-table tbody tr>th[scope="row"] {
+  color: white;
+  background: var(--theme-grid-header);
+
+}
+
+table.rfq-table tbody td,
+.deliveryModal table tbody td {
+  padding: .2rem;
+  height: 100%;
+}
+
+table.rfq-table td>p {
+  font-size: 1rem;
+}
+
+table.rfq-table td>p:hover {
+  cursor: pointer;
+}
+
+
+.deliveryModal table thead {
+  background: #BFD9F2;
+}
+
+
+.deliveryModal table tbody td {
+  padding: .75rem;
+}
+
+
+
+
+/* Process Tool Modal */
+
+.processToolModal div.icon {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  background: var(--theme-btn-primary);
+  color: white;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.processToolModal div.icon:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.processToolModal input {
+  border: 1px solid #80808036
+}
+
+.processToolModal .options,
+.postProcessActionModal .options {
+  max-height: 300px;
+  overflow: scroll;
+}
+
+.processToolModal .option-item.active,
+.processToolModal .option-item:hover {
+  cursor: pointer;
+  background: var(--theme-light-green-with-opacity);
+}
+
+
+.postProcessAction .options .icon.text-theme-green {
+  font-size: 18px;
+}
+
+.postProcessAction .options .icon.text-theme-green:hover {
+  cursor: pointer;
+}
