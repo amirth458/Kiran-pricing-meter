@@ -39,10 +39,11 @@ import { TabItemComponent } from './../common/tabs/tab-item/tab-item.component';
 import { TabComponent } from './../common/tabs/tab/tab.component';
 import { FileViewerComponent } from './../common/file-viewer/file-viewer.component';
 import { TemplateRendererComponent } from './../common/template-renderer/template-renderer.component';
-import { AutoPriceDetailComponent } from './vendor/pricing/rfq/auto-price-detail/auto-price-detail.component';
-import { AutoPriceViewComponent } from './vendor/pricing/rfq/auto-price-view/auto-price-view.component';
+import { PriceDetailComponent } from './vendor/pricing/rfq/price-detail/price-detail.component';
+import { PriceViewComponent } from './vendor/pricing/rfq/price-view/price-view.component';
 import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
 import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pricing-profile.component';
+import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-profile-detail/pricing-profile-detail.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -72,10 +73,11 @@ import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pr
     PricingSettingsComponent,
     RecentAutoPricesComponent,
     QueuedManualPriceComponent,
-    AutoPriceDetailComponent,
-    AutoPriceViewComponent,
+    PriceDetailComponent,
+    PriceViewComponent,
     PartInformationComponent,
     PricingProfileComponent,
+    PricingProfileDetailComponent,
     
   ],
   imports: [

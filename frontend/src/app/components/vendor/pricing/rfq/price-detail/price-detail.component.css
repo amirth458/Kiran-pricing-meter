@@ -18,5 +18,9 @@
 }
 
 .header {
-  color: var(--theme-sky-blue);
+  color: var(--theme-bright-blue);
+}
+
+.header.manual-price {
+  color: var(--theme-light-blue);
 }

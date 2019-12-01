@@ -13,7 +13,6 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.params = params;
-    console.log("params", params);
   }
 
   refresh(): boolean {

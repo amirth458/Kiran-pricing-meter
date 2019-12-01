@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Component, OnInit } from "@angular/core";
@@ -24,6 +25,7 @@ export class QueuedManualPriceComponent implements OnInit {
     }
   ];
   selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
+  selectedTabId: number;
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -39,6 +41,7 @@ export class QueuedManualPriceComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
     private modalService: NgbModal,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -203,10 +206,12 @@ export class QueuedManualPriceComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        console.log("row click", event.data.id);
+        const type = this.selectedTabId === 0 ? 'queued' : 'priced';
+        this.router.navigateByUrl(this.router.url + '/'+ type +'/' + event.data.id);
       }
     };
     this.selectedTabId$.subscribe(value => {
+      this.selectedTabId = value;
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
         this.gridOptions.api.setRowData(this.rowData[value]);
@@ -218,8 +223,7 @@ export class QueuedManualPriceComponent implements OnInit {
   }
 
   onGridReady(ev) {
-    console.log("gridReady");
-    this.gridOptions = ev;
+    this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
   }
 

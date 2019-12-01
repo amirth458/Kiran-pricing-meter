@@ -1,15 +1,10 @@
 .wrapper {
   border: 1px solid var(--theme-table-border);
   border-radius: 10px;
-  padding: 10px;
 }
 
 .border-white {
   border: 1px solid white;
-}
-
-.image-section {
-  border-right: 1px solid var(--theme-table-border);
 }
 
 .image-section>p {
@@ -24,6 +19,20 @@
 .tabs .tab-header {
   height: 35px;
   color: var(--theme-main-blue);
+}
+
+.details-section {
+  border-left: 1px solid var(--theme-table-border);
+  color: var(--theme-text-color);
+}
+
+.details {
+  color: var(--theme-text-color);
+  font-size: 14px;
+}
+.details .quantity {
+  color: var(--theme-light-blue);
+  font-size: 1rem;
 }
 
 .tabs .tab-header .tab {
@@ -46,19 +55,8 @@
   font-size: 12px;
 }
 
-
-.tab-body .normal {}
-
-.tab-body .normal table td {
-  padding: 5px 10px;
-}
-
-
-.tab-body .tolerances {}
-
-
-.files .delete {
-  font-size: 17px;
+table.rfq-table {
+  margin: 0 auto;
 }
 
 table.rfq-table tbody {
@@ -68,75 +66,24 @@ table.rfq-table tbody {
 table.rfq-table tbody tr>th[scope="row"] {
   color: white;
   background: var(--theme-grid-header);
-
 }
 
 table.rfq-table tbody td,
 .deliveryModal table tbody td {
-  padding: .2rem;
+  text-align: center;
   height: 100%;
 }
 
-table.rfq-table td>p {
-  font-size: 1rem;
+table.rfq-table tbody th,
+table.rfq-table tbody td {
+  padding: 8px 15px;
 }
 
-table.rfq-table td>p:hover {
-  cursor: pointer;
+.image-section .tabs .tab{
+  font-size: 14px;
+  color: var(--theme-bright-blue);
 }
-
-
-.deliveryModal table thead {
-  background: #BFD9F2;
-}
-
-
-.deliveryModal table tbody td {
-  padding: .75rem;
-}
-
-
-
-
-/* Process Tool Modal */
-
-.processToolModal div.icon {
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  padding: 7px;
-  background: var(--theme-btn-primary);
-  color: white;
-  height: 100%;
-  border-radius: 5px;
-}
-
-.processToolModal div.icon:hover {
-  cursor: pointer;
-  opacity: .8;
-}
-
-.processToolModal input {
-  border: 1px solid #80808036
-}
-
-.processToolModal .options,
-.postProcessActionModal .options {
-  max-height: 300px;
-  overflow: scroll;
-}
-
-.processToolModal .option-item.active,
-.processToolModal .option-item:hover {
-  cursor: pointer;
-  background: var(--theme-light-green-with-opacity);
-}
-
-
-.postProcessAction .options .icon.text-theme-green {
-  font-size: 18px;
-}
-
-.postProcessAction .options .icon.text-theme-green:hover {
-  cursor: pointer;
+a.view-3d {
+  text-decoration: underline;
+  color: var(--theme-sky-blue);
 }

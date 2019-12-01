@@ -1,13 +1,13 @@
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
+import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
 import { Component, OnInit } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 
 @Component({
-  selector: "app-auto-price-view",
-  templateUrl: "./auto-price-view.component.html",
-  styleUrls: ["./auto-price-view.component.css"]
+  selector: "app-price-view",
+  templateUrl: "./price-view.component.html",
+  styleUrls: ["./price-view.component.css"]
 })
-export class AutoPriceViewComponent implements OnInit {
+export class PriceViewComponent implements OnInit {
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
@@ -121,7 +121,7 @@ export class AutoPriceViewComponent implements OnInit {
   }
 
   onGridReady(ev) {
-    this.gridOptions = ev;
+    this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
   }
 }

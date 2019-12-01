@@ -306,7 +306,7 @@ export class RfqPricingService {
     return of(data);
   }
 
-  getAutoPricingDetail(id: number): Observable<any> {
+  getPricingDetail(id: number): Observable<any> {
     const data = {
       id,
       customer: "DetailCo",
@@ -320,6 +320,24 @@ export class RfqPricingService {
       postProcess: "Sand",
       price: "$ 1200"
     };
+    return of(data);
+  }
+
+  getPricingProfiles(filter: FilterOption): Observable<any> {
+    const data = {
+      content: [{
+      id: 1,
+      vendorName: 'VendCo',
+      pricingProfile: 'Fast',
+      material: 'ABS M30',
+      equipment: 'Fortus 450',
+      processProfile: 'Fortus 450 BS M30',
+      postProcess: 'Electropolishing',
+      machinesMatched: 2,
+      totalCost: 1238,
+      esitmatedDelivery: '10/12/2019',
+      matchScore: 4.9
+    }]};
     return of(data);
   }
 }

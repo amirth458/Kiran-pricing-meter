@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AutoPriceDetailComponent } from './auto-price-detail.component';
+import { PriceDetailComponent } from './price-detail.component';
 
-describe('AutoPriceDetailComponent', () => {
-  let component: AutoPriceDetailComponent;
-  let fixture: ComponentFixture<AutoPriceDetailComponent>;
+describe('PriceDetailComponent', () => {
+  let component: PriceDetailComponent;
+  let fixture: ComponentFixture<PriceDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AutoPriceDetailComponent ]
+      declarations: [ PriceDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AutoPriceDetailComponent);
+    fixture = TestBed.createComponent(PriceDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -41,8 +41,10 @@
     <div
       class="action-button"
       *ngIf="
-        route.url.includes('referral/') ||
-        route.url.includes('auto-prices/')
+        !route.url.includes('pricing-profile') && 
+        (route.url.includes('referral/') ||
+        route.url.includes('auto-prices/') || 
+        route.url.includes('manual-price/'))
       "
     >
       <button

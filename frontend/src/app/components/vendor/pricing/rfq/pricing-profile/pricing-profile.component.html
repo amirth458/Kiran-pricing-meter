@@ -1,3 +1,39 @@
-<p>
-  pricing-profile works!
-</p>
+<div class="w-100 p-3">
+  <p class="match-text">10 process profiles and 8 pricing profile matched</p>
+  <div class="d-flex">
+    <div class="table-control">
+      <app-column-search-filter
+        width="200px"
+        height="295px"
+        [type]="type"
+        [(filterColumns)]="filterColumns"
+        (filterColumnsChange)="filterColumnsChange($event)"
+        [(searchColumns)]="searchColumns"
+        (searchColumnsChange)="searchColumnsChange($event)"
+      >
+      </app-column-search-filter>
+    </div>
+    <div class="table theme-table">
+      <div class="page-size">
+        Page Size:
+        <select id="page-size">
+          <option selected value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </div>
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>  
+<ng-template #dateCell let-row let-column="params">
+  {{ row[column?.colDef?.field] | date: "dd/MM/yyyy" }}
+</ng-template>

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AutoPriceViewComponent } from './auto-price-view.component';
+import { PriceViewComponent } from './price-view.component';
 
-describe('AutoPriceViewComponent', () => {
-  let component: AutoPriceViewComponent;
-  let fixture: ComponentFixture<AutoPriceViewComponent>;
+describe('PriceViewComponent', () => {
+  let component: PriceViewComponent;
+  let fixture: ComponentFixture<PriceViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AutoPriceViewComponent ]
+      declarations: [ PriceViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AutoPriceViewComponent);
+    fixture = TestBed.createComponent(PriceViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
