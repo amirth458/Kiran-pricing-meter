@@ -18,7 +18,7 @@
               width="300px"
             />
           </div>
-          <a class="view-3d">View in 3D</a>
+          <a class="view-3d" (click)="view3D(content)">View in 3D</a>
         </div>
         <div class="details ml-5 mt-4">
           <p class="quantity mb-3"><strong>Quantity: 25</strong></p>
@@ -827,3 +827,8 @@
   </ng-template>
   <!-- End of Save Modal -->
 </div>
+
+
+<ng-template #content let-modal>
+  <app-model-detail-view (close)="modal.close('')"></app-model-detail-view>
+</ng-template>

@@ -23,7 +23,7 @@
     <div class="content p-4">
       <ng-container [ngSwitch]="selectedTabId$ | async">
         <ng-container *ngSwitchCase="0">
-          <app-price-view></app-price-view>
+          <app-price-view [type]="type"></app-price-view>
         </ng-container>
         <ng-container *ngSwitchCase="1">
           <app-part-information></app-part-information>

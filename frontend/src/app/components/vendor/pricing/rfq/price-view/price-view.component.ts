@@ -1,6 +1,8 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: "app-price-view",
@@ -8,6 +10,12 @@ import { GridOptions } from "ag-grid-community";
   styleUrls: ["./price-view.component.css"]
 })
 export class PriceViewComponent implements OnInit {
+
+  @Input() type: string;
+  @Input() pricingData: any;
+
+  stage = 'unset';
+
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
@@ -29,7 +37,28 @@ export class PriceViewComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  pricingForm: FormGroup = this.fb.group({
+    toolingUnitCount: [1],
+    toolingUnitPrice: [0],
+    toolingExtended: [0],
+    partsUnitCount: [30],
+    partsUnitPrice: [50],
+    partsExtended: [1500],
+  });
+
+  pricingDetail = {
+    toolingUnitCount: 1,
+    toolingUnitPrice: 0,
+    toolingExtended: 0,
+    partsUnitCount: 30,
+    partsUnitPrice: 50,
+    partsExtended: 1500,
+  }
+
+  constructor(
+    private modalService: NgbModal,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.columnDefs = [
@@ -123,5 +152,26 @@ export class PriceViewComponent implements OnInit {
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  changeStage(newStage) {
+    this.stage = newStage;
+  }
+
+  openModal(content, css) {
+    this.modalService.open(content, { centered: true, windowClass: `${css}-modal` });
+  }
+
+  onSave() {
+    this.modalService.dismissAll();
+    this.stage = 'set';
+    this.pricingDetail = {...this.pricingForm.value};
+  }
+
+  onRecommendModalClose(ev) {
+    if (ev) {
+      console.log(ev);
+    }
+    this.modalService.dismissAll();
   }
 }

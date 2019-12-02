@@ -1,3 +1,4 @@
+import { ModelDetailViewComponent } from './../common/model-detail-view/model-detail-view.component';
 import { FileViewRendererComponent } from './../common/file-view-renderer/file-view-renderer.component';
 import { AppModule } from './../app.module';
 import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
@@ -44,6 +45,7 @@ import { PriceViewComponent } from './vendor/pricing/rfq/price-view/price-view.c
 import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
 import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pricing-profile.component';
 import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-profile-detail/pricing-profile-detail.component';
+import { RecommendedPricingComponent } from './vendor/pricing/rfq/recommended-pricing/recommended-pricing.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -63,6 +65,7 @@ import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-prof
     TemplateRendererComponent,
     FileViewerComponent,
     FileViewRendererComponent,
+    ModelDetailViewComponent,
 
     MarketplaceContainerComponent,
     ReferralContainerComponent,
@@ -78,6 +81,7 @@ import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-prof
     PartInformationComponent,
     PricingProfileComponent,
     PricingProfileDetailComponent,
+    RecommendedPricingComponent,
     
   ],
   imports: [

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-part-information',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PartInformationComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
   }
 
+  view3D(content) {
+    this.modalService.open(content, {
+      centered: true,
+      windowClass: "model-viewer-modal"
+    });
+  }
 }

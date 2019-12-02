@@ -1,0 +1,56 @@
+::ng-deep .model-viewer-modal .modal-dialog {
+  max-width: 900px;
+}
+
+.modal-container {
+  width: 900px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  border-bottom: none;
+  position: relative;
+}
+.modal-header .close {
+  outline: none;
+  position: absolute;
+  right: 1rem;
+}
+.modal-title {
+  color: var(--theme-light-green);
+  text-align: center;
+  flex-grow: 1;
+}
+
+.modal-body {
+  flex-grow: 1;
+}
+.form-row > .col,
+.form-row > [class*="col-"] {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+.footnote.orange {
+  color: var(--theme-orange);
+}
+.btn-primary {
+  width: 200px;
+}
+
+.modal-body .heading {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--theme-light-green);
+  margin-bottom: 50px;
+}
+
+.modal-body .content {
+  font-size: 14px;
+  color: var(--theme-light-blue);
+  width: 400px;
+  text-align: center;
+  line-height: 2;
+  margin-bottom: 40px;
+}

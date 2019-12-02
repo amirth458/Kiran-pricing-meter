@@ -86,4 +86,5 @@ table.rfq-table tbody td {
 a.view-3d {
   text-decoration: underline;
   color: var(--theme-sky-blue);
+  cursor: pointer;
 }

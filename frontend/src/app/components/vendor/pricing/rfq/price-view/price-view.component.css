@@ -21,3 +21,90 @@
 .shipping-table thead {
   background-color: var(--theme-light-input-bg);
 }
+
+td.unset {
+  color: var(--theme-orange);
+}
+table.pricing-table td {
+  padding: 8px 20px;
+}
+table.pricing-table th {
+  padding: 12px 20px;
+}
+.orange-btn {
+  color: white;
+  background-color: var(--theme-orange);
+  margin: 0 15px;
+}
+
+.price-input {
+  text-align: center;
+  width: 50px;
+  font-size: 12px;
+}
+.price-input[readonly] {
+  border: none;
+  outline: none;
+}
+
+td a.show-recommended {
+  color: var(--theme-light-green);
+  font-size: 14px;
+}
+
+.unset-row {
+  border: 1px solid var(--theme-orange);
+  color: var(--theme-orange);
+  font-size: 14px;
+}
+.unset-row td {
+  vertical-align: middle;
+}
+
+.edit-row {
+  border-top: 1px solid var(--theme-table-border);
+}
+.edit-row td {
+  vertical-align: middle;
+}
+
+.confirm-row {
+  border: 1px solid var(--theme-sky-blue);
+}
+.confirm-row td {
+  vertical-align: middle;
+}
+.confirm-row td {
+  color: var(--theme-sky-blue);
+}
+
+.green-btn {
+  color: white;
+  background-color: var(--theme-light-green);
+}
+
+.btn {
+  padding: 5px 20px;
+  white-space: nowrap;
+  font-size: 14px;
+}
+td a.edit-price {
+  font-size: 14px;
+  color: var(--theme-orange);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+::ng-deep .confirm-modal .modal-dialog {
+  max-width: 800px;
+}
+
+.modal-title {
+  color: var(--theme-light-green);
+}
+.modal-body {
+  color: var(--theme-text-color);
+}
+.additional {
+  font-size: 12px;
+}

@@ -1,0 +1,35 @@
+::ng-deep .recommended-modal .modal-dialog {
+  max-width: 900px;
+}
+
+.modal-container {
+}
+
+.modal-header {
+  border-bottom: none;
+  position: relative;
+}
+.modal-header .close {
+  outline: none;
+  position: absolute;
+  right: 1rem;
+}
+.modal-title {
+  color: var(--theme-light-green);
+  text-align: center;
+  flex-grow: 1;
+}
+
+.theme-table {
+  height: 90px;
+}
+
+.action {
+  display: flex;
+  justify-content: flex-end;
+}
+.green-btn {
+  background-color: var(--theme-light-green);
+  color: white;
+  padding: 5px 20px;
+}
