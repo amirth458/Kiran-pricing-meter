@@ -156,7 +156,7 @@ export class ReferralComponent implements OnInit {
     }
   }
   onGridReady(ev) {
-    this.gridOptions = ev;
+    this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
   }
 

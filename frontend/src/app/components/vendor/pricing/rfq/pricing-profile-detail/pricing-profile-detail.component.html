@@ -1,0 +1,96 @@
+<div class="wrapper container-fluid">
+  <div class="header d-flex align-items-center mb-3" [ngClass]="{'manual-price': this.type !== undefined}">
+    <h5 class="text-center flex-grow-1">{{type === undefined ? '' : type === 'queued' ? 'Queued for Manual Pricing: ' : 'Manually Priced: '}}Part {{ pricingDetail.part }}</h5>
+    <button
+      type="button"
+      class="btn btn-back theme white"
+      (click)="backButton()"
+    >
+      <i class="fas fa-chevron-left"></i>
+      <span>
+        Back
+      </span>
+    </button>
+  </div>
+  <div class="row">
+    <div class="col-12 theme-table single-row-table">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="rowData[0]"
+        [gridOptions]="gridOptions[0]"
+        (gridReady)="onGridReady(0, $event)"
+      ></ag-grid-angular>
+    </div>
+  </div>
+
+  <p class="part-header font-weight-bold mt-4">Price Summary</p>
+  <div class="row">
+    <div class="col-12 theme-table single-row-table">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="rowData[1]"
+        [gridOptions]="gridOptions[1]"
+        (gridReady)="onGridReady(1, $event)"
+      ></ag-grid-angular>
+    </div>
+  </div>
+
+  <p class="part-header font-weight-bold mt-4">Price Profile Detail</p>
+  <div class="row">
+    <div class="col-12">
+      <div class="price-profile-detail">
+        <span>
+          Process Profile Name:
+          <mark>{{ priceProfileDetail.processProfileName }}</mark>
+        </span>
+        <span>
+          Pricing Parameter Set Nickname:
+          <mark>{{ priceProfileDetail.pricingParameterSetNickname }}</mark>
+        </span>
+        <span>
+          Conditions:
+          <ng-container *ngFor="let condition of priceProfileDetail.conditions">
+            <mark>{{ condition }}</mark>
+          </ng-container>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12">
+      <table class="table price-profile-table">
+        <thead>
+          <tr>
+            <th>Invoice Item</th>
+            <th>Line Item</th>
+            <th>Value</th>
+            <th>Per</th>
+            <th>Part Value</th>
+            <th>Measurement Unit</th>
+            <th>Sub-Order Value</th>
+            <th>Sub Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of priceProfileDetail.items">
+            <td>{{ item.invoiceItem }}</td>
+            <td>{{ item.lineItem }}</td>
+            <td class="text-center">{{ item.value }}</td>
+            <td class="text-center">{{ item.per }}</td>
+            <td class="text-center">{{ item.partValue }}</td>
+            <td class="text-center">{{ item.measurementUnit }}</td>
+            <td class="text-center">{{ item.subOrderValue }}</td>
+            <td class="text-center">{{ item.subTotal }}</td>
+          </tr>
+          <tr>
+            <td colspan="5"></td>
+            <td colspan="2" class="text-center font-weight-bold subtotal">
+              Subtotal
+            </td>
+            <td class="text-center font-weight-bold subtotal">$1200</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

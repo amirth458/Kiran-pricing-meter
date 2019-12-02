@@ -1,0 +1,834 @@
+<div class="wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-7 d-flex px-3 py-5">
+        <div class="image-section">
+          <div class="tabs d-flex">
+            <div class="tab text-center flex-grow-1">
+              <a>Part View</a>
+            </div>
+            <div class="tab text-center flex-grow-1">
+              <a>Platform View</a>
+            </div>
+          </div>
+          <div class="image">
+            <img
+              src="../../../../assets/image/example_machine.png"
+              alt="image of a machine design"
+              width="300px"
+            />
+          </div>
+          <a class="view-3d" (click)="view3D(content)">View in 3D</a>
+        </div>
+        <div class="details ml-5 mt-4">
+          <p class="quantity mb-3"><strong>Quantity: 25</strong></p>
+          <p><b>Part Dimensions:</b> 12.36mm * 4.50mm * 4.73mm</p>
+          <p><b>Files:</b> Break rotor no slogo.step</p>
+          <p><b>Supplemental Files:</b> Break rotor no slogo.step</p>
+          <p><b>Volumn - </b> 3.51 cubic centimeter</p>
+          <p><b>Bounding box - </b>6.2 cubic centimetor</p>
+          <p><b>Surface area - </b>8.1 square centimeter</p>
+          <p><b>Thinnest wall - </b>1.4 milimeter</p>
+          <p><b>Critical Tolerante 1:</b>6cm +/- 0.1cm</p>
+          <p><b>Critical Tolerante 2:</b>15cm +/- 0.5cm</p>
+          <p><b>Critical Tolerante 3:</b>6cm +/- 0.5cm</p>
+        </div>
+      </div>
+
+      <div class="col-md-5 details-section py-3 px-5">
+        <h5 class="text-center">Project Information</h5>
+        <table class="table table-bordered text-theme rfq-table ">
+          <tbody>
+            <tr>
+              <th scope="row">RFQ</th>
+              <td>58200</td>
+            </tr>
+            <tr>
+              <th scope="row">Customer</th>
+              <td>MedCo</td>
+            </tr>
+            <tr>
+              <th scope="row">Industry</th>
+              <td>Medical</td>
+            </tr>
+            <tr>
+              <th scope="row">Anti-Match Eligibility</th>
+              <td>No Medical</td>
+            </tr>
+            <tr>
+              <th scope="row">Permitted Countries</th>
+              <td>USA</td>
+            </tr>
+            <tr>
+              <th scope="row">Required Certs</th>
+              <td>ISO 13485:2015</td>
+            </tr>
+            <tr>
+              <th scope="row">NDA</th>
+              <td>1</td>
+            </tr>
+            <tr>
+              <th scope="row">Sub-Order</th>
+              <td>58200.1</td>
+            </tr>
+            <tr>
+              <th scope="row">Cutting and Bounding</th>
+              <td>No</td>
+            </tr>
+            <tr>
+              <th scope="row">Quantity</th>
+              <td>25</td>
+            </tr>
+            <tr>
+              <th scope="row">Material</th>
+              <td>No</td>
+            </tr>
+            <tr>
+              <th scope="row">Process/Equipment</th>
+              <td>3D Printing</td>
+            </tr>
+            <tr>
+              <th scope="row">Tolerance</th>
+              <td>0.005</td>
+            </tr>
+            <tr>
+              <th scope="row">Surface Roughness(Ra)</th>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th scope="row">Post-Process</th>
+              <td>8</td>
+            </tr>
+            <tr>
+              <th scope="row">Required Shipment</th>
+              <td>9/29/2019 (2BD)</td>
+            </tr>
+            <tr>
+              <th scope="row">Non-Quote Rational</th>
+              <td># of profiles (material)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shipment Modal   -->
+  <ng-template #content let-modal>
+    <div class="deliveryModal">
+      <div class="modal-header">
+        <h4
+          class="modal-title text-theme-green text-capitalize w-100 text-center"
+          id="modal-basic-title"
+        >
+          123.1 Rotor
+        </h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="progress-bar-section">
+          <p class="text-theme">
+            Quantity to Delivery
+            <span class="text-theme-green">
+              ( {{ selectedDeliveryItemCount }} / {{ quantity }} )</span
+            >
+            <ngb-progressbar
+              type="success"
+              [value]="(selectedDeliveryItemCount * 100) / quantity"
+            ></ngb-progressbar>
+          </p>
+        </div>
+        <table class="table text-theme">
+          <thead>
+            <tr>
+              <th scope="col">Shipment Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Target Delivery Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let shipment of deliveryDates; let index = index">
+              <td>Shipment {{ index + 1 }}</td>
+              <td>
+                <input
+                  required
+                  [(ngModel)]="deliveryDates[index].quantity"
+                  [ngModelOptions]="{ standalone: true }"
+                  type="number"
+                  maxlength="4"
+                  min="0"
+                  min="0"
+                  max="9999"
+                  class="form-control"
+                  [id]="'quantity' + index + 1"
+                  [name]="'quantity' + index + 1"
+                />
+              </td>
+              <td>
+                <div class="input-group">
+                  <input
+                    id="dateOfBirth"
+                    class="form-control"
+                    [(ngModel)]="deliveryDates[index].date"
+                    [ngModelOptions]="{ standalone: true }"
+                    placeholder="yyyy-mm-dd"
+                    [name]="'shipment' + index + 1"
+                    ngbDatepicker
+                    #shipment1="ngbDatepicker"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary calendar"
+                      (click)="shipment1.toggle()"
+                      type="button"
+                    >
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer row">
+        <div class="col-md-3">
+          <button
+            type="button"
+            class="btn theme"
+            (click)="modal.close('Save click')"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- End of Shipment Modal   -->
+
+  <!-- Process Tool Modal -->
+  <ng-template #processTool let-modal>
+    <div class="processToolModal">
+      <div class="modal-header">
+        <h4
+          class="modal-title text-theme-green text-capitalize w-100 text-center"
+          id="modal-basic-title"
+        >
+          Process Search Tool
+        </h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row search">
+          <div class="col-md-2"></div>
+
+          <div class="col-md-8">
+            <div class="d-flex input">
+              <input
+                type="text"
+                (keyup)="onPartToolSearch($event)"
+                class="form-control shadow white"
+                id="quantity"
+                name="quantity"
+              />
+              <div class="icon search-icon">
+                <i class="fas fa-search"></i>
+              </div>
+            </div>
+
+            <div
+              *ngIf="processOptionsFiltered.length"
+              class="shadow mt-4 p-3 text-theme options"
+            >
+              <ng-container *ngFor="let option of processOptionsFiltered">
+                <div
+                  (click)="selectProcess(option.id)"
+                  class="option-item active"
+                  [ngClass]="{ active: this.form.value.process == option.id }"
+                >
+                  <p class="m-2 p-2">{{ option.name }}</p>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer row justify-content-center">
+        <div class="col-md-4">
+          <button
+            type="button"
+            [disabled]="!this.form.value.process"
+            (click)="modal.close()"
+            class="col btn theme"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- End of Process Tool Modal -->
+
+  <!-- Process Tool Modal -->
+  <ng-template #postProcessAction let-modal>
+    <div class="postProcessAction">
+      <div class="modal-header">
+        <h4
+          class="modal-title text-theme-green text-capitalize w-100 text-center"
+          id="modal-basic-title"
+        >
+          Post-Process Search Tool
+        </h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row search">
+          <div class="col-md-4"></div>
+
+          <div class="col-md-4 options shadow p-2 text-theme">
+            <div
+              class="row m-2"
+              *ngFor="let column of postProcessActionOptions; let index = index"
+            >
+              <div class="col-2">
+                <span
+                  class="icon text-theme-green"
+                  *ngIf="column.checked"
+                  (click)="togglePostProcessCheck(index)"
+                >
+                  <i class="fas fa-check-square"></i>
+                </span>
+
+                <span
+                  class="icon text-theme-green"
+                  *ngIf="!column.checked"
+                  (click)="togglePostProcessCheck(index)"
+                >
+                  <i class="far fa-square"></i>
+                </span>
+              </div>
+
+              <div class="col-10 column-name">
+                <span title="{{ column.name }}">
+                  {{ column.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer row justify-content-center">
+        <div class="col-md-4">
+          <button
+            type="button"
+            [disabled]="
+              this.form.value.postProcessActions
+                ? !this.form.value.postProcessActions.length
+                : true
+            "
+            (click)="modal.close()"
+            class="col btn theme"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- End of Process Tool Modal -->
+
+  <!-- Tolerances Modal -->
+  <ng-template #tolerances let-modal>
+    <div class="tolerances">
+      <div class="modal-header">
+        <h4
+          class="modal-title text-theme-green text-capitalize w-100 text-center"
+          id="modal-basic-title"
+        >
+          Tolerances Tool
+        </h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body text-theme">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="image">
+              <img
+                src="../../../../assets/image/example_machine.png"
+                alt="image of a machine design"
+                height="240px"
+                width="240px"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-9 d-flex flex-column">
+            <div class="row">
+              <div class="col-md-2 d-flex align-items-center">
+                <p>Critical Tolerance 1</p>
+              </div>
+              <div class="col-md-10">
+                <div class="row w-100">
+                  <input
+                    class="w-100 text-center font-weight-bold text-theme mt-3 mb-3"
+                    type="text"
+                    disabled="true"
+                    name=""
+                    id=""
+                    value="Flange Width"
+                  />
+                </div>
+
+                <div class="row mt-2 mb-2 w-100">
+                  <ng-container formGroupName="criticalTolerance1">
+                    <div class="col-md-2">
+                      <input
+                        required
+                        type="number"
+                        maxlength="4"
+                        min="0"
+                        min="0"
+                        max="9999"
+                        class="form-control"
+                        id="value"
+                        name="value"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <select
+                        required
+                        id="unit"
+                        name="unit"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.unit.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of unitOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <select
+                        required
+                        id="operand"
+                        name="operand"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.operand.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of operandOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <input
+                        required
+                        type="number"
+                        maxlength="4"
+                        min="0"
+                        min="0"
+                        max="9999"
+                        class="form-control"
+                        id="quantity"
+                        name="quantity"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <select
+                        required
+                        id="unit1"
+                        name="criticalTolerance1.unit1"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.unit1.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of unitOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2 d-flex align-items-center">
+                <p>Critical Tolerance 2</p>
+              </div>
+              <div class="col-md-10">
+                <div class="row w-100">
+                  <input
+                    class="w-100 text-center font-weight-bold text-theme mt-3 mb-3"
+                    type="text"
+                    disabled="true"
+                    name=""
+                    id=""
+                    value="Primary Length"
+                  />
+                </div>
+
+                <div class="row mt-2 mb-2 w-100">
+                  <ng-container formGroupName="criticalTolerance2">
+                    <div class="col-md-2">
+                      <input
+                        required
+                        type="number"
+                        maxlength="4"
+                        min="0"
+                        min="0"
+                        max="9999"
+                        class="form-control"
+                        id="value"
+                        name="value"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <select
+                        required
+                        id="unit"
+                        name="unit"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.unit.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of unitOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <select
+                        required
+                        id="operand"
+                        name="operand"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.operand.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of operandOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <input
+                        required
+                        type="number"
+                        maxlength="4"
+                        min="0"
+                        min="0"
+                        max="9999"
+                        class="form-control"
+                        id="quantity"
+                        name="quantity"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <select
+                        required
+                        id="unit1"
+                        name="criticalTolerance1.unit1"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.unit1.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of unitOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2 d-flex align-items-center">
+                <p>Critical Tolerance 3</p>
+              </div>
+              <div class="col-md-10">
+                <div class="row w-100">
+                  <input
+                    class="w-100 text-center font-weight-bold text-theme mt-3 mb-3"
+                    type="text"
+                    disabled="true"
+                    name=""
+                    id=""
+                    value="End Height"
+                  />
+                </div>
+
+                <div class="row mt-2 mb-2 w-100">
+                  <ng-container formGroupName="criticalTolerance3">
+                    <div class="col-md-2">
+                      <input
+                        required
+                        type="number"
+                        maxlength="4"
+                        min="0"
+                        min="0"
+                        max="9999"
+                        class="form-control"
+                        id="value"
+                        name="value"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <select
+                        required
+                        id="unit"
+                        name="unit"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.unit.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of unitOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <select
+                        required
+                        id="operand"
+                        name="operand"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.operand.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of operandOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <input
+                        required
+                        type="number"
+                        maxlength="4"
+                        min="0"
+                        min="0"
+                        max="9999"
+                        class="form-control"
+                        id="quantity"
+                        name="quantity"
+                      />
+                    </div>
+
+                    <div class="col-md-3">
+                      <select
+                        required
+                        id="unit1"
+                        name="criticalTolerance1.unit1"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && f.criticalTolerance1.unit1.errors
+                        }"
+                      >
+                        <option selected value="null">Choose...</option>
+                        <option
+                          *ngFor="let item of unitOptions"
+                          [value]="item.id"
+                        >
+                          {{ item.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-10"></div>
+              <div class="col-md-2 d-flex justify-content-center">
+                <span class="icon text-theme-green">
+                  <i class="fas fa-plus"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer row justify-content-center">
+        <div class="col-md-4">
+          <button type="button" (click)="modal.close()" class="col btn theme">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- End of Tolerances Modal -->
+
+  <!-- Save Modal -->
+  <ng-template #saveModal let-modal>
+    <div class="saveModal">
+      <div class="modal-header">
+        <h4
+          class="modal-title text-theme-green text-capitalize w-100 text-center"
+          id="modal-basic-title"
+        >
+          Tolerances Tool
+        </h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body text-theme">
+        <h5 class="mb-4 text-center">Do you want to save it as part file ?</h5>
+        <div class="inputs">
+          <div class="form-group theme col">
+            <label for="profileName">Part Profile Name</label>
+            <input
+              required
+              type="text"
+              class="form-control"
+              id="profileName"
+              name="name"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer row justify-content-center">
+        <div class="col-md-4">
+          <button
+            type="button"
+            (click)="modal.close()"
+            class="col btn theme orange"
+          >
+            Cancel
+          </button>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+          <button
+            type="button"
+            [disabled]="!this.form.value.profileName"
+            (click)="save()"
+            class="col btn theme"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- End of Save Modal -->
+</div>
+
+
+<ng-template #content let-modal>
+  <app-model-detail-view (close)="modal.close('')"></app-model-detail-view>
+</ng-template>

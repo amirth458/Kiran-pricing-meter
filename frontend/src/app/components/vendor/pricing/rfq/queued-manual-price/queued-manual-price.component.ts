@@ -1,10 +1,12 @@
-import { TemplateRendererComponent } from "./../../../../../common/template-renderer/template-renderer.component";
+import { Router } from '@angular/router';
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { NgxSpinnerService } from "ngx-spinner";
-import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { BehaviorSubject } from "rxjs";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
 
 @Component({
   selector: "app-queued-manual-price",
@@ -12,8 +14,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ["./queued-manual-price.component.css"]
 })
 export class QueuedManualPriceComponent implements OnInit {
-  @ViewChild("fileCell") fileCell: TemplateRef<any>;
-
   tabs = [
     {
       id: 0,
@@ -25,9 +25,10 @@ export class QueuedManualPriceComponent implements OnInit {
     }
   ];
   selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
+  selectedTabId: number;
 
   frameworkComponents = {
-    templateRenderer: TemplateRendererComponent
+    fileViewRenderer: FileViewRendererComponent
   };
 
   columnDefs = [[],[]];
@@ -40,6 +41,7 @@ export class QueuedManualPriceComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
     private modalService: NgbModal,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -74,10 +76,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "templateRenderer",
-          cellRendererParams: {
-            ngTemplate: this.fileCell
-          }
+          cellRenderer: "fileViewRenderer",
         },
         {
           headerName: "Quantity",
@@ -155,10 +154,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "templateRenderer",
-          cellRendererParams: {
-            ngTemplate: this.fileCell
-          }
+          cellRenderer: "fileViewRenderer",
         },
         {
           headerName: "Material",
@@ -210,10 +206,12 @@ export class QueuedManualPriceComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        console.log("row click", event.data.id);
+        const type = this.selectedTabId === 0 ? 'queued' : 'priced';
+        this.router.navigateByUrl(this.router.url + '/'+ type +'/' + event.data.id);
       }
     };
     this.selectedTabId$.subscribe(value => {
+      this.selectedTabId = value;
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
         this.gridOptions.api.setRowData(this.rowData[value]);
@@ -225,8 +223,7 @@ export class QueuedManualPriceComponent implements OnInit {
   }
 
   onGridReady(ev) {
-    console.log("gridReady");
-    this.gridOptions = ev;
+    this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
   }
 

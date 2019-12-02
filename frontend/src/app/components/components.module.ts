@@ -1,3 +1,5 @@
+import { ModelDetailViewComponent } from './../common/model-detail-view/model-detail-view.component';
+import { FileViewRendererComponent } from './../common/file-view-renderer/file-view-renderer.component';
 import { AppModule } from './../app.module';
 import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
@@ -38,6 +40,12 @@ import { TabItemComponent } from './../common/tabs/tab-item/tab-item.component';
 import { TabComponent } from './../common/tabs/tab/tab.component';
 import { FileViewerComponent } from './../common/file-viewer/file-viewer.component';
 import { TemplateRendererComponent } from './../common/template-renderer/template-renderer.component';
+import { PriceDetailComponent } from './vendor/pricing/rfq/price-detail/price-detail.component';
+import { PriceViewComponent } from './vendor/pricing/rfq/price-view/price-view.component';
+import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
+import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pricing-profile.component';
+import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-profile-detail/pricing-profile-detail.component';
+import { RecommendedPricingComponent } from './vendor/pricing/rfq/recommended-pricing/recommended-pricing.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -56,6 +64,8 @@ import { TemplateRendererComponent } from './../common/template-renderer/templat
     TabItemComponent,
     TemplateRendererComponent,
     FileViewerComponent,
+    FileViewRendererComponent,
+    ModelDetailViewComponent,
 
     MarketplaceContainerComponent,
     ReferralContainerComponent,
@@ -66,6 +76,12 @@ import { TemplateRendererComponent } from './../common/template-renderer/templat
     PricingSettingsComponent,
     RecentAutoPricesComponent,
     QueuedManualPriceComponent,
+    PriceDetailComponent,
+    PriceViewComponent,
+    PartInformationComponent,
+    PricingProfileComponent,
+    PricingProfileDetailComponent,
+    RecommendedPricingComponent,
     
   ],
   imports: [
@@ -79,6 +95,7 @@ import { TemplateRendererComponent } from './../common/template-renderer/templat
       MultiSelectCellEditorComponent,
       StatusDropdownFilterComponent,
       TemplateRendererComponent,
+      FileViewRendererComponent,
     ]),
     NgSelectModule,
     FormsModule,
