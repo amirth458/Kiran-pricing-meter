@@ -115,6 +115,7 @@ a.link {
 .show>.btn-primary.dropdown-toggle {
   color: white;
   background: var(--theme-light-green);
+  border-color: var(--theme-light-green);
 }
 
 .btn-outline-secondary:hover {

@@ -1,3 +1,8 @@
+import { ReleasedOrdersComponent } from "./../../components/vendor/pricing/orders/released-orders/released-orders.component";
+import { OrderConfirmQueueComponent } from "./../../components/vendor/pricing/orders/order-confirm-queue/order-confirm-queue.component";
+import { SuborderReleaseQueueComponent } from "./../../components/vendor/pricing/orders/suborder-release-queue/suborder-release-queue.component";
+import { FullfillmentSettingsComponent } from "./../../components/vendor/pricing/orders/fullfillment-settings/fullfillment-settings.component";
+import { OrdersContainerComponent } from "./../../components/vendor/pricing/orders/orders-container/orders-container.component";
 import { PricingProfileDetailComponent } from "./../../components/vendor/pricing/rfq/pricing-profile-detail/pricing-profile-detail.component";
 import { PriceDetailComponent } from "../../components/vendor/pricing/rfq/price-detail/price-detail.component";
 import { QueuedManualPriceComponent } from "./../../components/vendor/pricing/rfq/queued-manual-price/queued-manual-price.component";
@@ -40,7 +45,10 @@ const routes: Routes = [
             children: [
               { path: "pricing-settings", component: PricingSettingsComponent },
               { path: "auto-prices", component: RecentAutoPricesComponent },
-              { path: "auto-prices/:pricingId", component: PriceDetailComponent },
+              {
+                path: "auto-prices/:pricingId",
+                component: PriceDetailComponent
+              },
               {
                 path: "auto-prices/:pricingId/pricing-profile/:profileId",
                 component: PricingProfileDetailComponent
@@ -55,11 +63,33 @@ const routes: Routes = [
                 component: PriceDetailComponent
               },
               {
-                path: "manual-price/:type/:pricingId/pricing-profile/:profileId",
+                path:
+                  "manual-price/:type/:pricingId/pricing-profile/:profileId",
                 component: PricingProfileDetailComponent
               },
               { path: "", redirectTo: "pricing-settings", pathMatch: "full" },
               { path: "**", redirectTo: "pricing-settings", pathMatch: "full" }
+            ]
+          },
+          {
+            path: "orders",
+            component: OrdersContainerComponent,
+            children: [
+              {
+                path: "fullfillment-settings",
+                component: FullfillmentSettingsComponent
+              },
+              {
+                path: "suborder-release-queue",
+                component: SuborderReleaseQueueComponent
+              },
+              {
+                path: "order-confirmation-queue",
+                component: OrderConfirmQueueComponent
+              },
+              { path: "released-orders", component: ReleasedOrdersComponent },
+              { path: "", redirectTo: "fullfillment-settings", pathMatch: "full" },
+              { path: "**", redirectTo: "fullfillment-settings", pathMatch: "full" }
             ]
           },
           { path: "", redirectTo: "rfq", pathMatch: "full" },

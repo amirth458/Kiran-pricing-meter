@@ -1,0 +1,134 @@
+<div class="wrapper">
+  <form class="table" [formGroup]="detailForm" (submit)="save($event)">
+    <div class="row header p-3">Pricing Information</div>
+    <div
+      class="row mb-2 dropdown"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      id="manualPricingDropdown"
+    >
+      <div class="setting-name p-3 col-6">Cutoff for Manual Pricing</div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div
+          class="d-flex align-items-center flex-grow-1 justify-content-center"
+        >
+          {{selectedCutOff}}
+        </div>
+        <div class="icon">
+          <i class="fa fa-chevron-down"></i>
+        </div>
+        <ul class="popup dropdown-menu" aria-labelledby="manualPricingDropdown">
+          <li
+            class="dropdown-item text-center"
+            (click)="setCutOff(item)"
+            [ngClass]="{ active: selectedCutOff === item }"
+            *ngFor="let item of cutOff"
+          >
+            {{item}}
+          </li>
+          <div class="icon">
+            <i class="fa fa-chevron-up"></i>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        How many suppliers view opportunity at one time?
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="suppliersView"
+            class="setting-input"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Time Increment for Bid increase if No Vendor accepts
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="timeIncrement"
+            class="setting-input"
+          />
+          <span>minutes</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Starting % of sold price
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="startingPercent"
+            class="setting-input"
+          />
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Increase amount by
+      </div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="increaseAmountBy"
+            class="setting-input"
+          />
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">% of sale price without fullfillment to revert to customers</div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="salePricePercent"
+            class="setting-input"
+          />
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">Unresponsive time before releasing to next supplier</div>
+      <div class="setting-control d-flex align-items-center col-6">
+        <div class="d-flex align-items-center flex-4"></div>
+        <div class="d-flex align-items-center flex-5">
+          <input
+            required
+            type="number"
+            formControlName="unresponsiveTime"
+            class="setting-input"
+          />
+          <span>minutes</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

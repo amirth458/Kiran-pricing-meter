@@ -1,0 +1,27 @@
+<div class="wrapper d-flex">
+    <div class="table-control">
+      <app-column-search-filter
+        width="200px"
+        [type]="type"
+        [(filterColumns)]="filterColumns"
+        (filterColumnsChange)="filterColumnsChange($event)"
+        [(searchColumns)]="searchColumns"
+        (searchColumnsChange)="searchColumnsChange($event)"
+      >
+      </app-column-search-filter>
+    </div>
+    <div class="table theme-table ml-4 d-flex flex-column">
+      <div class="toolbar d-flex justify-content-end mb-3">
+        
+      </div>
+      <ag-grid-angular
+        class="ag-theme-balham w-100 flex-grow-1"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        [groupHideOpenParents]="true"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+  
