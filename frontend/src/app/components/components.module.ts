@@ -46,6 +46,11 @@ import { PartInformationComponent } from './vendor/pricing/rfq/part-information/
 import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pricing-profile.component';
 import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-profile-detail/pricing-profile-detail.component';
 import { RecommendedPricingComponent } from './vendor/pricing/rfq/recommended-pricing/recommended-pricing.component';
+import { OrdersContainerComponent } from './vendor/pricing/orders/orders-container/orders-container.component';
+import { FullfillmentSettingsComponent } from './vendor/pricing/orders/fullfillment-settings/fullfillment-settings.component';
+import { SuborderReleaseQueueComponent } from './vendor/pricing/orders/suborder-release-queue/suborder-release-queue.component';
+import { OrderConfirmQueueComponent } from './vendor/pricing/orders/order-confirm-queue/order-confirm-queue.component';
+import { ReleasedOrdersComponent } from './vendor/pricing/orders/released-orders/released-orders.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -82,6 +87,11 @@ import { RecommendedPricingComponent } from './vendor/pricing/rfq/recommended-pr
     PricingProfileComponent,
     PricingProfileDetailComponent,
     RecommendedPricingComponent,
+    OrdersContainerComponent,
+    FullfillmentSettingsComponent,
+    SuborderReleaseQueueComponent,
+    OrderConfirmQueueComponent,
+    ReleasedOrdersComponent,
     
   ],
   imports: [
