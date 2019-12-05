@@ -40,9 +40,9 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
   ],
   apiBaseUrl: 'http://dev-marketplace-api.3diligent.com/api/v1',
-  MARKETPLACE_URL:'http://dev-marketplace.3diligent.com/',
   managementBaseUrl: 'http://dev-manage-api.3diligent.com/api/v1',
   adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
+  MARKETPLACE_URL:'http://dev-marketplace.3diligent.com/',
   PPE_HOST_URL: 'http://dev-ppe-api.3diligent.com/api/v1',
   CONNECTOR_HOST_URL: 'http://dev-manage.3diligent.com/api/v1',
   encryptionKey: '1Kf@%4%3ADfEafw'
