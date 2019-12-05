@@ -12,7 +12,7 @@ export class ConsultantService {
   constructor(private http: HttpClient) {}
 
   getConsultations(filterOption: FilterOption = null): Observable<any> {
-    let url = `${environment.apiBaseUrl}/consultation/search`;
+    let url = `${environment.marketApiBaseUrl}/consultation/search`;
     const data = JSON.parse(localStorage.getItem("auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -37,12 +37,12 @@ export class ConsultantService {
   }
 
   getConsultationById(id: number): Observable<any> {
-    const url = `${environment.apiBaseUrl}/consultation/${id}/`;
+    const url = `${environment.marketApiBaseUrl}/consultation/${id}/`;
     return this.http.get<any>(url);
   }
 
   createComment(id: number, comment: string): Observable<any> {
-    const url = `${environment.apiBaseUrl}/consultation/${id}/comment/`;
+    const url = `${environment.marketApiBaseUrl}/consultation/${id}/comment/`;
     const data = JSON.parse(localStorage.getItem("auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,

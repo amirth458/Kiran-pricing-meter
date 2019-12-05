@@ -36,7 +36,8 @@ export const environment = {
     { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
     { needsapproval: false, enabled: true, active: false, name: 'Appointments', icon: 'fa-calendar-check-o', path: '/appointment' }
   ],
-  apiBaseUrl: 'http://marketplace-api.3diligent.com/api/v1',
+  apiBaseUrl: 'http://admin-api.3diligent.com/api/v1',
+  marketApiBaseUrl: 'http://marketplace-api.3diligent.com/api/v1',
   managementBaseUrl: 'http://manage-api.3diligent.com/api/v1',
   adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
   CONNECTOR_HOST_URL: 'http://manage.3diligent.com/api/v1',
