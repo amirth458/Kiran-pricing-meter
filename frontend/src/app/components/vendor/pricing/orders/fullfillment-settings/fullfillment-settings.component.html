@@ -1,6 +1,9 @@
 <div class="wrapper">
   <form class="table" [formGroup]="detailForm" (submit)="save($event)">
-    <div class="row header p-3">Pricing Information</div>
+    <div class="row header p-3">
+      <div class="col-6">Pricing Information</div>
+      <div class="col-6">Value</div>
+    </div>
     <div
       class="row mb-2 dropdown"
       data-toggle="dropdown"

@@ -49,8 +49,8 @@ ul li .name:hover {
 
 .icon {
   font-size: 12px;
-  position: absolute;
-  margin-top: -8px;
+  top: 4px;
+  right: 0px;
 }
 
 .action-button {

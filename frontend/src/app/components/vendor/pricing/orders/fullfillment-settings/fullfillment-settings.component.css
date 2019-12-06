@@ -27,12 +27,11 @@
   font-size: 20px;
   line-height: 1.5;
   text-align: center;
-  display: block;
 }
 
 .setting-name {
   background-color: var(--theme-light-sky-blue);
-  color: var(--theme-secondary-blue-solid);
+  color: var(--theme-blue-solid);
   font-size: 14px;
   font-weight: 500;
 }

@@ -21,7 +21,6 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
 
   onFileClicked(ev: Event, content) {
     ev.stopPropagation();
-    console.log(this.params);
     this.modalService.open(content, {
       centered: true,
       windowClass: "file-viewer-modal"

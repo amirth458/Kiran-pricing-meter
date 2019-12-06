@@ -1,3 +1,5 @@
+import { VendorDetailsComponent } from './../../components/vendor/pricing/orders/vendor-details/vendor-details.component';
+import { CustomerOrderDetailsComponent } from './../../components/vendor/pricing/orders/customer-order-details/customer-order-details.component';
 import { ReleasedOrdersComponent } from "./../../components/vendor/pricing/orders/released-orders/released-orders.component";
 import { OrderConfirmQueueComponent } from "./../../components/vendor/pricing/orders/order-confirm-queue/order-confirm-queue.component";
 import { SuborderReleaseQueueComponent } from "./../../components/vendor/pricing/orders/suborder-release-queue/suborder-release-queue.component";
@@ -84,8 +86,24 @@ const routes: Routes = [
                 component: SuborderReleaseQueueComponent
               },
               {
+                path: "suborder-release-queue/:orderId",
+                component: CustomerOrderDetailsComponent
+              },
+              {
                 path: "order-confirmation-queue",
                 component: OrderConfirmQueueComponent
+              },
+              {
+                path: "suborder-release-queue/vendor/:vendorId",
+                component: VendorDetailsComponent
+              },
+              {
+                path: "order-confirmation-queue/:vendorId",
+                component: VendorDetailsComponent
+              },
+              {
+                path: "released-orders/:vendorId",
+                component: VendorDetailsComponent
               },
               { path: "released-orders", component: ReleasedOrdersComponent },
               { path: "", redirectTo: "fullfillment-settings", pathMatch: "full" },

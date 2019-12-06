@@ -1,5 +1,5 @@
-::ng-deep .recommended-modal .modal-dialog {
-  max-width: 900px;
+::ng-deep .past-order-modal .modal-dialog {
+  max-width: 1100px;
 }
 
 .modal-container {
@@ -20,18 +20,14 @@
   flex-grow: 1;
 }
 
-.description {
-  color: var(--theme-bright-blue);
-}
-
 .theme-table {
   height: 90px;
 }
 
-.action {
-  display: flex;
-  justify-content: flex-end;
+.description {
+  color: var(--theme-secondary-blue-solid);
 }
+
 .green-btn {
   background-color: var(--theme-light-green);
   color: white;

@@ -381,4 +381,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
       this.selectedIds.splice(idx, 1);
     }
   }
+
+  advanceToVendorSelection() {
+    this.router.navigateByUrl(this.router.url + '/vendor/1');
+  }
 }

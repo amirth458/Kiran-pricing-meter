@@ -51,6 +51,12 @@ import { FullfillmentSettingsComponent } from './vendor/pricing/orders/fullfillm
 import { SuborderReleaseQueueComponent } from './vendor/pricing/orders/suborder-release-queue/suborder-release-queue.component';
 import { OrderConfirmQueueComponent } from './vendor/pricing/orders/order-confirm-queue/order-confirm-queue.component';
 import { ReleasedOrdersComponent } from './vendor/pricing/orders/released-orders/released-orders.component';
+import { CustomerOrderDetailsComponent } from './vendor/pricing/orders/customer-order-details/customer-order-details.component';
+import { OrderInformationComponent } from './vendor/pricing/orders/order-information/order-information.component';
+import { SubOrderInformationComponent } from './vendor/pricing/orders/sub-order-information/sub-order-information.component';
+import { PastOrdersComponent } from './vendor/pricing/orders/past-orders/past-orders.component';
+import { PastOrderDetailsComponent } from './vendor/pricing/orders/past-order-details/past-order-details.component';
+import { VendorDetailsComponent } from './vendor/pricing/orders/vendor-details/vendor-details.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -92,6 +98,12 @@ import { ReleasedOrdersComponent } from './vendor/pricing/orders/released-orders
     SuborderReleaseQueueComponent,
     OrderConfirmQueueComponent,
     ReleasedOrdersComponent,
+    CustomerOrderDetailsComponent,
+    OrderInformationComponent,
+    SubOrderInformationComponent,
+    PastOrdersComponent,
+    PastOrderDetailsComponent,
+    VendorDetailsComponent,
     
   ],
   imports: [
