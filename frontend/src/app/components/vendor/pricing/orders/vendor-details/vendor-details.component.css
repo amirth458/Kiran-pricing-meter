@@ -1,0 +1,95 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}
+
+.content {
+  border: 1px solid var(--theme-tab-border);
+  border-top: none;
+}
+
+.single-row-table {
+  height: 90px;
+}
+
+.part-header {
+  color: var(--theme-secondary-blue-solid);
+}
+
+::ng-deep .confirm-release-modal .modal-dialog {
+  max-width: 1100px;
+}
+
+.table {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  user-select: none;
+}
+
+.table .header {
+  background-color: var(--theme-light-blue);
+  color: white;
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.setting-name {
+  background-color: var(--theme-light-sky-blue);
+  color: var(--theme-blue-solid);
+  font-size: 14px;
+  font-weight: 500;
+}
+.setting-value {
+  background-color: var(--theme-light-input-bg);
+  font-size: 14px;
+  position: relative;
+}
+
+.modal-header {
+  border-bottom: none;
+  position: relative;
+}
+.modal-header .close {
+  outline: none;
+  position: absolute;
+  right: 1rem;
+}
+.modal-title {
+  color: var(--theme-light-green);
+  text-align: center;
+  flex-grow: 1;
+}
+.modal-footer {
+  border-top: none;
+}
+
+.text-blue {
+  color: var(--theme-light-blue);
+}
+.text-green {
+  color: var(--theme-light-green);
+}
+.text-orange {
+  color: var(--theme-orange);
+}
+
+a.priority-btn:not([href]) {
+  color: var(--theme-light-green);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+}
+.release-btn {
+  font-size: 12px;
+}

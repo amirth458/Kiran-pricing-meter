@@ -5,7 +5,7 @@ import { AppModule } from "./app/app.module";
 import { environment } from "./environments/environment";
 
 import { LicenseManager } from 'ag-grid-enterprise';
-LicenseManager.setLicenseKey('aaa');
+LicenseManager.setLicenseKey('key');
 
 if (environment.production) {
   enableProdMode();

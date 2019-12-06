@@ -1,0 +1,90 @@
+.wrapper {
+  border: 1px solid var(--theme-table-border);
+  border-radius: 10px;
+}
+
+.border-white {
+  border: 1px solid white;
+}
+
+.image-section>p {
+  color: var(--theme-sky-blue);
+}
+
+.image-section>p:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tabs .tab-header {
+  height: 35px;
+  color: var(--theme-main-blue);
+}
+
+.details-section {
+  border-left: 1px solid var(--theme-table-border);
+  color: var(--theme-text-color);
+}
+
+.details {
+  color: var(--theme-text-color);
+  font-size: 14px;
+}
+.details .quantity {
+  color: var(--theme-light-blue);
+  font-size: 1rem;
+}
+
+.tabs .tab-header .tab {
+  padding: 0px 25px;
+  height: 100%;
+  flex-grow: .5;
+  min-width: fit-content;
+}
+
+.tabs .tab-header .tab.active {
+  background: rgba(113, 171, 228, 0.353);
+}
+
+.tabs .tab-header .tab:hover {
+  cursor: pointer;
+}
+
+.tab-body {
+  padding: 10px;
+  font-size: 12px;
+}
+
+table.rfq-table {
+  margin: 0 auto;
+}
+
+table.rfq-table tbody {
+  font-size: .8rem;
+}
+
+table.rfq-table tbody tr>th[scope="row"] {
+  color: white;
+  background: var(--theme-grid-header);
+}
+
+table.rfq-table tbody td,
+.deliveryModal table tbody td {
+  text-align: center;
+  height: 100%;
+}
+
+table.rfq-table tbody th,
+table.rfq-table tbody td {
+  padding: 8px 15px;
+}
+
+.image-section .tabs .tab{
+  font-size: 14px;
+  color: var(--theme-bright-blue);
+}
+a.view-3d {
+  text-decoration: underline;
+  color: var(--theme-sky-blue);
+  cursor: pointer;
+}

@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <div
+    class="header mb-3"
+  >
+    <h5 class="text-center">
+      Customer Order 234
+    </h5>
+  </div>
+  <app-tab (valueChange)="selectedTabId$.next($event.value)">
+    <app-tab-item
+      *ngFor="let tab of tabs"
+      [value]="tab.id"
+      [tabTitle]="tab.title"
+      [active]="(selectedTabId$ | async) === tab.id"
+    ></app-tab-item>
+    <div class="content p-4">
+      <ng-container [ngSwitch]="selectedTabId$ | async">
+        <ng-container *ngSwitchCase="0">
+          <app-order-information></app-order-information>
+        </ng-container>
+        <ng-container *ngSwitchCase="1">
+          <app-sub-order-information></app-sub-order-information>
+        </ng-container>
+        <ng-container *ngSwitchCase="2">
+          <app-past-orders></app-past-orders>
+        </ng-container>
+      </ng-container>
+    </div>
+  </app-tab>
+</div>

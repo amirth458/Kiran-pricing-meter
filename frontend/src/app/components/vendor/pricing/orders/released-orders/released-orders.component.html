@@ -1,3 +1,27 @@
-<p>
-  released-orders works!
-</p>
+<div class="wrapper d-flex">
+    <div class="table-control">
+      <app-column-search-filter
+        width="200px"
+        [type]="type"
+        [(filterColumns)]="filterColumns"
+        (filterColumnsChange)="filterColumnsChange($event)"
+        [(searchColumns)]="searchColumns"
+        (searchColumnsChange)="searchColumnsChange($event)"
+      >
+      </app-column-search-filter>
+    </div>
+    <div class="table theme-table ml-4 d-flex flex-column">
+      <div class="mb-3 row">
+        <input class="form-control col-md-3" placeholder="Vendor Order ID" />
+      </div>
+      <ag-grid-angular
+        class="ag-theme-balham w-100 flex-grow-1"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+  

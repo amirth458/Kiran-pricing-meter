@@ -13,7 +13,7 @@
   </div>
   <div class="table theme-table ml-4 d-flex flex-column">
     <div class="toolbar d-flex justify-content-end mb-3">
-      <button class="btn btn-primary active">Advance to Vendor Selection</button>
+      <button [ngClass]="{invisible: selectedIds.length === 0}" class="btn btn-primary active" (click)="advanceToVendorSelection()">Advance to Vendor Selection</button>
     </div>
     <ag-grid-angular
       class="ag-theme-balham w-100 flex-grow-1"

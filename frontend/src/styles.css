@@ -477,4 +477,14 @@ app-dropdown-cell-renderer {
   border-bottom: 5px solid var(--theme-light-green);
 }
 
+.orange-btn {
+  color: white;
+  background-color: var(--theme-orange);
+  margin: 0 15px;
+}
+.green-btn {
+  color: white;
+  background-color: var(--theme-light-green);
+}
+
 /* End of Tabbed Cards */

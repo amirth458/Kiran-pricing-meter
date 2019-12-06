@@ -11,15 +11,20 @@
       </app-column-search-filter>
     </div>
     <div class="table theme-table ml-4 d-flex flex-column">
-      <div class="toolbar d-flex justify-content-end mb-3">
-        
+      <div class="mb-3 row">
+        <input class="form-control col-md-3" placeholder="Vendor Order ID" />
+        <select class="form-control col-md-3" placeholder="Order Status">
+          <option value="">Bidding In Progress</option>
+          <option value="">Vendor Confirmation Received</option>
+          <option value="">Bidding Complete</option>
+        </select>
       </div>
       <ag-grid-angular
         class="ag-theme-balham w-100 flex-grow-1"
         [rowData]="rowData"
         [gridOptions]="gridOptions"
-        [groupHideOpenParents]="true"
         (gridReady)="onGridReady($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
       >
       </ag-grid-angular>
     </div>

@@ -87,24 +87,6 @@ export class OrderConfirmQueueComponent implements OnInit {
       }
     },
     {
-      name: "Previously Ordered",
-      field: "previouslyOrdered",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "First Shipment",
-      field: "firstShipment",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
       name: "Delivery Date",
       field: "deliveryDate",
       checked: false,
@@ -176,6 +158,7 @@ export class OrderConfirmQueueComponent implements OnInit {
   selectedIds = [];
 
   columnDefs: Array<any> = [];
+  autoGroupColumnDef = null;
   gridOptions: GridOptions;
   rowData;
   frameworkComponents = {
@@ -207,39 +190,46 @@ export class OrderConfirmQueueComponent implements OnInit {
         this.router.navigateByUrl(this.router.url + "/" + event.data.id);
       }
     };
-    this.getSubOrderReleaseQueue();
+    this.getOrderConfirmationQueue();
   }
 
   initColumns() {
     this.columnDefs = [
       {
-        headerName: "Customer Order",
-        field: "customerOrder",
+        headerName: "Vendor Order ID",
+        field: "vendorOrderId",
         hide: true,
         sortable: true,
         filter: false,
-        rowGroup: true
+        rowGroup: true,
+      },
+      {
+        headerName: "Customer Order",
+        field: "customerOrder",
+        hide: false,
+        sortable: true,
+        filter: false,
       },
       {
         headerName: "Sub-Order",
         field: "subOrder",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
       },
       {
         headerName: "Price Accepted",
         field: "priceAccepted",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
       },
       {
         headerName: "Customer",
         field: "customer",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
       },
       {
         headerName: "Quantity",
@@ -270,37 +260,33 @@ export class OrderConfirmQueueComponent implements OnInit {
         filter: false
       },
       {
-        headerName: "Previously Ordered",
-        field: "previouslyOrdered",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "First Shipment",
-        field: "firstShipment",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
         headerName: "Delivery Date",
         field: "deliveryDate",
         hide: false,
         sortable: true,
         filter: false
+      },
+      {
+        headerName: "Status",
+        field: "status",
+        hide: false,
+        sortable: true,
+        filter: false
       }
     ];
+    this.autoGroupColumnDef = {
+      headerName: "Vendor Order ID",
+    };
   }
 
-  async getSubOrderReleaseQueue(q = null) {
+  async getOrderConfirmationQueue(q = null) {
     this.spinner.show();
     let page = 0;
     const rows = [];
     try {
       while (true) {
         const res = await this.orderService
-          .getSubOrderReleaseQueue({ page, size: 1000, sort: "id,ASC", q })
+          .getOrderConfirmationQueue({ page, size: 1000, sort: "id,ASC", q })
           .toPromise();
 
         if (!res.content) {
@@ -358,4 +344,6 @@ export class OrderConfirmQueueComponent implements OnInit {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
   }
+
+
 }
