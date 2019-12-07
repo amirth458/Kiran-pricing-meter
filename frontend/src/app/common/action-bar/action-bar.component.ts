@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from "@angular/core";
+import { ActionService } from './../../service/action.service';
+import { Store } from '@ngrx/store';
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from "@angular/core";
 import { Router, NavigationEnd } from "@angular/router";
 import { EventEmitterService } from "src/app/components/event-emitter.service";
 
@@ -22,7 +30,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
 
   constructor(
     public route: Router,
-    public eventEmitterService: EventEmitterService
+    public eventEmitterService: EventEmitterService,
+    public actionService: ActionService
   ) {
     this.route.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
@@ -41,10 +50,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
       }
     });
   }
-  
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   selectTab(tab) {
     const prevURL = this.route.url;
@@ -61,7 +68,11 @@ export class ActionBarComponent implements OnInit, OnChanges {
   }
 
   addButton(route) {
-    this.route.navigateByUrl(this.route.url + "/" + route);
+    if (route === "save-pricing-setting") {
+      this.actionService.triggerSaveProfileSetting();
+    } else {
+      this.route.navigateByUrl(this.route.url + "/" + route);
+    }
   }
 
   backButton() {

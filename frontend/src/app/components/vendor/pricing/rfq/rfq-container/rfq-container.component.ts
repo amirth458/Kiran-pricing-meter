@@ -20,7 +20,7 @@ export class RfqContainerComponent implements OnInit {
       name: "Pricing Settings",
       tooltipMessage: "Pricing Settings",
       route: "pricing-settings",
-      actions: [{ name: "Save Settings", route: "" }]
+      actions: [{ name: "Save Settings", route: "save-pricing-setting" }]
     },
     {
       name: "Recent Auto Prices",

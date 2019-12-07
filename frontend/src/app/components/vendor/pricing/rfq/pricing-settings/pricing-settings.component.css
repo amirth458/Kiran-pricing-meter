@@ -114,3 +114,7 @@ li.auto-pricing-control:active .col-6,
 li.auto-pricing-control.active .col-6 {
   background-color: var(--theme-light-input-bg);
 }
+
+input {
+  text-align: center;
+}

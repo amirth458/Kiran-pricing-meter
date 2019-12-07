@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <form class="table" [formGroup]="detailForm" (submit)="save($event)">
+  <form class="table" [formGroup]="detailForm" (submit)="save()">
     <div class="row header p-3">Pricing Information</div>
     <div
       class="row mb-2 dropdown"
@@ -16,7 +16,7 @@
         >
           <input
             required
-            formControlName="eligibleProcessProfile"
+            formControlName="minElligibleProcessProfile"
             type="number"
             class="setting-input"
             (click)="$event.stopPropagation()"
@@ -30,7 +30,7 @@
           <input
             required
             type="number"
-            formControlName="eligiblePricingProfile"
+            formControlName="minElligiblePricingProfile"
             class="setting-input"
             (click)="$event.stopPropagation()"
           />
@@ -77,7 +77,7 @@
           <input
             required
             type="number"
-            formControlName="presentBidNo"
+            formControlName="presentBidNumberFromBottom"
             class="setting-input"
           />
           <span>(from bottom - 5<sup>th</sup> price)</span>
@@ -94,7 +94,7 @@
           <input
             required
             type="number"
-            formControlName="percentIncremental"
+            formControlName="incrementalMarginPercent"
             class="setting-input"
           />
           <span>%</span>
@@ -111,7 +111,7 @@
           <input
             required
             type="number"
-            formControlName="amountIncremental"
+            formControlName="incrementalMarginRate"
             class="setting-input"
           />
           <span>%</span>
@@ -130,13 +130,13 @@
           aria-expanded="false"
           id="autoPricingApproach"
         >
-          {{ defaultEligibilities[selectedEligibility].name }}
+          {{ detailForm.value.autoPricingEligibilityType && detailForm.value.autoPricingEligibilityType.name }}
           <div class="icon">
             <i class="fa fa-chevron-down"></i>
           </div>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-center">
-          {{ defaultEligibilities[selectedEligibility].description }}
+          {{ detailForm.value.autoPricingEligibilityType && detailForm.value.autoPricingEligibilityType.description }}
         </div>
         <ul class="popup dropdown-menu" aria-labelledby="autoPricingApproach">
           <li
@@ -166,7 +166,7 @@
           <input
             required
             type="number"
-            formControlName="percentOfSpecificity"
+            formControlName="specificityPremium"
             class="setting-input"
           />
           <span>% per level of specificity</span>

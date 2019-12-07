@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { Observable, of } from "rxjs";
 import { FilterOption } from "./../model/vendor.model";
 import { Injectable } from "@angular/core";
@@ -9,6 +10,17 @@ import { HttpClient } from "@angular/common/http";
 export class RfqPricingService {
   constructor(private http: HttpClient) {}
 
+  getPricingSettings(): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pricing-setting`;
+    return this.http.get(url);
+  }
+
+  setPricingSetting(data): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pricing-setting`;
+    return this.http.put(url, data);
+  }
+
+  // mock
   getRecentAutoPrices(filterOption: FilterOption = null): Observable<any> {
     const data = {
       content: [
