@@ -4,6 +4,7 @@
 
 export const environment = {
   production: true,
+  local: false,
   menus: [
     {
       name: 'Program',
