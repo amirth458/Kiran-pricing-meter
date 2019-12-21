@@ -44,6 +44,7 @@ export const environment = {
   apiBaseUrl: 'https://dev-admin-api.3diligent.com/api/v1',
   marketApiBaseUrl: 'https://dev-marketplace-api.3diligent.com/api/v1',
   managementBaseUrl: 'https://dev-manage-api.3diligent.com/api/v1',
+  procurementApiBaseUrl: 'https://dev-procurement-api.3diligent.com/api/v1',
   adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
   PPE_HOST_URL: 'https://dev-ppe-api.3diligent.com/api/v1',
   CONNECTOR_HOST_URL: 'https://dev-manage.3diligent.com/api/v1',

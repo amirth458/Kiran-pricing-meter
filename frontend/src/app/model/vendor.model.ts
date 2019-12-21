@@ -39,3 +39,17 @@ export class Country {
   code: string;
   flag: string;
 }
+
+export interface GetListResponse<T> {
+  content: T[];
+  pageable: any,
+  totalElements: number;
+  last: boolean;
+  totalPages: number;
+  first: boolean;
+  sort: any;
+  numberOfElements: number;
+  size: number;
+  number: number;
+  empty: boolean;
+}

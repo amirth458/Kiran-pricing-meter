@@ -3,8 +3,9 @@ import { FilterOption } from "./../../../../../model/vendor.model";
 import { TemplateRendererComponent } from "./../../../../../common/template-renderer/template-renderer.component";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef, Input } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
+import { Part } from 'src/app/model/part.model';
 
 @Component({
   selector: "app-pricing-profile",
@@ -12,6 +13,7 @@ import { GridOptions } from "ag-grid-community";
   styleUrls: ["./pricing-profile.component.css"]
 })
 export class PricingProfileComponent implements OnInit {
+  @Input() part: Part;
   @ViewChild("dateCell") dateCell: TemplateRef<any>;
   type = ["search", "filter"];
 

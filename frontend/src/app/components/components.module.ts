@@ -3,7 +3,7 @@ import { FileViewRendererComponent } from './../common/file-view-renderer/file-v
 import { AppModule } from './../app.module';
 import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -126,6 +126,9 @@ import { VendorDetailsComponent } from './vendor/pricing/orders/vendor-details/v
     NgxSpinnerModule,
     RouterModule,
     InternationalPhoneNumberModule,
+  ],
+  providers: [
+    DatePipe
   ],
   exports: [
     NgxSpinnerModule,

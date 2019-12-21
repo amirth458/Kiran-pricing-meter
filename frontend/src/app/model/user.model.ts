@@ -33,3 +33,15 @@ export interface AuthData {
   roles: Array<string>;
   tokenType: string;
 }
+
+export interface CustomerIndustry {
+  id: number;
+  name: string;
+}
+export interface CustomerData {
+  id: number;
+  name: string;
+  division: string;
+  phoneNo: string;
+  industries: CustomerIndustry[];
+}

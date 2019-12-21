@@ -1,41 +1,39 @@
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from "@angular/core";
 import { GridOptions } from "ag-grid-community";
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Part } from "src/app/model/part.model";
+import { catchError } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
+import { ToastrService } from "ngx-toastr";
+import { throwError } from "rxjs";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: "app-price-view",
   templateUrl: "./price-view.component.html",
-  styleUrls: ["./price-view.component.css"]
+  styleUrls: ["./price-view.component.css"] 
 })
-export class PriceViewComponent implements OnInit {
+export class PriceViewComponent implements OnInit, OnChanges {
+  @Input() part: Part;
 
-  @Input() type: string;
-  @Input() pricingData: any;
-
-  stage = 'unset';
+  stage = "unset";
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
   columnDefs = [];
   gridOptions: GridOptions;
-  rowData = [
-    {
-      id: 1,
-      customer: "DetailCo",
-      rfq: "58200",
-      part: "58200.1",
-      filename: "Rotor_No_Logo.stl",
-      quantity: 25,
-      material: "ABS M30",
-      process: "3D Printing",
-      roughness: 1,
-      postProcess: "Sand",
-      price: "$ 1200"
-    }
-  ];
+  partQuoteDetail;
+  rowData = [];
 
   pricingForm: FormGroup = this.fb.group({
     toolingUnitCount: [1],
@@ -43,24 +41,37 @@ export class PriceViewComponent implements OnInit {
     toolingExtended: [0],
     partsUnitCount: [30],
     partsUnitPrice: [50],
-    partsExtended: [1500],
+    partsExtended: [1500]
   });
-
-  pricingDetail = {
-    toolingUnitCount: 1,
-    toolingUnitPrice: 0,
-    toolingExtended: 0,
-    partsUnitCount: 30,
-    partsUnitPrice: 50,
-    partsExtended: 1500,
-  }
 
   constructor(
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public pricingService: RfqPricingService,
+    public toastrService: ToastrService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
+    this.rowData = [
+      {
+        id: this.part && this.part.id,
+        customer: "",
+        rfq: this.part && this.part.rfqMedia.projectRfqId,
+        part: this.part && this.part.rfqMedia.projectRfqId + "." + this.part.id,
+        filename: this.part && this.part.rfqMedia.media.name,
+        quantity: this.part && this.part.quantity,
+        material: this.part && this.part.materialName,
+        process: this.part && this.part.processTypeName,
+        roughness: "",
+        postProcess: "",
+        price:
+          this.part && this.part.shippingCost
+            ? `$ ${this.part.shippingCost}`
+            : ""
+      }
+    ];
+
     this.columnDefs = [
       {
         headerName: "Customer",
@@ -159,13 +170,59 @@ export class PriceViewComponent implements OnInit {
   }
 
   openModal(content, css) {
-    this.modalService.open(content, { centered: true, windowClass: `${css}-modal` });
+    this.modalService.open(content, {
+      centered: true,
+      windowClass: `${css}-modal`
+    });
   }
 
   onSave() {
     this.modalService.dismissAll();
-    this.stage = 'set';
-    this.pricingDetail = {...this.pricingForm.value};
+    this.stage = "set";
+
+    const data = {
+      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS')+'Z',
+      id: 0,
+      isManualPricing: true,
+      matchedProfileIds: [0],
+      partId: this.part.id,
+      partQuoteDetailList: [
+        {
+          id: null,
+          invoiceItemTypeName: "Tooling",
+          partQuoteId: 1,
+          unitCount: this.pricingForm.value.toolingUnitCount,
+          unitPrice: this.pricingForm.value.toolingUnitPrice,
+          extendedPrice: this.pricingForm.value.toolingExtended
+        },
+        {
+          id: null,
+          invoiceItemTypeName: "Parts",
+          partQuoteId: 1,
+          unitCount: this.pricingForm.value.partsUnitCount,
+          unitPrice: this.pricingForm.value.partsUnitPrice,
+          extendedPrice: this.pricingForm.value.partsExtended
+        }
+      ],
+      pricingProfileId: null,
+      quoteStatusTypeId: 1,
+      totalCost:
+        this.pricingForm.value.toolingExtended +
+        this.pricingForm.value.partsExtended
+    };
+
+    this.pricingService
+      .createPartQuoteDetail(data)
+      .pipe(catchError(e => this.handleError(e)))
+      .subscribe(() => {
+        this.toastrService.success("Part Quote created successfully.");
+      });
+  }
+
+  handleError(error: HttpErrorResponse) {
+    const message = error.error.message;
+    this.toastrService.error(`${message} Please contact your admin`);
+    return throwError("Error");
   }
 
   onRecommendModalClose(ev) {
@@ -173,5 +230,32 @@ export class PriceViewComponent implements OnInit {
       console.log(ev);
     }
     this.modalService.dismissAll();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.part && changes.part.currentValue) {
+      console.log(this.part);
+      this.partQuoteDetail = this.part.partQuoteList[0] || [];
+      this.rowData = [
+        {
+          id: changes.part.currentValue.id,
+          customer: "",
+          rfq: changes.part.currentValue.rfqMedia.projectRfqId,
+          part:
+            changes.part.currentValue.rfqMedia.projectRfqId +
+            "." +
+            changes.part.currentValue.id,
+          filename: changes.part.currentValue.rfqMedia.media.name,
+          quantity: changes.part.currentValue.quantity,
+          material: changes.part.currentValue.materialName,
+          process: changes.part.currentValue.processTypeName,
+          roughness: "",
+          postProcess: "",
+          price: changes.part.currentValue.shippingCost
+            ? `$ ${changes.part.currentValue.shippingCost}`
+            : ""
+        }
+      ];
+    }
   }
 }
