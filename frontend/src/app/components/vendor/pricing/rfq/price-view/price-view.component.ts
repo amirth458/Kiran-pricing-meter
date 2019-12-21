@@ -15,11 +15,12 @@ import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { throwError } from "rxjs";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: "app-price-view",
   templateUrl: "./price-view.component.html",
-  styleUrls: ["./price-view.component.css"]
+  styleUrls: ["./price-view.component.css"] 
 })
 export class PriceViewComponent implements OnInit, OnChanges {
   @Input() part: Part;
@@ -47,7 +48,8 @@ export class PriceViewComponent implements OnInit, OnChanges {
     private modalService: NgbModal,
     private fb: FormBuilder,
     public pricingService: RfqPricingService,
-    public toastrService: ToastrService
+    public toastrService: ToastrService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -179,7 +181,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
     this.stage = "set";
 
     const data = {
-      expiredAt: "2019-12-17T18:43:53.729Z",
+      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS')+'Z',
       id: 0,
       isManualPricing: true,
       matchedProfileIds: [0],
