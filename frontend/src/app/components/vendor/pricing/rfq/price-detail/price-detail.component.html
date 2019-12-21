@@ -1,16 +1,16 @@
 <div class="wrapper">
   <div
     class="header mb-3"
-    [ngClass]="{ 'manual-price': this.type !== undefined }"
+    [ngClass]="{ 'manual-price': part?.manualPricingAllowed }"
   >
     <h5 class="text-center">
       {{
-        type === undefined
+        part?.manualPricingAllowed === false
           ? ""
-          : type === "queued"
+          : (part?.partStatusType.id === 2
           ? "Queued for Manual Pricing: "
-          : "Manually Priced: "
-      }}Part {{ pricingDetail.part }}
+          : (part?.partStatusType.id === 3 ? "" : ""))
+      }}Part {{ part?.id }}
     </h5>
   </div>
   <app-tab (valueChange)="selectedTabId$.next($event.value)">
@@ -23,13 +23,13 @@
     <div class="content p-4">
       <ng-container [ngSwitch]="selectedTabId$ | async">
         <ng-container *ngSwitchCase="0">
-          <app-price-view [type]="type"></app-price-view>
+          <app-price-view [part]="part"></app-price-view>
         </ng-container>
         <ng-container *ngSwitchCase="1">
-          <app-part-information></app-part-information>
+          <app-part-information [part]="part" [rfq]="rfq" [customer]="customer"></app-part-information>
         </ng-container>
         <ng-container *ngSwitchCase="2">
-          <app-pricing-profile></app-pricing-profile>
+          <app-pricing-profile [part]="part"></app-pricing-profile>
         </ng-container>
       </ng-container>
     </div>

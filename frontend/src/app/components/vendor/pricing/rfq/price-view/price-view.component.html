@@ -14,7 +14,10 @@
       <h6 class="header mb-3"><strong>Price Detail</strong></h6>
       <table
         class="w-100 table table-borderless pricing-table"
-        *ngIf="type !== 'queued'; else pricingSetting"
+        *ngIf="
+          !part?.manualPricingAllowed || part?.partStatusType.id === 3;
+          else pricingSetting
+        "
       >
         <thead>
           <tr>
@@ -25,29 +28,29 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="font-weight-bold">Tooling</td>
-            <td class="text-center">{{ pricingDetail.toolingUnitCount }}</td>
-            <td class="text-center">{{ pricingDetail.toolingUnitPrice }}</td>
-            <td class="text-center">{{ pricingDetail.toolingExtended }}</td>
-          </tr>
-          <tr>
-            <td class="font-weight-bold">Parts</td>
-            <td class="text-center">{{ pricingDetail.partsUnitCount }}</td>
-            <td class="text-center">{{ pricingDetail.partsUnitPrice }}</td>
-            <td class="text-center">{{ pricingDetail.partsExtended }}</td>
+          <tr
+            *ngFor="let partQuoteDetail of partQuoteDetail?.partQuoteDetailList"
+          >
+            <td class="font-weight-bold">
+              {{ partQuoteDetail.invoiceItemTypeName }}
+            </td>
+            <td class="text-center">{{ partQuoteDetail.unitCount }}</td>
+            <td class="text-center">{{ partQuoteDetail.unitPrice }}</td>
+            <td class="text-center">{{ partQuoteDetail.extendedPrice }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>
             <td class="text-center"></td>
             <td class="text-center font-weight-bold">Subtotal</td>
-            <td class="text-center font-weight-bold">1250</td>
+            <td class="text-center font-weight-bold">
+              {{ partQuoteDetail?.totalCost }}
+            </td>
           </tr>
         </tbody>
       </table>
       <ng-template #pricingSetting>
         <form [formGroup]="pricingForm">
-          <table class="w-100 table table-borderless pricing-table">
+          <table class="w-100 table table-borderless pricing-table a">
             <colgroup>
               <col width="25%" />
               <col width="25%" />
@@ -247,18 +250,32 @@
                 >
                   <ng-container [ngSwitch]="stage">
                     <ng-container *ngSwitchCase="'edit'">
-                      <input type="number" class="price-input" value="2" />
+                      <input
+                        type="number"
+                        class="price-input"
+                        [value]="
+                          pricingForm.value.toolingExtended +
+                          pricingForm.value.partsExtended
+                        "
+                        readonly
+                      />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
                       <input
                         type="number"
-                        readonly
                         class="price-input"
-                        value="2"
+                        [value]="
+                          pricingForm.value.toolingExtended +
+                          pricingForm.value.partsExtended
+                        "
+                        readonly
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                    <ng-container *ngSwitchDeafault>1</ng-container>
+                    <ng-container *ngSwitchDefault>{{
+                      pricingForm.value.toolingExtended +
+                        pricingForm.value.partsExtended
+                    }}</ng-container>
                   </ng-container>
                 </td>
               </tr>
@@ -320,23 +337,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="text-center">1</td>
-            <td class="text-center">30</td>
-            <td>620 Atlantic Ave, Brooklyn, NY 11217, USA</td>
-            <td>10/05/2019</td>
-          </tr>
-          <tr>
-            <td class="text-center">2</td>
-            <td class="text-center">120</td>
-            <td>620 Atlantic Ave, Brooklyn, NY 11217, USA</td>
-            <td>2 weeks after First Article Approval</td>
-          </tr>
-          <tr>
-            <td class="text-center">3</td>
-            <td class="text-center">200</td>
-            <td>620 Atlantic Ave, Brooklyn, NY 11217, USA</td>
-            <td>2 weeks after Second Article Approval</td>
+          <tr *ngFor="let shipping of part?.order?.partList; index as i">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">{{ shipping.quantity }}</td>
+            <td>{{ shipping.shippingAddress }}</td>
+            <td>{{ shipping.targetDeliveryDate | date }}</td>
           </tr>
         </tbody>
       </table>
@@ -345,7 +350,9 @@
 </div>
 
 <ng-template #recommendation let-modal>
-  <app-recommended-pricing (close)="onRecommendModalClose($event)"></app-recommended-pricing>
+  <app-recommended-pricing
+    (close)="onRecommendModalClose($event)"
+  ></app-recommended-pricing>
 </ng-template>
 
 <ng-template #confirm let-modal>
@@ -372,8 +379,12 @@
         <tbody>
           <tr>
             <td class="font-weight-bold">Tooling</td>
-            <td class="text-center">{{ pricingForm.value.toolingUnitCount }}</td>
-            <td class="text-center">{{ pricingForm.value.toolingUnitPrice }}</td>
+            <td class="text-center">
+              {{ pricingForm.value.toolingUnitCount }}
+            </td>
+            <td class="text-center">
+              {{ pricingForm.value.toolingUnitPrice }}
+            </td>
             <td class="text-center">{{ pricingForm.value.toolingExtended }}</td>
           </tr>
           <tr>
@@ -386,7 +397,12 @@
             <td class="text-center"></td>
             <td class="text-center"></td>
             <td class="text-center font-weight-bold">Subtotal</td>
-            <td class="text-center font-weight-bold">1250</td>
+            <td class="text-center font-weight-bold">
+              {{
+                pricingForm.value.toolingExtended +
+                  pricingForm.value.partsExtended
+              }}
+            </td>
           </tr>
         </tbody>
       </table>

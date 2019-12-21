@@ -1,49 +1,54 @@
-import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
-import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { GridOptions, GridApi } from "ag-grid-community";
 import { NgxSpinnerService } from "ngx-spinner";
+import { CustomerData } from "src/app/model/user.model";
+import { CustomerService } from "./../../../../../service/customer.service";
+import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
+import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
+import { Pageable } from "./../../../../../model/pageable.model";
+import { Part } from "./../../../../../model/part.model";
 
 @Component({
-  selector: 'app-recent-auto-prices',
-  templateUrl: './recent-auto-prices.component.html',
-  styleUrls: ['./recent-auto-prices.component.css']
+  selector: "app-recent-auto-prices",
+  templateUrl: "./recent-auto-prices.component.html",
+  styleUrls: ["./recent-auto-prices.component.css"]
 })
 export class RecentAutoPricesComponent implements OnInit {
-
   columnDefs = [];
   gridOptions: GridOptions;
-  rowData = [];
+  rowData: any[] = [];
   pageSize = 10;
   navigation;
+  customer: CustomerData;
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
 
   constructor(
-    private spinner: NgxSpinnerService,
-    private pricingService: RfqPricingService,
-    private router: Router,
+    public spinner: NgxSpinnerService,
+    public pricingService: RfqPricingService,
+    public router: Router,
+    public customerService: CustomerService
   ) {}
 
   ngOnInit() {
     this.columnDefs = [
-      {
-        headerName: "Customer",
-        field: "customer",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
+      // {
+      //   headerName: "Customer",
+      //   field: "customer",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
       {
         headerName: "RFQ",
         field: "rfq",
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center'
+        cellClass: "text-center"
       },
       {
         headerName: "Part",
@@ -51,7 +56,7 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center'
+        cellClass: "text-center"
       },
       {
         headerName: "File Name",
@@ -59,7 +64,7 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellRenderer: 'fileViewRenderer',
+        cellRenderer: "fileViewRenderer"
       },
       {
         headerName: "Quantity",
@@ -67,7 +72,7 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center'
+        cellClass: "text-center"
       },
       {
         headerName: "Material",
@@ -83,28 +88,28 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false
       },
-      {
-        headerName: "Roughness",
-        field: "roughness",
-        hide: false,
-        sortable: true,
-        filter: false,
-        cellClass: 'text-center'
-      },
-      {
-        headerName: "Post-Process",
-        field: "postProcess",
-        hide: false,
-        sortable: true,
-        filter: true,
-        cellClass: 'text-center'
-      },
+      // {
+      //   headerName: "Roughness",
+      //   field: "roughness",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false,
+      //   cellClass: "text-center"
+      // },
+      // {
+      //   headerName: "Post-Process",
+      //   field: "postProcess",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: true,
+      //   cellClass: "text-center"
+      // },
       {
         headerName: "Price",
         field: "price",
         hide: false,
         sortable: true,
-        cellClass: 'text-center'
+        cellClass: "text-center"
       }
     ];
 
@@ -120,9 +125,13 @@ export class RecentAutoPricesComponent implements OnInit {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
         this.router.navigateByUrl(this.router.url + "/" + event.data.id);
-      },
+      }
     };
-    this.getRows();
+
+    this.customerService.getCustomer().subscribe((v: CustomerData) => {
+      this.customer = v;
+      this.getRows();
+    });
   }
 
   async getRows(q = null) {
@@ -131,14 +140,33 @@ export class RecentAutoPricesComponent implements OnInit {
     const rows = [];
     try {
       while (true) {
-        const res = await this.pricingService
-          .getRecentAutoPrices({ page, size: 1000, sort: "id,ASC", q })
+        const res: Pageable<Part> = await this.pricingService
+          .getRecentAutoPrices({
+            page,
+            size: 1000,
+            sort: "id,ASC",
+            q
+          })
           .toPromise();
 
         if (!res.content) {
           break;
         }
-        rows.push(...res.content);
+
+        rows.push(...res.content.map((part: Part) => ({
+          id: part.id,
+          customer: '',
+          rfq: part.rfqMedia.projectRfqId,
+          part: part.rfqMedia.projectRfqId + "." + part.id,
+          filename: part.rfqMedia.media.name,
+          quantity: part.quantity,
+          material: part.materialName,
+          process: part.processTypeName,
+          roughness: '',
+          postProcess: '',
+          price: part.shippingCost ? `$ ${part.shippingCost}` : ''
+        })));
+        
         if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }

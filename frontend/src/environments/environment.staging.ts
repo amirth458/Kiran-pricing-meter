@@ -42,6 +42,7 @@ export const environment = {
   apiBaseUrl: 'http://stage-admin-api.3diligent.com/api/v1',
   marketApiBaseUrl: 'http://stage-marketplace-api.3diligent.com/api/v1',
   managementBaseUrl: 'http://stage-manage-api.3diligent.com/api/v1',
+  procurementApiBaseUrl: 'http://stage-procurement-api.3diligent.com/api/v1',
   adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
   CONNECTOR_HOST_URL: 'http://stage-manage.3diligent.com/api/v1',
   PPE_HOST_URL: ' http://stage-ppe-api.3diligent.com/api/v1',

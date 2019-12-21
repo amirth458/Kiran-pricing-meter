@@ -1,12 +1,13 @@
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Component, OnInit } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { BehaviorSubject } from "rxjs";
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
+import { Part } from "./../../../../../model/part.model";
+import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
 
 @Component({
   selector: "app-queued-manual-price",
@@ -31,7 +32,7 @@ export class QueuedManualPriceComponent implements OnInit {
     fileViewRenderer: FileViewRendererComponent
   };
 
-  columnDefs = [[],[]];
+  columnDefs = [[], []];
   gridOptions: GridOptions;
   rowData = [[], []];
   pageSize = 10;
@@ -47,13 +48,13 @@ export class QueuedManualPriceComponent implements OnInit {
   ngOnInit() {
     this.columnDefs = [
       [
-        {
-          headerName: "Customer",
-          field: "customer",
-          hide: false,
-          sortable: true,
-          filter: false
-        },
+        // {
+        //   headerName: "Customer",
+        //   field: "customer",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false
+        // },
         {
           headerName: "RFQ",
           field: "rfq",
@@ -76,7 +77,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer",
+          cellRenderer: "fileViewRenderer"
         },
         {
           headerName: "Quantity",
@@ -100,38 +101,38 @@ export class QueuedManualPriceComponent implements OnInit {
           sortable: true,
           filter: false
         },
-        {
-          headerName: "Roughness",
-          field: "roughness",
-          hide: false,
-          sortable: true,
-          filter: false,
-          cellClass: "text-center"
-        },
-        {
-          headerName: "Post-Process",
-          field: "postProcess",
-          hide: false,
-          sortable: true,
-          filter: true,
-          cellClass: "text-center"
-        },
-        {
-          headerName: "Wait",
-          field: "wait",
-          hide: false,
-          sortable: true,
-          cellClass: "text-center"
-        }
+        // {
+        //   headerName: "Roughness",
+        //   field: "roughness",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false,
+        //   cellClass: "text-center"
+        // },
+        // {
+        //   headerName: "Post-Process",
+        //   field: "postProcess",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: true,
+        //   cellClass: "text-center"
+        // },
+        // {
+        //   headerName: "Wait",
+        //   field: "wait",
+        //   hide: false,
+        //   sortable: true,
+        //   cellClass: "text-center"
+        // }
       ],
       [
-        {
-          headerName: "Customer",
-          field: "customer",
-          hide: false,
-          sortable: true,
-          filter: false
-        },
+        // {
+        //   headerName: "Customer",
+        //   field: "customer",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false
+        // },
         {
           headerName: "RFQ",
           field: "rfq",
@@ -154,7 +155,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer",
+          cellRenderer: "fileViewRenderer"
         },
         {
           headerName: "Material",
@@ -171,22 +172,22 @@ export class QueuedManualPriceComponent implements OnInit {
           filter: false,
           cellClass: "text-center"
         },
-        {
-          headerName: "Post-Process",
-          field: "postProcess",
-          hide: false,
-          sortable: true,
-          filter: true,
-          cellClass: "text-center"
-        },
-        {
-          headerName: "NDA",
-          field: "nda",
-          hide: false,
-          sortable: true,
-          filter: false,
-          cellClass: "text-center"
-        },
+        // {
+        //   headerName: "Post-Process",
+        //   field: "postProcess",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: true,
+        //   cellClass: "text-center"
+        // },
+        // {
+        //   headerName: "NDA",
+        //   field: "nda",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false,
+        //   cellClass: "text-center"
+        // },
         {
           headerName: "Manual Price",
           field: "manualPrice",
@@ -206,8 +207,10 @@ export class QueuedManualPriceComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        const type = this.selectedTabId === 0 ? 'queued' : 'priced';
-        this.router.navigateByUrl(this.router.url + '/'+ type +'/' + event.data.id);
+        const type = this.selectedTabId === 0 ? "queued" : "priced";
+        this.router.navigateByUrl(
+          this.router.url + "/" + type + "/" + event.data.id
+        );
       }
     };
     this.selectedTabId$.subscribe(value => {
@@ -240,7 +243,23 @@ export class QueuedManualPriceComponent implements OnInit {
         if (!res.content) {
           break;
         }
-        rows.push(...res.content);
+
+        rows.push(
+          ...res.content.map((part: Part) => ({
+            id: part.id,
+            customer: "",
+            rfq: part.rfqMedia.id,
+            part: part.rfqMedia.id + "." + part.id,
+            filename: part.rfqMedia.media.name,
+            quantity: part.quantity,
+            material: part.materialName,
+            process: part.processTypeName,
+            roughness: "",
+            postProcess: "",
+            price: part.shippingCost ? `$ ${part.shippingCost}` : ""
+          }))
+        );
+
         if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }
@@ -267,7 +286,28 @@ export class QueuedManualPriceComponent implements OnInit {
         if (!res.content) {
           break;
         }
-        rows.push(...res.content);
+
+        rows.push(
+          ...res.content.map((part: Part) => ({
+            id: part.id,
+            customer: "",
+            rfq: part.rfqMedia.id,
+            part: part.rfqMedia.id + "." + part.id,
+            filename: part.rfqMedia.media.name,
+            quantity: part.quantity,
+            material: part.materialName,
+            process: part.processTypeName,
+            roughness: "",
+            postProcess: "",
+            manualPrice:
+              part.partQuoteList && part.partQuoteList.length > 0
+                ? part.partQuoteList[0].totalCost
+                  ? `$ ${part.shippingCost}`
+                  : ""
+                : ""
+          }))
+        );
+
         if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }
@@ -289,6 +329,9 @@ export class QueuedManualPriceComponent implements OnInit {
   onFileClicked(event, row, content) {
     event.stopPropagation();
     console.log(row);
-    this.modalService.open(content, { centered: true, windowClass: 'file-viewer-modal' });
+    this.modalService.open(content, {
+      centered: true,
+      windowClass: "file-viewer-modal"
+    });
   }
 }

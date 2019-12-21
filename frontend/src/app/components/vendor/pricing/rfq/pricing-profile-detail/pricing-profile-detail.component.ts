@@ -261,7 +261,7 @@ export class PricingProfileDetailComponent implements OnInit {
       this.pricingId = params.pricingId;
       this.profileId = params.profileId;
       this.type = params.type;
-      this.getPricingDetail(this.pricingId);
+      this.getPartDetail(this.pricingId);
     });
   }
 
@@ -272,9 +272,9 @@ export class PricingProfileDetailComponent implements OnInit {
     this.gridOptions[id].api.sizeColumnsToFit();
   }
 
-  async getPricingDetail(id: number) {
+  async getPartDetail(id: number) {
     this.pricingDetail = await this.pricingService
-      .getPricingDetail(id)
+      .getPartDetail(id)
       .toPromise();
   }
 
