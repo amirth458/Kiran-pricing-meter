@@ -31,7 +31,7 @@ export class PriceDetailComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.route.params.subscribe(params => {
-      this.selectedId = params.pricingId;
+      this.selectedId = params.partId;
       this.getDetails(this.selectedId);
     });
 
@@ -65,6 +65,10 @@ export class PriceDetailComponent implements OnInit {
         this.customer = customer;
       });
     });
+  }
+
+  manualQuote() {
+    this.getDetails(this.selectedId);
   }
 
   ngOnInit() {}

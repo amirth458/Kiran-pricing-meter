@@ -15,7 +15,7 @@
       <table
         class="w-100 table table-borderless pricing-table"
         *ngIf="
-          !part?.manualPricingAllowed || part?.partStatusType.id === 3;
+          !part?.manualPricingAllowed || part?.partStatusType.id === 3 || partQuote;
           else pricingSetting
         "
       >
@@ -29,7 +29,7 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let partQuoteDetail of partQuoteDetail?.partQuoteDetailList"
+            *ngFor="let partQuoteDetail of partQuote?.partQuoteDetailList"
           >
             <td class="font-weight-bold">
               {{ partQuoteDetail.invoiceItemTypeName }}
@@ -43,7 +43,7 @@
             <td class="text-center"></td>
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
-              {{ partQuoteDetail?.totalCost }}
+              {{ partQuote?.totalCost }}
             </td>
           </tr>
         </tbody>

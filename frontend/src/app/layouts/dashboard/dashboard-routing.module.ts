@@ -48,25 +48,21 @@ const routes: Routes = [
               { path: "pricing-settings", component: PricingSettingsComponent },
               { path: "auto-prices", component: RecentAutoPricesComponent },
               {
-                path: "auto-prices/:pricingId",
+                path: "auto-prices/:partId",
                 component: PriceDetailComponent
               },
               {
-                path: "auto-prices/:pricingId/pricing-profile/:profileId",
+                path: "auto-prices/:partId/pricing-profile/:profileId",
                 component: PricingProfileDetailComponent
               },
               { path: "manual-price", component: QueuedManualPriceComponent },
               {
-                path: "manual-price/:type/:pricingId",
-                component: PriceDetailComponent
-              },
-              {
-                path: "manual-price/:type/:pricingId",
+                path: "manual-price/:partId",
                 component: PriceDetailComponent
               },
               {
                 path:
-                  "manual-price/:type/:pricingId/pricing-profile/:profileId",
+                  "manual-price/:partId/pricing-profile/:profileId",
                 component: PricingProfileDetailComponent
               },
               { path: "", redirectTo: "pricing-settings", pathMatch: "full" },

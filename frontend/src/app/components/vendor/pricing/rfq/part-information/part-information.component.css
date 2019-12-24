@@ -30,6 +30,9 @@
   color: var(--theme-text-color);
   font-size: 14px;
 }
+.details p {
+  word-break: break-all;
+}
 .details .quantity {
   color: var(--theme-light-blue);
   font-size: 1rem;
