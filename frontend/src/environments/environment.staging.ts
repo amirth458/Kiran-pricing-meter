@@ -48,7 +48,8 @@ export const environment = {
   CONNECTOR_HOST_URL: 'https://stage-manage.3diligent.com/api/v1',
   PPE_HOST_URL: ' https://stage-ppe-api.3diligent.com/api/v1',
   MARKETPLACE_URL: 'https://stage-marketplace.3diligent.com/',
-  encryptionKey: '1Kf@%4%3ADfEafw'
+  encryptionKey: '1Kf@%4%3ADfEafw',
+  isTestDataEnabled: false,
 };
 
 /*

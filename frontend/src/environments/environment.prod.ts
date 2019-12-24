@@ -45,5 +45,6 @@ export const environment = {
   CONNECTOR_HOST_URL: 'https://manage.3diligent.com/api/v1',
   PPE_HOST_URL: ' https://ppe-api.3diligent.com/api/v1',
   MARKETPLACE_URL: 'https://marketplace.3diligent.com/',
-  encryptionKey: '1Kf@%4%3ADfEafw'
+  encryptionKey: '1Kf@%4%3ADfEafw',
+  isTestDataEnabled: false,
 };

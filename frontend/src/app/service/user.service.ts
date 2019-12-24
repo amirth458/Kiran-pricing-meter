@@ -302,23 +302,14 @@ export class UserService {
   }
 
   getCustomer(customerId: number): Observable<CustomerData> {
-    const data: CustomerData = {
-      id: 105,
-      name: "3DCo1231",
-      division: "3Diligent Development Teams",
-      phoneNo: "+12312312311",
-      industries: [
-        {
-          id: 2,
-          name: "Automotive and Maritime"
-        },
-        {
-          id: 1,
-          name: "Aerospace & Defense"
-        }
-      ]
-    };
-
-    return of(data);
+    const url = `${environment.procurementApiBaseUrl}/customer/${customerId}`;
+    const data = JSON.parse(localStorage.getItem("auth"));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
+    });
+    return this.http.get<CustomerData>(url, {
+      headers
+    });
   }
 }

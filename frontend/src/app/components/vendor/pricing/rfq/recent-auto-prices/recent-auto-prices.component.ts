@@ -20,7 +20,6 @@ export class RecentAutoPricesComponent implements OnInit {
   rowData: any[] = [];
   pageSize = 10;
   navigation;
-  customer: CustomerData;
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -128,10 +127,11 @@ export class RecentAutoPricesComponent implements OnInit {
       }
     };
 
-    this.customerService.getCustomer().subscribe((v: CustomerData) => {
-      this.customer = v;
-      this.getRows();
-    });
+    // this.customerService.getCustomer().subscribe((v: CustomerData) => {
+    //   this.customer = v;
+    //   this.getRows();
+    // });
+    this.getRows();
   }
 
   async getRows(q = null) {
@@ -155,15 +155,12 @@ export class RecentAutoPricesComponent implements OnInit {
 
         rows.push(...res.content.map((part: Part) => ({
           id: part.id,
-          customer: '',
           rfq: part.rfqMedia.projectRfqId,
           part: part.rfqMedia.projectRfqId + "." + part.id,
           filename: part.rfqMedia.media.name,
           quantity: part.quantity,
           material: part.materialName,
           process: part.processTypeName,
-          roughness: '',
-          postProcess: '',
           price: part.shippingCost ? `$ ${part.shippingCost}` : ''
         })));
         

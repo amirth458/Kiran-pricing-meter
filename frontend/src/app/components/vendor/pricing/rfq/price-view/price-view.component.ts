@@ -1,3 +1,5 @@
+import { CustomerData } from 'src/app/model/user.model';
+import { PartQuote } from './../../../../../model/part.model';
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
@@ -6,7 +8,9 @@ import {
   OnInit,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  Output,
+  EventEmitter
 } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -24,6 +28,8 @@ import { DatePipe } from '@angular/common';
 })
 export class PriceViewComponent implements OnInit, OnChanges {
   @Input() part: Part;
+  @Input() customer: CustomerData;
+  @Output() manualQuote: EventEmitter<any> = new EventEmitter();
 
   stage = "unset";
 
@@ -32,7 +38,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
   };
   columnDefs = [];
   gridOptions: GridOptions;
-  partQuoteDetail;
+  partQuote: PartQuote;
   rowData = [];
 
   pricingForm: FormGroup = this.fb.group({
@@ -53,24 +59,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.rowData = [
-      {
-        id: this.part && this.part.id,
-        customer: "",
-        rfq: this.part && this.part.rfqMedia.projectRfqId,
-        part: this.part && this.part.rfqMedia.projectRfqId + "." + this.part.id,
-        filename: this.part && this.part.rfqMedia.media.name,
-        quantity: this.part && this.part.quantity,
-        material: this.part && this.part.materialName,
-        process: this.part && this.part.processTypeName,
-        roughness: "",
-        postProcess: "",
-        price:
-          this.part && this.part.shippingCost
-            ? `$ ${this.part.shippingCost}`
-            : ""
-      }
-    ];
+    this.updateRowData();
 
     this.columnDefs = [
       {
@@ -126,22 +115,22 @@ export class PriceViewComponent implements OnInit, OnChanges {
         sortable: true,
         filter: false
       },
-      {
-        headerName: "Roughness",
-        field: "roughness",
-        hide: false,
-        sortable: true,
-        filter: false,
-        cellClass: "text-center"
-      },
-      {
-        headerName: "Post-Process",
-        field: "postProcess",
-        hide: false,
-        sortable: true,
-        filter: true,
-        cellClass: "text-center"
-      },
+      // {
+      //   headerName: "Roughness",
+      //   field: "roughness",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false,
+      //   cellClass: "text-center"
+      // },
+      // {
+      //   headerName: "Post-Process",
+      //   field: "postProcess",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: true,
+      //   cellClass: "text-center"
+      // },
       {
         headerName: "Price",
         field: "price",
@@ -216,6 +205,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
       .pipe(catchError(e => this.handleError(e)))
       .subscribe(() => {
         this.toastrService.success("Part Quote created successfully.");
+        this.manualQuote.emit();
       });
   }
 
@@ -232,30 +222,38 @@ export class PriceViewComponent implements OnInit, OnChanges {
     this.modalService.dismissAll();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.part && changes.part.currentValue) {
-      console.log(this.part);
-      this.partQuoteDetail = this.part.partQuoteList[0] || [];
+  updateRowData() {
+    if (this.part && this.customer) {
+      this.partQuote = (this.part.partQuoteList && this.part.partQuoteList.length) ? this.part.partQuoteList[0] || null : null;
       this.rowData = [
         {
-          id: changes.part.currentValue.id,
-          customer: "",
-          rfq: changes.part.currentValue.rfqMedia.projectRfqId,
+          id: this.part.id,
+          customer: this.customer.name,
+          rfq: this.part.rfqMedia.projectRfqId,
           part:
-            changes.part.currentValue.rfqMedia.projectRfqId +
+            this.part.rfqMedia.projectRfqId +
             "." +
-            changes.part.currentValue.id,
-          filename: changes.part.currentValue.rfqMedia.media.name,
-          quantity: changes.part.currentValue.quantity,
-          material: changes.part.currentValue.materialName,
-          process: changes.part.currentValue.processTypeName,
+            this.part.id,
+          filename: this.part.rfqMedia.media.name,
+          quantity: this.part.quantity,
+          material: this.part.materialName,
+          process: this.part.processTypeName,
           roughness: "",
           postProcess: "",
-          price: changes.part.currentValue.shippingCost
-            ? `$ ${changes.part.currentValue.shippingCost}`
+          price: this.part.shippingCost
+            ? `$ ${this.part.shippingCost}`
             : ""
         }
       ];
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.part && changes.part.currentValue) {
+      this.updateRowData();
+    }
+    if (changes.customer && changes.customer.currentValue) {
+      this.updateRowData();
     }
   }
 }

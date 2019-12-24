@@ -207,9 +207,8 @@ export class QueuedManualPriceComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        const type = this.selectedTabId === 0 ? "queued" : "priced";
         this.router.navigateByUrl(
-          this.router.url + "/" + type + "/" + event.data.id
+          this.router.url + "/" + event.data.id
         );
       }
     };
@@ -290,7 +289,6 @@ export class QueuedManualPriceComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
-            customer: "",
             rfq: part.rfqMedia.id,
             part: part.rfqMedia.id + "." + part.id,
             filename: part.rfqMedia.media.name,

@@ -1,4 +1,4 @@
-export interface RfqStatusType {
+export interface Type {
   id: number;
   name: string;
 }
@@ -159,8 +159,193 @@ export interface ProjectProfile {
 export interface RfqData {
   id: number;
   name: string;
-  rfqStatusType: RfqStatusType;
+  rfqStatusType: Type;
   projectProfile: ProjectProfile;
   isArchived: boolean;
   partList: Part[];
+}
+
+export interface Material {
+  id: string;
+  name: string;
+  genericName: string;
+  oemDescription: string;
+  materialClassName: string;
+  materialFamilyName: string;
+  materialTypeName: string;
+}
+
+export interface ProcessFamily {
+  id: number;
+  name: string;
+  processType: Type;
+  processAction: any[];
+}
+
+export interface Equipment {
+  id: number;
+  name: string;
+  oemDescription: string;
+  brandedProcessName: string;
+  genericProcessName: string;
+  processFamily: ProcessFamily;
+  processTypeName: string;
+}
+
+export interface VendorFacility {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  street1: string;
+  street2: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  vendorId: number;
+}
+
+export interface VendorMachinery {
+  id: number;
+  name: string;
+  serialName: string;
+  vendorId: number;
+  equipment: Equipment;
+  vendorFacility: VendorFacility;
+}
+
+export interface MachineServingMaterial {
+  id: number;
+  material: Material;
+  vendorMachinery: VendorMachinery;
+}
+
+export interface ProcessMachineServingMaterial {
+  id: number;
+  machineServingMaterial: MachineServingMaterial;
+  processProfileId: number;
+}
+
+export interface InvoiceLineItem {
+  id: number;
+  name: string;
+  invoiceItem: Type;
+  processPricingParameterGroup: Type;
+}
+
+export interface Currency {
+  id: number;
+  name: string;
+  symbol: string;
+  code: string;
+}
+
+export interface ProcessParameter {}
+export interface ProcessDimensionalProperty {}
+export interface ProcessMaterialCharacteristic {}
+
+export interface ProcessProfile {
+  id: number;
+  name: string;
+  parameterNickName: string;
+  vendorId: number;
+  vendorName: string;
+  processProfileType: Type;
+  processAction: any;
+  processMachineServingMaterialList: ProcessMachineServingMaterial[];
+  processParameterList: ProcessParameter[];
+  processDimensionalPropertyList: ProcessDimensionalProperty[];
+  processMaterialCharacteristicList: ProcessMaterialCharacteristic[];
+}
+
+export interface MultiplierProcessPricingParameter {
+  id: number;
+  quantity: number;
+  price: number;
+  multiplier: number;
+  invoiceLineItem: InvoiceLineItem;
+  currency: Currency;
+  processPricing: Type;
+  quantityUnitType: UnitType;
+  processPricingConditionType: ProcessPricingConditionType;
+  multiplierProcessPricingParameter: MultiplierProcessPricingParameter;
+}
+
+export interface ProcessPricingParameter {
+  id: number;
+  quantity: number;
+  price: number;
+  multiplier: number;
+  invoiceLineItem: InvoiceLineItem;
+  currency: Currency;
+  processPricing: Type;
+  quantityUnitType: UnitType;
+  processPricingConditionType: ProcessPricingConditionType;
+  multiplierProcessPricingParameter: MultiplierProcessPricingParameter;
+}
+
+export interface ProcessPricingConditionType {
+  id: number;
+  name: string;
+  operandType: Type;
+  measurementType: Type;
+  processProfileType: Type;
+}
+
+export interface ValueSignType {
+  id: number;
+  name: string;
+  symbol: string;
+}
+
+export interface OperatorType {
+  id: number;
+  name: string;
+  symbol: string;
+  operandType: Type;
+}
+
+export interface UnitType {
+  id: 1;
+  name: string;
+  symbol: string;
+  displayName: string;
+  measurementType: Type;
+  isDefault: boolean;
+}
+
+export interface ProcessPricingCondition {
+  id: number;
+  value: number;
+  valueInDefaultUnit: number;
+  processPricingConditionType: ProcessPricingConditionType;
+  valueSignType: ValueSignType;
+  operatorType: OperatorType;
+  processPricing: Type;
+  unitType: UnitType;
+}
+
+export interface PricingProfileDetailedView {
+  id: number;
+  name: string;
+  processProfile: ProcessProfile;
+  processPricingParameterList: ProcessPricingParameter[];
+  processPricingConditionList?: ProcessPricingCondition[];
+  partPricingProfileViews?: MultiplierProcessPricingParameter[];
+}
+
+export interface InvoiceItemSummary {
+  invoiceItem: Type;
+  unitCost: {
+    flatCharge: number;
+    variableCharge: number;
+  };
+  extendedCost: number;
+}
+
+export interface PricingProfile {
+  pricingProfileDetailedView: PricingProfileDetailedView;
+  partCostInvoiceItemSummary: InvoiceItemSummary;
+  toolCostInvoiceItemSummary: InvoiceItemSummary;
 }
