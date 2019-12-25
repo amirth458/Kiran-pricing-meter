@@ -70,6 +70,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
   addButton(route) {
     if (route === "save-pricing-setting") {
       this.actionService.triggerSaveProfileSetting();
+    } else if (route === "save-fullfillment-setting") {
+      this.actionService.triggerSaveFullfillmentSetting();
     } else {
       this.route.navigateByUrl(this.route.url + "/" + route);
     }
