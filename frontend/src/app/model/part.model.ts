@@ -1,3 +1,5 @@
+import { VendorProfile } from './vendorProfile.model';
+
 export interface Type {
   id: number;
   name: string;
@@ -137,12 +139,30 @@ export interface Part {
   shippingCost: number;
   shippedAt: string;
   manualPricingAllowed: boolean;
-  shippingAddress: string;
+  shippingAddress: Address;
   partStatusType: PartStatusType;
   order: PartOrder;
   postProcessTypeIds: number[];
   partCustomParameterList: PartCustomParameter[];
   partQuoteList: PartQuote[];
+}
+
+export interface Address {
+  id: number;
+  name: string;
+  street1: string;
+  street2: string;
+  landmark: string;
+  city: string;
+  zipcode: string;
+  state: string;
+  customerId: number;
+  country: Country;
+}
+
+export interface Country {
+  id: number;
+  name: string;
 }
 
 export interface ProjectProfile {
@@ -250,7 +270,6 @@ export interface ProcessProfile {
   name: string;
   parameterNickName: string;
   vendorId: number;
-  vendorName: string;
   processProfileType: Type;
   processAction: any;
   processMachineServingMaterialList: ProcessMachineServingMaterial[];
@@ -330,6 +349,7 @@ export interface PricingProfileDetailedView {
   id: number;
   name: string;
   processProfile: ProcessProfile;
+  vendorProfile: VendorProfile;
   processPricingParameterList: ProcessPricingParameter[];
   processPricingConditionList?: ProcessPricingCondition[];
   partPricingProfileViews?: MultiplierProcessPricingParameter[];

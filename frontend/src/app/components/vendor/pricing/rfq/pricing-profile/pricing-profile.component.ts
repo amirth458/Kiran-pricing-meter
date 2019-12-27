@@ -177,6 +177,7 @@ export class PricingProfileComponent implements OnInit {
   rowData;
   pageSize = 10;
   navigation;
+  pricingSettings;
 
   constructor(
     public router: Router,
@@ -292,7 +293,7 @@ export class PricingProfileComponent implements OnInit {
 
     this.rowData = res.map(item => ({
       id: item.id,
-      vendorName: item.processProfile.vendorName,
+      vendorName: item.vendorProfile.name,
       pricingProfile: item.name,
       material: item.processProfile.processMachineServingMaterialList
         .map(item => item.machineServingMaterial.material.name)
@@ -307,6 +308,8 @@ export class PricingProfileComponent implements OnInit {
       // esitmatedDelivery: "10/12/2019",
       // matchScore: 4.9
     }));
+
+    this.pricingSettings = await this.pricingService.getPricingSettings().toPromise();
 
     this.spinner.hide();
   }

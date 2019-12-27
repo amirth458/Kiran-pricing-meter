@@ -264,7 +264,7 @@ export class PricingProfileDetailComponent implements OnInit {
             this.part.rfqMedia.media.customerId
           ),
           this.userService.getCustomer(this.part.rfqMedia.media.customerId),
-          this.pricingService.getRfqDetail(this.part.rfqMedia.id),
+          this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId),
           this.metadataService.getMetaData("post_process_action")
         ).subscribe(([pricingProfile, customer, rfq, postProcesses]) => {
           this.spinner.hide();
@@ -311,8 +311,9 @@ export class PricingProfileDetailComponent implements OnInit {
       ],
       [
         {
-          vendorName: this.pricingProfile.pricingProfileDetailedView
-            .processProfile.vendorName,
+          vendorName:
+            this.pricingProfile.pricingProfileDetailedView.vendorProfile &&
+            this.pricingProfile.pricingProfileDetailedView.vendorProfile.name,
           pricingProfile: this.pricingProfile.pricingProfileDetailedView.name,
           material: this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
             .map(item => item.machineServingMaterial.material.name)

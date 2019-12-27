@@ -1,9 +1,11 @@
 export class VendorProfile {
-    id: string;
-    vendorInfoId: string;
-    processId: Array<string>;
-    postProcessId: Array<string>;
-    createdBy: string;
-    createdDate: string;
-    updatedDate: string;
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    street1: string;
+    street2: string;
+    city: string;
+    state: string;
+    zipCode: string;
 }
