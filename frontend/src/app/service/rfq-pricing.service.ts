@@ -29,6 +29,16 @@ export class RfqPricingService {
     return this.http.put(url, data);
   }
 
+  getFullfillmentSettings(): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/fulfillment-setting`;
+    return this.http.get(url);
+  }
+
+  setFullfillmentSetting(data): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/fulfillment-setting`;
+    return this.http.put(url, data);
+  }
+
   getRecentAutoPrices(
     filterOption: FilterOption = null
   ): Observable<Pageable<Part>> {

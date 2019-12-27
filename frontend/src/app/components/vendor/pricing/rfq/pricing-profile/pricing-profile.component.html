@@ -1,5 +1,16 @@
 <div class="w-100 p-3">
-  <p class="match-text">10 process profiles and 8 pricing profile matched</p>
+  <p class="match-text">
+    <ng-container *ngIf="part">
+      <ng-container *ngIf="!part?.manualPricingAllowed; else manualPricing"
+        >{{ pricingSettings?.minElligibleProcessProfile }} process profiles and
+        {{ pricingSettings?.minElligiblePricingProfile }} pricing profile
+        matched</ng-container
+      >
+      <ng-template #manualPricing>
+        Based on Pricing Profiles, we recommend
+      </ng-template>
+    </ng-container>
+  </p>
   <div class="d-flex">
     <div class="table-control">
       <app-column-search-filter
@@ -33,7 +44,7 @@
       </ag-grid-angular>
     </div>
   </div>
-</div>  
+</div>
 <ng-template #dateCell let-row let-column="params">
   {{ row[column?.colDef?.field] | date: "dd/MM/yyyy" }}
 </ng-template>

@@ -340,7 +340,7 @@
           <tr *ngFor="let shipping of part?.order?.partList; index as i">
             <td class="text-center">{{ i + 1 }}</td>
             <td class="text-center">{{ shipping.quantity }}</td>
-            <td>{{ shipping.shippingAddress }}</td>
+            <td>{{ getShippingAddress(shipping.shippingAddress) }}</td>
             <td>{{ shipping.targetDeliveryDate | date }}</td>
           </tr>
         </tbody>

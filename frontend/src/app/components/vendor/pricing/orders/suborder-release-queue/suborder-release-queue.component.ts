@@ -45,7 +45,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Customer",
-      field: "customer",
+      field: "customerName",
       checked: false,
       query: {
         type: "",
@@ -63,7 +63,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Material",
-      field: "material",
+      field: "materialName", 
       checked: false,
       query: {
         type: "",
@@ -81,31 +81,31 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Post-Process",
-      field: "postProcess",
+      field: "postProcessTypeNames",
       checked: false,
       query: {
         type: "",
         filter: ""
       }
     },
-    {
-      name: "Previously Ordered",
-      field: "previouslyOrdered",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "First Shipment",
-      field: "firstShipment",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
+    // {
+    //   name: "Previously Ordered",
+    //   field: "previouslyOrdered",
+    //   checked: false,
+    //   query: {
+    //     type: "",
+    //     filter: ""
+    //   }
+    // },
+    // {
+    //   name: "First Shipment",
+    //   field: "firstShipment",
+    //   checked: false,
+    //   query: {
+    //     type: "",
+    //     filter: ""
+    //   }
+    // },
     {
       name: "Delivery Date",
       field: "deliveryDate",
@@ -135,7 +135,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Customer",
-      field: "customer",
+      field: "customerName",
       checked: true
     },
     {
@@ -145,7 +145,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Material",
-      field: "material",
+      field: "materialName",
       checked: true
     },
     {
@@ -155,19 +155,19 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Post-Process",
-      field: "postProcess",
+      field: "postProcessTypeNames",
       checked: true
     },
-    {
-      name: "Previously Ordered",
-      field: "previouslyOrdered",
-      checked: true
-    },
-    {
-      name: "First Shipment",
-      field: "firstShipment",
-      checked: true
-    },
+    // {
+    //   name: "Previously Ordered",
+    //   field: "previouslyOrdered",
+    //   checked: true
+    // },
+    // {
+    //   name: "First Shipment",
+    //   field: "firstShipment",
+    //   checked: true
+    // },
     {
       name: "Delivery Date",
       field: "deliveryDate",
@@ -207,7 +207,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
         if (event.data) {
-          this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+          this.router.navigateByUrl(this.router.url + "/" + event.data.subOrder);
         }
       }
     };
@@ -239,7 +239,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: "Customer",
-        field: "customer",
+        field: "customerName",
         hide: false,
         sortable: true,
         filter: false
@@ -253,7 +253,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: "Material",
-        field: "material",
+        field: "materialName",
         hide: false,
         sortable: true,
         filter: false
@@ -267,25 +267,25 @@ export class SuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: "Post-Process",
-        field: "postProcess",
+        field: "postProcessTypeNames",
         hide: false,
         sortable: true,
         filter: false
       },
-      {
-        headerName: "Previously Ordered",
-        field: "previouslyOrdered",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "First Shipment",
-        field: "firstShipment",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
+      // {
+      //   headerName: "Previously Ordered",
+      //   field: "previouslyOrdered",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
+      // {
+      //   headerName: "First Shipment",
+      //   field: "firstShipment",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
       {
         headerName: "Delivery Date",
         field: "deliveryDate",

@@ -1,4 +1,4 @@
-import { PartDimensionValue, PartCustomParameter } from "./../model/part.model";
+import { PartDimensionValue, PartCustomParameter, Address } from "./../model/part.model";
 import { Part, PartDimension } from "../model/part.model";
 
 export class Util {
@@ -63,6 +63,17 @@ export class Util {
         dimension.z.value} cubic ${measurement}`;
     }
     return "";
+  }
+
+  static shippingAddressInfo(address: Address) {
+    if (!address) {
+      return '-';
+    }
+    return [
+      address.street1 || address.street2 || '',
+      `${address.city ||''} ${address.zipcode ||''}`,
+      address.country.name
+    ].filter( i => i.toString().trim() !== '').join(', ');
   }
 
   static showCustomPrameter(

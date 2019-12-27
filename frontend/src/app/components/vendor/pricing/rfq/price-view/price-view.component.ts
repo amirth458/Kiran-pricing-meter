@@ -1,5 +1,6 @@
+import { Util } from './../../../../../util/Util';
 import { CustomerData } from 'src/app/model/user.model';
-import { PartQuote } from './../../../../../model/part.model';
+import { PartQuote, Address } from './../../../../../model/part.model';
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
@@ -163,6 +164,10 @@ export class PriceViewComponent implements OnInit, OnChanges {
       centered: true,
       windowClass: `${css}-modal`
     });
+  }
+
+  getShippingAddress(address: Address) {
+    return Util.shippingAddressInfo(address);
   }
 
   onSave() {

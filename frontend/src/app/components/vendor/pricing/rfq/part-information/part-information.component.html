@@ -16,6 +16,7 @@
               [src]="part?.rfqMedia.media.partDimension.thumbnail200Location"
               alt="image of a machine design"
               width="300px"
+              onerror="this.src = 'assets/image/placeholder-image.png';"
             />
           </div>
           <a class="view-3d" (click)="view3D(content)">View in 3D</a>
