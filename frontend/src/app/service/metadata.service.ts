@@ -16,4 +16,8 @@ export class MetadataService {
     const url = `${environment.procurementApiBaseUrl}/metadata/${type}`;
     return this.http.get<any>(url).pipe(map(res => res.metadataList));
   }
+  getProcessMetaData(type: string) : Observable<MetaData[]> {
+    const url = `${environment.managementBaseUrl}/process-metadata/${type}`;
+    return this.http.get<any>(url).pipe(map(res => res.metadataList));
+  }
 }

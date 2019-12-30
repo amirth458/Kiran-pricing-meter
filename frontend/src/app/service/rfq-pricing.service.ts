@@ -9,7 +9,8 @@ import { map } from "rxjs/operators";
 import {
   RfqData,
   PricingProfileDetailedView,
-  PricingProfile
+  PricingProfile,
+  PartQuote
 } from "./../model/part.model";
 import { Observable } from "rxjs";
 
@@ -26,16 +27,6 @@ export class RfqPricingService {
 
   setPricingSetting(data): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pricing-setting`;
-    return this.http.put(url, data);
-  }
-
-  getFullfillmentSettings(): Observable<any> {
-    const url = `${environment.apiBaseUrl}/admin/fulfillment-setting`;
-    return this.http.get(url);
-  }
-
-  setFullfillmentSetting(data): Observable<any> {
-    const url = `${environment.apiBaseUrl}/admin/fulfillment-setting`;
     return this.http.put(url, data);
   }
 
@@ -184,5 +175,16 @@ export class RfqPricingService {
     });
 
     return this.http.get<PricingProfileDetailedView[]>(url, { headers });
+  }
+
+  getPartQuote(partId: number): Observable<PartQuote> {
+    const url = `${environment.procurementApiBaseUrl}/part-quote/admin/parts/${partId}`;
+    const data = JSON.parse(localStorage.getItem("auth"));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
+    });
+
+    return this.http.get<PartQuote>(url, { headers });
   }
 }

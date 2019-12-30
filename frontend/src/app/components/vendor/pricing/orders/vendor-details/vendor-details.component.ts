@@ -1,3 +1,4 @@
+import { UserService } from "./../../../../../service/user.service";
 import { OrdersService } from "./../../../../../service/orders.service";
 import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
 import { Component, OnInit } from "@angular/core";
@@ -12,7 +13,7 @@ import { GridOptions } from "ag-grid-community";
 })
 export class VendorDetailsComponent implements OnInit {
   type;
-  vendorId;
+  orderId;
 
   changePriority = false;
 
@@ -23,145 +24,18 @@ export class VendorDetailsComponent implements OnInit {
   };
 
   gridOptions: GridOptions[];
+  subOrderRelease;
+  matchedProfiles = [];
+  priorityRows = [];
 
-  rowData = [
-    [
-      {
-        id: 1,
-        customerOrder: 234,
-        subOrder: "234.1",
-        fileName: "Roter_No_Logo.stl",
-        priceAccepted: "$ 334",
-        customer: "CompCo",
-        quantity: "30",
-        material: "ABS M30",
-        process: "3D Printing",
-        postProcess: "Sanding",
-        previouslyOrdered: "Yes",
-        firstShipment: "Yes",
-        deliveryDate: "09/12/2019"
-      },
-      {
-        id: 2,
-        customerOrder: 234,
-        subOrder: "234.2",
-        fileName: "Roter_No_Logo.stl",
-        priceAccepted: "$ 334",
-        customer: "CompCo",
-        quantity: "30",
-        material: "ABS M30",
-        process: "3D Printing",
-        postProcess: "Sanding",
-        previouslyOrdered: "Yes",
-        firstShipment: "Yes",
-        deliveryDate: "09/12/2019"
-      }
-    ],
-    [
-      {
-        id: 1,
-        pricingProfileRank: 1,
-        vendorName: "VensCo",
-        processProfileName: "Fortus 900-ABS",
-        processProfile: "$ 544",
-        postProcessProfileName: "Standard Sanding",
-        postProcessPrice: 45,
-        postProcessProfileName2: "Standard Sanding",
-        postProcessPrice2: 0,
-        subtotal: "$ 571.00",
-        shippingEstimate: 18.0,
-        totalCost: "$ 589.99",
-        estimatedDelivery: 5,
-        supplierScore: 4.8
-      },
-      {
-        id: 1,
-        pricingProfileRank: 1,
-        vendorName: "VensCo",
-        processProfileName: "Fortus 900-ABS",
-        processProfile: "$ 544",
-        postProcessProfileName: "Standard Sanding",
-        postProcessPrice: 45,
-        postProcessProfileName2: "Standard Sanding",
-        postProcessPrice2: 0,
-        subtotal: "$ 571.00",
-        shippingEstimate: 18.0,
-        totalCost: "$ 589.99",
-        estimatedDelivery: 5,
-        supplierScore: 4.8
-      },
-      {
-        id: 2,
-        pricingProfileRank: 2,
-        vendorName: "VensCo",
-        processProfileName: "Fortus 900-ABS",
-        processProfile: "$ 544",
-        postProcessProfileName: "Standard Sanding",
-        postProcessPrice: 45,
-        postProcessProfileName2: "Standard Sanding",
-        postProcessPrice2: 0,
-        subtotal: "$ 571.00",
-        shippingEstimate: 18.0,
-        totalCost: "$ 589.99",
-        estimatedDelivery: 5,
-        supplierScore: 4.8
-      },
-      {
-        id: 3,
-        pricingProfileRank: 3,
-        vendorName: "VensCo",
-        processProfileName: "Fortus 900-ABS",
-        processProfile: "$ 544",
-        postProcessProfileName: "Standard Sanding",
-        postProcessPrice: 45,
-        postProcessProfileName2: "Standard Sanding",
-        postProcessPrice2: 0,
-        subtotal: "$ 571.00",
-        shippingEstimate: 18.0,
-        totalCost: "$ 589.99",
-        estimatedDelivery: 5,
-        supplierScore: 4.8
-      },
-      {
-        id: 4,
-        pricingProfileRank: 4,
-        vendorName: "VensCo",
-        processProfileName: "Fortus 900-ABS",
-        processProfile: "$ 544",
-        postProcessProfileName: "Standard Sanding",
-        postProcessPrice: 45,
-        postProcessProfileName2: "Standard Sanding",
-        postProcessPrice2: 0,
-        subtotal: "$ 571.00",
-        shippingEstimate: 18.0,
-        totalCost: "$ 589.99",
-        estimatedDelivery: 5,
-        supplierScore: 4.8
-      },
-      {
-        id: 5,
-        pricingProfileRank: 5,
-        vendorName: "VensCo",
-        processProfileName: "Fortus 900-ABS",
-        processProfile: "$ 544",
-        postProcessProfileName: "Standard Sanding",
-        postProcessPrice: 45,
-        postProcessProfileName2: "Standard Sanding",
-        postProcessPrice2: 0,
-        subtotal: "$ 571.00",
-        shippingEstimate: 18.0,
-        totalCost: "$ 589.99",
-        estimatedDelivery: 5,
-        supplierScore: 4.8
-      }
-    ]
-  ];
+  orderDetails = [];
 
   constructor(
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private userService: UserService
   ) {
     if (this.router.url.includes("order-confirmation-queue")) {
       this.type = "confirmation";
@@ -171,10 +45,21 @@ export class VendorDetailsComponent implements OnInit {
       this.type = "release";
     }
 
+    this.orderDetails = JSON.parse(localStorage.getItem("selectedSubOrders"));
+
     this.initTable();
 
     this.route.params.subscribe(v => {
-      this.vendorId = v.vendorId;
+      this.orderId = v.orderId;
+      this.ordersService
+        .getMatchedProfiles(
+          this.userService.getUserInfo().id,
+          this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
+        )
+        .subscribe(v => {
+          this.matchedProfiles = v;
+          this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
+        });
     });
   }
 
@@ -212,7 +97,7 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: "Customer",
-          field: "customer",
+          field: "customerName",
           hide: false,
           sortable: true,
           filter: false
@@ -226,7 +111,7 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: "Material",
-          field: "material",
+          field: "materialName",
           hide: false,
           sortable: true,
           filter: false
@@ -239,26 +124,33 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
+          headerName: "NDA",
+          field: "nda",
+          hide: true,
+          sortable: true,
+          filter: false
+        },
+        {
           headerName: "Post-Process",
-          field: "postProcess",
+          field: "postProcessTypeNames",
           hide: false,
           sortable: true,
           filter: false
         },
-        {
-          headerName: "Previously Ordered",
-          field: "previouslyOrdered",
-          hide: false,
-          sortable: true,
-          filter: false
-        },
-        {
-          headerName: "First Shipment",
-          field: "firstShipment",
-          hide: false,
-          sortable: true,
-          filter: false
-        },
+        // {
+        //   headerName: "Previously Ordered",
+        //   field: "previouslyOrdered",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false
+        // },
+        // {
+        //   headerName: "First Shipment",
+        //   field: "firstShipment",
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false
+        // },
         {
           headerName: "Delivery Date",
           field: "deliveryDate",
@@ -269,16 +161,39 @@ export class VendorDetailsComponent implements OnInit {
       ],
       [
         {
-          headerName: "Pricing Profile Rank",
-          field: "pricingProfileRank",
+          headerName: "No",
+          field: "id",
           hide: false,
           sortable: false,
           filter: false,
-          rowDrag: true,
+          rowDrag: true
         },
         {
           headerName: "Vendor Name",
           field: "vendorName",
+          hide: false,
+          sortable: false,
+          filter: false
+        }
+      ],
+      [
+        {
+          headerName: "No",
+          field: "id",
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: "Corporate Name",
+          field: "vendorName",
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: "Facility Name",
+          field: "facilityName",
           hide: false,
           sortable: false,
           filter: false
@@ -291,86 +206,23 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
-          headerName: "Process Profile",
-          field: "processProfile",
+          headerName: "Pricing Profile",
+          field: "pricingProfile",
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Post-Process Profile Name",
-          field: "postProcessProfileName",
+          headerName: "Release Priority",
+          field: "releasePriority",
           hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Post-Process Price",
-          field: "postProcessPrice",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Post-Process Profile Name 2",
-          field: "postProcessProfileName2",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Post-Process Price 2",
-          field: "postProcessPrice2",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Subtotal",
-          field: "subtotal",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Shipping Estimate",
-          field: "shippingEstimate",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Total Cost",
-          field: "totalCost",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Estimated Deliver by Date",
-          field: "estimatedDelivery",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Supplier Score",
-          field: "supplierScore",
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: "Status",
-          field: "status",
-          hide: this.type === 'release',
           sortable: false,
           filter: false
         }
       ]
     ];
 
-    this.gridOptions  = [
+    this.gridOptions = [
       {
         frameworkComponents: this.frameworkComponents,
         columnDefs: this.columnDefs[0],
@@ -384,6 +236,16 @@ export class VendorDetailsComponent implements OnInit {
         enableColResize: true,
         rowHeight: 35,
         headerHeight: 35
+      },
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.columnDefs[2],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35,
+        onRowClicked: (ev) => {
+          console.log(ev.data);
+        }
       }
     ];
   }
@@ -393,29 +255,36 @@ export class VendorDetailsComponent implements OnInit {
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
     this.gridOptions[idx].api.sizeColumnsToFit();
-    if (idx === 1) {
-      this.gridOptions[1].api.setSuppressRowDrag(true);
+    if (idx === 2) {
+      this.gridOptions[2].api.setSuppressRowDrag(true);
     }
+  }
+  onRowDragEnd(ev) {
+    const overNode = ev.overNode;
+    const popIndex = this.priorityRows.findIndex((item) => item.id === overNode.data.id);
+    const pushIndex = ev.overIndex;
+    this.priorityRows.splice(popIndex, 1);
+    this.priorityRows.splice(pushIndex, 0, overNode.data);
   }
 
   showModal(content) {
-    this.modalService.open(content, {
-      centered: true,
-      windowClass: "confirm-release-modal"
+    this.ordersService.getSubOrderReleaseConfirmation().subscribe((v) => {
+      this.subOrderRelease = v;
+      this.modalService.open(content, {
+        centered: true,
+        windowClass: "confirm-release-modal"
+      });
     });
   }
 
   confirmSubOrderRelease() {
     this.modalService.dismissAll();
-    this.router.navigateByUrl('/pricing/orders/order-confirmation-queue/' + this.vendorId);
+    this.router.navigateByUrl(
+      "/pricing/orders/order-confirmation-queue/" + this.orderId
+    );
   }
 
   toggleChangePriority() {
     this.changePriority = !this.changePriority;
-    if (this.changePriority) {
-      this.gridOptions[1].api.setSuppressRowDrag(false);
-    } else {
-      this.gridOptions[1].api.setSuppressRowDrag(true);
-    }
   }
 }

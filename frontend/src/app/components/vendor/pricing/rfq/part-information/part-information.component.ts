@@ -34,7 +34,7 @@ export class PartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('rfq',this.rfq);
+    console.log("part", this.part);
     this.metadataService
       .getMetaData("measurement_unit_type")
       .subscribe(v => (this.measurementUnits = v));
@@ -90,7 +90,9 @@ export class PartInformationComponent implements OnInit {
       this.rfq &&
       this.rfq.projectProfile.countryIds
         .map(item => {
-          const found = this.countries && this.countries.find(country => country.id === item);
+          const found =
+            this.countries &&
+            this.countries.find(country => country.id === item);
           return found && found.name;
         })
         .join(", ")
@@ -114,12 +116,12 @@ export class PartInformationComponent implements OnInit {
       this.part &&
       this.part.postProcessTypeIds &&
       this.part.postProcessTypeIds
-        .map(
-          id => {
-            const found = this.postProcesses && this.postProcesses.find(postProcess => postProcess.id == id);
-            return found && found.name;
-          }
-        )
+        .map(id => {
+          const found =
+            this.postProcesses &&
+            this.postProcesses.find(postProcess => postProcess.id == id);
+          return found && found.name;
+        })
         .join(", ")
     );
   }
@@ -129,5 +131,24 @@ export class PartInformationComponent implements OnInit {
       centered: true,
       windowClass: "model-viewer-modal"
     });
+  }
+
+  getSurfaceRoughness() {
+    const found = this.part.partCustomParameterList.find(
+      item => item.partParameterType === null
+    );
+    if (found) {
+      return found.targetValue;
+    }
+    return "";
+  }
+  getTolerance() {
+    const found = this.part.partCustomParameterList.find(
+      item => item.partParameterType !== null
+    );
+    if (found) {
+      return found.parameterTolerance.value;
+    }
+    return "";
   }
 }

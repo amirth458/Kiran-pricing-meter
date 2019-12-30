@@ -1,8 +1,8 @@
-import { Util } from './../../../../../util/Util';
-import { CustomerData } from 'src/app/model/user.model';
-import { PartQuote, Address } from './../../../../../model/part.model';
+import { Util } from "./../../../../../util/Util";
+import { CustomerData } from "src/app/model/user.model";
+import { PartQuote, Address } from "./../../../../../model/part.model";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
 import {
   Component,
@@ -20,16 +20,18 @@ import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { throwError } from "rxjs";
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
+import { MetadataService } from "src/app/service/metadata.service";
 
 @Component({
   selector: "app-price-view",
   templateUrl: "./price-view.component.html",
-  styleUrls: ["./price-view.component.css"] 
+  styleUrls: ["./price-view.component.css"]
 })
 export class PriceViewComponent implements OnInit, OnChanges {
   @Input() part: Part;
   @Input() customer: CustomerData;
+  @Input() partQuote: PartQuote;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
 
   stage = "unset";
@@ -39,16 +41,16 @@ export class PriceViewComponent implements OnInit, OnChanges {
   };
   columnDefs = [];
   gridOptions: GridOptions;
-  partQuote: PartQuote;
   rowData = [];
+  invoiceItems;
 
   pricingForm: FormGroup = this.fb.group({
     toolingUnitCount: [1],
     toolingUnitPrice: [0],
-    toolingExtended: [0],
+    toolingLineItemCost: [0],
     partsUnitCount: [30],
     partsUnitPrice: [50],
-    partsExtended: [1500]
+    partsLineItemCost: [1500]
   });
 
   constructor(
@@ -56,8 +58,15 @@ export class PriceViewComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     public pricingService: RfqPricingService,
     public toastrService: ToastrService,
-    private datePipe: DatePipe
-  ) {}
+    private datePipe: DatePipe,
+    public metadataService: MetadataService
+  ) {
+    this.metadataService
+      .getProcessMetaData("invoice_item")
+      .subscribe(invoiceItems => {
+        this.invoiceItems = invoiceItems;
+      });
+  }
 
   ngOnInit() {
     this.updateRowData();
@@ -175,7 +184,8 @@ export class PriceViewComponent implements OnInit, OnChanges {
     this.stage = "set";
 
     const data = {
-      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS')+'Z',
+      expiredAt:
+        this.datePipe.transform(Date.now(), "yyyy-MM-ddTHH:mm:ss.SSS") + "Z",
       id: 0,
       isManualPricing: true,
       matchedProfileIds: [0],
@@ -229,25 +239,19 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
   updateRowData() {
     if (this.part && this.customer) {
-      this.partQuote = (this.part.partQuoteList && this.part.partQuoteList.length) ? this.part.partQuoteList[0] || null : null;
       this.rowData = [
         {
           id: this.part.id,
           customer: this.customer.name,
           rfq: this.part.rfqMedia.projectRfqId,
-          part:
-            this.part.rfqMedia.projectRfqId +
-            "." +
-            this.part.id,
+          part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
           filename: this.part.rfqMedia.media.name,
           quantity: this.part.quantity,
           material: this.part.materialName,
           process: this.part.processTypeName,
           roughness: "",
           postProcess: "",
-          price: this.part.shippingCost
-            ? `$ ${this.part.shippingCost}`
-            : ""
+          price: this.part.shippingCost ? `$ ${this.part.shippingCost}` : ""
         }
       ];
     }
@@ -260,5 +264,16 @@ export class PriceViewComponent implements OnInit, OnChanges {
     if (changes.customer && changes.customer.currentValue) {
       this.updateRowData();
     }
+    if (changes.partQuote && changes.partQuote.currentValue) {
+      this.updateRowData();
+    }
+  }
+
+  getInvoiceItem(id: number) {
+    if (!this.invoiceItems) {
+      return '';
+    }
+    const found = this.invoiceItems.find(item => item.id === id);
+    return found ? found.name : "";
   }
 }

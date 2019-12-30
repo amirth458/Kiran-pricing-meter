@@ -1,4 +1,4 @@
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
+import { OrdersService } from './../../../../../service/orders.service';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { ActionService } from "src/app/service/action.service";
@@ -41,11 +41,11 @@ export class FullfillmentSettingsComponent implements OnInit {
     private fb: FormBuilder,
     public toastrService: ToastrService,
     public actionService: ActionService,
-    public pricingService: RfqPricingService
+    public ordersService: OrdersService
   ) {}
 
   ngOnInit() {
-    this.pricingService.getFullfillmentSettings().subscribe(defaultValue => {
+    this.ordersService.getFullfillmentSettings().subscribe(defaultValue => {
       this.detailForm.setValue(defaultValue);
     });
     this.actionService.saveFullfillmentSettingAction().subscribe(() => {
@@ -54,7 +54,7 @@ export class FullfillmentSettingsComponent implements OnInit {
   }
 
   async save() {
-    this.pricingService
+    this.ordersService
       .setFullfillmentSetting(this.detailForm.value)
       .pipe(catchError(e => this.handleSaveError(e)))
       .subscribe(v => {

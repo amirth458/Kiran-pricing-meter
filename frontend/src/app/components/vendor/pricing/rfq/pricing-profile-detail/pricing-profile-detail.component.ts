@@ -344,4 +344,9 @@ export class PricingProfileDetailComponent implements OnInit {
       );
     return found && found.name;
   }
+  getSubTotal() {
+    if (this.pricingProfile) {
+      return this.pricingProfile.pricingProfileDetailedView.partPricingProfileViews.reduce((value, item) => value + item.subTotal, 0);
+    }
+  }
 }

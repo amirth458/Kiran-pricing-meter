@@ -1,14 +1,14 @@
 <div class="w-100 p-3">
   <p class="match-text">
     <ng-container *ngIf="part">
-      <ng-container *ngIf="!part?.manualPricingAllowed; else manualPricing"
+      <ng-container *ngIf="!part?.manualPricingAllowed"
         >{{ pricingSettings?.minElligibleProcessProfile }} process profiles and
         {{ pricingSettings?.minElligiblePricingProfile }} pricing profile
         matched</ng-container
       >
-      <ng-template #manualPricing>
+      <!-- <ng-template #manualPricing>
         Based on Pricing Profiles, we recommend
-      </ng-template>
+      </ng-template> -->
     </ng-container>
   </p>
   <div class="d-flex">

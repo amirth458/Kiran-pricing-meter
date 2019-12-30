@@ -188,13 +188,13 @@ export class QueuedManualPriceComponent implements OnInit {
         //   filter: false,
         //   cellClass: "text-center"
         // },
-        {
-          headerName: "Manual Price",
-          field: "manualPrice",
-          hide: false,
-          sortable: true,
-          cellClass: "text-center"
-        }
+        // {
+        //   headerName: "Manual Price",
+        //   field: "manualPrice",
+        //   hide: false,
+        //   sortable: true,
+        //   cellClass: "text-center"
+        // }
       ]
     ];
     this.gridOptions = {
@@ -297,12 +297,12 @@ export class QueuedManualPriceComponent implements OnInit {
             process: part.processTypeName,
             roughness: "",
             postProcess: "",
-            manualPrice:
-              part.partQuoteList && part.partQuoteList.length > 0
-                ? part.partQuoteList[0].totalCost
-                  ? `$ ${part.shippingCost}`
-                  : ""
-                : ""
+            // manualPrice:
+            //   part.partQuoteList && part.partQuoteList.length > 0
+            //     ? part.partQuoteList[0].totalCost
+            //       ? `$ ${part.shippingCost}`
+            //       : ""
+            //     : ""
           }))
         );
 
