@@ -70,7 +70,7 @@ mark:not(:last-child)::after {
 
 .price-profile-table td.subtotal {
   font-size: 16px;
-  padding: 12px 40px;
+  padding: 12px 25px;
 }
 .price-profile-detail {
   border: 1px solid var(--theme-table-border);

@@ -24,19 +24,19 @@
             <th class="">Line Item</th>
             <th class="text-center">Unit Count</th>
             <th class="text-center">Unit Price</th>
-            <th class="text-center">Extended</th>
+            <th class="text-center">LineItemCost</th>
           </tr>
         </thead>
         <tbody>
           <tr
-            *ngFor="let partQuoteDetail of partQuote?.partQuoteDetailList"
+            *ngFor="let partQuoteDetail of partQuote?.partQuoteInvoiceItemDetails"
           >
             <td class="font-weight-bold">
-              {{ partQuoteDetail.invoiceItemTypeName }}
+              {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
             </td>
-            <td class="text-center">{{ partQuoteDetail.unitCount }}</td>
-            <td class="text-center">{{ partQuoteDetail.unitPrice }}</td>
-            <td class="text-center">{{ partQuoteDetail.extendedPrice }}</td>
+            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].unit }}</td>
+            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].unitPrice }}</td>
+            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].invoiceLineItemCost }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>
@@ -62,7 +62,7 @@
                 <th class="">Line Item</th>
                 <th class="text-center">Unit Count</th>
                 <th class="text-center">Unit Price</th>
-                <th class="text-center">Extended</th>
+                <th class="text-center">LineItemCost</th>
               </tr>
             </thead>
             <tbody>
@@ -129,7 +129,7 @@
                       <input
                         type="number"
                         class="price-input"
-                        formControlName="toolingExtended"
+                        formControlName="toolingLineItemCost"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -137,12 +137,12 @@
                         type="number"
                         readonly
                         class="price-input"
-                        formControlName="toolingExtended"
+                        formControlName="toolingLineItemCost"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
                     <ng-container *ngSwitchDefault>{{
-                      pricingForm.value.toolingExtended
+                      pricingForm.value.toolingLineItemCost
                     }}</ng-container>
                   </ng-container>
                 </td>
@@ -210,7 +210,7 @@
                       <input
                         type="number"
                         class="price-input"
-                        formControlName="partsExtended"
+                        formControlName="partsLineItemCost"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -218,12 +218,12 @@
                         type="number"
                         readonly
                         class="price-input"
-                        formControlName="partsExtended"
+                        formControlName="partsLineItemCost"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
                     <ng-container *ngSwitchDefault>{{
-                      pricingForm.value.partsExtended
+                      pricingForm.value.partsLineItemCost
                     }}</ng-container>
                   </ng-container>
                 </td>
@@ -254,8 +254,8 @@
                         type="number"
                         class="price-input"
                         [value]="
-                          pricingForm.value.toolingExtended +
-                          pricingForm.value.partsExtended
+                          pricingForm.value.toolingLineItemCost +
+                          pricingForm.value.partsLineItemCost
                         "
                         readonly
                       />
@@ -265,16 +265,16 @@
                         type="number"
                         class="price-input"
                         [value]="
-                          pricingForm.value.toolingExtended +
-                          pricingForm.value.partsExtended
+                          pricingForm.value.toolingLineItemCost +
+                          pricingForm.value.partsLineItemCost
                         "
                         readonly
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
                     <ng-container *ngSwitchDefault>{{
-                      pricingForm.value.toolingExtended +
-                        pricingForm.value.partsExtended
+                      pricingForm.value.toolingLineItemCost +
+                        pricingForm.value.partsLineItemCost
                     }}</ng-container>
                   </ng-container>
                 </td>
@@ -373,7 +373,7 @@
             <th class="">Line Item</th>
             <th class="text-center">Unit Count</th>
             <th class="text-center">Unit Price</th>
-            <th class="text-center">Extended</th>
+            <th class="text-center">LineItemCost</th>
           </tr>
         </thead>
         <tbody>
@@ -385,13 +385,13 @@
             <td class="text-center">
               {{ pricingForm.value.toolingUnitPrice }}
             </td>
-            <td class="text-center">{{ pricingForm.value.toolingExtended }}</td>
+            <td class="text-center">{{ pricingForm.value.toolingLineItemCost }}</td>
           </tr>
           <tr>
             <td class="font-weight-bold">Parts</td>
             <td class="text-center">{{ pricingForm.value.partsUnitCount }}</td>
             <td class="text-center">{{ pricingForm.value.partsUnitPrice }}</td>
-            <td class="text-center">{{ pricingForm.value.partsExtended }}</td>
+            <td class="text-center">{{ pricingForm.value.partsLineItemCost }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>
@@ -399,8 +399,8 @@
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
               {{
-                pricingForm.value.toolingExtended +
-                  pricingForm.value.partsExtended
+                pricingForm.value.toolingLineItemCost +
+                  pricingForm.value.partsLineItemCost
               }}
             </td>
           </tr>

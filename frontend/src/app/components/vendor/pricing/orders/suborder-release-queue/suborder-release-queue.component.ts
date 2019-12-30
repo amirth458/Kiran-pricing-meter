@@ -17,24 +17,6 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   searchColumns = [
     {
-      name: "Customer Order",
-      field: "customerOrder",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Sub-Order",
-      field: "subOrder",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
       name: "Price Accepted",
       field: "priceAccepted",
       checked: false,
@@ -63,16 +45,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: "Material",
-      field: "materialName", 
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Process",
-      field: "process",
+      field: "materialName",
       checked: false,
       query: {
         type: "",
@@ -82,6 +55,15 @@ export class SuborderReleaseQueueComponent implements OnInit {
     {
       name: "Post-Process",
       field: "postProcessTypeNames",
+      checked: false,
+      query: {
+        type: "",
+        filter: ""
+      }
+    },
+    {
+      name: "NDA",
+      field: "nda",
       checked: false,
       query: {
         type: "",
@@ -197,6 +179,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   ngOnInit() {
     this.initColumns();
+    localStorage.setItem('selectedSubOrders', '');
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -207,7 +190,9 @@ export class SuborderReleaseQueueComponent implements OnInit {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
         if (event.data) {
-          this.router.navigateByUrl(this.router.url + "/" + event.data.subOrder);
+          this.router.navigateByUrl(
+            this.router.url + "/order/" + event.data.subOrder
+          );
         }
       }
     };
@@ -221,7 +206,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         field: "customerOrder",
         hide: false,
         sortable: true,
-        filter: false,
+        filter: false
       },
       {
         headerName: "Sub-Order",
@@ -262,6 +247,13 @@ export class SuborderReleaseQueueComponent implements OnInit {
         headerName: "Process",
         field: "process",
         hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "NDA",
+        field: "nda",
+        hide: true,
         sortable: true,
         filter: false
       },
@@ -352,7 +344,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
   }
 
   searchColumnsChange(columns) {
-    columns.map(column => {
+    this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(
         column.field
       );
@@ -363,8 +355,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
           columnInstance.setModel({ type: "", filter: "" });
         }
       }
-      this.gridOptions.api.onFilterChanged();
     });
+    this.gridOptions.api.onFilterChanged();
   }
 
   onGridReady(event) {
@@ -374,15 +366,28 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   toggleSelection(ev, id) {
     ev.stopPropagation();
-    const idx = this.selectedIds.findIndex((item) => item === id);
+    const selectedIds = [...this.selectedIds];
+    const idx = selectedIds.findIndex(item => item === id);
     if (idx === -1) {
-      this.selectedIds.push(id);
+      selectedIds.push(id);
     } else {
-      this.selectedIds.splice(idx, 1);
+      selectedIds.splice(idx, 1);
     }
+    this.selectedIds = selectedIds;
   }
 
   advanceToVendorSelection() {
-    this.router.navigateByUrl(this.router.url + '/vendor/1');
+    localStorage.setItem(
+      "selectedSubOrders",
+      JSON.stringify(
+        this.rowData.filter(
+          item =>
+            this.selectedIds.find(id => id === item.subOrder) !== undefined
+        )
+      )
+    );
+    this.router.navigateByUrl(this.router.url + "/vendor", {
+      state: { subOrders: this.selectedIds }
+    });
   }
 }

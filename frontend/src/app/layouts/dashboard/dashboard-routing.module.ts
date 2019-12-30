@@ -82,7 +82,7 @@ const routes: Routes = [
                 component: SuborderReleaseQueueComponent
               },
               {
-                path: "suborder-release-queue/:orderId",
+                path: "suborder-release-queue/order/:orderId",
                 component: CustomerOrderDetailsComponent
               },
               {
@@ -90,7 +90,7 @@ const routes: Routes = [
                 component: OrderConfirmQueueComponent
               },
               {
-                path: "suborder-release-queue/vendor/:vendorId",
+                path: "suborder-release-queue/vendor",
                 component: VendorDetailsComponent
               },
               {

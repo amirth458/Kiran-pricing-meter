@@ -1,4 +1,4 @@
-import { VendorProfile } from './vendorProfile.model';
+import { VendorProfile } from "./vendorProfile.model";
 
 export interface Type {
   id: number;
@@ -75,24 +75,38 @@ export interface PartOrder {
 }
 
 export interface PartQuoteDetail {
-  id: number;
-  invoiceItemTypeName: string;
-  unitCount: number;
+  invoiceItemId: number;
+  unit: number;
   unitPrice: number;
-  extendedPrice: number;
+  value: number;
   partQuoteId: number;
 }
 
+export interface PartQuoteInvoiceLineItem {
+  partQuoteDetailId: number;
+  partQuoteId: number;
+  invoiceLineItemId: number;
+  invoiceLineItemCost: number;
+  extendedCost: number;
+  totalInvoiceLineItemCost: number;
+  unit: number;
+  unitPrice: number;
+  processPricingConditionTypeId: number;
+}
+
+export interface PartQuoteInvoiceItem {
+  invoiceItemId: number;
+  invoiceItemCost: number;
+  partQuoteInvoiceLineItemDetails: PartQuoteInvoiceLineItem;
+}
+
 export interface PartQuote {
-  partQuoteDetailList: PartQuoteDetail[];
   id: number;
-  pricingProfileId: number;
   partId: number;
-  quoteStatusTypeId: number;
-  matchedProfileIds: number[];
+  isExpired: boolean;
   expiredAt: string;
   totalCost: number;
-  isManualPricing: boolean;
+  partQuoteInvoiceItemDetails: PartQuoteInvoiceItem[];
 }
 
 export interface PartParameterType {
@@ -144,7 +158,6 @@ export interface Part {
   order: PartOrder;
   postProcessTypeIds: number[];
   partCustomParameterList: PartCustomParameter[];
-  partQuoteList: PartQuote[];
 }
 
 export interface Address {
@@ -345,6 +358,18 @@ export interface ProcessPricingCondition {
   unitType: UnitType;
 }
 
+export interface SubOrderValue {
+  value: number;
+  measurementType: Type;
+}
+
+export interface PartPricingProfileView {
+  processPricingParameters: MultiplierProcessPricingParameter;
+  subOrderValue: SubOrderValue;
+  subTotal: number;
+  extendedValue: number;
+}
+
 export interface PricingProfileDetailedView {
   id: number;
   name: string;
@@ -352,7 +377,7 @@ export interface PricingProfileDetailedView {
   vendorProfile: VendorProfile;
   processPricingParameterList: ProcessPricingParameter[];
   processPricingConditionList?: ProcessPricingCondition[];
-  partPricingProfileViews?: MultiplierProcessPricingParameter[];
+  partPricingProfileViews?: PartPricingProfileView[];
 }
 
 export interface InvoiceItemSummary {
