@@ -1,6 +1,6 @@
 <div class="wrapper container-fluid">
   <div class="header d-flex align-items-center mb-3" [ngClass]="{'manual-price': part?.manualPricingAllowed}">
-    <h5 class="text-center flex-grow-1">{{!(part?.manualPricingAllowed)? '' : part?.partStatusType.id == 2 ? 'Queued for Manual Pricing: ' : 'Manually Priced: '}} {{part?.name}}</h5>
+    <h5 class="text-center flex-grow-1">{{!(part?.manualPricingAllowed)? '' : part?.partStatusType.id == 2 ? 'Queued for Manual Pricing: ' : 'Manually Priced: '}} Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}</h5>
     <button
       type="button"
       class="btn btn-back theme white"

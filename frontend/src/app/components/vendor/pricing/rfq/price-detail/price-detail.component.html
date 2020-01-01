@@ -10,7 +10,7 @@
           : (part?.partStatusType.id === 2
           ? "Queued for Manual Pricing: "
           : (part?.partStatusType.id === 3 ? "" : ""))
-      }}Part {{ part?.id }}
+      }}Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}
     </h5>
   </div>
   <app-tab (valueChange)="selectedTabId$.next($event.value)">
