@@ -20,6 +20,7 @@ export class VendorDetailsComponent implements OnInit {
   changePriority = false;
 
   columnDefs = [];
+  vendorIds = [];
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -60,8 +61,22 @@ export class VendorDetailsComponent implements OnInit {
           this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
         )
         .subscribe(v => {
-          this.matchedProfiles = v;
-          console.log(this.matchedProfiles);
+          this.matchedProfiles = v.map((item) => {
+            const found = this.vendorIds.find((id) => id === item.processProfileView.vendorId);
+            let id = '';
+            if (found === undefined) {
+              this.vendorIds.push(item.processProfileView.vendorId);
+              id = item.processProfileView.vendorId;
+            }
+            return {
+              id,
+              vendorName: item.vendorProfile.name,
+              processProfileName: item.processProfileView.name,
+              facilityName: item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+              pricingProfile: '',
+              releasePriority: ''
+            }
+          });
           this.priorityRows = this.matchedProfiles.filter(
             item => item.id !== ""
           );

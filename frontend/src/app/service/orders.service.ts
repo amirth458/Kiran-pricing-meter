@@ -319,68 +319,21 @@ export class OrdersService {
   }
 
   getMatchedProfiles(userId: number, rfqMediaIds: number[]) {
-    // const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
-    // const data = JSON.parse(localStorage.getItem("auth"));
-    // const headers = new HttpHeaders({
-    //   Authorization: data.tokenType + " " + data.accessToken,
-    //   "Content-Type": "application/json"
-    // });
+    if (environment.isTestDataEnabled) {
+      userId = 357;
+      rfqMediaIds = [159];
+    }
+    const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
+    const data = JSON.parse(localStorage.getItem("auth"));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
+    });
 
-    // let params = new HttpParams();
-    // params = params.append("userId", userId.toString());
-    // params = params.append("rfqMediaIds", rfqMediaIds.join(','));
+    let params = new HttpParams();
+    params = params.append("userId", userId.toString());
+    params = params.append("rfqMediaIds", rfqMediaIds.join(','));
 
-    // return this.http.get<any>(url, { headers, params });
-    const data = [
-      {
-        id: 1,
-        vendorName: "VendsCo",
-        facilityName: "LA",
-        processProfileName: "3-Axis CNC Mill ...",
-        pricingProfile: 3,
-        releasePriority: 1
-      },
-      {
-        id: "",
-        vendorName: "VendsCo",
-        facilityName: "Jersey",
-        processProfileName: "3-Axis CNC Mill ...",
-        pricingProfile: 5,
-        releasePriority: ""
-      },
-      {
-        id: "",
-        vendorName: "VendsCo",
-        facilityName: "Youngstown",
-        processProfileName: "3-Axis CNC Mill ...",
-        pricingProfile: 3,
-        releasePriority: ""
-      },
-      {
-        id: 2,
-        vendorName: "MilCo",
-        facilityName: "LA",
-        processProfileName: "3-Axis CNC Mill ...",
-        pricingProfile: 2,
-        releasePriority: 2
-      },
-      {
-        id: "",
-        vendorName: "MilCo",
-        facilityName: "Jersey",
-        processProfileName: "3-Axis CNC Mill ...",
-        pricingProfile: 7,
-        releasePriority: ""
-      },
-      {
-        id: 3,
-        vendorName: "CastCo",
-        facilityName: "Jersey",
-        processProfileName: "3-Axis CNC Mill ...",
-        pricingProfile: 10,
-        releasePriority: 3
-      }
-    ];
-    return of(data);
+    return this.http.get<any>(url, { headers, params });
   }
 }
