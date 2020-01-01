@@ -1,7 +1,7 @@
 import { UserService } from "./../../../../../service/user.service";
 import { OrdersService } from "./../../../../../service/orders.service";
 import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GridOptions } from "ag-grid-community";
@@ -15,6 +15,8 @@ export class VendorDetailsComponent implements OnInit {
   type;
   orderId;
 
+  @ViewChild("pricingProfileModal") pricingProfileModal;
+
   changePriority = false;
 
   columnDefs = [];
@@ -27,6 +29,7 @@ export class VendorDetailsComponent implements OnInit {
   subOrderRelease;
   matchedProfiles = [];
   priorityRows = [];
+  pricingProfile = [];
 
   orderDetails = [];
 
@@ -50,7 +53,7 @@ export class VendorDetailsComponent implements OnInit {
     this.initTable();
 
     this.route.params.subscribe(v => {
-      this.orderId = v.orderId;
+      this.orderId = v.orderId || null;
       this.ordersService
         .getMatchedProfiles(
           this.userService.getUserInfo().id,
@@ -58,7 +61,10 @@ export class VendorDetailsComponent implements OnInit {
         )
         .subscribe(v => {
           this.matchedProfiles = v;
-          this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
+          console.log(this.matchedProfiles);
+          this.priorityRows = this.matchedProfiles.filter(
+            item => item.id !== ""
+          );
         });
     });
   }
@@ -174,6 +180,13 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
+        },
+        {
+          headerName: "Process Profile Name",
+          field: "processProfileName",
+          hide: false,
+          sortable: false,
+          filter: false
         }
       ],
       [
@@ -219,6 +232,29 @@ export class VendorDetailsComponent implements OnInit {
           sortable: false,
           filter: false
         }
+      ],
+      [
+        {
+          headerName: "Pricing No",
+          field: "pricingId",
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: "Pricing Profile Name",
+          field: "pricingProfileName",
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: "Pricing Condition 1",
+          field: "pricingCondition",
+          hide: false,
+          sortable: false,
+          filter: false
+        }
       ]
     ];
 
@@ -243,9 +279,27 @@ export class VendorDetailsComponent implements OnInit {
         enableColResize: true,
         rowHeight: 35,
         headerHeight: 35,
-        onRowClicked: (ev) => {
+        onRowClicked: ev => {
           console.log(ev.data);
+          this.pricingProfile = [
+            {
+              pricingId: 101,
+              pricingProfileName: '3-Axis CNC Mill - ABS / 20% Glass Filber -AA 3',
+              pricingCondition: 'Time to Ship < -2 day',
+            }
+          ];
+          this.modalService.open(this.pricingProfileModal, {
+            centered: true,
+            windowClass: "confirm-release-modal"
+          });
         }
+      },
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.columnDefs[3],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35
       }
     ];
   }
@@ -261,14 +315,16 @@ export class VendorDetailsComponent implements OnInit {
   }
   onRowDragEnd(ev) {
     const overNode = ev.overNode;
-    const popIndex = this.priorityRows.findIndex((item) => item.id === overNode.data.id);
+    const popIndex = this.priorityRows.findIndex(
+      item => item.id === overNode.data.id
+    );
     const pushIndex = ev.overIndex;
     this.priorityRows.splice(popIndex, 1);
     this.priorityRows.splice(pushIndex, 0, overNode.data);
   }
 
   showModal(content) {
-    this.ordersService.getSubOrderReleaseConfirmation().subscribe((v) => {
+    this.ordersService.getSubOrderReleaseConfirmation().subscribe(v => {
       this.subOrderRelease = v;
       this.modalService.open(content, {
         centered: true,

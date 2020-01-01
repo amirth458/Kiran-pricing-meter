@@ -84,9 +84,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         localStorage.setItem('password', this.userForm.value.password);
       }
 
-      this.store.dispatch({
-        type: AppTypes.GetVendorInfo
-      });
+      // this.store.dispatch({
+      //   type: AppTypes.GetVendorInfo
+      // });
       this.store.dispatch({
         type: AppTypes.GetUserInfo
       });

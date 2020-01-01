@@ -162,83 +162,23 @@
 </ng-template>
 
 
-<ng-template #pricingProfile let-modal>
+<ng-template #pricingProfileModal let-modal>
   <div class="modal-container">
     <div class="modal-header">
       <h5 class="modal-title" id="modal-basic-title">
         Vensco Pricing Profile
       </h5>
     </div>
-    <div class="modal-container px-5 py-2">
-      <div class="table">
-        <div class="row header p-3">
-          <div class="col-6">Pricing Information</div>
-          <div class="col-6">Value</div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Sold Price
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.soldPrice}}
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Starting Release Price as % of Sale
-          </div>
-          <div class="setting-value p-3 col-6">
-             % {{subOrderRelease.startingReleasePriceInPercentOfSale}}
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Initial Release Price
-          </div>
-          <div class="setting-value p-3 col-6">
-            $ {{subOrderRelease.initialReleasePrice}}
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Release to How Many Suppliers at a Time
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.parallelReleasesToNumberOfSuppliers}}
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Time Increment for Bid Increase if No vender accepts
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.timeInMinuteForBidIncreaseWhenNoVendorAccepts}} min
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Increase amount by
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.increaseAmountByInPercent}} %
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            % of sale price without fullfillment to revert to customers
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.salePriceWithoutFulfillmentToRevertCustomerInPercent}}%
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
-            Unresponsive time before releasing to next supplier
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.timeInMinuteToReleaseOrderToNextSupplier}} min
-          </div>
-        </div>
+    <div class="modal-container px-5 py-3">
+      <p class="text-center">3-Axis CNC Mill - ABS / 20% Glass Fiber - AA3 - Axis-cnc-abs: AA-2 3 axis cnc</p>
+      <div class="col-12 theme-table ">
+        <ag-grid-angular
+          class="ag-theme-balham w-100 h-100"
+          [rowData]="pricingProfile"
+          [gridOptions]="gridOptions[3]"
+          (gridReady)="onGridReady(3, $event)"
+          domLayout="autoHeight"
+        ></ag-grid-angular>
       </div>
     </div>
   </div>

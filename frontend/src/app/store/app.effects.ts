@@ -61,6 +61,7 @@ import { UserService } from '../service/user.service';
     ofType(AppTypes.GetVendorInfo),
     switchMap((_: GetUserInfo) => this.authService.getProfile()),
     map((res: any) => {
+      this.userService.setUserInfo(res);
       return {
         type: AppTypes.UpdateState,
         payload: {
