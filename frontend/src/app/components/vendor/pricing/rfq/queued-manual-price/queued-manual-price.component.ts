@@ -236,37 +236,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getQueuedManualPricing({ page, size: 1000, sort: "id,ASC", q }, 2)
-          .toPromise();
-
-        if (!res.content) {
-          break;
-        }
-
-        rows.push(
-          ...res.content.map((part: Part) => ({
-            id: part.id,
-            customer: "",
-            rfq: part.rfqMedia.id,
-            part: part.rfqMedia.id + "." + part.id,
-            filename: part.rfqMedia.media.name,
-            quantity: part.quantity,
-            material: part.materialName,
-            process: part.processTypeName,
-            roughness: "",
-            postProcess: "",
-            price: part.shippingCost ? `$ ${part.shippingCost}` : ""
-          }))
-        );
-
-        if (res.content.length === 0 || res.content.length < 1000) {
-          break;
-        }
-        page++;
-      }
-      while (true) {
-        const res = await this.pricingService
-          .getQueuedManualPricing({ page, size: 1000, sort: "id,ASC", q }, 5)
+          .getQueuedManualPricing({ page, size: 1000, sort: "id,ASC", q })
           .toPromise();
 
         if (!res.content) {

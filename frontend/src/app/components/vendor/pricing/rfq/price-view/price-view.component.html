@@ -129,7 +129,8 @@
                       <input
                         type="number"
                         class="price-input"
-                        formControlName="toolingLineItemCost"
+                        readonly
+                        [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -137,7 +138,8 @@
                         type="number"
                         readonly
                         class="price-input"
-                        formControlName="toolingLineItemCost"
+                        readonly
+                        [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
@@ -210,7 +212,8 @@
                       <input
                         type="number"
                         class="price-input"
-                        formControlName="partsLineItemCost"
+                        readonly
+                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -218,7 +221,8 @@
                         type="number"
                         readonly
                         class="price-input"
-                        formControlName="partsLineItemCost"
+                        readonly
+                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
@@ -253,15 +257,16 @@
                       <input
                         type="number"
                         class="price-input"
-                        formControlName="totalCost"
+                        readonly
+                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice + pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
                       <input
                         type="number"
                         class="price-input"
-                        formControlName="totalCost"
                         readonly
+                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice + pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
@@ -377,13 +382,13 @@
             <td class="text-center">
               {{ pricingForm.value.toolingUnitPrice }}
             </td>
-            <td class="text-center">{{ pricingForm.value.toolingLineItemCost }}</td>
+            <td class="text-center">{{ pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice }}</td>
           </tr>
           <tr>
             <td class="font-weight-bold">Parts</td>
             <td class="text-center">{{ pricingForm.value.partsUnitCount }}</td>
             <td class="text-center">{{ pricingForm.value.partsUnitPrice }}</td>
-            <td class="text-center">{{ pricingForm.value.partsLineItemCost }}</td>
+            <td class="text-center">{{ pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>
@@ -391,7 +396,8 @@
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
               {{
-                pricingForm.value.totalCost
+                pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
+                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
               }}
             </td>
           </tr>

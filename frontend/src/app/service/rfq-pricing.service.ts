@@ -46,7 +46,7 @@ export class RfqPricingService {
     });
 
     const body = {
-      statusId: 2,
+      statusIds: [2],
       isManual: false,
       partId: null
     };
@@ -54,8 +54,7 @@ export class RfqPricingService {
   }
 
   getQueuedManualPricing(
-    filterOption: FilterOption = null,
-    statusId
+    filterOption: FilterOption = null
   ): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
@@ -70,7 +69,7 @@ export class RfqPricingService {
     });
 
     const body = {
-      statusId: statusId, // auto quoted
+      statusIds: [2, 5], // auto quoted
       isManual: true,
       partId: null
     };
@@ -93,7 +92,7 @@ export class RfqPricingService {
     });
 
     const body = {
-      statusId: 3, // manual qu4ote
+      statusIds: [3], // manual qu4ote
       isManual: true,
       partId: null
     };
