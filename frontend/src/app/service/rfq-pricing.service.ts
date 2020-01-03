@@ -54,7 +54,8 @@ export class RfqPricingService {
   }
 
   getQueuedManualPricing(
-    filterOption: FilterOption = null
+    filterOption: FilterOption = null,
+    statusId
   ): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
@@ -69,7 +70,7 @@ export class RfqPricingService {
     });
 
     const body = {
-      statusId: 2, // auto quoted
+      statusId: statusId, // auto quoted
       isManual: true,
       partId: null
     };

@@ -45,12 +45,13 @@ export class PriceViewComponent implements OnInit, OnChanges {
   invoiceItems;
 
   pricingForm: FormGroup = this.fb.group({
-    toolingUnitCount: [1],
+    toolingUnitCount: [0],
     toolingUnitPrice: [0],
     toolingLineItemCost: [0],
-    partsUnitCount: [30],
-    partsUnitPrice: [50],
-    partsLineItemCost: [1500]
+    partsUnitCount: [0],
+    partsUnitPrice: [0],
+    partsLineItemCost: [0],
+    totalCost: [0]
   });
 
   constructor(
@@ -187,32 +188,36 @@ export class PriceViewComponent implements OnInit, OnChanges {
       expiredAt:
         this.datePipe.transform(Date.now(), "yyyy-MM-ddTHH:mm:ss.SSS") + "Z",
       id: 0,
+      isExpired: null,
       isManualPricing: true,
       matchedProfileIds: [0],
       partId: this.part.id,
       partQuoteDetailList: [
         {
-          id: null,
-          invoiceItemTypeName: "Tooling",
-          partQuoteId: 1,
-          unitCount: this.pricingForm.value.toolingUnitCount,
-          unitPrice: this.pricingForm.value.toolingUnitPrice,
-          extendedPrice: this.pricingForm.value.toolingExtended
+          extendedCost: 0,
+          id: 0,
+          invoiceCost: this.pricingForm.value.toolingLineItemCost,
+          invoiceItemId: 4,
+          invoiceLineItemId: 0,
+          partQuoteId: 0,
+          processPricingConditionTypeId: 0,
+          unit: this.pricingForm.value.toolingUnitCount,
+          unitPrice: this.pricingForm.value.toolingUnitPrice
         },
         {
-          id: null,
-          invoiceItemTypeName: "Parts",
-          partQuoteId: 1,
-          unitCount: this.pricingForm.value.partsUnitCount,
-          unitPrice: this.pricingForm.value.partsUnitPrice,
-          extendedPrice: this.pricingForm.value.partsExtended
+          extendedCost: 0,
+          id: 0,
+          invoiceCost: this.pricingForm.value.partsLineItemCost,
+          invoiceItemId: 3,
+          invoiceLineItemId: 0,
+          partQuoteId: 0,
+          processPricingConditionTypeId: 0,
+          unit: this.pricingForm.value.partsUnitCount,
+          unitPrice: this.pricingForm.value.partsUnitPrice
         }
       ],
-      pricingProfileId: null,
-      quoteStatusTypeId: 1,
-      totalCost:
-        this.pricingForm.value.toolingExtended +
-        this.pricingForm.value.partsExtended
+      totalCost: this.pricingForm.value.totalCost,
+      winningProcessPricingId: 0
     };
 
     this.pricingService
@@ -271,7 +276,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
   getInvoiceItem(id: number) {
     if (!this.invoiceItems) {
-      return '';
+      return "";
     }
     const found = this.invoiceItems.find(item => item.id === id);
     return found ? found.name : "";

@@ -24,7 +24,7 @@
             <th class="">Line Item</th>
             <th class="text-center">Unit Count</th>
             <th class="text-center">Unit Price</th>
-            <th class="text-center">LineItemCost</th>
+            <th class="text-center">Line Item Cost</th>
           </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
             </td>
             <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].unit }}</td>
             <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].unitPrice }}</td>
-            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].invoiceLineItemCost }}</td>
+            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].totalInvoiceLineItemCost }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>
@@ -253,28 +253,20 @@
                       <input
                         type="number"
                         class="price-input"
-                        [value]="
-                          pricingForm.value.toolingLineItemCost +
-                          pricingForm.value.partsLineItemCost
-                        "
-                        readonly
+                        formControlName="totalCost"
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
                       <input
                         type="number"
                         class="price-input"
-                        [value]="
-                          pricingForm.value.toolingLineItemCost +
-                          pricingForm.value.partsLineItemCost
-                        "
+                        formControlName="totalCost"
                         readonly
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
                     <ng-container *ngSwitchDefault>{{
-                      pricingForm.value.toolingLineItemCost +
-                        pricingForm.value.partsLineItemCost
+                      pricingForm.value.totalCost
                     }}</ng-container>
                   </ng-container>
                 </td>
@@ -399,8 +391,7 @@
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
               {{
-                pricingForm.value.toolingLineItemCost +
-                  pricingForm.value.partsLineItemCost
+                pricingForm.value.totalCost
               }}
             </td>
           </tr>
