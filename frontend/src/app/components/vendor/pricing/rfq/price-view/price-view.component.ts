@@ -45,7 +45,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
   invoiceItems;
 
   pricingForm: FormGroup = this.fb.group({
-    toolingUnitCount: [0],
+    toolingUnitCount: [1],
     toolingUnitPrice: [0],
     toolingLineItemCost: [0],
     partsUnitCount: [0],
@@ -184,6 +184,21 @@ export class PriceViewComponent implements OnInit, OnChanges {
     this.modalService.dismissAll();
     this.stage = "set";
 
+    this.pricingForm.setValue({
+      ...this.pricingForm.value,
+      toolingLineItemCost:
+        this.pricingForm.value.toolingUnitCount *
+        this.pricingForm.value.toolingUnitPrice,
+      partsLineItemCost:
+        this.pricingForm.value.partsUnitCount *
+        this.pricingForm.value.partsUnitPrice,
+      totalCost:
+        this.pricingForm.value.toolingUnitCount *
+          this.pricingForm.value.toolingUnitPrice +
+        this.pricingForm.value.partsUnitCount *
+          this.pricingForm.value.partsUnitPrice
+    });
+
     const data = {
       expiredAt:
         this.datePipe.transform(Date.now(), "yyyy-MM-ddTHH:mm:ss.SSS") + "Z",
@@ -244,6 +259,10 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
   updateRowData() {
     if (this.part && this.customer) {
+      this.pricingForm.setValue({
+        ...this.pricingForm.value,
+        partsUnitCount: this.part.quantity
+      });
       this.rowData = [
         {
           id: this.part.id,
