@@ -1,10 +1,10 @@
-import { UserService } from "./../../../../../service/user.service";
-import { OrdersService } from "./../../../../../service/orders.service";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ActivatedRoute, Router } from "@angular/router";
-import { GridOptions } from "ag-grid-community";
+import {UserService} from "./../../../../../service/user.service";
+import {OrdersService} from "./../../../../../service/orders.service";
+import {FileViewRendererComponent} from "./../../../../../common/file-view-renderer/file-view-renderer.component";
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ActivatedRoute, Router} from "@angular/router";
+import {GridOptions} from "ag-grid-community";
 
 @Component({
   selector: "app-vendor-details",
@@ -62,19 +62,21 @@ export class VendorDetailsComponent implements OnInit {
         )
         .subscribe(v => {
           this.matchedProfiles = v.map((item) => {
-            const found = this.vendorIds.find((id) => id === item.processProfileView.vendorId);
+            const processProfileView = item.processProfileView;
+            const processPricingView = (item.processPricingViews || []).length > 0 ? item.processPricingViews[0] : null;
+            const found = (this.vendorIds || []).find((id) => id === processProfileView.vendorId);
             let id = '';
             if (found === undefined) {
-              this.vendorIds.push(item.processProfileView.vendorId);
-              id = item.processProfileView.vendorId;
+              this.vendorIds.push(processProfileView.vendorId);
+              id = processProfileView.vendorId;
             }
             return {
               id,
               vendorName: item.vendorProfile.name,
-              processProfileName: item.processProfileView.name,
-              facilityName: item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
-              pricingProfile: '',
-              releasePriority: ''
+              processProfileName: processProfileView.name,
+              facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+              pricingProfile: processPricingView ? processPricingView.name : '',
+              releasePriority: (this.vendorIds.length + 1)
             }
           });
           this.priorityRows = this.matchedProfiles.filter(
@@ -319,7 +321,8 @@ export class VendorDetailsComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
@@ -328,6 +331,7 @@ export class VendorDetailsComponent implements OnInit {
       this.gridOptions[2].api.setSuppressRowDrag(true);
     }
   }
+
   onRowDragEnd(ev) {
     const overNode = ev.overNode;
     const popIndex = this.priorityRows.findIndex(
