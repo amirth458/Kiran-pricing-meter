@@ -66,9 +66,11 @@ export class VendorDetailsComponent implements OnInit {
             const processPricingView = (item.processPricingViews || []).length > 0 ? item.processPricingViews[0] : null;
             const found = (this.vendorIds || []).find((id) => id === processProfileView.vendorId);
             let id = '';
+            let priority = '';
             if (found === undefined) {
               this.vendorIds.push(processProfileView.vendorId);
               id = processProfileView.vendorId;
+              priority = this.vendorIds.length.toString();
             }
             return {
               id,
@@ -76,7 +78,7 @@ export class VendorDetailsComponent implements OnInit {
               processProfileName: processProfileView.name,
               facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
               pricingProfile: processPricingView ? processPricingView.name : '',
-              releasePriority: (this.vendorIds.length + 1)
+              releasePriority: priority
             }
           });
           this.priorityRows = this.matchedProfiles.filter(
