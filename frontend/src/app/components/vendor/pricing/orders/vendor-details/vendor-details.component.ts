@@ -20,7 +20,6 @@ export class VendorDetailsComponent implements OnInit {
   changePriority = false;
 
   columnDefs = [];
-  vendorIds = [];
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -30,7 +29,7 @@ export class VendorDetailsComponent implements OnInit {
   subOrderRelease;
   matchedProfiles = [];
   priorityRows = [];
-  pricingProfile = [];
+  pricingProfile: any;
 
   orderDetails = [];
 
@@ -80,7 +79,8 @@ export class VendorDetailsComponent implements OnInit {
                 facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
                 pricingProfile: processPricingView ? processPricingView.name : '',
                 releasePriority: priority,
-                pricing: item.processPricingViews
+                pricing: item.processPricingViews,
+                vendorProfile: item.vendorProfile
               });
             }
           });
@@ -259,6 +259,8 @@ export class VendorDetailsComponent implements OnInit {
         {
           headerName: "Pricing No",
           field: "id",
+          width: 100,
+          maxWidth: 100,
           hide: false,
           sortable: false,
           filter: false
@@ -281,7 +283,7 @@ export class VendorDetailsComponent implements OnInit {
             (dt.value || []).map(condition => {
               arr.push(`${condition.processPricingConditionType.name || ''} ${condition.operatorType.symbol || ''} ${condition.value || ''} ${condition.unitType.symbol || ''}`);
             });
-            return arr.length > 1 ? arr.join(' , ') : '';
+            return arr.length !== 0 ? arr.join(' , ') : '';
           }
         }
       ]
@@ -310,7 +312,7 @@ export class VendorDetailsComponent implements OnInit {
         headerHeight: 35,
         onRowClicked: ev => {
           console.log(ev.data);
-          this.pricingProfile = ev.data.pricing;
+          this.pricingProfile = ev.data;
           this.modalService.open(this.pricingProfileModal, {
             centered: true,
             windowClass: "confirm-release-modal"
