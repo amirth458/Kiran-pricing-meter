@@ -4,9 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions} from 'ag-grid-community';
 
-import { UserService } from './../../../../../service/user.service';
-import { OrdersService } from './../../../../../service/orders.service';
+import { BiddingService } from '../../../../../service/bidding.service';
+import { ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
+import { OrdersService } from './../../../../../service/orders.service';
+import { UserService } from './../../../../../service/user.service';
 
 @Component({
   selector: 'app-vendor-details',
@@ -37,6 +39,7 @@ export class VendorDetailsComponent implements OnInit {
   orderDetails = [];
 
   constructor(
+    public biddingService: BiddingService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
@@ -78,7 +81,8 @@ export class VendorDetailsComponent implements OnInit {
               const title = [];
               (item.processPricingViews || []).map(p => title.push(p.name));
               this.matchedProfiles.push({
-                id,
+                id: this.matchedProfiles.length + 1,
+                vendorId: id,
                 title : title.join(' , '),
                 profileId: item.processProfileId,
                 vendorName: item.vendorProfile.name,
@@ -378,8 +382,36 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   confirmSubOrderRelease() {
-    this.modalService.dismissAll();
-    this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${this.orderId}`);
+    const customerOrders = this.orderDetails.map(order => {
+      return { partId: order.subOrder, priceAccepted: order.priceAccepted };
+    });
+    const vendorData = {};
+    this.matchedProfiles.map(pricing => {
+      if(!vendorData[pricing.vendorId]) {
+        vendorData[pricing.vendorId] = {
+          id: pricing.vendorId,
+          postProcessProfileIds: [pricing.profileId],
+          processProfileIds: [],
+          releasePriority: pricing.releasePriority
+        };
+      } else {
+        vendorData[pricing.vendorId].processProfileIds.push(pricing.profileId);
+      }
+    });
+    const vendors = [];
+    for (let key in vendorData) {
+      vendors.push(vendorData[key]);
+    }
+    this.biddingService.biddingConfirmation({
+      customerOrders,
+      bidOfferPrice: (this.initialPrice * (this.subOrderRelease.initialBidSoldPricePercent / 100)),
+      bidDuration: this.subOrderRelease.maxBidUnresponsiveTimeMinutes,
+      maxSupplierViewOpportunity: this.subOrderRelease.maxSupplierViewOpportunity,
+      vendors
+    } as ConfirmSubOrderRelease).subscribe(v => {
+      this.modalService.dismissAll();
+      this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${this.orderId}`);
+    });
   }
 
   toggleChangePriority() {
