@@ -198,6 +198,8 @@ export class VendorDetailsComponent implements OnInit {
         {
           headerName: 'No',
           field: 'id',
+          width: 100,
+          maxWidth: 100,
           hide: false,
           sortable: false,
           filter: false,
@@ -216,12 +218,21 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
+        },
+        {
+          headerName: 'Release Priority',
+          field: 'releasePriority',
+          hide: false,
+          sortable: false,
+          filter: false
         }
       ],
       [
         {
           headerName: 'No',
           field: 'id',
+          width: 100,
+          maxWidth: 100,
           hide: false,
           sortable: false,
           filter: false
@@ -318,7 +329,6 @@ export class VendorDetailsComponent implements OnInit {
         rowHeight: 35,
         headerHeight: 35,
         onRowClicked: ev => {
-          console.log(ev.data);
           this.pricingProfile = ev.data;
           this.modalService.open(this.pricingProfileModal, {
             centered: true,
