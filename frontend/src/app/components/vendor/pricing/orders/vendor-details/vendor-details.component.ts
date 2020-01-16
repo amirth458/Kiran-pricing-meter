@@ -61,24 +61,27 @@ export class VendorDetailsComponent implements OnInit {
           this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
         )
         .subscribe(v => {
-          this.matchedProfiles = v.map((item) => {
+          this.matchedProfiles = [];
+          v.map(item => {
             const processProfileView = item.processProfileView;
             const processPricingView = (item.processPricingViews || []).length > 0 ? item.processPricingViews[0] : null;
-            const found = (this.vendorIds || []).find((id) => id === processProfileView.vendorId);
-            let id = '';
-            let priority = '';
-            if (found === undefined) {
-              this.vendorIds.push(processProfileView.vendorId);
-              id = processProfileView.vendorId;
-              priority = this.vendorIds.length.toString();
-            }
-            return {
-              id,
-              vendorName: item.vendorProfile.name,
-              processProfileName: processProfileView.name,
-              facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
-              pricingProfile: processPricingView ? processPricingView.name : '',
-              releasePriority: priority
+            const found = this.matchedProfiles.some(match => {
+              return (match.id === processProfileView.vendorId &&
+                match.profileId === item.processProfileId);
+            });
+            let id = found ? '' : processProfileView.vendorId;
+            let priority = found ? '' : this.matchedProfiles.length + 1;
+            if (!found) {
+              this.matchedProfiles.push({
+                id,
+                profileId: item.processProfileId,
+                vendorName: item.vendorProfile.name,
+                processProfileName: processProfileView.name,
+                facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+                pricingProfile: processPricingView ? processPricingView.name : '',
+                releasePriority: priority,
+                pricing: item.processPricingViews
+              });
             }
           });
           this.priorityRows = this.matchedProfiles.filter(
@@ -255,14 +258,14 @@ export class VendorDetailsComponent implements OnInit {
       [
         {
           headerName: "Pricing No",
-          field: "pricingId",
+          field: "id",
           hide: false,
           sortable: false,
           filter: false
         },
         {
           headerName: "Pricing Profile Name",
-          field: "pricingProfileName",
+          field: "name",
           hide: false,
           sortable: false,
           filter: false
@@ -300,13 +303,7 @@ export class VendorDetailsComponent implements OnInit {
         headerHeight: 35,
         onRowClicked: ev => {
           console.log(ev.data);
-          this.pricingProfile = [
-            {
-              pricingId: 101,
-              pricingProfileName: '3-Axis CNC Mill - ABS / 20% Glass Filber -AA 3',
-              pricingCondition: 'Time to Ship < -2 day',
-            }
-          ];
+          this.pricingProfile = ev.data.pricing;
           this.modalService.open(this.pricingProfileModal, {
             centered: true,
             windowClass: "confirm-release-modal"
