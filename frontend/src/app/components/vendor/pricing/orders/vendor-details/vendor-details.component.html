@@ -86,18 +86,10 @@
         </div>
         <div class="row mb-1">
           <div class="setting-name p-3 col-6">
-            Sold Price
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.soldPrice}}
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
             Starting Release Price as % of Sale
           </div>
           <div class="setting-value p-3 col-6">
-             % {{subOrderRelease.startingReleasePriceInPercentOfSale}}
+             % {{subOrderRelease.initialBidSoldPricePercent}}
           </div>
         </div>
         <div class="row mb-1">
@@ -105,7 +97,7 @@
             Initial Release Price
           </div>
           <div class="setting-value p-3 col-6">
-            $ {{subOrderRelease.initialReleasePrice}}
+            $ {{(initialPrice * (subOrderRelease.initialBidSoldPricePercent / 100)).toFixed(2)}}
           </div>
         </div>
         <div class="row mb-1">
@@ -113,7 +105,7 @@
             Release to How Many Suppliers at a Time
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.parallelReleasesToNumberOfSuppliers}}
+            {{subOrderRelease.maxSupplierViewOpportunity}}
           </div>
         </div>
         <div class="row mb-1">
@@ -121,7 +113,7 @@
             Time Increment for Bid Increase if No vender accepts
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.timeInMinuteForBidIncreaseWhenNoVendorAccepts}} min
+            {{subOrderRelease.minBidIncreaseTimeMinutes}} min
           </div>
         </div>
         <div class="row mb-1">
@@ -129,7 +121,7 @@
             Increase amount by
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.increaseAmountByInPercent}} %
+            {{subOrderRelease.incrementBidAmountPercent}} %
           </div>
         </div>
         <div class="row mb-1">
@@ -137,7 +129,7 @@
             % of sale price without fullfillment to revert to customers
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.salePriceWithoutFulfillmentToRevertCustomerInPercent}}%
+            {{subOrderRelease.maxPercentWithoutFulfillment}}%
           </div>
         </div>
         <div class="row mb-1">
@@ -145,7 +137,7 @@
             Unresponsive time before releasing to next supplier
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.timeInMinuteToReleaseOrderToNextSupplier}} min
+            {{subOrderRelease.maxBidUnresponsiveTimeMinutes}} min
           </div>
         </div>
       </div>
@@ -166,15 +158,17 @@
   <div class="modal-container">
     <div class="modal-header">
       <h5 class="modal-title" id="modal-basic-title">
-        Vensco Pricing Profile
+        {{pricingProfile?.vendorProfile?.name}} Pricing Profile
       </h5>
     </div>
     <div class="modal-container px-5 py-3">
-      <p class="text-center">3-Axis CNC Mill - ABS / 20% Glass Fiber - AA3 - Axis-cnc-abs: AA-2 3 axis cnc</p>
+      <p class="text-center">
+        {{pricingProfile?.title}}
+      </p>
       <div class="col-12 theme-table ">
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
-          [rowData]="pricingProfile"
+          [rowData]="pricingProfile?.pricing || []"
           [gridOptions]="gridOptions[3]"
           (gridReady)="onGridReady(3, $event)"
           domLayout="autoHeight"

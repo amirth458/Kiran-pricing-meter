@@ -1,26 +1,29 @@
-import { UserService } from "./../../../../../service/user.service";
-import { OrdersService } from "./../../../../../service/orders.service";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ActivatedRoute, Router } from "@angular/router";
-import { GridOptions } from "ag-grid-community";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GridOptions} from 'ag-grid-community';
+
+import { BiddingService } from '../../../../../service/bidding.service';
+import { ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
+import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
+import { OrdersService } from './../../../../../service/orders.service';
+import { UserService } from './../../../../../service/user.service';
 
 @Component({
-  selector: "app-vendor-details",
-  templateUrl: "./vendor-details.component.html",
-  styleUrls: ["./vendor-details.component.css"]
+  selector: 'app-vendor-details',
+  templateUrl: './vendor-details.component.html',
+  styleUrls: ['./vendor-details.component.css']
 })
 export class VendorDetailsComponent implements OnInit {
   type;
   orderId;
 
-  @ViewChild("pricingProfileModal") pricingProfileModal;
+  @ViewChild('pricingProfileModal') pricingProfileModal;
 
   changePriority = false;
 
   columnDefs = [];
-  vendorIds = [];
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -30,26 +33,29 @@ export class VendorDetailsComponent implements OnInit {
   subOrderRelease;
   matchedProfiles = [];
   priorityRows = [];
-  pricingProfile = [];
+  pricingProfile: any;
+  initialPrice: number;
 
   orderDetails = [];
 
   constructor(
+    public biddingService: BiddingService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
     private ordersService: OrdersService,
     private userService: UserService
   ) {
-    if (this.router.url.includes("order-confirmation-queue")) {
-      this.type = "confirmation";
-    } else if (this.router.url.includes("released-orders")) {
-      this.type = "released";
+    if (this.router.url.includes('order-confirmation-queue')) {
+      this.type = 'confirmation';
+    } else if (this.router.url.includes('released-orders')) {
+      this.type = 'released';
     } else {
-      this.type = "release";
+      this.type = 'release';
     }
-
-    this.orderDetails = JSON.parse(localStorage.getItem("selectedSubOrders"));
+    this.initialPrice = 0;
+    this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
+    (this.orderDetails).map(order => (this.initialPrice+= order.priceAccepted));
 
     this.initTable();
 
@@ -61,24 +67,36 @@ export class VendorDetailsComponent implements OnInit {
           this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
         )
         .subscribe(v => {
-          this.matchedProfiles = v.map((item) => {
-            const found = this.vendorIds.find((id) => id === item.processProfileView.vendorId);
-            let id = '';
-            if (found === undefined) {
-              this.vendorIds.push(item.processProfileView.vendorId);
-              id = item.processProfileView.vendorId;
-            }
-            return {
-              id,
-              vendorName: item.vendorProfile.name,
-              processProfileName: item.processProfileView.name,
-              facilityName: item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
-              pricingProfile: '',
-              releasePriority: ''
+          this.matchedProfiles = [];
+          v.map(item => {
+            const processProfileView = item.processProfileView;
+            const processPricingView = (item.processPricingViews || []).length > 0 ? item.processPricingViews[0] : {};
+            const found = this.matchedProfiles.some(match => {
+              return (match.id === processProfileView.vendorId &&
+                match.profileId === item.processProfileId);
+            });
+            let id = found ? '' : processProfileView.vendorId;
+            let priority = found ? '' : this.matchedProfiles.length + 1;
+            if (!found) {
+              const title = [];
+              (item.processPricingViews || []).map(p => title.push(p.name));
+              this.matchedProfiles.push({
+                id: this.matchedProfiles.length + 1,
+                vendorId: id,
+                title : title.join(' , '),
+                profileId: item.processProfileId,
+                vendorName: item.vendorProfile.name,
+                processProfileName: processProfileView.name,
+                facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+                pricingProfile: processPricingView.name || '',
+                releasePriority: priority,
+                pricing: item.processPricingViews,
+                vendorProfile: item.vendorProfile
+              });
             }
           });
           this.priorityRows = this.matchedProfiles.filter(
-            item => item.id !== ""
+            item => item.id !== ''
           );
         });
     });
@@ -88,93 +106,93 @@ export class VendorDetailsComponent implements OnInit {
     this.columnDefs = [
       [
         {
-          headerName: "Customer Order",
-          field: "customerOrder",
+          headerName: 'Customer Order',
+          field: 'customerOrder',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Sub-Order",
-          field: "subOrder",
+          headerName: 'Sub-Order',
+          field: 'subOrder',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "File Name",
-          field: "fileName",
+          headerName: 'File Name',
+          field: 'fileName',
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer"
+          cellRenderer: 'fileViewRenderer'
         },
         {
-          headerName: "Price Accepted",
-          field: "priceAccepted",
+          headerName: 'Price Accepted',
+          field: 'priceAccepted',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Customer",
-          field: "customerName",
+          headerName: 'Customer',
+          field: 'customerName',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Quantity",
-          field: "quantity",
+          headerName: 'Quantity',
+          field: 'quantity',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Material",
-          field: "materialName",
+          headerName: 'Material',
+          field: 'materialName',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Process",
-          field: "process",
+          headerName: 'Process',
+          field: 'process',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "NDA",
-          field: "nda",
+          headerName: 'NDA',
+          field: 'nda',
           hide: true,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Post-Process",
-          field: "postProcessTypeNames",
+          headerName: 'Post-Process',
+          field: 'postProcessTypeNames',
           hide: false,
           sortable: true,
           filter: false
         },
         // {
-        //   headerName: "Previously Ordered",
-        //   field: "previouslyOrdered",
+        //   headerName: 'Previously Ordered',
+        //   field: 'previouslyOrdered',
         //   hide: false,
         //   sortable: true,
         //   filter: false
         // },
         // {
-        //   headerName: "First Shipment",
-        //   field: "firstShipment",
+        //   headerName: 'First Shipment',
+        //   field: 'firstShipment',
         //   hide: false,
         //   sortable: true,
         //   filter: false
         // },
         {
-          headerName: "Delivery Date",
-          field: "deliveryDate",
+          headerName: 'Delivery Date',
+          field: 'deliveryDate',
           hide: false,
           sortable: true,
           filter: false
@@ -182,23 +200,32 @@ export class VendorDetailsComponent implements OnInit {
       ],
       [
         {
-          headerName: "No",
-          field: "id",
+          headerName: 'No',
+          field: 'id',
+          width: 100,
+          maxWidth: 100,
           hide: false,
           sortable: false,
           filter: false,
           rowDrag: true
         },
         {
-          headerName: "Vendor Name",
-          field: "vendorName",
+          headerName: 'Vendor Name',
+          field: 'vendorName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Process Profile Name",
-          field: "processProfileName",
+          headerName: 'Process Profile Name',
+          field: 'processProfileName',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Release Priority',
+          field: 'releasePriority',
           hide: false,
           sortable: false,
           filter: false
@@ -206,43 +233,45 @@ export class VendorDetailsComponent implements OnInit {
       ],
       [
         {
-          headerName: "No",
-          field: "id",
+          headerName: 'No',
+          field: 'id',
+          width: 100,
+          maxWidth: 100,
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Corporate Name",
-          field: "vendorName",
+          headerName: 'Corporate Name',
+          field: 'vendorName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Facility Name",
-          field: "facilityName",
+          headerName: 'Facility Name',
+          field: 'facilityName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Process Profile Name",
-          field: "processProfileName",
+          headerName: 'Process Profile Name',
+          field: 'processProfileName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Pricing Profile",
-          field: "pricingProfile",
+          headerName: 'Pricing Profile',
+          field: 'pricingProfile',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Release Priority",
-          field: "releasePriority",
+          headerName: 'Release Priority',
+          field: 'releasePriority',
           hide: false,
           sortable: false,
           filter: false
@@ -250,25 +279,34 @@ export class VendorDetailsComponent implements OnInit {
       ],
       [
         {
-          headerName: "Pricing No",
-          field: "pricingId",
+          headerName: 'Pricing No',
+          field: 'id',
+          width: 100,
+          maxWidth: 100,
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Pricing Profile Name",
-          field: "pricingProfileName",
+          headerName: 'Pricing Profile Name',
+          field: 'name',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Pricing Condition 1",
-          field: "pricingCondition",
+          headerName: 'Pricing Condition 1',
+          field: 'processPricingConditionList',
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          valueFormatter: dt => {
+            const arr = [];
+            (dt.value || []).map(condition => {
+              arr.push(`${condition.processPricingConditionType.name || ''} ${condition.operatorType.symbol || ''} ${condition.value || ''} ${condition.unitType.symbol || ''}`);
+            });
+            return arr.length !== 0 ? arr.join(' , ') : '';
+          }
         }
       ]
     ];
@@ -295,17 +333,10 @@ export class VendorDetailsComponent implements OnInit {
         rowHeight: 35,
         headerHeight: 35,
         onRowClicked: ev => {
-          console.log(ev.data);
-          this.pricingProfile = [
-            {
-              pricingId: 101,
-              pricingProfileName: '3-Axis CNC Mill - ABS / 20% Glass Filber -AA 3',
-              pricingCondition: 'Time to Ship < -2 day',
-            }
-          ];
+          this.pricingProfile = ev.data;
           this.modalService.open(this.pricingProfileModal, {
             centered: true,
-            windowClass: "confirm-release-modal"
+            windowClass: 'confirm-release-modal'
           });
         }
       },
@@ -319,7 +350,8 @@ export class VendorDetailsComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
@@ -328,6 +360,7 @@ export class VendorDetailsComponent implements OnInit {
       this.gridOptions[2].api.setSuppressRowDrag(true);
     }
   }
+
   onRowDragEnd(ev) {
     const overNode = ev.overNode;
     const popIndex = this.priorityRows.findIndex(
@@ -343,16 +376,42 @@ export class VendorDetailsComponent implements OnInit {
       this.subOrderRelease = v;
       this.modalService.open(content, {
         centered: true,
-        windowClass: "confirm-release-modal"
+        windowClass: 'confirm-release-modal'
       });
     });
   }
 
   confirmSubOrderRelease() {
-    this.modalService.dismissAll();
-    this.router.navigateByUrl(
-      "/pricing/orders/order-confirmation-queue/" + this.orderId
-    );
+    const customerOrders = this.orderDetails.map(order => {
+      return { partId: order.subOrder, priceAccepted: order.priceAccepted };
+    });
+    const vendorData = {};
+    this.matchedProfiles.map(pricing => {
+      if(!vendorData[pricing.vendorId]) {
+        vendorData[pricing.vendorId] = {
+          id: pricing.vendorId,
+          postProcessProfileIds: [pricing.profileId],
+          processProfileIds: [],
+          releasePriority: pricing.releasePriority
+        };
+      } else {
+        vendorData[pricing.vendorId].processProfileIds.push(pricing.profileId);
+      }
+    });
+    const vendors = [];
+    for (let key in vendorData) {
+      vendors.push(vendorData[key]);
+    }
+    this.biddingService.biddingConfirmation({
+      customerOrders,
+      bidOfferPrice: (this.initialPrice * (this.subOrderRelease.initialBidSoldPricePercent / 100)),
+      bidDuration: this.subOrderRelease.maxBidUnresponsiveTimeMinutes,
+      maxSupplierViewOpportunity: this.subOrderRelease.maxSupplierViewOpportunity,
+      vendors
+    } as ConfirmSubOrderRelease).subscribe(v => {
+      this.modalService.dismissAll();
+      this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${this.orderId}`);
+    });
   }
 
   toggleChangePriority() {

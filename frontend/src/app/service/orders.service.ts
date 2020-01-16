@@ -13,19 +13,12 @@ export class OrdersService {
 
   getSubOrderReleaseQueue(filterOption: FilterOption): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/part/placing-order-status`;
-    const data = JSON.parse(localStorage.getItem("auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
-
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append("page", filterOption.page.toString());
-      params = params.append("size", filterOption.size.toString());
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
     }
-
-    return this.http.get<any>(url, { headers, params });
+    return this.http.get<any>(url, { params });
   }
 
   getOrderConfirmationQueue(filterOption: FilterOption): Observable<any> {
@@ -299,13 +292,7 @@ export class OrdersService {
 
   getSubOrderReleaseConfirmation() {
     const url = `${environment.apiBaseUrl}/admin/bidding/sub-order-release-confirmation`;
-    const data = JSON.parse(localStorage.getItem("auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
-
-    return this.http.get<any>(url, { headers });
+    return this.http.get<any>(url);
   }
 
   getFullfillmentSettings(): Observable<any> {
