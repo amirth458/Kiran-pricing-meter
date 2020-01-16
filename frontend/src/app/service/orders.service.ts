@@ -299,13 +299,7 @@ export class OrdersService {
 
   getSubOrderReleaseConfirmation() {
     const url = `${environment.apiBaseUrl}/admin/bidding/sub-order-release-confirmation`;
-    const data = JSON.parse(localStorage.getItem("auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
-
-    return this.http.get<any>(url, { headers });
+    return this.http.get<any>(url);
   }
 
   getFullfillmentSettings(): Observable<any> {
