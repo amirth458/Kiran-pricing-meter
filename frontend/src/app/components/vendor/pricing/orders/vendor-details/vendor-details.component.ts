@@ -32,6 +32,7 @@ export class VendorDetailsComponent implements OnInit {
   matchedProfiles = [];
   priorityRows = [];
   pricingProfile: any;
+  initialPrice: number;
 
   orderDetails = [];
 
@@ -49,8 +50,9 @@ export class VendorDetailsComponent implements OnInit {
     } else {
       this.type = 'release';
     }
-
+    this.initialPrice = 0;
     this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
+    (this.orderDetails).map(order => (this.initialPrice+= order.priceAccepted));
 
     this.initTable();
 

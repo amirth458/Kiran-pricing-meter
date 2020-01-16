@@ -97,7 +97,7 @@
             Initial Release Price
           </div>
           <div class="setting-value p-3 col-6">
-            $ {{subOrderRelease.initialReleasePrice}}
+            $ {{(initialPrice * (subOrderRelease.initialBidSoldPricePercent / 100)).toFixed(2)}}
           </div>
         </div>
         <div class="row mb-1">
