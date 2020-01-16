@@ -86,18 +86,10 @@
         </div>
         <div class="row mb-1">
           <div class="setting-name p-3 col-6">
-            Sold Price
-          </div>
-          <div class="setting-value p-3 col-6">
-            {{subOrderRelease.soldPrice}}
-          </div>
-        </div>
-        <div class="row mb-1">
-          <div class="setting-name p-3 col-6">
             Starting Release Price as % of Sale
           </div>
           <div class="setting-value p-3 col-6">
-             % {{subOrderRelease.startingReleasePriceInPercentOfSale}}
+             % {{subOrderRelease.initialBidSoldPricePercent}}
           </div>
         </div>
         <div class="row mb-1">
@@ -113,7 +105,7 @@
             Release to How Many Suppliers at a Time
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.parallelReleasesToNumberOfSuppliers}}
+            {{subOrderRelease.maxSupplierViewOpportunity}}
           </div>
         </div>
         <div class="row mb-1">
@@ -121,7 +113,7 @@
             Time Increment for Bid Increase if No vender accepts
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.timeInMinuteForBidIncreaseWhenNoVendorAccepts}} min
+            {{subOrderRelease.minBidIncreaseTimeMinutes}} min
           </div>
         </div>
         <div class="row mb-1">
@@ -129,7 +121,7 @@
             Increase amount by
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.increaseAmountByInPercent}} %
+            {{subOrderRelease.incrementBidAmountPercent}} %
           </div>
         </div>
         <div class="row mb-1">
@@ -137,7 +129,7 @@
             % of sale price without fullfillment to revert to customers
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.salePriceWithoutFulfillmentToRevertCustomerInPercent}}%
+            {{subOrderRelease.maxPercentWithoutFulfillment}}%
           </div>
         </div>
         <div class="row mb-1">
@@ -145,7 +137,7 @@
             Unresponsive time before releasing to next supplier
           </div>
           <div class="setting-value p-3 col-6">
-            {{subOrderRelease.timeInMinuteToReleaseOrderToNextSupplier}} min
+            {{subOrderRelease.maxBidUnresponsiveTimeMinutes}} min
           </div>
         </div>
       </div>
