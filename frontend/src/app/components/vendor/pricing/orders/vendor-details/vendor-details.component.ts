@@ -272,10 +272,17 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: "Pricing Condition 1",
-          field: "pricingCondition",
+          field: "processPricingConditionList",
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          valueFormatter: dt => {
+            const arr = [];
+            (dt.value || []).map(condition => {
+              arr.push(`${condition.processPricingConditionType.name || ''} ${condition.operatorType.symbol || ''} ${condition.value || ''} ${condition.unitType.symbol || ''}`);
+            });
+            return arr.length > 1 ? arr.join(' , ') : '';
+          }
         }
       ]
     ];
