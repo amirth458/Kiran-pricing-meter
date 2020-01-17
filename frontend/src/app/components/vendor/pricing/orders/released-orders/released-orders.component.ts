@@ -204,71 +204,7 @@ export class ReleasedOrdersComponent implements OnInit {
   }
 
   initColumns() {
-    this.columnDefs = [
-      {
-        headerName: 'Vendor Bid',
-        field: 'bidOrder.id',
-        hide: true,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Sub Order Count',
-        field: 'subOrderCount',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Offer Price',
-        field: 'offerPrice',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Quantity',
-        field: 'quantity',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Material',
-        field: 'material',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Process',
-        field: 'process',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Post-Process',
-        field: 'postProcess',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Delivery Date',
-        field: 'deliveryDate',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Status',
-        field: 'bidOrder.bidOrderStatusType.name',
-        hide: false,
-        sortable: true,
-        filter: false
-      }
-    ];
+    this.columnDefs = this.orderService.getOrderViewColumns();
     this.autoGroupColumnDef = {
       headerName: 'Vendor Order ID',
     };
