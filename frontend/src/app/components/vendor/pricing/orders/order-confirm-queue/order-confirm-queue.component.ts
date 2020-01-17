@@ -185,9 +185,7 @@ export class OrderConfirmQueueComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
     };
     this.getStartedBidOrders();
