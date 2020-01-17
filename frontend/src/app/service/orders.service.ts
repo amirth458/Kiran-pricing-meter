@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { ColDef } from 'ag-grid-community/src/ts/entities/colDef';
 
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
@@ -24,94 +26,8 @@ export class OrdersService {
     return this.http.get<any>(url, { params });
   }
 
-  getOrderConfirmationQueue(filterOption: FilterOption): Observable<any> {
-    const data = {
-      content: [
-        {
-          id: 1,
-          vendorOrderId: '555',
-          customerOrder: 2,
-          subOrder: 2,
-          priceAccepted: '$ 614',
-          quantity: '74',
-          material: 'ABS M30',
-          process: '3D Printing',
-          postProcess: 'Sanding',
-          deliveryDate: '09/12/2019',
-          status: 'Bidding In Progress'
-        },
-        {
-          id: 2,
-          vendorOrderId: '555',
-          customerOrder: 234,
-          subOrder: '234.2',
-          priceAccepted: 334,
-          customer: 'CompCo',
-          quantity: '30',
-          material: 'ABS M30',
-          process: '3D Printing',
-          postProcess: 'Sanding',
-          previouslyOrdered: 'Yes',
-          firstShipment: 'Yes',
-          deliveryDate: '09/12/2019'
-        },
-        {
-          id: 3,
-          vendorOrderId: '555',
-          customerOrder: 4556,
-          subOrder: '456.2',
-          priceAccepted: 334,
-          customer: 'CompCo',
-          quantity: '44',
-          material: 'ABS M30',
-          process: '3D Printing',
-          postProcess: 'Sanding',
-          previouslyOrdered: 'Yes',
-          firstShipment: 'Yes',
-          deliveryDate: '09/12/2019'
-        },
-        {
-          id: 4,
-          vendorOrderId: '7889',
-          customerOrder: 456,
-          subOrder: '456.1',
-          priceAccepted: 334,
-          customer: 'CompCo',
-          quantity: '30',
-          material: 'ABS M30',
-          process: '3D Printing',
-          postProcess: 'Sanding',
-          deliveryDate: '09/12/2019'
-        },
-        {
-          id: 5,
-          vendorOrderId: '7889',
-          customerOrder: 456,
-          subOrder: '456.4',
-          priceAccepted: 334,
-          customer: 'CompCo',
-          quantity: '30',
-          material: 'ABS M30',
-          process: '3D Printing',
-          postProcess: 'Sanding',
-          deliveryDate: '09/12/2019'
-        },
-        {
-          id: 6,
-          vendorOrderId: '1345',
-          customerOrder: 128,
-          subOrder: '128.1',
-          priceAccepted: 334,
-          customer: 'CompCo',
-          quantity: '30',
-          material: 'ABS M30',
-          process: '3D Printing',
-          postProcess: 'Sanding',
-          deliveryDate: '09/12/2019'
-        }
-      ]
-    };
-    return of(data);
+  getStartedBidOrders(): Observable<Array<BiddingOrder>> {
+    return this.http.get<Array<BiddingOrder>>(`${environment.apiBaseUrl}/admin/bidding/started-bid-orders`);
   }
 
   getPastOrders(filterOption: FilterOption): Observable<any> {
@@ -222,11 +138,77 @@ export class OrdersService {
       rfqMediaIds = [159];
     }
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
-
     let params = new HttpParams();
     params = params.append('userId', userId.toString());
     params = params.append('rfqMediaIds', rfqMediaIds.join(','));
-
     return this.http.get<any>(url, { params });
+  }
+
+  getOrderViewColumns(): ColDef[] {
+    const columns = [
+      {
+        headerName: 'Vendor Bid',
+        field: 'bidOrder.id',
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Sub Order Count',
+        field: 'subOrderCount',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Offer Price',
+        field: 'offerPrice',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Quantity',
+        field: 'quantity',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Material',
+        field: 'material',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Process',
+        field: 'process',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Post-Process',
+        field: 'postProcess',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Delivery Date',
+        field: 'deliveryDate',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Status',
+        field: 'bidOrder.bidOrderStatusType.description',
+        hide: false,
+        sortable: true,
+        filter: false
+      }
+    ];
+    return columns;
   }
 }
