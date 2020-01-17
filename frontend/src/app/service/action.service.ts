@@ -6,13 +6,19 @@ import { Subject } from 'rxjs';
 })
 export class ActionService {
   saveProfileSetting: Subject<any> = new Subject();
+  saveFullfillmentSetting: Subject<any> = new Subject();
   constructor() { }
 
   triggerSaveProfileSetting() {
-    console.log('trigger');
     this.saveProfileSetting.next();
+  }
+  triggerSaveFullfillmentSetting() {
+    this.saveFullfillmentSetting.next();
   }
   saveProfileSettingAction() {
     return this.saveProfileSetting.asObservable();
+  }
+  saveFullfillmentSettingAction() {
+    return this.saveFullfillmentSetting.asObservable();
   }
 }

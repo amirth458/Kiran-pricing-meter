@@ -1,12 +1,18 @@
-import { RfqData } from './../model/part.model';
-import { Observable, of } from "rxjs";
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 import { FilterOption } from "./../model/vendor.model";
 import { environment } from "./../../environments/environment";
 import { Part } from "../model/part.model";
-import { Pageable } from './../model/pageable.model';
+import { Pageable } from "./../model/pageable.model";
+import { map } from "rxjs/operators";
+import {
+  RfqData,
+  PricingProfileDetailedView,
+  PricingProfile,
+  PartQuote
+} from "./../model/part.model";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -30,21 +36,21 @@ export class RfqPricingService {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
+      params = params.append("page", filterOption.page.toString());
+      params = params.append("size", filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
     });
 
     const body = {
-      statusId: 2,
+      statusIds: [2],
       isManual: false,
       partId: null
     };
-    return this.http.post<Pageable<Part>>(url, body, {headers, params});
+    return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
   getQueuedManualPricing(
@@ -53,21 +59,21 @@ export class RfqPricingService {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
+      params = params.append("page", filterOption.page.toString());
+      params = params.append("size", filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
     });
 
     const body = {
-      statusId: 2,  // auto quoted
+      statusIds: [2, 5], // auto quoted
       isManual: true,
       partId: null
     };
-    return this.http.post<Pageable<Part>>(url, body, {headers, params});
+    return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
   getManuallyPriced(
@@ -76,74 +82,109 @@ export class RfqPricingService {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
+      params = params.append("page", filterOption.page.toString());
+      params = params.append("size", filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
     });
 
     const body = {
-      statusId: 3,  // manual quote
+      statusIds: [3], // manual qu4ote
       isManual: true,
       partId: null
     };
-    return this.http.post<Pageable<Part>>(url, body, {headers, params});
+    return this.http.post<Pageable<Part>>(url, body, { headers, params });
+  }
+
+  getPricingProfileDetail(
+    id: number,
+    partId: number,
+    customerId: number
+  ): Observable<PricingProfile> {
+    if (environment.isTestDataEnabled) {
+      // test data
+      partId = 44;
+      id = 136;
+      customerId = 105;
+    }
+
+    const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/${id}`;
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
+    });
+
+    const body = {
+      partId,
+      customerId
+    };
+
+    return this.http
+      .post<PricingProfile[]>(url, body, { headers })
+      .pipe(map(itemArray => itemArray[0] || null));
   }
 
   getPartDetail(id: number): Observable<Part> {
     const url = `${environment.procurementApiBaseUrl}/part/${id}`;
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
     });
 
-    return this.http.get<Part>(url, {headers});
+    return this.http.get<Part>(url, { headers });
   }
 
   createPartQuoteDetail(quoteDetail) {
     const url = `${environment.procurementApiBaseUrl}/part-quote-detail`;
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
     });
 
-    return this.http.post(url, quoteDetail, {headers});
+    return this.http.post(url, quoteDetail, { headers });
   }
 
   getRfqDetail(id: number): Observable<RfqData> {
     const url = `${environment.procurementApiBaseUrl}/rfq/${id}`;
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
     });
 
-    return this.http.get<RfqData>(url, {headers});
+    return this.http.get<RfqData>(url, { headers });
   }
 
-  getPricingProfiles(filter: FilterOption): Observable<any> {
-    const data = {
-      content: [
-        {
-          id: 1,
-          vendorName: "VendCo",
-          pricingProfile: "Fast",
-          material: "ABS M30",
-          equipment: "Fortus 450",
-          processProfile: "Fortus 450 BS M30",
-          postProcess: "Electropolishing",
-          machinesMatched: 2,
-          totalCost: 1238,
-          esitmatedDelivery: "10/12/2019",
-          matchScore: 4.9
-        }
-      ]
-    };
-    return of(data);
+  getPricingProfiles(partId: number): Observable<PricingProfileDetailedView[]> {
+    if (environment.isTestDataEnabled) {
+      // test data
+      partId = 178;
+    }
+
+    const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/matched-profiles/${partId}`;
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
+    });
+
+    return this.http.get<PricingProfileDetailedView[]>(url, { headers });
+  }
+
+  getPartQuote(partId: number): Observable<PartQuote> {
+    const url = `${environment.procurementApiBaseUrl}/part-quote/admin/parts/${partId}`;
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const headers = new HttpHeaders({
+      Authorization: data.tokenType + " " + data.accessToken,
+      "Content-Type": "application/json"
+    });
+
+    return this.http.get<PartQuote>(url, { headers });
   }
 }

@@ -10,7 +10,7 @@
           : (part?.partStatusType.id === 2
           ? "Queued for Manual Pricing: "
           : (part?.partStatusType.id === 3 ? "" : ""))
-      }}Part {{ part?.id }}
+      }}Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}
     </h5>
   </div>
   <app-tab (valueChange)="selectedTabId$.next($event.value)">
@@ -23,7 +23,7 @@
     <div class="content p-4">
       <ng-container [ngSwitch]="selectedTabId$ | async">
         <ng-container *ngSwitchCase="0">
-          <app-price-view [part]="part"></app-price-view>
+          <app-price-view [part]="part" [customer]="customer" [partQuote]="partQuote" (manualQuote)="manualQuote()"></app-price-view>
         </ng-container>
         <ng-container *ngSwitchCase="1">
           <app-part-information [part]="part" [rfq]="rfq" [customer]="customer"></app-part-information>

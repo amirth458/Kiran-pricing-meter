@@ -1,6 +1,6 @@
 <div class="wrapper container-fluid">
-  <div class="header d-flex align-items-center mb-3" [ngClass]="{'manual-price': this.type !== undefined}">
-    <h5 class="text-center flex-grow-1">{{type === undefined ? '' : type === 'queued' ? 'Queued for Manual Pricing: ' : 'Manually Priced: '}}Part {{ pricingDetail.part }}</h5>
+  <div class="header d-flex align-items-center mb-3" [ngClass]="{'manual-price': part?.manualPricingAllowed}">
+    <h5 class="text-center flex-grow-1">{{!(part?.manualPricingAllowed)? '' : part?.partStatusType.id == 2 ? 'Queued for Manual Pricing: ' : 'Manually Priced: '}} Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}</h5>
     <button
       type="button"
       class="btn btn-back theme white"
@@ -39,20 +39,20 @@
   <div class="row">
     <div class="col-12">
       <div class="price-profile-detail">
-        <span>
+        <p>
           Process Profile Name:
-          <mark>{{ priceProfileDetail.processProfileName }}</mark>
-        </span>
-        <span>
+          <mark>{{ pricingProfile?.pricingProfileDetailedView.processProfile.name }}</mark>
+        </p>
+        <p>
           Pricing Parameter Set Nickname:
-          <mark>{{ priceProfileDetail.pricingParameterSetNickname }}</mark>
-        </span>
-        <span>
+          <mark>{{ pricingProfile?.pricingProfileDetailedView.processProfile.parameterNickName }}</mark>
+        </p>
+        <p>
           Conditions:
-          <ng-container *ngFor="let condition of priceProfileDetail.conditions">
-            <mark>{{ condition }}</mark>
+          <ng-container *ngFor="let condition of pricingProfile?.pricingProfileDetailedView.processPricingConditionList">
+            <mark>{{ condition.processPricingConditionType.name }} {{condition.operatorType.symbol}} {{condition.valueSignType.symbol}} {{condition.value}} {{condition.unitType.symbol}}</mark>
           </ng-container>
-        </span>
+        </p>
       </div>
     </div>
   </div>
@@ -72,14 +72,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of priceProfileDetail.items">
-            <td>{{ item.invoiceItem }}</td>
-            <td>{{ item.lineItem }}</td>
-            <td class="text-center">{{ item.value }}</td>
-            <td class="text-center">{{ item.per }}</td>
-            <td class="text-center">{{ item.partValue }}</td>
-            <td class="text-center">{{ item.measurementUnit }}</td>
-            <td class="text-center">{{ item.subOrderValue }}</td>
+          <tr *ngFor="let item of pricingProfile?.pricingProfileDetailedView.partPricingProfileViews">
+            <td>{{ item.processPricingParameters.invoiceLineItem.invoiceItem.name }}</td>
+            <td>{{ item.processPricingParameters.invoiceLineItem.name}}</td>
+            <td class="text-center">{{item.processPricingParameters.currency.symbol}} {{ item.processPricingParameters.price }}</td>
+            <td class="text-center">{{ item.processPricingParameters.quantity }}</td>
+            <td class="text-center">{{ item.processPricingParameters.quantityUnitType?.measurementType.name }}</td>
+            <td class="text-center">{{ item.processPricingParameters.quantityUnitType?.symbol }}</td>
+            <td class="text-center">{{ item.subOrderValue.value }}</td>
             <td class="text-center">{{ item.subTotal }}</td>
           </tr>
           <tr>
@@ -87,7 +87,7 @@
             <td colspan="2" class="text-center font-weight-bold subtotal">
               Subtotal
             </td>
-            <td class="text-center font-weight-bold subtotal">$1200</td>
+            <td class="text-center font-weight-bold subtotal">$ {{getSubTotal()}}</td>
           </tr>
         </tbody>
       </table>

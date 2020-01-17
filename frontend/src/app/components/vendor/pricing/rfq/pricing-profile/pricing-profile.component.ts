@@ -3,9 +3,15 @@ import { FilterOption } from "./../../../../../model/vendor.model";
 import { TemplateRendererComponent } from "./../../../../../common/template-renderer/template-renderer.component";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Component, OnInit, ViewChild, TemplateRef, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  TemplateRef,
+  Input
+} from "@angular/core";
 import { GridOptions } from "ag-grid-community";
-import { Part } from 'src/app/model/part.model';
+import { Part } from "src/app/model/part.model";
 
 @Component({
   selector: "app-pricing-profile",
@@ -171,6 +177,7 @@ export class PricingProfileComponent implements OnInit {
   rowData;
   pageSize = 10;
   navigation;
+  pricingSettings;
 
   constructor(
     public router: Router,
@@ -179,10 +186,6 @@ export class PricingProfileComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.navigation = this.router.getCurrentNavigation();
-
-    this.route.params.subscribe(params => {
-      console.log(params);
-    });
   }
 
   ngOnInit() {
@@ -198,7 +201,9 @@ export class PricingProfileComponent implements OnInit {
       onRowClicked: event => {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
-        this.router.navigateByUrl(this.router.url + "/pricing-profile/" + event.data.id);
+        this.router.navigateByUrl(
+          this.router.url + "/pricing-profile/" + event.data.id
+        );
       }
     };
     this.getPricingProfiles();
@@ -241,71 +246,72 @@ export class PricingProfileComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false
-      },
-      {
-        headerName: "Post-Process",
-        field: "postProcess",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Machines Matched",
-        field: "machinesMatched",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Total Cost",
-        field: "totalCost",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Estimated Delivery",
-        field: "esitmatedDelivery",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Match Score",
-        field: "matchScore",
-        hide: false,
-        sortable: false,
-        filter: false
       }
+      // {
+      //   headerName: "Post-Process",
+      //   field: "postProcess",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
+      // {
+      //   headerName: "Machines Matched",
+      //   field: "machinesMatched",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
+      // {
+      //   headerName: "Total Cost",
+      //   field: "totalCost",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
+      // {
+      //   headerName: "Estimated Delivery",
+      //   field: "esitmatedDelivery",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
+      // {
+      //   headerName: "Match Score",
+      //   field: "matchScore",
+      //   hide: false,
+      //   sortable: false,
+      //   filter: false
+      // }
     ];
   }
 
   async getPricingProfiles(q = null) {
     this.spinner.show();
-    let page = 0;
-    const rows = [];
-    try {
-      while (true) {
-        const res = await this.pricingService
-          .getPricingProfiles({ page, size: 1000, sort: "id,ASC", q })
-          .toPromise();
+    const res = await this.pricingService
+      .getPricingProfiles(this.part.id)
+      .toPromise();
 
-        if (!res.content) {
-          break;
-        }
-        rows.push(...res.content);
+    this.rowData = res.map(item => ({
+      id: item.id,
+      vendorName: item.vendorProfile.name,
+      pricingProfile: item.name,
+      material: item.processProfile.processMachineServingMaterialList
+        .map(item => item.machineServingMaterial.material.name)
+        .join(", "),
+      equipment: item.processProfile.processMachineServingMaterialList
+        .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
+        .join(", "),
+      processProfile: item.processProfile.name,
+      // postProcess: "Electropolishing",
+      // machinesMatched: 2,
+      // totalCost: 1238,
+      // esitmatedDelivery: "10/12/2019",
+      // matchScore: 4.9
+    }));
 
-        if (res.content.length === 0 || res.content.length < 1000) {
-          break;
-        }
-        page++;
-      }
-      this.rowData = rows;
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.spinner.hide();
-    }
+    this.pricingSettings = await this.pricingService.getPricingSettings().toPromise();
+
+    this.spinner.hide();
   }
 
   configureColumnDefs() {

@@ -80,13 +80,13 @@
             formControlName="presentBidNumberFromBottom"
             class="setting-input"
           />
-          <span>(from bottom - 5<sup>th</sup> price)</span>
+          <span>(from bottom - {{detailForm.value.presentBidNumberFromBottom}}<sup>th</sup> price)</span>
         </div>
       </div>
     </div>
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
-        Add what % Incremental Margin to Bid No 5
+        Add what % Incremental Margin to Bid No {{detailForm.value.presentBidNumberFromBottom}}
       </div>
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
@@ -103,7 +103,7 @@
     </div>
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
-        Add what $ Incremental Margin to Bid No 5
+        Add what $ Incremental Margin to Bid No {{detailForm.value.presentBidNumberFromBottom}}
       </div>
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>

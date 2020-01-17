@@ -20,7 +20,7 @@ export class OrdersContainerComponent implements OnInit {
       name: "Fullfillment Settings",
       tooltipMessage: "Fullfillment Settings",
       route: "fullfillment-settings",
-      actions: [{ name: "Save Settings", route: "" }]
+      actions: [{ name: "Save Settings", route: "save-fullfillment-setting" }]
     },
     {
       name: "Suborder Release Queue",

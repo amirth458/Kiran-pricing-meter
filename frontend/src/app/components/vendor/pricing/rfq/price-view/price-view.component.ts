@@ -1,12 +1,17 @@
+import { Util } from "./../../../../../util/Util";
+import { CustomerData } from "src/app/model/user.model";
+import { PartQuote, Address } from "./../../../../../model/part.model";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
 import {
   Component,
   OnInit,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  Output,
+  EventEmitter
 } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -15,15 +20,19 @@ import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { throwError } from "rxjs";
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
+import { MetadataService } from "src/app/service/metadata.service";
 
 @Component({
   selector: "app-price-view",
   templateUrl: "./price-view.component.html",
-  styleUrls: ["./price-view.component.css"] 
+  styleUrls: ["./price-view.component.css"]
 })
 export class PriceViewComponent implements OnInit, OnChanges {
   @Input() part: Part;
+  @Input() customer: CustomerData;
+  @Input() partQuote: PartQuote;
+  @Output() manualQuote: EventEmitter<any> = new EventEmitter();
 
   stage = "unset";
 
@@ -32,16 +41,17 @@ export class PriceViewComponent implements OnInit, OnChanges {
   };
   columnDefs = [];
   gridOptions: GridOptions;
-  partQuoteDetail;
   rowData = [];
+  invoiceItems;
 
   pricingForm: FormGroup = this.fb.group({
     toolingUnitCount: [1],
     toolingUnitPrice: [0],
-    toolingExtended: [0],
-    partsUnitCount: [30],
-    partsUnitPrice: [50],
-    partsExtended: [1500]
+    toolingLineItemCost: [0],
+    partsUnitCount: [0],
+    partsUnitPrice: [0],
+    partsLineItemCost: [0],
+    totalCost: [0]
   });
 
   constructor(
@@ -49,28 +59,18 @@ export class PriceViewComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     public pricingService: RfqPricingService,
     public toastrService: ToastrService,
-    private datePipe: DatePipe
-  ) {}
+    private datePipe: DatePipe,
+    public metadataService: MetadataService
+  ) {
+    this.metadataService
+      .getProcessMetaData("invoice_item")
+      .subscribe(invoiceItems => {
+        this.invoiceItems = invoiceItems;
+      });
+  }
 
   ngOnInit() {
-    this.rowData = [
-      {
-        id: this.part && this.part.id,
-        customer: "",
-        rfq: this.part && this.part.rfqMedia.projectRfqId,
-        part: this.part && this.part.rfqMedia.projectRfqId + "." + this.part.id,
-        filename: this.part && this.part.rfqMedia.media.name,
-        quantity: this.part && this.part.quantity,
-        material: this.part && this.part.materialName,
-        process: this.part && this.part.processTypeName,
-        roughness: "",
-        postProcess: "",
-        price:
-          this.part && this.part.shippingCost
-            ? `$ ${this.part.shippingCost}`
-            : ""
-      }
-    ];
+    this.updateRowData();
 
     this.columnDefs = [
       {
@@ -126,22 +126,22 @@ export class PriceViewComponent implements OnInit, OnChanges {
         sortable: true,
         filter: false
       },
-      {
-        headerName: "Roughness",
-        field: "roughness",
-        hide: false,
-        sortable: true,
-        filter: false,
-        cellClass: "text-center"
-      },
-      {
-        headerName: "Post-Process",
-        field: "postProcess",
-        hide: false,
-        sortable: true,
-        filter: true,
-        cellClass: "text-center"
-      },
+      // {
+      //   headerName: "Roughness",
+      //   field: "roughness",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false,
+      //   cellClass: "text-center"
+      // },
+      // {
+      //   headerName: "Post-Process",
+      //   field: "postProcess",
+      //   hide: false,
+      //   sortable: true,
+      //   filter: true,
+      //   cellClass: "text-center"
+      // },
       {
         headerName: "Price",
         field: "price",
@@ -176,39 +176,63 @@ export class PriceViewComponent implements OnInit, OnChanges {
     });
   }
 
+  getShippingAddress(address: Address) {
+    return Util.shippingAddressInfo(address);
+  }
+
   onSave() {
     this.modalService.dismissAll();
     this.stage = "set";
 
+    this.pricingForm.setValue({
+      ...this.pricingForm.value,
+      toolingLineItemCost:
+        this.pricingForm.value.toolingUnitCount *
+        this.pricingForm.value.toolingUnitPrice,
+      partsLineItemCost:
+        this.pricingForm.value.partsUnitCount *
+        this.pricingForm.value.partsUnitPrice,
+      totalCost:
+        this.pricingForm.value.toolingUnitCount *
+          this.pricingForm.value.toolingUnitPrice +
+        this.pricingForm.value.partsUnitCount *
+          this.pricingForm.value.partsUnitPrice
+    });
+
     const data = {
-      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS')+'Z',
+      expiredAt:
+        this.datePipe.transform(Date.now(), "yyyy-MM-ddTHH:mm:ss.SSS") + "Z",
       id: 0,
+      isExpired: null,
       isManualPricing: true,
       matchedProfileIds: [0],
       partId: this.part.id,
       partQuoteDetailList: [
         {
-          id: null,
-          invoiceItemTypeName: "Tooling",
-          partQuoteId: 1,
-          unitCount: this.pricingForm.value.toolingUnitCount,
-          unitPrice: this.pricingForm.value.toolingUnitPrice,
-          extendedPrice: this.pricingForm.value.toolingExtended
+          extendedCost: 0,
+          id: 0,
+          invoiceCost: this.pricingForm.value.toolingLineItemCost,
+          invoiceItemId: 4,
+          invoiceLineItemId: 0,
+          partQuoteId: 0,
+          processPricingConditionTypeId: 0,
+          unit: this.pricingForm.value.toolingUnitCount,
+          unitPrice: this.pricingForm.value.toolingUnitPrice
         },
         {
-          id: null,
-          invoiceItemTypeName: "Parts",
-          partQuoteId: 1,
-          unitCount: this.pricingForm.value.partsUnitCount,
-          unitPrice: this.pricingForm.value.partsUnitPrice,
-          extendedPrice: this.pricingForm.value.partsExtended
+          extendedCost: 0,
+          id: 0,
+          invoiceCost: this.pricingForm.value.partsLineItemCost,
+          invoiceItemId: 3,
+          invoiceLineItemId: 0,
+          partQuoteId: 0,
+          processPricingConditionTypeId: 0,
+          unit: this.pricingForm.value.partsUnitCount,
+          unitPrice: this.pricingForm.value.partsUnitPrice
         }
       ],
-      pricingProfileId: null,
-      quoteStatusTypeId: 1,
-      totalCost:
-        this.pricingForm.value.toolingExtended +
-        this.pricingForm.value.partsExtended
+      totalCost: this.pricingForm.value.totalCost,
+      winningProcessPricingId: 0
     };
 
     this.pricingService
@@ -216,6 +240,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
       .pipe(catchError(e => this.handleError(e)))
       .subscribe(() => {
         this.toastrService.success("Part Quote created successfully.");
+        this.manualQuote.emit();
       });
   }
 
@@ -232,30 +257,47 @@ export class PriceViewComponent implements OnInit, OnChanges {
     this.modalService.dismissAll();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.part && changes.part.currentValue) {
-      console.log(this.part);
-      this.partQuoteDetail = this.part.partQuoteList[0] || [];
+  updateRowData() {
+    if (this.part && this.customer) {
+      this.pricingForm.setValue({
+        ...this.pricingForm.value,
+        partsUnitCount: this.part.quantity
+      });
       this.rowData = [
         {
-          id: changes.part.currentValue.id,
-          customer: "",
-          rfq: changes.part.currentValue.rfqMedia.projectRfqId,
-          part:
-            changes.part.currentValue.rfqMedia.projectRfqId +
-            "." +
-            changes.part.currentValue.id,
-          filename: changes.part.currentValue.rfqMedia.media.name,
-          quantity: changes.part.currentValue.quantity,
-          material: changes.part.currentValue.materialName,
-          process: changes.part.currentValue.processTypeName,
+          id: this.part.id,
+          customer: this.customer.name,
+          rfq: this.part.rfqMedia.projectRfqId,
+          part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
+          filename: this.part.rfqMedia.media.name,
+          quantity: this.part.quantity,
+          material: this.part.materialName,
+          process: this.part.processTypeName,
           roughness: "",
           postProcess: "",
-          price: changes.part.currentValue.shippingCost
-            ? `$ ${changes.part.currentValue.shippingCost}`
-            : ""
+          price: this.part.shippingCost ? `$ ${this.part.shippingCost}` : ""
         }
       ];
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.part && changes.part.currentValue) {
+      this.updateRowData();
+    }
+    if (changes.customer && changes.customer.currentValue) {
+      this.updateRowData();
+    }
+    if (changes.partQuote && changes.partQuote.currentValue) {
+      this.updateRowData();
+    }
+  }
+
+  getInvoiceItem(id: number) {
+    if (!this.invoiceItems) {
+      return "";
+    }
+    const found = this.invoiceItems.find(item => item.id === id);
+    return found ? found.name : "";
   }
 }

@@ -21,9 +21,10 @@ export class PartInformationComponent implements OnInit {
   @Input() rfq: RfqData;
   @Input() customer: CustomerData;
 
-  countries;
-  certs;
-  postProcesses;
+  countries = [];
+  certs = [];
+  postProcesses = [];
+  antiMatchCerts = [];
 
   measurementUnits;
 
@@ -33,6 +34,7 @@ export class PartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("part", this.part);
     this.metadataService
       .getMetaData("measurement_unit_type")
       .subscribe(v => (this.measurementUnits = v));
@@ -87,7 +89,12 @@ export class PartInformationComponent implements OnInit {
     return (
       this.rfq &&
       this.rfq.projectProfile.countryIds
-        .map(item => this.countries.find(country => country.id === item).name)
+        .map(item => {
+          const found =
+            this.countries &&
+            this.countries.find(country => country.id === item);
+          return found && found.name;
+        })
         .join(", ")
     );
   }
@@ -96,7 +103,10 @@ export class PartInformationComponent implements OnInit {
     return (
       this.rfq &&
       this.rfq.projectProfile.vendorCertIds
-        .map(item => this.certs.find(cert => cert.id === item).name)
+        .map(item => {
+          const found = this.certs && this.certs.find(cert => cert.id === item);
+          return found && found.name;
+        })
         .join(", ")
     );
   }
@@ -106,10 +116,12 @@ export class PartInformationComponent implements OnInit {
       this.part &&
       this.part.postProcessTypeIds &&
       this.part.postProcessTypeIds
-        .map(
-          id =>
-            this.postProcesses.find(postProcess => postProcess.id == id).name
-        )
+        .map(id => {
+          const found =
+            this.postProcesses &&
+            this.postProcesses.find(postProcess => postProcess.id == id);
+          return found && found.name;
+        })
         .join(", ")
     );
   }
@@ -119,5 +131,24 @@ export class PartInformationComponent implements OnInit {
       centered: true,
       windowClass: "model-viewer-modal"
     });
+  }
+
+  getSurfaceRoughness() {
+    const found = this.part.partCustomParameterList.find(
+      item => item.partParameterType === null
+    );
+    if (found) {
+      return found.targetValue;
+    }
+    return "";
+  }
+  getTolerance() {
+    const found = this.part.partCustomParameterList.find(
+      item => item.partParameterType !== null
+    );
+    if (found) {
+      return found.parameterTolerance.value;
+    }
+    return "";
   }
 }

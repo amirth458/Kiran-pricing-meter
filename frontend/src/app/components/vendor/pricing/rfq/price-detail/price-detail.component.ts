@@ -1,6 +1,6 @@
 import { UserService } from 'src/app/service/user.service';
 import { CustomerData } from 'src/app/model/user.model';
-import { RfqData } from './../../../../../model/part.model';
+import { RfqData, PartQuote } from './../../../../../model/part.model';
 import { BehaviorSubject } from "rxjs";
 import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
 import { Component, OnInit } from "@angular/core";
@@ -17,6 +17,7 @@ export class PriceDetailComponent implements OnInit {
   selectedId: number;
   part: Part;
   rfq: RfqData;
+  partQuote: PartQuote;
   customer: CustomerData;
 
   tabs = [];
@@ -31,7 +32,7 @@ export class PriceDetailComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {
     this.route.params.subscribe(params => {
-      this.selectedId = params.pricingId;
+      this.selectedId = params.partId;
       this.getDetails(this.selectedId);
     });
 
@@ -64,7 +65,14 @@ export class PriceDetailComponent implements OnInit {
       this.userService.getCustomer(this.part.rfqMedia.media.customerId).subscribe((customer) => {
         this.customer = customer;
       });
+      this.pricingService.getPartQuote(this.part.id).subscribe((partQuote) => {
+        this.partQuote = partQuote;
+      })
     });
+  }
+
+  manualQuote() {
+    this.getDetails(this.selectedId);
   }
 
   ngOnInit() {}

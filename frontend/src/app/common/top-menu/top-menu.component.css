@@ -64,16 +64,25 @@
   position: absolute;
 }
 
+.profile .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-top: 5px;
+}
+
 .dropdown .dropdown-menu .dropdown-item {
   color: white;
   font-weight: normal;
   display: flex;
   justify-content: space-between;
 }
+
 .menu-icon {
   margin-top: 5px;
   color: var(--theme-light-green);
 }
+
 .dropdown .dropdown-menu .dropdown-item:hover {
   background: rgba(255, 255, 255, 0.336);
   /* color: var(--theme-main-blue); */

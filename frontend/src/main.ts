@@ -4,8 +4,8 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AppModule } from "./app/app.module";
 import { environment } from "./environments/environment";
 
-import { LicenseManager } from 'ag-grid-enterprise';
-LicenseManager.setLicenseKey('key');
+// import { LicenseManager } from 'ag-grid-enterprise';
+// LicenseManager.setLicenseKey('key1');
 
 if (environment.production) {
   enableProdMode();

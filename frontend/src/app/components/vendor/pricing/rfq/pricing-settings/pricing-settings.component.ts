@@ -52,7 +52,7 @@ export class PricingSettingsComponent implements OnInit {
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
       this.save();
-    })
+    });
   }
 
   async save() {
