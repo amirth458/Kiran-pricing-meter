@@ -39,11 +39,11 @@ export class AuthService {
   }
 
   setAuthData(data) {
-    localStorage.setItem('auth', JSON.stringify(data));
+    localStorage.setItem('dms-auth', JSON.stringify(data));
   }
 
   getAuthData() {
-    return JSON.parse(localStorage.getItem('auth'));
+    return JSON.parse(localStorage.getItem('dms-auth'));
   }
 
   logout(): any {
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   getProfile(): any {
-    const data = JSON.parse(localStorage.getItem('auth'));
+    const data = JSON.parse(localStorage.getItem('dms-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
@@ -74,7 +74,7 @@ export class AuthService {
   }
 
   getVendor(): any {
-    const data = JSON.parse(localStorage.getItem('auth'));
+    const data = JSON.parse(localStorage.getItem('dms-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    const data = JSON.parse(localStorage.getItem('auth'));
+    const data = JSON.parse(localStorage.getItem('dms-auth'));
     if (data) {
       const expireDate = new Date(data.expiryDate);
       const now = new Date();

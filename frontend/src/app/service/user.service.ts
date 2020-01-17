@@ -29,11 +29,11 @@ export class UserService {
   }
 
   getUserInfo() {
-    return JSON.parse(localStorage.getItem("user"));
+    return JSON.parse(localStorage.getItem("dms-user"));
   }
 
   setUserInfo(userInfo) {
-    localStorage.setItem("user", JSON.stringify(userInfo));
+    localStorage.setItem("dms-user", JSON.stringify(userInfo));
     this.userInfo = userInfo;
   }
 
@@ -51,12 +51,12 @@ export class UserService {
   }
 
   logout() {
-    localStorage.removeItem("3d-token");
+    localStorage.removeItem("dms-3d-token");
     this.route.navigateByUrl("/login");
   }
 
   isLoggedIn() {
-    return !!localStorage.getItem("3d-token");
+    return !!localStorage.getItem("dms-3d-token");
   }
 
   getTokenData(): {
@@ -65,7 +65,7 @@ export class UserService {
     generatedIn: string;
     expiryDate: string;
   } {
-    const tokenData = JSON.parse(localStorage.getItem("3d-token"));
+    const tokenData = JSON.parse(localStorage.getItem("dms-3d-token"));
     if (tokenData == null) {
       return null;
     }
@@ -110,7 +110,7 @@ export class UserService {
       environment.encryptionKey
     );
 
-    localStorage.setItem("3d-token", JSON.stringify(tokenInfo));
+    localStorage.setItem("dms-3d-token", JSON.stringify(tokenInfo));
   }
 
   tokenNeedsRefresh(): boolean {
@@ -137,36 +137,36 @@ export class UserService {
 
   // TODO: Do an encryption and decryption
   setVendorInfo(vendorInfo) {
-    localStorage.setItem("vendor", JSON.stringify(vendorInfo));
+    localStorage.setItem("dms-vendor", JSON.stringify(vendorInfo));
     this.vendorInfo = vendorInfo;
   }
 
   getVendorInfo() {
-    return JSON.parse(localStorage.getItem("vendor"));
+    return JSON.parse(localStorage.getItem("dms-vendor"));
   }
 
   getRegisterUserInfo() {
-    return JSON.parse(localStorage.getItem("RegisterUser"));
+    return JSON.parse(localStorage.getItem("dms-RegisterUser"));
   }
 
   setRegisterUserInfo(user) {
-    localStorage.setItem("RegisterUser", JSON.stringify(user));
+    localStorage.setItem("dms-RegisterUser", JSON.stringify(user));
   }
 
   getRegisterVendorInfo() {
-    return JSON.parse(localStorage.getItem("RegisterVendor"));
+    return JSON.parse(localStorage.getItem("dms-RegisterVendor"));
   }
 
   setRegisterVendorInfo(vendor) {
-    localStorage.setItem("RegisterVendor", JSON.stringify(vendor));
+    localStorage.setItem("dms-RegisterVendor", JSON.stringify(vendor));
   }
 
   getRegisterMachineInfo() {
-    return JSON.parse(localStorage.getItem("RegisterMachines"));
+    return JSON.parse(localStorage.getItem("dms-RegisterMachines"));
   }
 
   setRegisterMachineInfo(machines) {
-    localStorage.setItem("RegisterMachines", JSON.stringify(machines));
+    localStorage.setItem("dms-RegisterMachines", JSON.stringify(machines));
   }
 
   registerUser(user) {
@@ -175,14 +175,14 @@ export class UserService {
   }
 
   resetRegisterInfo() {
-    localStorage.removeItem("RegisterUser");
-    localStorage.removeItem("RegisterVendor");
-    localStorage.removeItem("RegisterMachines");
+    localStorage.removeItem("dms-RegisterUser");
+    localStorage.removeItem("dms-RegisterVendor");
+    localStorage.removeItem("dms-RegisterMachines");
   }
 
   getAllUsers() {
     const url = `${environment.apiBaseUrl}/users/all`;
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -194,7 +194,7 @@ export class UserService {
 
   approveUsers(ids) {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -214,7 +214,7 @@ export class UserService {
 
   declineUsers(ids, comment = "") {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -234,7 +234,7 @@ export class UserService {
 
   approveUser(id) {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -254,7 +254,7 @@ export class UserService {
 
   declineUser(id, declineMessage = "") {
     const url = `${environment.apiBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -275,7 +275,7 @@ export class UserService {
 
   getUserDetails(id) {
     const url = `${environment.apiBaseUrl}/users/${id}`;
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -286,19 +286,19 @@ export class UserService {
   }
 
   setUserFormStatus(id) {
-    localStorage.setItem("validInUserForm", String(id));
+    localStorage.setItem("dms-validInUserForm", String(id));
   }
 
   getUserFormStatus() {
-    return Number(localStorage.getItem("validInUserForm"));
+    return Number(localStorage.getItem("dms-validInUserForm"));
   }
 
   setVendorFormStatus(id) {
-    localStorage.setItem("validInVendorForm", String(id));
+    localStorage.setItem("dms-validInVendorForm", String(id));
   }
 
   getVendorFormStatus() {
-    return Number(localStorage.getItem("validInVendorForm"));
+    return Number(localStorage.getItem("dms-validInVendorForm"));
   }
 
   getCustomer(customerId: number): Observable<CustomerData> {

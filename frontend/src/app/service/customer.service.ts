@@ -12,7 +12,7 @@ export class CustomerService {
   constructor(public http: HttpClient) {}
 
   getCustomer(): Observable<CustomerData> {
-    const data = JSON.parse(localStorage.getItem("auth"));
+    const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"

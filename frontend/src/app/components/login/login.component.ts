@@ -35,9 +35,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     public userService: UserService) {}
 
   ngOnInit() {
-    const rememberMe = localStorage.getItem('remember_me');
-    const email = localStorage.getItem('email');
-    const password = localStorage.getItem('password');
+    const rememberMe = localStorage.getItem('dms-remember_me');
+    const email = localStorage.getItem('dms-email');
+    const password = localStorage.getItem('dms-password');
     if (rememberMe === '1') {
       this.userForm.setValue({
         email,
@@ -79,9 +79,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       });
 
       if (this.userForm.value.remember_me) {
-        localStorage.setItem('remember_me', '1');
-        localStorage.setItem('email', this.userForm.value.email);
-        localStorage.setItem('password', this.userForm.value.password);
+        localStorage.setItem('dms-remember_me', '1');
+        localStorage.setItem('dms-email', this.userForm.value.email);
+        localStorage.setItem('dms-password', this.userForm.value.password);
       }
 
       this.store.dispatch({

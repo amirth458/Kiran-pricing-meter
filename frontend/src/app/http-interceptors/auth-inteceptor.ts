@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 
 export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const localAuthInfo = localStorage.getItem('auth'); // you probably want to store it in localStorage or something
+        const localAuthInfo = localStorage.getItem('dms-auth'); // you probably want to store it in localStorage or something
 
         if (!localAuthInfo) {
             return next.handle(req);

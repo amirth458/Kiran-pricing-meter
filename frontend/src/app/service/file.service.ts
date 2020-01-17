@@ -29,7 +29,7 @@ export class FileService {
 
   fileUpload(userId: number, vendorId: number, certFile: any): Observable < UploadedCertFile > {
     const url = `${environment.apiBaseUrl}/user/${userId}/vendor/${vendorId}/file`;
-    const data = JSON.parse(localStorage.getItem('auth'));
+    const data = JSON.parse(localStorage.getItem('dms-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
@@ -38,7 +38,7 @@ export class FileService {
 
   fileDelete(userId: number, vendorId: number, path: string) {
     const url = `${environment.apiBaseUrl}/user/${userId}/vendor/${vendorId}/file?s3URL=${path}`;
-    const data = JSON.parse(localStorage.getItem('auth'));
+    const data = JSON.parse(localStorage.getItem('dms-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
