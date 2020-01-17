@@ -293,7 +293,6 @@ export class OrderConfirmQueueComponent implements OnInit {
           break;
         }
         rows.push(...res.content);
-
         if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }
