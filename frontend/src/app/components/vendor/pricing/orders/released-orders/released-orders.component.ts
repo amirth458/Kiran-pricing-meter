@@ -1,9 +1,11 @@
-import { OrdersService } from './../../../../../service/orders.service';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Router } from '@angular/router';
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { NgxSpinnerService } from 'ngx-spinner';
 import { GridOptions } from 'ag-grid-community';
+
+import { OrdersService } from './../../../../../service/orders.service';
+import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-released-orders',
@@ -11,160 +13,160 @@ import { GridOptions } from 'ag-grid-community';
   styleUrls: ['./released-orders.component.css']
 })
 export class ReleasedOrdersComponent implements OnInit {
-  type = ["search", "filter"];
+  type = ['search', 'filter'];
 
   searchColumns = [
     {
-      name: "Customer Order",
-      field: "customerOrder",
+      name: 'Customer Order',
+      field: 'customerOrder',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Sub-Order",
-      field: "subOrder",
+      name: 'Sub-Order',
+      field: 'subOrder',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Price Accepted",
-      field: "priceAccepted",
+      name: 'Price Accepted',
+      field: 'priceAccepted',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Customer",
-      field: "customer",
+      name: 'Customer',
+      field: 'customer',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Quantity",
-      field: "quantity",
+      name: 'Quantity',
+      field: 'quantity',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Material",
-      field: "material",
+      name: 'Material',
+      field: 'material',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Equipment",
-      field: "equipment",
+      name: 'Equipment',
+      field: 'equipment',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Post-Process",
-      field: "postProcess",
+      name: 'Post-Process',
+      field: 'postProcess',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "NDA",
-      field: "nda",
+      name: 'NDA',
+      field: 'nda',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Delivery Date",
-      field: "deliveryDate",
+      name: 'Delivery Date',
+      field: 'deliveryDate',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     }
   ];
 
   filterColumns = [
     {
-      name: "Customer Order",
-      field: "customerOrder",
+      name: 'Customer Order',
+      field: 'customerOrder',
       checked: true,
     },
     {
-      name: "Sub-Order",
-      field: "subOrder",
+      name: 'Sub-Order',
+      field: 'subOrder',
       checked: true
     },
     {
-      name: "Price Accepted",
-      field: "priceAccepted",
+      name: 'Price Accepted',
+      field: 'priceAccepted',
       checked: true
     },
     {
-      name: "Customer",
-      field: "customer",
+      name: 'Customer',
+      field: 'customer',
       checked: true
     },
     {
-      name: "Quantity",
-      field: "quantity",
+      name: 'Quantity',
+      field: 'quantity',
       checked: true
     },
     {
-      name: "Material",
-      field: "material",
+      name: 'Material',
+      field: 'material',
       checked: true
     },
     {
-      name: "Equipment",
-      field: "equipment",
+      name: 'Equipment',
+      field: 'equipment',
       checked: true
     },
     {
-      name: "Post-Process",
-      field: "postProcess",
+      name: 'Post-Process',
+      field: 'postProcess',
       checked: true
     },
     {
-      name: "NDA",
-      field: "nda",
+      name: 'NDA',
+      field: 'nda',
       checked: true
     },
     {
-      name: "Previously Ordered",
-      field: "previouslyOrdered",
+      name: 'Previously Ordered',
+      field: 'previouslyOrdered',
       checked: true
     },
     {
-      name: "First Shipment",
-      field: "firstShipment",
+      name: 'First Shipment',
+      field: 'firstShipment',
       checked: true
     },
     {
-      name: "Delivery Date",
-      field: "deliveryDate",
+      name: 'Delivery Date',
+      field: 'deliveryDate',
       checked: true
     }
   ];
@@ -195,133 +197,89 @@ export class ReleasedOrdersComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
     };
-    this.getOrderConfirmationQueue();
+    this.getReleasedBiddingOrders();
   }
 
   initColumns() {
     this.columnDefs = [
       {
-        headerName: "Vendor Order ID",
-        field: "vendorOrderId",
+        headerName: 'Vendor Bid',
+        field: 'bidOrder.id',
         hide: true,
         sortable: true,
-        filter: false,
-        rowGroup: true,
+        filter: false
       },
       {
-        headerName: "Customer Order",
-        field: "customerOrder",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Sub-Order",
-        field: "subOrder",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Price Accepted",
-        field: "priceAccepted",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Customer",
-        field: "customer",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Quantity",
-        field: "quantity",
+        headerName: 'Sub Order Count',
+        field: 'subOrderCount',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "material",
+        headerName: 'Offer Price',
+        field: 'offerPrice',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Equipment",
-        field: "equipment",
+        headerName: 'Quantity',
+        field: 'quantity',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Post-Process",
-        field: "postProcess",
+        headerName: 'Material',
+        field: 'material',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "NDA",
-        field: "nda",
+        headerName: 'Process',
+        field: 'process',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Delivery Date",
-        field: "deliveryDate",
+        headerName: 'Post-Process',
+        field: 'postProcess',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Status",
-        field: "status",
+        headerName: 'Delivery Date',
+        field: 'deliveryDate',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Status',
+        field: 'bidOrder.bidOrderStatusType.name',
         hide: false,
         sortable: true,
         filter: false
       }
     ];
     this.autoGroupColumnDef = {
-      headerName: "Vendor Order ID",
+      headerName: 'Vendor Order ID',
     };
   }
 
-  async getOrderConfirmationQueue(q = null) {
+  getReleasedBiddingOrders() {
     this.spinner.show();
-    let page = 0;
-    const rows = [];
-    try {
-      while (true) {
-        const res = await this.orderService
-          .getReleasedOrders({ page, size: 1000, sort: "id,ASC", q })
-          .toPromise();
-
-        if (!res.content) {
-          break;
-        }
-        rows.push(...res.content);
-
-        if (res.content.length === 0 || res.content.length < 1000) {
-          break;
-        }
-        page++;
-      }
-      this.rowData = rows;
-    } catch (e) {
-      console.log(e);
-    } finally {
+    this.orderService.getReleasedBiddingOrders().subscribe(v => {
+      this.rowData = (v || []).length > 0 ? v : [];
       this.spinner.hide();
-    }
+    });
   }
 
   configureColumnDefs() {
@@ -350,7 +308,7 @@ export class ReleasedOrdersComponent implements OnInit {
         if (column.checked) {
           columnInstance.setModel(column.query);
         } else {
-          columnInstance.setModel({ type: "", filter: "" });
+          columnInstance.setModel({ type: '', filter: '' });
         }
       }
       this.gridOptions.api.onFilterChanged();
