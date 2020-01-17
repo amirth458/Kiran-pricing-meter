@@ -185,126 +185,25 @@ export class OrderConfirmQueueComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
     };
-    this.getOrderConfirmationQueue();
+    this.getStartedBidOrders();
   }
 
   initColumns() {
-    this.columnDefs = [
-      {
-        headerName: "Vendor Order ID",
-        field: "vendorOrderId",
-        hide: true,
-        sortable: true,
-        filter: false,
-        rowGroup: true,
-      },
-      {
-        headerName: "Customer Order",
-        field: "customerOrder",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Sub-Order",
-        field: "subOrder",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Price Accepted",
-        field: "priceAccepted",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Customer",
-        field: "customer",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Quantity",
-        field: "quantity",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Material",
-        field: "material",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Process",
-        field: "process",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Post-Process",
-        field: "postProcess",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Delivery Date",
-        field: "deliveryDate",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Status",
-        field: "status",
-        hide: false,
-        sortable: true,
-        filter: false
-      }
-    ];
+    this.columnDefs = this.orderService.getOrderViewColumns();
     this.autoGroupColumnDef = {
       headerName: "Vendor Order ID",
     };
   }
 
-  async getOrderConfirmationQueue(q = null) {
+  getStartedBidOrders() {
     this.spinner.show();
-    let page = 0;
-    const rows = [];
-    try {
-      while (true) {
-        const res = await this.orderService
-          .getOrderConfirmationQueue({ page, size: 1000, sort: "id,ASC", q })
-          .toPromise();
-
-        if (!res.content) {
-          break;
-        }
-        rows.push(...res.content);
-
-        if (res.content.length === 0 || res.content.length < 1000) {
-          break;
-        }
-        page++;
-      }
-      this.rowData = rows;
-    } catch (e) {
-      console.log(e);
-    } finally {
+    this.orderService.getStartedBidOrders().subscribe(v => {
+      this.rowData = (v || []).length > 0 ? v : [];
       this.spinner.hide();
-    }
+    });
   }
 
   configureColumnDefs() {

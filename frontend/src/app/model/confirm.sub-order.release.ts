@@ -59,9 +59,9 @@ interface BidProcessStatusType {
   description: string;
 }
 
-interface BidOrderStatusType extends BidProcessStatusType {}
+export interface BidOrderStatusType extends BidProcessStatusType {}
 
-interface BidOrder {
+export interface BidOrder {
   id: number;
   bidStartAt: Date;
   bidDuration: number;

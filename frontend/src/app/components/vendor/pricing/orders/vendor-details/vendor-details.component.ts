@@ -18,13 +18,10 @@ import { UserService } from './../../../../../service/user.service';
 export class VendorDetailsComponent implements OnInit {
   type;
   orderId;
-
   @ViewChild('pricingProfileModal') pricingProfileModal;
 
   changePriority = false;
-
   columnDefs = [];
-
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
@@ -35,7 +32,6 @@ export class VendorDetailsComponent implements OnInit {
   priorityRows = [];
   pricingProfile: any;
   initialPrice: number;
-
   orderDetails = [];
 
   constructor(
@@ -56,9 +52,7 @@ export class VendorDetailsComponent implements OnInit {
     this.initialPrice = 0;
     this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
     (this.orderDetails).map(order => (this.initialPrice+= order.priceAccepted));
-
     this.initTable();
-
     this.route.params.subscribe(v => {
       this.orderId = v.orderId || null;
       this.ordersService
@@ -95,9 +89,7 @@ export class VendorDetailsComponent implements OnInit {
               });
             }
           });
-          this.priorityRows = this.matchedProfiles.filter(
-            item => item.id !== ''
-          );
+          this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
         });
     });
   }
@@ -363,9 +355,7 @@ export class VendorDetailsComponent implements OnInit {
 
   onRowDragEnd(ev) {
     const overNode = ev.overNode;
-    const popIndex = this.priorityRows.findIndex(
-      item => item.id === overNode.data.id
-    );
+    const popIndex = this.priorityRows.findIndex(item => item.id === overNode.data.id);
     const pushIndex = ev.overIndex;
     this.priorityRows.splice(popIndex, 1);
     this.priorityRows.splice(pushIndex, 0, overNode.data);
