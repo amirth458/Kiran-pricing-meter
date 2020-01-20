@@ -7,6 +7,7 @@ export interface BiddingOrderDetail {
 }
 
 export interface VendorOrderDetail {
+  id?: number;
   vendorName: string;
   processProfileViews: Array<ProcessProfile>;
   bidProcessStatus: BidProcessStatusType;

@@ -96,10 +96,10 @@ export class VendorDetailsComponent implements OnInit {
           });
       } else {
         this.ordersService.getBidOrderDetailsById(3).subscribe(v => {
-          // tslint: disable
-          console.log(v);
           this.orderDetails = v.acceptedOrderDetails || [];
+          let count = 0;
           this.bidding = v.matchingSuppliersProfilesView || [];
+          this.bidding.map(match => (match.id = ++count));
         });
       }
 
