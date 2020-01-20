@@ -134,10 +134,6 @@ export class OrdersService {
   }
 
   getMatchedProfiles(userId: number, rfqMediaIds: number[]) {
-    if (environment.isTestDataEnabled) {
-      userId = 357;
-      rfqMediaIds = [159];
-    }
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
     params = params.append('userId', userId.toString());
