@@ -244,5 +244,4 @@ export class OrderConfirmQueueComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-
 }

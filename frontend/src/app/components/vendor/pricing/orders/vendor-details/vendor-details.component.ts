@@ -57,7 +57,6 @@ export class VendorDetailsComponent implements OnInit {
     this.route.params.subscribe(v => {
       this.orderId = v.orderId || null;
       this.bidOrderId = v.bidOrderId || null;
-      this.bidOrderId = 1;
       if (!this.bidOrderId) {
         this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
         (this.orderDetails || []).map(order => (this.initialPrice+= order.priceAccepted));
@@ -95,7 +94,7 @@ export class VendorDetailsComponent implements OnInit {
             this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
           });
       } else {
-        this.ordersService.getBidOrderDetailsById(3).subscribe(v => {
+        this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
           this.orderDetails = v.acceptedOrderDetails || [];
           let count = 0;
           this.bidding = v.matchingSuppliersProfilesView || [];
