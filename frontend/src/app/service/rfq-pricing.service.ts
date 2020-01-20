@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 import { FilterOption } from "./../model/vendor.model";
 import { environment } from "./../../environments/environment";
-import { Part } from "../model/part.model";
+import { Part, PartDimension } from "../model/part.model";
 import { Pageable } from "./../model/pageable.model";
 import { map } from "rxjs/operators";
 import {
@@ -186,5 +186,15 @@ export class RfqPricingService {
     });
 
     return this.http.get<PartQuote>(url, { headers });
+  }
+
+  getPartQuotes(partIds: number[]): Observable<PartQuote[]> {
+    const url = `${environment.procurementApiBaseUrl}/part-quote/admin/parts`;
+    return this.http.post<PartQuote[]>(url, { partIds: partIds });
+  }
+
+  getPartDimension(partId: number): Observable<PartDimension> {
+    const url = `${environment.procurementApiBaseUrl}/part/${partId}/dimension?generateSignedUrl=true`;
+    return this.http.get<PartDimension>(url);
   }
 }

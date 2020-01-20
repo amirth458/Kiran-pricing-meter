@@ -1,12 +1,16 @@
-import { UserService } from 'src/app/service/user.service';
-import { CustomerData } from 'src/app/model/user.model';
-import { RfqData, PartQuote } from './../../../../../model/part.model';
+import { UserService } from "src/app/service/user.service";
+import { CustomerData } from "src/app/model/user.model";
+import {
+  RfqData,
+  PartQuote,
+  PartDimension
+} from "./../../../../../model/part.model";
 import { BehaviorSubject } from "rxjs";
 import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Part } from "src/app/model/part.model";
-import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-price-detail",
@@ -18,6 +22,7 @@ export class PriceDetailComponent implements OnInit {
   part: Part;
   rfq: RfqData;
   partQuote: PartQuote;
+  partDimension: PartDimension;
   customer: CustomerData;
 
   tabs = [];
@@ -35,7 +40,6 @@ export class PriceDetailComponent implements OnInit {
       this.selectedId = params.partId;
       this.getDetails(this.selectedId);
     });
-
   }
 
   getDetails(id: number) {
@@ -46,9 +50,10 @@ export class PriceDetailComponent implements OnInit {
       this.tabs = [
         {
           id: 0,
-          title: this.part && this.part.manualPricingAllowed
-            ? "Manual-Price View"
-            : "Auto-Price View"
+          title:
+            this.part && this.part.manualPricingAllowed
+              ? "Manual-Price View"
+              : "Auto-Price View"
         },
         {
           id: 1,
@@ -59,15 +64,24 @@ export class PriceDetailComponent implements OnInit {
           title: "Pricing Profile"
         }
       ];
-      this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId).subscribe((rfq) => {
-        this.rfq = rfq;
-      });
-      this.userService.getCustomer(this.part.rfqMedia.media.customerId).subscribe((customer) => {
-        this.customer = customer;
-      });
-      this.pricingService.getPartQuote(this.part.id).subscribe((partQuote) => {
+      this.pricingService
+        .getRfqDetail(this.part.rfqMedia.projectRfqId)
+        .subscribe(rfq => {
+          this.rfq = rfq;
+        });
+      this.userService
+        .getCustomer(this.part.rfqMedia.media.customerId)
+        .subscribe(customer => {
+          this.customer = customer;
+        });
+      this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
         this.partQuote = partQuote;
-      })
+      });
+      this.pricingService
+        .getPartDimension(this.part.id)
+        .subscribe(dimension => {
+          this.partDimension = dimension;
+        });
     });
   }
 

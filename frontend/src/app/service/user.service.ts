@@ -303,13 +303,6 @@ export class UserService {
 
   getCustomer(customerId: number): Observable<CustomerData> {
     const url = `${environment.procurementApiBaseUrl}/customer/${customerId}`;
-    const data = JSON.parse(localStorage.getItem("auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
-    return this.http.get<CustomerData>(url, {
-      headers
-    });
+    return this.http.get<CustomerData>(url);
   }
 }

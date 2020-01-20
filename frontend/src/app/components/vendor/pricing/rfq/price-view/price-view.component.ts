@@ -275,7 +275,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
           process: this.part.processTypeName,
           roughness: "",
           postProcess: "",
-          price: this.part.shippingCost ? `$ ${this.part.shippingCost}` : ""
+          price: this.partQuote ? `$ ${this.partQuote.totalCost}` : ""
         }
       ];
     }

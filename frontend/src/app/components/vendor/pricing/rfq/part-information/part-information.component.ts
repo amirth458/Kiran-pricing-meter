@@ -2,7 +2,8 @@ import { CustomerData } from "src/app/model/user.model";
 import {
   RfqData,
   ParameterTolerance,
-  PartCustomParameter
+  PartCustomParameter,
+  PartDimension
 } from "./../../../../../model/part.model";
 import { Util } from "./../../../../../util/Util";
 import { Component, OnInit, Input } from "@angular/core";
@@ -20,6 +21,7 @@ export class PartInformationComponent implements OnInit {
   @Input() part: Part;
   @Input() rfq: RfqData;
   @Input() customer: CustomerData;
+  @Input() partDimension: PartDimension;
 
   countries = [];
   certs = [];
@@ -51,10 +53,7 @@ export class PartInformationComponent implements OnInit {
 
   getDimension() {
     const metadataList = this.measurementUnits;
-    return Util.getPartDimension(
-      this.part.rfqMedia.media.partDimension,
-      metadataList || []
-    );
+    return Util.getPartDimension(this.partDimension, metadataList || []);
   }
 
   getDimensionValue(dimensionValue) {
