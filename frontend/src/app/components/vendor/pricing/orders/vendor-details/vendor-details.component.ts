@@ -9,6 +9,7 @@ import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confi
 import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from './../../../../../service/orders.service';
 import { UserService } from './../../../../../service/user.service';
+import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 
 @Component({
   selector: 'app-vendor-details',
@@ -34,6 +35,7 @@ export class VendorDetailsComponent implements OnInit {
   pricingProfile: any;
   initialPrice: number;
   orderDetails = [];
+  bidding: Array<VendorOrderDetail>;
 
   constructor(
     public biddingService: BiddingService,
@@ -55,6 +57,7 @@ export class VendorDetailsComponent implements OnInit {
     this.route.params.subscribe(v => {
       this.orderId = v.orderId || null;
       this.bidOrderId = v.bidOrderId || null;
+      this.bidOrderId = 1;
       if (!this.bidOrderId) {
         this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
         (this.orderDetails || []).map(order => (this.initialPrice+= order.priceAccepted));
@@ -96,6 +99,7 @@ export class VendorDetailsComponent implements OnInit {
           // tslint: disable
           console.log(v);
           this.orderDetails = v.acceptedOrderDetails || [];
+          this.bidding = v.matchingSuppliersProfilesView || [];
         });
       }
 
@@ -308,6 +312,31 @@ export class VendorDetailsComponent implements OnInit {
             return arr.length !== 0 ? arr.join(' , ') : '';
           }
         }
+      ],
+      [
+        {
+          headerName: 'No',
+          field: 'id',
+          width: 100,
+          maxWidth: 100,
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Vendor Name',
+          field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Status',
+          field: 'bidProcessStatus.description',
+          hide: false,
+          sortable: false,
+          filter: false
+        }
       ]
     ];
 
@@ -343,6 +372,13 @@ export class VendorDetailsComponent implements OnInit {
       {
         frameworkComponents: this.frameworkComponents,
         columnDefs: this.columnDefs[3],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35
+      },
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.columnDefs[4],
         enableColResize: true,
         rowHeight: 35,
         headerHeight: 35

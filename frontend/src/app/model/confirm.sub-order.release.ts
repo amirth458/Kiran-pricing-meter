@@ -18,7 +18,6 @@ interface SubOrderReleaseVendor {
   postProcessProfileIds: Array<number>;
 }
 
-
 export interface ConfirmSubOrderReleaseResponse {
   bidOrderItemList: Array<BidOrderItem>;
   bidProcessItemList: Array<BidProcessItem>;
