@@ -38,12 +38,7 @@
               getDimensionValue(part?.rfqMedia.media.partDimension.surfaceArea)
             }}
           </p>
-          <p
-            *ngFor="
-              let customerParameter of part?.partCustomParameterList;
-              index as i
-            "
-          >
+          <p *ngFor="let customerParameter of getToleranceList(); index as i">
             <b>Critical Tolerance {{ i + 1 }}: </b>
             {{ showCustomParameter(customerParameter) }}
           </p>
@@ -68,7 +63,7 @@
             </tr>
             <tr>
               <th scope="row">Anti-Match Eligibility</th>
-              <td>{{ rfq?.projectProfile.antiMatchCertIds }}</td>
+              <td>{{ getAntiMatch() }}</td>
             </tr>
             <tr>
               <th scope="row">Permitted Countries</th>
