@@ -72,12 +72,9 @@ export class VendorDetailsComponent implements OnInit {
             let id = found ? '' : processProfileView.vendorId;
             let priority = found ? '' : this.matchedProfiles.length + 1;
             if (!found) {
-              const title = [];
-              (item.processPricingViews || []).map(p => title.push(p.name));
               this.matchedProfiles.push({
                 id: this.matchedProfiles.length + 1,
                 vendorId: id,
-                title : title.join(' , '),
                 profileId: item.processProfileId,
                 vendorName: item.vendorProfile.name,
                 processProfileName: processProfileView.name,
