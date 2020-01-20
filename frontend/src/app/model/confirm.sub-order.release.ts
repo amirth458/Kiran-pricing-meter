@@ -24,11 +24,11 @@ export interface ConfirmSubOrderReleaseResponse {
   bidProcessItemList: Array<BidProcessItem>;
 }
 
-interface BidOrderItem {
+export interface BidOrderItem {
   id: number;
   quotePrice: number;
   partId: number;
-  bidOrder: number;
+  bidOrder: BidOrder;
 }
 
 interface BidProcessItem {
