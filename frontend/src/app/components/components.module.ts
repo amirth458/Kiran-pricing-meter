@@ -25,6 +25,7 @@ import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
 import { ProgressBarComponent } from '../common/progress-bar/progress-bar.component';
+import { ImgPreloadDirective } from '../common/core/img-preload/img-preload.directive';
 
 import { MarketplaceContainerComponent } from './vendor/marketplace/marketplace-container/marketplace-container.component';
 import { ReferralContainerComponent } from './vendor/marketplace/referral/referral-container/referral-container.component';
@@ -104,7 +105,7 @@ import { VendorDetailsComponent } from './vendor/pricing/orders/vendor-details/v
     PastOrdersComponent,
     PastOrderDetailsComponent,
     VendorDetailsComponent,
-    
+    ImgPreloadDirective
   ],
   imports: [
     CommonModule,
@@ -142,6 +143,7 @@ import { VendorDetailsComponent } from './vendor/pricing/orders/vendor-details/v
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
+    ImgPreloadDirective
   ]
 })
 export class ComponentsModule { }
