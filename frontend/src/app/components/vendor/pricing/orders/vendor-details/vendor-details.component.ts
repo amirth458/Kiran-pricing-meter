@@ -337,6 +337,10 @@ export class VendorDetailsComponent implements OnInit {
         headerHeight: 35
       }
     ];
+    this.ordersService.getBidOrderDetailsById(1).subscribe(v => {
+      // tslint: disable
+      console.log(v);
+    });
   }
 
   ngOnInit() {

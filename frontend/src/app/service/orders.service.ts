@@ -144,6 +144,10 @@ export class OrdersService {
     return this.http.get<any>(url, { params });
   }
 
+  getBidOrderDetailsById(bidOrderId: number): Observable<BiddingOrder> {
+    return this.http.get<BiddingOrder>(`${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}`);
+  }
+
   getOrderViewColumns(): ColDef[] {
     const columns = [
       {
