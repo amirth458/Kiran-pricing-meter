@@ -153,23 +153,39 @@ export class RecentAutoPricesComponent implements OnInit {
           break;
         }
 
-        rows.push(...res.content.map((part: Part) => ({
-          id: part.id,
-          rfq: part.rfqMedia.projectRfqId,
-          part: part.rfqMedia.projectRfqId + "." + part.id,
-          filename: part.rfqMedia.media.name,
-          quantity: part.quantity,
-          material: part.materialName,
-          process: part.processTypeName,
-          price: part.shippingCost ? `$ ${part.shippingCost}` : ''
-        })));
-        
+        rows.push(
+          ...res.content.map((part: Part) => ({
+            id: part.id,
+            rfq: part.rfqMedia.projectRfqId,
+            part: part.rfqMedia.projectRfqId + "." + part.id,
+            filename: part.rfqMedia.media.name,
+            quantity: part.quantity,
+            material: part.materialName,
+            process: part.processTypeName
+          }))
+        );
+
         if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }
         page++;
       }
       this.rowData = rows;
+
+      this.pricingService
+        .getPartQuotes(rows.map(item => item.id))
+        .subscribe(partQuotes => {
+          partQuotes.forEach(partQuote => {
+            const findIndex = this.rowData.findIndex(
+              row => row.id === partQuote.partId
+            );
+            this.rowData[findIndex] = {
+              ...this.rowData[findIndex],
+              price: partQuote.totalCost
+            };
+          });
+          this.rowData = [...this.rowData];
+        });
     } catch (e) {
       console.log(e);
     } finally {

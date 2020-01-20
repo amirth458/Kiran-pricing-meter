@@ -34,16 +34,16 @@
             <td class="font-weight-bold">
               {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
             </td>
-            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].unit }}</td>
-            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].unitPrice }}</td>
-            <td class="text-center">{{ partQuoteDetail.partQuoteInvoiceLineItemDetails[0].totalInvoiceLineItemCost }}</td>
+            <td class="text-center">{{ partQuoteDetail.invoiceItemId === 3 ? part.quantity : 1 }}</td>
+            <td class="text-center">{{ (partQuoteDetail.invoiceItemId === 3 ? partQuoteDetail.invoiceItemCost / (part.quantity ? part.quantity : 1) : partQuoteDetail.invoiceItemCost) | number:'1.0-2' }}</td>
+            <td class="text-center">{{ partQuoteDetail.invoiceItemCost | number:'0.0-3' }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>
             <td class="text-center"></td>
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
-              {{ partQuote?.totalCost }}
+              {{ partQuote?.totalCost | currency:'USD':'symbol':'0.0-3' }}
             </td>
           </tr>
         </tbody>

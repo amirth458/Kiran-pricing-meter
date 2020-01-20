@@ -100,7 +100,7 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false
-        },
+        }
         // {
         //   headerName: "Roughness",
         //   field: "roughness",
@@ -188,13 +188,13 @@ export class QueuedManualPriceComponent implements OnInit {
         //   filter: false,
         //   cellClass: "text-center"
         // },
-        // {
-        //   headerName: "Manual Price",
-        //   field: "manualPrice",
-        //   hide: false,
-        //   sortable: true,
-        //   cellClass: "text-center"
-        // }
+        {
+          headerName: "Manual Price",
+          field: "price",
+          hide: false,
+          sortable: true,
+          cellClass: "text-center"
+        }
       ]
     ];
     this.gridOptions = {
@@ -207,9 +207,7 @@ export class QueuedManualPriceComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        this.router.navigateByUrl(
-          this.router.url + "/" + event.data.id
-        );
+        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
       }
     };
     this.selectedTabId$.subscribe(value => {
@@ -296,7 +294,7 @@ export class QueuedManualPriceComponent implements OnInit {
             material: part.materialName,
             process: part.processTypeName,
             roughness: "",
-            postProcess: "",
+            postProcess: ""
             // manualPrice:
             //   part.partQuoteList && part.partQuoteList.length > 0
             //     ? part.partQuoteList[0].totalCost
@@ -312,6 +310,20 @@ export class QueuedManualPriceComponent implements OnInit {
         page++;
       }
       this.rowData[1] = rows;
+      this.pricingService
+        .getPartQuotes(rows.map(item => item.id))
+        .subscribe(partQuotes => {
+          partQuotes.forEach(partQuote => {
+            const findIndex = this.rowData[1].findIndex(
+              row => row.id === partQuote.partId
+            );
+            this.rowData[1][findIndex] = {
+              ...this.rowData[1][findIndex],
+              price: partQuote.totalCost
+            };
+          });
+          this.rowData[1] = [...this.rowData[1]];
+        });
     } catch (e) {
       console.log(e);
     } finally {

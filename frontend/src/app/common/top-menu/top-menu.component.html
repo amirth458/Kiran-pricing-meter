@@ -1,18 +1,28 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark-blue">
   <div class="d-flex flex-column logo">
-    <img src="assets/image/logo.png" width="230px" height="20px" alt="3Diligent Logo">
+    <img
+      src="assets/image/logo.png"
+      width="230px"
+      height="20px"
+      alt="3Diligent Logo"
+    />
     <span>The Digital Manufacuring Partner for Every Business</span>
   </div>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarText"
+    aria-controls="navbarText"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarText">
-
     <div class="navbar-nav ml-auto account-control">
       <ul class="navbar-nav ">
-
         <li class="nav-item">
           <a class="nav-link active" href="#">
             <i class="fas fa-store"></i>
@@ -33,20 +43,35 @@
         </li>
         <li class="nav-item dropdown">
           <div class="profile">
-            <div class="image">
-              <!-- <img [src]="userInfo.img" height="50px" width="50px" alt="User Profile Picture"> -->
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true"  aria-expanded="false">
-                <span class="name">{{userInfo.name}}</span>
+            <div class="image d-flex">
+              <img
+                [src]="userInfo.img"
+                height="50px"
+                width="50px"
+                alt="User Profile Picture"
+              />
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <span class="name">{{ userInfo.firstName }}</span>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Help <i class="fas fa-question-circle menu-icon"></i></a>
-                <a class="dropdown-item" [routerLink]="" (click)="onLogout()">Logout <i class="fas fa-sign-out-alt menu-icon"></i></a>
+                <a class="dropdown-item" href="#"
+                  >Help <i class="fas fa-question-circle menu-icon"></i
+                ></a>
+                <a class="dropdown-item" [routerLink]="" (click)="onLogout()"
+                  >Logout <i class="fas fa-sign-out-alt menu-icon"></i
+                ></a>
               </div>
             </div>
           </div>
         </li>
-
       </ul>
     </div>
   </div>
