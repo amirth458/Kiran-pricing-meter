@@ -39,7 +39,6 @@ a:hover {
 
 #sidebar ul li a {
   font-size: 1.1em;
-  display: block;
   text-align: left;
   display: flex;
   flex-direction: column;
