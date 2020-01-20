@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 
 import { BiddingOrder } from '../model/bidding.order';
+import { BiddingOrderDetail } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from './../model/vendor.model';
 
@@ -142,6 +143,10 @@ export class OrdersService {
     params = params.append('userId', userId.toString());
     params = params.append('rfqMediaIds', rfqMediaIds.join(','));
     return this.http.get<any>(url, { params });
+  }
+
+  getBidOrderDetailsById(bidOrderId: number): Observable<BiddingOrderDetail> {
+    return this.http.get<BiddingOrderDetail>(`${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}`);
   }
 
   getOrderViewColumns(): ColDef[] {

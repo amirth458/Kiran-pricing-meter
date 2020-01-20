@@ -18,17 +18,16 @@ interface SubOrderReleaseVendor {
   postProcessProfileIds: Array<number>;
 }
 
-
 export interface ConfirmSubOrderReleaseResponse {
   bidOrderItemList: Array<BidOrderItem>;
   bidProcessItemList: Array<BidProcessItem>;
 }
 
-interface BidOrderItem {
+export interface BidOrderItem {
   id: number;
   quotePrice: number;
   partId: number;
-  bidOrder: number;
+  bidOrder: BidOrder;
 }
 
 interface BidProcessItem {
@@ -53,7 +52,7 @@ interface BidProcess {
   bidOrder: BidOrder;
 }
 
-interface BidProcessStatusType {
+export interface BidProcessStatusType {
   id: number;
   name: string;
   description: string;
