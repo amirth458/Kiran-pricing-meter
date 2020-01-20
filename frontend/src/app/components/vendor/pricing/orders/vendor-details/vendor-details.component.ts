@@ -102,7 +102,6 @@ export class VendorDetailsComponent implements OnInit {
           this.bidding.map(match => (match.id = ++count));
         });
       }
-
     });
   }
 
