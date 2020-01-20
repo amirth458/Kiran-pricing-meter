@@ -1,15 +1,33 @@
-import { ICellRendererAngularComp } from "ag-grid-angular";
-import { Component } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { Component } from '@angular/core';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { OrdersService } from '../../service/orders.service';
+
+import { Part } from '../../model/part.model';
+import { Util } from '../../util/Util';
 
 @Component({
-  selector: "app-file-view-renderer",
-  templateUrl: "./file-view-renderer.component.html",
-  styleUrls: ["./file-view-renderer.component.css"]
+  selector: 'app-file-view-renderer',
+  templateUrl: './file-view-renderer.component.html',
+  styleUrls: ['./file-view-renderer.component.css']
 })
 export class FileViewRendererComponent implements ICellRendererAngularComp {
   params: any;
-  constructor(private modalService: NgbModal) {}
+  measurementUnits;
+  partInfo: Part;
+
+  constructor(
+    private modalService: NgbModal,
+    public orderService: OrdersService,
+    public spinner: NgxSpinnerService
+  ) {
+    this.orderService
+      .getAllMesurementUnitType()
+      .subscribe(v => (this.measurementUnits = v));
+  }
 
   agInit(params: any): void {
     this.params = params;
@@ -21,9 +39,14 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
 
   onFileClicked(ev: Event, content) {
     ev.stopPropagation();
-    this.modalService.open(content, {
-      centered: true,
-      windowClass: "file-viewer-modal"
+    this.spinner.show();
+    this.orderService.getPartById(this.params.data.subOrder).subscribe(v => {
+      this.partInfo = v;
+      this.modalService.open(content, {
+        centered: true,
+        windowClass: 'file-viewer-modal'
+      });
+      this.spinner.hide();
     });
   }
 }

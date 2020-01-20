@@ -1,7 +1,8 @@
 <div class="modal-container">
   <div class="modal-header">
     <h5 class="modal-title" id="modal-basic-title">
-      Rotor No Logo.stl
+      {{partDimension?.name}}
+      <span (click)="download()"><i class="fa fa-cloud-download-alt"></i></span>
     </h5>
     <button type="button" class="close" aria-label="Close" (click)="onClose()">
       <span aria-hidden="true">&times;</span>
@@ -12,15 +13,26 @@
   >
     <div class="row">
       <div class="col-6">
-        <img src="https://3diligent-marketplace.s3-us-west-2.amazonaws.com/Equipment+Images/Id_1.jpg" width="100%"/>
+        <div class="d-flex flex-row">
+          <img default="./assets/image/no-preview.jpg"  class="img-fluid"
+               [src]="partDimension?.thumbnail200Location" />
+        </div>
       </div>
       <div class="col-6">
-        <p>Part Dimensions: 12.36mm * 4.50mm * 4.73mm</p>
-        <p><strong>volumn - 3.51</strong> cubic centimeter</p>
-        <p><strong>Extents- 25.51 * 25.00 * 12.8</strong> cubic centimeter</p>
-        <p><strong>Bounding box - 6.2</strong> cubic centimeter</p>
-        <p><strong>Surface area - 8.2</strong> square centimeter</p>
-        <p><strong>Thinnest wall - 6.2</strong> milimenter</p>
+        <p>Part Dimensions: {{getDimension()}}</p>
+        <p>
+          <strong>volume - {{partDimension?.volume?.value}}</strong>
+          {{getUnit(partDimension?.volume?.unitId)}}
+        </p>
+        <p><strong>Extents- {{partDimension?.x?.value}} *
+          {{partDimension?.y?.value}}*
+          {{partDimension?.z?.value}}</strong>
+          {{getUnit(partDimension?.x?.unitId)}}
+        </p>
+        <p><strong>Bounding box - {{getBoundingBox()}}</strong></p>
+        <p><strong>Surface area - {{partDimension?.surfaceArea?.value}}</strong>
+          {{getUnit(partDimension?.surfaceArea?.unitId)}}
+        </p>
       </div>
     </div>
   </div>

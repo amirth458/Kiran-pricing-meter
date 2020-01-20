@@ -58,9 +58,9 @@ export class Util {
         measurements,
         dimension.x.unitId
       );
-      return `${dimension.x.value *
+      return `${(dimension.x.value *
         dimension.y.value *
-        dimension.z.value} cubic ${measurement}`;
+        dimension.z.value).toFixed(2)} cubic ${measurement}`;
     }
     return "";
   }

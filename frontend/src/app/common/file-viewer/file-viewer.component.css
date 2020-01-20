@@ -24,6 +24,11 @@
   flex-grow: 1;
 }
 
+.modal-title svg {
+  cursor: pointer;
+  color: #000000 !important;
+}
+
 .modal-body {
   flex-grow: 1;
 }
