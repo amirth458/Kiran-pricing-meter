@@ -28,16 +28,13 @@ a:hover {
   transform: rotate(180deg);
 }
 
-#sidebar .sidebar-header>span:hover {
-  cursor: pointer;
-}
-
 #sidebar ul.components {
   display: none;
 }
 
 #sidebar ul li {
   list-style: none;
+  cursor: pointer;
 }
 
 #sidebar ul li a {
