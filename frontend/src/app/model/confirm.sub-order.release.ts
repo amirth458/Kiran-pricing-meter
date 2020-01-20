@@ -53,7 +53,7 @@ interface BidProcess {
   bidOrder: BidOrder;
 }
 
-interface BidProcessStatusType {
+export interface BidProcessStatusType {
   id: number;
   name: string;
   description: string;
