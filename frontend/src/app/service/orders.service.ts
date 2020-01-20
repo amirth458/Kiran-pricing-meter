@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { ColDef } from 'ag-grid-community/src/ts/entities/colDef';
 
@@ -7,8 +7,10 @@ import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 
 import { BiddingOrder } from '../model/bidding.order';
+import { BiddingOrderDetail } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from './../model/vendor.model';
+import { Part } from '../model/part.model';
 
 @Injectable({
   providedIn: 'root'
@@ -133,15 +135,15 @@ export class OrdersService {
   }
 
   getMatchedProfiles(userId: number, rfqMediaIds: number[]) {
-    if (environment.isTestDataEnabled) {
-      userId = 357;
-      rfqMediaIds = [159];
-    }
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
     params = params.append('userId', userId.toString());
     params = params.append('rfqMediaIds', rfqMediaIds.join(','));
     return this.http.get<any>(url, { params });
+  }
+
+  getBidOrderDetailsById(bidOrderId: number): Observable<BiddingOrderDetail> {
+    return this.http.get<BiddingOrderDetail>(`${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}`);
   }
 
   getOrderViewColumns(): ColDef[] {
@@ -211,4 +213,22 @@ export class OrdersService {
     ];
     return columns;
   }
+
+  getPartById(id: number, generateSignedUrl = true): Observable<Part> {
+    return this.http.get<Part>(`${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`);
+  }
+
+  downloadActualFile(file: string) {
+    return this.http
+      .get(file , { headers: new HttpHeaders({
+          'Content-Type': 'application/octet-stream',
+        }), responseType: 'blob'});
+  }
+
+  getAllMesurementUnitType(): Observable<any> {
+    return this.http.get<any>(
+      `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`
+    );
+  }
+
 }

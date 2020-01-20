@@ -94,11 +94,11 @@ const routes: Routes = [
                 component: VendorDetailsComponent
               },
               {
-                path: "order-confirmation-queue/:vendorId",
+                path: "order-confirmation-queue/:bidOrderId",
                 component: VendorDetailsComponent
               },
               {
-                path: "released-orders/:vendorId",
+                path: "released-orders/:bidOrderId",
                 component: VendorDetailsComponent
               },
               { path: "released-orders", component: ReleasedOrdersComponent },

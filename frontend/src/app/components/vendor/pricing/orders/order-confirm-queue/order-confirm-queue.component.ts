@@ -168,12 +168,8 @@ export class OrderConfirmQueueComponent implements OnInit {
   constructor(
     public router: Router,
     public spinner: NgxSpinnerService,
-    private orderService: OrdersService,
-    private route: ActivatedRoute
+    private orderService: OrdersService
   ) {
-    this.route.params.subscribe(params => {
-      console.log(params);
-    });
   }
 
   ngOnInit() {
@@ -243,6 +239,5 @@ export class OrderConfirmQueueComponent implements OnInit {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
   }
-
 
 }

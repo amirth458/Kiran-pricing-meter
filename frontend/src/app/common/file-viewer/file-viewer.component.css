@@ -24,6 +24,12 @@
   flex-grow: 1;
 }
 
+.modal-title img {
+  cursor: pointer;
+  height: 16px;
+  width: 20px;
+}
+
 .modal-body {
   flex-grow: 1;
 }

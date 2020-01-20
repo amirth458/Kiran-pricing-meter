@@ -49,7 +49,7 @@ export interface PartDimension {
   x: PartDimensionValue;
   y: PartDimensionValue;
   z: PartDimensionValue;
-  volumn: PartDimensionValue;
+  volume: PartDimensionValue;
   surfaceArea: PartDimensionValue;
   thumbnail100Location: string;
   thumbnail200Location: string;

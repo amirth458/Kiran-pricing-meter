@@ -6,18 +6,19 @@
         [(filterColumns)]="filterColumns"
         (filterColumnsChange)="filterColumnsChange($event)"
         [(searchColumns)]="searchColumns"
-        (searchColumnsChange)="searchColumnsChange($event)"
-      >
+        (searchColumnsChange)="searchColumnsChange($event)">
       </app-column-search-filter>
     </div>
     <div class="table theme-table ml-4 d-flex flex-column">
       <div class="mb-3 row">
-        <input class="form-control col-md-3" placeholder="Vendor Order ID" />
-        <select class="form-control col-md-3" placeholder="Order Status">
-          <option value="">Bidding In Progress</option>
-          <option value="">Vendor Confirmation Received</option>
-          <option value="">Bidding Complete</option>
-        </select>
+        <div class="form-group theme col-12 d-flex flex-row m-0">
+          <input class="form-control col-md-3" placeholder="Vendor Order ID" />
+          <select class="form-control col-md-3 ml-4" placeholder="Order Status">
+            <option value="">Bidding In Progress</option>
+            <option value="">Vendor Confirmation Received</option>
+            <option value="">Bidding Complete</option>
+          </select>
+        </div>
       </div>
       <ag-grid-angular
         class="ag-theme-balham w-100 flex-grow-1"
@@ -29,4 +30,3 @@
       </ag-grid-angular>
     </div>
   </div>
-  
