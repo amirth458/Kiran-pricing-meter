@@ -10,6 +10,7 @@ import { BiddingOrder } from '../model/bidding.order';
 import { BiddingOrderDetail } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from './../model/vendor.model';
+import { Part } from '../model/part.model';
 
 @Injectable({
   providedIn: 'root'
@@ -212,4 +213,15 @@ export class OrdersService {
     ];
     return columns;
   }
+
+  getPartById(id: number, generateSignedUrl = true): Observable<Part> {
+    return this.http.get<Part>(`${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`);
+  }
+
+  getAllMesurementUnitType(): Observable<any> {
+    return this.http.get<any>(
+      `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`
+    );
+  }
+
 }
