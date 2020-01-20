@@ -25,6 +25,7 @@
 }
 
 .modal-title svg {
+  cursor: pointer;
   color: #000000 !important;
 }
 
