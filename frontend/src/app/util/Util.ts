@@ -1,4 +1,8 @@
-import { PartDimensionValue, PartCustomParameter, Address } from "./../model/part.model";
+import {
+  PartDimensionValue,
+  PartCustomParameter,
+  Address
+} from "./../model/part.model";
 import { Part, PartDimension } from "../model/part.model";
 
 export class Util {
@@ -58,27 +62,32 @@ export class Util {
         measurements,
         dimension.x.unitId
       );
-      return `${(dimension.x.value *
+      return `${(
+        dimension.x.value *
         dimension.y.value *
-        dimension.z.value).toFixed(2)} cubic ${measurement}`;
+        dimension.z.value
+      ).toFixed(2)} cubic ${measurement}`;
     }
     return "";
   }
 
   static shippingAddressInfo(address: Address) {
     if (!address) {
-      return '-';
+      return "-";
     }
     return [
-      address.street1 || address.street2 || '',
-      `${address.city ||''} ${address.zipcode ||''}`,
+      address.street1 || address.street2 || "",
+      `${address.city || ""} ${address.zipcode || ""}`,
       address.country.name
-    ].filter( i => i.toString().trim() !== '').join(', ');
+    ]
+      .filter(i => i.toString().trim() !== "")
+      .join(", ");
   }
 
   static showCustomPrameter(
     customParameter: PartCustomParameter,
-    measurements: any = []
+    measurements: any = [],
+    operatorTypes: any = []
   ) {
     let string = ``;
     if (customParameter.targetValue && customParameter.targetUnitTypeId) {
@@ -94,12 +103,19 @@ export class Util {
         customParameter.parameterTolerance.unitTypeId
       );
       string += `+/- ${customParameter.parameterTolerance.value} ${measurement}`;
+    } else {
+      const operatorType = Util.findMeasurementUnit(
+        operatorTypes,
+        customParameter.targetOperatorTypeId
+      );
+      string = `${operatorType} ${string}`;
     }
+    return string;
   }
 
   static findMeasurementUnit(measurements: any, unitId: number): any {
     const m = (measurements || []).find(item => item.id === unitId);
-    return (m || []).length > 0 ? m[0].symbol : Util.measurementUnit;
+    return m ? m.symbol : Util.measurementUnit;
   }
 
   static calcShippingCost(parts: Array<Part>) {

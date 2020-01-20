@@ -27,6 +27,7 @@ export class PartInformationComponent implements OnInit {
   certs = [];
   postProcesses = [];
   antiMatchCerts = [];
+  operatorTypes = [];
 
   measurementUnits;
 
@@ -49,6 +50,12 @@ export class PartInformationComponent implements OnInit {
     this.metadataService
       .getMetaData("post_process_action")
       .subscribe(v => (this.postProcesses = v));
+    this.metadataService
+      .getMetaData("core_competence")
+      .subscribe(v => (this.antiMatchCerts = v));
+    this.metadataService
+      .getMetaData("operator_type")
+      .subscribe(v => (this.operatorTypes = v));
   }
 
   getDimension() {
@@ -98,6 +105,20 @@ export class PartInformationComponent implements OnInit {
     );
   }
 
+  getAntiMatch() {
+    return (
+      this.rfq &&
+      this.rfq.projectProfile.antiMatchCertIds
+        .map(item => {
+          const found =
+            this.antiMatchCerts &&
+            this.antiMatchCerts.find(certs => certs.id === item);
+          return found ? found.name : item;
+        })
+        .join(", ")
+    );
+  }
+
   getRequiredCerts() {
     return (
       this.rfq &&
@@ -134,20 +155,30 @@ export class PartInformationComponent implements OnInit {
 
   getSurfaceRoughness() {
     const found = this.part.partCustomParameterList.find(
-      item => item.partParameterType === null
+      item => item.partParameterType.name === "SURFACE_ROUGHNESS"
     );
     if (found) {
-      return found.targetValue;
+      return Util.showCustomPrameter(
+        found,
+        this.measurementUnits,
+        this.operatorTypes
+      );
     }
     return "";
   }
   getTolerance() {
-    const found = this.part.partCustomParameterList.find(
-      item => item.partParameterType !== null
+    return this.part.partCustomParameterList
+      .filter(item => item.partParameterType.name !== "SURFACE_ROUGHNESS")
+      .map(item => Util.showCustomPrameter(item, this.measurementUnits))
+      .join(", ");
+  }
+
+  getToleranceList() {
+    return (
+      this.part &&
+      this.part.partCustomParameterList.filter(
+        item => item.partParameterType.name !== "SURFACE_ROUGHNESS"
+      )
     );
-    if (found) {
-      return found.parameterTolerance.value;
-    }
-    return "";
   }
 }
