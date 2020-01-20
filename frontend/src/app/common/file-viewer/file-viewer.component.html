@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h5 class="modal-title" id="modal-basic-title">
       {{partDimension?.name}}
-      <span><i class="fa fa-cloud-download-alt"></i></span>
+      <span (click)="download()"><i class="fa fa-cloud-download-alt"></i></span>
     </h5>
     <button type="button" class="close" aria-label="Close" (click)="onClose()">
       <span aria-hidden="true">&times;</span>

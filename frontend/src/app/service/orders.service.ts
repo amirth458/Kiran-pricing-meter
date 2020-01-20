@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { ColDef } from 'ag-grid-community/src/ts/entities/colDef';
 
@@ -216,6 +216,13 @@ export class OrdersService {
 
   getPartById(id: number, generateSignedUrl = true): Observable<Part> {
     return this.http.get<Part>(`${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`);
+  }
+
+  downloadActualFile(file: string) {
+    return this.http
+      .get(file , { headers: new HttpHeaders({
+          'Content-Type': 'application/octet-stream',
+        }), responseType: 'blob'});
   }
 
   getAllMesurementUnitType(): Observable<any> {
