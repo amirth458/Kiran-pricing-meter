@@ -1,14 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions} from 'ag-grid-community';
 
 import { BiddingService } from '../../../../../service/bidding.service';
+import { BiddingStatus } from '../../../../../model/bidding.order';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
-import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
-import { OrdersService } from './../../../../../service/orders.service';
-import { UserService } from './../../../../../service/user.service';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import {  OrdersService } from '../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 
 @Component({
@@ -17,15 +19,19 @@ import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
   styleUrls: ['./vendor-details.component.css']
 })
 export class VendorDetailsComponent implements OnInit {
+  biddingStatus = BiddingStatus;
   type;
   orderId;
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
+  @ViewChild('statusCell') statusCell: TemplateRef<any>;
 
   changePriority = false;
+  toggleVendorList = false;
   columnDefs = [];
   frameworkComponents = {
-    fileViewRenderer: FileViewRendererComponent
+    fileViewRenderer: FileViewRendererComponent,
+    templateRenderer: TemplateRendererComponent
   };
 
   gridOptions: GridOptions[];
@@ -310,31 +316,6 @@ export class VendorDetailsComponent implements OnInit {
             return arr.length !== 0 ? arr.join(' , ') : '';
           }
         }
-      ],
-      [
-        {
-          headerName: 'No',
-          field: 'id',
-          width: 100,
-          maxWidth: 100,
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: 'Vendor Name',
-          field: 'vendorName',
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: 'Status',
-          field: 'bidProcessStatus.description',
-          hide: false,
-          sortable: false,
-          filter: false
-        }
       ]
     ];
 
@@ -373,18 +354,48 @@ export class VendorDetailsComponent implements OnInit {
         enableColResize: true,
         rowHeight: 35,
         headerHeight: 35
-      },
-      {
-        frameworkComponents: this.frameworkComponents,
-        columnDefs: this.columnDefs[4],
-        enableColResize: true,
-        rowHeight: 35,
-        headerHeight: 35
       }
     ];
   }
 
   ngOnInit() {
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Status',
+        field: 'bidProcessStatus.description',
+        cellClass: 'p-0',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
+      }
+    ]);
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[4],
+      enableColResize: true,
+      rowHeight: 36,
+      headerHeight: 35
+    });
   }
 
   onGridReady(idx, ev) {

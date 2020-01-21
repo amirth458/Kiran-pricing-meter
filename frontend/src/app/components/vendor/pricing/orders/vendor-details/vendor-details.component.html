@@ -56,8 +56,7 @@
         [rowDragManaged]="true"
         [animateRows]="true"
         (rowDragEnd)="onRowDragEnd($event)"
-        domLayout="autoHeight"
-      ></ag-grid-angular>
+        domLayout="autoHeight"></ag-grid-angular>
     </div>
     <ng-template #plainMode>
       <div class="col-12 theme-table">
@@ -74,6 +73,9 @@
   </div>
   <div class="d-flex justify-content-between mt-4 align-items-center"  *ngIf="bidOrderId">
     <p class="part-header font-weight-bold">Bidding Status</p>
+    <a class="priority-btn"
+       (click)="toggleVendorList = !toggleVendorList">{{toggleVendorList ? 'View Vendor List' :
+        'View Matching Profile'}}</a>
   </div>
   <div class="row" *ngIf="bidOrderId">
     <div class="col-12 theme-table bidding-orders">
@@ -193,4 +195,17 @@
       </div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #statusCell let-row let-column="params">
+  <ng-container [ngSwitch]="row.bidProcessStatus.name">
+    <ng-container *ngSwitchCase="biddingStatus.ACCEPTED">
+      <div class="d-flex flex-row pt-1 pb-1">
+        {{row.bidProcessStatus.description}} <button class="btn btn-primary confirm-btn ml-4 btn-sm">Confirm</button>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      {{row.bidProcessStatus.description}}
+    </ng-container>
+  </ng-container>
 </ng-template>
