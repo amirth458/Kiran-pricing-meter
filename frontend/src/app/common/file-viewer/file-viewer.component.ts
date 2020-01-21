@@ -40,7 +40,7 @@ export class FileViewerComponent {
   }
 
   getUnit(unitId: number) {
-    const unit = (this.measurementUnits && this.measurementUnits.metadataList).filter(u => u.id === unitId)[0];
+    const unit = (this.measurementUnits && this.measurementUnits.metadataList || []).filter(u => u.id === unitId)[0];
     return unit ? unit.displayName : '';
   }
 
@@ -54,25 +54,15 @@ export class FileViewerComponent {
   }
 
   download() {
-    this.orderService.downloadActualFile(this.partInfo.rfqMedia.media.location)
-      .pipe(
-        map(res => {
-          return {
-            filename: this.partInfo.rfqMedia.media.name,
-            data: res
-          };
-        })
-      ).subscribe(res => {
-        let url = window.URL.createObjectURL(res.data);
-        let a = document.createElement('a');
-        document.body.appendChild(a);
-        a.setAttribute('style', 'display: none');
-        a.href = url;
-        a.download = res.filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-    });
+    let url = this.partInfo.rfqMedia.media.location;
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = this.partInfo.rfqMedia.media.name;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
   }
 
   onClose() {

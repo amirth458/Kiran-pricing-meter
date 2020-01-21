@@ -1,8 +1,9 @@
-import { Component, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, TemplateRef } from '@angular/core';
 import { AgEditorComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { IAfterGuiAttachedParams } from 'ag-grid';
 
 // Reference: https://www.ag-grid.com/javascript-grid-cell-editor/angular.php
+declare var $: any;
 
 @Component({
   selector: 'app-template-renderer',
@@ -12,21 +13,29 @@ import { IAfterGuiAttachedParams } from 'ag-grid';
     ></ng-container>
   `
 })
-export class TemplateRendererComponent implements ICellRendererAngularComp, AgEditorComponent {
+export class TemplateRendererComponent implements ICellRendererAngularComp, AgEditorComponent, AfterViewInit  {
   template: TemplateRef<any>;
-  templateContext: { $implicit: any, params: any };
+  templateContext: { $implicit: any, params: any, refreshCell: any };
   params: any;
+  tooltipCell = false;
+
+  constructor(private element: ElementRef) { }
 
   refresh(params: any): boolean {
     this.templateContext = {
       $implicit: params.data,
-      params: params
+      params,
+      refreshCell: this.refreshCell
     };
     return true;
   }
 
   agInit(params: any): void {
     params.cellStartedEdit = params.hasOwnProperty('cellStartedEdit');
+    if (!params.cellStartedEdit && params.colDef.cellRendererParams && params.colDef.cellRendererParams.tooltipCell) {
+      this.tooltipCell = params.colDef.cellRendererParams.tooltipCell;
+      $(this.element.nativeElement).addClass('tooltip-cell');
+    }
     this.template = params['ngTemplate'];
     this.params = params;
     this.refresh(params);
@@ -73,6 +82,27 @@ export class TemplateRendererComponent implements ICellRendererAngularComp, AgEd
   isPopup(): boolean {
     // TODO: analysis required
     return false;
+  }
+
+  refreshCell(): void {
+    const el = this.element.nativeElement.querySelector('div');
+    // determine tooltip popover
+    if (el && (el.offsetWidth < el.scrollWidth)) {
+      $(el).popover();
+    } else {
+      $(el).popover('hide');
+      $(el).popover('disable');
+      $(el).popover('dispose');
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.tooltipCell) {
+      $(() => {
+        this.params.api.addEventListener('columnResized', () => this.refreshCell());
+        this.refreshCell();
+      });
+    }
   }
 
 }

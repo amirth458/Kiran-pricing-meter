@@ -11,6 +11,22 @@
   min-height: auto !important;
 }
 
+:host ::ng-deep .ag-theme-balham.grid-empty .ag-body-viewport {
+  min-height: 35px !important;
+}
+
+:host ::ng-deep .bidding-orders .confirm-btn {
+  border-color: var(--theme-light-green);
+  border-radius: 0;
+  text-align: center;
+  padding: 0 20px;
+  width: 130px;
+}
+
+:host ::ng-deep .bidding-orders .confirm-btn:focus {
+  outline: none;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
@@ -79,12 +95,18 @@
   border-top: none;
 }
 
+.text-coutered {
+  color: #007bff;
+}
+
 .text-blue {
   color: var(--theme-light-blue);
 }
+
 .text-green {
   color: var(--theme-light-green);
 }
+
 .text-orange {
   color: var(--theme-orange);
 }

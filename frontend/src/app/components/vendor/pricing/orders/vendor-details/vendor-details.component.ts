@@ -1,14 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions} from 'ag-grid-community';
 
 import { BiddingService } from '../../../../../service/bidding.service';
+import { BiddingStatus } from '../../../../../model/bidding.order';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
-import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
-import { OrdersService } from './../../../../../service/orders.service';
-import { UserService } from './../../../../../service/user.service';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import {  OrdersService } from '../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 
 @Component({
@@ -17,15 +19,19 @@ import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
   styleUrls: ['./vendor-details.component.css']
 })
 export class VendorDetailsComponent implements OnInit {
+  biddingStatus = BiddingStatus;
   type;
   orderId;
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
+  @ViewChild('statusCell') statusCell: TemplateRef<any>;
 
   changePriority = false;
+  toggleVendorList = false;
   columnDefs = [];
   frameworkComponents = {
-    fileViewRenderer: FileViewRendererComponent
+    fileViewRenderer: FileViewRendererComponent,
+    templateRenderer: TemplateRendererComponent
   };
 
   gridOptions: GridOptions[];
@@ -99,6 +105,29 @@ export class VendorDetailsComponent implements OnInit {
           let count = 0;
           this.bidding = v.matchingSuppliersProfilesView || [];
           this.bidding.map(match => (match.id = ++count));
+          const vendors = [];
+          this.bidding.map(match => {
+            (match.processProfileViews).map(p => {
+              let count = (match.id).toString();
+              let status = match.bidProcessStatus.description;
+              if (!(vendors.indexOf(match.vendorName) > -1)) {
+                vendors.push(match.vendorName);
+              } else {
+                count = '';
+                status = '';
+              }
+              this.matchedProfiles.push({
+                id: count,
+                vendorId: p.vendorId,
+                profileId: p.id,
+                vendorName: match.vendorName,
+                processProfileName: p.name,
+                facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+                pricingProfile: '',
+                status
+              });
+            });
+          });
         });
       }
     });
@@ -310,31 +339,6 @@ export class VendorDetailsComponent implements OnInit {
             return arr.length !== 0 ? arr.join(' , ') : '';
           }
         }
-      ],
-      [
-        {
-          headerName: 'No',
-          field: 'id',
-          width: 100,
-          maxWidth: 100,
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: 'Vendor Name',
-          field: 'vendorName',
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: 'Status',
-          field: 'bidProcessStatus.description',
-          hide: false,
-          sortable: false,
-          filter: false
-        }
       ]
     ];
 
@@ -373,18 +377,105 @@ export class VendorDetailsComponent implements OnInit {
         enableColResize: true,
         rowHeight: 35,
         headerHeight: 35
-      },
-      {
-        frameworkComponents: this.frameworkComponents,
-        columnDefs: this.columnDefs[4],
-        enableColResize: true,
-        rowHeight: 35,
-        headerHeight: 35
       }
     ];
   }
 
   ngOnInit() {
+    // view bidding status
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Status',
+        field: 'bidProcessStatus.description',
+        cellClass: 'p-0',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
+      }
+    ]);
+    // View vendor profile matching
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Facility Name',
+        field: 'facilityName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Process Profile Name',
+        field: 'processProfileName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Pricing Profile',
+        field: 'pricingProfile',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'status',
+        field: 'status',
+        hide: false,
+        sortable: false,
+        filter: false
+      }
+    ]);
+    // view bidding status grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[4],
+      enableColResize: true,
+      rowHeight: 36,
+      headerHeight: 35
+    });
+    // View vendor profile matching grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[5],
+      enableColResize: true,
+      rowHeight: 36,
+      headerHeight: 35
+    });
   }
 
   onGridReady(idx, ev) {
