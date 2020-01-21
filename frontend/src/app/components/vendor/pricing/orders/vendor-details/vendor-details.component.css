@@ -11,6 +11,10 @@
   min-height: auto !important;
 }
 
+:host ::ng-deep .ag-theme-balham.grid-empty .ag-body-viewport {
+  min-height: 35px !important;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
