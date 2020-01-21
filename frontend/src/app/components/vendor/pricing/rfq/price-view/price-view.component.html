@@ -29,14 +29,14 @@
         </thead>
         <tbody>
           <tr
-            *ngFor="let partQuoteDetail of partQuote?.partQuoteInvoiceItemDetails"
+            *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails"
           >
             <td class="font-weight-bold">
               {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
             </td>
-            <td class="text-center">{{ partQuoteDetail.invoiceItemId === 3 ? part.quantity : 1 }}</td>
-            <td class="text-center">{{ (partQuoteDetail.invoiceItemId === 3 ? partQuoteDetail.invoiceItemCost / (part.quantity ? part.quantity : 1) : partQuoteDetail.invoiceItemCost) | number:'1.0-2' }}</td>
-            <td class="text-center">{{ partQuoteDetail.invoiceItemCost | number:'0.0-3' }}</td>
+            <td class="text-center">{{ partQuoteDetail.unit }}</td>
+            <td class="text-center">{{ partQuoteDetail.unitPrice }}</td>
+            <td class="text-center">{{ partQuoteDetail.value }}</td>
           </tr>
           <tr>
             <td class="text-center"></td>

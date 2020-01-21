@@ -60,7 +60,7 @@ export class PartInformationComponent implements OnInit {
 
   getDimension() {
     const metadataList = this.measurementUnits;
-    return Util.getPartDimension(this.partDimension, metadataList || []);
+    return this.partDimension && Util.getPartDimension(this.partDimension, metadataList || []);
   }
 
   getDimensionValue(dimensionValue) {
