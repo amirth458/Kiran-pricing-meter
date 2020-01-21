@@ -218,6 +218,10 @@ export class OrdersService {
     return this.http.get<Part>(`${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`);
   }
 
+  confirmBidOrder(bidOrderId: number, winningBidProcessId: number, winningBidVendorId: number): Observable<any> {
+    return this.http.patch<any>(`${environment.apiBaseUrl}/admin/bidding/${bidOrderId}/${winningBidProcessId}/${winningBidVendorId}/confirm-vendor-accepted-bid`, null);
+  }
+
   getAllMesurementUnitType(): Observable<any> {
     return this.http.get<any>(
       `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`
