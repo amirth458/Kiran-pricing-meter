@@ -107,14 +107,14 @@ export class VendorDetailsComponent implements OnInit {
           this.bidding.map(match => (match.id = ++count));
           const vendors = [];
           this.bidding.map(match => {
-            (match.processProfileViews).map(p => {
+            (match.processProfileViews || []).map(p => {
               let count = (match.id).toString();
-              let status = match.bidProcessStatus.description;
+              let status = match.bidProcessStatus;
               if (!(vendors.indexOf(match.vendorName) > -1)) {
                 vendors.push(match.vendorName);
               } else {
                 count = '';
-                status = '';
+                status = null;
               }
               this.matchedProfiles.push({
                 id: count,
@@ -124,10 +124,12 @@ export class VendorDetailsComponent implements OnInit {
                 processProfileName: p.name,
                 facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
                 pricingProfile: '',
-                status
+                bidProcessStatus: status
               });
             });
           });
+          //tslint: disable
+          console.log(this.matchedProfiles);
         });
       }
     });
@@ -454,10 +456,14 @@ export class VendorDetailsComponent implements OnInit {
       },
       {
         headerName: 'status',
-        field: 'status',
+        field: 'bidProcessStatus.description',
         hide: false,
         sortable: false,
-        filter: false
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
       }
     ]);
     // view bidding status grid
