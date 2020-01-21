@@ -104,12 +104,12 @@ export class RfqPricingService {
     partId: number,
     customerId: number
   ): Observable<PricingProfile> {
-    if (environment.isTestDataEnabled) {
-      // test data
-      partId = 44;
-      id = 136;
-      customerId = 105;
-    }
+    // if (environment.isTestDataEnabled) {
+    //   // test data
+    //   partId = 44;
+    //   id = 136;
+    //   customerId = 105;
+    // }
 
     const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/${id}`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
@@ -162,23 +162,18 @@ export class RfqPricingService {
   }
 
   getPricingProfiles(partId: number): Observable<PricingProfileDetailedView[]> {
-    if (environment.isTestDataEnabled) {
-      // test data
-      partId = 178;
-    }
+    // if (environment.isTestDataEnabled) {
+    //   // test data
+    //   partId = 178;
+    // }
 
     const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/matched-profiles/${partId}`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
 
-    return this.http.get<PricingProfileDetailedView[]>(url, { headers });
+    return this.http.get<PricingProfileDetailedView[]>(url);
   }
 
   getPartQuote(partId: number): Observable<PartQuote> {
-    const url = `${environment.procurementApiBaseUrl}/part-quote/admin/parts/${partId}`;
+    const url = `${environment.procurementApiBaseUrl}/part-quote/parts/${partId}`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -189,7 +184,7 @@ export class RfqPricingService {
   }
 
   getPartQuotes(partIds: number[]): Observable<PartQuote[]> {
-    const url = `${environment.procurementApiBaseUrl}/part-quote/admin/parts`;
+    const url = `${environment.procurementApiBaseUrl}/part-quote/parts`;
     return this.http.post<PartQuote[]>(url, { partIds: partIds });
   }
 

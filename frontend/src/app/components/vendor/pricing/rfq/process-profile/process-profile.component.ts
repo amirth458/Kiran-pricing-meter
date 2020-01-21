@@ -11,20 +11,21 @@ import {
 } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
 import { Part } from "src/app/model/part.model";
-
+import { OrdersService } from "src/app/service/orders.service";
+import { UserService } from "src/app/service/user.service";
 @Component({
-  selector: "app-pricing-profile",
-  templateUrl: "./pricing-profile.component.html",
-  styleUrls: ["./pricing-profile.component.css"]
+  selector: "app-process-profile",
+  templateUrl: "./process-profile.component.html",
+  styleUrls: ["./process-profile.component.css"]
 })
-export class PricingProfileComponent implements OnInit {
+export class ProcessProfileComponent implements OnInit {
   @Input() part: Part;
   @ViewChild("dateCell") dateCell: TemplateRef<any>;
   type = ["search", "filter"];
 
   searchColumns = [
     {
-      name: "Vendor Name",
+      name: "Corporate Name",
       field: "vendorName",
       checked: false,
       query: {
@@ -33,8 +34,8 @@ export class PricingProfileComponent implements OnInit {
       }
     },
     {
-      name: "Pricing Profile",
-      field: "pricingProfile",
+      name: "Facility Name",
+      field: "facilityName",
       checked: false,
       query: {
         type: "",
@@ -42,8 +43,8 @@ export class PricingProfileComponent implements OnInit {
       }
     },
     {
-      name: "Material",
-      field: "material",
+      name: "Process Profile Name",
+      field: "processProfileName",
       checked: false,
       query: {
         type: "",
@@ -60,75 +61,39 @@ export class PricingProfileComponent implements OnInit {
       }
     },
     {
-      name: "Process Profile",
-      field: "processProfile",
+      name: "Material",
+      field: "material",
+      checked: false,
+      query: {
+        type: "",
+        filter: ""
+      }
+    },
+    {
+      name: "PricingProfile",
+      field: "pricingProfile",
       checked: false,
       query: {
         type: "",
         filter: ""
       }
     }
-    // {
-    //   name: "Post-Process",
-    //   field: "postProcess",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // },
-    // {
-    //   name: "Machines Matched",
-    //   field: "machinesMatched",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // },
-    // {
-    //   name: "Total Cost",
-    //   field: "totalCost",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // },
-    // {
-    //   name: "Estimated Delivery",
-    //   field: "estimatedDelivery",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // },
-    // {
-    //   name: "Match Score",
-    //   field: "matchScore",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // }
   ];
 
   filterColumns = [
     {
-      name: "Vendor Name",
+      name: "Corporate Name",
       field: "vendorName",
       checked: true
     },
     {
-      name: "Pricing Profile",
-      field: "pricingProfile",
+      name: "Facility Name",
+      field: "facilityName",
       checked: true
     },
     {
-      name: "Material",
-      field: "material",
+      name: "Process Profile Name",
+      field: "processProfileName",
       checked: true
     },
     {
@@ -137,35 +102,15 @@ export class PricingProfileComponent implements OnInit {
       checked: true
     },
     {
-      name: "Process Profile",
-      field: "processProfile",
+      name: "Material",
+      field: "material",
+      checked: true
+    },
+    {
+      name: "PricingProfile",
+      field: "pricingProfile",
       checked: true
     }
-    // {
-    //   name: "Post-Process",
-    //   field: "postProcess",
-    //   checked: true
-    // },
-    // {
-    //   name: "Machines Matched",
-    //   field: "machinesMatched",
-    //   checked: true
-    // },
-    // {
-    //   name: "Total Cost",
-    //   field: "totalCost",
-    //   checked: true
-    // },
-    // {
-    //   name: "Estimated Delivery",
-    //   field: "estimatedDelivery",
-    //   checked: true
-    // },
-    // {
-    //   name: "Match Score",
-    //   field: "matchScore",
-    //   checked: true
-    // }
   ];
 
   columnDefs: Array<any> = [];
@@ -181,8 +126,8 @@ export class PricingProfileComponent implements OnInit {
   constructor(
     public router: Router,
     public spinner: NgxSpinnerService,
-    private pricingService: RfqPricingService,
-    private route: ActivatedRoute
+    private ordersService: OrdersService,
+    private userService: UserService
   ) {
     this.navigation = this.router.getCurrentNavigation();
   }
@@ -205,28 +150,28 @@ export class PricingProfileComponent implements OnInit {
         );
       }
     };
-    this.getPricingProfiles();
+    this.getProcessProfile();
   }
 
   initColumns() {
     this.columnDefs = [
       {
-        headerName: "Vendor Name",
+        headerName: "Corporate Name",
         field: "vendorName",
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Pricing Profile",
-        field: "pricingProfile",
+        headerName: "Facility Name",
+        field: "facilityName",
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "material",
+        headerName: "Process Profile Name",
+        field: "processProfileName",
         hide: false,
         sortable: true,
         filter: false
@@ -239,78 +184,43 @@ export class PricingProfileComponent implements OnInit {
         filter: false
       },
       {
-        headerName: "Process Profile",
-        field: "processProfile",
+        headerName: "Material",
+        field: "material",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "PricingProfile",
+        field: "pricingProfile",
         hide: false,
         sortable: true,
         filter: false
       }
-      // {
-      //   headerName: "Post-Process",
-      //   field: "postProcess",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Machines Matched",
-      //   field: "machinesMatched",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Total Cost",
-      //   field: "totalCost",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Estimated Delivery",
-      //   field: "esitmatedDelivery",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Match Score",
-      //   field: "matchScore",
-      //   hide: false,
-      //   sortable: false,
-      //   filter: false
-      // }
     ];
   }
 
-  async getPricingProfiles(q = null) {
+  async getProcessProfile(q = null) {
     this.spinner.show();
-    const res = await this.pricingService
-      .getPricingProfiles(this.part.id)
+    const res = await this.ordersService
+      .getMatchedProfiles(this.userService.getUserInfo().id, [
+        this.part.rfqMedia.id
+      ])
       .toPromise();
 
     this.rowData = res.map(item => ({
       id: item.id,
+      profileId: item.processProfileId,
       vendorName: item.vendorProfile.name,
-      pricingProfile: item.name,
-      material: item.processProfile.processMachineServingMaterialList
-        .map(item => item.machineServingMaterial.material.name)
-        .join(", "),
-      equipment: item.processProfile.processMachineServingMaterialList
-        .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
-        .join(", "),
-      processProfile: item.processProfile.name
-      // postProcess: "Electropolishing",
-      // machinesMatched: 2,
-      // totalCost: 1238,
-      // esitmatedDelivery: "10/12/2019",
-      // matchScore: 4.9
+      processProfileName: item.processProfileView.name,
+      facilityName:
+        item.processProfileView.processMachineServingMaterialList[0]
+          .machineServingMaterial.vendorMachinery.vendorFacility.name,
+      pricingProfile: item.processPricingView.name || "",
+      material: "",
+      equipment: "",
+      vendorProfile: item.vendorProfile
     }));
-
-    this.pricingSettings = await this.pricingService
-      .getPricingSettings()
-      .toPromise();
-
     this.spinner.hide();
   }
 

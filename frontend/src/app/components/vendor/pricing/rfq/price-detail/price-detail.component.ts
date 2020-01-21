@@ -61,7 +61,9 @@ export class PriceDetailComponent implements OnInit {
         },
         {
           id: 2,
-          title: "Pricing Profile"
+          title: part.manualPricingAllowed
+            ? "Process Profile"
+            : "Pricing Profile"
         }
       ];
       this.pricingService
