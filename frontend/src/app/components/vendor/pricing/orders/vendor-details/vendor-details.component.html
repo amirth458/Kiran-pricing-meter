@@ -208,7 +208,12 @@
       </div>
     </ng-container>
     <ng-container *ngSwitchCase="biddingStatus.COUNTER_OFFER">
-      <div class="text-coutered">{{row.bidProcessStatus.description}}</div>
+      <div class="d-flex flex-row pt-1 pb-1">
+        <div class="text-coutered">{{row.bidProcessStatus.description}}</div>
+        <button class="btn btn-primary confirm-btn ml-4 btn-sm">
+          Confirm
+        </button>
+      </div>
     </ng-container>
     <ng-container *ngSwitchCase="biddingStatus.NO_RESPONSE">
       <div class="text-blue">{{row.bidProcessStatus.description}}</div>
