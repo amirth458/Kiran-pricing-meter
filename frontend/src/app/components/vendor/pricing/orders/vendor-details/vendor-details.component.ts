@@ -105,6 +105,29 @@ export class VendorDetailsComponent implements OnInit {
           let count = 0;
           this.bidding = v.matchingSuppliersProfilesView || [];
           this.bidding.map(match => (match.id = ++count));
+          const vendors = [];
+          this.bidding.map(match => {
+            (match.processProfileViews).map(p => {
+              let count = (match.id).toString();
+              let status = match.bidProcessStatus.description;
+              if (!(vendors.indexOf(match.vendorName) > -1)) {
+                vendors.push(match.vendorName);
+              } else {
+                count = '';
+                status = '';
+              }
+              this.matchedProfiles.push({
+                id: count,
+                vendorId: p.vendorId,
+                profileId: p.id,
+                vendorName: match.vendorName,
+                processProfileName: p.name,
+                facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+                pricingProfile: '',
+                status
+              });
+            });
+          });
         });
       }
     });
@@ -359,6 +382,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // view bidding status
     this.columnDefs.push([
       {
         headerName: 'No',
@@ -389,9 +413,65 @@ export class VendorDetailsComponent implements OnInit {
         }
       }
     ]);
+    // View vendor profile matching
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Facility Name',
+        field: 'facilityName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Process Profile Name',
+        field: 'processProfileName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Pricing Profile',
+        field: 'pricingProfile',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'status',
+        field: 'status',
+        hide: false,
+        sortable: false,
+        filter: false
+      }
+    ]);
+    // view bidding status grid
     this.gridOptions.push({
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs[4],
+      enableColResize: true,
+      rowHeight: 36,
+      headerHeight: 35
+    });
+    // View vendor profile matching grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[5],
       enableColResize: true,
       rowHeight: 36,
       headerHeight: 35
