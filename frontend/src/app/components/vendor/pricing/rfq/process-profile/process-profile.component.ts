@@ -217,8 +217,12 @@ export class ProcessProfileComponent implements OnInit {
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.vendorMachinery.vendorFacility.name,
       pricingProfile: item.processPricingView.name || "",
-      material: "",
-      equipment: "",
+      material:
+        item.processProfileView.processMachineServingMaterialList[0]
+          .machineServingMaterial.material.name,
+      equipment:
+        item.processProfileView.processMachineServingMaterialList[0]
+          .machineServingMaterial.vendorMachinery.equipment.name,
       vendorProfile: item.vendorProfile
     }));
     this.spinner.hide();
