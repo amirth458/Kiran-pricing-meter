@@ -210,7 +210,7 @@
     <ng-container [ngSwitch]="row.bidProcessStatus.name">
       <ng-container *ngSwitchCase="biddingStatus.ACCEPTED">
         <div class="d-flex flex-row pt-1 pb-1">
-          <div class="text-theme-green">{{row.bidProcessStatus.description}}</div>
+          <strong class="text-theme-green">{{row.bidProcessStatus.description | titlecase}}</strong>
           <button class="btn btn-primary confirm-btn ml-4 btn-sm" *ngIf="(type === 'confirmation' &&
           !toggleVendorList)">
             Confirm
@@ -219,7 +219,9 @@
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.COUNTER_OFFER">
         <div class="d-flex flex-row pt-1 pb-1">
-          <div class="text-coutered">{{row.bidProcessStatus.description}}</div>
+          <strong class="text-coutered">
+            {{row.bidProcessStatus.description | titlecase}} ${{row.counterOfferPrice}}
+          </strong>
           <button class="btn btn-primary confirm-btn ml-4 btn-sm" *ngIf="(type === 'confirmation' &&
           !toggleVendorList)">
             Confirm
@@ -227,13 +229,13 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.NO_RESPONSE">
-        <div class="text-blue">{{row.bidProcessStatus.description}}</div>
+        <strong class="text-blue">{{row.bidProcessStatus.description | titlecase}}</strong>
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.REJECTED">
-        <div class="text-orange">{{row.bidProcessStatus.description}}</div>
+        <strong class="text-orange">{{row.bidProcessStatus.description | titlecase}}</strong>
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.QUEUED_FOR_LATER">
-        <div class="text-blue">{{row.bidProcessStatus.description}}</div>
+        <strong class="text-blue">{{row.bidProcessStatus.description | titlecase}}</strong>
       </ng-container>
     </ng-container>
   </ng-container>
