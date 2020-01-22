@@ -99,21 +99,6 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getPricingProfileDetail(id: number[]): Observable<PricingProfile[]> {
-    // if (environment.isTestDataEnabled) {
-    //   // test data
-    //   partId = 44;
-    //   id = 136;
-    //   customerId = 105;
-    // }
-
-    const url = `${
-      environment.managementBaseUrl
-    }/process-pricing-profile/process-profile?ids=${id.join(",")}`;
-
-    return this.http.get<PricingProfile[]>(url);
-  }
-
   getPartDetail(id: number, generateSignedUrl = true): Observable<Part> {
     const url = `${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`;
 
@@ -172,5 +157,12 @@ export class RfqPricingService {
   getPartDimension(partId: number): Observable<PartDimension> {
     const url = `${environment.procurementApiBaseUrl}/part/${partId}/dimension?generateSignedUrl=true`;
     return this.http.get<PartDimension>(url);
+  }
+
+  getPricingProfileDetail(
+    profileIds: number[]
+  ): Observable<PricingProfileDetailedView[]> {
+    const url = `${environment.managementBaseUrl}/process-pricing-profile/ids`;
+    return this.http.post<PricingProfileDetailedView[]>(url, profileIds);
   }
 }

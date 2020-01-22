@@ -1,6 +1,11 @@
 <div class="wrapper container-fluid">
-  <div class="header d-flex align-items-center mb-3" [ngClass]="{'manual-price': part?.manualPricingAllowed}">
-    <h5 class="text-center flex-grow-1">{{!(part?.manualPricingAllowed)? '' : part?.partStatusType.id == 2 ? 'Queued for Manual Pricing: ' : 'Manually Priced: '}} Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}</h5>
+  <div
+    class="header d-flex align-items-center mb-3"
+    [ngClass]="{ 'manual-price': part?.manualPricingAllowed }"
+  >
+    <h5 class="text-center flex-grow-1">
+      Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}
+    </h5>
     <button
       type="button"
       class="btn btn-back theme white"
@@ -12,85 +17,161 @@
       </span>
     </button>
   </div>
-  <div class="row">
-    <div class="col-12 theme-table single-row-table">
+  <div class="form-row">
+    <div class="table theme-table">
       <ag-grid-angular
-        class="ag-theme-balham w-100 h-100"
-        [rowData]="rowData[0]"
-        [gridOptions]="gridOptions[0]"
-        (gridReady)="onGridReady(0, $event)"
+        class="ag-theme-balham"
+        domLayout="autoHeight"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions['partDetail']"
+        (gridReady)="onGridReady($event, 'partDetail')"
       ></ag-grid-angular>
     </div>
   </div>
 
-  <p class="part-header font-weight-bold mt-4">Price Summary</p>
-  <div class="row">
-    <div class="col-12 theme-table single-row-table">
-      <ag-grid-angular
-        class="ag-theme-balham w-100 h-100"
-        [rowData]="rowData[1]"
-        [gridOptions]="gridOptions[1]"
-        (gridReady)="onGridReady(1, $event)"
-      ></ag-grid-angular>
-    </div>
+  <div class="d-flex align-items-center justify-content-between mt-4">
+    <span class="font-weight-bold ">Pricing Detail</span>
+    <button type="button" class="btn btn-primary">Show Prices</button>
+  </div>
+  <div class="round-border p-3 mt-2">
+    <p>
+      Pricing Profile Name: &nbsp;
+      <span class="text-highlight">{{ pricingProfile?.name }}</span>
+    </p>
+    <p>
+      Process Profile Name: &nbsp;
+      <span class="text-highlight">{{
+        pricingProfile?.processProfile.name
+      }}</span>
+    </p>
+    <p>
+      Pricing Parameter Set Nickname: &nbsp;
+      <span class="text-highlight">{{
+        pricingProfile?.processProfile.parameterNickName
+      }}</span>
+    </p>
   </div>
 
-  <p class="part-header font-weight-bold mt-4">Price Profile Detail</p>
-  <div class="row">
-    <div class="col-12">
-      <div class="price-profile-detail">
-        <p>
-          Process Profile Name:
-          <mark>{{ pricingProfile?.pricingProfileDetailedView.processProfile.name }}</mark>
-        </p>
-        <p>
-          Pricing Parameter Set Nickname:
-          <mark>{{ pricingProfile?.pricingProfileDetailedView.processProfile.parameterNickName }}</mark>
-        </p>
-        <p>
-          Conditions:
-          <ng-container *ngFor="let condition of pricingProfile?.pricingProfileDetailedView.processPricingConditionList">
-            <mark>{{ condition.processPricingConditionType.name }} {{condition.operatorType.symbol}} {{condition.valueSignType.symbol}} {{condition.value}} {{condition.unitType.symbol}}</mark>
-          </ng-container>
-        </p>
+  <div class="d-flex align-items-center justify-content-between mt-4">
+    <span class="font-weight-bold">Conditions</span>
+  </div>
+  <div class="round-border p-3 mt-2">
+    <p *ngFor="let condition of pricingProfile?.processPricingConditionList">
+      <mark>
+        {{ condition.processPricingConditionType.name }}
+        {{ condition.operatorType.symbol }}
+        {{ condition.valueSignType.symbol }} {{ condition.value }}
+        {{ condition.unitType.symbol }}
+      </mark>
+    </p>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-between mt-4">
+    <span class="font-weight-bold">Pricing Parameters</span>
+  </div>
+  <div class="round-border p-3 mt-2">
+    <!-- Flat Charges -->
+
+    <div id="conditionLabel" class="tables">
+      <div class="controls d-flex justify-content-between mb-1">
+        <label for="conditionLabel">
+          <b>Flat Charges</b>(These are base expenses associated with every
+          project)
+          <span
+            class="icon"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Examples include Non Recurring Engineering or Setup Expense"
+          >
+            <i class="fas fa-exclamation-circle"></i>
+          </span>
+        </label>
+      </div>
+      <!-- Insert Table here -->
+      <div class="input-wrapper mb-3">
+        <div class="form-row">
+          <div class="table theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham"
+              domLayout="autoHeight"
+              [rowData]="flatRowData"
+              [gridOptions]="gridOptions['flatCharge']"
+              (gridReady)="onGridReady($event, 'flatCharge')"
+            ></ag-grid-angular>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row mt-4">
-    <div class="col-12">
-      <table class="table price-profile-table">
-        <thead>
-          <tr>
-            <th>Invoice Item</th>
-            <th>Line Item</th>
-            <th>Value</th>
-            <th>Per</th>
-            <th>Part Value</th>
-            <th>Measurement Unit</th>
-            <th>Sub-Order Value</th>
-            <th>Sub Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of pricingProfile?.pricingProfileDetailedView.partPricingProfileViews">
-            <td>{{ item.processPricingParameters.invoiceLineItem.invoiceItem.name }}</td>
-            <td>{{ item.processPricingParameters.invoiceLineItem.name}}</td>
-            <td class="text-center">{{item.processPricingParameters.currency.symbol}} {{ item.processPricingParameters.price }}</td>
-            <td class="text-center">{{ item.processPricingParameters.quantity }}</td>
-            <td class="text-center">{{ item.processPricingParameters.quantityUnitType?.measurementType.name }}</td>
-            <td class="text-center">{{ item.processPricingParameters.quantityUnitType?.symbol }}</td>
-            <td class="text-center">{{ item.subOrderValue.value }}</td>
-            <td class="text-center">{{ item.subTotal }}</td>
-          </tr>
-          <tr>
-            <td colspan="5"></td>
-            <td colspan="2" class="text-center font-weight-bold subtotal">
-              Subtotal
-            </td>
-            <td class="text-center font-weight-bold subtotal">$ {{getSubTotal()}}</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <!-- End of Flat Charges -->
+
+    <!-- Variable Charges -->
+
+    <div id="conditionLabel" class="tables">
+      <div class="controls d-flex justify-content-between mb-1">
+        <label for="conditionLabel"
+          ><b>Variable Charges</b>(These are charges that increase with the size
+          of a program)
+          <span
+            class="icon"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Examples include material expense per unit column or cost per unit. 50 per cubic meter. $1/cubic inch"
+          >
+            <i class="fas fa-exclamation-circle"></i>
+          </span>
+        </label>
+      </div>
+      <!-- Insert Table here -->
+      <div class="input-wrapper mb-3">
+        <div class="form-row">
+          <div class="table theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham"
+              domLayout="autoHeight"
+              [rowData]="variableRowData"
+              [gridOptions]="gridOptions['variableCharge']"
+              (gridReady)="onGridReady($event, 'variableCharge')"
+            ></ag-grid-angular>
+          </div>
+        </div>
+      </div>
+      <!-- Insert Table here -->
     </div>
+    <!-- End of Variable Charges -->
+
+    <!-- Multiplier Charges -->
+
+    <div id="conditionLabel" class="tables">
+      <div class="controls d-flex justify-content-between mb-1">
+        <label for="conditionLabel">
+          <b>Multiplier Charges</b>(These are cost considerations that are
+          applied across one or more cost inputs)
+          <span
+            class="icon"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Examples Include: Margin and Expedite Fees"
+          >
+            <i class="fas fa-exclamation-circle"></i>
+          </span>
+        </label>
+      </div>
+      <!-- Insert Table here -->
+      <div class="input-wrapper">
+        <div class="form-row">
+          <div class="table theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham"
+              domLayout="autoHeight"
+              [rowData]="multiplierRowData"
+              [gridOptions]="gridOptions['multiplierCharge']"
+              (gridReady)="onGridReady($event, 'multiplierCharge')"
+            ></ag-grid-angular>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Multiplier Charges -->
   </div>
 </div>
