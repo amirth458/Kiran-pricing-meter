@@ -25,6 +25,7 @@ export class VendorDetailsComponent implements OnInit {
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
+  @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
 
   changePriority = false;
   toggleVendorList = false;
@@ -42,6 +43,7 @@ export class VendorDetailsComponent implements OnInit {
   initialPrice: number;
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
+  selectedBidding: any;
 
   constructor(
     public biddingService: BiddingService,
@@ -549,4 +551,13 @@ export class VendorDetailsComponent implements OnInit {
   toggleChangePriority() {
     this.changePriority = !this.changePriority;
   }
+
+  onConfirmBidding(row) {
+    this.selectedBidding = row;
+    this.modalService.open(this.confirmBidding, {
+      centered: true,
+      windowClass: 'bidding-confirm'
+    });
+  }
+
 }
