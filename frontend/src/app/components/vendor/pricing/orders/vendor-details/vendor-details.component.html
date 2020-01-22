@@ -212,7 +212,7 @@
         <div class="d-flex flex-row pt-1 pb-1">
           <strong class="text-theme-green">{{row.bidProcessStatus.description | titlecase}}</strong>
           <button class="btn btn-primary confirm-btn ml-4 btn-sm" *ngIf="(type === 'confirmation' &&
-          !toggleVendorList)" (click)="onConfirmBidding(row)">
+          !toggleVendorList)" (click)="openConfirmBidding(row)">
             Confirm
           </button>
         </div>
@@ -223,7 +223,7 @@
             {{row.bidProcessStatus.description | titlecase}} ${{row.counterOfferPrice}}
           </strong>
           <button class="btn btn-primary confirm-btn ml-4 btn-sm" *ngIf="(type === 'confirmation' &&
-          !toggleVendorList)" (click)="onConfirmBidding(row)">
+          !toggleVendorList)" (click)="openConfirmBidding(row)">
             Confirm
           </button>
         </div>
@@ -258,7 +258,7 @@
     <div
       class="modal-footer d-flex px-4 py-4 align-items-center justify-content-center">
       <button class="btn orange-btn m-0" (click)="modal.dismiss()">Cancel</button>
-      <button class="btn green-btn m-0 ml-5">
+      <button class="btn green-btn m-0 ml-5" (click)="onConfirmBidding()">
         Confirm
       </button>
     </div>
