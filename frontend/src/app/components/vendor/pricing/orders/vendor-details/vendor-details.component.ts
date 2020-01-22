@@ -6,6 +6,9 @@ import { GridOptions} from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
+import { catchError } from 'rxjs/operators';
+import { empty } from 'rxjs';
+
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
@@ -570,7 +573,16 @@ export class VendorDetailsComponent implements OnInit {
   onConfirmBidding() {
     const processProfileView = (this.selectedBidding.processProfileViews || []).length > 0 ? this.selectedBidding.processProfileViews[0] : null;
     this.spinner.show();
-    this.biddingService.confirmBidOrder(this.bidOrderId, null, processProfileView.vendorId).subscribe(v => {
+    this.biddingService.confirmBidOrder(this.bidOrderId, this.selectedBidding.bidProcessId, processProfileView.vendorId)
+      .pipe(
+        catchError((err: any) => {
+          this.toaster.error(err.error.message);
+          this.spinner.hide();
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(v => {
       this.toaster.success('Successfully bidding confirmed');
       this.prepareBidOrderInfo();
       this.spinner.hide();
