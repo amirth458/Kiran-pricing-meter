@@ -218,13 +218,6 @@ export class OrdersService {
     return this.http.get<Part>(`${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`);
   }
 
-  downloadActualFile(file: string) {
-    return this.http
-      .get(file , { headers: new HttpHeaders({
-          'Content-Type': 'application/octet-stream',
-        }), responseType: 'blob'});
-  }
-
   getAllMesurementUnitType(): Observable<any> {
     return this.http.get<any>(
       `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`

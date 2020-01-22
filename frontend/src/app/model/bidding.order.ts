@@ -10,3 +10,12 @@ export interface BiddingOrder {
   postProcess: string;
   deliveryDate: string;
 }
+
+
+export enum BiddingStatus {
+  QUEUED_FOR_LATER = 'QUEUED_FOR_LATER',
+  NO_RESPONSE =	'NO_RESPONSE',
+  COUNTER_OFFER =	'COUNTER_OFFER',
+  ACCEPTED =	'ACCEPTED',
+  REJECTED =	'REJECTED'
+}
