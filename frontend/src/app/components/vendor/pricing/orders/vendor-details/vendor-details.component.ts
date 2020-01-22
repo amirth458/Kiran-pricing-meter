@@ -550,7 +550,7 @@ export class VendorDetailsComponent implements OnInit {
       this.modalService.dismissAll();
       if (v != null) {
         const bidOrder: BidOrderItem  = (v.bidOrderItemList || []).length > 0 ? v.bidOrderItemList[0] : null
-        this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder}`);
+        this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder.id}`);
       }
     });
   }
