@@ -93,7 +93,7 @@ export class VendorDetailsComponent implements OnInit {
                   id: this.matchedProfiles.length + 1,
                   vendorId: id,
                   profileId: item.processProfileId,
-                  vendorName: item.vendorProfile.name,
+                  vendorName: item.vendorProfile ? item.vendorProfile.name : '',
                   processProfileName: processProfileView.name,
                   facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
                   pricingProfile: processPricingView.name || '',
