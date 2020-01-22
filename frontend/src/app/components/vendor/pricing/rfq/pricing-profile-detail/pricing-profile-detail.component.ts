@@ -258,17 +258,13 @@ export class PricingProfileDetailComponent implements OnInit {
       this.pricingService.getPartDetail(this.partId).subscribe(part => {
         this.part = part;
         combineLatest(
-          this.pricingService.getPricingProfileDetail(
-            this.profileId,
-            this.partId,
-            this.part.rfqMedia.media.customerId
-          ),
+          this.pricingService.getPricingProfileDetail([this.profileId]),
           this.userService.getCustomer(this.part.rfqMedia.media.customerId),
           this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId),
           this.metadataService.getMetaData("post_process_action")
         ).subscribe(([pricingProfile, customer, rfq, postProcesses]) => {
           this.spinner.hide();
-          this.pricingProfile = pricingProfile;
+          this.pricingProfile = pricingProfile[0];
           this.customer = customer;
           this.rfq = rfq;
           this.postProcesses = postProcesses;
@@ -312,24 +308,33 @@ export class PricingProfileDetailComponent implements OnInit {
       [
         {
           vendorName:
+            this.pricingProfile &&
             this.pricingProfile.pricingProfileDetailedView.vendorProfile &&
             this.pricingProfile.pricingProfileDetailedView.vendorProfile.name,
-          pricingProfile: this.pricingProfile.pricingProfileDetailedView.name,
-          material: this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
-            .map(item => item.machineServingMaterial.material.name)
-            .join(", "),
-          equipment: this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
-            .map(
-              item => item.machineServingMaterial.vendorMachinery.equipment.name
-            )
-            .join(", "),
-          processProfile: this.pricingProfile.pricingProfileDetailedView
-            .processProfile.name,
+          pricingProfile:
+            this.pricingProfile &&
+            this.pricingProfile.pricingProfileDetailedView.name,
+          material:
+            this.pricingProfile &&
+            this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
+              .map(item => item.machineServingMaterial.material.name)
+              .join(", "),
+          equipment:
+            this.pricingProfile &&
+            this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
+              .map(
+                item =>
+                  item.machineServingMaterial.vendorMachinery.equipment.name
+              )
+              .join(", "),
+          processProfile:
+            this.pricingProfile &&
+            this.pricingProfile.pricingProfileDetailedView.processProfile.name,
           // postProcess: "Electropolishing",
           // machinesMatched: 2,
-          totalCost: `$ ${this.pricingProfile.partCostInvoiceItemSummary
-            .extendedCost +
-            this.pricingProfile.toolCostInvoiceItemSummary.extendedCost}`
+          totalCost: `$ ${this.pricingProfile &&
+            this.pricingProfile.partCostInvoiceItemSummary.extendedCost +
+              this.pricingProfile.toolCostInvoiceItemSummary.extendedCost}`
           // esitmatedDelivery: "10/12/2019",
           // matchScore: 4.9
         }
@@ -346,7 +351,10 @@ export class PricingProfileDetailComponent implements OnInit {
   }
   getSubTotal() {
     if (this.pricingProfile) {
-      return this.pricingProfile.pricingProfileDetailedView.partPricingProfileViews.reduce((value, item) => value + item.subTotal, 0);
+      return this.pricingProfile.pricingProfileDetailedView.partPricingProfileViews.reduce(
+        (value, item) => value + item.subTotal,
+        0
+      );
     }
   }
 }

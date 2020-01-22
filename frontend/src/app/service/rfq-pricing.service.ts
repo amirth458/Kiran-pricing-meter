@@ -99,11 +99,7 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getPricingProfileDetail(
-    id: number,
-    partId: number,
-    customerId: number
-  ): Observable<PricingProfile> {
+  getPricingProfileDetail(id: number[]): Observable<PricingProfile[]> {
     // if (environment.isTestDataEnabled) {
     //   // test data
     //   partId = 44;
@@ -111,32 +107,17 @@ export class RfqPricingService {
     //   customerId = 105;
     // }
 
-    const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/${id}`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
+    const url = `${
+      environment.managementBaseUrl
+    }/process-pricing-profile/process-profile?ids=${id.join(",")}`;
 
-    const body = {
-      partId,
-      customerId
-    };
-
-    return this.http
-      .post<PricingProfile[]>(url, body, { headers })
-      .pipe(map(itemArray => itemArray[0] || null));
+    return this.http.get<PricingProfile[]>(url);
   }
 
-  getPartDetail(id: number): Observable<Part> {
-    const url = `${environment.procurementApiBaseUrl}/part/${id}`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
-    });
+  getPartDetail(id: number, generateSignedUrl = true): Observable<Part> {
+    const url = `${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`;
 
-    return this.http.get<Part>(url, { headers });
+    return this.http.get<Part>(url);
   }
 
   createPartQuoteDetail(quoteDetail) {
