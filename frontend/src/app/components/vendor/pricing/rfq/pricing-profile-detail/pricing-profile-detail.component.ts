@@ -1,9 +1,10 @@
 import { UserService } from "src/app/service/user.service";
 import { CustomerData } from "src/app/model/user.model";
 import {
-  PricingProfile,
   Part,
-  RfqData
+  RfqData,
+  PartQuote,
+  PricingProfileDetailedView
 } from "./../../../../../model/part.model";
 import { NgxSpinnerService } from "ngx-spinner";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
@@ -104,100 +105,143 @@ export class PricingProfileDetailComponent implements OnInit {
     ],
     [
       {
-        headerName: "Vendor Name",
-        field: "vendorName",
-        hide: false,
-        sortable: true,
-        filter: false,
-        width: 80
-      },
-      {
-        headerName: "Pricing Profile",
-        field: "pricingProfile",
+        headerName: "Invoice Item",
+        field: "invoiceItem",
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "material",
+        headerName: "Line Item",
+        field: "lineItem",
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Equipment",
-        field: "equipment",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: "Process Profile",
-        field: "processProfile",
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      // {
-      //   headerName: "Post-Process",
-      //   field: "postProcess",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Machines Matched",
-      //   field: "machinesMatched",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      {
-        headerName: "Total Cost",
-        field: "totalCost",
+        headerName: "Value ($)",
+        field: "value",
         hide: false,
         sortable: true,
         filter: false
       }
-      // {
-      //   headerName: "Estimated Delivery",
-      //   field: "esitmatedDelivery",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Match Score",
-      //   field: "matchScore",
-      //   hide: false,
-      //   sortable: false,
-      //   filter: false
-      // }
+    ],
+    [
+      {
+        headerName: "Invoice Item",
+        field: "invoiceItem",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Line Item",
+        field: "lineItem",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Value ($)",
+        field: "value",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Per",
+        field: "per",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Part Value",
+        field: "partValue",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Units",
+        field: "units",
+        hide: false,
+        sortable: true,
+        filter: false
+      }
+    ],
+    [
+      {
+        headerName: "Invoice Item",
+        field: "invoiceItem",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Line Item",
+        field: "lineItem",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Multiplier",
+        field: "multiplier",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "Multiplier Value",
+        field: "multiplierValue",
+        hide: false,
+        sortable: true,
+        filter: false
+      }
     ]
   ];
-  gridOptions: GridOptions[] = [
-    {
+  gridOptions = {
+    partDetail: {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs[0],
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35
     },
-    {
+    flatCharge: {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs[1],
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35
+    },
+    variableCharge: {
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[2],
+      enableColResize: true,
+      rowHeight: 35,
+      headerHeight: 35
+    },
+    multiplierCharge: {
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[3],
+      enableColResize: true,
+      rowHeight: 35,
+      headerHeight: 35
     }
-  ];
+  };
   rowData = [];
-  pricingProfile: PricingProfile;
-  customer: CustomerData;
+  flatRowData = [];
+  variableRowData = [];
+  multiplierRowData = [];
   postProcesses;
+
   part: Part;
+  partQuote: PartQuote;
   rfq: RfqData;
+  pricingProfile: PricingProfileDetailedView;
+  customer: CustomerData;
   partId: any;
   profileId: any;
 
@@ -255,20 +299,22 @@ export class PricingProfileDetailComponent implements OnInit {
       this.profileId = params.profileId;
 
       this.spinner.show();
-      this.pricingService.getPartDetail(this.partId).subscribe(part => {
+
+      combineLatest(
+        this.pricingService.getPartDetail(this.partId),
+        this.pricingService.getPartQuote(this.partId)
+      ).subscribe(([part, partQuote]) => {
         this.part = part;
+        this.partQuote = partQuote;
+
         combineLatest(
-          this.pricingService.getPricingProfileDetail([this.profileId]),
           this.userService.getCustomer(this.part.rfqMedia.media.customerId),
-          this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId),
-          this.metadataService.getMetaData("post_process_action")
-        ).subscribe(([pricingProfile, customer, rfq, postProcesses]) => {
-          this.spinner.hide();
-          this.pricingProfile = pricingProfile[0];
+          this.pricingService.getPricingProfileDetail([this.profileId])
+        ).subscribe(([customer, pricingProfiles]) => {
+          this.pricingProfile = pricingProfiles[0];
           this.customer = customer;
-          this.rfq = rfq;
-          this.postProcesses = postProcesses;
           this.updateData();
+          this.spinner.hide();
         });
       });
     });
@@ -276,9 +322,9 @@ export class PricingProfileDetailComponent implements OnInit {
 
   ngOnInit() {}
 
-  onGridReady(id, ev) {
-    this.gridOptions[id].api = ev.api;
-    this.gridOptions[id].api.sizeColumnsToFit();
+  onGridReady(ev, type) {
+    this.gridOptions[type].api = ev.api;
+    this.gridOptions[type].api.sizeColumnsToFit();
   }
 
   backButton() {
@@ -288,59 +334,57 @@ export class PricingProfileDetailComponent implements OnInit {
   }
 
   updateData() {
-    console.log(this.part, this.pricingProfile, this.customer, this.rfq);
     this.rowData = [
-      [
-        {
-          id: this.part.id,
-          customer: this.customer.name,
-          rfq: this.part.rfqMedia.projectRfqId,
-          part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
-          filename: this.part.rfqMedia.media.name,
-          quantity: this.part.quantity,
-          material: this.part.materialName,
-          process: this.part.processTypeName,
-          roughness: "",
-          postProcess: "",
-          price: this.part.shippingCost ? `$ ${this.part.shippingCost}` : ""
-        }
-      ],
-      [
-        {
-          vendorName:
-            this.pricingProfile &&
-            this.pricingProfile.pricingProfileDetailedView.vendorProfile &&
-            this.pricingProfile.pricingProfileDetailedView.vendorProfile.name,
-          pricingProfile:
-            this.pricingProfile &&
-            this.pricingProfile.pricingProfileDetailedView.name,
-          material:
-            this.pricingProfile &&
-            this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
-              .map(item => item.machineServingMaterial.material.name)
-              .join(", "),
-          equipment:
-            this.pricingProfile &&
-            this.pricingProfile.pricingProfileDetailedView.processProfile.processMachineServingMaterialList
-              .map(
-                item =>
-                  item.machineServingMaterial.vendorMachinery.equipment.name
-              )
-              .join(", "),
-          processProfile:
-            this.pricingProfile &&
-            this.pricingProfile.pricingProfileDetailedView.processProfile.name,
-          // postProcess: "Electropolishing",
-          // machinesMatched: 2,
-          totalCost: `$ ${this.pricingProfile &&
-            this.pricingProfile.partCostInvoiceItemSummary.extendedCost +
-              this.pricingProfile.toolCostInvoiceItemSummary.extendedCost}`
-          // esitmatedDelivery: "10/12/2019",
-          // matchScore: 4.9
-        }
-      ]
+      {
+        id: this.part.id,
+        customer: this.customer.name,
+        rfq: this.part.rfqMedia.projectRfqId,
+        part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
+        filename: this.part.rfqMedia.media.name,
+        quantity: this.part.quantity,
+        material: this.part.materialName,
+        process: this.part.processTypeName,
+        roughness: "",
+        postProcess: "",
+        price: this.partQuote.totalCost
+      }
     ];
+
+    this.pricingProfile.processPricingParameterList.forEach(param => {
+      switch (param.invoiceLineItem.processPricingParameterGroup.name) {
+        case "flat_charges":
+          this.flatRowData.push({
+            invoiceItem: param.invoiceLineItem.invoiceItem.name,
+            lineItem: param.invoiceLineItem.name,
+            value: param.price
+          });
+          break;
+        case "multipliers":
+          this.multiplierRowData.push({
+            invoiceItem: param.invoiceLineItem.invoiceItem.name,
+            lineItem: param.invoiceLineItem.name,
+            multiplier: param.multiplier,
+            multiplierValue:
+              param.multiplierProcessPricingParameter.invoiceLineItem.name
+          });
+          break;
+        case "variable_charges":
+          this.variableRowData.push({
+            invoiceItem: param.invoiceLineItem.invoiceItem.name,
+            lineItem: param.invoiceLineItem.name,
+            value: param.price,
+            per: param.quantity,
+            partValue: param.processPricingConditionType.name,
+            units: param.quantityUnitType.name
+          });
+          break;
+      }
+    });
+    this.flatRowData = [...this.flatRowData];
+    this.multiplierRowData = [...this.multiplierRowData];
+    this.variableRowData = [...this.variableRowData];
   }
+
   getPostProcess(id) {
     const found =
       this.part.postProcessTypeIds &&
@@ -348,13 +392,5 @@ export class PricingProfileDetailComponent implements OnInit {
         postProcess => postProcess.id == this.part.postProcessTypeIds[id]
       );
     return found && found.name;
-  }
-  getSubTotal() {
-    if (this.pricingProfile) {
-      return this.pricingProfile.pricingProfileDetailedView.partPricingProfileViews.reduce(
-        (value, item) => value + item.subTotal,
-        0
-      );
-    }
   }
 }

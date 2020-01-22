@@ -59,6 +59,7 @@ import { PastOrdersComponent } from './vendor/pricing/orders/past-orders/past-or
 import { PastOrderDetailsComponent } from './vendor/pricing/orders/past-order-details/past-order-details.component';
 import { VendorDetailsComponent } from './vendor/pricing/orders/vendor-details/vendor-details.component';
 import { ProcessProfileComponent } from './vendor/pricing/rfq/process-profile/process-profile.component';
+import { ProcessProfileDetailComponent } from './vendor/pricing/rfq/process-profile-detail/process-profile-detail.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -107,7 +108,8 @@ import { ProcessProfileComponent } from './vendor/pricing/rfq/process-profile/pr
     PastOrderDetailsComponent,
     VendorDetailsComponent,
     ImgPreloadDirective,
-    ProcessProfileComponent
+    ProcessProfileComponent,
+    ProcessProfileDetailComponent
   ],
   imports: [
     CommonModule,

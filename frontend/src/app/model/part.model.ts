@@ -371,10 +371,11 @@ export interface SubOrderValue {
 }
 
 export interface PartPricingProfileView {
+  invoiceGroup: string;
   processPricingParameters: MultiplierProcessPricingParameter;
   subOrderValue: SubOrderValue;
-  subTotal: number;
-  extendedValue: number;
+  invoiceItem: number;
+  finalInvoiceItemCost: number;
 }
 
 export interface PricingProfileDetailedView {
@@ -382,7 +383,7 @@ export interface PricingProfileDetailedView {
   name: string;
   processProfile: ProcessProfile;
   vendorProfile: VendorProfile;
-  processPricingParameterList: ProcessPricingParameter[];
+  processPricingParameterList?: ProcessPricingParameter[];
   processPricingConditionList?: ProcessPricingCondition[];
   partPricingProfileViews?: PartPricingProfileView[];
 }
