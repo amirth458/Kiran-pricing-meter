@@ -81,21 +81,24 @@
   border-bottom: none;
   position: relative;
 }
+
 .modal-header .close {
   outline: none;
   position: absolute;
   right: 1rem;
 }
+
 .modal-title {
   color: var(--theme-light-green);
   text-align: center;
   flex-grow: 1;
 }
+
 .modal-footer {
   border-top: none;
 }
 
-.text-coutered {
+:host ::ng-deep .text-coutered {
   color: #007bff;
 }
 

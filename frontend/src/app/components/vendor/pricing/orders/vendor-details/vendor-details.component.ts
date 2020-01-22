@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridOptions} from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
@@ -25,6 +27,7 @@ export class VendorDetailsComponent implements OnInit {
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
+  @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
 
   changePriority = false;
   toggleVendorList = false;
@@ -42,6 +45,7 @@ export class VendorDetailsComponent implements OnInit {
   initialPrice: number;
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
+  selectedBidding: any;
 
   constructor(
     public biddingService: BiddingService,
@@ -49,7 +53,9 @@ export class VendorDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private ordersService: OrdersService,
-    private userService: UserService
+    private userService: UserService,
+    public toaster: ToastrService,
+    public spinner: NgxSpinnerService
   ) {
     if (this.router.url.includes('order-confirmation-queue')) {
       this.type = 'confirmation';
@@ -100,38 +106,41 @@ export class VendorDetailsComponent implements OnInit {
             this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
           });
       } else {
-        this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
-          this.orderDetails = v.acceptedOrderDetails || [];
-          let count = 0;
-          this.bidding = v.matchingSuppliersProfilesView || [];
-          this.bidding.map(match => (match.id = ++count));
-          const vendors = [];
-          this.bidding.map(match => {
-            (match.processProfileViews || []).map(p => {
-              let count = (match.id).toString();
-              let status = match.bidProcessStatus;
-              if (!(vendors.indexOf(match.vendorName) > -1)) {
-                vendors.push(match.vendorName);
-              } else {
-                count = '';
-                status = null;
-              }
-              this.matchedProfiles.push({
-                id: count,
-                vendorId: p.vendorId,
-                profileId: p.id,
-                vendorName: match.vendorName,
-                processProfileName: p.name,
-                facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
-                pricingProfile: '',
-                bidProcessStatus: status
-              });
-            });
-          });
-          //tslint: disable
-          console.log(this.matchedProfiles);
-        });
+        this.prepareBidOrderInfo();
       }
+    });
+  }
+
+  prepareBidOrderInfo() {
+    this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
+      this.orderDetails = v.acceptedOrderDetails || [];
+      let count = 0;
+      this.bidding = v.matchingSuppliersProfilesView || [];
+      this.bidding.map(match => (match.id = ++count));
+      const vendors = [];
+      this.bidding.map(match => {
+        (match.processProfileViews || []).map(p => {
+          let count = (match.id).toString();
+          let status = match.bidProcessStatus;
+          if (!(vendors.indexOf(match.vendorName) > -1)) {
+            vendors.push(match.vendorName);
+          } else {
+            count = '';
+            status = null;
+          }
+          this.matchedProfiles.push({
+            id: count,
+            vendorId: p.vendorId,
+            profileId: p.id,
+            vendorName: match.vendorName,
+            processProfileName: p.name,
+            facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+            pricingProfile: (p.processPricingList || []).length,
+            bidProcessStatus: status,
+            counterOfferPrice: match.counterOfferPrice
+          });
+        });
+      });
     });
   }
 
@@ -549,4 +558,24 @@ export class VendorDetailsComponent implements OnInit {
   toggleChangePriority() {
     this.changePriority = !this.changePriority;
   }
+
+  openConfirmBidding(row) {
+    this.selectedBidding = row;
+    this.modalService.open(this.confirmBidding, {
+      centered: true,
+      windowClass: 'bidding-confirm'
+    });
+  }
+
+  onConfirmBidding() {
+    const processProfileView = (this.selectedBidding.processProfileViews || []).length > 0 ? this.selectedBidding.processProfileViews[0] : null;
+    this.spinner.show();
+    this.biddingService.confirmBidOrder(this.bidOrderId, null, processProfileView.vendorId).subscribe(v => {
+      this.toaster.success('Successfully bidding confirmed');
+      this.prepareBidOrderInfo();
+      this.spinner.hide();
+      this.modalService.dismissAll();
+    });
+  }
+
 }

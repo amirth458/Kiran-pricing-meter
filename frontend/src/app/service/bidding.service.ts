@@ -17,4 +17,8 @@ export class BiddingService {
     return this.http.post<ConfirmSubOrderReleaseResponse>(`${environment.apiBaseUrl}/admin/bidding/confirm`, bidding);
   }
 
+  confirmBidOrder(bidOrderId: number, winningBidProcessId: number, winningBidVendorId: number): Observable<any> {
+    return this.http.patch<any>(`${environment.apiBaseUrl}/admin/bidding/${bidOrderId}/${winningBidProcessId}/${winningBidVendorId}/confirm-vendor-accepted-bid`, null);
+  }
+
 }
