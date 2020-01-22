@@ -1,9 +1,13 @@
-import { TemplateRendererComponent } from "./../../../../../common/template-renderer/template-renderer.component";
-import { OrdersService } from "./../../../../../service/orders.service";
-import { NgxSpinnerService } from "ngx-spinner";
-import { Router, ActivatedRoute } from "@angular/router";
-import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
-import { GridOptions } from "ag-grid-community";
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { NgxSpinnerService } from 'ngx-spinner';
+import { GridOptions } from 'ag-grid-community';
+
+import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
+import { OrdersService } from './../../../../../service/orders.service';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: "app-suborder-release-queue",
@@ -170,7 +174,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
     public router: Router,
     public spinner: NgxSpinnerService,
     private orderService: OrdersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public datePipe: DatePipe
   ) {
     this.route.params.subscribe(params => {
       console.log(params);
@@ -283,7 +288,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
         field: "deliveryDate",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => this.datePipe.transform(dt.value || '', Util.dateFormat)
       },
       {
         headerName: "",

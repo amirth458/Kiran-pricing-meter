@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { ColDef } from 'ag-grid-community/src/ts/entities/colDef';
 
@@ -9,14 +10,15 @@ import { Observable } from 'rxjs';
 import { BiddingOrder } from '../model/bidding.order';
 import { BiddingOrderDetail } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
-import { FilterOption } from './../model/vendor.model';
+import { FilterOption } from '../model/vendor.model';
 import { Part } from '../model/part.model';
+import { Util } from '../util/Util';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public datePipe: DatePipe) {}
 
   getSubOrderReleaseQueue(filterOption: FilterOption): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/part/placing-order-status`;
@@ -202,6 +204,7 @@ export class OrdersService {
         hide: false,
         sortable: true,
         filter: false
+        // valueFormatter: dt => this.datePipe.transform(dt.value || '', Util.dateFormat)
       },
       {
         headerName: 'Status',
