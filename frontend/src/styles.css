@@ -488,3 +488,14 @@ app-dropdown-cell-renderer {
 }
 
 /* End of Tabbed Cards */
+
+/* Bidding Confirmation Modal */
+.bidding-confirm  .modal-dialog {
+  max-width: 550px;
+}
+
+.bidding-confirm .modal-footer button {
+  width: 160px;
+  border-radius: 2px;
+}
+/*Bidding Confirmation Modal*/

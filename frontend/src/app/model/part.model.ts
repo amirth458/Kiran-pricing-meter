@@ -1,4 +1,4 @@
-import { VendorProfile } from "./vendorProfile.model";
+import { VendorProfile } from './vendorProfile.model';
 
 export interface Type {
   id: number;
@@ -289,6 +289,13 @@ export interface ProcessProfile {
   processParameterList: ProcessParameter[];
   processDimensionalPropertyList: ProcessDimensionalProperty[];
   processMaterialCharacteristicList: ProcessMaterialCharacteristic[];
+  processPricingList: ProcessPricing[];
+}
+
+export interface ProcessPricing {
+  id: number;
+  name: string;
+  processPricingConditions: ProcessPricingCondition[]
 }
 
 export interface MultiplierProcessPricingParameter {

@@ -11,6 +11,7 @@ export interface VendorOrderDetail {
   vendorName: string;
   processProfileViews: Array<ProcessProfile>;
   bidProcessStatus: BidProcessStatusType;
+  counterOfferPrice: number;
 }
 
 interface GetAllCustomerPartView {
