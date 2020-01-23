@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,6 +18,7 @@ import {  OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
 import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-vendor-details',
@@ -58,7 +60,8 @@ export class VendorDetailsComponent implements OnInit {
     private ordersService: OrdersService,
     private userService: UserService,
     public toaster: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public datePipe: DatePipe
   ) {
     if (this.router.url.includes('order-confirmation-queue')) {
       this.type = 'confirmation';
@@ -140,7 +143,8 @@ export class VendorDetailsComponent implements OnInit {
             facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
             pricingProfile: (p.processPricingList || []).length,
             bidProcessStatus: status,
-            counterOfferPrice: match.counterOfferPrice
+            counterOfferPrice: match.counterOfferPrice,
+            bidOfferPrice: match.bidOfferPrice
           });
         });
       });
@@ -240,7 +244,8 @@ export class VendorDetailsComponent implements OnInit {
           field: 'deliveryDate',
           hide: false,
           sortable: true,
-          filter: false
+          filter: false,
+          valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat)}` : '')
         }
       ],
       [
@@ -499,7 +504,14 @@ export class VendorDetailsComponent implements OnInit {
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
     this.gridOptions[idx].api.sizeColumnsToFit();
-    if (idx === 2) {
+    if (idx === 0) {
+      this.gridOptions[idx].api.setSortModel([
+        {
+          colId: 'subOrder',
+          sort: 'desc'
+        }
+      ]);
+    } else if (idx === 2) {
       this.gridOptions[2].api.setSuppressRowDrag(true);
     }
   }

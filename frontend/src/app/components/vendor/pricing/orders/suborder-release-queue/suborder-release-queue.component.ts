@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GridOptions } from 'ag-grid-community';
 
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
-import { OrdersService } from './../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { OrdersService } from '../../../../../service/orders.service';
 import { Util } from '../../../../../util/Util';
 
 @Component({
@@ -174,12 +174,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
     public router: Router,
     public spinner: NgxSpinnerService,
     private orderService: OrdersService,
-    private route: ActivatedRoute,
     public datePipe: DatePipe
   ) {
-    this.route.params.subscribe(params => {
-      console.log(params);
-    });
   }
 
   ngOnInit() {
@@ -192,12 +188,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
         if (event.data) {
-          this.router.navigateByUrl(
-            this.router.url + "/order/" + event.data.subOrder
-          );
+          this.router.navigateByUrl(`${this.router.url}/order/${event.data.subOrder}`);
         }
       }
     };
@@ -368,6 +360,12 @@ export class SuborderReleaseQueueComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.gridOptions.api.setSortModel([
+      {
+        colId: 'subOrder',
+        sort: 'desc'
+      }
+    ]);
   }
 
   toggleSelection(ev, id) {
