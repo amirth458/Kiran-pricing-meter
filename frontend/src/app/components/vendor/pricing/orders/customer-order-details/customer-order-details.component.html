@@ -1,9 +1,7 @@
 <div class="wrapper">
-  <div
-    class="header mb-3"
-  >
+  <div class="header mb-3">
     <h5 class="text-center">
-      Customer Order 234
+      Customer Order <span *ngIf="this.part">{{this.part.id}}</span>
     </h5>
   </div>
   <app-tab (valueChange)="selectedTabId$.next($event.value)">
@@ -16,13 +14,20 @@
     <div class="content p-4">
       <ng-container [ngSwitch]="selectedTabId$ | async">
         <ng-container *ngSwitchCase="0">
-          <app-order-information></app-order-information>
+          <app-price-view
+            [part]="part"
+            [customer]="customer"
+            [partQuote]="partQuote"
+            (manualQuote)="manualQuote()"
+          ></app-price-view>
         </ng-container>
         <ng-container *ngSwitchCase="1">
-          <app-sub-order-information></app-sub-order-information>
-        </ng-container>
-        <ng-container *ngSwitchCase="2">
-          <app-past-orders></app-past-orders>
+          <app-part-information
+            [part]="part"
+            [rfq]="rfq"
+            [customer]="customer"
+            [partDimension]="partDimension"
+          ></app-part-information>
         </ng-container>
       </ng-container>
     </div>
