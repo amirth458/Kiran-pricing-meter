@@ -218,6 +218,7 @@ export class QueuedManualPriceComponent implements OnInit {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
         this.gridOptions.api.setRowData(this.rowData[value]);
         this.gridOptions.api.sizeColumnsToFit();
+        this.setDefaultSort();
       }
     });
     this.getQueuedManualPricing();
@@ -227,6 +228,10 @@ export class QueuedManualPriceComponent implements OnInit {
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.setDefaultSort();
+  }
+
+  setDefaultSort() {
     this.gridOptions.api.setSortModel([
       {
         colId: 'rfq',
