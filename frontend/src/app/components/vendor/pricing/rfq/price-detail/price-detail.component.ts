@@ -18,14 +18,14 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ["./price-detail.component.css"]
 })
 export class PriceDetailComponent implements OnInit  {
-  protected selectedId: number;
-  protected part: Part;
-  protected rfq: RfqData;
-  protected partQuote: PartQuote;
-  protected partDimension: PartDimension;
-  protected customer: CustomerData;
-  protected tabs = [];
-  protected selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
+  public selectedId: number;
+  public part: Part;
+  public rfq: RfqData;
+  public partQuote: PartQuote;
+  public partDimension: PartDimension;
+  public customer: CustomerData;
+  public tabs = [];
+  public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(
     protected  route: ActivatedRoute,
@@ -40,7 +40,7 @@ export class PriceDetailComponent implements OnInit  {
     });
   }
 
-  protected getDetails(id: number) {
+  public getDetails(id: number) {
     this.spinner.show();
     this.pricingService.getPartDetail(id).subscribe(part => {
       this.spinner.hide();
@@ -67,7 +67,7 @@ export class PriceDetailComponent implements OnInit  {
     });
   }
 
-  protected setTabInfo() {
+  public setTabInfo() {
     this.tabs = [
       {
         id: 0,
@@ -89,7 +89,7 @@ export class PriceDetailComponent implements OnInit  {
     ];
   }
 
-  protected manualQuote() {
+  public manualQuote() {
     this.getDetails(this.selectedId);
   }
 
