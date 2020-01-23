@@ -364,6 +364,12 @@ export class SuborderReleaseQueueComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.gridOptions.api.setSortModel([
+      {
+        colId: 'subOrder',
+        sort: 'desc'
+      }
+    ]);
   }
 
   toggleSelection(ev, id) {
