@@ -22,6 +22,7 @@ export class ProcessProfileComponent implements OnInit {
   @Input() part: Part;
   @ViewChild("dateCell") dateCell: TemplateRef<any>;
   type = ["search", "filter"];
+  maxPartId;
 
   searchColumns = [
     {
@@ -212,7 +213,7 @@ export class ProcessProfileComponent implements OnInit {
       .getMatchedProfiles(
         this.userService.getUserInfo().id,
         [this.part.rfqMedia.id],
-        this.part.id === 3
+        this.part.id === 976
       )
       .toPromise();
 
