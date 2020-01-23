@@ -1,4 +1,5 @@
-import { VendorProfile } from './vendorProfile.model';
+import { VendorProfile } from "./vendorProfile.model";
+import { UserSummary } from "./user.model";
 
 export interface Type {
   id: number;
@@ -295,7 +296,7 @@ export interface ProcessProfile {
 export interface ProcessPricing {
   id: number;
   name: string;
-  processPricingConditions: ProcessPricingCondition[]
+  processPricingConditions: ProcessPricingCondition[];
 }
 
 export interface MultiplierProcessPricingParameter {
@@ -381,6 +382,7 @@ export interface PartPricingProfileView {
 export interface PricingProfileDetailedView {
   id: number;
   name: string;
+  processProfileId: number;
   processProfile: ProcessProfile;
   vendorProfile: VendorProfile;
   processPricingParameterList?: ProcessPricingParameter[];
@@ -401,4 +403,14 @@ export interface PricingProfile {
   pricingProfileDetailedView: PricingProfileDetailedView;
   partCostInvoiceItemSummary: InvoiceItemSummary;
   toolCostInvoiceItemSummary: InvoiceItemSummary;
+}
+
+export interface ProcessProfileDetailedView {
+  rfqMediaId: number;
+  processProfileId: number;
+  userId: number;
+  processProfileView: ProcessProfile;
+  processPricingViews: PricingProfileDetailedView[];
+  vendorProfile: VendorProfile;
+  userSummary2: UserSummary;
 }

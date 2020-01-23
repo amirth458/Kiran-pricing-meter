@@ -20,7 +20,7 @@ import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ToastrService } from "ngx-toastr";
 import { throwError } from "rxjs";
-import { DatePipe } from "@angular/common";
+import { DatePipe, CurrencyPipe } from "@angular/common";
 import { MetadataService } from "src/app/service/metadata.service";
 
 @Component({
@@ -60,7 +60,8 @@ export class PriceViewComponent implements OnInit, OnChanges {
     public pricingService: RfqPricingService,
     public toastrService: ToastrService,
     private datePipe: DatePipe,
-    public metadataService: MetadataService
+    public metadataService: MetadataService,
+    public currencyPipe: CurrencyPipe
   ) {
     this.metadataService
       .getProcessMetaData("invoice_item")
@@ -275,7 +276,14 @@ export class PriceViewComponent implements OnInit, OnChanges {
           process: this.part.processTypeName,
           roughness: "",
           postProcess: "",
-          price: this.partQuote ? `$ ${this.partQuote.totalCost}` : ""
+          price: this.partQuote
+            ? this.currencyPipe.transform(
+                this.partQuote.totalCost,
+                "USD",
+                "symbol",
+                "0.0-3"
+              )
+            : this.part.partStatusType.displayName
         }
       ];
     }

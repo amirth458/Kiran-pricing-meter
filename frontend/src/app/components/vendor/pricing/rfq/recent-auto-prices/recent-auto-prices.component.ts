@@ -8,6 +8,7 @@ import { FileViewRendererComponent } from "./../../../../../common/file-view-ren
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { Pageable } from "./../../../../../model/pageable.model";
 import { Part } from "./../../../../../model/part.model";
+import { CurrencyPipe } from "@angular/common";
 
 @Component({
   selector: "app-recent-auto-prices",
@@ -29,7 +30,8 @@ export class RecentAutoPricesComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public pricingService: RfqPricingService,
     public router: Router,
-    public customerService: CustomerService
+    public customerService: CustomerService,
+    public currencyPipe: CurrencyPipe
   ) {}
 
   ngOnInit() {
@@ -181,7 +183,12 @@ export class RecentAutoPricesComponent implements OnInit {
             );
             this.rowData[findIndex] = {
               ...this.rowData[findIndex],
-              price: partQuote.totalCost
+              price: this.currencyPipe.transform(
+                partQuote.totalCost,
+                "USD",
+                "symbol",
+                "0.0-3"
+              )
             };
           });
           this.rowData = [...this.rowData];

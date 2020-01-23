@@ -1,4 +1,5 @@
-import { NumberFilter } from 'ag-grid-community';
+import { NumberFilter } from "ag-grid-community";
+import { Vendor } from "./vendor.model";
 
 export interface User {
   name: string;
@@ -44,4 +45,18 @@ export interface CustomerData {
   division: string;
   phoneNo: string;
   industries: CustomerIndustry[];
+}
+
+export interface UserSummary {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  department: string;
+  phoneNo: string;
+  vendor: Vendor;
+  machines: any[];
+  roles: string[];
+  is_admin: boolean;
 }

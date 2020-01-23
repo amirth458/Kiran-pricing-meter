@@ -1,5 +1,5 @@
-import { VendorDetailsComponent } from './../../components/vendor/pricing/orders/vendor-details/vendor-details.component';
-import { CustomerOrderDetailsComponent } from './../../components/vendor/pricing/orders/customer-order-details/customer-order-details.component';
+import { VendorDetailsComponent } from "./../../components/vendor/pricing/orders/vendor-details/vendor-details.component";
+import { CustomerOrderDetailsComponent } from "./../../components/vendor/pricing/orders/customer-order-details/customer-order-details.component";
 import { ReleasedOrdersComponent } from "./../../components/vendor/pricing/orders/released-orders/released-orders.component";
 import { OrderConfirmQueueComponent } from "./../../components/vendor/pricing/orders/order-confirm-queue/order-confirm-queue.component";
 import { SuborderReleaseQueueComponent } from "./../../components/vendor/pricing/orders/suborder-release-queue/suborder-release-queue.component";
@@ -21,6 +21,7 @@ import { DashboardComponent } from "./dashboard.component";
 import { MarketplaceContainerComponent } from "src/app/components/vendor/marketplace/marketplace-container/marketplace-container.component";
 import { ReferralContainerComponent } from "./../../components/vendor/marketplace/referral/referral-container/referral-container.component";
 import { ReferralComponent } from "./../../components/vendor/marketplace/referral/referral/referral.component";
+import { ProcessProfileDetailComponent } from "src/app/components/vendor/pricing/rfq/process-profile-detail/process-profile-detail.component";
 
 const routes: Routes = [
   {
@@ -61,8 +62,11 @@ const routes: Routes = [
                 component: PriceDetailComponent
               },
               {
-                path:
-                  "manual-price/:partId/pricing-profile/:profileId",
+                path: "manual-price/:partId/process-profile/:profileId",
+                component: ProcessProfileDetailComponent
+              },
+              {
+                path: "manual-price/:partId/pricing-profile/:profileId",
                 component: PricingProfileDetailComponent
               },
               { path: "", redirectTo: "pricing-settings", pathMatch: "full" },
@@ -102,15 +106,24 @@ const routes: Routes = [
                 component: VendorDetailsComponent
               },
               { path: "released-orders", component: ReleasedOrdersComponent },
-              { path: "", redirectTo: "fullfillment-settings", pathMatch: "full" },
-              { path: "**", redirectTo: "fullfillment-settings", pathMatch: "full" }
+              {
+                path: "",
+                redirectTo: "fullfillment-settings",
+                pathMatch: "full"
+              },
+              {
+                path: "**",
+                redirectTo: "fullfillment-settings",
+                pathMatch: "full"
+              }
             ]
           },
           { path: "", redirectTo: "rfq", pathMatch: "full" },
           { path: "**", redirectTo: "rfq", pathMatch: "full" }
         ]
       },
-      { path: "", redirectTo: "marketplace", pathMatch: "full" }
+      { path: "*", redirectTo: "marketplace", pathMatch: "full" },
+      { path: "**", redirectTo: "marketplace", pathMatch: "full" }
     ]
   }
 ];

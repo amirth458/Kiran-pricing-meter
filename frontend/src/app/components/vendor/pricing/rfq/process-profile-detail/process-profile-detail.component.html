@@ -1,3 +1,145 @@
-<p>
-  process-profile-detail works!
-</p>
+<div class="wrapper container-fluid">
+  <div
+    class="header d-flex align-items-center mb-3"
+    [ngClass]="{ 'manual-price': part?.manualPricingAllowed }"
+  >
+    <h5 class="text-center flex-grow-1">
+      Part {{ part?.rfqMedia.projectRfqId + "." + part?.id }}
+    </h5>
+    <button
+      type="button"
+      class="btn btn-back theme white"
+      (click)="backButton()"
+    >
+      <i class="fas fa-chevron-left"></i>
+      <span>
+        Back
+      </span>
+    </button>
+  </div>
+  <div class="form-row">
+    <div class="table theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham"
+        domLayout="autoHeight"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions['partDetail']"
+        (gridReady)="onGridReady($event, 'partDetail')"
+      ></ag-grid-angular>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-between mt-4">
+        <span class="font-weight-bold">Process Profile Detail</span>
+      </div>
+      <div class="round-border p-3 mt-2">
+        <p>
+          Pricing Profile Name: &nbsp;
+          <span class="text-highlight">{{ processProfile?.name }}</span>
+        </p>
+        <p>
+          Pricing Parameter Set Nickname: &nbsp;
+          <span class="text-highlight">{{
+            processProfile?.parameterNickName
+          }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="round-border mt-3">
+    <div class="tabs px-4 d-flex">
+      <div
+        class="tab mr-5"
+        [ngClass]="{ active: selectedTab === 'dimension' }"
+        (click)="selectedTab = 'dimension'"
+      >
+        Process Dimensional Properties
+      </div>
+      <div
+        class="tab mr-5"
+        [ngClass]="{ active: selectedTab === 'material' }"
+        (click)="selectedTab = 'material'"
+      >
+        Process Material Characteristics
+      </div>
+      <div
+        class="tab"
+        [ngClass]="{ active: selectedTab === 'speed' }"
+        (click)="selectedTab = 'speed'"
+      >
+        Process Speed
+      </div>
+    </div>
+    <div class="px-4 py-3">
+      <ng-container [ngSwitch]="selectedTab">
+        <div *ngSwitchCase="'dimension'">
+          <p
+            *ngFor="let item of processProfile?.processDimensionalPropertyList"
+          >
+            {{ item.processDimensionalPropertyType.name }}
+            <mark>
+              {{ item.operatorType.symbol }}
+              {{ item.valueSignType.symbol }}
+              {{ item.value }}
+              {{ item.unitType.displayName }}
+            </mark>
+          </p>
+        </div>
+        <div *ngSwitchCase="'material'">
+          <p
+            *ngFor="
+              let item of processProfile?.processMaterialCharacteristicList
+            "
+          >
+            {{ item.processMaterialCharacteristicType.name }}
+            <mark>
+              {{ item.operatorType.symbol }}
+              {{ item.valueSignType.symbol }}
+              {{ item.value }}
+              {{ item.unitType.displayName }}
+            </mark>
+          </p>
+        </div>
+        <div *ngSwitchCase="'speed'">
+          <p *ngFor="let item of processProfile?.processSpeedList">
+            {{ item.processSpeedType.name }}
+            <mark>
+              {{ item.operatorType.symbol }}
+              {{ item.valueSignType.symbol }}
+              {{ item.value }}
+              {{ item.unitType.displayName }}
+            </mark>
+          </p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-between mt-4">
+        <span class="font-weight-bold">Pricing Profiles</span>
+      </div>
+      <div class="table theme-table mt-3">
+        <ag-grid-angular
+          class="ag-theme-balham"
+          domLayout="autoHeight"
+          [rowData]="pricingData"
+          [gridOptions]="gridOptions['pricingProfile']"
+          (gridReady)="onGridReady($event, 'pricingProfile')"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #viewPricingProfileCell let-row>
+  <a
+    class="w-100 text-center show-pricing-profile"
+    (click)="showPricingProfile(row.pricingProfileId)"
+  >
+    <strong>View</strong>
+  </a>
+</ng-template>

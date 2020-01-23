@@ -84,7 +84,7 @@ export class VendorDetailsComponent implements OnInit {
             this.matchedProfiles = [];
             v.map(item => {
               const processProfileView = item.processProfileView;
-              const processPricingView = (item.processPricingViews || []).length > 0 ? item.processPricingViews[0] : {};
+              const processPricingView = item.processPricingViews.length > 0 ? item.processPricingViews[0] : null;
               const found = this.matchedProfiles.some(match => {
                 return (match.id === processProfileView.vendorId &&
                   match.profileId === item.processProfileId);
@@ -99,7 +99,7 @@ export class VendorDetailsComponent implements OnInit {
                   vendorName: item.vendorProfile ? item.vendorProfile.name : '',
                   processProfileName: processProfileView.name,
                   facilityName: processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
-                  pricingProfile: processPricingView.name || '',
+                  pricingProfile: processPricingView && processPricingView.name || '',
                   releasePriority: priority,
                   pricing: item.processPricingViews,
                   vendorProfile: item.vendorProfile
