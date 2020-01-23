@@ -44,12 +44,6 @@
         <li class="nav-item dropdown">
           <div class="profile">
             <div class="image d-flex">
-              <img
-                [src]="userInfo.img"
-                height="50px"
-                width="50px"
-                alt="User Profile Picture"
-              />
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -59,7 +53,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <span class="name">{{ userInfo.name }}</span>
+                <span class="name">{{ userInfo.firstName }}</span>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="#"

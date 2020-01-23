@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 import { FilterOption } from "./../model/vendor.model";
 import { environment } from "./../../environments/environment";
-import { Part, PartDimension } from "../model/part.model";
+import { Part, PartDimension, ProcessProfile } from "../model/part.model";
 import { Pageable } from "./../model/pageable.model";
 import { map } from "rxjs/operators";
 import {
@@ -164,5 +164,10 @@ export class RfqPricingService {
   ): Observable<PricingProfileDetailedView[]> {
     const url = `${environment.managementBaseUrl}/process-pricing-profile/ids`;
     return this.http.post<PricingProfileDetailedView[]>(url, profileIds);
+  }
+
+  getProcessProfileDetail(profileIds: number[]): Observable<ProcessProfile[]> {
+    const url = `${environment.managementBaseUrl}/process-profile/ids`;
+    return this.http.post<ProcessProfile[]>(url, profileIds);
   }
 }

@@ -27,151 +27,164 @@
         (gridReady)="onGridReady($event, 'partDetail')"
       ></ag-grid-angular>
     </div>
+    <button type="button" class="btn btn-primary mt-3 ml-auto">
+      Show Prices
+    </button>
   </div>
-
-  <div class="d-flex align-items-center justify-content-between mt-4">
-    <span class="font-weight-bold ">Pricing Detail</span>
-    <button type="button" class="btn btn-primary">Show Prices</button>
-  </div>
-  <div class="round-border p-3 mt-2">
-    <p>
-      Pricing Profile Name: &nbsp;
-      <span class="text-highlight">{{ pricingProfile?.name }}</span>
-    </p>
-    <p>
-      Process Profile Name: &nbsp;
-      <span class="text-highlight">{{
-        pricingProfile?.processProfile.name
-      }}</span>
-    </p>
-    <p>
-      Pricing Parameter Set Nickname: &nbsp;
-      <span class="text-highlight">{{
-        pricingProfile?.processProfile.parameterNickName
-      }}</span>
-    </p>
-  </div>
-
-  <div class="d-flex align-items-center justify-content-between mt-4">
-    <span class="font-weight-bold">Conditions</span>
-  </div>
-  <div class="round-border p-3 mt-2">
-    <p *ngFor="let condition of pricingProfile?.processPricingConditionList">
-      <mark>
-        {{ condition.processPricingConditionType.name }}
-        {{ condition.operatorType.symbol }}
-        {{ condition.valueSignType.symbol }} {{ condition.value }}
-        {{ condition.unitType.symbol }}
-      </mark>
-    </p>
-  </div>
-
-  <div class="d-flex align-items-center justify-content-between mt-4">
-    <span class="font-weight-bold">Pricing Parameters</span>
-  </div>
-  <div class="round-border p-3 mt-2">
-    <!-- Flat Charges -->
-
-    <div id="conditionLabel" class="tables">
-      <div class="controls d-flex justify-content-between mb-1">
-        <label for="conditionLabel">
-          <b>Flat Charges</b>(These are base expenses associated with every
-          project)
-          <span
-            class="icon"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Examples include Non Recurring Engineering or Setup Expense"
-          >
-            <i class="fas fa-exclamation-circle"></i>
-          </span>
-        </label>
+  <div class="row">
+    <div class="col-6">
+      <div class="d-flex align-items-center justify-content-between mt-4">
+        <span class="font-weight-bold ">Pricing Profile Detail</span>
       </div>
-      <!-- Insert Table here -->
-      <div class="input-wrapper mb-3">
-        <div class="form-row">
-          <div class="table theme-table">
-            <ag-grid-angular
-              class="ag-theme-balham"
-              domLayout="autoHeight"
-              [rowData]="flatRowData"
-              [gridOptions]="gridOptions['flatCharge']"
-              (gridReady)="onGridReady($event, 'flatCharge')"
-            ></ag-grid-angular>
-          </div>
-        </div>
+      <div class="round-border p-3 mt-2">
+        <p>
+          Pricing Profile Name: &nbsp;
+          <span class="text-highlight">{{ pricingProfile?.name }}</span>
+        </p>
+        <p>
+          Process Profile Name: &nbsp;
+          <span class="text-highlight">{{
+            pricingProfile?.processProfile.name
+          }}</span>
+        </p>
+        <p>
+          Pricing Parameter Set Nickname: &nbsp;
+          <span class="text-highlight">{{
+            pricingProfile?.processProfile.parameterNickName
+          }}</span>
+        </p>
       </div>
     </div>
 
-    <!-- End of Flat Charges -->
-
-    <!-- Variable Charges -->
-
-    <div id="conditionLabel" class="tables">
-      <div class="controls d-flex justify-content-between mb-1">
-        <label for="conditionLabel"
-          ><b>Variable Charges</b>(These are charges that increase with the size
-          of a program)
-          <span
-            class="icon"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Examples include material expense per unit column or cost per unit. 50 per cubic meter. $1/cubic inch"
-          >
-            <i class="fas fa-exclamation-circle"></i>
-          </span>
-        </label>
+    <div class="col-6">
+      <div class="d-flex align-items-center justify-content-between mt-4">
+        <span class="font-weight-bold">Conditions</span>
       </div>
-      <!-- Insert Table here -->
-      <div class="input-wrapper mb-3">
-        <div class="form-row">
-          <div class="table theme-table">
-            <ag-grid-angular
-              class="ag-theme-balham"
-              domLayout="autoHeight"
-              [rowData]="variableRowData"
-              [gridOptions]="gridOptions['variableCharge']"
-              (gridReady)="onGridReady($event, 'variableCharge')"
-            ></ag-grid-angular>
+      <div class="round-border p-3 mt-2">
+        <p
+          *ngFor="let condition of pricingProfile?.processPricingConditionList"
+        >
+          {{ condition.processPricingConditionType.name }}
+          <mark>
+            {{ condition.operatorType.symbol }}
+            {{ condition.valueSignType.symbol }} {{ condition.value }}
+            {{ condition.unitType.displayName }}
+          </mark>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="round-border mt-3">
+    <div class="d-flex justify-content-between header px-5">
+      <span class="font-weight-bold active-tab d-flex align-items-center"
+        >Process Parameters</span
+      >
+    </div>
+    <div class="px-5 py-3 process-parameters">
+      <!-- Flat Charges -->
+
+      <div id="conditionLabel" class="tables">
+        <div class="controls d-flex justify-content-between mb-1">
+          <label for="conditionLabel">
+            <b>Flat Charges</b>(These are base expenses associated with every
+            project)
+            <span
+              class="icon"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Examples include Non Recurring Engineering or Setup Expense"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+          </label>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper mb-3">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular
+                class="ag-theme-balham"
+                domLayout="autoHeight"
+                [rowData]="flatRowData"
+                [gridOptions]="gridOptions['flatCharge']"
+                (gridReady)="onGridReady($event, 'flatCharge')"
+              ></ag-grid-angular>
+            </div>
           </div>
         </div>
       </div>
-      <!-- Insert Table here -->
-    </div>
-    <!-- End of Variable Charges -->
 
-    <!-- Multiplier Charges -->
+      <!-- End of Flat Charges -->
 
-    <div id="conditionLabel" class="tables">
-      <div class="controls d-flex justify-content-between mb-1">
-        <label for="conditionLabel">
-          <b>Multiplier Charges</b>(These are cost considerations that are
-          applied across one or more cost inputs)
-          <span
-            class="icon"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Examples Include: Margin and Expedite Fees"
-          >
-            <i class="fas fa-exclamation-circle"></i>
-          </span>
-        </label>
+      <!-- Variable Charges -->
+
+      <div id="conditionLabel" class="tables">
+        <div class="controls d-flex justify-content-between mb-1">
+          <label for="conditionLabel"
+            ><b>Variable Charges</b>(These are charges that increase with the
+            size of a program)
+            <span
+              class="icon"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Examples include material expense per unit column or cost per unit. 50 per cubic meter. $1/cubic inch"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+          </label>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper mb-3">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular
+                class="ag-theme-balham"
+                domLayout="autoHeight"
+                [rowData]="variableRowData"
+                [gridOptions]="gridOptions['variableCharge']"
+                (gridReady)="onGridReady($event, 'variableCharge')"
+              ></ag-grid-angular>
+            </div>
+          </div>
+        </div>
+        <!-- Insert Table here -->
       </div>
-      <!-- Insert Table here -->
-      <div class="input-wrapper">
-        <div class="form-row">
-          <div class="table theme-table">
-            <ag-grid-angular
-              class="ag-theme-balham"
-              domLayout="autoHeight"
-              [rowData]="multiplierRowData"
-              [gridOptions]="gridOptions['multiplierCharge']"
-              (gridReady)="onGridReady($event, 'multiplierCharge')"
-            ></ag-grid-angular>
+      <!-- End of Variable Charges -->
+
+      <!-- Multiplier Charges -->
+
+      <div id="conditionLabel" class="tables">
+        <div class="controls d-flex justify-content-between mb-1">
+          <label for="conditionLabel">
+            <b>Multiplier Charges</b>(These are cost considerations that are
+            applied across one or more cost inputs)
+            <span
+              class="icon"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Examples Include: Margin and Expedite Fees"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+          </label>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular
+                class="ag-theme-balham"
+                domLayout="autoHeight"
+                [rowData]="multiplierRowData"
+                [gridOptions]="gridOptions['multiplierCharge']"
+                (gridReady)="onGridReady($event, 'multiplierCharge')"
+              ></ag-grid-angular>
+            </div>
           </div>
         </div>
       </div>
+      <!-- End of Multiplier Charges -->
     </div>
-    <!-- End of Multiplier Charges -->
   </div>
 </div>

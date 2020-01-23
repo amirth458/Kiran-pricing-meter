@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { CurrencyPipe } from "@angular/common";
 import { GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -44,7 +45,8 @@ export class QueuedManualPriceComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    public currencyPipe: CurrencyPipe
   ) {}
 
   ngOnInit() {
@@ -258,8 +260,8 @@ export class QueuedManualPriceComponent implements OnInit {
           ...res.content.map((part: Part) => ({
             id: part.id,
             customer: "",
-            rfq: part.rfqMedia.id,
-            part: part.rfqMedia.id + "." + part.id,
+            rfq: part.rfqMedia.projectRfqId,
+            part: part.rfqMedia.projectRfqId + "." + part.id,
             filename: part.rfqMedia.media.name,
             quantity: part.quantity,
             material: part.materialName,
@@ -300,8 +302,8 @@ export class QueuedManualPriceComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
-            rfq: part.rfqMedia.id,
-            part: part.rfqMedia.id + "." + part.id,
+            rfq: part.rfqMedia.projectRfqId,
+            part: part.rfqMedia.projectRfqId + "." + part.id,
             filename: part.rfqMedia.media.name,
             quantity: part.quantity,
             material: part.materialName,
@@ -332,7 +334,12 @@ export class QueuedManualPriceComponent implements OnInit {
             );
             this.rowData[1][findIndex] = {
               ...this.rowData[1][findIndex],
-              price: partQuote.totalCost
+              price: this.currencyPipe.transform(
+                partQuote.totalCost,
+                "USD",
+                "symbol",
+                "0.0-3"
+              )
             };
           });
           this.rowData[1] = [...this.rowData[1]];

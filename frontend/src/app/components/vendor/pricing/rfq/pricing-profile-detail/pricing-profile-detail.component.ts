@@ -14,6 +14,7 @@ import { GridOptions } from "ag-grid-community";
 import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
 import { MetadataService } from "src/app/service/metadata.service";
+import { CurrencyPipe } from "@angular/common";
 
 @Component({
   selector: "app-pricing-profile-detail",
@@ -245,54 +246,13 @@ export class PricingProfileDetailComponent implements OnInit {
   partId: any;
   profileId: any;
 
-  priceProfileDetail = {
-    processProfileName: "Fortus 400 - ABS M 30 - Detailed",
-    pricingParameterSetNickname: "Standard 3 cm Test",
-    conditions: [
-      "Part Volumn > 3 cubic centimeter (cu cm)",
-      "Part Quantity> 25 count"
-    ],
-    items: [
-      {
-        invoiceItem: "Part Cost",
-        lineItem: "Setup Cost",
-        value: "$ 3",
-        per: "1",
-        partValue: "Setup",
-        measurementUnit: "cubic centimeters(cc)",
-        subOrderValue: "130 cc",
-        subTotal: 400
-      },
-      {
-        invoiceItem: "Part Cost",
-        lineItem: "Setup Cost",
-        value: "$ 3",
-        per: "1",
-        partValue: "Setup",
-        measurementUnit: "cubic centimeters(cc)",
-        subOrderValue: "130 cc",
-        subTotal: 400
-      },
-      {
-        invoiceItem: "Part Cost",
-        lineItem: "Setup Cost",
-        value: "$ 3",
-        per: "1",
-        partValue: "Setup",
-        measurementUnit: "cubic centimeters(cc)",
-        subOrderValue: "130 cc",
-        subTotal: 400
-      }
-    ]
-  };
-
   constructor(
     private pricingService: RfqPricingService,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private metadataService: MetadataService
+    private currencyPipe: CurrencyPipe
   ) {
     this.route.params.subscribe(params => {
       this.partId = params.partId;
@@ -334,6 +294,9 @@ export class PricingProfileDetailComponent implements OnInit {
   }
 
   updateData() {
+    if (!this.pricingProfile) {
+      return;
+    }
     this.rowData = [
       {
         id: this.part.id,
@@ -346,7 +309,14 @@ export class PricingProfileDetailComponent implements OnInit {
         process: this.part.processTypeName,
         roughness: "",
         postProcess: "",
-        price: this.partQuote.totalCost
+        price: this.partQuote
+          ? this.currencyPipe.transform(
+              this.partQuote.totalCost,
+              "USD",
+              "symbol",
+              "0.0-3"
+            )
+          : this.part.partStatusType.displayName
       }
     ];
 

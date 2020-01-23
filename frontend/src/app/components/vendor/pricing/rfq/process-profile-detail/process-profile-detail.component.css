@@ -1,0 +1,132 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}
+
+.content {
+  border: 1px solid var(--theme-tab-border);
+  border-top: none;
+}
+
+.header {
+  color: var(--theme-bright-blue);
+  position: relative;
+  height: 40px;
+}
+.header h5 {
+  margin: 0;
+}
+
+.single-row-table {
+  height: 90px;
+}
+
+.price-summary {
+  color: var(--theme-secondary-blue-solid);
+}
+
+mark {
+  background-color: transparent;
+  color: var(--theme-light-green);
+}
+mark:not(:last-child)::after {
+  content: ", ";
+}
+
+.part-header {
+}
+
+.price-profile-detail {
+  font-size: 12px;
+}
+
+.price-profile-table {
+  font-size: 14px;
+}
+
+.price-profile-table thead {
+  background-color: var(--theme-light-sky-blue);
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+.price-profile-table tbody {
+  border: 1px solid var(--theme-table-border);
+  font-size: 14px;
+}
+.price-profile-table th,
+.price-profile-table td {
+  padding: 8px 25px;
+  color: var(--theme-text-color);
+}
+
+.price-profile-table td.subtotal {
+  font-size: 16px;
+  padding: 12px 25px;
+}
+.price-profile-detail {
+  border: 1px solid var(--theme-table-border);
+  padding: 20px;
+}
+.price-profile-detail span {
+  margin-right: 30px;
+}
+
+.header.manual-price {
+  color: var(--theme-light-blue);
+}
+
+.btn-back {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.round-border {
+  border: 1px solid var(--theme-table-border);
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.text-highlight {
+  color: var(--theme-light-green);
+}
+
+.round-border p:last-child {
+  margin-bottom: 0;
+}
+
+.round-border .tabs {
+  border-bottom: 1px solid var(--theme-table-border);
+}
+
+.round-border .tabs .tab {
+  font-size: 16px;
+  color: var(--theme-light-blue);
+  border-bottom: 4px solid transparent;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.round-border .tabs .active {
+  font-size: 16px;
+  color: var(--theme-light-green);
+  border-bottom: 4px solid var(--theme-light-green);
+}
+
+.process-parameters {
+  color: var(--theme-light-blue);
+}
+
+.show-pricing-profile {
+  color: var(--theme-light-green) !important;
+  cursor: pointer;
+}

@@ -13,11 +13,11 @@ import { AppFields } from "src/app/store";
 })
 export class TopMenuComponent implements OnInit, OnDestroy {
   userInfo = {
-    name: "",
+    firstName: "",
     img: "assets/image/avatar3.png"
   };
   sub: Subscription;
-  vendor: Observable<any>;
+  userObserver: Observable<any>;
 
   constructor(
     public router: Router,
@@ -25,17 +25,21 @@ export class TopMenuComponent implements OnInit, OnDestroy {
     public store: Store<any>,
     public user: UserService
   ) {
-    this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
+    this.userObserver = this.store.select(AppFields.App, AppFields.UserInfo);
   }
 
   ngOnInit() {
-    this.userInfo = {
-      ...this.userInfo,
-      ...this.user.getUserInfo()
-    };
+    this.sub = this.userObserver.subscribe(res => {
+      this.userInfo = {
+        ...this.userInfo,
+        ...res
+      };
+    });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
   onLogout() {
     this.authService.logout();

@@ -1,14 +1,14 @@
-import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-
-import { GridOptions } from 'ag-grid-community';
-import { NgxSpinnerService } from 'ngx-spinner';
-
-import { CustomerService } from '../../../../../service/customer.service';
-import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
-import { Pageable } from '../../../../../model/pageable.model';
-import { Part } from '../../../../../model/part.model';
-import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { GridOptions, GridApi } from "ag-grid-community";
+import { NgxSpinnerService } from "ngx-spinner";
+import { CustomerData } from "src/app/model/user.model";
+import { CustomerService } from "./../../../../../service/customer.service";
+import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
+import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
+import { Pageable } from "./../../../../../model/pageable.model";
+import { Part } from "./../../../../../model/part.model";
+import { CurrencyPipe } from "@angular/common";
 
 @Component({
   selector: 'app-recent-auto-prices',
@@ -30,7 +30,8 @@ export class RecentAutoPricesComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public pricingService: RfqPricingService,
     public router: Router,
-    public customerService: CustomerService
+    public customerService: CustomerService,
+    public currencyPipe: CurrencyPipe
   ) {}
 
   ngOnInit() {
@@ -175,7 +176,12 @@ export class RecentAutoPricesComponent implements OnInit {
             );
             this.rowData[findIndex] = {
               ...this.rowData[findIndex],
-              price: partQuote.totalCost
+              price: this.currencyPipe.transform(
+                partQuote.totalCost,
+                "USD",
+                "symbol",
+                "0.0-3"
+              )
             };
           });
           this.rowData = [...this.rowData];

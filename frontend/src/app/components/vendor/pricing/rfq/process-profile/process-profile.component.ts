@@ -22,6 +22,7 @@ export class ProcessProfileComponent implements OnInit {
   @Input() part: Part;
   @ViewChild("dateCell") dateCell: TemplateRef<any>;
   type = ["search", "filter"];
+  maxPartId;
 
   searchColumns = [
     {
@@ -146,7 +147,7 @@ export class ProcessProfileComponent implements OnInit {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
         this.router.navigateByUrl(
-          this.router.url + "/pricing-profile/" + event.data.id
+          this.router.url + "/process-profile/" + event.data.id
         );
       }
     };
@@ -160,42 +161,48 @@ export class ProcessProfileComponent implements OnInit {
         field: "vendorName",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        tooltip: params => params.value
       },
       {
         headerName: "Facility Name",
         field: "facilityName",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        tooltip: params => params.value
       },
       {
         headerName: "Process Profile Name",
         field: "processProfileName",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        tooltip: params => params.value
       },
       {
         headerName: "Equipment",
         field: "equipment",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        tooltip: params => params.value
       },
       {
         headerName: "Material",
         field: "material",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        tooltip: params => params.value
       },
       {
         headerName: "PricingProfile",
         field: "pricingProfile",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        tooltip: params => params.value
       }
     ];
   }
@@ -203,27 +210,28 @@ export class ProcessProfileComponent implements OnInit {
   async getProcessProfile(q = null) {
     this.spinner.show();
     const res = await this.ordersService
-      .getMatchedProfiles(this.userService.getUserInfo().id, [
-        this.part.rfqMedia.id
-      ])
+      .getMatchedProfiles(
+        this.userService.getUserInfo().id,
+        [this.part.rfqMedia.id],
+        this.part.id === 976
+      )
       .toPromise();
 
     this.rowData = res.map(item => ({
-      id: item.id,
+      id: item.processProfileView.id,
       profileId: item.processProfileId,
       vendorName: item.vendorProfile.name,
       processProfileName: item.processProfileView.name,
       facilityName:
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.vendorMachinery.vendorFacility.name,
-      pricingProfile: item.processPricingView.name || "",
+      pricingProfile: item.processPricingViews.map(v => v.name).join(", "),
       material:
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.material.name,
       equipment:
         item.processProfileView.processMachineServingMaterialList[0]
-          .machineServingMaterial.vendorMachinery.equipment.name,
-      vendorProfile: item.vendorProfile
+          .machineServingMaterial.vendorMachinery.equipment.name
     }));
     this.spinner.hide();
   }
