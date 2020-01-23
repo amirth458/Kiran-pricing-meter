@@ -122,8 +122,7 @@ const routes: Routes = [
           { path: "**", redirectTo: "rfq", pathMatch: "full" }
         ]
       },
-      { path: "*", redirectTo: "marketplace", pathMatch: "full" },
-      { path: "**", redirectTo: "marketplace", pathMatch: "full" }
+      { path: "*", redirectTo: "marketplace", pathMatch: "full" }
     ]
   }
 ];
