@@ -1,21 +1,19 @@
-import { UserService } from "src/app/service/user.service";
-import { CustomerData } from "src/app/model/user.model";
-import {
-  RfqData,
-  PartQuote,
-  PartDimension
-} from "./../../../../../model/part.model";
-import { BehaviorSubject } from "rxjs";
-import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Part } from "src/app/model/part.model";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { CustomerData } from 'src/app/model/user.model';
+import { Part } from 'src/app/model/part.model';
+import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
-  selector: "app-price-detail",
-  templateUrl: "./price-detail.component.html",
-  styleUrls: ["./price-detail.component.css"]
+  selector: 'app-price-detail',
+  templateUrl: './price-detail.component.html',
+  styleUrls: ['./price-detail.component.css']
 })
 export class PriceDetailComponent implements OnInit  {
   public selectedId: number;
