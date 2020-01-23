@@ -1,17 +1,19 @@
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
-import { OrdersService } from './../../../../../service/orders.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from "@angular/core";
 import { GridOptions } from 'ag-grid-community';
 
+import { OrdersService } from '../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+
 @Component({
-  selector: "app-order-confirm-queue",
-  templateUrl: "./order-confirm-queue.component.html",
-  styleUrls: ["./order-confirm-queue.component.css"]
+  selector: 'app-order-confirm-queue',
+  templateUrl: './order-confirm-queue.component.html',
+  styleUrls: ['./order-confirm-queue.component.css']
 })
 export class OrderConfirmQueueComponent implements OnInit {
-  type = ["search", "filter"];
+  type = ['search', 'filter'];
 
   searchColumns = [
     {
