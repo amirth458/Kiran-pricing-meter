@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
 import { MetadataService } from "src/app/service/metadata.service";
 import { CurrencyPipe } from "@angular/common";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-pricing-profile-detail",
@@ -252,7 +253,8 @@ export class PricingProfileDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private modalService: NgbModal
   ) {
     this.route.params.subscribe(params => {
       this.partId = params.partId;
@@ -362,5 +364,12 @@ export class PricingProfileDetailComponent implements OnInit {
         postProcess => postProcess.id == this.part.postProcessTypeIds[id]
       );
     return found && found.name;
+  }
+
+  showModal(content) {
+    this.modalService.open(content, {
+      centered: true,
+      windowClass: "pricing-view-modal"
+    });
   }
 }

@@ -7,49 +7,55 @@ export const environment = {
   local: false,
   menus: [
     {
-      name: 'User Management',
-      route: '/user',
-      icon: 'fa fa-users',
+      name: "User Management",
+      route: "/user",
+      icon: "fa fa-users",
+      visible: true,
+      active: false
+    },
+    {
+      name: "Marketplace",
+      route: "/marketplace",
+      icon: "fa fa-tools",
       visible: true,
       active: true
     },
     {
-      name: 'Marketplace',
-      route: '/marketplace',
-      icon: 'fa fa-tools',
+      name: "Pricing",
+      route: "/pricing",
+      icon: "far fa-list-alt",
       visible: true,
-      active: true,
+      active: true
     },
     {
-      name: 'Pricing',
-      route: '/pricing',
-      icon: 'far fa-list-alt',
-      visible: true,
-      active: true,
-    },
-    {
-      name: 'Insight',
-      route: '/insight',
-      icon: 'far fa-chart-bar',
+      name: "Insight",
+      route: "/insight",
+      icon: "far fa-chart-bar",
       visible: true,
       active: false
-    },
+    }
   ],
-  admin_menus: [
-  ],
+  admin_menus: [],
   extendedmenu: [
-    { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
+    {
+      needsapproval: false,
+      enabled: true,
+      active: false,
+      name: "Dashboard",
+      icon: "fa-tachometer",
+      path: "/dashboard"
+    }
   ],
-  apiBaseUrl: 'https://dev-admin-api.3diligent.com/api/v1',
-  marketApiBaseUrl: 'https://dev-marketplace-api.3diligent.com/api/v1',
-  managementBaseUrl: 'https://dev-manage-api.3diligent.com/api/v1',
-  procurementApiBaseUrl: 'https://dev-procurement-api.3diligent.com/api/v1',
-  adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
-  MARKETPLACE_URL: 'https://dev-marketplace.3diligent.com/',
-  PPE_HOST_URL: 'https://dev-ppe-api.3diligent.com/api/v1',
-  CONNECTOR_HOST_URL: 'https://dev-manage.3diligent.com/api/v1',
-  encryptionKey: '1Kf@%4%3ADfEafw',
-  isTestDataEnabled: true,
+  apiBaseUrl: "https://dev-admin-api.3diligent.com/api/v1",
+  marketApiBaseUrl: "https://dev-marketplace-api.3diligent.com/api/v1",
+  managementBaseUrl: "https://dev-manage-api.3diligent.com/api/v1",
+  procurementApiBaseUrl: "https://dev-procurement-api.3diligent.com/api/v1",
+  adminAPIToken: "655d67be-af74-48bb-b707-ce5266f7e8fc",
+  MARKETPLACE_URL: "https://dev-marketplace.3diligent.com/",
+  PPE_HOST_URL: "https://dev-ppe-api.3diligent.com/api/v1",
+  CONNECTOR_HOST_URL: "https://dev-manage.3diligent.com/api/v1",
+  encryptionKey: "1Kf@%4%3ADfEafw",
+  isTestDataEnabled: true
 };
 
 /*
