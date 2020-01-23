@@ -254,6 +254,12 @@ export class ReleasedOrdersComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.gridOptions.api.setSortModel([
+      {
+        colId: 'bidOrder.id',
+        sort: 'desc'
+      }
+    ]);
   }
 
 }

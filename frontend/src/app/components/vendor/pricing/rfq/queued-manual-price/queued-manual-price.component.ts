@@ -1,18 +1,20 @@
-import { Router } from "@angular/router";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { NgxSpinnerService } from "ngx-spinner";
-import { Component, OnInit } from "@angular/core";
-import { GridOptions } from "ag-grid-community";
-import { BehaviorSubject } from "rxjs";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { Part } from "./../../../../../model/part.model";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
+import { GridOptions } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { BehaviorSubject } from 'rxjs';
+
+import { Part } from '../../../../../model/part.model';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
 
 @Component({
-  selector: "app-queued-manual-price",
-  templateUrl: "./queued-manual-price.component.html",
-  styleUrls: ["./queued-manual-price.component.css"]
+  selector: 'app-queued-manual-price',
+  templateUrl: './queued-manual-price.component.html',
+  styleUrls: ['./queued-manual-price.component.css']
 })
 export class QueuedManualPriceComponent implements OnInit {
   tabs = [
@@ -216,6 +218,7 @@ export class QueuedManualPriceComponent implements OnInit {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
         this.gridOptions.api.setRowData(this.rowData[value]);
         this.gridOptions.api.sizeColumnsToFit();
+        this.setDefaultSort();
       }
     });
     this.getQueuedManualPricing();
@@ -225,6 +228,16 @@ export class QueuedManualPriceComponent implements OnInit {
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.setDefaultSort();
+  }
+
+  setDefaultSort() {
+    this.gridOptions.api.setSortModel([
+      {
+        colId: 'rfq',
+        sort: 'desc'
+      }
+    ]);
   }
 
   async getQueuedManualPricing(q = null) {

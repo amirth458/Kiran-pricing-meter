@@ -499,7 +499,14 @@ export class VendorDetailsComponent implements OnInit {
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
     this.gridOptions[idx].api.sizeColumnsToFit();
-    if (idx === 2) {
+    if (idx === 0) {
+      this.gridOptions[idx].api.setSortModel([
+        {
+          colId: 'subOrder',
+          sort: 'desc'
+        }
+      ]);
+    } else if (idx === 2) {
       this.gridOptions[2].api.setSuppressRowDrag(true);
     }
   }

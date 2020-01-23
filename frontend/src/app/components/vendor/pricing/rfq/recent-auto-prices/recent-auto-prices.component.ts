@@ -1,18 +1,19 @@
-import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
-import { GridOptions, GridApi } from "ag-grid-community";
-import { NgxSpinnerService } from "ngx-spinner";
-import { CustomerData } from "src/app/model/user.model";
-import { CustomerService } from "./../../../../../service/customer.service";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { Pageable } from "./../../../../../model/pageable.model";
-import { Part } from "./../../../../../model/part.model";
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
+import { GridOptions } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { CustomerService } from '../../../../../service/customer.service';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import { Pageable } from '../../../../../model/pageable.model';
+import { Part } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 
 @Component({
-  selector: "app-recent-auto-prices",
-  templateUrl: "./recent-auto-prices.component.html",
-  styleUrls: ["./recent-auto-prices.component.css"]
+  selector: 'app-recent-auto-prices',
+  templateUrl: './recent-auto-prices.component.html',
+  styleUrls: ['./recent-auto-prices.component.css']
 })
 export class RecentAutoPricesComponent implements OnInit {
   columnDefs = [];
@@ -121,16 +122,9 @@ export class RecentAutoPricesComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+        this.router.navigateByUrl(`${this.router.url}/${event.data.id}`);
       }
     };
-
-    // this.customerService.getCustomer().subscribe((v: CustomerData) => {
-    //   this.customer = v;
-    //   this.getRows();
-    // });
     this.getRows();
   }
 
@@ -195,6 +189,12 @@ export class RecentAutoPricesComponent implements OnInit {
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.gridOptions.api.setSortModel([
+      {
+        colId: 'rfq',
+        sort: 'desc'
+      }
+    ]);
   }
 
   onPageSizeChange(ev) {
