@@ -22,7 +22,7 @@
   </div>
 
   <div class="row">
-    <div class="col-12 theme-table ">
+    <div class="col-12 theme-table">
       <ag-grid-angular
         class="ag-theme-balham w-100 h-100"
         [class.grid-empty]="(orderDetails || []).length === 0"
@@ -220,7 +220,7 @@
       <ng-container *ngSwitchCase="biddingStatus.COUNTER_OFFER">
         <div class="d-flex flex-row pt-1 pb-1">
           <strong class="text-coutered">
-            {{row.bidProcessStatus.description | titlecase}} ${{row.counterOfferPrice}}
+            {{row.bidProcessStatus.description | titlecase}} ${{row.counterOfferPrice || 0}}
           </strong>
           <button class="btn btn-primary confirm-btn ml-4 btn-sm" *ngIf="(type === 'confirmation' &&
           !toggleVendorList)" (click)="openConfirmBidding(row)">
@@ -253,7 +253,7 @@
     </div>
     <div class="modal-container p-4">
       Do you want to confirm this sub order to {{selectedBidding.vendorName}} for
-      ${{selectedBidding.counterOfferPrice}}?
+      ${{selectedBidding.counterOfferPrice || 0}}?
     </div>
     <div
       class="modal-footer d-flex px-4 py-4 align-items-center justify-content-center">

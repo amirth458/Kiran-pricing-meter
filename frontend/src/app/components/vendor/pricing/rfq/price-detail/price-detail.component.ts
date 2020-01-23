@@ -1,40 +1,36 @@
-import { UserService } from "src/app/service/user.service";
-import { CustomerData } from "src/app/model/user.model";
-import {
-  RfqData,
-  PartQuote,
-  PartDimension
-} from "./../../../../../model/part.model";
-import { BehaviorSubject } from "rxjs";
-import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Part } from "src/app/model/part.model";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { CustomerData } from 'src/app/model/user.model';
+import { Part } from 'src/app/model/part.model';
+import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
-  selector: "app-price-detail",
-  templateUrl: "./price-detail.component.html",
-  styleUrls: ["./price-detail.component.css"]
+  selector: 'app-price-detail',
+  templateUrl: './price-detail.component.html',
+  styleUrls: ['./price-detail.component.css']
 })
-export class PriceDetailComponent implements OnInit {
-  selectedId: number;
-  part: Part;
-  rfq: RfqData;
-  partQuote: PartQuote;
-  partDimension: PartDimension;
-  customer: CustomerData;
-
-  tabs = [];
-
-  selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
+export class PriceDetailComponent implements OnInit  {
+  public selectedId: number;
+  public part: Part;
+  public rfq: RfqData;
+  public partQuote: PartQuote;
+  public partDimension: PartDimension;
+  public customer: CustomerData;
+  public tabs = [];
+  public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private pricingService: RfqPricingService,
-    private userService: UserService,
-    private spinner: NgxSpinnerService
+    protected  route: ActivatedRoute,
+    protected  router: Router,
+    protected  pricingService: RfqPricingService,
+    protected  userService: UserService,
+    protected  spinner: NgxSpinnerService
   ) {
     this.route.params.subscribe(params => {
       this.selectedId = params.partId;
@@ -42,30 +38,11 @@ export class PriceDetailComponent implements OnInit {
     });
   }
 
-  getDetails(id: number) {
+  public getDetails(id: number) {
     this.spinner.show();
     this.pricingService.getPartDetail(id).subscribe(part => {
       this.spinner.hide();
       this.part = part;
-      this.tabs = [
-        {
-          id: 0,
-          title:
-            this.part && this.part.manualPricingAllowed
-              ? "Manual-Price View"
-              : "Auto-Price View"
-        },
-        {
-          id: 1,
-          title: "Part Information"
-        },
-        {
-          id: 2,
-          title: part.manualPricingAllowed
-            ? "Process Profile"
-            : "Pricing Profile"
-        }
-      ];
       this.pricingService
         .getRfqDetail(this.part.rfqMedia.projectRfqId)
         .subscribe(rfq => {
@@ -84,10 +61,33 @@ export class PriceDetailComponent implements OnInit {
         .subscribe(dimension => {
           this.partDimension = dimension;
         });
+      this.setTabInfo();
     });
   }
 
-  manualQuote() {
+  public setTabInfo() {
+    this.tabs = [
+      {
+        id: 0,
+        title:
+          this.part && this.part.manualPricingAllowed
+            ? "Manual-Price View"
+            : "Auto-Price View"
+      },
+      {
+        id: 1,
+        title: "Part Information"
+      },
+      {
+        id: 2,
+        title: this.part.manualPricingAllowed
+          ? "Process Profile"
+          : "Pricing Profile"
+      }
+    ];
+  }
+
+  public manualQuote() {
     this.getDetails(this.selectedId);
   }
 

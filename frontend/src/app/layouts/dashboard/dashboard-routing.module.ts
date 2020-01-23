@@ -82,7 +82,7 @@ const routes: Routes = [
                 component: SuborderReleaseQueueComponent
               },
               {
-                path: "suborder-release-queue/order/:orderId",
+                path: "suborder-release-queue/order/:partId",
                 component: CustomerOrderDetailsComponent
               },
               {
