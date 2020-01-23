@@ -140,7 +140,8 @@ export class VendorDetailsComponent implements OnInit {
             facilityName: p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
             pricingProfile: (p.processPricingList || []).length,
             bidProcessStatus: status,
-            counterOfferPrice: match.counterOfferPrice
+            counterOfferPrice: match.counterOfferPrice,
+            bidOfferPrice: match.bidOfferPrice
           });
         });
       });

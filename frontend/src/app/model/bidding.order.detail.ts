@@ -12,6 +12,7 @@ export interface VendorOrderDetail {
   processProfileViews: Array<ProcessProfile>;
   bidProcessStatus: BidProcessStatusType;
   counterOfferPrice: number;
+  bidOfferPrice: number;
   bidProcessId: number;
 }
 
