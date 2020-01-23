@@ -192,12 +192,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
         if (event.data) {
-          this.router.navigateByUrl(
-            this.router.url + "/order/" + event.data.subOrder
-          );
+          this.router.navigateByUrl(`${this.router.url}/order/${event.data.subOrder}`);
         }
       }
     };
