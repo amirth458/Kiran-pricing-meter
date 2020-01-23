@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GridOptions } from 'ag-grid-community';
 
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
-import { OrdersService } from './../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { OrdersService } from '../../../../../service/orders.service';
 import { Util } from '../../../../../util/Util';
 
 @Component({
@@ -174,12 +174,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
     public router: Router,
     public spinner: NgxSpinnerService,
     private orderService: OrdersService,
-    private route: ActivatedRoute,
     public datePipe: DatePipe
   ) {
-    this.route.params.subscribe(params => {
-      console.log(params);
-    });
   }
 
   ngOnInit() {

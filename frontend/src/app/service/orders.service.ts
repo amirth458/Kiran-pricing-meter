@@ -203,8 +203,14 @@ export class OrdersService {
         field: 'deliveryDate',
         hide: false,
         sortable: true,
-        filter: false
-        // valueFormatter: dt => this.datePipe.transform(dt.value || '', Util.dateFormat)
+        filter: false,
+        valueFormatter: dt => {
+          const arr = [];
+          (dt.value || []).map(dt => {
+            arr.push(this.datePipe.transform(dt, Util.dateFormat))
+          });
+          return arr.length !== 0 ? arr.join(', ') : '';
+        }
       },
       {
         headerName: 'Status',
