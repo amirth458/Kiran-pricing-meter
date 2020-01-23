@@ -7,49 +7,55 @@ export const environment = {
   local: false,
   menus: [
     {
-      name: 'Program',
-      route: '/program',
-      icon: 'far fa-file-alt',
-      visible: true,
-      active: true
-    },
-    {
-      name: 'Insight',
-      route: '/insight',
-      icon: 'far fa-chart-bar',
-      visible: true,
-      active: false,
-    },
-    {
-      name: 'Setting',
-      route: '/setting',
-      icon: 'fas fa-cogs',
-      visible: true,
-      active: false,
-    },
-    {
-      name: 'Design',
-      route: '/design',
-      icon: 'far fa-edit',
+      name: "Program",
+      route: "/program",
+      icon: "far fa-file-alt",
       visible: true,
       active: false
     },
+    {
+      name: "Insight",
+      route: "/insight",
+      icon: "far fa-chart-bar",
+      visible: true,
+      active: false
+    },
+    {
+      name: "Setting",
+      route: "/setting",
+      icon: "fas fa-cogs",
+      visible: true,
+      active: false
+    },
+    {
+      name: "Design",
+      route: "/design",
+      icon: "far fa-edit",
+      visible: true,
+      active: false
+    }
   ],
-  admin_menus: [
-  ],
+  admin_menus: [],
   extendedmenu: [
-    { needsapproval: false, enabled: true, active: false, name: 'Dashboard', icon: 'fa-tachometer', path: '/dashboard' },
+    {
+      needsapproval: false,
+      enabled: true,
+      active: false,
+      name: "Dashboard",
+      icon: "fa-tachometer",
+      path: "/dashboard"
+    }
   ],
-  apiBaseUrl: 'https://stage-admin-api.3diligent.com/api/v1',
-  marketApiBaseUrl: 'https://stage-marketplace-api.3diligent.com/api/v1',
-  managementBaseUrl: 'https://stage-manage-api.3diligent.com/api/v1',
-  procurementApiBaseUrl: 'https://stage-procurement-api.3diligent.com/api/v1',
-  adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
-  CONNECTOR_HOST_URL: 'https://stage-manage.3diligent.com/api/v1',
-  PPE_HOST_URL: ' https://stage-ppe-api.3diligent.com/api/v1',
-  MARKETPLACE_URL: 'https://stage-marketplace.3diligent.com/',
-  encryptionKey: '1Kf@%4%3ADfEafw',
-  isTestDataEnabled: false,
+  apiBaseUrl: "https://stage-admin-api.3diligent.com/api/v1",
+  marketApiBaseUrl: "https://stage-marketplace-api.3diligent.com/api/v1",
+  managementBaseUrl: "https://stage-manage-api.3diligent.com/api/v1",
+  procurementApiBaseUrl: "https://stage-procurement-api.3diligent.com/api/v1",
+  adminAPIToken: "655d67be-af74-48bb-b707-ce5266f7e8fc",
+  CONNECTOR_HOST_URL: "https://stage-manage.3diligent.com/api/v1",
+  PPE_HOST_URL: " https://stage-ppe-api.3diligent.com/api/v1",
+  MARKETPLACE_URL: "https://stage-marketplace.3diligent.com/",
+  encryptionKey: "1Kf@%4%3ADfEafw",
+  isTestDataEnabled: false
 };
 
 /*

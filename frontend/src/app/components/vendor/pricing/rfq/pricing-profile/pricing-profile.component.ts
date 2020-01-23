@@ -181,8 +181,7 @@ export class PricingProfileComponent implements OnInit {
   constructor(
     public router: Router,
     public spinner: NgxSpinnerService,
-    private pricingService: RfqPricingService,
-    private route: ActivatedRoute
+    private pricingService: RfqPricingService
   ) {
     this.navigation = this.router.getCurrentNavigation();
   }

@@ -27,7 +27,11 @@
         (gridReady)="onGridReady($event, 'partDetail')"
       ></ag-grid-angular>
     </div>
-    <button type="button" class="btn btn-primary mt-3 ml-auto">
+    <button
+      type="button"
+      class="btn btn-primary mt-3 ml-auto"
+      (click)="showModal(modal)"
+    >
       Show Prices
     </button>
   </div>
@@ -188,3 +192,86 @@
     </div>
   </div>
 </div>
+
+<ng-template #modal let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title"></h5>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div
+      class="modal-body d-flex flex-column align-items-center justify-content-center p-5"
+    >
+      <div class="row">
+        <div class="col-12">
+          <table class="table price-profile-table">
+            <thead>
+              <tr>
+                <th>Invoice Item</th>
+                <th>Line Item</th>
+                <th>Value</th>
+                <th>Per</th>
+                <th>Part Value</th>
+                <th>Measurement Unit</th>
+                <th>Sub-Order Value</th>
+                <th>Sub Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let item of pricingProfile?.pricingProfileDetailedView
+                    .partPricingProfileViews
+                "
+              >
+                <td>
+                  {{
+                    item.processPricingParameters.invoiceLineItem.invoiceItem
+                      .name
+                  }}
+                </td>
+                <td>
+                  {{ item.processPricingParameters.invoiceLineItem.name }}
+                </td>
+                <td class="text-center">
+                  {{ item.processPricingParameters.currency.symbol }}
+                  {{ item.processPricingParameters.price }}
+                </td>
+                <td class="text-center">
+                  {{ item.processPricingParameters.quantity }}
+                </td>
+                <td class="text-center">
+                  {{
+                    item.processPricingParameters.quantityUnitType
+                      ?.measurementType.name
+                  }}
+                </td>
+                <td class="text-center">
+                  {{ item.processPricingParameters.quantityUnitType?.symbol }}
+                </td>
+                <td class="text-center">{{ item.subOrderValue.value }}</td>
+                <td class="text-center">{{ item.subTotal }}</td>
+              </tr>
+              <tr>
+                <td colspan="5"></td>
+                <td colspan="2" class="text-center font-weight-bold subtotal">
+                  Subtotal
+                </td>
+                <td class="text-center font-weight-bold subtotal">
+                  $ {{ getSubTotal() }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
