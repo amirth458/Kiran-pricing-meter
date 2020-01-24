@@ -1,11 +1,11 @@
-import { ActionService } from './../../../../../service/action.service';
-import { ToastrService } from 'ngx-toastr';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ActionService } from "./../../../../../service/action.service";
+import { ToastrService } from "ngx-toastr";
+import { HttpErrorResponse } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { throwError } from 'rxjs';
+import { throwError } from "rxjs";
 
 @Component({
   selector: "app-pricing-settings",
@@ -20,7 +20,8 @@ export class PricingSettingsComponent implements OnInit {
     incrementalMarginPercent: [null],
     incrementalMarginRate: [null],
     specificityPremium: [null],
-    autoPricingEligibilityType: [null]
+    autoPricingEligibilityType: [null],
+    quoteExpirationTime: [null]
   });
   manualPricingSection = 3;
 
@@ -49,6 +50,7 @@ export class PricingSettingsComponent implements OnInit {
   ngOnInit() {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
       this.detailForm.setValue(defaultValue);
+      this.selectedEligibility = defaultValue.autoPricingEligibilityType.id;
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
       this.save();
@@ -61,11 +63,12 @@ export class PricingSettingsComponent implements OnInit {
       .pipe(catchError(e => this.handleSaveError(e)))
       .subscribe(v => {
         this.detailForm.setValue(v);
+        this.toastrService.success(`Pricing Settings Updated Successfully`);
       });
   }
 
   handleSaveError(error: HttpErrorResponse) {
-    const message = error.error.message || 'Import Failed.';
+    const message = error.error.message || "Import Failed.";
     this.toastrService.error(`${message} Please contact your admin`);
     return throwError("Error");
   }

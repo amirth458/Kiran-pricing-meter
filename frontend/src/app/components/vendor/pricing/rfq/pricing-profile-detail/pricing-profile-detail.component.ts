@@ -237,6 +237,7 @@ export class PricingProfileDetailComponent implements OnInit {
   flatRowData = [];
   variableRowData = [];
   multiplierRowData = [];
+  pricingDetail;
   postProcesses;
 
   part: Part;
@@ -271,9 +272,11 @@ export class PricingProfileDetailComponent implements OnInit {
 
         combineLatest(
           this.userService.getCustomer(this.part.rfqMedia.media.customerId),
-          this.pricingService.getPricingProfileDetail([this.profileId])
-        ).subscribe(([customer, pricingProfiles]) => {
+          this.pricingService.getPricingProfileDetail([this.profileId]),
+          this.pricingService.getProcessPricingDetail(this.profileId)
+        ).subscribe(([customer, pricingProfiles, pricingDetail]) => {
           this.pricingProfile = pricingProfiles[0];
+          this.pricingDetail = pricingDetail[0];
           this.customer = customer;
           this.updateData();
           this.spinner.hide();
@@ -371,5 +374,25 @@ export class PricingProfileDetailComponent implements OnInit {
       centered: true,
       windowClass: "pricing-view-modal"
     });
+  }
+
+  invoiceItemCost(invoiceItem) {
+    return this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews
+      .filter(
+        item =>
+          item.processPricingParameters.invoiceLineItem.invoiceItem.name ===
+          invoiceItem
+      )
+      .reduce((sum, item) => sum + item.invoiceItemCost, 0);
+  }
+  finalInvoiceItemCost(invoiceItem = null) {
+    return this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews
+      .filter(item =>
+        invoiceItem
+          ? item.processPricingParameters.invoiceLineItem.invoiceItem.name ===
+            invoiceItem
+          : true
+      )
+      .reduce((sum, item) => sum + item.finalInvoiceItemCost, 0);
   }
 }

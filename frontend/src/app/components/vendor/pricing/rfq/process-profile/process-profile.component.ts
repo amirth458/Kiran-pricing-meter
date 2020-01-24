@@ -212,8 +212,7 @@ export class ProcessProfileComponent implements OnInit {
     const res = await this.ordersService
       .getMatchedProfiles(
         this.userService.getUserInfo().id,
-        [this.part.rfqMedia.id],
-        this.part.id === 976
+        [this.part.rfqMedia.id]
       )
       .toPromise();
 

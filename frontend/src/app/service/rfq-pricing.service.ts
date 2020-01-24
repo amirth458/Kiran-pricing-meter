@@ -171,10 +171,8 @@ export class RfqPricingService {
     return this.http.post<ProcessProfile[]>(url, profileIds);
   }
 
-  getProcessPricingDetail(profileIds: number[]): Observable<any> {
-    const url = `${
-      environment.managementBaseUrl
-    }/process-pricing-profile/process-profile?ids=${profileIds.join(",")}`;
-    return this.http.get<any>(url);
+  getProcessPricingDetail(profileId: number): Observable<any> {
+    const url = `${environment.managementBaseUrl}/process-pricing-profile/${profileId}/price`;
+    return this.http.post<any>(url, {});
   }
 }
