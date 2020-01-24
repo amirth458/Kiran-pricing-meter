@@ -196,7 +196,9 @@
 <ng-template #modal let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title"></h5>
+      <h5 class="modal-title" id="modal-basic-title">
+        {{ pricingProfile?.name }}
+      </h5>
       <button
         type="button"
         class="close"
@@ -214,23 +216,28 @@
           <table class="table price-profile-table">
             <thead>
               <tr>
+                <th>Invoice Group</th>
                 <th>Invoice Item</th>
-                <th>Line Item</th>
+                <th>Invoice Line Item</th>
                 <th>Value</th>
                 <th>Per</th>
-                <th>Part Value</th>
-                <th>Measurement Unit</th>
-                <th>Sub-Order Value</th>
-                <th>Sub Total</th>
+                <th>Part Value (unit)</th>
+                <th>Suborder Value (unit)</th>
+                <th>Invoice item cost</th>
+                <th>Multiplier</th>
+                <th>Final Invoice Item Cost</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 *ngFor="
-                  let item of pricingProfile?.pricingProfileDetailedView
+                  let item of pricingDetail?.pricingProfileDetailedView
                     .partPricingProfileViews
                 "
               >
+                <td>
+                  {{ item.invoiceGroup }}
+                </td>
                 <td>
                   {{
                     item.processPricingParameters.invoiceLineItem.invoiceItem
@@ -241,31 +248,101 @@
                   {{ item.processPricingParameters.invoiceLineItem.name }}
                 </td>
                 <td class="text-center">
-                  {{ item.processPricingParameters.currency.symbol }}
-                  {{ item.processPricingParameters.price }}
+                  {{
+                    item.processPricingParameters.price
+                      | currency: "USD":"symbol":"0.0-3"
+                  }}
                 </td>
                 <td class="text-center">
                   {{ item.processPricingParameters.quantity }}
                 </td>
                 <td class="text-center">
                   {{
-                    item.processPricingParameters.quantityUnitType
-                      ?.measurementType.name
+                    item.processPricingParameters.processPricingConditionType
+                      ?.name
+                      ? item.processPricingParameters
+                          .processPricingConditionType?.name +
+                        "(" +
+                        item.processPricingParameters
+                          .processPricingConditionType?.measurementType.name +
+                        ")"
+                      : ""
                   }}
                 </td>
                 <td class="text-center">
-                  {{ item.processPricingParameters.quantityUnitType?.symbol }}
+                  {{
+                    item.subOrderValue?.value
+                      ? item.subOrderValue?.value +
+                        "(" +
+                        item.subOrderValue?.measurementType?.name +
+                        ")"
+                      : ""
+                  }}
                 </td>
-                <td class="text-center">{{ item.subOrderValue.value }}</td>
-                <td class="text-center">{{ item.subTotal }}</td>
+                <td class="text-center">
+                  {{ item.invoiceItemCost | currency: "USD":"symbol":"0.0-3" }}
+                </td>
+                <td class="text-center">
+                  {{ item.processPricingParameters?.multiplier }}
+                </td>
+                <td class="text-center">
+                  {{
+                    item.finalInvoiceItemCost | currency: "USD":"symbol":"0.0-3"
+                  }}
+                </td>
               </tr>
               <tr>
-                <td colspan="5"></td>
-                <td colspan="2" class="text-center font-weight-bold subtotal">
-                  Subtotal
-                </td>
-                <td class="text-center font-weight-bold subtotal">
-                  $ {{ getSubTotal() }}
+                <td colspan="6"></td>
+                <td colspan="4" class="subtotal">
+                  <table class="table table-responsive table-borderless">
+                    <colgroup>
+                      <col width="40%" />
+                      <col width="30%" />
+                      <col width="30%" />
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <th>Tool Cost</th>
+                        <td>
+                          {{
+                            invoiceItemCost("Tool Cost")
+                              | currency: "USD":"symbol":"0.0-3"
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            finalInvoiceItemCost("Tool Cost")
+                              | currency: "USD":"symbol":"0.0-3"
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Part Cost</th>
+                        <td>
+                          {{
+                            invoiceItemCost("Part Cost")
+                              | currency: "USD":"symbol":"0.0-3"
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            finalInvoiceItemCost("Part Cost")
+                              | currency: "USD":"symbol":"0.0-3"
+                          }}
+                        </td>
+                      </tr>
+                      <tr class="font-weight-bold">
+                        <th>TOTAL COST</th>
+                        <td></td>
+                        <td>
+                          {{
+                            finalInvoiceItemCost()
+                              | currency: "USD":"symbol":"0.0-3"
+                          }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </td>
               </tr>
             </tbody>
