@@ -301,35 +301,10 @@
                       <col width="30%" />
                     </colgroup>
                     <tbody>
-                      <tr>
-                        <th>Tool Cost</th>
-                        <td>
-                          {{
-                            invoiceItemCost("Tool Cost")
-                              | currency: "USD":"symbol":"0.0-3"
-                          }}
-                        </td>
-                        <td>
-                          {{
-                            finalInvoiceItemCost("Tool Cost")
-                              | currency: "USD":"symbol":"0.0-3"
-                          }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>Part Cost</th>
-                        <td>
-                          {{
-                            invoiceItemCost("Part Cost")
-                              | currency: "USD":"symbol":"0.0-3"
-                          }}
-                        </td>
-                        <td>
-                          {{
-                            finalInvoiceItemCost("Part Cost")
-                              | currency: "USD":"symbol":"0.0-3"
-                          }}
-                        </td>
+                      <tr *ngFor="let item of invoiceItemKeys">
+                        <td>{{item}}</td>
+                        <td>{{totalInvoice[item].invoiceItemCost| currency: "USD":"symbol":"0.0-3"}}</td>
+                        <td>{{totalInvoice[item].finalInvoiceItemCost| currency: "USD":"symbol":"0.0-3"}}</td>
                       </tr>
                       <tr class="font-weight-bold">
                         <th>TOTAL COST</th>
