@@ -239,6 +239,7 @@ export class PricingProfileDetailComponent implements OnInit {
   multiplierRowData = [];
   pricingDetail;
   postProcesses;
+  totalInvoice;
 
   part: Part;
   partQuote: PartQuote;
@@ -358,6 +359,30 @@ export class PricingProfileDetailComponent implements OnInit {
     this.flatRowData = [...this.flatRowData];
     this.multiplierRowData = [...this.multiplierRowData];
     this.variableRowData = [...this.variableRowData];
+
+    const totalInvoice = {};
+
+    this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.forEach(
+      item => {
+        const invoiceName =
+          item.processPricingParameters.invoiceLineItem.invoiceItem.name;
+        if (totalInvoice[invoiceName]) {
+          totalInvoice[invoiceName].invoiceItemCost += parseInt(
+            item.invoiceItemCost
+          );
+          totalInvoice[invoiceName].finalInvoiceItemCost += parseInt(
+            item.finalInvoiceItemCost
+          );
+        } else {
+          totalInvoice[invoiceName] = {
+            invoiceItemCost: parseInt(item.invoiceItemCost),
+            finalInvoiceItemCost: parseInt(item.finalInvoiceItemCost)
+          };
+        }
+      }
+    );
+
+    this.totalInvoice = totalInvoice;
   }
 
   getPostProcess(id) {
@@ -376,23 +401,14 @@ export class PricingProfileDetailComponent implements OnInit {
     });
   }
 
-  invoiceItemCost(invoiceItem) {
-    return this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews
-      .filter(
-        item =>
-          item.processPricingParameters.invoiceLineItem.invoiceItem.name ===
-          invoiceItem
-      )
-      .reduce((sum, item) => sum + item.invoiceItemCost, 0);
+  finalInvoiceItemCost() {
+    return this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.reduce(
+      (sum, item) => sum + item.finalInvoiceItemCost,
+      0
+    );
   }
-  finalInvoiceItemCost(invoiceItem = null) {
-    return this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews
-      .filter(item =>
-        invoiceItem
-          ? item.processPricingParameters.invoiceLineItem.invoiceItem.name ===
-            invoiceItem
-          : true
-      )
-      .reduce((sum, item) => sum + item.finalInvoiceItemCost, 0);
+
+  get invoiceItemKeys() {
+    return Object.keys(this.totalInvoice);
   }
 }
