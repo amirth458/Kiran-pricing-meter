@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  local: true,
+  production: true,
+  local: false,
   menus: [
     {
       name: "User Management",
@@ -44,14 +44,6 @@ export const environment = {
       name: "Dashboard",
       icon: "fa-tachometer",
       path: "/dashboard"
-    },
-    {
-      needsapproval: false,
-      enabled: true,
-      active: false,
-      name: "Appointments",
-      icon: "fa-calendar-check-o",
-      path: "/appointment"
     }
   ],
   apiBaseUrl: "https://dev-admin-api.3diligent.com/api/v1",
@@ -59,9 +51,9 @@ export const environment = {
   managementBaseUrl: "https://dev-manage-api.3diligent.com/api/v1",
   procurementApiBaseUrl: "https://dev-procurement-api.3diligent.com/api/v1",
   adminAPIToken: "655d67be-af74-48bb-b707-ce5266f7e8fc",
+  MARKETPLACE_URL: "https://dev-marketplace.3diligent.com/",
   PPE_HOST_URL: "https://dev-ppe-api.3diligent.com/api/v1",
   CONNECTOR_HOST_URL: "https://dev-manage.3diligent.com/api/v1",
-  MARKETPLACE_URL: "https://localhost:4200/",
   encryptionKey: "1Kf@%4%3ADfEafw",
   isTestDataEnabled: true
 };
