@@ -38,8 +38,10 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
     ev.stopPropagation();
     this.spinner.show();
     combineLatest(
-      this.orderService.getAllMesurementUnitType(),
-      this.orderService.getPartById(this.params.data.subOrder)
+      this.orderService.getAllMeasurementUnitType(),
+      this.orderService.getPartById(
+        this.params.data.subOrder || this.params.data.id
+      )
     ).subscribe(([measurementUnits, order]) => {
       this.measurementUnits = measurementUnits;
       this.partInfo = order;

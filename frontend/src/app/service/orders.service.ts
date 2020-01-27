@@ -243,7 +243,7 @@ export class OrdersService {
     );
   }
 
-  getAllMesurementUnitType(): Observable<any> {
+  getAllMeasurementUnitType(): Observable<any> {
     return this.http.get<any>(
       `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`
     );
