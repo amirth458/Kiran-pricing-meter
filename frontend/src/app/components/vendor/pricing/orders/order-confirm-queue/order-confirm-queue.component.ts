@@ -15,147 +15,8 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
 export class OrderConfirmQueueComponent implements OnInit {
   type = ['search', 'filter'];
 
-  searchColumns = [
-    {
-      name: "Customer Order",
-      field: "customerOrder",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Sub-Order",
-      field: "subOrder",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Price Accepted",
-      field: "priceAccepted",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Customer",
-      field: "customer",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Quantity",
-      field: "quantity",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Material",
-      field: "material",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Process",
-      field: "process",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Post-Process",
-      field: "postProcess",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    },
-    {
-      name: "Delivery Date",
-      field: "deliveryDate",
-      checked: false,
-      query: {
-        type: "",
-        filter: ""
-      }
-    }
-  ];
-
-  filterColumns = [
-    {
-      name: "Customer Order",
-      field: "customerOrder",
-      checked: true,
-    },
-    {
-      name: "Sub-Order",
-      field: "subOrder",
-      checked: true
-    },
-    {
-      name: "Price Accepted",
-      field: "priceAccepted",
-      checked: true
-    },
-    {
-      name: "Customer",
-      field: "customer",
-      checked: true
-    },
-    {
-      name: "Quantity",
-      field: "quantity",
-      checked: true
-    },
-    {
-      name: "Material",
-      field: "material",
-      checked: true
-    },
-    {
-      name: "Process",
-      field: "process",
-      checked: true
-    },
-    {
-      name: "Post-Process",
-      field: "postProcess",
-      checked: true
-    },
-    {
-      name: "Previously Ordered",
-      field: "previouslyOrdered",
-      checked: true
-    },
-    {
-      name: "First Shipment",
-      field: "firstShipment",
-      checked: true
-    },
-    {
-      name: "Delivery Date",
-      field: "deliveryDate",
-      checked: true
-    }
-  ];
+  searchColumns = this.orderService.getGridSearchColumns();
+  filterColumns = this.orderService.getGridFilterColumns();
 
   selectedIds = [];
 
@@ -192,7 +53,7 @@ export class OrderConfirmQueueComponent implements OnInit {
   initColumns() {
     this.columnDefs = this.orderService.getOrderViewColumns();
     this.autoGroupColumnDef = {
-      headerName: "Vendor Order ID",
+      headerName: 'Vendor Order ID',
     };
   }
 
@@ -230,7 +91,7 @@ export class OrderConfirmQueueComponent implements OnInit {
         if (column.checked) {
           columnInstance.setModel(column.query);
         } else {
-          columnInstance.setModel({ type: "", filter: "" });
+          columnInstance.setModel({ type: '', filter: '' });
         }
       }
       this.gridOptions.api.onFilterChanged();
