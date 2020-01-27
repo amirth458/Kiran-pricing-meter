@@ -10,153 +10,142 @@ import { OrdersService } from '../../../../../service/orders.service';
 import { Util } from '../../../../../util/Util';
 
 @Component({
-  selector: "app-suborder-release-queue",
-  templateUrl: "./suborder-release-queue.component.html",
-  styleUrls: ["./suborder-release-queue.component.css"]
+  selector: 'app-suborder-release-queue',
+  templateUrl: './suborder-release-queue.component.html',
+  styleUrls: ['./suborder-release-queue.component.css']
 })
 export class SuborderReleaseQueueComponent implements OnInit {
-  @ViewChild("selectBtn") selectBtn: TemplateRef<any>;
+  @ViewChild('selectBtn') selectBtn: TemplateRef<any>;
 
-  type = ["search", "filter"];
+  type = ['search', 'filter'];
 
   searchColumns = [
     {
-      name: "Price Accepted",
-      field: "priceAccepted",
+      name: 'Customer Order',
+      field: 'customerOrder',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Customer",
-      field: "customerName",
+      name: 'Sub-Order',
+      field: 'subOrder',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Quantity",
-      field: "quantity",
+      name: 'Price Accepted',
+      field: 'priceAccepted',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Material",
-      field: "materialName",
+      name: 'Customer Name',
+      field: 'customerName',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Post-Process",
-      field: "postProcessTypeNames",
+      name: 'Quantity',
+      field: 'quantity',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "NDA",
-      field: "nda",
+      name: 'Material',
+      field: 'materialName',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
-    // {
-    //   name: "Previously Ordered",
-    //   field: "previouslyOrdered",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // },
-    // {
-    //   name: "First Shipment",
-    //   field: "firstShipment",
-    //   checked: false,
-    //   query: {
-    //     type: "",
-    //     filter: ""
-    //   }
-    // },
     {
-      name: "Delivery Date",
-      field: "deliveryDate",
+      name: 'Process',
+      field: 'process',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Post-Process',
+      field: 'postProcessTypeNames',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Delivery Date',
+      field: 'deliveryDate',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
       }
     }
   ];
-
   filterColumns = [
     {
-      name: "Customer Order",
-      field: "customerOrder",
+      name: 'Customer Order',
+      field: 'customerOrder',
       checked: true
     },
     {
-      name: "Sub-Order",
-      field: "subOrder",
+      name: 'Sub-Order',
+      field: 'subOrder',
       checked: true
     },
     {
-      name: "Price Accepted",
-      field: "priceAccepted",
+      name: 'Price Accepted',
+      field: 'priceAccepted',
       checked: true
     },
     {
-      name: "Customer",
-      field: "customerName",
+      name: 'Customer',
+      field: 'customerName',
       checked: true
     },
     {
-      name: "Quantity",
-      field: "quantity",
+      name: 'Quantity',
+      field: 'quantity',
       checked: true
     },
     {
-      name: "Material",
-      field: "materialName",
+      name: 'Material',
+      field: 'materialName',
       checked: true
     },
     {
-      name: "Process",
-      field: "process",
+      name: 'Process',
+      field: 'process',
       checked: true
     },
     {
-      name: "Post-Process",
-      field: "postProcessTypeNames",
+      name: 'Post-Process',
+      field: 'postProcessTypeNames',
       checked: true
     },
-    // {
-    //   name: "Previously Ordered",
-    //   field: "previouslyOrdered",
-    //   checked: true
-    // },
-    // {
-    //   name: "First Shipment",
-    //   field: "firstShipment",
-    //   checked: true
-    // },
     {
-      name: "Delivery Date",
-      field: "deliveryDate",
+      name: 'Delivery Date',
+      field: 'deliveryDate',
       checked: true
     }
   ];
@@ -199,96 +188,82 @@ export class SuborderReleaseQueueComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
-        headerName: "Customer Order",
-        field: "customerOrder",
+        headerName: 'Customer Order',
+        field: 'customerOrder',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Sub-Order",
-        field: "subOrder",
+        headerName: 'Sub-Order',
+        field: 'subOrder',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Price Accepted",
-        field: "priceAccepted",
+        headerName: 'Price Accepted',
+        field: 'priceAccepted',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Customer",
-        field: "customerName",
+        headerName: 'Customer',
+        field: 'customerName',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Quantity",
-        field: "quantity",
+        headerName: 'Quantity',
+        field: 'quantity',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "materialName",
+        headerName: 'Material',
+        field: 'materialName',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Process",
-        field: "process",
+        headerName: 'Process',
+        field: 'process',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "NDA",
-        field: "nda",
+        headerName: 'NDA',
+        field: 'nda',
         hide: true,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Post-Process",
-        field: "postProcessTypeNames",
+        headerName: 'Post-Process',
+        field: 'postProcessTypeNames',
         hide: false,
         sortable: true,
         filter: false
       },
-      // {
-      //   headerName: "Previously Ordered",
-      //   field: "previouslyOrdered",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "First Shipment",
-      //   field: "firstShipment",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
       {
-        headerName: "Delivery Date",
-        field: "deliveryDate",
+        headerName: 'Delivery Date',
+        field: 'deliveryDate',
         hide: false,
         sortable: true,
         filter: false,
         valueFormatter: dt => this.datePipe.transform(dt.value || '', Util.dateFormat)
       },
       {
-        headerName: "",
+        headerName: '',
         hide: false,
         sortable: false,
         filter: false,
-        cellRenderer: "templateRenderer",
+        cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.selectBtn
         }
@@ -303,7 +278,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     try {
       while (true) {
         const res = await this.orderService
-          .getSubOrderReleaseQueue({ page, size: 1000, sort: "id,ASC", q })
+          .getSubOrderReleaseQueue({ page, size: 1000, sort: 'id,ASC', q })
           .toPromise();
 
         if (!res.content) {
@@ -350,7 +325,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         if (column.checked) {
           columnInstance.setModel(column.query);
         } else {
-          columnInstance.setModel({ type: "", filter: "" });
+          columnInstance.setModel({ type: '', filter: '' });
         }
       }
     });
@@ -382,7 +357,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   advanceToVendorSelection() {
     localStorage.setItem(
-      "selectedSubOrders",
+      'selectedSubOrders',
       JSON.stringify(
         this.rowData.filter(
           item =>
@@ -390,7 +365,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         )
       )
     );
-    this.router.navigateByUrl(this.router.url + "/vendor", {
+    this.router.navigateByUrl(`${this.router.url}/vendor`, {
       state: { subOrders: this.selectedIds }
     });
   }
