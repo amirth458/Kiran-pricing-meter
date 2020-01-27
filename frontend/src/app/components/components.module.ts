@@ -15,6 +15,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { RouterModule } from "@angular/router";
 
 import { ActionBarComponent } from "../common/action-bar/action-bar.component";
+import { ActionCellApproveRendererComponent } from "../common/action-cell-approve-renderer/action-cell-approve-renderer.component";
 import { ActionCellRendererComponent } from "../common/action-cell-renderer/action-cell-renderer.component";
 import { ColumnSearchFilterComponent } from "../common/column-search-filter/column-search-filter.component";
 import { DropdownCellRendererComponent } from "../common/dropdown-cell-renderer/dropdown-cell-renderer.component";
@@ -36,6 +37,14 @@ import { RfqContainerComponent } from "./vendor/pricing/rfq/rfq-container/rfq-co
 import { PricingSettingsComponent } from "./vendor/pricing/rfq/pricing-settings/pricing-settings.component";
 import { RecentAutoPricesComponent } from "./vendor/pricing/rfq/recent-auto-prices/recent-auto-prices.component";
 import { QueuedManualPriceComponent } from "./vendor/pricing/rfq/queued-manual-price/queued-manual-price.component";
+
+import { AdminContainerComponent } from "./admin/_container/container.component";
+import { ApproveVendorComponent } from "./admin/approve-vendor/approve-vendor.component";
+import { AdminVendorDetailsContainerComponent } from "./admin/vendor-details/_container/container.component";
+import { AdminVendorDetailsActionBarComponent } from "./admin/vendor-details/action-bar/action-bar.component";
+import { AdminVendorDetailsUserComponent } from "./admin/vendor-details/user/user.component";
+import { AdminVendorDetailsVendorComponent } from "./admin/vendor-details/vendor/vendor.component";
+import { AdminVendorDetailsMachineComponent } from "./admin/vendor-details/machine/machine.component";
 
 import { TabItemComponent } from "./../common/tabs/tab-item/tab-item.component";
 import { TabComponent } from "./../common/tabs/tab/tab.component";
@@ -60,9 +69,11 @@ import { PastOrderDetailsComponent } from "./vendor/pricing/orders/past-order-de
 import { VendorDetailsComponent } from "./vendor/pricing/orders/vendor-details/vendor-details.component";
 import { ProcessProfileComponent } from "./vendor/pricing/rfq/process-profile/process-profile.component";
 import { ProcessProfileDetailComponent } from "./vendor/pricing/rfq/process-profile-detail/process-profile-detail.component";
+
 @NgModule({
   declarations: [
     ActionBarComponent,
+    ActionCellApproveRendererComponent,
     ActionCellRendererComponent,
     ColumnSearchFilterComponent,
     DropdownCellRendererComponent,
@@ -80,6 +91,14 @@ import { ProcessProfileDetailComponent } from "./vendor/pricing/rfq/process-prof
     FileViewerComponent,
     FileViewRendererComponent,
     ModelDetailViewComponent,
+
+    AdminContainerComponent,
+    ApproveVendorComponent,
+    AdminVendorDetailsContainerComponent,
+    AdminVendorDetailsActionBarComponent,
+    AdminVendorDetailsUserComponent,
+    AdminVendorDetailsVendorComponent,
+    AdminVendorDetailsMachineComponent,
 
     MarketplaceContainerComponent,
     ReferralContainerComponent,

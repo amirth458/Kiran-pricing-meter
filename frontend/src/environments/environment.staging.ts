@@ -8,10 +8,10 @@ export const environment = {
   menus: [
     {
       name: "User Management",
-      route: "/user",
+      route: "/user-manage",
       icon: "fa fa-users",
       visible: true,
-      active: false
+      active: true
     },
     {
       name: "Marketplace",

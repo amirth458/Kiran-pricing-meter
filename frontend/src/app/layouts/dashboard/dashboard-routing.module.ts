@@ -13,6 +13,14 @@ import { PricingSettingsComponent } from "./../../components/vendor/pricing/rfq/
 import { RfqContainerComponent } from "./../../components/vendor/pricing/rfq/rfq-container/rfq-container.component";
 import { PricingContainerComponent } from "./../../components/vendor/pricing/pricing-container/pricing-container.component";
 import { ReferralDetailsComponent } from "./../../components/vendor/marketplace/referral/referral-details/referral-details.component";
+
+import { AdminContainerComponent } from "./../../components/admin/_container/container.component";
+import { ApproveVendorComponent } from "./../../components/admin/approve-vendor/approve-vendor.component";
+import { AdminVendorDetailsContainerComponent } from "./../../components/admin/vendor-details/_container/container.component";
+import { AdminVendorDetailsUserComponent } from "./../../components/admin/vendor-details/user/user.component";
+import { AdminVendorDetailsVendorComponent } from "./../../components/admin/vendor-details/vendor/vendor.component";
+import { AdminVendorDetailsMachineComponent } from "./../../components/admin/vendor-details/machine/machine.component";
+
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
@@ -120,6 +128,27 @@ const routes: Routes = [
           },
           { path: "", redirectTo: "rfq", pathMatch: "full" },
           { path: "**", redirectTo: "rfq", pathMatch: "full" }
+        ]
+      },
+      {
+        path: "user-manage",
+        component: AdminContainerComponent,
+        children: [
+          {
+            path: "approve-vendor",
+            component: ApproveVendorComponent
+          },
+          {
+            path: "vendor-details/:vendorId",
+            component: AdminVendorDetailsContainerComponent,
+            children: [
+              { path: "user", component: AdminVendorDetailsUserComponent },
+              { path: "vendor", component: AdminVendorDetailsVendorComponent },
+              { path: "machine", component: AdminVendorDetailsMachineComponent }
+            ]
+          },
+          { path: "", pathMatch: "full", redirectTo: "approve-vendor" },
+          { path: "**", pathMatch: "full", redirectTo: "approve-vendor" }
         ]
       },
       { path: "", redirectTo: "marketplace", pathMatch: "full" }
