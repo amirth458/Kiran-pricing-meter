@@ -20,9 +20,11 @@ export class FileViewerComponent implements OnInit {
   }
   set partInfo(value: Part) {
     this._partInfo = value;
-    if (value.rfqMedia && value.rfqMedia.media) {
-      this.partDimension = value.rfqMedia.media.partDimension || null;
-    }
+    this.pricingService
+      .getPartDimension(this._partInfo.id)
+      .subscribe(dimension => {
+        this.partDimension = dimension;
+      });
   }
   @Input()
   measurementUnits: any;
@@ -67,6 +69,7 @@ export class FileViewerComponent implements OnInit {
     let a = document.createElement("a");
     document.body.appendChild(a);
     a.setAttribute("style", "display: none");
+    a.setAttribute("target", "_blank");
     a.href = url;
     a.download = this.partInfo.rfqMedia.media.name;
     a.click();
