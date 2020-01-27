@@ -12,11 +12,11 @@ declare let ga: any;
 })
 export class AppComponent implements OnInit {
   constructor(@Inject(DOCUMENT) document: any, public router: Router) {
-    // if (environment.local !== true) {
-    //   if (location.protocol === 'http:') {
-    //     document.location.href = location.href.replace('http', 'https');
-    //   }
-    // }
+    if (environment.local !== true) {
+      if (location.protocol === 'http:') {
+        document.location.href = location.href.replace('http', 'https');
+      }
+    }
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
