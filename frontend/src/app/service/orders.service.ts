@@ -237,6 +237,142 @@ export class OrdersService {
     return columns;
   }
 
+  getGridSearchColumns(): any {
+    return [
+      {
+        name: 'Vendor Bid',
+        field: 'bidOrder.id',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Sub Order Count',
+        field: 'subOrderCount',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Offer Price',
+        field: 'offerPrice',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Quantity',
+        field: 'quantity',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Material',
+        field: 'material',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Process',
+        field: 'process',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Post-Process',
+        field: 'postProcess',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Delivery Date',
+        field: 'deliveryDate',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Status',
+        field: 'bidOrder.bidOrderStatusType.description',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      }
+    ];
+  }
+
+  getGridFilterColumns(): any {
+    return [
+      {
+        name: 'Vendor Bid',
+        field: 'bidOrder.id',
+        checked: true,
+      },
+      {
+        name: 'Sub Order Count',
+        field: 'subOrderCount',
+        checked: true
+      },
+      {
+        name: 'Offer Price',
+        field: 'offerPrice',
+        checked: true
+      },
+      {
+        name: 'Quantity',
+        field: 'quantity',
+        checked: true
+      },
+      {
+        name: 'Material',
+        field: 'material',
+        checked: true
+      },
+      {
+        name: 'Process',
+        field: 'process',
+        checked: true
+      },
+      {
+        name: 'Post-Process',
+        field: 'postProcess',
+        checked: true
+      },
+      {
+        name: 'Delivery Date',
+        field: 'deliveryDate',
+        checked: true
+      },
+      {
+        name: 'Status',
+        field: 'bidOrder.bidOrderStatusType.description',
+        checked: true
+      }
+    ];
+  }
+
   getPartById(id: number, generateSignedUrl = true): Observable<Part> {
     return this.http.get<Part>(
       `${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`
