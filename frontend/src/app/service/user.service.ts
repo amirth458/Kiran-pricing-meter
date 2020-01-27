@@ -170,7 +170,7 @@ export class UserService {
   }
 
   registerUser(user) {
-    const url = `${environment.apiBaseUrl}/users/signup`;
+    const url = `${environment.managementBaseUrl}/users/signup`;
     return this.http.post(url, user);
   }
 
@@ -181,7 +181,7 @@ export class UserService {
   }
 
   getAllUsers() {
-    const url = `${environment.apiBaseUrl}/users/all`;
+    const url = `${environment.managementBaseUrl}/users/all?vendor-profile-needed=true&vendor-machines-needed=false`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -193,7 +193,7 @@ export class UserService {
   }
 
   approveUsers(ids) {
-    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const url = `${environment.managementBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -213,7 +213,7 @@ export class UserService {
   }
 
   declineUsers(ids, comment = "") {
-    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const url = `${environment.managementBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -233,7 +233,7 @@ export class UserService {
   }
 
   approveUser(id) {
-    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const url = `${environment.managementBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -253,7 +253,7 @@ export class UserService {
   }
 
   declineUser(id, declineMessage = "") {
-    const url = `${environment.apiBaseUrl}/vendors/approve`;
+    const url = `${environment.managementBaseUrl}/vendors/approve`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
@@ -274,7 +274,7 @@ export class UserService {
   }
 
   getUserDetails(id) {
-    const url = `${environment.apiBaseUrl}/users/${id}`;
+    const url = `${environment.managementBaseUrl}/users/${id}`;
     const data = JSON.parse(localStorage.getItem("dms-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,

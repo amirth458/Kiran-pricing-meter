@@ -1,0 +1,197 @@
+{
+  "basicMenu": [
+    {
+      "name": "Corporate Details",
+      "tooltipMessage": "High level information about your business operations.",
+      "route": "basics",
+      "actions": []
+    },
+    {
+      "name": "Facilities",
+      "tooltipMessage": "Details regarding specific manufacturing facilities. If you have different individuals quoting for different divisions, create that delineation here",
+      "route": "facilities",
+      "actions": [
+        {
+          "name": "Add Facility",
+          "route": "add"
+        }
+      ]
+    },
+    {
+      "name": "Preferences",
+      "tooltipMessage": "Specify the industries you currently support, seek to support, and would rather not support",
+      "route": "preferences",
+      "actions": []
+    },
+    {
+      "name": "Machines",
+      "tooltipMessage": "At vero eos et accusamus et",
+      "route": "machines",
+      "actions": [
+        {
+          "name": "Add Machine",
+          "route": "add"
+        }
+      ]
+    },
+    {
+      "name": "Shipping",
+      "tooltipMessage": "At vero eos et accusamus et",
+      "route": "shipping",
+      "actions": [
+        {
+          "name": "Add Carrier",
+          "route": "add"
+        }
+      ]
+    }
+  ],
+  "adminVendor": [
+    {
+      "name": "User Details",
+      "tooltipMessage": "User Details.",
+      "route": "user",
+      "actions": ["back"]
+    },
+    {
+      "name": "Vendor Details",
+      "tooltipMessage": "Vendor Details.",
+      "route": "vendor",
+      "actions": ["back"]
+    },
+    {
+      "name": "Machine Details",
+      "tooltipMessage": "Machine Details.",
+      "route": "machine",
+      "actions": ["back"]
+    }
+  ],
+  "unapprovedVendor": [
+    {
+      "name": "User Details",
+      "tooltipMessage": "User Details.",
+      "route": "user"
+    },
+
+    {
+      "name": "Vendor Details",
+      "tooltipMessage": "Vendor Details.",
+      "route": "vendor"
+    },
+    {
+      "name": "Machine Details",
+      "tooltipMessage": "Machine Details.",
+      "route": "machine"
+    }
+  ],
+  "process": [
+    {
+      "name": "Profile",
+      "tooltipMessage": "At vero eos et accusamus et",
+      "route": "profile",
+      "actions": [
+        {
+          "name": "Add Process Profile",
+          "route": "add"
+        },
+        {
+          "name": "Profile Screener",
+          "route": "profile-screener"
+        }
+      ]
+    },
+    {
+      "name": "Pricing",
+      "tooltipMessage": "At vero eos et accusamus et",
+      "route": "pricing",
+      "actions": [
+        {
+          "name": "Add Pricing",
+          "route": "add"
+        },
+        {
+          "name": "Pricing Estimator",
+          "route": "estimator"
+        }
+      ]
+    }
+  ],
+  "postProcess": [
+    {
+      "name": "Profile",
+      "tooltipMessage": "At vero eos et accusamus et",
+      "route": "profile",
+      "actions": [
+        {
+          "name": "Add Post-Process",
+          "route": "add"
+        }
+      ]
+    },
+    {
+      "name": "Pricing",
+      "tooltipMessage": "At vero eos et accusamus et",
+      "route": "pricing",
+      "actions": [
+        {
+          "name": "Add Pricing",
+          "route": "add"
+        }
+      ]
+    }
+  ],
+  "vendorFacility": [
+    {
+      "name": "Order",
+      "tooltipMessage": "Order information",
+      "route": "orders",
+      "actions": [
+        {
+          "name": "Import",
+          "route": "import-order"
+        }
+      ]
+    },
+    {
+      "name": "Sub Orders",
+      "tooltipMessage": "Sub Orders",
+      "route": "parts",
+      "actions": []
+    },
+    {
+      "name": "Jobs",
+      "tooltipMessage": "Job information",
+      "route": "jobs",
+      "actions": []
+    }
+  ],
+  "pending": [
+    {
+      "name": "Offer",
+      "tooltipMessage": "Offer",
+      "route": "",
+      "actions": []
+    }
+  ],
+  "registration": [
+    {
+      "name": "User Details",
+      "tooltipMessage": "Register Users.",
+      "route": "user"
+    },
+    {
+      "name": "Corporate Details",
+      "tooltipMessage": "Corporate Details.",
+      "route": "vendor"
+    },
+    {
+      "name": "Machine Details",
+      "tooltipMessage": "Machine Details.",
+      "route": "machine"
+    }
+  ],
+
+  "profileScreener": {
+    "tooltipMessage": "The Profile Screener allows you to check whether a given process profile would be considered eligible to complete a given part.  Useful for expediting your own project assessment as well as eliminating any gaps"
+  }
+}

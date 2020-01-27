@@ -224,7 +224,7 @@ export class ProcessProfileComponent implements OnInit {
       facilityName:
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.vendorMachinery.vendorFacility.name,
-      pricingProfile: item.processPricingViews.map(v => v.name).join(", "),
+      pricingProfile: item.processPricingViews && item.processPricingViews.map(v => v.name).join(", "),
       material:
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.material.name,
