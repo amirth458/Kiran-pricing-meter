@@ -1,21 +1,21 @@
-import { Injectable } from "@angular/core";
-import { DatePipe } from "@angular/common";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { ColDef } from "ag-grid-community/src/ts/entities/colDef";
+import { ColDef } from 'ag-grid-community/src/ts/entities/colDef';
 
-import { of } from "rxjs";
-import { Observable } from "rxjs";
+import { of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { BiddingOrder } from "../model/bidding.order";
-import { BiddingOrderDetail } from "../model/bidding.order.detail";
-import { environment } from "src/environments/environment";
-import { FilterOption } from "../model/vendor.model";
-import { Part, ProcessProfileDetailedView } from "../model/part.model";
-import { Util } from "../util/Util";
+import { BiddingOrder } from '../model/bidding.order';
+import { BiddingOrderDetail } from '../model/bidding.order.detail';
+import { environment } from 'src/environments/environment';
+import { FilterOption } from '../model/vendor.model';
+import { Part, ProcessProfileDetailedView } from '../model/part.model';
+import { Util } from '../util/Util';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class OrdersService {
   constructor(private http: HttpClient, public datePipe: DatePipe) {}
@@ -24,8 +24,8 @@ export class OrdersService {
     const url = `${environment.apiBaseUrl}/admin/part/placing-order-status`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append("page", filterOption.page.toString());
-      params = params.append("size", filterOption.size.toString());
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
     }
     return this.http.get<any>(url, { params });
   }
@@ -151,8 +151,8 @@ export class OrdersService {
     }
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
-    params = params.append("userId", userId.toString());
-    params = params.append("rfqMediaIds", rfqMediaIds.join(","));
+    params = params.append('userId', userId.toString());
+    params = params.append('rfqMediaIds', rfqMediaIds.join(','));
     return this.http.get<ProcessProfileDetailedView[]>(url, { params });
   }
 
@@ -165,56 +165,56 @@ export class OrdersService {
   getOrderViewColumns(): ColDef[] {
     const columns = [
       {
-        headerName: "Vendor Bid",
-        field: "bidOrder.id",
+        headerName: 'Vendor Bid',
+        field: 'bidOrder.id',
         sortable: true,
         filter: false
       },
       {
-        headerName: "Sub Order Count",
-        field: "subOrderCount",
+        headerName: 'Sub Order Count',
+        field: 'subOrderCount',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Offer Price",
-        field: "offerPrice",
+        headerName: 'Offer Price',
+        field: 'offerPrice',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Quantity",
-        field: "quantity",
+        headerName: 'Quantity',
+        field: 'quantity',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "material",
+        headerName: 'Material',
+        field: 'material',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Process",
-        field: "process",
+        headerName: 'Process',
+        field: 'process',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Post-Process",
-        field: "postProcess",
+        headerName: 'Post-Process',
+        field: 'postProcess',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Delivery Date",
-        field: "deliveryDate",
+        headerName: 'Delivery Date',
+        field: 'deliveryDate',
         hide: false,
         sortable: true,
         filter: false,
@@ -227,8 +227,8 @@ export class OrdersService {
         }
       },
       {
-        headerName: "Status",
-        field: "bidOrder.bidOrderStatusType.description",
+        headerName: 'Status',
+        field: 'bidOrder.bidOrderStatusType.description',
         hide: false,
         sortable: true,
         filter: false

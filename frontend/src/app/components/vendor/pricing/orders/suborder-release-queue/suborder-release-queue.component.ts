@@ -102,7 +102,6 @@ export class SuborderReleaseQueueComponent implements OnInit {
       }
     }
   ];
-
   filterColumns = [
     {
       name: 'Customer Order',
