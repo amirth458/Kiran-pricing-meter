@@ -8,6 +8,7 @@
         <span
           (click)="selectTab(menu)"
           class="name"
+          [class.orders]="baseURL === 'pricing/orders'"
           [class.active]="selectedTab == menu.name"
           >{{ menu.name }}</span
         >
@@ -24,8 +25,8 @@
       *ngIf="
         menus[activeTabIndex].actions.length &&
         !route.url.includes('add') &&
-          !route.url.includes('edit') &&
-          !route.url.includes('clone')
+        !route.url.includes('edit') &&
+        !route.url.includes('clone')
       "
     >
       <button
@@ -41,10 +42,10 @@
     <div
       class="action-button"
       *ngIf="
-        !route.url.includes('pricing-profile') && 
+        !route.url.includes('pricing-profile') &&
         (route.url.includes('referral/') ||
-        route.url.includes('auto-prices/') || 
-        route.url.includes('manual-price/'))
+          route.url.includes('auto-prices/') ||
+          route.url.includes('manual-price/'))
       "
     >
       <button

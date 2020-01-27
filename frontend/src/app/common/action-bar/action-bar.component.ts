@@ -1,5 +1,4 @@
-import { ActionService } from './../../service/action.service';
-import { Store } from '@ngrx/store';
+import { ActionService } from "./../../service/action.service";
 import {
   Component,
   OnInit,
@@ -36,6 +35,7 @@ export class ActionBarComponent implements OnInit, OnChanges {
     this.route.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
         const routeArray = this.route.url.split("/");
+
         this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
         if (routeArray.length > 2) {
           if (this.menus) {
