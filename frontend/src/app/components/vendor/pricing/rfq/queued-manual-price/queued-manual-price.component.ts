@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CurrencyPipe } from "@angular/common";
+import { CurrencyPipe } from '@angular/common';
 import { GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Part } from '../../../../../model/part.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
-import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 
 @Component({
   selector: 'app-queued-manual-price',
@@ -21,11 +21,11 @@ export class QueuedManualPriceComponent implements OnInit {
   tabs = [
     {
       id: 0,
-      title: "Queued for Manual Pricing"
+      title: 'Queued for Manual Pricing'
     },
     {
       id: 1,
-      title: "Manually Priced"
+      title: 'Manually Priced'
     }
   ];
   selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -53,151 +53,151 @@ export class QueuedManualPriceComponent implements OnInit {
     this.columnDefs = [
       [
         // {
-        //   headerName: "Customer",
-        //   field: "customer",
+        //   headerName: 'Customer',
+        //   field: 'customer',
         //   hide: false,
         //   sortable: true,
         //   filter: false
         // },
         {
-          headerName: "RFQ",
-          field: "rfq",
+          headerName: 'RFQ',
+          field: 'rfq',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "Part",
-          field: "part",
+          headerName: 'Part',
+          field: 'part',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "File Name",
-          field: "filename",
+          headerName: 'File Name',
+          field: 'fileName',
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer"
+          cellRenderer: 'fileViewRenderer'
         },
         {
-          headerName: "Quantity",
-          field: "quantity",
+          headerName: 'Quantity',
+          field: 'quantity',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "Material",
-          field: "material",
+          headerName: 'Material',
+          field: 'material',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Process",
-          field: "process",
+          headerName: 'Process',
+          field: 'process',
           hide: false,
           sortable: true,
           filter: false
         }
         // {
-        //   headerName: "Roughness",
-        //   field: "roughness",
+        //   headerName: 'Roughness',
+        //   field: 'roughness',
         //   hide: false,
         //   sortable: true,
         //   filter: false,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // },
         // {
-        //   headerName: "Post-Process",
-        //   field: "postProcess",
+        //   headerName: 'Post-Process',
+        //   field: 'postProcess',
         //   hide: false,
         //   sortable: true,
         //   filter: true,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // },
         // {
-        //   headerName: "Wait",
-        //   field: "wait",
+        //   headerName: 'Wait',
+        //   field: 'wait',
         //   hide: false,
         //   sortable: true,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // }
       ],
       [
         // {
-        //   headerName: "Customer",
-        //   field: "customer",
+        //   headerName: 'Customer',
+        //   field: 'customer',
         //   hide: false,
         //   sortable: true,
         //   filter: false
         // },
         {
-          headerName: "RFQ",
-          field: "rfq",
+          headerName: 'RFQ',
+          field: 'rfq',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "Part",
-          field: "part",
+          headerName: 'Part',
+          field: 'part',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "File Name",
-          field: "filename",
+          headerName: 'File Name',
+          field: 'fileName',
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer"
+          cellRenderer: 'fileViewRenderer'
         },
         {
-          headerName: "Material",
-          field: "material",
+          headerName: 'Material',
+          field: 'material',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Equipment",
-          field: "equipment",
+          headerName: 'Equipment',
+          field: 'equipment',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         // {
-        //   headerName: "Post-Process",
-        //   field: "postProcess",
+        //   headerName: 'Post-Process',
+        //   field: 'postProcess',
         //   hide: false,
         //   sortable: true,
         //   filter: true,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // },
         // {
-        //   headerName: "NDA",
-        //   field: "nda",
+        //   headerName: 'NDA',
+        //   field: 'nda',
         //   hide: false,
         //   sortable: true,
         //   filter: false,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // },
         {
-          headerName: "Manual Price",
-          field: "price",
+          headerName: 'Manual Price',
+          field: 'price',
           hide: false,
           sortable: true,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         }
       ]
     ];
@@ -211,7 +211,7 @@ export class QueuedManualPriceComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
+        this.router.navigateByUrl(this.router.url + '/' + event.data.id);
       }
     };
     this.selectedTabId$.subscribe(value => {
@@ -249,7 +249,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getQueuedManualPricing({ page, size: 1000, sort: "id,ASC", q })
+          .getQueuedManualPricing({ page, size: 1000, sort: 'id,ASC', q })
           .toPromise();
 
         if (!res.content) {
@@ -259,16 +259,17 @@ export class QueuedManualPriceComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
-            customer: "",
+            subOrder: part.id,
+            customer: '',
             rfq: part.rfqMedia.projectRfqId,
-            part: part.rfqMedia.projectRfqId + "." + part.id,
-            filename: part.rfqMedia.media.name,
+            part: `${part.rfqMedia.projectRfqId}.${part.id}`,
+            fileName: part.rfqMedia.media.name,
             quantity: part.quantity,
             material: part.materialName,
             process: part.processTypeName,
-            roughness: "",
-            postProcess: "",
-            price: part.shippingCost ? `$ ${part.shippingCost}` : ""
+            roughness: '',
+            postProcess: '',
+            price: part.shippingCost ? `$ ${part.shippingCost}` : ''
           }))
         );
 
@@ -292,7 +293,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getManuallyPriced({ page, size: 1000, sort: "id,ASC", q })
+          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q })
           .toPromise();
 
         if (!res.content) {
@@ -302,20 +303,21 @@ export class QueuedManualPriceComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
+            subOrder: part.id,
             rfq: part.rfqMedia.projectRfqId,
-            part: part.rfqMedia.projectRfqId + "." + part.id,
-            filename: part.rfqMedia.media.name,
+            part: part.rfqMedia.projectRfqId + '.' + part.id,
+            fileName: part.rfqMedia.media.name,
             quantity: part.quantity,
             material: part.materialName,
             process: part.processTypeName,
-            roughness: "",
-            postProcess: ""
+            roughness: '',
+            postProcess: ''
             // manualPrice:
             //   part.partQuoteList && part.partQuoteList.length > 0
             //     ? part.partQuoteList[0].totalCost
             //       ? `$ ${part.shippingCost}`
-            //       : ""
-            //     : ""
+            //       : ''
+            //     : ''
           }))
         );
 
@@ -336,9 +338,9 @@ export class QueuedManualPriceComponent implements OnInit {
               ...this.rowData[1][findIndex],
               price: this.currencyPipe.transform(
                 partQuote.totalCost,
-                "USD",
-                "symbol",
-                "0.0-3"
+                'USD',
+                'symbol',
+                '0.0-3'
               )
             };
           });
@@ -361,7 +363,7 @@ export class QueuedManualPriceComponent implements OnInit {
     console.log(row);
     this.modalService.open(content, {
       centered: true,
-      windowClass: "file-viewer-modal"
+      windowClass: 'file-viewer-modal'
     });
   }
 }

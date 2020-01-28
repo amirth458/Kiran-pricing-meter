@@ -1,19 +1,19 @@
-import { ICellRendererAngularComp } from "ag-grid-angular";
-import { Component } from "@angular/core";
+import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { Component } from '@angular/core';
 
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import { OrdersService } from "../../service/orders.service";
+import { OrdersService } from '../../service/orders.service';
 
-import { Part } from "../../model/part.model";
-import { Util } from "../../util/Util";
-import { combineLatest } from "rxjs";
+import { combineLatest } from 'rxjs';
+
+import { Part } from '../../model/part.model';
 
 @Component({
-  selector: "app-file-view-renderer",
-  templateUrl: "./file-view-renderer.component.html",
-  styleUrls: ["./file-view-renderer.component.css"]
+  selector: 'app-file-view-renderer',
+  templateUrl: './file-view-renderer.component.html',
+  styleUrls: ['./file-view-renderer.component.css']
 })
 export class FileViewRendererComponent implements ICellRendererAngularComp {
   params: any;
@@ -45,7 +45,7 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
       this.partInfo = order;
       this.modalService.open(content, {
         centered: true,
-        windowClass: "file-viewer-modal"
+        windowClass: 'file-viewer-modal'
       });
       this.spinner.hide();
     });
