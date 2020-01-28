@@ -99,7 +99,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
       },
       {
         headerName: "File Name",
-        field: "filename",
+        field: "fileName",
         hide: false,
         sortable: true,
         filter: false,
@@ -267,10 +267,11 @@ export class PriceViewComponent implements OnInit, OnChanges {
       this.rowData = [
         {
           id: this.part.id,
+          subOrder: this.part.id,
           customer: this.customer.name,
           rfq: this.part.rfqMedia.projectRfqId,
           part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
-          filename: this.part.rfqMedia.media.name,
+          fileName: this.part.rfqMedia.media.name,
           quantity: this.part.quantity,
           material: this.part.materialName,
           process: this.part.processTypeName,
