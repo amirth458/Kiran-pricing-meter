@@ -1,32 +1,27 @@
-import { Util } from "./../../../../../util/Util";
-import { CustomerData } from "src/app/model/user.model";
-import { PartQuote, Address } from "./../../../../../model/part.model";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
-import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  Output,
-  EventEmitter
-} from "@angular/core";
-import { GridOptions } from "ag-grid-community";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { Part } from "src/app/model/part.model";
-import { catchError } from "rxjs/operators";
-import { HttpErrorResponse } from "@angular/common/http";
-import { ToastrService } from "ngx-toastr";
-import { throwError } from "rxjs";
-import { DatePipe, CurrencyPipe } from "@angular/common";
-import { MetadataService } from "src/app/service/metadata.service";
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DatePipe, CurrencyPipe } from '@angular/common';
+
+import { GridOptions } from 'ag-grid-community';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+
+import { CustomerData } from 'src/app/model/user.model';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { Part } from 'src/app/model/part.model';
+import { PartQuote, Address } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { Util } from '../../../../../util/Util';
 
 @Component({
-  selector: "app-price-view",
-  templateUrl: "./price-view.component.html",
-  styleUrls: ["./price-view.component.css"]
+  selector: 'app-price-view',
+  templateUrl: './price-view.component.html',
+  styleUrls: ['./price-view.component.css']
 })
 export class PriceViewComponent implements OnInit, OnChanges {
   @Input() part: Part;
@@ -34,7 +29,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
   @Input() partQuote: PartQuote;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
 
-  stage = "unset";
+  stage = 'unset';
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -64,7 +59,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
     public currencyPipe: CurrencyPipe
   ) {
     this.metadataService
-      .getProcessMetaData("invoice_item")
+      .getProcessMetaData('invoice_item')
       .subscribe(invoiceItems => {
         this.invoiceItems = invoiceItems;
       });
@@ -72,86 +67,84 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.updateRowData();
-
     this.columnDefs = [
       {
-        headerName: "Customer",
-        field: "customer",
+        headerName: 'Customer',
+        field: 'customer',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "RFQ",
-        field: "rfq",
+        headerName: 'RFQ',
+        field: 'rfq',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       },
       {
-        headerName: "Part",
-        field: "part",
+        headerName: 'Part',
+        field: 'part',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       },
       {
-        headerName: "File Name",
-        field: "fileName",
+        headerName: 'File Name',
+        field: 'fileName',
         hide: false,
         sortable: true,
         filter: false,
-        cellRenderer: "fileViewRenderer"
+        cellRenderer: 'fileViewRenderer'
       },
       {
-        headerName: "Quantity",
-        field: "quantity",
+        headerName: 'Quantity',
+        field: 'quantity',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       },
       {
-        headerName: "Material",
-        field: "material",
+        headerName: 'Material',
+        field: 'material',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Process",
-        field: "process",
+        headerName: 'Process',
+        field: 'process',
         hide: false,
         sortable: true,
         filter: false
       },
       // {
-      //   headerName: "Roughness",
-      //   field: "roughness",
+      //   headerName: 'Roughness',
+      //   field: 'roughness',
       //   hide: false,
       //   sortable: true,
       //   filter: false,
-      //   cellClass: "text-center"
+      //   cellClass: 'text-center'
       // },
       // {
-      //   headerName: "Post-Process",
-      //   field: "postProcess",
+      //   headerName: 'Post-Process',
+      //   field: 'postProcess',
       //   hide: false,
       //   sortable: true,
       //   filter: true,
-      //   cellClass: "text-center"
+      //   cellClass: 'text-center'
       // },
       {
-        headerName: "Price",
-        field: "price",
+        headerName: 'Price',
+        field: 'price',
         hide: false,
         sortable: true,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       }
     ];
-
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -183,7 +176,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
   onSave() {
     this.modalService.dismissAll();
-    this.stage = "set";
+    this.stage = 'set';
 
     this.pricingForm.setValue({
       ...this.pricingForm.value,
@@ -202,7 +195,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
     const data = {
       expiredAt:
-        this.datePipe.transform(Date.now(), "yyyy-MM-ddTHH:mm:ss.SSS") + "Z",
+        this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
       id: 0,
       isExpired: null,
       isManualPricing: true,
@@ -240,7 +233,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
       .createPartQuoteDetail(data)
       .pipe(catchError(e => this.handleError(e)))
       .subscribe(() => {
-        this.toastrService.success("Part Quote created successfully.");
+        this.toastrService.success('Part Quote created successfully.');
         this.manualQuote.emit();
       });
   }
@@ -248,13 +241,10 @@ export class PriceViewComponent implements OnInit, OnChanges {
   handleError(error: HttpErrorResponse) {
     const message = error.error.message;
     this.toastrService.error(`${message} Please contact your admin`);
-    return throwError("Error");
+    return throwError('Error');
   }
 
   onRecommendModalClose(ev) {
-    if (ev) {
-      console.log(ev);
-    }
     this.modalService.dismissAll();
   }
 
@@ -270,19 +260,19 @@ export class PriceViewComponent implements OnInit, OnChanges {
           subOrder: this.part.id,
           customer: this.customer.name,
           rfq: this.part.rfqMedia.projectRfqId,
-          part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
+          part: this.part.rfqMedia.projectRfqId + '.' + this.part.id,
           fileName: this.part.rfqMedia.media.name,
           quantity: this.part.quantity,
           material: this.part.materialName,
           process: this.part.processTypeName,
-          roughness: "",
-          postProcess: "",
+          roughness: '',
+          postProcess: '',
           price: this.partQuote
             ? this.currencyPipe.transform(
                 this.partQuote.totalCost,
-                "USD",
-                "symbol",
-                "0.0-3"
+                'USD',
+                'symbol',
+                '0.0-3'
               )
             : this.part.partStatusType.displayName
         }
@@ -304,9 +294,9 @@ export class PriceViewComponent implements OnInit, OnChanges {
 
   getInvoiceItem(id: number) {
     if (!this.invoiceItems) {
-      return "";
+      return '';
     }
     const found = this.invoiceItems.find(item => item.id === id);
-    return found ? found.name : "";
+    return found ? found.name : '';
   }
 }
