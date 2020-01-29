@@ -1,14 +1,15 @@
-import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
-import { GridOptions, GridApi } from "ag-grid-community";
-import { NgxSpinnerService } from "ngx-spinner";
-import { CustomerData } from "src/app/model/user.model";
-import { CustomerService } from "./../../../../../service/customer.service";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { Pageable } from "./../../../../../model/pageable.model";
-import { Part } from "./../../../../../model/part.model";
-import { CurrencyPipe } from "@angular/common";
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+
+import { GridOptions } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { CustomerService } from './../../../../../service/customer.service';
+import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
+import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
+import { Pageable } from './../../../../../model/pageable.model';
+import { Part } from './../../../../../model/part.model';
 
 @Component({
   selector: 'app-recent-auto-prices',
@@ -37,80 +38,80 @@ export class RecentAutoPricesComponent implements OnInit {
   ngOnInit() {
     this.columnDefs = [
       // {
-      //   headerName: "Customer",
-      //   field: "customer",
+      //   headerName: 'Customer',
+      //   field: 'customer',
       //   hide: false,
       //   sortable: true,
       //   filter: false
       // },
       {
-        headerName: "RFQ",
-        field: "rfq",
+        headerName: 'RFQ',
+        field: 'rfq',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       },
       {
-        headerName: "Part",
-        field: "part",
+        headerName: 'Part',
+        field: 'part',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       },
       {
-        headerName: "File Name",
-        field: "filename",
+        headerName: 'File Name',
+        field: 'fileName',
         hide: false,
         sortable: true,
         filter: false,
-        cellRenderer: "fileViewRenderer"
+        cellRenderer: 'fileViewRenderer'
       },
       {
-        headerName: "Quantity",
-        field: "quantity",
+        headerName: 'Quantity',
+        field: 'quantity',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       },
       {
-        headerName: "Material",
-        field: "material",
+        headerName: 'Material',
+        field: 'material',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Process",
-        field: "process",
+        headerName: 'Process',
+        field: 'process',
         hide: false,
         sortable: true,
         filter: false
       },
       // {
-      //   headerName: "Roughness",
-      //   field: "roughness",
+      //   headerName: 'Roughness',
+      //   field: 'roughness',
       //   hide: false,
       //   sortable: true,
       //   filter: false,
-      //   cellClass: "text-center"
+      //   cellClass: 'text-center'
       // },
       // {
-      //   headerName: "Post-Process",
-      //   field: "postProcess",
+      //   headerName: 'Post-Process',
+      //   field: 'postProcess',
       //   hide: false,
       //   sortable: true,
       //   filter: true,
-      //   cellClass: "text-center"
+      //   cellClass: 'text-center'
       // },
       {
-        headerName: "Price",
-        field: "price",
+        headerName: 'Price',
+        field: 'price',
         hide: false,
         sortable: true,
-        cellClass: "text-center"
+        cellClass: 'text-center'
       }
     ];
 
@@ -139,7 +140,7 @@ export class RecentAutoPricesComponent implements OnInit {
           .getRecentAutoPrices({
             page,
             size: 1000,
-            sort: "id,ASC",
+            sort: 'id,ASC',
             q
           })
           .toPromise();
@@ -151,9 +152,10 @@ export class RecentAutoPricesComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
+            subOrder: part.id,
             rfq: part.rfqMedia.projectRfqId,
-            part: part.rfqMedia.projectRfqId + "." + part.id,
-            filename: part.rfqMedia.media.name,
+            part: `${part.rfqMedia.projectRfqId}.${part.id}`,
+            fileName: part.rfqMedia.media.name,
             quantity: part.quantity,
             material: part.materialName,
             process: part.processTypeName
@@ -178,9 +180,9 @@ export class RecentAutoPricesComponent implements OnInit {
               ...this.rowData[findIndex],
               price: this.currencyPipe.transform(
                 partQuote.totalCost,
-                "USD",
-                "symbol",
-                "0.0-3"
+                'USD',
+                'symbol',
+                '0.0-3'
               )
             };
           });

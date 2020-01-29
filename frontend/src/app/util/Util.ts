@@ -51,12 +51,14 @@ export class Util {
 
   static getBoundingBox(dimension: PartDimension, measurements: any = []) {
     if (
+      dimension && (
       dimension.x &&
       dimension.x.value &&
       dimension.y &&
       dimension.y.value &&
       dimension.z &&
       dimension.z.value
+      )
     ) {
       const measurement = Util.findMeasurementUnit(
         measurements,
