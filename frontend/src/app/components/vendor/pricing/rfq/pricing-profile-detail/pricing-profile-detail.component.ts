@@ -416,7 +416,7 @@ export class PricingProfileDetailComponent implements OnInit {
     return this.pricingDetail
       ? this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.sort(
           (a, b) => {
-            const values = ["Flat Charge", "Variable", "Multiplier"];
+            const values = ["Flat Charge", "Variable", "Multiplier", null];
             return (
               values.findIndex(item => item === a.invoiceGroup) -
               values.findIndex(item => item === b.invoiceGroup)
