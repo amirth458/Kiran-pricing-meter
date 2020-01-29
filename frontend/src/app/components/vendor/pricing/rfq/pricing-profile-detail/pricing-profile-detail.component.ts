@@ -411,4 +411,18 @@ export class PricingProfileDetailComponent implements OnInit {
   get invoiceItemKeys() {
     return Object.keys(this.totalInvoice);
   }
+
+  get pricingList() {
+    return this.pricingDetail
+      ? this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.sort(
+          (a, b) => {
+            const values = ["Flat Charge", "Variable", "Multiplier"];
+            return (
+              values.findIndex(item => item === a.invoiceGroup) -
+              values.findIndex(item => item === b.invoiceGroup)
+            );
+          }
+        )
+      : [];
+  }
 }

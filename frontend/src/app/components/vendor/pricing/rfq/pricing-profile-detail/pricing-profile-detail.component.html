@@ -216,7 +216,7 @@
           <table class="table price-profile-table">
             <thead>
               <tr>
-                <th>Invoice Group</th>
+                <!-- <th>Invoice Group</th> -->
                 <th>Invoice Item</th>
                 <th>Invoice Line Item</th>
                 <th>Value</th>
@@ -231,13 +231,12 @@
             <tbody>
               <tr
                 *ngFor="
-                  let item of pricingDetail?.pricingProfileDetailedView
-                    .partPricingProfileViews
+                  let item of pricingList
                 "
               >
-                <td>
+                <!-- <td>
                   {{ item.invoiceGroup }}
-                </td>
+                </td> -->
                 <td>
                   {{
                     item.processPricingParameters.invoiceLineItem.invoiceItem
