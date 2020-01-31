@@ -11,10 +11,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
 import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
-import { GridOptions } from "ag-grid-community";
 import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
-import { MetadataService } from "src/app/service/metadata.service";
 import { CurrencyPipe } from "@angular/common";
 import { TemplateRendererComponent } from "src/app/common/template-renderer/template-renderer.component";
 
