@@ -1,18 +1,14 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
-import { FilterOption } from "./../model/vendor.model";
-import { environment } from "./../../environments/environment";
-import { Part, PartDimension, ProcessProfile } from "../model/part.model";
-import { Pageable } from "./../model/pageable.model";
-import { map } from "rxjs/operators";
-import {
-  RfqData,
-  PricingProfileDetailedView,
-  PricingProfile,
-  PartQuote
-} from "./../model/part.model";
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
+
+import { environment } from '../../environments/environment';
+import { FilterOption } from '../model/vendor.model';
+import { Part, PartDimension, ProcessProfile } from '../model/part.model';
+import { Pageable } from '../model/pageable.model';
+import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
+import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
 
 @Injectable({
   providedIn: "root"
@@ -175,4 +171,9 @@ export class RfqPricingService {
     const url = `${environment.managementBaseUrl}/process-pricing-profile/${profileId}/price`;
     return this.http.post<any>(url, {});
   }
+
+  getScreenPricingBreakdown(breakDown: PricingBreakDown): Observable<PricingBreakdown> {
+    return this.http.post<PricingBreakdown>(`${environment.apiBaseUrl}/part-pricing-breakdown`, breakDown);
+  }
+
 }
