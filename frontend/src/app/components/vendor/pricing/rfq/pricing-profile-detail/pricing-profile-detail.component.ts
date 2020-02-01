@@ -1,26 +1,24 @@
-import { UserService } from "src/app/service/user.service";
-import { CustomerData } from "src/app/model/user.model";
-import {
-  Part,
-  RfqData,
-  PartQuote,
-  PricingProfileDetailedView
-} from "./../../../../../model/part.model";
-import { NgxSpinnerService } from "ngx-spinner";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit } from "@angular/core";
-import { GridOptions } from "ag-grid-community";
-import { ActivatedRoute, Router } from "@angular/router";
-import { combineLatest } from "rxjs";
-import { MetadataService } from "src/app/service/metadata.service";
-import { CurrencyPipe } from "@angular/common";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GridOptions } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { combineLatest } from 'rxjs';
+
+import { CustomerData } from 'src/app/model/user.model';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import { Part, RfqData, PartQuote, PricingProfileDetailedView } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { PricingBreakDown, PricingBreakdown } from '../../../../../model/pricing.breakdown';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
-  selector: "app-pricing-profile-detail",
-  templateUrl: "./pricing-profile-detail.component.html",
-  styleUrls: ["./pricing-profile-detail.component.css"]
+  selector: 'app-pricing-profile-detail',
+  templateUrl: './pricing-profile-detail.component.html',
+  styleUrls: ['./pricing-profile-detail.component.css']
 })
 export class PricingProfileDetailComponent implements OnInit {
   frameworkComponents = {
@@ -249,6 +247,10 @@ export class PricingProfileDetailComponent implements OnInit {
   partId: any;
   profileId: any;
 
+  breakDownGridOptions: Array<GridOptions>;
+  breakDownColumnDefs = [];
+  breakDownInfo: PricingBreakdown;
+
   constructor(
     private pricingService: RfqPricingService,
     private spinner: NgxSpinnerService,
@@ -286,7 +288,109 @@ export class PricingProfileDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.configureBreakDownColumns();
+    this.breakDownGridOptions = [
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.breakDownColumnDefs[0],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35,
+        suppressHorizontalScroll: true
+      },
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.breakDownColumnDefs[1],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35,
+        suppressHorizontalScroll: true
+      }
+    ];
+  }
+
+  configureBreakDownColumns() {
+    this.breakDownColumnDefs = [
+      [
+        {
+          headerName: 'Invoice Item',
+          field: 'invoiceItem',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Quantity',
+          field: 'quantity',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Unit Price',
+          field: 'unitPrice',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Total Invoice Item Cost',
+          field: 'totalInvoiceItem',
+          hide: false,
+          sortable: true,
+          filter: false,
+          valueFormatter: x => `$ ${x.value ? x.value.toLocaleString() : 0}`
+        }
+      ],
+      [
+        {
+          headerName: 'Parameters Group',
+          field: 'parameterGroup',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Invoice Item',
+          field: 'invoiceItem',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Invoice Line Item',
+          field: 'invoiceLineItem',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Item Cost',
+          field: 'lineItemCost',
+          hide: true,
+          sortable: true,
+          filter: false,
+          valueFormatter: x => `$ ${x.value ? x.value.toLocaleString() : 0}`
+        },
+        {
+          headerName: 'Multiplier',
+          field: 'multiplier',
+          hide: true,
+          sortable: true,
+          filter: false
+        },
+        {
+          headerName: 'Invoice Item Cost',
+          field: 'finalInvoiceItemCost',
+          hide: false,
+          sortable: true,
+          filter: false,
+          valueFormatter: x => `$ ${x.value ? x.value.toLocaleString() : 0}`
+        }
+      ]
+    ];
+  }
 
   onGridReady(ev, type) {
     this.gridOptions[type].api = ev.api;
@@ -398,6 +502,38 @@ export class PricingProfileDetailComponent implements OnInit {
     this.modalService.open(content, {
       centered: true,
       windowClass: "pricing-view-modal"
+    });
+  }
+
+  onBreakdownGridReady(idx, ev) {
+    if(this.breakDownGridOptions[idx]) {
+      this.breakDownGridOptions[idx].api = ev.api;
+      this.breakDownGridOptions[idx].api.sizeColumnsToFit();
+    }
+  }
+
+  viewBreakDownInfo(content) {
+    this.spinner.show();
+    this.pricingService.getScreenPricingBreakdown({
+      partId: this.partId,
+      processPricingId: this.pricingProfile.id
+    } as PricingBreakDown).subscribe(v => {
+      this.breakDownInfo = v;
+      this.modalService.open(content, {
+        centered: true,
+        windowClass: 'break-down-modal'
+      });
+      if((this.breakDownInfo.costSummuryView || []).length > 0) {
+        let cost = 0;
+        this.breakDownInfo.costSummuryView.map(i => (cost += i.totalInvoiceItem));
+        this.breakDownInfo.costSummuryView.push({
+          invoiceItem: 'Total Cost',
+          quantity: null,
+          unitPrice: null,
+          totalInvoiceItem: cost
+        });
+      }
+      this.spinner.hide();
     });
   }
 

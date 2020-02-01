@@ -1,30 +1,25 @@
-import { UserService } from "src/app/service/user.service";
-import { CustomerData } from "src/app/model/user.model";
-import {
-  Part,
-  RfqData,
-  PartQuote,
-  PricingProfileDetailedView,
-  ProcessProfile
-} from "./../../../../../model/part.model";
-import { NgxSpinnerService } from "ngx-spinner";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
-import { GridOptions } from "ag-grid-community";
-import { ActivatedRoute, Router } from "@angular/router";
-import { combineLatest } from "rxjs";
-import { MetadataService } from "src/app/service/metadata.service";
-import { CurrencyPipe } from "@angular/common";
-import { TemplateRendererComponent } from "src/app/common/template-renderer/template-renderer.component";
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { combineLatest } from 'rxjs';
+
+import { CustomerData } from 'src/app/model/user.model';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import { Part, RfqData, PartQuote, PricingProfileDetailedView, ProcessProfile } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
-  selector: "app-process-profile-detail",
-  templateUrl: "./process-profile-detail.component.html",
-  styleUrls: ["./process-profile-detail.component.css"]
+  selector: 'app-process-profile-detail',
+  templateUrl: './process-profile-detail.component.html',
+  styleUrls: ['./process-profile-detail.component.css']
 })
 export class ProcessProfileDetailComponent implements OnInit {
-  @ViewChild("viewPricingProfileCell") viewPricingProfileCell: TemplateRef<any>;
+  @ViewChild('viewPricingProfileCell') viewPricingProfileCell: TemplateRef<any>;
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent,
     templateRenderer: TemplateRendererComponent
@@ -32,7 +27,7 @@ export class ProcessProfileDetailComponent implements OnInit {
   columnDefs = [];
   gridOptions;
   rowData = [];
-  selectedTab = "dimension";
+  selectedTab = 'dimension';
   pricingData = [];
   pricingProfiles: PricingProfileDetailedView[] = [];
   postProcesses;
@@ -94,7 +89,7 @@ export class ProcessProfileDetailComponent implements OnInit {
 
   backButton() {
     this.router.navigateByUrl(
-      this.router.url.substr(0, this.router.url.indexOf("/pricing-profile"))
+      this.router.url.substr(0, this.router.url.indexOf('/pricing-profile'))
     );
   }
 
@@ -102,145 +97,145 @@ export class ProcessProfileDetailComponent implements OnInit {
     this.columnDefs = [
       [
         {
-          headerName: "Customer",
-          field: "customer",
+          headerName: 'Customer',
+          field: 'customer',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "RFQ",
-          field: "rfq",
+          headerName: 'RFQ',
+          field: 'rfq',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "Part",
-          field: "part",
+          headerName: 'Part',
+          field: 'part',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "File Name",
-          field: "filename",
+          headerName: 'File Name',
+          field: 'filename',
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer"
+          cellRenderer: 'fileViewRenderer'
         },
         {
-          headerName: "Quantity",
-          field: "quantity",
+          headerName: 'Quantity',
+          field: 'quantity',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         },
         {
-          headerName: "Material",
-          field: "material",
+          headerName: 'Material',
+          field: 'material',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Process",
-          field: "process",
+          headerName: 'Process',
+          field: 'process',
           hide: false,
           sortable: true,
           filter: false
         },
         // {
-        //   headerName: "Roughness",
-        //   field: "roughness",
+        //   headerName: 'Roughness',
+        //   field: 'roughness',
         //   hide: false,
         //   sortable: true,
         //   filter: false,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // },
         // {
-        //   headerName: "Post-Process",
-        //   field: "postProcess",
+        //   headerName: 'Post-Process',
+        //   field: 'postProcess',
         //   hide: false,
         //   sortable: true,
         //   filter: true,
-        //   cellClass: "text-center"
+        //   cellClass: 'text-center'
         // },
         {
-          headerName: "Price",
-          field: "price",
+          headerName: 'Price',
+          field: 'price',
           hide: false,
           sortable: true,
-          cellClass: "text-center"
+          cellClass: 'text-center'
         }
       ],
       [
         {
-          headerName: "Pricing No",
-          field: "pricingProfileId",
+          headerName: 'Pricing No',
+          field: 'pricingProfileId',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Pricing Profile",
-          field: "pricingProfileName",
+          headerName: 'Pricing Profile',
+          field: 'pricingProfileName',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Process Profile",
-          field: "processProfileName",
+          headerName: 'Process Profile',
+          field: 'processProfileName',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Parameter Set Nickname",
-          field: "parameterSetNickname",
+          headerName: 'Parameter Set Nickname',
+          field: 'parameterSetNickname',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Equipment",
-          field: "equipment",
+          headerName: 'Equipment',
+          field: 'equipment',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Material",
-          field: "material",
+          headerName: 'Material',
+          field: 'material',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Pricing Condition 1",
-          field: "pricingCondition",
+          headerName: 'Pricing Condition 1',
+          field: 'pricingCondition',
           hide: false,
           sortable: true,
           filter: false,
           tooltip: param => param.value
         },
         {
-          headerName: "Price",
+          headerName: 'Price',
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "templateRenderer",
+          cellRenderer: 'templateRenderer',
           cellRendererParams: {
             ngTemplate: this.viewPricingProfileCell
           }
@@ -272,19 +267,19 @@ export class ProcessProfileDetailComponent implements OnInit {
         id: this.part.id,
         customer: this.customer.name,
         rfq: this.part.rfqMedia.projectRfqId,
-        part: this.part.rfqMedia.projectRfqId + "." + this.part.id,
+        part: `${this.part.rfqMedia.projectRfqId}.${this.part.id}`,
         filename: this.part.rfqMedia.media.name,
         quantity: this.part.quantity,
         material: this.part.materialName,
         process: this.part.processTypeName,
-        roughness: "",
-        postProcess: "",
+        roughness: '',
+        postProcess: '',
         price: this.partQuote
           ? this.currencyPipe.transform(
               this.partQuote.totalCost,
-              "USD",
-              "symbol",
-              "0.0-3"
+              'USD',
+              'symbol',
+              '0.0-3'
             )
           : this.part.partStatusType.displayName
       }
@@ -300,10 +295,10 @@ export class ProcessProfileDetailComponent implements OnInit {
             .map(
               item => item.machineServingMaterial.vendorMachinery.equipment.name
             )
-            .join(", "),
+            .join(', '),
           material: this.processProfile.processMachineServingMaterialList
             .map(item => item.machineServingMaterial.material.name)
-            .join(", "),
+            .join(', '),
           pricingCondition:
             processPricing.processPricingConditions[0] &&
             `${processPricing.processPricingConditions[0].processPricingConditionType.name} ${processPricing.processPricingConditions[0].operatorType.symbol}

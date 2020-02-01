@@ -94,7 +94,7 @@ export class PartInformationComponent implements OnInit {
   getPermittedCountries() {
     return (
       this.rfq &&
-      this.rfq.projectProfile.countryIds
+      (this.rfq.projectProfile.countryIds || [])
         .map(item => {
           const found =
             this.countries &&
@@ -108,7 +108,7 @@ export class PartInformationComponent implements OnInit {
   getAntiMatch() {
     return (
       this.rfq &&
-      this.rfq.projectProfile.antiMatchCertIds
+      (this.rfq.projectProfile.antiMatchCertIds || [])
         .map(item => {
           const found =
             this.antiMatchCerts &&
@@ -122,7 +122,7 @@ export class PartInformationComponent implements OnInit {
   getRequiredCerts() {
     return (
       this.rfq &&
-      this.rfq.projectProfile.vendorCertIds
+      (this.rfq.projectProfile.vendorCertIds || [])
         .map(item => {
           const found = this.certs && this.certs.find(cert => cert.id === item);
           return found && found.name;

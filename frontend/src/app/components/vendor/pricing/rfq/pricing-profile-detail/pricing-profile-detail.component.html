@@ -27,13 +27,9 @@
         (gridReady)="onGridReady($event, 'partDetail')"
       ></ag-grid-angular>
     </div>
-    <!-- <button
-      type="button"
-      class="btn btn-primary mt-3 ml-auto"
-      (click)="showModal(modal)"
-    >
-      Show Prices
-    </button> -->
+    <div class="w-100 d-flex flex-row justify-content-end align-items-end mt-3">
+      <button class="btn btn-primary" (click)="viewBreakDownInfo(breakDownModal)">Show Prices</button>
+    </div>
   </div>
   <div class="row">
     <div class="col-6">
@@ -321,6 +317,43 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #breakDownModal let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title w-100 text-left pl-3 pr-2">
+        Pricing Breakdown for the "{{pricingProfile?.processProfile?.name}}" pricing profile
+      </h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body d-flex justify-content-center align-center overflow-auto" *ngIf="breakDownGridOptions?.length > 0">
+      <div class="col-12 pb-4">
+        <h6 class="mb-3 mt-3">Cost Summary</h6>
+        <div class="table theme-table" ngbAutofocus>
+          <ag-grid-angular
+            class="ag-theme-balham w-100 h-100"
+            [rowData]="breakDownInfo?.costSummuryView"
+            domLayout="autoHeight"
+            (gridReady)="onBreakdownGridReady(0, $event)"
+            [gridOptions]="breakDownGridOptions[0]">
+          </ag-grid-angular>
+        </div>
+        <h6 class="mb-3 mt-3">Cost Breakdown</h6>
+        <div class="table theme-table mb-4">
+          <ag-grid-angular
+            class="ag-theme-balham w-100 h-100"
+            [rowData]="breakDownInfo?.screenPricingBreakdownView"
+            domLayout="autoHeight"
+            (gridReady)="onBreakdownGridReady(1, $event)"
+            [gridOptions]="breakDownGridOptions[1]">
+          </ag-grid-angular>
         </div>
       </div>
     </div>
