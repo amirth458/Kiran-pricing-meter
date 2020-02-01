@@ -23,4 +23,5 @@ interface ScreenPricingBreakdownView {
 export interface PricingBreakDown {
   preQuoteRequestId: number;
   processPricingId: number;
+  partId: number;
 }
