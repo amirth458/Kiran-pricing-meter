@@ -12,7 +12,7 @@ import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { Part, RfqData, PartQuote, PricingProfileDetailedView } from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
-import { PricingBreakdown } from '../../../../../model/pricing.breakdown';
+import { PricingBreakDown, PricingBreakdown } from '../../../../../model/pricing.breakdown';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -513,9 +513,27 @@ export class PricingProfileDetailComponent implements OnInit {
   }
 
   viewBreakDownInfo(content) {
-    this.modalService.open(content, {
-      centered: true,
-      windowClass: 'break-down-modal'
+    this.spinner.show();
+    this.pricingService.getScreenPricingBreakdown({
+      partId: this.partId,
+      processPricingId: this.pricingProfile.id
+    } as PricingBreakDown).subscribe(v => {
+      this.breakDownInfo = v;
+      this.modalService.open(content, {
+        centered: true,
+        windowClass: 'break-down-modal'
+      });
+      if((this.breakDownInfo.costSummuryView || []).length > 0) {
+        let cost = 0;
+        this.breakDownInfo.costSummuryView.map(i => (cost += i.totalInvoiceItem));
+        this.breakDownInfo.costSummuryView.push({
+          invoiceItem: 'Total Cost',
+          quantity: null,
+          unitPrice: null,
+          totalInvoiceItem: cost
+        });
+      }
+      this.spinner.hide();
     });
   }
 

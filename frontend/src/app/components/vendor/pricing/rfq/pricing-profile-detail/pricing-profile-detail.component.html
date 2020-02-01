@@ -327,7 +327,7 @@
   <div class="modal-container">
     <div class="modal-header">
       <h5 class="modal-title w-100 text-left pl-3 pr-2">
-        Pricing Breakdown for the "Test" pricing profile
+        Pricing Breakdown for the "{{pricingProfile?.processProfile?.name}}" pricing profile
       </h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
@@ -336,7 +336,7 @@
     <div class="modal-body d-flex justify-content-center align-center overflow-auto" *ngIf="breakDownGridOptions?.length > 0">
       <div class="col-12 pb-4">
         <h6 class="mb-3 mt-3">Cost Summary</h6>
-        <div class="table theme-table">
+        <div class="table theme-table" ngbAutofocus>
           <ag-grid-angular
             class="ag-theme-balham w-100 h-100"
             [rowData]="breakDownInfo?.costSummuryView"
