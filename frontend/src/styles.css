@@ -502,6 +502,23 @@ app-dropdown-cell-renderer {
 }
 /*Bidding Confirmation Modal*/
 
+/* breakdown pricing  window */
+.break-down-modal .modal-dialog {
+  max-width: 600px;
+}
+
+.break-down-modal .modal-dialog .title {
+  color: white;
+  background: var(--theme-grid-header);
+}
+
+.break-down-modal .modal-title {
+  border-left: 4px solid var(--them-dark-blue-opaque);
+  color: var(--them-dark-blue-opaque);
+  opacity: 0.5;
+}
+/* breakdown pricing  window */
+
 .approved {
   background-color: #e0f0c9 !important;
 }
