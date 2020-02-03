@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 import { OrdersService } from '../../service/orders.service';
 
@@ -23,7 +24,8 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
   constructor(
     private modalService: NgbModal,
     public orderService: OrdersService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public toaster: ToastrService
   ) {}
 
   agInit(params: any): void {
@@ -36,20 +38,25 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
 
   onFileClicked(ev: Event, content) {
     ev.stopPropagation();
-    this.spinner.show();
-    combineLatest(
-      this.orderService.getAllMeasurementUnitType(),
-      this.orderService.getPartById(
-        this.params.data.partId || (this.params.prop ? this.params.data[this.params.prop] : this.params.data.id)
-      )
-    ).subscribe(([measurementUnits, order]) => {
-      this.measurementUnits = measurementUnits;
-      this.partInfo = order;
-      this.modalService.open(content, {
-        centered: true,
-        windowClass: 'file-viewer-modal'
+    const partId = this.params.data.partId || (this.params.prop ? this.params.data[this.params.prop] : this.params.data.id);
+    if (partId) {
+      this.spinner.show();
+      combineLatest(
+        this.orderService.getAllMeasurementUnitType(),
+        this.orderService.getPartById(
+          partId
+        )
+      ).subscribe(([measurementUnits, order]) => {
+        this.measurementUnits = measurementUnits;
+        this.partInfo = order;
+        this.modalService.open(content, {
+          centered: true,
+          windowClass: 'file-viewer-modal'
+        });
+        this.spinner.hide();
       });
-      this.spinner.hide();
-    });
+    } else {
+     this.toaster.error('Invalid part id!');
+    }
   }
 }
