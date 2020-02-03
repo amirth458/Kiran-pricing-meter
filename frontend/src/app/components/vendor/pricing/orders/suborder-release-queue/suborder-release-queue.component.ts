@@ -67,7 +67,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: 'Material',
-      field: 'materialName',
+      field: 'materialPropertyValues',
       checked: false,
       query: {
         type: '',
@@ -130,7 +130,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: 'Material',
-      field: 'materialName',
+      field: 'materialPropertyValues',
       checked: true
     },
     {
@@ -224,10 +224,11 @@ export class SuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: 'Material',
-        field: 'materialName',
+        field: 'materialPropertyValues',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
         headerName: 'Process',
