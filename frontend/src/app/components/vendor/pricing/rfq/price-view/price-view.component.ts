@@ -109,10 +109,11 @@ export class PriceViewComponent implements OnInit, OnChanges {
       },
       {
         headerName: 'Material',
-        field: 'material',
+        field: 'materialPropertyValues',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
         headerName: 'Process',
@@ -263,7 +264,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
           part: this.part.rfqMedia.projectRfqId + '.' + this.part.id,
           fileName: this.part.rfqMedia.media.name,
           quantity: this.part.quantity,
-          material: this.part.materialName,
+          materialPropertyValues: this.part.materialPropertyValues,
           process: this.part.processTypeName,
           roughness: '',
           postProcess: '',
