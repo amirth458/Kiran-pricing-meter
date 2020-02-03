@@ -77,7 +77,7 @@ export class VendorDetailsComponent implements OnInit {
       this.bidOrderId = v.bidOrderId || null;
       if (!this.bidOrderId) {
         this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
-        (this.orderDetails || []).map(order => (this.initialPrice+= order.priceAccepted));
+        (this.orderDetails || []).map(order => (this.initialPrice += order.priceAccepted));
         this.ordersService
           .getMatchedProfiles(
             this.userService.getUserInfo().id,
@@ -163,7 +163,7 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: 'Sub-Order',
-          field: 'subOrder',
+          field: 'partId',
           hide: false,
           sortable: true,
           filter: false
@@ -174,7 +174,10 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: 'fileViewRenderer'
+          cellRenderer: 'fileViewRenderer',
+          cellRendererParams: {
+            prop: 'partId'
+          }
         },
         {
           headerName: 'Price Accepted',
@@ -507,7 +510,7 @@ export class VendorDetailsComponent implements OnInit {
     if (idx === 0) {
       this.gridOptions[idx].api.setSortModel([
         {
-          colId: 'subOrder',
+          colId: 'partId',
           sort: 'desc'
         }
       ]);
@@ -536,7 +539,7 @@ export class VendorDetailsComponent implements OnInit {
 
   confirmSubOrderRelease() {
     const customerOrders = this.orderDetails.map(order => {
-      return { partId: order.subOrder, priceAccepted: order.priceAccepted };
+      return { partId: order.partId, priceAccepted: order.priceAccepted };
     });
     const vendorData = {};
     this.matchedProfiles.map(pricing => {

@@ -29,9 +29,8 @@
   <div class="select-btn-wrapper">
     <button
       class="btn btn-select"
-      [ngClass]="{ selected: selectedIds.includes(row.subOrder) }"
-      (click)="toggleSelection($event, row.subOrder)"
-    >
+      [ngClass]="{ selected: selectedIds.includes(row.partId) }"
+      (click)="toggleSelection($event, row.partId)">
       Select
     </button>
   </div>

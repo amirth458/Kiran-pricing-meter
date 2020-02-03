@@ -31,7 +31,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: 'Sub-Order',
-      field: 'subOrder',
+      field: 'partId',
       checked: false,
       query: {
         type: '',
@@ -110,7 +110,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     },
     {
       name: 'Sub-Order',
-      field: 'subOrder',
+      field: 'partId',
       checked: true
     },
     {
@@ -196,7 +196,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: 'Sub-Order',
-        field: 'subOrder',
+        field: 'partId',
         hide: false,
         sortable: true,
         filter: false
@@ -280,12 +280,10 @@ export class SuborderReleaseQueueComponent implements OnInit {
         const res = await this.orderService
           .getSubOrderReleaseQueue({ page, size: 1000, sort: 'id,ASC', q })
           .toPromise();
-
         if (!res.content) {
           break;
         }
         rows.push(...res.content);
-
         if (res.content.length === 0 || res.content.length < 1000) {
           break;
         }
@@ -337,7 +335,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
     this.gridOptions.api.setSortModel([
       {
-        colId: 'subOrder',
+        colId: 'partId',
         sort: 'desc'
       }
     ]);
@@ -361,7 +359,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       JSON.stringify(
         this.rowData.filter(
           item =>
-            this.selectedIds.find(id => id === item.subOrder) !== undefined
+            this.selectedIds.find(id => id === item.partId) !== undefined
         )
       )
     );
