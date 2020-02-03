@@ -220,7 +220,8 @@ export class ProcessProfileDetailComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          tooltip: param => param.value
+          valueFormatter: dt => (dt.value || []).join(' , '),
+          tooltip: param => (param.value || []).join(' , ')
         },
         {
           headerName: 'Pricing Condition 1',
@@ -270,7 +271,7 @@ export class ProcessProfileDetailComponent implements OnInit {
         part: `${this.part.rfqMedia.projectRfqId}.${this.part.id}`,
         filename: this.part.rfqMedia.media.name,
         quantity: this.part.quantity,
-        material: this.part.materialName,
+        materialPropertyValues: this.part.materialPropertyValues,
         process: this.part.processTypeName,
         roughness: '',
         postProcess: '',
