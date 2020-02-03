@@ -202,10 +202,11 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: 'Material',
-          field: 'materialName',
+          field: 'materialPropertyValues',
           hide: false,
           sortable: true,
-          filter: false
+          filter: false,
+          valueFormatter: dt => (dt.value || []).join(' , ')
         },
         {
           headerName: 'Process',
