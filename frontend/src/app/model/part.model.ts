@@ -146,8 +146,12 @@ export interface Part {
   rfqMedia: RfqMedia;
   processTypeId: number;
   processTypeName: string;
-  materialId: number;
-  materialName: string;
+  materialPropertyType: string;
+  materialIds: Array<number>,
+  materialPropertyValues: Array<string>;
+  equipmentPropertyType: string;
+  equipmentPropertyValues: Array<string>,
+  equipmentIds: Array<number>,
   cuttingBondingAllowed: boolean;
   quantity: number;
   targetDeliveryDate: string;
