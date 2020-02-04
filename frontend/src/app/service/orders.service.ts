@@ -193,17 +193,19 @@ export class OrdersService {
       },
       {
         headerName: 'Material',
-        field: 'material',
+        field: 'materialPropertyValues',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
         headerName: 'Technology',
-        field: 'process',
+        field: 'equipmentPropertyValues',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
         headerName: 'Post-Process',
