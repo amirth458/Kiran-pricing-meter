@@ -178,7 +178,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         if (event.data) {
-          this.router.navigateByUrl(`${this.router.url}/order/${event.data.subOrder}`);
+          this.router.navigateByUrl(`${this.router.url}/order/${event.data.partId}`);
         }
       }
     };
@@ -232,10 +232,11 @@ export class SuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: 'Process',
-        field: 'process',
+        field: 'equipmentPropertyValues',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
         headerName: 'NDA',
