@@ -199,7 +199,7 @@ export class OrdersService {
         filter: false
       },
       {
-        headerName: 'Process',
+        headerName: 'Technology',
         field: 'process',
         hide: false,
         sortable: true,

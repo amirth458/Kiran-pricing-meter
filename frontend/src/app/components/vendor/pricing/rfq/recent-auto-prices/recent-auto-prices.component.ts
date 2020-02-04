@@ -85,7 +85,7 @@ export class RecentAutoPricesComponent implements OnInit {
         valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
-        headerName: 'Process',
+        headerName: 'Technology',
         field: 'equipmentPropertyValues',
         hide: false,
         sortable: true,
