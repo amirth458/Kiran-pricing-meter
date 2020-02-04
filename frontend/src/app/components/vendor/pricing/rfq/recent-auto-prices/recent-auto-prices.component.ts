@@ -86,10 +86,11 @@ export class RecentAutoPricesComponent implements OnInit {
       },
       {
         headerName: 'Process',
-        field: 'process',
+        field: 'equipmentPropertyValues',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => (dt.value || []).join(' , ')
       },
       // {
       //   headerName: 'Roughness',
@@ -159,7 +160,7 @@ export class RecentAutoPricesComponent implements OnInit {
             fileName: part.rfqMedia.media.name,
             quantity: part.quantity,
             materialPropertyValues: part.materialPropertyValues,
-            process: part.processTypeName
+            equipmentPropertyValues: part.equipmentPropertyValues
           }))
         );
 
