@@ -100,11 +100,12 @@ export class QueuedManualPriceComponent implements OnInit {
           valueFormatter: dt => (dt.value || []).join(' , ')
         },
         {
-          headerName: 'Process',
-          field: 'process',
+          headerName: 'Technology',
+          field: 'equipmentPropertyValues',
           hide: false,
           sortable: true,
-          filter: false
+          filter: false,
+          valueFormatter: dt => (dt.value || []).join(' , ')
         }
         // {
         //   headerName: 'Roughness',
@@ -164,18 +165,20 @@ export class QueuedManualPriceComponent implements OnInit {
         },
         {
           headerName: 'Material',
-          field: 'material',
-          hide: false,
-          sortable: true,
-          filter: false
-        },
-        {
-          headerName: 'Equipment',
-          field: 'equipment',
+          field: 'materialPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
-          cellClass: 'text-center'
+          valueFormatter: dt => (dt.value || []).join(' , ')
+        },
+        {
+          headerName: 'Technology',
+          field: 'equipmentPropertyValues',
+          hide: false,
+          sortable: true,
+          filter: false,
+          cellClass: 'text-center',
+          valueFormatter: dt => (dt.value || []).join(' , ')
         },
         // {
         //   headerName: 'Post-Process',
@@ -267,7 +270,7 @@ export class QueuedManualPriceComponent implements OnInit {
             fileName: part.rfqMedia.media.name,
             quantity: part.quantity,
             materialPropertyValues: part.materialPropertyValues,
-            process: part.processTypeName,
+            equipmentPropertyValues: part.equipmentPropertyValues,
             roughness: '',
             postProcess: '',
             price: part.shippingCost ? `$ ${part.shippingCost}` : ''
@@ -310,7 +313,7 @@ export class QueuedManualPriceComponent implements OnInit {
             fileName: part.rfqMedia.media.name,
             quantity: part.quantity,
             materialPropertyValues: part.materialPropertyValues,
-            process: part.processTypeName,
+            equipmentPropertyValues: part.equipmentPropertyValues,
             roughness: '',
             postProcess: ''
             // manualPrice:

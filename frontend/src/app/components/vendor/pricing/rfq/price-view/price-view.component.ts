@@ -116,7 +116,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
         valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
-        headerName: 'Process',
+        headerName: 'Technology',
         field: 'equipmentPropertyValues',
         hide: false,
         sortable: true,
