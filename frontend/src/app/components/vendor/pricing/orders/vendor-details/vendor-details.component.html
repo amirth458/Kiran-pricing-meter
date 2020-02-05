@@ -4,7 +4,7 @@
     <p class="part-header font-weight-bold">Accepted Order Details</p>
     <ng-container [ngSwitch]="type">
       <ng-container *ngSwitchCase="'release'">
-        <button class="btn green-btn release-btn" (click)="showModal(content)">
+        <button class="btn green-btn release-btn" [disabled]="matchedProfiles.length == 0" (click)="showModal(content)">
           Release Sub Orders for Bidding
         </button>
       </ng-container>

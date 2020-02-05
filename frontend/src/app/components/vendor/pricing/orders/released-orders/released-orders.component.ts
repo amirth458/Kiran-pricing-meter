@@ -15,6 +15,8 @@ import { TemplateRendererComponent } from './../../../../../common/template-rend
 export class ReleasedOrdersComponent implements OnInit {
   type = ['search', 'filter'];
 
+  pageSize = 10;
+
   searchColumns = this.orderService.getGridSearchColumns();
   filterColumns = this.orderService.getGridFilterColumns();
 
@@ -43,6 +45,8 @@ export class ReleasedOrdersComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      pagination: true,
+      paginationPageSize: this.pageSize,
       onRowClicked: event => {
         this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
@@ -55,6 +59,9 @@ export class ReleasedOrdersComponent implements OnInit {
     this.autoGroupColumnDef = {
       headerName: 'Vendor Order ID',
     };
+  }
+  pageSizeChanged(value) {
+    this.gridOptions.api.paginationSetPageSize(Number(value));
   }
 
   getReleasedBiddingOrders() {

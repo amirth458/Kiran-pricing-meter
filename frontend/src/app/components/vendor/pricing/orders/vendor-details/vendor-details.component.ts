@@ -76,7 +76,7 @@ export class VendorDetailsComponent implements OnInit {
       this.orderId = v.orderId || null;
       this.bidOrderId = v.bidOrderId || null;
       if (!this.bidOrderId) {
-        this.orderDetails = JSON.parse(localStorage.getItem('selectedSubOrders'));
+        this.orderDetails = JSON.parse(localStorage.getItem('admin-selectedSubOrders'));
         (this.orderDetails || []).map(order => (this.initialPrice += order.priceAccepted));
         this.ordersService
           .getMatchedProfiles(

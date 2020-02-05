@@ -1,28 +1,32 @@
 <div class="wrapper d-flex">
-    <div class="table-control">
-      <app-column-search-filter
-        width="200px"
-        [type]="type"
-        [(filterColumns)]="filterColumns"
-        (filterColumnsChange)="filterColumnsChange($event)"
-        [(searchColumns)]="searchColumns"
-        (searchColumnsChange)="searchColumnsChange($event)"
-      >
-      </app-column-search-filter>
-    </div>
-    <div class="table theme-table ml-4 d-flex flex-column">
-      <div class="mb-3 row">
-        <div class="form-group theme col-12 d-flex flex-row m-0">
-          <input class="form-control col-md-3" placeholder="Vendor Order ID" />
-        </div>
-      </div>
-      <ag-grid-angular
-        class="ag-theme-balham w-100 flex-grow-1"
-        [rowData]="rowData"
-        [gridOptions]="gridOptions"
-        (gridReady)="onGridReady($event)"
-        [autoGroupColumnDef]="autoGroupColumnDef"
-      >
-      </ag-grid-angular>
-    </div>
+  <div class="table-control">
+    <app-column-search-filter width="200px" [type]="type" [(filterColumns)]="filterColumns"
+      (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
+      (searchColumnsChange)="searchColumnsChange($event)">
+    </app-column-search-filter>
   </div>
+  <div class="table theme-table ml-4 d-flex flex-column">
+    <div class="mb-3 row">
+      <div class="form-group theme col-10 d-flex flex-row m-0">
+        <input class="form-control col-md-3" placeholder="Vendor Order ID" />
+      </div>
+
+      <div class="col-2 page-size mt-2 pl-5 pr-0">
+        <span>
+          Page Size:
+        </span>
+        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+          <option selected value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </div>
+
+    </div>
+    <ag-grid-angular class="ag-theme-balham w-100 flex-grow-1" [rowData]="rowData" [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)" [autoGroupColumnDef]="autoGroupColumnDef">
+    </ag-grid-angular>
+  </div>
+</div>

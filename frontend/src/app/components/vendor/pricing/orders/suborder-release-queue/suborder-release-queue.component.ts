@@ -17,6 +17,7 @@ import { Util } from '../../../../../util/Util';
 export class SuborderReleaseQueueComponent implements OnInit {
   @ViewChild('selectBtn') selectBtn: TemplateRef<any>;
 
+  pageSize = 10;
   type = ['search', 'filter'];
 
   searchColumns = [
@@ -169,13 +170,15 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   ngOnInit() {
     this.initColumns();
-    localStorage.setItem('selectedSubOrders', '');
+    localStorage.setItem('admin-selectedSubOrders', '');
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      pagination: true,
+      paginationPageSize: this.pageSize,
       onRowClicked: event => {
         if (event.data) {
           this.router.navigateByUrl(`${this.router.url}/order/${event.data.partId}`);
@@ -316,6 +319,10 @@ export class SuborderReleaseQueueComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
+  pageSizeChanged(value) {
+    this.gridOptions.api.paginationSetPageSize(Number(value));
+  }
+
   searchColumnsChange(columns) {
     this.searchColumns.map(column => {
       const columnInstance = this.gridOptions.api.getFilterInstance(
@@ -357,7 +364,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   advanceToVendorSelection() {
     localStorage.setItem(
-      'selectedSubOrders',
+      'admin-selectedSubOrders',
       JSON.stringify(
         this.rowData.filter(
           item =>

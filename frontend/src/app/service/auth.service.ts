@@ -39,19 +39,19 @@ export class AuthService {
   }
 
   setAuthData(data) {
-    localStorage.setItem('dms-auth', JSON.stringify(data));
+    localStorage.setItem('admin-auth', JSON.stringify(data));
   }
 
   getAuthData() {
-    return JSON.parse(localStorage.getItem('dms-auth'));
+    return JSON.parse(localStorage.getItem('admin-auth'));
   }
 
   logout(): any {
-    localStorage.removeItem('auth');
-    localStorage.removeItem('remember_me');
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
-    localStorage.removeItem('user');
+    localStorage.removeItem('admin-auth');
+    localStorage.removeItem('admin-remember_me');
+    localStorage.removeItem('admin-email');
+    localStorage.removeItem('admin-password');
+    localStorage.removeItem('admin-user');
 
     this.store.dispatch({
       type: AppTypes.UpdateState,
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   getProfile(): any {
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
@@ -74,7 +74,7 @@ export class AuthService {
   }
 
   getVendor(): any {
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    const data = JSON.parse(localStorage.getItem('dms-auth'));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     if (data) {
       const expireDate = new Date(data.expiryDate);
       const now = new Date();

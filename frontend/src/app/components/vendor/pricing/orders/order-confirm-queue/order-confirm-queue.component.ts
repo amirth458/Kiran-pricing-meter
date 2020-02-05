@@ -15,6 +15,8 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
 export class OrderConfirmQueueComponent implements OnInit {
   type = ['search', 'filter'];
 
+  pageSize = 10;
+
   searchColumns = this.orderService.getGridSearchColumns();
   filterColumns = this.orderService.getGridFilterColumns();
 
@@ -43,6 +45,8 @@ export class OrderConfirmQueueComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      pagination: true,
+      paginationPageSize: this.pageSize,
       onRowClicked: event => {
         this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
@@ -56,6 +60,12 @@ export class OrderConfirmQueueComponent implements OnInit {
       headerName: 'Vendor Order ID',
     };
   }
+
+
+  pageSizeChanged(value) {
+    this.gridOptions.api.paginationSetPageSize(Number(value));
+  }
+
 
   getStartedBidOrders() {
     this.spinner.show();
