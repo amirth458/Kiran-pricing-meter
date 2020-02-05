@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     public spineer: NgxSpinnerService,
     public authService: AuthService,
     private store: Store<any>,
-    public userService: UserService) {}
+    public userService: UserService) { }
 
   ngOnInit() {
     const rememberMe = localStorage.getItem('dms-remember_me');
@@ -72,7 +72,12 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     }
     this.spineer.show();
 
-    this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe(res => {
+    this.authService.login(this.userForm.value.email, this.userForm.value.password).subscribe((res: any) => {
+
+      if (!res.roles.includes('ROLE_ADMIN')) {
+        this.loginErrorHandler({ status: 403 });
+        return;
+      }
       this.store.dispatch({
         type: AppTypes.UpdateAuthInfo,
         payload: res
@@ -91,12 +96,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         type: AppTypes.GetUserInfo
       });
 
-      // tslint:disable-next-line: no-string-literal
-      if (res['is_admin']) {
-        this.router.navigate(['/marketplace']);
-      } else {
-        this.router.navigate(['/marketplace']);
-      }
+
+      this.router.navigate(['/marketplace']);
+
       this.spineer.hide();
     }, error => {
       console.log(error);
@@ -113,6 +115,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         break;
       case 401:
         this.errorMessage = 'Login credentials is incorrect.';
+        break;
+      case 403:
+        this.errorMessage =
+          'Access failed. Please contact 3Diligent for support.';
         break;
       case 500:
         this.errorMessage = 'Error on Server';
