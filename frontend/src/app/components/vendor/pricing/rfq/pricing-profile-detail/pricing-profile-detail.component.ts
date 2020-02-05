@@ -1,24 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CurrencyPipe } from "@angular/common";
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GridOptions } from 'ag-grid-community';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { GridOptions } from "ag-grid-community";
+import { NgxSpinnerService } from "ngx-spinner";
 
-import { combineLatest } from 'rxjs';
+import { combineLatest } from "rxjs";
 
-import { CustomerData } from 'src/app/model/user.model';
-import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
-import { Part, RfqData, PartQuote, PricingProfileDetailedView } from '../../../../../model/part.model';
-import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
-import { PricingBreakDown, PricingBreakdown } from '../../../../../model/pricing.breakdown';
-import { UserService } from 'src/app/service/user.service';
+import { CustomerData } from "src/app/model/user.model";
+import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
+import {
+  Part,
+  RfqData,
+  PartQuote,
+  PricingProfileDetailedView
+} from "../../../../../model/part.model";
+import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
+import {
+  PricingBreakDown,
+  PricingBreakdown
+} from "../../../../../model/pricing.breakdown";
+import { UserService } from "src/app/service/user.service";
 
 @Component({
-  selector: 'app-pricing-profile-detail',
-  templateUrl: './pricing-profile-detail.component.html',
-  styleUrls: ['./pricing-profile-detail.component.css']
+  selector: "app-pricing-profile-detail",
+  templateUrl: "./pricing-profile-detail.component.html",
+  styleUrls: ["./pricing-profile-detail.component.css"]
 })
 export class PricingProfileDetailComponent implements OnInit {
   frameworkComponents = {
@@ -29,6 +37,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Customer",
         field: "customer",
+        tooltipField: "customer",
         hide: false,
         sortable: true,
         filter: false
@@ -36,6 +45,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "RFQ",
         field: "rfq",
+        tooltipField: "rfq",
         hide: false,
         sortable: true,
         filter: false,
@@ -44,6 +54,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Part",
         field: "part",
+        tooltipField: "part",
         hide: false,
         sortable: true,
         filter: false,
@@ -52,6 +63,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "File Name",
         field: "filename",
+        tooltipField: "filename",
         hide: false,
         sortable: true,
         filter: false,
@@ -60,6 +72,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Quantity",
         field: "quantity",
+        tooltipField: "quantity",
         hide: false,
         sortable: true,
         filter: false,
@@ -68,22 +81,25 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Material",
         field: "materialPropertyValues",
+        tooltipField: "materialPropertyValues",
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => (dt.value || []).join(' , ')
+        valueFormatter: dt => (dt.value || []).join(" , ")
       },
       {
         headerName: "Technology",
         field: "equipmentPropertyValues",
+        tooltipField: "equipmentPropertyValues",
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => (dt.value || []).join(' , ')
+        valueFormatter: dt => (dt.value || []).join(" , ")
       },
       // {
       //   headerName: "Roughness",
       //   field: "roughness",
+      //   tooltipField: "roughness",
       //   hide: false,
       //   sortable: true,
       //   filter: false,
@@ -92,6 +108,7 @@ export class PricingProfileDetailComponent implements OnInit {
       // {
       //   headerName: "Post-Process",
       //   field: "postProcess",
+      //   tooltipField: "postProcess",
       //   hide: false,
       //   sortable: true,
       //   filter: true,
@@ -100,6 +117,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Price",
         field: "price",
+        tooltipField: "price",
         hide: false,
         sortable: true,
         cellClass: "text-center"
@@ -109,6 +127,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Invoice Item",
         field: "invoiceItem",
+        tooltipField: "invoiceItem",
         hide: false,
         sortable: true,
         filter: false
@@ -116,6 +135,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Line Item",
         field: "lineItem",
+        tooltipField: "lineItem",
         hide: false,
         sortable: true,
         filter: false
@@ -123,6 +143,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Value ($)",
         field: "value",
+        tooltipField: "value",
         hide: false,
         sortable: true,
         filter: false
@@ -132,6 +153,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Invoice Item",
         field: "invoiceItem",
+        tooltipField: "invoiceItem",
         hide: false,
         sortable: true,
         filter: false
@@ -139,6 +161,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Line Item",
         field: "lineItem",
+        tooltipField: "lineItem",
         hide: false,
         sortable: true,
         filter: false
@@ -146,6 +169,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Value ($)",
         field: "value",
+        tooltipField: "value",
         hide: false,
         sortable: true,
         filter: false
@@ -153,6 +177,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Per",
         field: "per",
+        tooltipField: "per",
         hide: false,
         sortable: true,
         filter: false
@@ -160,6 +185,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Part Value",
         field: "partValue",
+        tooltipField: "partValue",
         hide: false,
         sortable: true,
         filter: false
@@ -167,6 +193,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Units",
         field: "units",
+        tooltipField: "units",
         hide: false,
         sortable: true,
         filter: false
@@ -176,6 +203,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Invoice Item",
         field: "invoiceItem",
+        tooltipField: "invoiceItem",
         hide: false,
         sortable: true,
         filter: false
@@ -183,6 +211,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Line Item",
         field: "lineItem",
+        tooltipField: "lineItem",
         hide: false,
         sortable: true,
         filter: false
@@ -190,6 +219,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Multiplier",
         field: "multiplier",
+        tooltipField: "multiplier",
         hide: false,
         sortable: true,
         filter: false
@@ -197,6 +227,7 @@ export class PricingProfileDetailComponent implements OnInit {
       {
         headerName: "Multiplier Value",
         field: "multiplierValue",
+        tooltipField: "multiplierValue",
         hide: false,
         sortable: true,
         filter: false
@@ -316,29 +347,33 @@ export class PricingProfileDetailComponent implements OnInit {
     this.breakDownColumnDefs = [
       [
         {
-          headerName: 'Invoice Item',
-          field: 'invoiceItem',
+          headerName: "Invoice Item",
+          field: "invoiceItem",
+          tooltipField: "invoiceItem",
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Quantity',
-          field: 'quantity',
+          headerName: "Quantity",
+          field: "quantity",
+          tooltipField: "quantity",
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Unit Price',
-          field: 'unitPrice',
+          headerName: "Unit Price",
+          field: "unitPrice",
+          tooltipField: "unitPrice",
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Total Invoice Item Cost',
-          field: 'totalInvoiceItem',
+          headerName: "Total Invoice Item Cost",
+          field: "totalInvoiceItem",
+          tooltipField: "totalInvoiceItem",
           hide: false,
           sortable: true,
           filter: false,
@@ -347,44 +382,50 @@ export class PricingProfileDetailComponent implements OnInit {
       ],
       [
         {
-          headerName: 'Parameters Group',
-          field: 'parameterGroup',
+          headerName: "Parameters Group",
+          field: "parameterGroup",
+          tooltipField: "parameterGroup",
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Invoice Item',
-          field: 'invoiceItem',
+          headerName: "Invoice Item",
+          field: "invoiceItem",
+          tooltipField: "invoiceItem",
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Invoice Line Item',
-          field: 'invoiceLineItem',
+          headerName: "Invoice Line Item",
+          field: "invoiceLineItem",
+          tooltipField: "invoiceLineItem",
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Item Cost',
-          field: 'lineItemCost',
+          headerName: "Item Cost",
+          field: "lineItemCost",
+          tooltipField: "lineItemCost",
           hide: true,
           sortable: true,
           filter: false,
           valueFormatter: x => `$ ${x.value ? x.value.toLocaleString() : 0}`
         },
         {
-          headerName: 'Multiplier',
-          field: 'multiplier',
+          headerName: "Multiplier",
+          field: "multiplier",
+          tooltipField: "multiplier",
           hide: true,
           sortable: true,
           filter: false
         },
         {
-          headerName: 'Invoice Item Cost',
-          field: 'finalInvoiceItemCost',
+          headerName: "Invoice Item Cost",
+          field: "finalInvoiceItemCost",
+          tooltipField: "finalInvoiceItemCost",
           hide: false,
           sortable: true,
           filter: false,
@@ -508,7 +549,7 @@ export class PricingProfileDetailComponent implements OnInit {
   }
 
   onBreakdownGridReady(idx, ev) {
-    if(this.breakDownGridOptions[idx]) {
+    if (this.breakDownGridOptions[idx]) {
       this.breakDownGridOptions[idx].api = ev.api;
       this.breakDownGridOptions[idx].api.sizeColumnsToFit();
     }
@@ -516,27 +557,31 @@ export class PricingProfileDetailComponent implements OnInit {
 
   viewBreakDownInfo(content) {
     this.spinner.show();
-    this.pricingService.getScreenPricingBreakdown({
-      partId: this.partId,
-      processPricingId: this.pricingProfile.id
-    } as PricingBreakDown).subscribe(v => {
-      this.breakDownInfo = v;
-      this.modalService.open(content, {
-        centered: true,
-        windowClass: 'break-down-modal'
-      });
-      if((this.breakDownInfo.costSummuryView || []).length > 0) {
-        let cost = 0;
-        this.breakDownInfo.costSummuryView.map(i => (cost += i.totalInvoiceItem));
-        this.breakDownInfo.costSummuryView.push({
-          invoiceItem: 'Total Cost',
-          quantity: null,
-          unitPrice: null,
-          totalInvoiceItem: cost
+    this.pricingService
+      .getScreenPricingBreakdown({
+        partId: this.partId,
+        processPricingId: this.pricingProfile.id
+      } as PricingBreakDown)
+      .subscribe(v => {
+        this.breakDownInfo = v;
+        this.modalService.open(content, {
+          centered: true,
+          windowClass: "break-down-modal"
         });
-      }
-      this.spinner.hide();
-    });
+        if ((this.breakDownInfo.costSummuryView || []).length > 0) {
+          let cost = 0;
+          this.breakDownInfo.costSummuryView.map(
+            i => (cost += i.totalInvoiceItem)
+          );
+          this.breakDownInfo.costSummuryView.push({
+            invoiceItem: "Total Cost",
+            quantity: null,
+            unitPrice: null,
+            totalInvoiceItem: cost
+          });
+        }
+        this.spinner.hide();
+      });
   }
 
   finalInvoiceItemCost() {
