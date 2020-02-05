@@ -35,7 +35,7 @@ export class RfqPricingService {
       params = params.append("page", filterOption.page.toString());
       params = params.append("size", filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -58,7 +58,7 @@ export class RfqPricingService {
       params = params.append("page", filterOption.page.toString());
       params = params.append("size", filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -81,7 +81,7 @@ export class RfqPricingService {
       params = params.append("page", filterOption.page.toString());
       params = params.append("size", filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -103,7 +103,7 @@ export class RfqPricingService {
 
   createPartQuoteDetail(quoteDetail) {
     const url = `${environment.procurementApiBaseUrl}/part-quote-detail`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -114,7 +114,7 @@ export class RfqPricingService {
 
   getRfqDetail(id: number): Observable<RfqData> {
     const url = `${environment.procurementApiBaseUrl}/rfq/${id}`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"
@@ -136,7 +136,7 @@ export class RfqPricingService {
 
   getPartQuote(partId: number): Observable<PartQuote> {
     const url = `${environment.procurementApiBaseUrl}/part-quote/parts/${partId}`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       "Content-Type": "application/json"

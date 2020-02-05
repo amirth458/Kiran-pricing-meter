@@ -13,7 +13,7 @@ export class ConsultantService {
 
   getConsultations(filterOption: FilterOption = null): Observable<any> {
     let url = `${environment.marketApiBaseUrl}/consultation/search`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       '3d-application-token': environment.adminAPIToken,
@@ -43,7 +43,7 @@ export class ConsultantService {
 
   createComment(id: number, comment: string): Observable<any> {
     const url = `${environment.marketApiBaseUrl}/consultation/${id}/comment/`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem("admin-auth"));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + " " + data.accessToken,
       '3d-application-token': environment.adminAPIToken,

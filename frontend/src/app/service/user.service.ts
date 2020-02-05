@@ -1,15 +1,15 @@
-import { Observable, of } from "rxjs";
-import { Injectable } from "@angular/core";
-import { User, CustomerData } from "../model/user.model";
+import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { User, CustomerData } from '../model/user.model';
 
-import * as crypto from "crypto-js";
-import { Router } from "@angular/router";
+import * as crypto from 'crypto-js';
+import { Router } from '@angular/router';
 
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from "src/environments/environment";
-import { FilterOption } from "../model/vendor.model";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { FilterOption } from '../model/vendor.model';
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class UserService {
   userInfo = {
@@ -21,42 +21,42 @@ export class UserService {
   constructor(public http: HttpClient, public route: Router) {}
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
     const headers = new HttpHeaders()
-      .set("Content-type", "application/json")
-      .set("userID", userId.toString())
-      .set("roleId", roleId.toString());
+      .set('Content-type', 'application/json')
+      .set('userID', userId.toString())
+      .set('roleId', roleId.toString());
 
     return headers;
   }
 
   getUserInfo() {
-    return JSON.parse(localStorage.getItem("dms-user"));
+    return JSON.parse(localStorage.getItem('admin-user'));
   }
 
   setUserInfo(userInfo) {
-    localStorage.setItem("dms-user", JSON.stringify(userInfo));
+    localStorage.setItem('admin-user', JSON.stringify(userInfo));
     this.userInfo = userInfo;
   }
 
   login(data: User) {
-    return this.http.post(environment.apiBaseUrl + "/auth/signin", {
+    return this.http.post(environment.apiBaseUrl + '/auth/signin', {
       usernameOrEmail: data.username,
       password: data.password
     });
   }
 
   signup(userData: User) {
-    return this.http.post(environment.apiBaseUrl + "/auth/signup", {
+    return this.http.post(environment.apiBaseUrl + '/auth/signup', {
       ...userData
     });
   }
 
   logout() {
-    localStorage.removeItem("dms-3d-token");
-    this.route.navigateByUrl("/login");
+    localStorage.removeItem('admin-3d-token');
+    this.route.navigateByUrl('/login');
   }
 
   isLoggedIn() {
-    return !!localStorage.getItem("dms-3d-token");
+    return !!localStorage.getItem('admin-3d-token');
   }
 
   getTokenData(): {
@@ -65,7 +65,7 @@ export class UserService {
     generatedIn: string;
     expiryDate: string;
   } {
-    const tokenData = JSON.parse(localStorage.getItem("dms-3d-token"));
+    const tokenData = JSON.parse(localStorage.getItem('admin-3d-token'));
     if (tokenData == null) {
       return null;
     }
@@ -110,7 +110,7 @@ export class UserService {
       environment.encryptionKey
     );
 
-    localStorage.setItem("dms-3d-token", JSON.stringify(tokenInfo));
+    localStorage.setItem('admin-3d-token', JSON.stringify(tokenInfo));
   }
 
   tokenNeedsRefresh(): boolean {
@@ -137,36 +137,36 @@ export class UserService {
 
   // TODO: Do an encryption and decryption
   setVendorInfo(vendorInfo) {
-    localStorage.setItem("dms-vendor", JSON.stringify(vendorInfo));
+    localStorage.setItem('admin-vendor', JSON.stringify(vendorInfo));
     this.vendorInfo = vendorInfo;
   }
 
   getVendorInfo() {
-    return JSON.parse(localStorage.getItem("dms-vendor"));
+    return JSON.parse(localStorage.getItem('admin-vendor'));
   }
 
   getRegisterUserInfo() {
-    return JSON.parse(localStorage.getItem("dms-RegisterUser"));
+    return JSON.parse(localStorage.getItem('admin-RegisterUser'));
   }
 
   setRegisterUserInfo(user) {
-    localStorage.setItem("dms-RegisterUser", JSON.stringify(user));
+    localStorage.setItem('admin-RegisterUser', JSON.stringify(user));
   }
 
   getRegisterVendorInfo() {
-    return JSON.parse(localStorage.getItem("dms-RegisterVendor"));
+    return JSON.parse(localStorage.getItem('admin-RegisterVendor'));
   }
 
   setRegisterVendorInfo(vendor) {
-    localStorage.setItem("dms-RegisterVendor", JSON.stringify(vendor));
+    localStorage.setItem('admin-RegisterVendor', JSON.stringify(vendor));
   }
 
   getRegisterMachineInfo() {
-    return JSON.parse(localStorage.getItem("dms-RegisterMachines"));
+    return JSON.parse(localStorage.getItem('admin-RegisterMachines'));
   }
 
   setRegisterMachineInfo(machines) {
-    localStorage.setItem("dms-RegisterMachines", JSON.stringify(machines));
+    localStorage.setItem('admin-RegisterMachines', JSON.stringify(machines));
   }
 
   registerUser(user) {
@@ -175,17 +175,17 @@ export class UserService {
   }
 
   resetRegisterInfo() {
-    localStorage.removeItem("dms-RegisterUser");
-    localStorage.removeItem("dms-RegisterVendor");
-    localStorage.removeItem("dms-RegisterMachines");
+    localStorage.removeItem('admin-RegisterUser');
+    localStorage.removeItem('admin-RegisterVendor');
+    localStorage.removeItem('admin-RegisterMachines');
   }
 
   getAllUsers() {
     const url = `${environment.managementBaseUrl}/users/all?vendor-profile-needed=true&vendor-machines-needed=false`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
     return this.http.get<any>(url, {
       headers
@@ -194,17 +194,17 @@ export class UserService {
 
   approveUsers(ids) {
     const url = `${environment.managementBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
     return this.http.patch<any>(
       url,
       {
         approved: true,
         vendorIds: ids,
-        comment: "Approved at " + new Date().toISOString()
+        comment: 'Approved at ' + new Date().toISOString()
       },
       {
         headers
@@ -212,12 +212,12 @@ export class UserService {
     );
   }
 
-  declineUsers(ids, comment = "") {
+  declineUsers(ids, comment = '') {
     const url = `${environment.managementBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
     return this.http.patch<any>(
       url,
@@ -234,17 +234,17 @@ export class UserService {
 
   approveUser(id) {
     const url = `${environment.managementBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
     return this.http.patch<any>(
       url,
       {
         approved: true,
         vendorIds: [Number(id)],
-        comment: "Approved at " + new Date().toISOString()
+        comment: 'Approved at ' + new Date().toISOString()
       },
       {
         headers
@@ -252,12 +252,12 @@ export class UserService {
     );
   }
 
-  declineUser(id, declineMessage = "") {
+  declineUser(id, declineMessage = '') {
     const url = `${environment.managementBaseUrl}/vendors/approve`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     return this.http.patch<any>(
@@ -275,10 +275,10 @@ export class UserService {
 
   getUserDetails(id) {
     const url = `${environment.managementBaseUrl}/users/${id}`;
-    const data = JSON.parse(localStorage.getItem("dms-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
     return this.http.get<any>(url, {
       headers
@@ -286,19 +286,19 @@ export class UserService {
   }
 
   setUserFormStatus(id) {
-    localStorage.setItem("dms-validInUserForm", String(id));
+    localStorage.setItem('admin-validInUserForm', String(id));
   }
 
   getUserFormStatus() {
-    return Number(localStorage.getItem("dms-validInUserForm"));
+    return Number(localStorage.getItem('admin-validInUserForm'));
   }
 
   setVendorFormStatus(id) {
-    localStorage.setItem("dms-validInVendorForm", String(id));
+    localStorage.setItem('admin-validInVendorForm', String(id));
   }
 
   getVendorFormStatus() {
-    return Number(localStorage.getItem("dms-validInVendorForm"));
+    return Number(localStorage.getItem('admin-validInVendorForm'));
   }
 
   getCustomer(customerId: number): Observable<CustomerData> {
