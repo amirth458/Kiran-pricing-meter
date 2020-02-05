@@ -170,7 +170,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   ngOnInit() {
     this.initColumns();
-    localStorage.setItem('selectedSubOrders', '');
+    localStorage.setItem('admin-selectedSubOrders', '');
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
