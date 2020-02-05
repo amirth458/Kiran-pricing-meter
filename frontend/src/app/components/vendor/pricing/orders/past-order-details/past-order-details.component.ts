@@ -1,4 +1,4 @@
-import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
+import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
 import { EventEmitter } from "@angular/core";
 import { Component, OnInit, Output } from "@angular/core";
 import { GridOptions } from "ag-grid-community";
@@ -55,6 +55,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Customer Order",
         field: "customerOrder",
+        tooltipField: "customerOrder",
         hide: false,
         sortable: true,
         filter: false
@@ -62,6 +63,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Sub-Order",
         field: "subOrder",
+        tooltipField: "subOrder",
         hide: false,
         sortable: true,
         filter: false
@@ -69,6 +71,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "File Name",
         field: "fileName",
+        tooltipField: "fileName",
         hide: false,
         sortable: true,
         filter: false,
@@ -77,6 +80,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Price Accepted",
         field: "priceAccepted",
+        tooltipField: "priceAccepted",
         hide: false,
         sortable: true,
         filter: false
@@ -84,6 +88,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Customer",
         field: "customer",
+        tooltipField: "customer",
         hide: false,
         sortable: true,
         filter: false
@@ -91,6 +96,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Quantity",
         field: "quantity",
+        tooltipField: "quantity",
         hide: false,
         sortable: true,
         filter: false
@@ -98,6 +104,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Material",
         field: "material",
+        tooltipField: "material",
         hide: false,
         sortable: true,
         filter: false
@@ -105,6 +112,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Process",
         field: "process",
+        tooltipField: "process",
         hide: false,
         sortable: true,
         filter: false
@@ -112,6 +120,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Post-Process",
         field: "postProcess",
+        tooltipField: "postProcess",
         hide: false,
         sortable: true,
         filter: false
@@ -119,6 +128,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Previously Ordered",
         field: "previouslyOrdered",
+        tooltipField: "previouslyOrdered",
         hide: false,
         sortable: true,
         filter: false
@@ -126,6 +136,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "First Shipment",
         field: "firstShipment",
+        tooltipField: "firstShipment",
         hide: false,
         sortable: true,
         filter: false
@@ -133,6 +144,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Delivery Date",
         field: "deliveryDate",
+        tooltipField: "deliveryDate",
         hide: false,
         sortable: true,
         filter: false
@@ -142,6 +154,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Vendor Name",
         field: "vendorName",
+        tooltipField: "vendorName",
         hide: false,
         sortable: false,
         filter: false
@@ -149,6 +162,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Process Profile No",
         field: "processProfileNo",
+        tooltipField: "processProfileNo",
         hide: false,
         sortable: false,
         filter: false
@@ -156,6 +170,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Process Profile",
         field: "processProfile",
+        tooltipField: "processProfile",
         hide: false,
         sortable: false,
         filter: false
@@ -163,6 +178,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Post-Process Profile 1 No",
         field: "postProcessProfile1No",
+        tooltipField: "postProcessProfile1No",
         hide: false,
         sortable: false,
         filter: false
@@ -170,6 +186,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Post-Process Price 1",
         field: "postProcessPrice1",
+        tooltipField: "postProcessPrice1",
         hide: false,
         sortable: false,
         filter: false
@@ -177,6 +194,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Post-Process Profile 2 No",
         field: "postProcessProfile2No",
+        tooltipField: "postProcessProfile2No",
         hide: false,
         sortable: false,
         filter: false
@@ -184,6 +202,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Post-Process Price 2",
         field: "postProcessPrice2",
+        tooltipField: "postProcessPrice2",
         hide: false,
         sortable: false,
         filter: false
@@ -191,6 +210,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Shipping Estimate",
         field: "shippingEstimate",
+        tooltipField: "shippingEstimate",
         hide: false,
         sortable: false,
         filter: false
@@ -198,6 +218,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Total Cost",
         field: "totalCost",
+        tooltipField: "totalCost",
         hide: false,
         sortable: false,
         filter: false
@@ -205,6 +226,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Estimated Production Date",
         field: "estimatedProductionDate",
+        tooltipField: "estimatedProductionDate",
         hide: false,
         sortable: false,
         filter: false
@@ -212,6 +234,7 @@ export class PastOrderDetailsComponent implements OnInit {
       {
         headerName: "Supplier Sccore",
         field: "supplierScore",
+        tooltipField: "supplierScore",
         hide: false,
         sortable: false,
         filter: false

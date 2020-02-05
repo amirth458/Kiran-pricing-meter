@@ -1,18 +1,18 @@
-import { OrdersService } from './../../../../../service/orders.service';
-import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { OrdersService } from "./../../../../../service/orders.service";
+import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
+import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { GridOptions } from "ag-grid-community";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-past-orders',
-  templateUrl: './past-orders.component.html',
-  styleUrls: ['./past-orders.component.css']
+  selector: "app-past-orders",
+  templateUrl: "./past-orders.component.html",
+  styleUrls: ["./past-orders.component.css"]
 })
 export class PastOrdersComponent implements OnInit {
-  @ViewChild('modalContent') modalContent: TemplateRef<any>;
+  @ViewChild("modalContent") modalContent: TemplateRef<any>;
   columnDefs = [];
   gridOptions: GridOptions;
   rowData = [];
@@ -35,20 +35,23 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Customer Order",
         field: "customerOrder",
-        hide: false,
-        sortable: true,
-        filter: false,
-      },
-      {
-        headerName: "Sub-Order",
-        field: "subOrder",
+        tooltipField: "customerOrder",
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'File Name',
-        field: 'fileName',
+        headerName: "Sub-Order",
+        field: "subOrder",
+        tooltipField: "subOrder",
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: "File Name",
+        field: "fileName",
+        tooltipField: "fileName",
         hide: false,
         sortable: true,
         filter: false,
@@ -57,6 +60,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Price Accepted",
         field: "priceAccepted",
+        tooltipField: "priceAccepted",
         hide: false,
         sortable: true,
         filter: false
@@ -64,6 +68,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Customer",
         field: "customer",
+        tooltipField: "customer",
         hide: false,
         sortable: true,
         filter: false
@@ -71,6 +76,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Quantity",
         field: "quantity",
+        tooltipField: "quantity",
         hide: false,
         sortable: true,
         filter: false
@@ -78,6 +84,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Material",
         field: "material",
+        tooltipField: "material",
         hide: false,
         sortable: true,
         filter: false
@@ -85,6 +92,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Process",
         field: "process",
+        tooltipField: "process",
         hide: false,
         sortable: true,
         filter: false
@@ -92,6 +100,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Post-Process",
         field: "postProcess",
+        tooltipField: "postProcess",
         hide: false,
         sortable: true,
         filter: false
@@ -99,6 +108,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Previously Ordered",
         field: "previouslyOrdered",
+        tooltipField: "previouslyOrdered",
         hide: false,
         sortable: true,
         filter: false
@@ -106,6 +116,7 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "First Shipment",
         field: "firstShipment",
+        tooltipField: "firstShipment",
         hide: false,
         sortable: true,
         filter: false
@@ -113,10 +124,11 @@ export class PastOrdersComponent implements OnInit {
       {
         headerName: "Delivery Date",
         field: "deliveryDate",
+        tooltipField: "deliveryDate",
         hide: false,
         sortable: true,
         filter: false
-      },
+      }
     ];
 
     this.gridOptions = {
@@ -135,7 +147,7 @@ export class PastOrdersComponent implements OnInit {
           centered: true,
           windowClass: "past-order-modal"
         });
-      },
+      }
     };
     this.getRows();
   }

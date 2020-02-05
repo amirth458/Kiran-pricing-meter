@@ -26,6 +26,7 @@ export class PricingProfileComponent implements OnInit {
     {
       name: "Vendor Name",
       field: "vendorName",
+      tooltipField: "vendorName",
       checked: false,
       query: {
         type: "",
@@ -35,6 +36,7 @@ export class PricingProfileComponent implements OnInit {
     {
       name: "Pricing Profile",
       field: "pricingProfile",
+      tooltipField: "pricingProfile",
       checked: false,
       query: {
         type: "",
@@ -44,6 +46,7 @@ export class PricingProfileComponent implements OnInit {
     {
       name: "Material",
       field: "material",
+      tooltipField: "material",
       checked: false,
       query: {
         type: "",
@@ -53,6 +56,7 @@ export class PricingProfileComponent implements OnInit {
     {
       name: "Equipment",
       field: "equipment",
+      tooltipField: "equipment",
       checked: false,
       query: {
         type: "",
@@ -62,6 +66,7 @@ export class PricingProfileComponent implements OnInit {
     {
       name: "Process Profile",
       field: "processProfile",
+      tooltipField: "processProfile",
       checked: false,
       query: {
         type: "",
@@ -71,6 +76,7 @@ export class PricingProfileComponent implements OnInit {
     // {
     //   name: "Post-Process",
     //   field: "postProcess",
+    //   tooltipField: "postProcess",
     //   checked: false,
     //   query: {
     //     type: "",
@@ -80,6 +86,7 @@ export class PricingProfileComponent implements OnInit {
     // {
     //   name: "Machines Matched",
     //   field: "machinesMatched",
+    //   tooltipField: "machinesMatched",
     //   checked: false,
     //   query: {
     //     type: "",
@@ -89,6 +96,7 @@ export class PricingProfileComponent implements OnInit {
     // {
     //   name: "Total Cost",
     //   field: "totalCost",
+    //   tooltipField: "totalCost",
     //   checked: false,
     //   query: {
     //     type: "",
@@ -98,6 +106,7 @@ export class PricingProfileComponent implements OnInit {
     // {
     //   name: "Estimated Delivery",
     //   field: "estimatedDelivery",
+    //   tooltipField: "estimatedDelivery",
     //   checked: false,
     //   query: {
     //     type: "",
@@ -107,6 +116,7 @@ export class PricingProfileComponent implements OnInit {
     // {
     //   name: "Match Score",
     //   field: "matchScore",
+    //   tooltipField: "matchScore",
     //   checked: false,
     //   query: {
     //     type: "",
@@ -119,51 +129,61 @@ export class PricingProfileComponent implements OnInit {
     {
       name: "Vendor Name",
       field: "vendorName",
+      tooltipField: "vendorName",
       checked: true
     },
     {
       name: "Pricing Profile",
       field: "pricingProfile",
+      tooltipField: "pricingProfile",
       checked: true
     },
     {
       name: "Material",
       field: "material",
+      tooltipField: "material",
       checked: true
     },
     {
       name: "Equipment",
       field: "equipment",
+      tooltipField: "equipment",
       checked: true
     },
     {
       name: "Process Profile",
       field: "processProfile",
+      tooltipField: "processProfile",
       checked: true
     }
     // {
     //   name: "Post-Process",
     //   field: "postProcess",
+    //   tooltipField: "postProcess",
     //   checked: true
     // },
     // {
     //   name: "Machines Matched",
     //   field: "machinesMatched",
+    //   tooltipField: "machinesMatched",
     //   checked: true
     // },
     // {
     //   name: "Total Cost",
     //   field: "totalCost",
+    //   tooltipField: "totalCost",
     //   checked: true
     // },
     // {
     //   name: "Estimated Delivery",
     //   field: "estimatedDelivery",
+    //   tooltipField: "estimatedDelivery",
     //   checked: true
     // },
     // {
     //   name: "Match Score",
     //   field: "matchScore",
+    //   tooltipField: "matchScore",
     //   checked: true
     // }
   ];
@@ -212,6 +232,7 @@ export class PricingProfileComponent implements OnInit {
       {
         headerName: "Vendor Name",
         field: "vendorName",
+        tooltipField: "vendorName",
         hide: false,
         sortable: true,
         filter: false
@@ -219,6 +240,7 @@ export class PricingProfileComponent implements OnInit {
       {
         headerName: "Pricing Profile",
         field: "pricingProfile",
+        tooltipField: "pricingProfile",
         hide: false,
         sortable: true,
         filter: false
@@ -226,6 +248,7 @@ export class PricingProfileComponent implements OnInit {
       {
         headerName: "Material",
         field: "material",
+        tooltipField: "material",
         hide: false,
         sortable: true,
         filter: false
@@ -233,6 +256,7 @@ export class PricingProfileComponent implements OnInit {
       {
         headerName: "Equipment",
         field: "equipment",
+        tooltipField: "equipment",
         hide: false,
         sortable: true,
         filter: false
@@ -240,6 +264,7 @@ export class PricingProfileComponent implements OnInit {
       {
         headerName: "Process Profile",
         field: "processProfile",
+        tooltipField: "processProfile",
         hide: false,
         sortable: true,
         filter: false
@@ -247,6 +272,7 @@ export class PricingProfileComponent implements OnInit {
       // {
       //   headerName: "Post-Process",
       //   field: "postProcess",
+      //   tooltipField: "postProcess",
       //   hide: false,
       //   sortable: true,
       //   filter: false
@@ -254,6 +280,7 @@ export class PricingProfileComponent implements OnInit {
       // {
       //   headerName: "Machines Matched",
       //   field: "machinesMatched",
+      //   tooltipField: "machinesMatched",
       //   hide: false,
       //   sortable: true,
       //   filter: false
@@ -261,6 +288,7 @@ export class PricingProfileComponent implements OnInit {
       // {
       //   headerName: "Total Cost",
       //   field: "totalCost",
+      //   tooltipField: "totalCost",
       //   hide: false,
       //   sortable: true,
       //   filter: false
@@ -268,6 +296,7 @@ export class PricingProfileComponent implements OnInit {
       // {
       //   headerName: "Estimated Delivery",
       //   field: "esitmatedDelivery",
+      //   tooltipField: "esitmatedDelivery",
       //   hide: false,
       //   sortable: true,
       //   filter: false
@@ -275,6 +304,7 @@ export class PricingProfileComponent implements OnInit {
       // {
       //   headerName: "Match Score",
       //   field: "matchScore",
+      //   tooltipField: "matchScore",
       //   hide: false,
       //   sortable: false,
       //   filter: false

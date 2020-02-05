@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { HttpClient, HttpParams } from "@angular/common/http";
 
-import { ColDef } from 'ag-grid-community/src/ts/entities/colDef';
+import { ColDef } from "ag-grid-community/src/ts/entities/colDef";
 
-import { of } from 'rxjs';
-import { Observable } from 'rxjs';
+import { of } from "rxjs";
+import { Observable } from "rxjs";
 
-import { BiddingOrder } from '../model/bidding.order';
-import { BiddingOrderDetail } from '../model/bidding.order.detail';
-import { environment } from 'src/environments/environment';
-import { FilterOption } from '../model/vendor.model';
-import { Part, ProcessProfileDetailedView } from '../model/part.model';
-import { Util } from '../util/Util';
+import { BiddingOrder } from "../model/bidding.order";
+import { BiddingOrderDetail } from "../model/bidding.order.detail";
+import { environment } from "src/environments/environment";
+import { FilterOption } from "../model/vendor.model";
+import { Part, ProcessProfileDetailedView } from "../model/part.model";
+import { Util } from "../util/Util";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class OrdersService {
   constructor(private http: HttpClient, public datePipe: DatePipe) {}
@@ -24,8 +24,8 @@ export class OrdersService {
     const url = `${environment.apiBaseUrl}/admin/part/placing-order-status`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
+      params = params.append("page", filterOption.page.toString());
+      params = params.append("size", filterOption.size.toString());
     }
     return this.http.get<any>(url, { params });
   }
@@ -151,8 +151,8 @@ export class OrdersService {
     }
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
-    params = params.append('userId', userId.toString());
-    params = params.append('rfqMediaIds', rfqMediaIds.join(','));
+    params = params.append("userId", userId.toString());
+    params = params.append("rfqMediaIds", rfqMediaIds.join(","));
     return this.http.get<ProcessProfileDetailedView[]>(url, { params });
   }
 
@@ -165,72 +165,81 @@ export class OrdersService {
   getOrderViewColumns(): ColDef[] {
     const columns = [
       {
-        headerName: 'Vendor Bid',
-        field: 'bidOrder.id',
+        headerName: "Vendor Bid",
+        field: "bidOrder.id",
+        tooltip: params => params.value,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Sub Order Count',
-        field: 'subOrderCount',
+        headerName: "Sub Order Count",
+        field: "subOrderCount",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Offer Price',
-        field: 'offerPrice',
+        headerName: "Offer Price",
+        field: "offerPrice",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Quantity',
-        field: 'quantity',
+        headerName: "Quantity",
+        field: "quantity",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Material',
-        field: 'materialPropertyValues',
+        headerName: "Material",
+        field: "materialPropertyValues",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => (dt.value || []).join(' , ')
+        valueFormatter: dt => (dt.value || []).join(" , ")
       },
       {
-        headerName: 'Technology',
-        field: 'equipmentPropertyValues',
+        headerName: "Technology",
+        field: "equipmentPropertyValues",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => (dt.value || []).join(' , ')
+        valueFormatter: dt => (dt.value || []).join(" , ")
       },
       {
-        headerName: 'Post-Process',
-        field: 'postProcess',
+        headerName: "Post-Process",
+        field: "postProcess",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Delivery Date',
-        field: 'deliveryDate',
+        headerName: "Delivery Date",
+        field: "deliveryDate",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false,
         valueFormatter: dt => {
           const arr = [];
           (dt.value || []).map(dt => {
-            arr.push(this.datePipe.transform(dt, Util.dateFormat))
+            arr.push(this.datePipe.transform(dt, Util.dateFormat));
           });
-          return arr.length !== 0 ? arr.join(', ') : '';
+          return arr.length !== 0 ? arr.join(", ") : "";
         }
       },
       {
-        headerName: 'Status',
-        field: 'bidOrder.bidOrderStatusType.description',
+        headerName: "Status",
+        field: "bidOrder.bidOrderStatusType.description",
+        tooltip: params => params.value,
         hide: false,
         sortable: true,
         filter: false
@@ -242,84 +251,84 @@ export class OrdersService {
   getGridSearchColumns(): any {
     return [
       {
-        name: 'Vendor Bid',
-        field: 'bidOrder.id',
+        name: "Vendor Bid",
+        field: "bidOrder.id",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Sub Order Count',
-        field: 'subOrderCount',
+        name: "Sub Order Count",
+        field: "subOrderCount",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Offer Price',
-        field: 'offerPrice',
+        name: "Offer Price",
+        field: "offerPrice",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Quantity',
-        field: 'quantity',
+        name: "Quantity",
+        field: "quantity",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Material',
-        field: 'material',
+        name: "Material",
+        field: "material",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Process',
-        field: 'process',
+        name: "Process",
+        field: "process",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Post-Process',
-        field: 'postProcess',
+        name: "Post-Process",
+        field: "postProcess",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Delivery Date',
-        field: 'deliveryDate',
+        name: "Delivery Date",
+        field: "deliveryDate",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       },
       {
-        name: 'Status',
-        field: 'bidOrder.bidOrderStatusType.description',
+        name: "Status",
+        field: "bidOrder.bidOrderStatusType.description",
         checked: false,
         query: {
-          type: '',
-          filter: ''
+          type: "",
+          filter: ""
         }
       }
     ];
@@ -328,48 +337,48 @@ export class OrdersService {
   getGridFilterColumns(): any {
     return [
       {
-        name: 'Vendor Bid',
-        field: 'bidOrder.id',
-        checked: true,
-      },
-      {
-        name: 'Sub Order Count',
-        field: 'subOrderCount',
+        name: "Vendor Bid",
+        field: "bidOrder.id",
         checked: true
       },
       {
-        name: 'Offer Price',
-        field: 'offerPrice',
+        name: "Sub Order Count",
+        field: "subOrderCount",
         checked: true
       },
       {
-        name: 'Quantity',
-        field: 'quantity',
+        name: "Offer Price",
+        field: "offerPrice",
         checked: true
       },
       {
-        name: 'Material',
-        field: 'material',
+        name: "Quantity",
+        field: "quantity",
         checked: true
       },
       {
-        name: 'Process',
-        field: 'process',
+        name: "Material",
+        field: "material",
         checked: true
       },
       {
-        name: 'Post-Process',
-        field: 'postProcess',
+        name: "Process",
+        field: "process",
         checked: true
       },
       {
-        name: 'Delivery Date',
-        field: 'deliveryDate',
+        name: "Post-Process",
+        field: "postProcess",
         checked: true
       },
       {
-        name: 'Status',
-        field: 'bidOrder.bidOrderStatusType.description',
+        name: "Delivery Date",
+        field: "deliveryDate",
+        checked: true
+      },
+      {
+        name: "Status",
+        field: "bidOrder.bidOrderStatusType.description",
         checked: true
       }
     ];
