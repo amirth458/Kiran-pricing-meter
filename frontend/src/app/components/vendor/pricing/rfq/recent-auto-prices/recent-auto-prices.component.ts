@@ -50,7 +50,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center'
+        cellClass: 'text-center',
+        tooltipField: 'rfq',
       },
       {
         headerName: 'Part',
@@ -58,7 +59,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center'
+        cellClass: 'text-center',
+        tooltipField: 'part',
       },
       {
         headerName: 'File Name',
@@ -66,7 +68,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellRenderer: 'fileViewRenderer'
+        cellRenderer: 'fileViewRenderer',
+        tooltipField: 'fileName',
       },
       {
         headerName: 'Quantity',
@@ -74,7 +77,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center'
+        cellClass: 'text-center',
+        tooltipField: 'quantity',
       },
       {
         headerName: 'Material',
@@ -82,7 +86,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => (dt.value || []).join(' , ')
+        valueFormatter: dt => (dt.value || []).join(' , '),
+        tooltipField: 'materialPropertyValues',
       },
       {
         headerName: 'Technology',
@@ -90,7 +95,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => (dt.value || []).join(' , ')
+        valueFormatter: dt => (dt.value || []).join(' , '),
+        tooltipField: 'equipmentPropertyValues',
       },
       // {
       //   headerName: 'Roughness',
@@ -98,7 +104,8 @@ export class RecentAutoPricesComponent implements OnInit {
       //   hide: false,
       //   sortable: true,
       //   filter: false,
-      //   cellClass: 'text-center'
+      //   cellClass: 'text-center',
+      //   tooltipField: 'roughness',
       // },
       // {
       //   headerName: 'Post-Process',
@@ -106,15 +113,17 @@ export class RecentAutoPricesComponent implements OnInit {
       //   hide: false,
       //   sortable: true,
       //   filter: true,
-      //   cellClass: 'text-center'
+      //   cellClass: 'text-center',
+      //   tooltipField: 'postProcess',
       // },
       {
         headerName: 'Price',
         field: 'price',
         hide: false,
         sortable: true,
-        cellClass: 'text-center'
-      }
+        cellClass: 'text-center',
+        tooltipField: 'price',
+      }      
     ];
 
     this.gridOptions = {

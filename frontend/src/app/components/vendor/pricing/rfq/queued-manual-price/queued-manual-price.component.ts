@@ -55,6 +55,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'Customer',
         //   field: 'customer',
+        //   tooltipField: 'customer',
         //   hide: false,
         //   sortable: true,
         //   filter: false
@@ -62,6 +63,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'RFQ',
           field: 'rfq',
+          tooltipField: 'rfq',
           hide: false,
           sortable: true,
           filter: false,
@@ -70,6 +72,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Part',
           field: 'part',
+          tooltipField: 'part',
           hide: false,
           sortable: true,
           filter: false,
@@ -78,6 +81,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'File Name',
           field: 'fileName',
+          tooltipField: 'fileName',
           hide: false,
           sortable: true,
           filter: false,
@@ -86,6 +90,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Quantity',
           field: 'quantity',
+          tooltipField: 'quantity',
           hide: false,
           sortable: true,
           filter: false,
@@ -94,6 +99,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Material',
           field: 'materialPropertyValues',
+          tooltipField: 'materialPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
@@ -102,6 +108,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Technology',
           field: 'equipmentPropertyValues',
+          tooltipField: 'equipmentPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
@@ -110,6 +117,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'Roughness',
         //   field: 'roughness',
+        //   tooltipField: 'roughness',
         //   hide: false,
         //   sortable: true,
         //   filter: false,
@@ -118,6 +126,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'Post-Process',
         //   field: 'postProcess',
+        //   tooltipField: 'postProcess',
         //   hide: false,
         //   sortable: true,
         //   filter: true,
@@ -126,6 +135,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'Wait',
         //   field: 'wait',
+        //   tooltipField: 'wait',
         //   hide: false,
         //   sortable: true,
         //   cellClass: 'text-center'
@@ -135,6 +145,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'Customer',
         //   field: 'customer',
+        //   tooltipField: 'customer',
         //   hide: false,
         //   sortable: true,
         //   filter: false
@@ -142,6 +153,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'RFQ',
           field: 'rfq',
+          tooltipField: 'rfq',
           hide: false,
           sortable: true,
           filter: false,
@@ -150,6 +162,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Part',
           field: 'part',
+          tooltipField: 'part',
           hide: false,
           sortable: true,
           filter: false,
@@ -158,6 +171,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'File Name',
           field: 'fileName',
+          tooltipField: 'fileName',
           hide: false,
           sortable: true,
           filter: false,
@@ -166,6 +180,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Material',
           field: 'materialPropertyValues',
+          tooltipField: 'materialPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
@@ -174,6 +189,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Technology',
           field: 'equipmentPropertyValues',
+          tooltipField: 'equipmentPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
@@ -183,6 +199,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'Post-Process',
         //   field: 'postProcess',
+        //   tooltipField: 'postProcess',
         //   hide: false,
         //   sortable: true,
         //   filter: true,
@@ -191,6 +208,7 @@ export class QueuedManualPriceComponent implements OnInit {
         // {
         //   headerName: 'NDA',
         //   field: 'nda',
+        //   tooltipField: 'nda',
         //   hide: false,
         //   sortable: true,
         //   filter: false,
@@ -199,6 +217,7 @@ export class QueuedManualPriceComponent implements OnInit {
         {
           headerName: 'Manual Price',
           field: 'price',
+          tooltipField: 'price',
           hide: false,
           sortable: true,
           cellClass: 'text-center'
