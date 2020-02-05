@@ -84,9 +84,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       });
 
       if (this.userForm.value.remember_me) {
-        localStorage.setItem('dms-remember_me', '1');
-        localStorage.setItem('dms-email', this.userForm.value.email);
-        localStorage.setItem('dms-password', this.userForm.value.password);
+        localStorage.setItem('admin-remember_me', '1');
+        localStorage.setItem('admin-email', this.userForm.value.email);
+        localStorage.setItem('admin-password', this.userForm.value.password);
       }
 
       // this.store.dispatch({

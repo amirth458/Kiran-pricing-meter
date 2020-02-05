@@ -47,11 +47,11 @@ export class AuthService {
   }
 
   logout(): any {
-    localStorage.removeItem('auth');
-    localStorage.removeItem('remember_me');
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
-    localStorage.removeItem('user');
+    localStorage.removeItem('admin-auth');
+    localStorage.removeItem('admin-remember_me');
+    localStorage.removeItem('admin-email');
+    localStorage.removeItem('admin-password');
+    localStorage.removeItem('admin-user');
 
     this.store.dispatch({
       type: AppTypes.UpdateState,

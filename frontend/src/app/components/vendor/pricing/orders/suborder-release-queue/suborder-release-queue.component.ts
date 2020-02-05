@@ -364,7 +364,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   advanceToVendorSelection() {
     localStorage.setItem(
-      'selectedSubOrders',
+      'admin-selectedSubOrders',
       JSON.stringify(
         this.rowData.filter(
           item =>
