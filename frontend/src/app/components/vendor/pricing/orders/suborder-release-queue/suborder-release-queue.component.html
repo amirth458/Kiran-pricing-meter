@@ -1,35 +1,42 @@
 <div class="wrapper d-flex">
   <div class="table-control">
-    <app-column-search-filter
-      width="200px"
-      height="295px"
-      [type]="type"
-      [(filterColumns)]="filterColumns"
-      (filterColumnsChange)="filterColumnsChange($event)"
-      [(searchColumns)]="searchColumns"
-      (searchColumnsChange)="searchColumnsChange($event)"
-    >
+    <app-column-search-filter width="200px" height="295px" [type]="type" [(filterColumns)]="filterColumns"
+      (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
+      (searchColumnsChange)="searchColumnsChange($event)">
     </app-column-search-filter>
   </div>
   <div class="table theme-table ml-4 d-flex flex-column">
     <div class="toolbar d-flex justify-content-end mb-3">
-      <button [ngClass]="{invisible: selectedIds.length === 0}" class="btn btn-primary active" (click)="advanceToVendorSelection()">Advance to Vendor Selection</button>
+
+
+      <div>
+        <button [ngClass]="{invisible: selectedIds.length === 0}" class="btn btn-primary active"
+          (click)="advanceToVendorSelection()">Advance to Vendor Selection</button>
+      </div>
+
+      <div class="page-size mt-2 ml-3">
+        <span>
+          Page Size:
+        </span>
+        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+          <option selected value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </div>
+
     </div>
-    <ag-grid-angular
-      class="ag-theme-balham w-100 flex-grow-1"
-      [rowData]="rowData"
-      [gridOptions]="gridOptions"
-      (gridReady)="onGridReady($event)"
-    >
+    <ag-grid-angular class="ag-theme-balham w-100 flex-grow-1" [rowData]="rowData" [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)">
     </ag-grid-angular>
   </div>
 </div>
 
 <ng-template #selectBtn let-row>
   <div class="select-btn-wrapper">
-    <button
-      class="btn btn-select"
-      [ngClass]="{ selected: selectedIds.includes(row.partId) }"
+    <button class="btn btn-select" [ngClass]="{ selected: selectedIds.includes(row.partId) }"
       (click)="toggleSelection($event, row.partId)">
       Select
     </button>

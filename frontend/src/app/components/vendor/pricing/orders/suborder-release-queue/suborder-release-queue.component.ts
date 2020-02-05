@@ -17,6 +17,7 @@ import { Util } from '../../../../../util/Util';
 export class SuborderReleaseQueueComponent implements OnInit {
   @ViewChild('selectBtn') selectBtn: TemplateRef<any>;
 
+  pageSize = 10;
   type = ['search', 'filter'];
 
   searchColumns = [
@@ -176,6 +177,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      pagination: true,
+      paginationPageSize: this.pageSize,
       onRowClicked: event => {
         if (event.data) {
           this.router.navigateByUrl(`${this.router.url}/order/${event.data.partId}`);
@@ -314,6 +317,10 @@ export class SuborderReleaseQueueComponent implements OnInit {
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  pageSizeChanged(value) {
+    this.gridOptions.api.paginationSetPageSize(Number(value));
   }
 
   searchColumnsChange(columns) {
