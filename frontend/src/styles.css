@@ -572,3 +572,14 @@ app-dropdown-cell-renderer {
   border: 1px solid var(--theme-orange) !important;
   width: 140px !important;
 }
+
+.confirm-release-modal .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container,
+.confirm-release-modal .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper{
+  min-height: auto !important;
+}
+
+.confirm-release-modal .grid-empty .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container,
+.confirm-release-modal .grid-empty .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper{
+  min-height: 35px !important;
+  height: 35px !important;
+}
