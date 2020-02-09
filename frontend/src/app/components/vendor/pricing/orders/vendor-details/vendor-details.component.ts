@@ -92,6 +92,7 @@ export class VendorDetailsComponent implements OnInit {
           )
           .subscribe(v => {
             this.matchedProfiles = [];
+            let count = 0;
             v.map(item => {
               const processProfileView = item.processProfileView;
               const processPricingView: any =
@@ -100,31 +101,29 @@ export class VendorDetailsComponent implements OnInit {
                   ? item.processPricingViews[0]
                   : {};
               const found = this.matchedProfiles.some(match => {
-                return (
-                  match.id === processProfileView.vendorId &&
-                  match.profileId === item.processProfileId
-                );
+                return match.vendorId === processProfileView.vendorId;
               });
-              let id = found ? "" : processProfileView.vendorId;
-              let priority = found ? "" : this.matchedProfiles.length + 1;
               if (!found) {
-                this.matchedProfiles.push({
-                  id: this.matchedProfiles.length + 1,
-                  vendorId: id,
-                  profileId: item.processProfileId,
-                  vendorName: item.vendorProfile ? item.vendorProfile.name : "",
-                  processProfileName: processProfileView.name,
-                  facilityName:
-                    processProfileView.processMachineServingMaterialList[0]
-                      .machineServingMaterial.vendorMachinery.vendorFacility
-                      .name,
-                  pricingProfile:
-                    (processPricingView && processPricingView.name) || "",
-                  releasePriority: priority,
-                  pricing: item.processPricingViews || [],
-                  vendorProfile: item.vendorProfile
-                });
+                count++;
               }
+              let id = !found ? count.toString() : '';
+              let priority = !found ? count.toString() : '';
+              this.matchedProfiles.push({
+                id,
+                vendorId: processProfileView.vendorId,
+                profileId: item.processProfileId,
+                vendorName: item.vendorProfile ? item.vendorProfile.name : '',
+                processProfileName: processProfileView.name || '',
+                facilityName:
+                  processProfileView.processMachineServingMaterialList[0]
+                    .machineServingMaterial.vendorMachinery.vendorFacility
+                    .name || '',
+                pricingProfile:
+                  (processPricingView && processPricingView.name) || '',
+                releasePriority: priority,
+                pricing: item.processPricingViews || [],
+                vendorProfile: item.vendorProfile
+              });
             });
             this.priorityRows = this.matchedProfiles.filter(
               item => item.id !== ""
