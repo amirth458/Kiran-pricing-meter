@@ -1,4 +1,4 @@
-import { OrdersService } from './../../../../../service/orders.service';
+import { OrdersService } from "./../../../../../service/orders.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { ActionService } from "src/app/service/action.service";
@@ -46,7 +46,9 @@ export class FullfillmentSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.ordersService.getFullfillmentSettings().subscribe(defaultValue => {
-      this.detailForm.setValue(defaultValue);
+      if (defaultValue) {
+        this.detailForm.setValue(defaultValue);
+      }
     });
     this.actionService.saveFullfillmentSettingAction().subscribe(() => {
       this.save();
@@ -58,21 +60,19 @@ export class FullfillmentSettingsComponent implements OnInit {
       .setFullfillmentSetting(this.detailForm.value)
       .pipe(catchError(e => this.handleSaveError(e)))
       .subscribe(v => {
-        this.toastrService.success('Setting Saved Succesfully.');
+        this.toastrService.success("Setting Saved Succesfully.");
         this.detailForm.setValue(v);
       });
   }
 
   handleSaveError(error: HttpErrorResponse) {
-    const message = error.error.message || "Import Failed.";
+    const message = error.error.message || "Save Failed.";
     this.toastrService.error(`${message} Please contact your admin`);
     return throwError("Error");
   }
 
   setCutOff(newValue: number) {
     this.selectedCutOff = newValue;
-    this.detailForm.value.bidReleaseCutoffType = this.cutOff[
-      newValue
-    ];
+    this.detailForm.value.bidReleaseCutoffType = this.cutOff[newValue];
   }
 }
