@@ -66,7 +66,7 @@ export class FullfillmentSettingsComponent implements OnInit {
   }
 
   handleSaveError(error: HttpErrorResponse) {
-    const message = error.error.message || "Import Failed.";
+    const message = error.error.message || "Save Failed.";
     this.toastrService.error(`${message} Please contact your admin`);
     return throwError("Error");
   }
