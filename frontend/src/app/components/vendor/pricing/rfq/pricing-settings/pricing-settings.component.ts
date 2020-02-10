@@ -49,8 +49,10 @@ export class PricingSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
-      this.detailForm.setValue(defaultValue);
-      this.selectedEligibility = defaultValue.autoPricingEligibilityType.id;
+      if (defaultValue) {
+        this.detailForm.setValue(defaultValue);
+        this.selectedEligibility = defaultValue.autoPricingEligibilityType.id;
+      }
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
       this.save();
