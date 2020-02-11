@@ -27,6 +27,11 @@
   outline: none;
 }
 
+:host .loading-panel {
+  min-height: 200px;
+  height: 200px;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
