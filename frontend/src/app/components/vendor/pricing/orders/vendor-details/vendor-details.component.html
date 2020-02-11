@@ -60,7 +60,7 @@
     </div>
     <ng-template #plainMode>
       <div class="position-relative w-100 h-100">
-        <ng-container *ngIf="matchedProfiles?.length > 0; else loading">
+        <ng-container *ngIf="!loadingProfiles; else loading">
           <div class="col-12 theme-table">
             <ag-grid-angular
               class="ag-theme-balham w-100 h-100"

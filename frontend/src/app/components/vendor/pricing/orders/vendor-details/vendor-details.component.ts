@@ -39,6 +39,7 @@ export class VendorDetailsComponent implements OnInit {
 
   changePriority = false;
   toggleVendorList = false;
+  loadingProfiles = false;
   columnDefs = [];
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent,
@@ -86,6 +87,7 @@ export class VendorDetailsComponent implements OnInit {
           order => (this.initialPrice += order.priceAccepted)
         );
         this.spinner.show('spooler');
+        this.loadingProfiles = true;
         this.ordersService
           .getMatchedProfiles(
             this.userService.getUserInfo().id,
@@ -128,6 +130,7 @@ export class VendorDetailsComponent implements OnInit {
             });
             this.priorityRows = this.matchedProfiles.filter(item => item.id !== "");
             this.spinner.hide('spooler');
+            this.loadingProfiles = false;
           });
       } else {
         this.prepareBidOrderInfo();
