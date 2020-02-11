@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GridOptions } from 'ag-grid-community';
 
-import { OrdersService } from './../../../../../service/orders.service';
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
+import { OrdersService } from '../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-released-orders',
