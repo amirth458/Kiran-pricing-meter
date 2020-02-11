@@ -85,6 +85,7 @@ export class VendorDetailsComponent implements OnInit {
         (this.orderDetails || []).map(
           order => (this.initialPrice += order.priceAccepted)
         );
+        this.spinner.show('spooler');
         this.ordersService
           .getMatchedProfiles(
             this.userService.getUserInfo().id,
@@ -125,9 +126,8 @@ export class VendorDetailsComponent implements OnInit {
                 vendorProfile: item.vendorProfile
               });
             });
-            this.priorityRows = this.matchedProfiles.filter(
-              item => item.id !== ""
-            );
+            this.priorityRows = this.matchedProfiles.filter(item => item.id !== "");
+            this.spinner.hide('spooler');
           });
       } else {
         this.prepareBidOrderInfo();

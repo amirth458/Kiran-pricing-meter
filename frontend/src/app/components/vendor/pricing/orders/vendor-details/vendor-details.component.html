@@ -59,15 +59,19 @@
         domLayout="autoHeight"></ag-grid-angular>
     </div>
     <ng-template #plainMode>
-      <div class="col-12 theme-table">
-        <ag-grid-angular
-          class="ag-theme-balham w-100 h-100"
-          [rowData]="matchedProfiles"
-          [class.grid-empty]="(matchedProfiles || []).length === 0"
-          [gridOptions]="gridOptions[2]"
-          (gridReady)="onGridReady(2, $event)"
-          domLayout="autoHeight"
-        ></ag-grid-angular>
+      <div class="position-relative w-100 h-100">
+        <ng-container *ngIf="matchedProfiles?.length > 0; else loading">
+          <div class="col-12 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="matchedProfiles"
+              [class.grid-empty]="(matchedProfiles || []).length === 0"
+              [gridOptions]="gridOptions[2]"
+              (gridReady)="onGridReady(2, $event)"
+              domLayout="autoHeight">
+            </ag-grid-angular>
+          </div>
+        </ng-container>
       </div>
     </ng-template>
   </div>
@@ -262,5 +266,19 @@
         Confirm
       </button>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center align-items-center loading-panel">
+    <ngx-spinner [name]="'spooler'"
+                 bdOpacity = 0.7
+                 bdColor = "#fff"
+                 size = "small"
+                 color = "#74bf09"
+                 type = "ball-clip-rotate"
+                 [fullScreen] = "false">
+      <p class="m-0">Loading... </p>
+    </ngx-spinner>
   </div>
 </ng-template>
