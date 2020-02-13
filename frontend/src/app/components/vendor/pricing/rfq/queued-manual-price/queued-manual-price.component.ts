@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -39,12 +38,10 @@ export class QueuedManualPriceComponent implements OnInit {
   gridOptions: GridOptions;
   rowData = [[], []];
   pageSize = 10;
-  navigation;
 
   constructor(
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
-    private modalService: NgbModal,
     private router: Router,
     public currencyPipe: CurrencyPipe
   ) {}
@@ -381,12 +378,4 @@ export class QueuedManualPriceComponent implements OnInit {
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
   }
 
-  onFileClicked(event, row, content) {
-    event.stopPropagation();
-    console.log(row);
-    this.modalService.open(content, {
-      centered: true,
-      windowClass: 'file-viewer-modal'
-    });
-  }
 }
