@@ -260,7 +260,7 @@ export class QueuedManualPriceComponent implements OnInit {
     this.gridOptions.api.setSortModel([
       {
         colId: 'rfq',
-        sort: 'desc'
+        sort: this.selectedTabId === 0 ? 'asc' : 'desc'
       }
     ]);
   }
