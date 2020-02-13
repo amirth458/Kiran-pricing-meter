@@ -62,7 +62,7 @@ import {
       easing: "ease-in"
     }),
     ComponentsModule,
-    RecaptchaModule,
+    RecaptchaModule.forRoot(),
     RecaptchaFormsModule
   ],
   declarations: [AppComponent, LoginComponent, FooterMenuComponent],
