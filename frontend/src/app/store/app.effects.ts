@@ -61,7 +61,6 @@ export class AppEffects {
     ofType(AppTypes.GetVendorInfo),
     switchMap((_: GetVendorInfo) => this.authService.getVendor()),
     map((res: any) => {
-      console.log("getVendorInfo");
       this.userService.setVendorInfo(res);
       return {
         type: AppTypes.UpdateState,
@@ -76,7 +75,6 @@ export class AppEffects {
     ofType(AppTypes.GetVendorInfo),
     switchMap((_: GetUserInfo) => this.authService.getProfile()),
     map((res: any) => {
-      console.log("getUserInfo");
       this.userService.setUserInfo(res);
       return {
         type: AppTypes.UpdateState,
