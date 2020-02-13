@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   errorMessage = "";
   siteKey = environment.reCaptureKey;
+  recaptcha = false;
 
   constructor(
     public fb: FormBuilder,
@@ -40,6 +41,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     const email = localStorage.getItem("admin-email");
     const password = localStorage.getItem("admin-password");
     console.log("login component ng on init", rememberMe, email, password);
+    setTimeout(() => {
+      this.recaptcha = true;
+    }, 1000);
     if (rememberMe === "1") {
       this.userForm.setValue({
         email,
