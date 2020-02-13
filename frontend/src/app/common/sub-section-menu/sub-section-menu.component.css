@@ -22,6 +22,7 @@ ul li {
   color: white;
   display: flex;
   align-items: center;
+  font-weight: 500;
 }
 
 ul li.active {
