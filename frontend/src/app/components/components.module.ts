@@ -1,6 +1,5 @@
 import { ModelDetailViewComponent } from "./../common/model-detail-view/model-detail-view.component";
 import { FileViewRendererComponent } from "./../common/file-view-renderer/file-view-renderer.component";
-import { AppModule } from "./../app.module";
 import { StatusDropdownFilterComponent } from "./../common/status-dropdown-filter/status-dropdown-filter.component";
 import { NgModule } from "@angular/core";
 import { CommonModule, DatePipe, CurrencyPipe } from "@angular/common";
@@ -69,6 +68,15 @@ import { PastOrderDetailsComponent } from "./vendor/pricing/orders/past-order-de
 import { VendorDetailsComponent } from "./vendor/pricing/orders/vendor-details/vendor-details.component";
 import { ProcessProfileComponent } from "./vendor/pricing/rfq/process-profile/process-profile.component";
 import { ProcessProfileDetailComponent } from "./vendor/pricing/rfq/process-profile-detail/process-profile-detail.component";
+
+import {
+  RecaptchaModule,
+  RECAPTCHA_SETTINGS,
+  RecaptchaSettings,
+  RecaptchaFormsModule,
+  RECAPTCHA_BASE_URL
+} from "ng-recaptcha";
+import { environment } from "src/environments/environment";
 
 @NgModule({
   declarations: [
@@ -149,9 +157,24 @@ import { ProcessProfileDetailComponent } from "./vendor/pricing/rfq/process-prof
     HttpClientModule,
     NgxSpinnerModule,
     RouterModule,
-    InternationalPhoneNumberModule
+    InternationalPhoneNumberModule,
+    RecaptchaModule,
+    RecaptchaFormsModule
   ],
-  providers: [DatePipe, CurrencyPipe],
+  providers: [
+    DatePipe,
+    CurrencyPipe,
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.reCaptureKey
+      } as RecaptchaSettings
+    },
+    {
+      provide: RECAPTCHA_BASE_URL,
+      useValue: "https://recaptcha.net/recaptcha/api.js" // use recaptcha.net script source for some of our users
+    }
+  ],
   exports: [
     NgxSpinnerModule,
     AgGridModule,
