@@ -33,8 +33,6 @@ import { ProcessProfileDetailComponent } from "src/app/components/vendor/pricing
 import { BillingContainerComponent } from 'src/app/components/vendor/billing/billing-container/billing-container.component';
 import { PaymentContainerComponent } from 'src/app/components/vendor/billing/payment-container/payment-container.component';
 import { WaitingForApprovalComponent } from 'src/app/components/vendor/billing/waiting-for-approval/waiting-for-approval.component';
-import { ApprovedComponent } from 'src/app/components/vendor/billing/approved/approved.component';
-import { RejectedComponent } from 'src/app/components/vendor/billing/rejected/rejected.component';
 
 const routes: Routes = [
   {
@@ -165,8 +163,8 @@ const routes: Routes = [
             component: PaymentContainerComponent,
             children: [
               { path: "waiting-for-approval", component: WaitingForApprovalComponent },
-              { path: "approved", component: ApprovedComponent },
-              { path: "rejected", component: RejectedComponent },
+              { path: "approved", component: WaitingForApprovalComponent },
+              { path: "rejected", component: WaitingForApprovalComponent },
               { path: "", redirectTo: "waiting-for-approval", pathMatch: "full" },
               { path: "**", redirectTo: "waiting-for-approval", pathMatch: "full" }
             ]
