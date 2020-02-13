@@ -72,8 +72,6 @@ import { ProcessProfileDetailComponent } from "./vendor/pricing/rfq/process-prof
 import { BillingContainerComponent } from './vendor/billing/billing-container/billing-container.component';
 import { PaymentContainerComponent } from './vendor/billing/payment-container/payment-container.component';
 import { WaitingForApprovalComponent } from './vendor/billing/waiting-for-approval/waiting-for-approval.component';
-import { ApprovedComponent } from './vendor/billing/approved/approved.component';
-import { RejectedComponent } from './vendor/billing/rejected/rejected.component';
 
 @NgModule({
   declarations: [
@@ -137,8 +135,6 @@ import { RejectedComponent } from './vendor/billing/rejected/rejected.component'
     BillingContainerComponent,
     PaymentContainerComponent,
     WaitingForApprovalComponent,
-    ApprovedComponent,
-    RejectedComponent
   ],
   imports: [
     CommonModule,
