@@ -33,6 +33,13 @@ export const environment = {
       icon: "far fa-chart-bar",
       visible: true,
       active: false
+    },
+    {
+      name: "Billing",
+      route: '/billing',
+      icon: 'fas fa-file-invoice-dollar',
+      visible: true,
+      active: true
     }
   ],
   admin_menus: [],

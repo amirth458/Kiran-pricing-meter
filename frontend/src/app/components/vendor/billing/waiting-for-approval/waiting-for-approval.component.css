@@ -1,0 +1,60 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-control {
+  width: 220px;
+  height: auto;
+  margin-right: 10px;
+  margin-bottom: 32px;
+}
+
+.table {
+  width: 100%;
+  height: auto;
+}
+
+.viewAllInfo {
+  color: var(--theme-sky-blue);
+  cursor: pointer
+}
+
+.viewAllInfo:hover,
+.approve-btn:hover,
+.reject-btn:hover {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.approve-btn {
+  cursor: pointer
+}
+
+.reject-btn {
+  cursor: pointer;
+  color: var(--theme-orange);
+}
+
+
+.approveModal .modal-header>h5,
+.rejectModal .modal-header>h5 {
+  border-left: 5px solid var(--theme-text-color);
+}
+
+.approveModal .modal-body p {
+  font-size: 19px;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+
+}
