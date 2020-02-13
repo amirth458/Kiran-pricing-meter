@@ -14,11 +14,11 @@ export class AuthService {
 
   constructor(public http: HttpClient, private store: Store<any>) {}
 
-  login(user: string, password: string, recaptchaReactive: string) {
+  login(user: string, password: string, recaptchaReactive: string = "") {
     const userRequest = {
       email: user,
-      password,
-      recaptchaReactive
+      password
+      // recaptchaReactive
     };
 
     const headers = new HttpHeaders();
