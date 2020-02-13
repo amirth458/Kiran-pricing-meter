@@ -8,11 +8,17 @@
       aria-expanded="false"
       id="manualPricingDropdown"
     >
-      <div class="setting-name p-3 col-6">Cutoff for Manual Pricing</div>
+      <div class="setting-name p-3 col-6">
+        Cutoff for Manual Pricing
+      </div>
       <div class="setting-control d-flex align-items-center col-6">
         <div
           class="d-flex align-items-center flex-4"
-          [ngClass]="{ invisible: manualPricingSection === 2 }"
+          *ngIf="manualPricingSection !== 3"
+        ></div>
+        <div
+          class="d-flex align-items-center flex-5"
+          *ngIf="manualPricingSection !== 2"
         >
           <input
             required
@@ -25,7 +31,7 @@
         </div>
         <div
           class="d-flex align-items-center flex-5"
-          [ngClass]="{ invisible: manualPricingSection === 1 }"
+          *ngIf="manualPricingSection !== 1"
         >
           <input
             required
@@ -80,10 +86,13 @@
             formControlName="presentBidNumberFromBottom"
             class="setting-input"
           />
-          <span
-            >(from bottom - {{ detailForm.value.presentBidNumberFromBottom
-            }}<sup>th</sup> price)</span
-          >
+          <span>
+            (from bottom - {{ detailForm.value.presentBidNumberFromBottom }}
+            <sup>
+              {{ getOrderUnit(detailForm.value.presentBidNumberFromBottom) }}
+            </sup>
+            price)
+          </span>
         </div>
       </div>
     </div>
@@ -125,7 +134,7 @@
     </div>
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
-        Default Eligibiligy for auto-pricing approach
+        Default Eligibility for auto-pricing approach
       </div>
       <div class="auto-pricing-control col-6 d-flex">
         <div
@@ -169,7 +178,7 @@
         </ul>
       </div>
     </div>
-    <div class="row mb-2 d-none">
+    <!-- <div class="row mb-2 d-none">
       <div class="setting-name p-3 col-6">Specificity Premium</div>
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
@@ -183,7 +192,7 @@
           <span>% per level of specificity</span>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">Time to Expire Quote</div>
       <div class="setting-control d-flex align-items-center col-6">

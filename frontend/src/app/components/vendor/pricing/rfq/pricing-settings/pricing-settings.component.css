@@ -48,6 +48,9 @@
   margin: 0 10px;
   color: var(--theme-action-bar-color);
 }
+.flex-3 {
+  flex: 3;
+}
 .flex-4 {
   flex: 4;
 }
@@ -79,7 +82,6 @@
   position: absolute;
   color: var(--theme-light-green);
   right: 20px;
-  top: 1em;
 }
 
 .auto-pricing-control {
@@ -117,4 +119,8 @@ li.auto-pricing-control.active .col-6 {
 
 input {
   text-align: center;
+}
+
+.d-none {
+  display: none !important;
 }
