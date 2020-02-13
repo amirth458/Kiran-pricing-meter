@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     const rememberMe = localStorage.getItem("admin-remember_me");
     const email = localStorage.getItem("admin-email");
     const password = localStorage.getItem("admin-password");
+    console.log("login component ng on init", rememberMe, email, password);
     if (rememberMe === "1") {
       this.userForm.setValue({
         email,
@@ -71,6 +72,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   login() {
+    console.log("login component login");
     this.errorMessage = "";
     if (!this.userForm.valid) {
       return;
