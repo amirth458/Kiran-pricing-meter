@@ -30,6 +30,11 @@ import { MarketplaceContainerComponent } from "src/app/components/vendor/marketp
 import { ReferralContainerComponent } from "./../../components/vendor/marketplace/referral/referral-container/referral-container.component";
 import { ReferralComponent } from "./../../components/vendor/marketplace/referral/referral/referral.component";
 import { ProcessProfileDetailComponent } from "src/app/components/vendor/pricing/rfq/process-profile-detail/process-profile-detail.component";
+import { BillingContainerComponent } from 'src/app/components/vendor/billing/billing-container/billing-container.component';
+import { PaymentContainerComponent } from 'src/app/components/vendor/billing/payment-container/payment-container.component';
+import { WaitingForApprovalComponent } from 'src/app/components/vendor/billing/waiting-for-approval/waiting-for-approval.component';
+import { ApprovedComponent } from 'src/app/components/vendor/billing/approved/approved.component';
+import { RejectedComponent } from 'src/app/components/vendor/billing/rejected/rejected.component';
 
 const routes: Routes = [
   {
@@ -151,6 +156,25 @@ const routes: Routes = [
           { path: "**", pathMatch: "full", redirectTo: "approve-vendor" }
         ]
       },
+      {
+        path: "billing",
+        component: BillingContainerComponent,
+        children: [
+          {
+            path: "payment",
+            component: PaymentContainerComponent,
+            children: [
+              { path: "waiting-for-approval", component: WaitingForApprovalComponent },
+              { path: "approved", component: ApprovedComponent },
+              { path: "rejected", component: RejectedComponent },
+              { path: "", redirectTo: "waiting-for-approval", pathMatch: "full" },
+              { path: "**", redirectTo: "waiting-for-approval", pathMatch: "full" }
+            ]
+          },
+          { path: "", redirectTo: "payment", pathMatch: "full" },
+          { path: "**", redirectTo: "payment", pathMatch: "full" }
+        ]
+      },
       { path: "", redirectTo: "marketplace", pathMatch: "full" }
     ]
   }
@@ -160,4 +184,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule {}
+export class DashboardRoutingModule { }
