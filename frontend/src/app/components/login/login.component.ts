@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   userForm: FormGroup = this.fb.group({
     email: [null, Validators.required],
     password: [null, Validators.required],
-    // recaptchaReactive: [null, [Validators.required]],
+    recaptchaReactive: [null, [Validators.required]],
     remember_me: null
   });
 
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       this.userForm.setValue({
         email,
         password,
-        // recaptchaReactive: null,
+        recaptchaReactive: null,
         remember_me: null
       });
       this.login();
@@ -83,8 +83,8 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this.authService
       .login(
         this.userForm.value.email,
-        this.userForm.value.password
-        // this.userForm.value.recaptchaReactive
+        this.userForm.value.password,
+        this.userForm.value.recaptchaReactive
       )
       .subscribe(
         (res: any) => {

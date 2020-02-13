@@ -32,9 +32,9 @@ import {
   RecaptchaModule,
   RECAPTCHA_SETTINGS,
   RecaptchaSettings,
-  RecaptchaFormsModule,
   RECAPTCHA_BASE_URL
 } from "ng-recaptcha";
+import { RecaptchaFormsModule } from "ng-recaptcha/forms";
 
 @NgModule({
   imports: [
