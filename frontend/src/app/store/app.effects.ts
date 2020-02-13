@@ -1,13 +1,27 @@
-import { Injectable } from '@angular/core';
-import { Observable, Action, Effect, ofType, switchMap, map, AppTypes, AppFields,
-  CreateVendorInfo, Actions, UpdateVendorInfo, GetVendorInfo, GetUserInfo,
-  GetRegisterStatus, UpdateAuthInfo } from './app.models';
-import { VendorService } from '../service/vendor.service';
-import { AuthService } from '../service/auth.service';
-import { UserService } from '../service/user.service';
+import { Injectable } from "@angular/core";
+import {
+  Observable,
+  Action,
+  Effect,
+  ofType,
+  switchMap,
+  map,
+  AppTypes,
+  AppFields,
+  CreateVendorInfo,
+  Actions,
+  UpdateVendorInfo,
+  GetVendorInfo,
+  GetUserInfo,
+  GetRegisterStatus,
+  UpdateAuthInfo
+} from "./app.models";
+import { VendorService } from "../service/vendor.service";
+import { AuthService } from "../service/auth.service";
+import { UserService } from "../service/user.service";
 
-@Injectable() export class AppEffects {
-
+@Injectable()
+export class AppEffects {
   constructor(
     private vendorService: VendorService,
     private authService: AuthService,
@@ -47,6 +61,7 @@ import { UserService } from '../service/user.service';
     ofType(AppTypes.GetVendorInfo),
     switchMap((_: GetVendorInfo) => this.authService.getVendor()),
     map((res: any) => {
+      console.log("getVendorInfo");
       this.userService.setVendorInfo(res);
       return {
         type: AppTypes.UpdateState,
@@ -61,6 +76,7 @@ import { UserService } from '../service/user.service';
     ofType(AppTypes.GetVendorInfo),
     switchMap((_: GetUserInfo) => this.authService.getProfile()),
     map((res: any) => {
+      console.log("getUserInfo");
       this.userService.setUserInfo(res);
       return {
         type: AppTypes.UpdateState,
