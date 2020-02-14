@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import { CurrencyPipe, DatePipe } from "@angular/common";
 import { HttpClient, HttpParams } from "@angular/common/http";
 
 import { ColDef } from "ag-grid-community/src/ts/entities/colDef";
@@ -18,7 +18,7 @@ import { Util } from "../util/Util";
   providedIn: "root"
 })
 export class OrdersService {
-  constructor(private http: HttpClient, public datePipe: DatePipe) {}
+  constructor(private http: HttpClient, public datePipe: DatePipe, public currencyPipe: CurrencyPipe) {}
 
   getSubOrderReleaseQueue(filterOption: FilterOption): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/part/placing-order-status`;
@@ -185,7 +185,15 @@ export class OrdersService {
         tooltip: params => params.value,
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(
+            dt.value || 0,
+            'USD',
+            'symbol',
+            '0.0-3'
+          );
+        }
       },
       {
         headerName: "Quantity",
