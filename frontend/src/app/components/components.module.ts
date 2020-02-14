@@ -69,9 +69,9 @@ import { PastOrderDetailsComponent } from "./vendor/pricing/orders/past-order-de
 import { VendorDetailsComponent } from "./vendor/pricing/orders/vendor-details/vendor-details.component";
 import { ProcessProfileComponent } from "./vendor/pricing/rfq/process-profile/process-profile.component";
 import { ProcessProfileDetailComponent } from "./vendor/pricing/rfq/process-profile-detail/process-profile-detail.component";
-import { BillingContainerComponent } from './vendor/billing/billing-container/billing-container.component';
-import { PaymentContainerComponent } from './vendor/billing/payment-container/payment-container.component';
-import { WaitingForApprovalComponent } from './vendor/billing/waiting-for-approval/waiting-for-approval.component';
+import { BillingContainerComponent } from "./vendor/billing/billing-container/billing-container.component";
+import { PaymentContainerComponent } from "./vendor/billing/payment-container/payment-container.component";
+import { WaitingForApprovalComponent } from "./vendor/billing/waiting-for-approval/waiting-for-approval.component";
 
 @NgModule({
   declarations: [
@@ -134,13 +134,14 @@ import { WaitingForApprovalComponent } from './vendor/billing/waiting-for-approv
     ProcessProfileDetailComponent,
     BillingContainerComponent,
     PaymentContainerComponent,
-    WaitingForApprovalComponent,
+    WaitingForApprovalComponent
   ],
   imports: [
     CommonModule,
     NgbModule,
     AgGridModule.withComponents([
       ActionCellRendererComponent,
+      ActionCellApproveRendererComponent,
       DropdownCellRendererComponent,
       DropdownHeaderRendererComponent,
       MultiSelectCellRendererComponent,
