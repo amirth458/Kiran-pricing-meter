@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import { CurrencyPipe, DatePipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -65,7 +65,8 @@ export class VendorDetailsComponent implements OnInit {
     private userService: UserService,
     public toaster: ToastrService,
     public spinner: NgxSpinnerService,
-    public datePipe: DatePipe
+    public datePipe: DatePipe,
+    public currencyPipe: CurrencyPipe
   ) {
     if (this.router.url.includes("order-confirmation-queue")) {
       this.type = "confirmation";
@@ -211,7 +212,15 @@ export class VendorDetailsComponent implements OnInit {
           tooltipField: "priceAccepted",
           hide: false,
           sortable: true,
-          filter: false
+          filter: false,
+          valueFormatter: dt => {
+            return this.currencyPipe.transform(
+              dt.value || 0,
+              'USD',
+              'symbol',
+              '0.0-3'
+            );
+          }
         },
         {
           headerName: "Customer",
