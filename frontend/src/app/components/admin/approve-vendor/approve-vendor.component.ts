@@ -335,8 +335,12 @@ export class ApproveVendorComponent implements OnInit {
       ...user,
       vendorName: user.vendor ? user.vendor.name : "",
       email: user.vendor ? user.vendor.email : "",
-      country: user.vendor ? user.vendor.country.name : "",
-      confidentiality: user.vendor ? user.vendor.confidentiality.name : ""
+      country:
+        user.vendor && user.vendor.country ? user.vendor.country.name : "",
+      confidentiality:
+        user.vendor && user.vendor.confidentiality
+          ? user.vendor.confidentiality.name
+          : ""
     }));
   }
 
