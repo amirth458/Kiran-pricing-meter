@@ -225,14 +225,23 @@ export class ProcessProfileComponent implements OnInit {
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.vendorMachinery.vendorFacility.name,
       pricingProfile: item.processPricingViews && item.processPricingViews.map(v => v.name).join(", "),
-      material:
-        item.processProfileView.processMachineServingMaterialList[0]
-          .machineServingMaterial.material.name,
+      material: this.getAllMaterials(item.processProfileView.processMachineServingMaterialList),
       equipment:
         item.processProfileView.processMachineServingMaterialList[0]
           .machineServingMaterial.vendorMachinery.equipment.name
     }));
     this.spinner.hide();
+  }
+
+  getAllMaterials(m: any) {
+    const arr = [];
+    (m || []).map(m => {
+      m.machineServingMaterial.material.name;
+      if (m.machineServingMaterial && m.machineServingMaterial.material && m.machineServingMaterial.material.name) {
+        arr.push(m.machineServingMaterial.material.name);
+      }
+    });
+    return arr.join(',');
   }
 
   configureColumnDefs() {
