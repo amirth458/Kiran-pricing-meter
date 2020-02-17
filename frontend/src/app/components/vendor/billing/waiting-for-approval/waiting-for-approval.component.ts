@@ -273,7 +273,8 @@ export class WaitingForApprovalComponent implements OnInit {
         note: 'I submitted my PO. Please Accept it.',
         paymentType: 'Purchase Order',
         status: 'Approved'
-      }, {
+      },
+      {
         id: 5,
         customerName: 'Printing Co',
         orderId: '1234',
@@ -282,7 +283,8 @@ export class WaitingForApprovalComponent implements OnInit {
         paymentType: 'Purchase Order',
         status: 'Approved'
       }
-      , {
+      ,
+      {
         id: 6,
         customerName: 'Printing Co',
         orderId: '1234',

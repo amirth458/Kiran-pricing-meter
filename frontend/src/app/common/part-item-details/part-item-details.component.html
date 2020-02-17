@@ -1,0 +1,61 @@
+<div class="container">
+
+  <h6>Part {{part?.id}}</h6>
+  <div class="col-12 row pt-4 pl-0 pb-4 m-0 body">
+
+    <div class="col-7 o-card p-2 border">
+      <div class="col-12 d-flex p-0">
+        <div class="col-4">
+          <img class="img-fluid h-100 w-100" alt="" height="140px" width="140px"
+            [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location" data-holder-rendered="true">
+        </div>
+        <div class="col-4">
+          <p class="label">File: <span class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.name}}</span>
+          </p>
+          <p class="label">Material: <span
+              class="text-theme-green font-weight-bold">{{part?.materialPropertyValues?.join(', ')}}</span></p>
+          <p class="label">Process: <span
+              class="text-theme-green font-weight-bold">{{part?.equipmentPropertyValues?.join(', ')}}</span></p>
+          <p class="label">Post-process: <span class="text-theme-green font-weight-bold"></span></p>
+        </div>
+        <div class="col-4 border-left">
+          <p class="label">Dimension: <span class="text-theme-green font-weight-bold">{{getPartDimension()}}</span></p>
+          <p class="label">Volume: <span
+              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.volume?.value}}</span>
+          </p>
+          <p class="label">Surface Roughness: <span
+              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.surfaceArea?.value}}</span>
+          </p>
+          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold"></span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-5 d-flex  pl-3">
+      <div class="col-12 d-flex shipment p-3">
+
+        <div class="o-card w-100">
+          <p class="label d-flex flex-row">
+            Shipment (OTY - {{part?.quantity}}) <span class="float-right">{{part?.shippedAt | date: 'YYY/mm/dd'}}</span>
+            <!-- {{part?.targetDeliveryDate | date: 'YYY/mm/dd'}} -->
+          </p>
+          <div class="d-flex col-12 p-0">
+            <div class="col-8 p-0">
+              <p class="label">
+                Address: {{shippingAddressInfo(part?.shippingAddress)}}
+              </p>
+            </div>
+            <div class="col-8">
+              <p class="label target-delivery font-weight-bold">
+                Target Delivery Date
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
