@@ -1,0 +1,112 @@
+.wrapper {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  color: var(--theme-action-bar-color);
+}
+
+
+.purchase-nav span {
+  font-size: 17px;
+}
+
+.purchase-nav span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.detail-body .details,
+.detail-body .summary {
+  height: 100%;
+}
+
+.detail-body .info .order-info,
+.detail-body .info .payment-info {
+  border: 1px solid var(--theme-action-bar-color);
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.detail-body .info h5 {
+  font-size: 14px;
+}
+
+.payment-info .file-name {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+.notes .notes-body {
+  /* height: 300px; */
+}
+
+
+.notes .notes-action .comment .btn {
+  height: 40px;
+  width: 105px;
+  position: absolute;
+  right: 20px;
+}
+
+.notes .notes-action .comment>div>textarea {
+  padding-right: 135px
+}
+
+
+.summary .order-summary {
+  background: var(--theme-tab-border);
+  height: 100;
+  border-radius: 5px;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  transition-delay: calc(1 * (1s / 18));
+}
+
+
+.summary .order-summary p {
+  font-size: 14px;
+}
+
+.summary .order-summary span.value {
+  font-weight: 500;
+}
+
+.summary .order-summary .details-toggle {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.notes .notes-body {
+  height: 350px;
+  overflow: scroll
+}
+
+
+.part-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.part-detail-toggle {
+  text-decoration: underline;
+  font-size: 12px;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.part-list {
+  height: 450px;
+  overflow: scroll
+}
+
+.part-list .part-item {
+  font-size: 12px;
+}
+
+.part-list .part-item .value {
+  margin-left: 5px;
+}

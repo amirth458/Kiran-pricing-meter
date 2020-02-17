@@ -1,0 +1,251 @@
+<div class="wrapper shadow ">
+
+  <!-- Prev-Next PO Navigation -->
+  <div class="row justify-content-between purchase-nav">
+    <div class="col-md-2 text-theme-green">
+      <i class="fas fa-chevron-left"></i>
+      <span class="ml-2">Previous PO</span>
+    </div>
+    <div class="col-md-2 row justify-content-end align-items-center text-theme-green">
+      <span class="mr-2">Next PO</span>
+      <i class="fas fa-chevron-right"></i>
+    </div>
+  </div>
+  <!-- End of Prev-Next PO Navigation -->
+
+
+  <div class="row mt-4 justify-content-between detail-body">
+
+    <div class="col-7 details">
+
+      <!-- Top Details Bar -->
+      <div class="row justify-content-between info">
+
+        <div class="col-5 mr-3 mb-3 p-3 order-info">
+          <h5 class="font-weight-bold">Ordered on: <span class="text-theme-green">05/02/2020</span> </h5>
+          <p class="mb-1">Customer: <span class="text-theme-green">Printing 3D</span></p>
+          <p class="">Order Id: <span class="text-theme-green">1234</span></p>
+        </div>
+
+        <div class="col-6 p-3 mb-3 payment-info">
+          <h5 class="font-weight-bold">Purchase Method: <span class="text-theme-green">Purchase Order (No
+              3783748)</span> </h5>
+          <p class="mb-1">Paid: <span class="text-theme-green">{{'0.00'| currency:' '}}</span></p>
+          <p class="text-theme-green file-name">Rotor Purchase Order.pdf</p>
+        </div>
+
+      </div>
+      <!-- End of Top Details Bar -->
+
+
+      <!-- Notes -->
+      <div class="row shadow mt-4 notes">
+
+        <div class="col-12 shadow">
+          <h4 class="text-center text-theme-green w-100 mt-2 mb-2">Notes</h4>
+        </div>
+
+        <div class="col-12 notes-body">
+
+
+        </div>
+
+        <div class="col-12  shadow notes-action pt-3 pb-3">
+          <div class="col-12 comment">
+
+            <label class="font-weight-bold">Notes</label>
+
+            <div class="col-12 m-0 p-1 row align-items-center">
+
+              <textarea class="form-control"></textarea>
+              <button type="button" class="btn theme white" (click)="toast.warning('Feature In Development')">
+                Send Note
+              </button>
+            </div>
+
+
+          </div>
+
+          <div class="col-12 mt-2 row justify-content-center">
+            <div class="col-3 mr-1">
+              <button type="button" class="btn theme"
+              (click)="open(approveModal, 'md')">Approve</button>
+            </div>
+
+            <div class="col-3 ml-1">
+              <button type="button" class="btn theme orange-btn"
+                (click)="open(rejectModal, 'md')">Reject</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- End of Notes -->
+
+    </div>
+
+
+
+    <!-- Summary -->
+    <div class="col-5 summary">
+
+      <!-- Top Summary -->
+      <div class="p-3 order-summary">
+        <h5>Order Summary</h5>
+        <div *ngIf="showPaymentDetails" class="">
+
+          <p class="d-flex mb-1 justify-content-between summary-item">
+            <span class="name">Items</span>
+            <span class="value">1,000</span>
+          </p>
+          <p class="d-flex mb-1 justify-content-between summary-item">
+            <span class="name">Shipping and Handling</span>
+            <span class="value">{{'15.99' | currency:' '}}</span>
+          </p>
+          <p class="d-flex mb-1 justify-content-between summary-item">
+            <span class="name">3Diligent Discount</span>
+            <span class="value">{{'-8.50' | currency:' '}}</span>
+          </p>
+          <p class="d-flex mb-1 justify-content-between summary-item">
+            <span class="name">Total Before Tax</span>
+            <span class="value">{{'1027.49' | currency:' '}}</span>
+          </p>
+          <p class="d-flex mb-1 justify-content-between summary-item">
+            <span class="name">Estimated Tax to be collected</span>
+            <span class="value">{{'371.50' | currency:' '}}</span>
+          </p>
+
+        </div>
+
+
+        <h6 class="d-flex mt-2 justify-content-between summary-item">
+          <span class="name">Total Cost</span>
+          <span class="value">{{'24227.24' | currency:'$'}}</span>
+        </h6>
+
+        <br>
+        <p class="details-toggle text-center" (click)="togglePaymentInfo()">
+          <span *ngIf="showPaymentDetails">Close Details</span>
+          <span *ngIf="!showPaymentDetails">See Details</span>
+        </p>
+      </div>
+      <!-- End of Top Summary -->
+
+
+      <h5 class="col-12 mt-5 pl-0">Parts <span (click)="toast.warning('Feature In Development')"
+          class="ml-4 part-detail-toggle">See More Details</span></h5>
+      <div class="row justify-content-between part-list">
+
+        <div *ngFor="let item of partList" class="col-5 part-item mt-2">
+          <p class="part-name">Part 123.1</p>
+
+          <!-- Image -->
+          <img src="../../../../../assets/image/example_machine.png" alt="" height="80px" width="80px">
+
+          <!-- Part Details -->
+          <div class="details">
+            <p class="d-flex mb-1">
+              <span class="name">File: </span>
+              <span class="value text-theme-green">Brake Rotor No Logo.step</span>
+            </p>
+            <p class="d-flex mb-1">
+              <span class="name">Material: </span>
+              <span class="value text-theme-green">ABS / 20% Carbon Fiber</span>
+            </p>
+            <p class="d-flex mb-1">
+              <span class="name">Process: </span>
+              <span class="value text-theme-green">3D Printing</span>
+            </p>
+            <p class="d-flex mb-1">
+              <span class="name">Post-Process: </span>
+              <span class="value text-theme-green">ElectroPolishing</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- End of Summary -->
+
+
+  </div>
+
+</div>
+
+
+
+
+
+<!-- Approve Modal -->
+<ng-template #approveModal let-modal>
+
+
+  <div class="approveModal">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        Approve Purchase Order No {{selectedPurchaseOrderId}}
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body text-theme">
+      <p class="text-center">Do you want to Approve this Purchase Order ?</p>
+    </div>
+
+    <div class="modal-footer border-0" ngbAutofocus>
+      <div class="w-100 row justify-content-center">
+        <div class="col-md-4">
+          <button (click)="approvePurchase()" type="button" class="col btn theme">
+            Approve
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>
+<!-- End of Approve Modal -->
+
+
+
+
+
+
+
+<!-- Approve Modal -->
+<ng-template #rejectModal let-modal>
+
+
+  <div class="rejectModal">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        Reject Purchase Order No {{selectedPurchaseOrderId}}
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body text-theme">
+      <p class="text-center">Do you want to Reject this Purchase Order ?</p>
+    </div>
+
+    <div class="modal-footer border-0" ngbAutofocus>
+      <div class="w-100 row justify-content-center">
+        <div class="col-md-4">
+          <button (click)="rejectPurchase()" type="button" class="col btn theme orange-btn m-0">
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>
+<!-- End of Approve Modal -->
+

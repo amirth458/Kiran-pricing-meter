@@ -481,7 +481,7 @@ app-dropdown-cell-renderer {
 
 .orange-btn {
   color: white;
-  background-color: var(--theme-orange);
+  background-color: var(--theme-orange) !important;
   margin: 0 15px;
 }
 .green-btn {

@@ -40,6 +40,8 @@ export class PaymentContainerComponent implements OnInit {
       case "rejected":
         this.selectedTab = "Rejected";
         break;
+      case "details":
+        break;
       default:
         this.route.navigateByUrl(this.route.url + "/waiting-for-approval");
         break;
