@@ -15,7 +15,9 @@
       <table
         class="w-100 table table-borderless pricing-table"
         *ngIf="
-          !part?.manualPricingAllowed || part?.partStatusType.id === 3 || partQuote;
+          !part?.manualPricingAllowed ||
+            part?.partStatusType.id === 3 ||
+            partQuote;
           else pricingSetting
         "
       >
@@ -28,9 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails"
-          >
+          <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
             <td class="font-weight-bold">
               {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
             </td>
@@ -43,7 +43,7 @@
             <td class="text-center"></td>
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
-              {{ partQuote?.totalCost | currency:'USD':'symbol':'0.0-3' }}
+              {{ partQuote?.totalCost | currency: "USD":"symbol":"0.0-3" }}
             </td>
           </tr>
         </tbody>
@@ -131,7 +131,10 @@
                         type="number"
                         class="price-input"
                         readonly
-                        [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
+                        [value]="
+                          pricingForm.value.toolingUnitCount *
+                          pricingForm.value.toolingUnitPrice
+                        "
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -140,7 +143,10 @@
                         readonly
                         class="price-input"
                         readonly
-                        [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
+                        [value]="
+                          pricingForm.value.toolingUnitCount *
+                          pricingForm.value.toolingUnitPrice
+                        "
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
@@ -214,7 +220,10 @@
                         type="number"
                         class="price-input"
                         readonly
-                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
+                        [value]="
+                          pricingForm.value.partsUnitCount *
+                          pricingForm.value.partsUnitPrice
+                        "
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -223,7 +232,10 @@
                         readonly
                         class="price-input"
                         readonly
-                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
+                        [value]="
+                          pricingForm.value.partsUnitCount *
+                          pricingForm.value.partsUnitPrice
+                        "
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
@@ -235,12 +247,12 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <a
+                  <!-- <a
                     *ngIf="stage === 'edit'"
                     (click)="openModal(recommendation, 'recommended')"
                     class="show-recommended"
                     >See Recommended Price</a
-                  >
+                  > -->
                   <a
                     *ngIf="stage === 'confirm'"
                     (click)="changeStage('edit')"
@@ -259,7 +271,12 @@
                         type="number"
                         class="price-input"
                         readonly
-                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice + pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
+                        [value]="
+                          pricingForm.value.partsUnitCount *
+                            pricingForm.value.partsUnitPrice +
+                          pricingForm.value.toolingUnitCount *
+                            pricingForm.value.toolingUnitPrice
+                        "
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'confirm'">
@@ -267,7 +284,12 @@
                         type="number"
                         class="price-input"
                         readonly
-                        [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice + pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
+                        [value]="
+                          pricingForm.value.partsUnitCount *
+                            pricingForm.value.partsUnitPrice +
+                          pricingForm.value.toolingUnitCount *
+                            pricingForm.value.toolingUnitPrice
+                        "
                       />
                     </ng-container>
                     <ng-container *ngSwitchCase="'unset'">-</ng-container>
@@ -383,13 +405,23 @@
             <td class="text-center">
               {{ pricingForm.value.toolingUnitPrice }}
             </td>
-            <td class="text-center">{{ pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice }}</td>
+            <td class="text-center">
+              {{
+                pricingForm.value.toolingUnitCount *
+                  pricingForm.value.toolingUnitPrice
+              }}
+            </td>
           </tr>
           <tr>
             <td class="font-weight-bold">Parts</td>
             <td class="text-center">{{ pricingForm.value.partsUnitCount }}</td>
             <td class="text-center">{{ pricingForm.value.partsUnitPrice }}</td>
-            <td class="text-center">{{ pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice }}</td>
+            <td class="text-center">
+              {{
+                pricingForm.value.partsUnitCount *
+                  pricingForm.value.partsUnitPrice
+              }}
+            </td>
           </tr>
           <tr>
             <td class="text-center"></td>
@@ -397,8 +429,10 @@
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
               {{
-                pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
-                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                pricingForm.value.partsUnitCount *
+                  pricingForm.value.partsUnitPrice +
+                  pricingForm.value.toolingUnitCount *
+                    pricingForm.value.toolingUnitPrice
               }}
             </td>
           </tr>
