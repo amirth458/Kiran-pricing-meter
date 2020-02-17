@@ -1,4 +1,4 @@
-<div class="wrapper shadow ">
+<div class="wrapper shadow text-theme">
 
   <!-- Prev-Next PO Navigation -->
   <div class="row justify-content-between purchase-nav">
@@ -68,13 +68,11 @@
 
           <div class="col-12 mt-2 row justify-content-center">
             <div class="col-3 mr-1">
-              <button type="button" class="btn theme"
-              (click)="open(approveModal, 'md')">Approve</button>
+              <button type="button" class="btn theme" (click)="open(approveModal, 'md')">Approve</button>
             </div>
 
             <div class="col-3 ml-1">
-              <button type="button" class="btn theme orange-btn"
-                (click)="open(rejectModal, 'md')">Reject</button>
+              <button type="button" class="btn theme orange-btn" (click)="open(rejectModal, 'md')">Reject</button>
             </div>
 
           </div>
@@ -132,7 +130,7 @@
       <!-- End of Top Summary -->
 
 
-      <h5 class="col-12 mt-5 pl-0">Parts <span (click)="toast.warning('Feature In Development')"
+      <h5 class="col-12 mt-5 pl-0">Parts <span (click)="open(partDetailsModal, 'xl')"
           class="ml-4 part-detail-toggle">See More Details</span></h5>
       <div class="row justify-content-between part-list">
 
@@ -249,3 +247,30 @@
 </ng-template>
 <!-- End of Approve Modal -->
 
+
+
+<ng-template #partDetailsModal>
+
+
+  <div class="partDetailsModal">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        Order No 12345
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body text-theme">
+      <app-part-item-details *ngFor="let part of partList"></app-part-item-details>
+
+
+    </div>
+
+    <div class="modal-footer border-0" ngbAutofocus>
+    </div>
+  </div>
+
+
+</ng-template>

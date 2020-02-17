@@ -73,6 +73,7 @@ import { BillingContainerComponent } from './vendor/billing/billing-container/bi
 import { PaymentContainerComponent } from './vendor/billing/payment-container/payment-container.component';
 import { WaitingForApprovalComponent } from './vendor/billing/waiting-for-approval/waiting-for-approval.component';
 import { PurchaseOrderItemComponent } from './vendor/billing/purchase-order-item/purchase-order-item.component';
+import { PartItemDetailsComponent } from '../common/part-item-details/part-item-details.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { PurchaseOrderItemComponent } from './vendor/billing/purchase-order-item
     PaymentContainerComponent,
     WaitingForApprovalComponent,
     PurchaseOrderItemComponent,
+    PartItemDetailsComponent,
   ],
   imports: [
     CommonModule,

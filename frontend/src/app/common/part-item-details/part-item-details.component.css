@@ -1,0 +1,21 @@
+:host {
+  font-size: 12px;
+}
+
+.shipment {
+  background: #F0F8FF;
+  border-radius: 5px;
+}
+
+.border {
+  border-radius: 5px;
+}
+
+.label {
+  margin-bottom: 3px;
+}
+
+
+.label.target-delivery {
+  color: var(--theme-sky-blue);
+}
