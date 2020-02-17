@@ -30,15 +30,15 @@ export class PricingSettingsComponent implements OnInit {
       id: 1,
       name: "Based on Process Profiles",
       description:
-        "Show all process profile with or without matching pricing profile"
+        "(Show all process profiles with or without matching pricing profile)"
     },
     {
       id: 2,
       name: "Based on Pricing Profiles",
-      description: "Sort and filter based on pricing profiles"
+      description: "(Sort and filter based on pricing profiles)"
     }
   ];
-  selectedEligibility = 0;
+  selectedEligibility = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -51,7 +51,8 @@ export class PricingSettingsComponent implements OnInit {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
       if (defaultValue) {
         this.detailForm.setValue(defaultValue);
-        this.selectedEligibility = defaultValue.autoPricingEligibilityType.id;
+        this.selectedEligibility =
+          defaultValue.autoPricingEligibilityType.id - 1;
       }
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
@@ -80,8 +81,25 @@ export class PricingSettingsComponent implements OnInit {
   }
   setEligibility(newValue: number) {
     this.selectedEligibility = newValue;
-    this.detailForm.value.autoPricingEligibilityType = this.defaultEligibilities[
-      newValue
-    ];
+    this.detailForm.setValue({
+      ...this.detailForm.value,
+      autoPricingEligibilityType: this.defaultEligibilities[newValue]
+    });
+  }
+
+  getOrderUnit(num: number) {
+    num = num % 100;
+    if (num >= 10 && num <= 20) {
+      return "th";
+    }
+    if (num % 10 === 1) {
+      return "st";
+    } else if (num % 10 === 2) {
+      return "nd";
+    } else if (num % 10 === 3) {
+      return "rd";
+    } else {
+      return "th";
+    }
   }
 }

@@ -139,12 +139,14 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
     WaitingForApprovalComponent,
     PurchaseOrderItemComponent,
     PartItemDetailsComponent,
+    WaitingForApprovalComponent
   ],
   imports: [
     CommonModule,
     NgbModule,
     AgGridModule.withComponents([
       ActionCellRendererComponent,
+      ActionCellApproveRendererComponent,
       DropdownCellRendererComponent,
       DropdownHeaderRendererComponent,
       MultiSelectCellRendererComponent,

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import { CurrencyPipe, DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 
 import { NgxSpinnerService } from "ngx-spinner";
@@ -182,7 +182,8 @@ export class SuborderReleaseQueueComponent implements OnInit {
     public router: Router,
     public spinner: NgxSpinnerService,
     private orderService: OrdersService,
-    public datePipe: DatePipe
+    public datePipe: DatePipe,
+    public currencyPipe: CurrencyPipe
   ) {}
 
   ngOnInit() {
@@ -231,7 +232,15 @@ export class SuborderReleaseQueueComponent implements OnInit {
         tooltipField: "priceAccepted",
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(
+            dt.value || 0,
+            'USD',
+            'symbol',
+            '0.0-3'
+          );
+        }
       },
       {
         headerName: "Customer",

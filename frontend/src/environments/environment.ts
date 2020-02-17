@@ -62,7 +62,8 @@ export const environment = {
   PPE_HOST_URL: "http://dev-ppe-api.3diligent.com/api/v1",
   CONNECTOR_HOST_URL: "http://dev-manage.3diligent.com/api/v1",
   encryptionKey: "1Kf@%4%3ADfEafw",
-  isTestDataEnabled: true
+  isTestDataEnabled: true,
+  reCaptureKey: "6Lc7odMUAAAAAPFvi0LXKWIbUzDXvnd9_7aSVJ2_"
 };
 
 /*

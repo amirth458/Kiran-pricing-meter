@@ -18,13 +18,12 @@
             <option value="200">200</option>
           </select>
         </div>
-
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
-          [rowData]="rowData[(selectedTabId$ | async)]"
+          [rowData]="rowData[selectedTabId]"
           [gridOptions]="gridOptions"
-          (gridReady)="onGridReady($event)"
-        ></ag-grid-angular>
+          (gridReady)="onGridReady($event)">
+        </ag-grid-angular>
       </div>
     </div>
   </app-tab>
