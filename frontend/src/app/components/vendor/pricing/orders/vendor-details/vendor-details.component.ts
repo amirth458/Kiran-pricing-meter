@@ -678,26 +678,30 @@ export class VendorDetailsComponent implements OnInit {
       (this.selectedBidding.processProfileViews || []).length > 0
         ? this.selectedBidding.processProfileViews[0]
         : null;
-    this.spinner.show();
-    this.biddingService
-      .confirmBidOrder(
-        this.bidOrderId,
-        this.selectedBidding.bidProcessId,
-        processProfileView.vendorId
-      )
-      .pipe(
-        catchError((err: any) => {
-          this.toaster.error(err.error.message);
+    if (processProfileView) {
+      this.spinner.show();
+      this.biddingService
+        .confirmBidOrder(
+          this.bidOrderId,
+          this.selectedBidding.bidProcessId,
+          processProfileView.vendorId
+        )
+        .pipe(
+          catchError((err: any) => {
+            this.toaster.error(err.error.message);
+            this.spinner.hide();
+            this.modalService.dismissAll();
+            return empty();
+          })
+        )
+        .subscribe(v => {
+          this.toaster.success("Successfully bidding confirmed");
+          this.prepareBidOrderInfo();
           this.spinner.hide();
           this.modalService.dismissAll();
-          return empty();
-        })
-      )
-      .subscribe(v => {
-        this.toaster.success("Successfully bidding confirmed");
-        this.prepareBidOrderInfo();
-        this.spinner.hide();
-        this.modalService.dismissAll();
-      });
+        });
+    } else {
+      this.toaster.error('There is no process profile associated wit this bidding!');
+    }
   }
 }
