@@ -14,17 +14,19 @@
           </p>
           <p class="label">Material: <span
               class="text-theme-green font-weight-bold">{{part?.materialPropertyValues?.join(', ')}}</span></p>
-          <p class="label">Process: <span
+          <p class="label">Technology: <span
               class="text-theme-green font-weight-bold">{{part?.equipmentPropertyValues?.join(', ')}}</span></p>
           <p class="label">Post-process: <span class="text-theme-green font-weight-bold"></span></p>
         </div>
         <div class="col-4 border-left">
           <p class="label">Dimension: <span class="text-theme-green font-weight-bold">{{getPartDimension()}}</span></p>
           <p class="label">Volume: <span
-              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.volume?.value}}</span>
+              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.volume?.value}}
+              {{getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId)}}</span>
           </p>
           <p class="label">Surface Roughness: <span
-              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.surfaceArea?.value}}</span>
+              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.surfaceArea?.value}}
+              {{getUnit(part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId)}}</span>
           </p>
           <p class="label">Tolerance: <span class="text-theme-green font-weight-bold"></span></p>
         </div>
@@ -34,12 +36,13 @@
     <div class="col-5 d-flex  pl-3">
       <div class="col-12 d-flex shipment p-3">
 
-        <div class="o-card w-100">
-          <p class="label d-flex flex-row">
-            Shipment (OTY - {{part?.quantity}}) <span class="float-right">{{part?.shippedAt | date: 'YYY/mm/dd'}}</span>
+        <div class="o-card w-100 d-flex flex-column justify-content-between">
+          <p class="label d-flex flex-row justify-content-between mb-5">
+            Shipment (OTY - {{part?.quantity}}) <span
+              class="float-right">{{part?.targetDeliveryDate | date:'MM/dd/yyyy'}}</span>
             <!-- {{part?.targetDeliveryDate | date: 'YYY/mm/dd'}} -->
           </p>
-          <div class="d-flex col-12 p-0">
+          <span class="d-flex col-12 p-0">
             <div class="col-8 p-0">
               <p class="label">
                 Address: {{shippingAddressInfo(part?.shippingAddress)}}
@@ -50,12 +53,11 @@
                 Target Delivery Date
               </p>
             </div>
-          </div>
-        </div>
+          </span>
 
+        </div>
       </div>
+
     </div>
 
   </div>
-
-</div>
