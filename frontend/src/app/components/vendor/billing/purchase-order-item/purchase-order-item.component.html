@@ -22,16 +22,21 @@
       <div class="row justify-content-between info">
 
         <div class="col-5 mr-3 mb-3 p-3 order-info">
-          <h5 class="font-weight-bold">Ordered on: <span class="text-theme-green">05/02/2020</span> </h5>
-          <p class="mb-1">Customer: <span class="text-theme-green">Printing 3D</span></p>
-          <p class="">Order Id: <span class="text-theme-green">1234</span></p>
+          <h5 class="font-weight-bold">Ordered on: <span class="text-theme-green">-</span> </h5>
+          <p class="mb-1">Customer: <span class="text-theme-green">-</span></p>
+          <p class="">Order Id: <span class="text-theme-green">{{orderInfo?.billingInfoView?.orderId }}</span></p>
         </div>
 
         <div class="col-6 p-3 mb-3 payment-info">
-          <h5 class="font-weight-bold">Purchase Method: <span class="text-theme-green">Purchase Order (No
-              3783748)</span> </h5>
-          <p class="mb-1">Paid: <span class="text-theme-green">{{'0.00'| currency:' '}}</span></p>
-          <p class="text-theme-green file-name">Rotor Purchase Order.pdf</p>
+          <h5 class="font-weight-bold">Purchase Method: <span
+              class="text-theme-green">{{formatPaymentType(orderInfo?.billingInfoView?.paymentType) | titlecase}}
+              (No {{orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber}})</span> </h5>
+          <p class="mb-1">Paid: <span
+              class="text-theme-green">{{orderInfo?.billingInfoView?.amount| currency:''}}</span></p>
+          <p class="text-theme-green file-name">
+            <a [href]="orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl|| ''" target="_blank">Purchase Order
+              File</a>
+          </p>
         </div>
 
       </div>
@@ -55,10 +60,10 @@
 
             <label class="font-weight-bold">Notes</label>
 
-            <div class="col-12 m-0 p-1 row align-items-center">
+            <div [formGroup]="chatForm" class="col-12 m-0 p-1 row align-items-center">
 
-              <textarea class="form-control"></textarea>
-              <button type="button" class="btn theme white" (click)="toast.warning('Feature In Development')">
+              <textarea formControlName="note"  class="form-control"></textarea>
+              <button [disabled]="!chatForm.valid" type="button" class="btn theme white" (click)="sendNote()">
                 Send Note
               </button>
             </div>
@@ -134,29 +139,31 @@
           class="ml-4 part-detail-toggle">See More Details</span></h5>
       <div class="row justify-content-between part-list">
 
-        <div *ngFor="let item of partList" class="col-5 part-item mt-2">
-          <p class="part-name">Part 123.1</p>
+        <div *ngFor="let item of orderInfo?.customerOrder?.partList" class="col-5 part-item mt-2">
+          <p class="part-name">Part {{item?.rfqMedia?.id}}.{{item?.id}}</p>
 
           <!-- Image -->
-          <img src="../../../../../assets/image/example_machine.png" alt="" height="80px" width="80px">
+          <img
+            [src]="item?.rfqMedia?.media?.partDimension?.thumbnail200Location||'../../../../../assets/image/no-preview.jpg'"
+            alt="" height="80px" width="80px">
 
           <!-- Part Details -->
           <div class="details">
             <p class="d-flex mb-1">
               <span class="name">File: </span>
-              <span class="value text-theme-green">Brake Rotor No Logo.step</span>
+              <span class="value text-theme-green">{{item?.rfqMedia?.media?.name}}</span>
             </p>
             <p class="d-flex mb-1">
               <span class="name">Material: </span>
-              <span class="value text-theme-green">ABS / 20% Carbon Fiber</span>
+              <span class="value text-theme-green">{{item?.materialPropertyValues?.join(', ')}}</span>
             </p>
             <p class="d-flex mb-1">
-              <span class="name">Process: </span>
-              <span class="value text-theme-green">3D Printing</span>
+              <span class="name">Technology: </span>
+              <span class="value text-theme-green">{{item?.equipmentPropertyValues.join(', ')}}</span>
             </p>
             <p class="d-flex mb-1">
               <span class="name">Post-Process: </span>
-              <span class="value text-theme-green">ElectroPolishing</span>
+              <span class="value text-theme-green">-</span>
             </p>
           </div>
         </div>
@@ -249,13 +256,13 @@
 
 
 
-<ng-template #partDetailsModal>
+<ng-template #partDetailsModal let-modal>
 
 
   <div class="partDetailsModal">
     <div class="modal-header">
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
-        Order No 12345
+        Order No {{orderInfo?.billingInfoView?.orderId }}
       </h5>
       <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
@@ -263,7 +270,7 @@
     </div>
 
     <div class="modal-body text-theme">
-      <app-part-item-details *ngFor="let part of partList"></app-part-item-details>
+      <app-part-item-details *ngFor="let part of orderInfo?.customerOrder?.partList" [part]="part"></app-part-item-details>
 
 
     </div>
