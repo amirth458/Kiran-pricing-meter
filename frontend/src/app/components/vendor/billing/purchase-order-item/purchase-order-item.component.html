@@ -22,7 +22,8 @@
       <div class="row justify-content-between info">
 
         <div class="col-5 mr-3 mb-3 p-3 order-info">
-          <h5 class="font-weight-bold">Ordered on: <span class="text-theme-green">-</span> </h5>
+          <h5 class="font-weight-bold">Ordered on: <span
+              class="text-theme-green">{{orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy'}}</span> </h5>
           <p class="mb-1">Customer: <span class="text-theme-green">-</span></p>
           <p class="">Order Id: <span class="text-theme-green">{{orderInfo?.billingInfoView?.orderId }}</span></p>
         </div>
@@ -34,8 +35,8 @@
           <p class="mb-1">Paid: <span
               class="text-theme-green">{{orderInfo?.billingInfoView?.amount| currency:''}}</span></p>
           <p class="text-theme-green file-name">
-            <a [href]="orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl|| ''" target="_blank">Purchase Order
-              File</a>
+            <a [href]="orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl|| ''" target="_blank">
+              {{ orderInfo?.billingInfoView?.purchaseAgreement?.fileName || 'PO File'}}</a>
           </p>
         </div>
 
@@ -47,11 +48,39 @@
       <div class="row shadow mt-4 notes">
 
         <div class="col-12 shadow">
-          <h4 class="text-center text-theme-green w-100 mt-2 mb-2">Notes</h4>
+          <h4 class="text-center text-theme-green  w-100 mt-2 mb-2">Notes</h4>
         </div>
 
-        <div class="col-12 notes-body">
+        <div class="col-12 d-flex flex-column-reverse notes-body">
 
+          <div *ngFor="let message of messageList; let index = index" class="message"
+            [ngClass]="{'admin': message.userId == userInfo.email}">
+            <!-- TODO: -->
+            <!-- *ngIf="isDifferentDate(index)" -->
+            <!-- <hr>
+            <div class="time-stamp d-block text-center">
+              <p class="m-0 date">{{orderInfo?.customerOrder?.createdDate | date: 'fullDate'}}</p>
+              <p class=" m-0 time text-theme">{{orderInfo?.customerOrder?.createdDate | date: 'shortTime'}}</p>
+            </div> -->
+
+            <div class="d-block mt-3">
+              <div class="user-name font-italic">
+                <p class="m-0">
+                  <!-- {{message.userId}} -->
+                  <ng-container *ngIf="message.userId == userInfo.email; else name">Admin</ng-container>
+
+                  <ng-template #name>Cullen H</ng-template>
+                </p>
+              </div>
+              <div class="body">
+                <p class="m-0">
+                  {{message.note}}
+                </p>
+              </div>
+            </div>
+
+
+          </div>
 
         </div>
 
@@ -62,7 +91,7 @@
 
             <div [formGroup]="chatForm" class="col-12 m-0 p-1 row align-items-center">
 
-              <textarea formControlName="note"  class="form-control"></textarea>
+              <textarea formControlName="note" class="form-control"></textarea>
               <button [disabled]="!chatForm.valid" type="button" class="btn theme white" (click)="sendNote()">
                 Send Note
               </button>
@@ -123,11 +152,12 @@
 
         <h6 class="d-flex mt-2 justify-content-between summary-item">
           <span class="name">Total Cost</span>
-          <span class="value">{{'24227.24' | currency:'$'}}</span>
+          <span class="value">{{orderInfo?.billingInfoView?.amount | currency:'$'}}</span>
         </h6>
 
         <br>
-        <p class="details-toggle text-center" (click)="togglePaymentInfo()">
+        <!-- TODO: -->
+        <p *ngIf="false" class="details-toggle text-center" (click)="togglePaymentInfo()">
           <span *ngIf="showPaymentDetails">Close Details</span>
           <span *ngIf="!showPaymentDetails">See Details</span>
         </p>
@@ -270,7 +300,8 @@
     </div>
 
     <div class="modal-body text-theme">
-      <app-part-item-details *ngFor="let part of orderInfo?.customerOrder?.partList" [part]="part"></app-part-item-details>
+      <app-part-item-details *ngFor="let part of orderInfo?.customerOrder?.partList" [part]="part">
+      </app-part-item-details>
 
 
     </div>

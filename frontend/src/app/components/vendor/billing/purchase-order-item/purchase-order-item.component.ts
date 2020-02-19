@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { componentHostSyntheticProperty } from '@angular/core/src/render3';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-purchase-order-item',
@@ -21,6 +21,7 @@ export class PurchaseOrderItemComponent implements OnInit {
   showPaymentDetails = false;
   selectedPurchaseOrderId = null;
 
+  userInfo;
   orderInfo;
   // = {
   //   billingInfoView: {
@@ -760,9 +761,11 @@ export class PurchaseOrderItemComponent implements OnInit {
     public modalService: NgbModal,
     public route: Router,
     public billingService: BillingService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    public userService: UserService
   ) {
     this.selectedPurchaseOrderId = this.route.url.split('/').pop();
+    this.userInfo = this.userService.getUserInfo();
   }
 
   ngOnInit() {
@@ -778,6 +781,7 @@ export class PurchaseOrderItemComponent implements OnInit {
 
         }
         this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
+        this.messageList = this.messageList.reverse();
       },
       (err) => {
         console.log({ err });
@@ -804,13 +808,15 @@ export class PurchaseOrderItemComponent implements OnInit {
   }
 
   approvePurchase() {
-    this.toast.success('Purchase ' + this.selectedPurchaseOrderId + ' Approved.');
+    this.toast.warning('Feature in progress');
+    // this.toast.success('Purchase ' + this.selectedPurchaseOrderId + ' Approved.');
     this.modalService.dismissAll();
     this.location.back();
   }
 
   rejectPurchase() {
-    this.toast.success('Purchase ' + this.selectedPurchaseOrderId + ' Rejected.');
+    this.toast.warning('Feature in progress');
+    // this.toast.success('Purchase ' + this.selectedPurchaseOrderId + ' Rejected.');
     this.modalService.dismissAll();
     this.location.back();
   }
@@ -829,7 +835,7 @@ export class PurchaseOrderItemComponent implements OnInit {
       .subscribe(
         (res) => {
           console.log({ res });
-          this.messageList = res;
+          this.messageList = res.reverse();
           this.toast.success('Note Sent');
           this.chatForm.reset();
         },
@@ -838,5 +844,29 @@ export class PurchaseOrderItemComponent implements OnInit {
           this.toast.error(err.error.message);
         });
 
+  }
+
+  isDifferentDate(index: number) {
+    if (index == 0) {
+      return false;
+    }
+    const current = this.messageList[index].createdDate;
+    const prev = this.messageList[index - 1].createdDate;
+    if (!current || !prev) {
+      return false;
+    }
+
+    const currentDate = new Date(this.messageList[index].createdDate);
+    const prevDate = new Date(this.messageList[index - 1].createdDate);
+
+    if (
+      (currentDate.getDate() == prevDate.getDate()) &&
+      (currentDate.getDate() == prevDate.getDate()) &&
+      (currentDate.getDate() == prevDate.getDate())
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }
