@@ -5,6 +5,12 @@
   padding: 40px;
 }
 
+hr {
+  position: absolute;
+  right: 0px;
+  margin-bottom: unset;
+  width: 100%;
+}
 
 .purchase-nav span {
   font-size: 17px;
@@ -39,6 +45,32 @@
 
 .notes .notes-body {
   /* height: 300px; */
+}
+
+.notes .notes-body .message {
+  text-align: left;
+  font-size: 12px;
+}
+
+.notes .notes-body .message .time-stamp .date {
+  color: grey;
+}
+
+
+.notes .notes-body .message .user-name {
+  color: var(--theme-sky-blue);
+}
+
+.notes .notes-body .message .body {
+  font-size: 14px;
+}
+
+.notes .notes-body .message.admin {
+  text-align: right;
+}
+
+.notes .notes-body .message.admin .user-name {
+  color: rgb(122, 40, 122);
 }
 
 
@@ -81,7 +113,9 @@
 
 .notes .notes-body {
   height: 350px;
-  overflow: scroll
+  overflow: scroll;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 
