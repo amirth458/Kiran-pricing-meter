@@ -13,7 +13,7 @@
           <form [formGroup]="form" class="form-row col-12  pl-0">
             <div class="col-md-3">
               <div class="form-group theme">
-                <input type="number" formControlName="orderNo" class="form-control form-control-sm"
+                <input type="number" formControlName="orderNo" (keyup)="getProfiles()" class="form-control form-control-sm"
                   placeholder="Search Order" />
               </div>
             </div>
@@ -21,7 +21,7 @@
             appStatus.RFQ_IN_PROGRESS)" -->
             <div class="col-md-3">
               <div class="form-group theme">
-                <select class="form-control form-control-sm" formControlName="paymentStatus">
+                <select class="form-control form-control-sm" formControlName="paymentType" (change)="getProfiles()">
                   <!-- <option value="" selected>All Type Of Payment</option> -->
                   <option *ngFor="let s of status" [value]="s.id" [text]="s.displayName"></option>
                   <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
@@ -56,7 +56,7 @@
 
 
 <ng-template #viewAllInfo let-row>
-  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.id)"> View All Information</span>
+  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)"> View All Information</span>
 </ng-template>
 
 

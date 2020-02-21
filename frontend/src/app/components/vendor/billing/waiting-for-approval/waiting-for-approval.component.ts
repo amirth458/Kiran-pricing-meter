@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BillingService } from 'src/app/service/billing.service';
+import { PaymentStatusType, Payment } from 'src/app/model/billing.model';
+import { FilterOption } from 'src/app/model/vendor.model';
 
 @Component({
   selector: 'app-waiting-for-approval',
@@ -59,7 +62,7 @@ export class WaitingForApprovalComponent implements OnInit {
       name: 'Customer Order ID', checked: true, field: 'orderId'
     },
     {
-      name: 'Purchase Order', checked: true, field: 'purchaseOrder'
+      name: 'Purchase Order', checked: true, field: 'poNumber'
     },
     {
       name: 'Note', checked: true, field: 'note'
@@ -69,14 +72,14 @@ export class WaitingForApprovalComponent implements OnInit {
   status = [
     {
       displayName: 'All Type Of Payment',
-      id: 1
+      id: null
     },
     {
       displayName: 'Purchase Order',
-      id: 2
+      id: 'PURCHASE_ORDER'
     }, {
       displayName: 'Credit Card',
-      id: 3
+      id: 'CREDIT_CARD'
     }
   ];
 
@@ -90,7 +93,7 @@ export class WaitingForApprovalComponent implements OnInit {
   };
 
 
-  rowData = [];
+  rowData;
   pageSize = 10;
 
   navigation;
@@ -99,19 +102,20 @@ export class WaitingForApprovalComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     orderNo: [null],
-    paymentStatus: [1],
+    paymentType: ['PURCHASE_ORDER'],
     comment: ['']
   });
 
 
-  pageType = '';
+  pageType: PaymentStatusType = PaymentStatusType.WAITING_FOR_APPROVAL;
 
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,
     public toastr: ToastrService,
     public fb: FormBuilder,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public billingService: BillingService
   ) {
     this.navigation = this.route.getCurrentNavigation();
     const routeArr = this.route.url
@@ -120,7 +124,19 @@ export class WaitingForApprovalComponent implements OnInit {
       )
       .split("/");
 
-    this.pageType = routeArr[0];
+    switch (routeArr[0]) {
+      case 'waiting-for-approval':
+        this.pageType = PaymentStatusType.WAITING_FOR_APPROVAL;
+        break;
+      case 'approved':
+        this.pageType = PaymentStatusType.APPROVED;
+        break;
+      case 'waiting-for-approval':
+        this.pageType = PaymentStatusType.REJECTED;
+        break;
+      default:
+        break;
+    }
 
   }
 
@@ -128,10 +144,10 @@ export class WaitingForApprovalComponent implements OnInit {
   ngOnInit() {
     // this.spineer.show();
 
+
+    this.setGridColumns(PaymentStatusType.WAITING_FOR_APPROVAL === this.pageType);
+
     this.getProfiles();
-
-    this.setGridColumns('waiting-for-approval' === this.pageType);
-
 
     this.tableControlReady = true;
 
@@ -230,70 +246,36 @@ export class WaitingForApprovalComponent implements OnInit {
   }
 
   rejectPurchase() {
-    console.log(this.form.value.comment);
+
     this.toastr.success('Purchase ' + this.selectedPurchaseOrderId + ' Rejected.');
     this.modalService.dismissAll();
     this.selectedPurchaseOrderId = null;
     this.form.controls.comment.setValue('');
   }
   getProfiles() {
-    this.rowData = [
-      {
-        id: 1,
-        customerName: 'Printing Co',
-        orderId: '1234',
-        purchaseOrder: '123456',
-        note: 'I submitted my PO. Please Accept it.',
-        paymentType: 'Purchase Order',
-        status: 'Approved'
-      },
-      {
-        id: 2,
-        customerName: 'Printing Co',
-        orderId: '1234',
-        purchaseOrder: '123456',
-        note: 'I submitted my PO. Please Accept it.',
-        paymentType: 'Purchase Order',
-        status: 'Approved'
-      },
-      {
-        id: 3,
-        customerName: 'Printing Co',
-        orderId: '1234',
-        purchaseOrder: '123456',
-        note: 'I submitted my PO. Please Accept it.',
-        paymentType: 'Purchase Order',
-        status: 'Approved'
-      },
-      {
-        id: 4,
-        customerName: 'Printing Co',
-        orderId: '1234',
-        purchaseOrder: '123456',
-        note: 'I submitted my PO. Please Accept it.',
-        paymentType: 'Purchase Order',
-        status: 'Approved'
-      },
-      {
-        id: 5,
-        customerName: 'Printing Co',
-        orderId: '1234',
-        purchaseOrder: '123456',
-        note: 'I submitted my PO. Please Accept it.',
-        paymentType: 'Purchase Order',
-        status: 'Approved'
-      }
-      ,
-      {
-        id: 6,
-        customerName: 'Printing Co',
-        orderId: '1234',
-        purchaseOrder: '123456',
-        note: 'I submitted my PO. Please Accept it.',
-        paymentType: 'Purchase Order',
-        status: 'Approved'
-      }
-    ];
+    const body: Payment = {
+      id: null,
+      customerName: null,
+      orderId: this.form.value.orderNo || null,
+      paymentStatusType: this.pageType,
+      paymentType: this.form.value.paymentType,
+      poNumber: null,
+      note: null
+    };
+    const filter: FilterOption = { size: 1000, sort: "id,ASC", page: 0, q: "" };
+    if (this.gridOptions) {
+      this.gridOptions.api.showLoadingOverlay();
+    }
+
+    this.billingService.getPaymentList(body, filter)
+      .subscribe((res: any) => {
+        console.log({ res });
+        this.rowData = res.content;
+        if (this.gridOptions) {
+          this.gridOptions.api.hideOverlay();
+        }
+      });
+
   }
 
   setGridColumns(waitingForApproval = false) {
@@ -304,7 +286,7 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false, sortable: true, filter: false,
       },
       {
-        headerName: 'Purchase Order', field: 'purchaseOrder',
+        headerName: 'Purchase Order', field: 'poNumber',
         hide: false, sortable: true, filter: false,
       },
       { headerName: 'Note', field: 'note', hide: false, sortable: true, filter: false },
