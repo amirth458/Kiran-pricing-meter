@@ -7,7 +7,7 @@ import { TemplateRendererComponent } from 'src/app/common/template-renderer/temp
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillingService } from 'src/app/service/billing.service';
-import { PaymentStatusType, Payment } from 'src/app/model/billing.model';
+import { PaymentStatusTypes, PaymentType, Payment } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
 
 @Component({
@@ -19,7 +19,7 @@ export class WaitingForApprovalComponent implements OnInit {
 
   @ViewChild('viewAllInfo') viewAllInfo: TemplateRef<any>;
   @ViewChild('approveRejectAction') approveRejectAction: TemplateRef<any>;
-
+  disableControls = false;
 
   tableControlReady = false;
 
@@ -65,6 +65,9 @@ export class WaitingForApprovalComponent implements OnInit {
       name: 'Purchase Order', checked: true, field: 'poNumber'
     },
     {
+      name: 'Payment Type', checked: true, field: 'paymentType'
+    },
+    {
       name: 'Note', checked: true, field: 'note'
     }
   ];
@@ -98,16 +101,16 @@ export class WaitingForApprovalComponent implements OnInit {
 
   navigation;
 
-  selectedPurchaseOrderId = null;
+  selectedPurchaseOrder = null;
 
   form: FormGroup = this.fb.group({
     orderNo: [null],
-    paymentType: ['PURCHASE_ORDER'],
+    paymentType: [PaymentType.PURCHASE_ORDER],
     comment: ['']
   });
 
 
-  pageType: PaymentStatusType = PaymentStatusType.WAITING_FOR_APPROVAL;
+  pageType: PaymentStatusTypes = PaymentStatusTypes.WAITING_FOR_APPROVAL;
 
   constructor(
     public route: Router,
@@ -126,13 +129,13 @@ export class WaitingForApprovalComponent implements OnInit {
 
     switch (routeArr[0]) {
       case 'waiting-for-approval':
-        this.pageType = PaymentStatusType.WAITING_FOR_APPROVAL;
+        this.pageType = PaymentStatusTypes.WAITING_FOR_APPROVAL;
         break;
       case 'approved':
-        this.pageType = PaymentStatusType.APPROVED;
+        this.pageType = PaymentStatusTypes.APPROVED;
         break;
-      case 'waiting-for-approval':
-        this.pageType = PaymentStatusType.REJECTED;
+      case 'rejected':
+        this.pageType = PaymentStatusTypes.REJECTED;
         break;
       default:
         break;
@@ -145,7 +148,7 @@ export class WaitingForApprovalComponent implements OnInit {
     // this.spineer.show();
 
 
-    this.setGridColumns(PaymentStatusType.WAITING_FOR_APPROVAL === this.pageType);
+    this.setGridColumns(PaymentStatusTypes.WAITING_FOR_APPROVAL === this.pageType);
 
     this.getProfiles();
 
@@ -240,17 +243,85 @@ export class WaitingForApprovalComponent implements OnInit {
   }
 
   approvePurchase() {
-    this.toastr.success('Purchase ' + this.selectedPurchaseOrderId + ' Approved.');
-    this.modalService.dismissAll();
-    this.selectedPurchaseOrderId = null;
+    this.disableControls = true;
+    const body = {
+      orderId: this.selectedPurchaseOrder.orderId,
+      paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
+      paymentType: this.selectedPurchaseOrder.paymentType,
+      poNumber: this.selectedPurchaseOrder.poNumber,
+    };
+    this.billingService.approveOrder(body)
+      .subscribe(res => {
+        this.selectedPurchaseOrder = null;
+        this.disableControls = false;
+        this.getProfiles();
+        this.modalService.dismissAll();
+        this.toastr.success('Purchase Approved.');
+      },
+        (err) => {
+          console.log({ err });
+          this.selectedPurchaseOrder = null;
+          this.disableControls = false;
+          this.modalService.dismissAll();
+          this.toastr.error(err.error.message);
+
+        });
   }
 
   rejectPurchase() {
+    this.disableControls = true;
+    const body = {
+      orderId: this.selectedPurchaseOrder.orderId,
+      paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
+      paymentType: this.selectedPurchaseOrder.paymentType,
+      poNumber: this.selectedPurchaseOrder.poNumber,
+    };
+    if (this.form.value.comment) {
+      this.billingService.addNote(this.form.value.comment, this.selectedPurchaseOrder.orderId)
+        .subscribe(
+          (res) => {
+            this.form.controls.comment.setValue('');
+            console.log({ res });
+            this.billingService.rejectOrder(body)
+              .subscribe(result => {
+                console.log({ reject: result });
+                this.selectedPurchaseOrder = null;
+                this.disableControls = false;
+                this.getProfiles();
+                this.modalService.dismissAll();
+                this.toastr.success('Purchase Rejected.');
+              },
+                (err) => {
+                  console.log({ err });
+                  this.selectedPurchaseOrder = null;
+                  this.disableControls = false;
+                  this.modalService.dismissAll();
+                  this.toastr.error(err.error.message);
+                });
+          },
+          (err) => {
+            console.log({ err });
+            this.disableControls = false;
+            this.toastr.error(err.error.message);
+          });
+    } else {
+      this.billingService.rejectOrder(body)
+        .subscribe(result => {
+          this.selectedPurchaseOrder = null;
+          this.disableControls = false;
+          this.getProfiles();
+          this.modalService.dismissAll();
+          this.toastr.success('Purchase Rejected.');
+        },
+          (err) => {
+            console.log({ err });
+            this.selectedPurchaseOrder = null;
+            this.disableControls = false;
+            this.modalService.dismissAll();
+            this.toastr.error(err.error.message);
+          });
+    }
 
-    this.toastr.success('Purchase ' + this.selectedPurchaseOrderId + ' Rejected.');
-    this.modalService.dismissAll();
-    this.selectedPurchaseOrderId = null;
-    this.form.controls.comment.setValue('');
   }
   getProfiles() {
     const body: Payment = {
@@ -258,7 +329,7 @@ export class WaitingForApprovalComponent implements OnInit {
       customerName: null,
       orderId: this.form.value.orderNo || null,
       paymentStatusType: this.pageType,
-      paymentType: this.form.value.paymentType,
+      paymentType: this.form.value.paymentType == 'null' ? null : this.form.value.paymentType,
       poNumber: null,
       note: null
     };
@@ -284,6 +355,8 @@ export class WaitingForApprovalComponent implements OnInit {
       {
         headerName: 'Customer Order ID', field: 'orderId',
         hide: false, sortable: true, filter: false,
+        sort: 'asc',
+        width: 100
       },
       {
         headerName: 'Purchase Order', field: 'poNumber',
@@ -292,6 +365,13 @@ export class WaitingForApprovalComponent implements OnInit {
       { headerName: 'Note', field: 'note', hide: false, sortable: true, filter: false },
       {
         headerName: 'Payment Type', field: 'paymentType', hide: true, sortable: true, filter: false,
+        valueFormatter: (val) => {
+          const result = (val.data.paymentType || '').replace(/_/g, ' ').toLowerCase();
+          if (result.length) {
+            return result[0].toUpperCase() + result.substr(1)
+          }
+          return result;
+        }
       },
       {
         headerName: '', field: '',
@@ -309,7 +389,7 @@ export class WaitingForApprovalComponent implements OnInit {
           ngTemplate: this.approveRejectAction
         },
         hide: false, sortable: false, filter: false,
-        width: 140
+        width: 160
       }
     ];
 
@@ -318,6 +398,13 @@ export class WaitingForApprovalComponent implements OnInit {
       this.columnDefs.splice(5, 0, {
         headerName: 'Status', field: 'status',
         hide: false, sortable: false, filter: false,
+        valueFormatter: (val) => {
+          const result = (val.data.paymentStatusType || '').replace(/_/g, ' ').toLowerCase();
+          if (result.length) {
+            return result[0].toUpperCase() + result.substr(1);
+          }
+          return result;
+        }
       });
     }
   }

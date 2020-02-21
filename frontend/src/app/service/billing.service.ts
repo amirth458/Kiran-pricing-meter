@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { Payment } from '../model/billing.model';
+import { Payment, PaymentDetails } from '../model/billing.model';
 import { FilterOption } from '../model/vendor.model';
 
 @Injectable({
@@ -17,8 +17,8 @@ export class BillingService {
     return this.http.get(environment.apiBaseUrl + '/metadata/payment_status_type');
   }
 
-  getPaymentInfo(orderId: string): Observable<any> {
-    return this.http.get(environment.apiBaseUrl + '/admin/billing/orders/' + orderId);
+  getPaymentInfo(orderId: string): Observable<PaymentDetails> {
+    return this.http.get<PaymentDetails>(environment.apiBaseUrl + '/admin/billing/orders/' + orderId);
   }
 
   addNote(note: string, orderId: number): Observable<any> {
@@ -35,4 +35,11 @@ export class BillingService {
     return this.http.post<Payment[]>(`${environment.apiBaseUrl}/admin/billing/search`, body, { params });
   }
 
+  approveOrder(body) {
+    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/approve`, body);
+  }
+
+  rejectOrder(body) {
+    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/reject`, body);
+  }
 }
