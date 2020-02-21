@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-purchase-order-item',
@@ -23,6 +24,7 @@ export class PurchaseOrderItemComponent implements OnInit {
 
   userInfo;
   orderInfo;
+  postProcessAction = [];
   // = {
   //   billingInfoView: {
   //     id: 4,
@@ -762,13 +764,16 @@ export class PurchaseOrderItemComponent implements OnInit {
     public route: Router,
     public billingService: BillingService,
     public fb: FormBuilder,
-    public userService: UserService
+    public userService: UserService,
+    public spinner: NgxSpinnerService
   ) {
     this.selectedPurchaseOrderId = this.route.url.split('/').pop();
     this.userInfo = this.userService.getUserInfo();
   }
 
   ngOnInit() {
+
+    this.spinner.show();
     // '75'
     this.billingService.getPaymentInfo(this.selectedPurchaseOrderId).subscribe(
       (res) => {
@@ -782,9 +787,11 @@ export class PurchaseOrderItemComponent implements OnInit {
         }
         this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
         this.messageList = this.messageList.reverse();
+        this.spinner.hide();
       },
       (err) => {
         console.log({ err });
+        this.spinner.hide();
         this.toast.error(err.error.message);
         this.route.navigateByUrl('/billing/payment');
       });
@@ -843,6 +850,10 @@ export class PurchaseOrderItemComponent implements OnInit {
           console.log({ err });
           this.toast.error(err.error.message);
         });
+
+  }
+
+  getpostProcessActionName(postProcessActionId: string) {
 
   }
 
