@@ -63,8 +63,8 @@
 <ng-template #approveRejectAction let-row>
   <div class="d-flex justify-content-between h-100 w-100">
     <span class="text-theme-green approve-btn"
-      (click)="selectedPurchaseOrderId=row.id; open(approveModal, 'md')">Approve</span>
-    <span class="reject-btn" (click)="selectedPurchaseOrderId=row.id; open(rejectModal)">Reject</span>
+      (click)="selectedPurchaseOrder=row; open(approveModal, 'md')">Approve</span>
+    <span class="reject-btn" (click)="selectedPurchaseOrder=row; open(rejectModal)">Reject</span>
   </div>
 </ng-template>
 
@@ -77,7 +77,7 @@
   <div class="approveModal">
     <div class="modal-header">
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
-        Approve Purchase Order No {{selectedPurchaseOrderId}}
+        Approve Purchase Order No {{selectedPurchaseOrder.orderId}}
       </h5>
       <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
@@ -91,7 +91,7 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button (click)="approvePurchase()" type="button" class="col btn theme">
+          <button [disabled]="disableControls" (click)="approvePurchase()" type="button" class="col btn theme">
             Approve
           </button>
         </div>
@@ -113,7 +113,7 @@
   <div class="rejectModal">
     <div class="modal-header">
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
-        Reject Purchase Order No {{selectedPurchaseOrderId}}
+        Reject Purchase Order No {{selectedPurchaseOrder.orderId}}
       </h5>
       <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
@@ -136,7 +136,7 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button (click)="rejectPurchase()" type="button" class="col btn theme orange-btn">
+          <button [disabled]="disableControls" (click)="rejectPurchase()" type="button" class="col btn theme orange-btn">
             Reject
           </button>
         </div>

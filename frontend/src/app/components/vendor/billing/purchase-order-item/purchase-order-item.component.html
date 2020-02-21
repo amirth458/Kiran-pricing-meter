@@ -24,7 +24,7 @@
         <div class="col-5 mr-3 mb-3 p-3 order-info">
           <h5 class="font-weight-bold">Ordered on: <span
               class="text-theme-green">{{orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy'}}</span> </h5>
-          <p class="mb-1">Customer: <span class="text-theme-green font-weight-bold">-</span></p>
+          <p class="mb-1">Customer: <span class="text-theme-green font-weight-bold">{{orderInfo?.customerOrder?.customerName}}</span></p>
           <p class="">Order Id: <span
               class="text-theme-green font-weight-bold">{{orderInfo?.billingInfoView?.orderId }}</span></p>
         </div>
