@@ -41,14 +41,10 @@
           ></app-part-information>
         </ng-container>
         <ng-container *ngSwitchCase="2">
-          <app-pricing-profile
-            *ngIf="!part?.manualPricingAllowed"
-            [part]="part"
-          ></app-pricing-profile>
-          <app-process-profile
-            *ngIf="part?.manualPricingAllowed"
-            [part]="part"
-          ></app-process-profile>
+          <app-process-profile [part]="part"></app-process-profile>
+        </ng-container>
+        <ng-container *ngSwitchCase="3">
+          <app-pricing-profile [part]="part"></app-pricing-profile>
         </ng-container>
       </ng-container>
     </div>

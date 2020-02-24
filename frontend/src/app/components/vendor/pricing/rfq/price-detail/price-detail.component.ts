@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
-import { BehaviorSubject } from 'rxjs';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { BehaviorSubject } from "rxjs";
+import { NgxSpinnerService } from "ngx-spinner";
 
-import { CustomerData } from 'src/app/model/user.model';
-import { Part } from 'src/app/model/part.model';
-import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
-import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
-import { UserService } from 'src/app/service/user.service';
+import { CustomerData } from "src/app/model/user.model";
+import { Part } from "src/app/model/part.model";
+import {
+  RfqData,
+  PartQuote,
+  PartDimension
+} from "../../../../../model/part.model";
+import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
+import { UserService } from "src/app/service/user.service";
 
 @Component({
-  selector: 'app-price-detail',
-  templateUrl: './price-detail.component.html',
-  styleUrls: ['./price-detail.component.css']
+  selector: "app-price-detail",
+  templateUrl: "./price-detail.component.html",
+  styleUrls: ["./price-detail.component.css"]
 })
-export class PriceDetailComponent implements OnInit  {
+export class PriceDetailComponent implements OnInit {
   public selectedId: number;
   public part: Part;
   public rfq: RfqData;
@@ -26,11 +30,11 @@ export class PriceDetailComponent implements OnInit  {
   public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(
-    protected  route: ActivatedRoute,
-    protected  router: Router,
-    protected  pricingService: RfqPricingService,
-    protected  userService: UserService,
-    protected  spinner: NgxSpinnerService
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected pricingService: RfqPricingService,
+    protected userService: UserService,
+    protected spinner: NgxSpinnerService
   ) {
     this.route.params.subscribe(params => {
       this.selectedId = params.partId;
@@ -80,10 +84,13 @@ export class PriceDetailComponent implements OnInit  {
       },
       {
         id: 2,
-        title: this.part.manualPricingAllowed
-          ? "Process Profile"
-          : "Pricing Profile"
-      }
+        title: "Process Profile"
+      },
+      this.part &&
+        !this.part.manualPricingAllowed && {
+          id: 3,
+          title: "Pricing Profile"
+        }
     ];
   }
 
