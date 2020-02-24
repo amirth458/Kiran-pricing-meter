@@ -13,8 +13,8 @@
           <form [formGroup]="form" class="form-row col-12  pl-0">
             <div class="col-md-3">
               <div class="form-group theme">
-                <input type="number" formControlName="orderNo" (keyup)="getProfiles()" class="form-control form-control-sm"
-                  placeholder="Search Order" />
+                <input type="number" formControlName="orderNo" (keyup)="getProfiles()"
+                  class="form-control form-control-sm" placeholder="Search Order" />
               </div>
             </div>
             <!-- *ngIf="state && (state.name !== appStatus.RFQ_CREATED && state.name !==
@@ -56,7 +56,8 @@
 
 
 <ng-template #viewAllInfo let-row>
-  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)"> View All Information</span>
+  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)"> View All
+    Information</span>
 </ng-template>
 
 
@@ -64,7 +65,7 @@
   <div class="d-flex justify-content-between h-100 w-100">
     <span class="text-theme-green approve-btn"
       (click)="selectedPurchaseOrder=row; open(approveModal, 'md')">Approve</span>
-    <span class="reject-btn" (click)="selectedPurchaseOrder=row; open(rejectModal)">Reject</span>
+    <!-- <span class="reject-btn" (click)="selectedPurchaseOrder=row; open(rejectModal)">Reject</span> -->
   </div>
 </ng-template>
 
@@ -136,7 +137,8 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button [disabled]="disableControls" (click)="rejectPurchase()" type="button" class="col btn theme orange-btn">
+          <button [disabled]="disableControls" (click)="rejectPurchase()" type="button"
+            class="col btn theme orange-btn">
             Reject
           </button>
         </div>

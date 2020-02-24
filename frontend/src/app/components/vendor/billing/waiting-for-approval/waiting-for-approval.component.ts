@@ -389,7 +389,7 @@ export class WaitingForApprovalComponent implements OnInit {
           ngTemplate: this.approveRejectAction
         },
         hide: false, sortable: false, filter: false,
-        width: 160
+        width: 100
       }
     ];
 
