@@ -81,6 +81,10 @@ export class ActionBarComponent implements OnInit, OnChanges {
     const urlArray = this.route.url.split("/");
     if (urlArray[1] === "marketplace") {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
+    } else if (urlArray.length > 6) {
+      this.route.navigateByUrl(
+        `/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}/${urlArray[4]}`
+      );
     } else {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
     }

@@ -30,10 +30,10 @@ import { MarketplaceContainerComponent } from "src/app/components/vendor/marketp
 import { ReferralContainerComponent } from "./../../components/vendor/marketplace/referral/referral-container/referral-container.component";
 import { ReferralComponent } from "./../../components/vendor/marketplace/referral/referral/referral.component";
 import { ProcessProfileDetailComponent } from "src/app/components/vendor/pricing/rfq/process-profile-detail/process-profile-detail.component";
-import { BillingContainerComponent } from 'src/app/components/vendor/billing/billing-container/billing-container.component';
-import { PaymentContainerComponent } from 'src/app/components/vendor/billing/payment-container/payment-container.component';
-import { WaitingForApprovalComponent } from 'src/app/components/vendor/billing/waiting-for-approval/waiting-for-approval.component';
-import { PurchaseOrderItemComponent } from 'src/app/components/vendor/billing/purchase-order-item/purchase-order-item.component';
+import { BillingContainerComponent } from "src/app/components/vendor/billing/billing-container/billing-container.component";
+import { PaymentContainerComponent } from "src/app/components/vendor/billing/payment-container/payment-container.component";
+import { WaitingForApprovalComponent } from "src/app/components/vendor/billing/waiting-for-approval/waiting-for-approval.component";
+import { PurchaseOrderItemComponent } from "src/app/components/vendor/billing/purchase-order-item/purchase-order-item.component";
 
 const routes: Routes = [
   {
@@ -67,6 +67,10 @@ const routes: Routes = [
               {
                 path: "auto-prices/:partId/pricing-profile/:profileId",
                 component: PricingProfileDetailComponent
+              },
+              {
+                path: "auto-prices/:partId/process-profile/:profileId",
+                component: ProcessProfileDetailComponent
               },
               { path: "manual-price", component: QueuedManualPriceComponent },
               {
@@ -163,12 +167,23 @@ const routes: Routes = [
             path: "payment",
             component: PaymentContainerComponent,
             children: [
-              { path: "waiting-for-approval", component: WaitingForApprovalComponent },
+              {
+                path: "waiting-for-approval",
+                component: WaitingForApprovalComponent
+              },
               { path: "approved", component: WaitingForApprovalComponent },
               { path: "rejected", component: WaitingForApprovalComponent },
               { path: "details/:id", component: PurchaseOrderItemComponent },
-              { path: "", redirectTo: "waiting-for-approval", pathMatch: "full" },
-              { path: "**", redirectTo: "waiting-for-approval", pathMatch: "full" }
+              {
+                path: "",
+                redirectTo: "waiting-for-approval",
+                pathMatch: "full"
+              },
+              {
+                path: "**",
+                redirectTo: "waiting-for-approval",
+                pathMatch: "full"
+              }
             ]
           },
           { path: "", redirectTo: "payment", pathMatch: "full" },
@@ -184,4 +199,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule { }
+export class DashboardRoutingModule {}
