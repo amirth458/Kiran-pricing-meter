@@ -7,7 +7,7 @@ import { GridOptions } from "ag-grid-community";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
-import { catchError } from "rxjs/operators";
+import { catchError, switchMap } from "rxjs/operators";
 import { empty } from "rxjs";
 
 import { BiddingService } from "../../../../../service/bidding.service";
@@ -141,7 +141,7 @@ export class VendorDetailsComponent implements OnInit {
 
   prepareBidOrderInfo() {
     this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
-      this.orderDetails = v.acceptedOrderDetails || [];
+      // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.bidding = v.matchingSuppliersProfilesView || [];
       this.bidding.map(match => (match.id = ++count));
@@ -172,6 +172,13 @@ export class VendorDetailsComponent implements OnInit {
           });
         });
       });
+      this.ordersService.getPartQuotesByPartIds((v.acceptedOrderDetails || []).map(p => p.partId))
+        .pipe(
+          switchMap(parts => this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails))
+        )
+        .subscribe(v => {
+          this.orderDetails = v || [];
+        });
     });
   }
 
@@ -430,7 +437,6 @@ export class VendorDetailsComponent implements OnInit {
         }
       ]
     ];
-
     this.gridOptions = [
       {
         frameworkComponents: this.frameworkComponents,

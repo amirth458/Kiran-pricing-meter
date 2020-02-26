@@ -6,12 +6,13 @@ import { ColDef } from "ag-grid-community/src/ts/entities/colDef";
 
 import { of } from "rxjs";
 import { Observable } from "rxjs";
+import { map, reduce } from "rxjs/operators";
 
 import { BiddingOrder } from "../model/bidding.order";
-import { BiddingOrderDetail } from "../model/bidding.order.detail";
+import { BiddingOrderDetail, GetAllCustomerPartView } from "../model/bidding.order.detail";
 import { environment } from "src/environments/environment";
 import { FilterOption } from "../model/vendor.model";
-import { Part, ProcessProfileDetailedView } from "../model/part.model";
+import { Part, PartQuote, ProcessProfileDetailedView } from "../model/part.model";
 import { Util } from "../util/Util";
 
 @Injectable({
@@ -403,4 +404,26 @@ export class OrdersService {
       `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`
     );
   }
+
+  getPartQuotesByPartIds(partIds: Array<number>): Observable<PartQuote[]> {
+    const url = `${environment.procurementApiBaseUrl}/part-quote/parts`;
+    return this.http.post<PartQuote[]>(url, { partIds });
+  }
+
+  mergePartQuoteInfo(parts: Array<GetAllCustomerPartView>): Observable<GetAllCustomerPartView[]> {
+    return parts.length > 0 ?
+      this.getPartQuotesByPartIds((parts || []).map(p => p.partId)).pipe(
+        reduce((quotes: any, arr: PartQuote[]) => {
+          (arr || []).map( p => quotes[p.partId] = p);
+          return quotes;
+        }, {}),
+        map((quotes: any) => {
+          (parts || []).map(part => {
+            part.priceAccepted = quotes[part.partId].totalCost || null;
+          });
+          return parts;
+        })
+      ) : of([]);
+  }
+
 }
