@@ -498,6 +498,26 @@ export class VendorDetailsComponent implements OnInit {
         filter: false
       },
       {
+        headerName: "Vendor Bid Price",
+        field: "bidOfferPrice",
+        tooltipField: "bidOfferPrice",
+        hide: false,
+        sortable: false,
+        filter: false,
+        valueFormatter: dt => {
+          let value = '';
+          switch(dt.data.bidProcessStatus.name) {
+            case BiddingStatus.COUNTER_OFFER:
+              value = `$ ${(dt.data.counterOfferPrice || 0)}`;
+              break;
+            case BiddingStatus.ACCEPTED:
+              value = `$ ${(dt.data.bidOfferPrice || 0)}`;
+              break;
+          }
+          return value;
+        }
+      },
+      {
         headerName: "Status",
         field: "bidProcessStatus.description",
         tooltipField: "bidProcessStatus.description",
@@ -673,6 +693,8 @@ export class VendorDetailsComponent implements OnInit {
 
   openConfirmBidding(row) {
     this.selectedBidding = row;
+    // tslint: disable
+    console.log(this.selectedBidding);
     this.modalService.open(this.confirmBidding, {
       centered: true,
       windowClass: "bidding-confirm"
