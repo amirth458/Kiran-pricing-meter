@@ -693,8 +693,6 @@ export class VendorDetailsComponent implements OnInit {
 
   openConfirmBidding(row) {
     this.selectedBidding = row;
-    // tslint: disable
-    console.log(this.selectedBidding);
     this.modalService.open(this.confirmBidding, {
       centered: true,
       windowClass: "bidding-confirm"
@@ -724,9 +722,9 @@ export class VendorDetailsComponent implements OnInit {
         )
         .subscribe(v => {
           this.toaster.success("Successfully bidding confirmed");
-          this.prepareBidOrderInfo();
           this.spinner.hide();
           this.modalService.dismissAll();
+          this.router.navigateByUrl(`/pricing/orders/released-orders/${this.bidOrderId}`);
         });
     } else {
       this.toaster.error('There is no process profile associated wit this bidding!');
