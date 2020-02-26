@@ -72,7 +72,7 @@ export class WaitingForApprovalComponent implements OnInit {
     }
   ];
 
-  status = [
+  paymentStatusType = [
     {
       displayName: 'All Type Of Payment',
       id: null

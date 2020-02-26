@@ -22,8 +22,8 @@
             <div class="col-md-3">
               <div class="form-group theme">
                 <select class="form-control form-control-sm" formControlName="paymentType" (change)="getProfiles()">
-                  <!-- <option value="" selected>All Type Of Payment</option> -->
-                  <option *ngFor="let s of status" [value]="s.id" [text]="s.displayName"></option>
+                  <!-- <option value="null" selected>All Type Of Payment</option> -->
+                  <option *ngFor="let s of paymentStatusType " [value]="s.id" [text]="s.displayName"></option>
                   <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
                 </select>
               </div>
