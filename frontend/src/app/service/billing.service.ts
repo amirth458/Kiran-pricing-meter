@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Payment, PaymentDetails } from '../model/billing.model';
 import { FilterOption } from '../model/vendor.model';
+import { map } from '../store';
+import { MetaData } from '../model/metadata.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,8 @@ export class BillingService {
   constructor(public http: HttpClient) { }
 
 
-  getPaymentStatusType() {
-    return this.http.get(environment.apiBaseUrl + '/metadata/payment_status_type');
+  getPaymentStatusType(): Observable<MetaData[]> {
+    return this.http.get<any>(environment.apiBaseUrl + '/admin/metadata/payment_status_type').pipe(map(res => res.metadataList));
   }
 
   getPaymentInfo(orderId: string): Observable<PaymentDetails> {

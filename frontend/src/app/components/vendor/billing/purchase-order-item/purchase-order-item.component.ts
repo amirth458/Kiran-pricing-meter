@@ -7,7 +7,8 @@ import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Payment, PaymentDetails } from 'src/app/model/billing.model';
+import { PaymentDetails, PaymentStatusTypes } from 'src/app/model/billing.model';
+import { MetadataService } from 'src/app/service/metadata.service';
 
 @Component({
   selector: 'app-purchase-order-item',
@@ -15,7 +16,7 @@ import { Payment, PaymentDetails } from 'src/app/model/billing.model';
   styleUrls: ['./purchase-order-item.component.css']
 })
 export class PurchaseOrderItemComponent implements OnInit {
-
+  PaymentStatusTypes = PaymentStatusTypes;
   chatForm = this.fb.group({
     note: ['', Validators.required]
   });
@@ -32,6 +33,7 @@ export class PurchaseOrderItemComponent implements OnInit {
     public modalService: NgbModal,
     public route: Router,
     public billingService: BillingService,
+    public metadataService: MetadataService,
     public fb: FormBuilder,
     public userService: UserService,
     public spinner: NgxSpinnerService
@@ -64,6 +66,10 @@ export class PurchaseOrderItemComponent implements OnInit {
         this.toast.error(err.error.message);
         this.route.navigateByUrl('/billing/payment');
       });
+    this.metadataService.getPostProcessActionMetaData().subscribe(res => {
+      this.postProcessAction = res;
+      console.log({ r: res });
+    });
   }
 
   open(content, size: any = 'lg') {
@@ -154,8 +160,19 @@ export class PurchaseOrderItemComponent implements OnInit {
 
   }
 
-  getpostProcessActionName(postProcessActionId: string) {
-
+  getPostProcessActions(postProcessActionId: Array<number>) {
+    const filterPostProcessAction = this.postProcessAction.filter(item => postProcessActionId.includes(item.id));
+    let result = '';
+    if (filterPostProcessAction.length) {
+      filterPostProcessAction.map((item, index) => {
+        if (index != filterPostProcessAction.length - 1) {
+          result += item.name + ', ';
+        } else {
+          result += item.name;
+        }
+      });
+    }
+    return result;
   }
 
   isDifferentDate(index: number) {
