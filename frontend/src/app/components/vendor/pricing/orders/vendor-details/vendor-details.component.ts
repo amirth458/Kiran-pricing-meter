@@ -498,6 +498,26 @@ export class VendorDetailsComponent implements OnInit {
         filter: false
       },
       {
+        headerName: "Vendor Bid Price",
+        field: "bidOfferPrice",
+        tooltipField: "bidOfferPrice",
+        hide: false,
+        sortable: false,
+        filter: false,
+        valueFormatter: dt => {
+          let value = '';
+          switch(dt.data.bidProcessStatus.name) {
+            case BiddingStatus.COUNTER_OFFER:
+              value = `$ ${(dt.data.counterOfferPrice || 0)}`;
+              break;
+            case BiddingStatus.ACCEPTED:
+              value = `$ ${(dt.data.bidOfferPrice || 0)}`;
+              break;
+          }
+          return value;
+        }
+      },
+      {
         headerName: "Status",
         field: "bidProcessStatus.description",
         tooltipField: "bidProcessStatus.description",
@@ -702,9 +722,9 @@ export class VendorDetailsComponent implements OnInit {
         )
         .subscribe(v => {
           this.toaster.success("Successfully bidding confirmed");
-          this.prepareBidOrderInfo();
           this.spinner.hide();
           this.modalService.dismissAll();
+          this.router.navigateByUrl(`/pricing/orders/released-orders/${this.bidOrderId}`);
         });
     } else {
       this.toaster.error('There is no process profile associated wit this bidding!');
