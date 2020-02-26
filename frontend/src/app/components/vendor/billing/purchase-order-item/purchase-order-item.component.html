@@ -104,7 +104,8 @@
 
           <div class="col-12 mt-2 row justify-content-center">
             <div class="col-3 mr-1">
-              <button type="button" class="btn theme" (click)="open(approveModal, 'md')">Approve</button>
+              <button *ngIf="orderInfo?.billingInfoView?.paymentStatusType == PaymentStatusTypes.WAITING_FOR_APPROVAL"
+                type="button" class="btn theme" (click)="open(approveModal, 'md')">Approve</button>
             </div>
 
             <!-- <div class="col-3 ml-1">
@@ -197,7 +198,8 @@
             </p>
             <p class="d-flex mb-1">
               <span class="name">Post-Process: </span>
-              <span class="value text-theme-green font-weight-bold">{{getPostProcessActions(item?.postProcessTypeIds)}}</span>
+              <span
+                class="value text-theme-green font-weight-bold">{{getPostProcessActions(item?.postProcessTypeIds)}}</span>
             </p>
           </div>
         </div>

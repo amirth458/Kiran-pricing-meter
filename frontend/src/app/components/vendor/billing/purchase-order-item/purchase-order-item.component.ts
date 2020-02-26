@@ -7,7 +7,7 @@ import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Payment, PaymentDetails } from 'src/app/model/billing.model';
+import { PaymentDetails, PaymentStatusTypes } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { MetadataService } from 'src/app/service/metadata.service';
   styleUrls: ['./purchase-order-item.component.css']
 })
 export class PurchaseOrderItemComponent implements OnInit {
-
+  PaymentStatusTypes = PaymentStatusTypes;
   chatForm = this.fb.group({
     note: ['', Validators.required]
   });
