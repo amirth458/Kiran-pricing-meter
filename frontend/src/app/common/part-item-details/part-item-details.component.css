@@ -3,7 +3,7 @@
 }
 
 .shipment {
-  background: #F0F8FF;
+  background: #f0f8ff;
   border-radius: 5px;
 }
 
@@ -14,7 +14,6 @@
 .label {
   margin-bottom: 3px;
 }
-
 
 .label.target-delivery {
   color: var(--theme-sky-blue);

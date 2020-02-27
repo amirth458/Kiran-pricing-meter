@@ -8,15 +8,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        NgxSpinnerModule
-      ],
-      declarations: [
-        AppComponent,
-        SideMenuComponent,
-        TopMenuComponent,
-      ]
+      imports: [RouterTestingModule, NgxSpinnerModule],
+      declarations: [AppComponent, SideMenuComponent, TopMenuComponent]
     }).compileComponents();
   }));
 

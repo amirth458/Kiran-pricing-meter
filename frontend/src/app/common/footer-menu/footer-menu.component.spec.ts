@@ -8,9 +8,8 @@ describe('FooterMenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterMenuComponent ]
-    })
-    .compileComponents();
+      declarations: [FooterMenuComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

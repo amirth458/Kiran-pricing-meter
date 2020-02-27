@@ -8,9 +8,8 @@ describe('QueuedManualPriceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QueuedManualPriceComponent ]
-    })
-    .compileComponents();
+      declarations: [QueuedManualPriceComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  SimpleChange
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 declare var $: any;
@@ -9,15 +16,15 @@ declare var $: any;
 })
 export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
   @Input('menus') menus: Array<{
-    name: string,
-    tooltipMessage: string,
-    route: string,
-    actions: Array<{ name: string, route: string }>
+    name: string;
+    tooltipMessage: string;
+    route: string;
+    actions: Array<{ name: string; route: string }>;
   }>;
   @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
-  constructor(public route: Router) { }
+  constructor(public route: Router) {}
 
   ngOnInit() {
     $(() => {
@@ -51,17 +58,16 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
 
   selectTab(tab) {
     const prevURL = this.route.url;
-    this.route.navigateByUrl(`/${this.baseURL}/${tab.route}`)
-      .then((res) => {
-        if (this.route.url !== prevURL && this.route.url.includes(tab.route)) {
-          this.selectedTab = tab.name;
-          this.menus.map((x, index) => {
-            if (x.name === tab.name) {
-              this.activeTabIndex = index;
-            }
-          });
-        }
-      });
+    this.route.navigateByUrl(`/${this.baseURL}/${tab.route}`).then(res => {
+      if (this.route.url !== prevURL && this.route.url.includes(tab.route)) {
+        this.selectedTab = tab.name;
+        this.menus.map((x, index) => {
+          if (x.name === tab.name) {
+            this.activeTabIndex = index;
+          }
+        });
+      }
+    });
   }
 
   addButton(route) {
@@ -71,5 +77,4 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
   backButton() {
     this.route.navigateByUrl('/user-manage/approve');
   }
-
 }

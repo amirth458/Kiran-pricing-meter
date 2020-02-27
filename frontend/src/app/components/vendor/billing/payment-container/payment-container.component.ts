@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import * as tooltipData from "../../../../../assets/tooltip.json";
+import * as tooltipData from '../../../../../assets/tooltip.json';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./payment-container.component.css']
 })
 export class PaymentContainerComponent implements OnInit {
-
   actionbarMenu: Array<{
     name: string;
     tooltipMessage: string;
@@ -21,31 +20,30 @@ export class PaymentContainerComponent implements OnInit {
   }> = tooltipData.default.payment;
   selectedTab = this.actionbarMenu[0].name;
 
-  constructor(private route: Router) { }
+  constructor(private route: Router) {}
 
   ngOnInit() {
     const routeArr = this.route.url
       .slice(
-        this.route.url.indexOf("/billing/payment/") + "/billing/payment/".length
+        this.route.url.indexOf('/billing/payment/') + '/billing/payment/'.length
       )
-      .split("/");
+      .split('/');
 
     switch (routeArr[0]) {
-      case "waiting-for-approval":
-        this.selectedTab = "Waiting For Approval";
+      case 'waiting-for-approval':
+        this.selectedTab = 'Waiting For Approval';
         break;
-      case "approved":
-        this.selectedTab = "Approved";
+      case 'approved':
+        this.selectedTab = 'Approved';
         break;
-      case "rejected":
-        this.selectedTab = "Rejected";
+      case 'rejected':
+        this.selectedTab = 'Rejected';
         break;
-      case "details":
+      case 'details':
         break;
       default:
-        this.route.navigateByUrl(this.route.url + "/waiting-for-approval");
+        this.route.navigateByUrl(this.route.url + '/waiting-for-approval');
         break;
     }
   }
 }
-

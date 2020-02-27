@@ -1,4 +1,10 @@
-import { InitialState, AppState, AppTypes, AppAction, AppFields } from './app.models';
+import {
+  InitialState,
+  AppState,
+  AppTypes,
+  AppAction,
+  AppFields
+} from './app.models';
 
 export function appReducer(s: AppState = InitialState, a: AppAction) {
   if (!a) {
@@ -6,7 +12,9 @@ export function appReducer(s: AppState = InitialState, a: AppAction) {
     return s;
   }
   switch (a.type) {
-    case AppTypes.UpdateState: return { ...s, ...a.payload };
-    default: return s;
+    case AppTypes.UpdateState:
+      return { ...s, ...a.payload };
+    default:
+      return s;
   }
 }

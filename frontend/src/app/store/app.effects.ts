@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   Observable,
   Action,
@@ -15,10 +15,10 @@ import {
   GetUserInfo,
   GetRegisterStatus,
   UpdateAuthInfo
-} from "./app.models";
-import { VendorService } from "../service/vendor.service";
-import { AuthService } from "../service/auth.service";
-import { UserService } from "../service/user.service";
+} from './app.models';
+import { VendorService } from '../service/vendor.service';
+import { AuthService } from '../service/auth.service';
+import { UserService } from '../service/user.service';
 
 @Injectable()
 export class AppEffects {

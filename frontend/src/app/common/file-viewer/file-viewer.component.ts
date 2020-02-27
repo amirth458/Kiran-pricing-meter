@@ -1,16 +1,16 @@
-import { Component, Output, EventEmitter, Input, OnInit } from "@angular/core";
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 
-import { map } from "rxjs/operators";
+import { map } from 'rxjs/operators';
 
-import { OrdersService } from "../../service/orders.service";
-import { Part, PartDimension } from "../../model/part.model";
-import { Util } from "../../util/Util";
-import { RfqPricingService } from "src/app/service/rfq-pricing.service";
+import { OrdersService } from '../../service/orders.service';
+import { Part, PartDimension } from '../../model/part.model';
+import { Util } from '../../util/Util';
+import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 
 @Component({
-  selector: "app-file-viewer",
-  templateUrl: "./file-viewer.component.html",
-  styleUrls: ["./file-viewer.component.css"]
+  selector: 'app-file-viewer',
+  templateUrl: './file-viewer.component.html',
+  styleUrls: ['./file-viewer.component.css']
 })
 export class FileViewerComponent implements OnInit {
   _partInfo: Part;
@@ -55,7 +55,7 @@ export class FileViewerComponent implements OnInit {
       (this.measurementUnits && this.measurementUnits.metadataList) ||
       []
     ).filter(u => u.id === unitId)[0];
-    return unit ? unit.displayName : "";
+    return unit ? unit.displayName : '';
   }
 
   getBoundingBox() {
@@ -66,10 +66,10 @@ export class FileViewerComponent implements OnInit {
 
   download() {
     let url = this.partInfo.rfqMedia.media.location;
-    let a = document.createElement("a");
+    let a = document.createElement('a');
     document.body.appendChild(a);
-    a.setAttribute("style", "display: none");
-    a.setAttribute("target", "_blank");
+    a.setAttribute('style', 'display: none');
+    a.setAttribute('target', '_blank');
     a.href = url;
     a.download = this.partInfo.rfqMedia.media.name;
     a.click();

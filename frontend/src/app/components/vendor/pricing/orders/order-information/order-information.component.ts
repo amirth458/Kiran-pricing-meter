@@ -1,14 +1,14 @@
-import { FileViewRendererComponent } from "./../../../../../common/file-view-renderer/file-view-renderer.component";
-import { Component, OnInit } from "@angular/core";
-import { GridOptions } from "ag-grid-community";
+import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
+import { Component, OnInit } from '@angular/core';
+import { GridOptions } from 'ag-grid-community';
 
 @Component({
-  selector: "app-order-information",
-  templateUrl: "./order-information.component.html",
-  styleUrls: ["./order-information.component.css"]
+  selector: 'app-order-information',
+  templateUrl: './order-information.component.html',
+  styleUrls: ['./order-information.component.css']
 })
 export class OrderInformationComponent implements OnInit {
-  stage = "unset";
+  stage = 'unset';
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -18,18 +18,18 @@ export class OrderInformationComponent implements OnInit {
   rowData = [
     {
       id: 1,
-      customerOrder: "234",
-      subOrder: "234.1",
-      fileName: "Rotor_No_ Logo.stl",
-      priceAccepted: "$ 334",
-      customer: "CompCo",
+      customerOrder: '234',
+      subOrder: '234.1',
+      fileName: 'Rotor_No_ Logo.stl',
+      priceAccepted: '$ 334',
+      customer: 'CompCo',
       quantity: 30,
-      material: "ABS M30",
-      process: "3D Printing",
-      postProcess: "Sanding",
-      previouslyOrdered: "Yes",
-      firstShipment: "Yes",
-      deliveryDate: "09/12/2019"
+      material: 'ABS M30',
+      process: '3D Printing',
+      postProcess: 'Sanding',
+      previouslyOrdered: 'Yes',
+      firstShipment: 'Yes',
+      deliveryDate: '09/12/2019'
     }
   ];
 
@@ -47,98 +47,98 @@ export class OrderInformationComponent implements OnInit {
   ngOnInit() {
     this.columnDefs = [
       {
-        headerName: "Customer Order",
-        field: "customerOrder",
-        tooltipField: "customerOrder",
+        headerName: 'Customer Order',
+        field: 'customerOrder',
+        tooltipField: 'customerOrder',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Sub-Order",
-        field: "subOrder",
-        tooltipField: "subOrder",
+        headerName: 'Sub-Order',
+        field: 'subOrder',
+        tooltipField: 'subOrder',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "File Name",
-        field: "fileName",
-        tooltipField: "fileName",
+        headerName: 'File Name',
+        field: 'fileName',
+        tooltipField: 'fileName',
         hide: false,
         sortable: true,
         filter: false,
-        cellRenderer: "fileViewRenderer"
+        cellRenderer: 'fileViewRenderer'
       },
       {
-        headerName: "Price Accepted",
-        field: "priceAccepted",
-        tooltipField: "priceAccepted",
+        headerName: 'Price Accepted',
+        field: 'priceAccepted',
+        tooltipField: 'priceAccepted',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Customer",
-        field: "customer",
-        tooltipField: "customer",
+        headerName: 'Customer',
+        field: 'customer',
+        tooltipField: 'customer',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Quantity",
-        field: "quantity",
-        tooltipField: "quantity",
+        headerName: 'Quantity',
+        field: 'quantity',
+        tooltipField: 'quantity',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "material",
-        tooltipField: "material",
+        headerName: 'Material',
+        field: 'material',
+        tooltipField: 'material',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Process",
-        field: "process",
-        tooltipField: "process",
+        headerName: 'Process',
+        field: 'process',
+        tooltipField: 'process',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Post-Process",
-        field: "postProcess",
-        tooltipField: "postProcess",
+        headerName: 'Post-Process',
+        field: 'postProcess',
+        tooltipField: 'postProcess',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Previously Ordered",
-        field: "previouslyOrdered",
-        tooltipField: "previouslyOrdered",
+        headerName: 'Previously Ordered',
+        field: 'previouslyOrdered',
+        tooltipField: 'previouslyOrdered',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "First Shipment",
-        field: "firstShipment",
-        tooltipField: "firstShipment",
+        headerName: 'First Shipment',
+        field: 'firstShipment',
+        tooltipField: 'firstShipment',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Delivery Date",
-        field: "deliveryDate",
-        tooltipField: "deliveryDate",
+        headerName: 'Delivery Date',
+        field: 'deliveryDate',
+        tooltipField: 'deliveryDate',
         hide: false,
         sortable: true,
         filter: false

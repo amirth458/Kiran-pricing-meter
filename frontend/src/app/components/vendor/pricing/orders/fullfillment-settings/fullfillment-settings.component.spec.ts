@@ -8,9 +8,8 @@ describe('FullfillmentSettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FullfillmentSettingsComponent ]
-    })
-    .compileComponents();
+      declarations: [FullfillmentSettingsComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

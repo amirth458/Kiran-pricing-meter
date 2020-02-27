@@ -18,8 +18,7 @@ describe('ProgressBarComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

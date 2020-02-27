@@ -33,9 +33,8 @@ export class ReleasedOrdersComponent implements OnInit {
   constructor(
     public router: Router,
     public spinner: NgxSpinnerService,
-    private orderService: OrdersService,
-  ) {
-  }
+    private orderService: OrdersService
+  ) {}
 
   ngOnInit() {
     this.initColumns();
@@ -48,7 +47,9 @@ export class ReleasedOrdersComponent implements OnInit {
       pagination: true,
       paginationPageSize: this.pageSize,
       onRowClicked: event => {
-        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
+        this.router.navigateByUrl(
+          `${this.router.url}/${event.data.bidOrder.id}`
+        );
       }
     };
     this.getReleasedBiddingOrders();
@@ -57,7 +58,7 @@ export class ReleasedOrdersComponent implements OnInit {
   initColumns() {
     this.columnDefs = this.orderService.getOrderViewColumns();
     this.autoGroupColumnDef = {
-      headerName: 'Vendor Order ID',
+      headerName: 'Vendor Order ID'
     };
   }
   pageSizeChanged(value) {
@@ -115,5 +116,4 @@ export class ReleasedOrdersComponent implements OnInit {
       }
     ]);
   }
-
 }

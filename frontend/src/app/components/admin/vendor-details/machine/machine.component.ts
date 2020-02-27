@@ -14,13 +14,33 @@ import { ToastrService } from 'ngx-toastr';
 export class AdminVendorDetailsMachineComponent implements OnInit {
   @ViewChild('modal') modal;
   columnDefs = [
-    { headerName: 'Machine No', field: 'id', hide: false, sortable: true, filter: false },
-    { headerName: 'Machine Name', field: 'name', hide: false, sortable: true, filter: false },
     {
-      headerName: 'Equipment', field: 'equipment.name', hide: false, sortable: true, filter: false
+      headerName: 'Machine No',
+      field: 'id',
+      hide: false,
+      sortable: true,
+      filter: false
     },
     {
-      headerName: 'Material', field: 'materialList', hide: false, sortable: true, filter: false,
+      headerName: 'Machine Name',
+      field: 'name',
+      hide: false,
+      sortable: true,
+      filter: false
+    },
+    {
+      headerName: 'Equipment',
+      field: 'equipment.name',
+      hide: false,
+      sortable: true,
+      filter: false
+    },
+    {
+      headerName: 'Material',
+      field: 'materialList',
+      hide: false,
+      sortable: true,
+      filter: false,
       cellRenderer(params) {
         const data = params.data;
         let materials = '';
@@ -34,14 +54,20 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
         return `${materials}`;
       }
     },
-    { headerName: 'Serial Number', field: 'serialNumber', hide: false, sortable: true, filter: false },
+    {
+      headerName: 'Serial Number',
+      field: 'serialNumber',
+      hide: false,
+      sortable: true,
+      filter: false
+    }
   ];
 
   gridOptions: GridOptions;
   rowData = [];
   pageSize = 10;
   frameworkComponents = {
-    actionCellRenderer: ActionCellRendererComponent,
+    actionCellRenderer: ActionCellRendererComponent
   };
   vendorId = 0;
   status = 0;
@@ -52,7 +78,8 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     public route: Router,
     public spinner: NgxSpinnerService,
     public userService: UserService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService
+  ) {}
 
   async ngOnInit() {
     this.gridOptions = {
@@ -63,7 +90,7 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
       // paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35,
+      headerHeight: 35
     };
 
     const userId = this.route.url.split('/')[3];
@@ -71,7 +98,10 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.rowData = res.machines;
     if (res.vendor) {
       this.vendorId = res.vendor.id;
-      this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
+      this.primaryContactName =
+        res.vendor.primaryContactFirstName +
+        ' ' +
+        res.vendor.primaryContactLastName;
       if (res.vendor.approved) {
         this.status = 1; // approved
       } else {
@@ -101,7 +131,9 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
       await this.userService.approveUser(this.vendorId).toPromise();
       this.route.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
+      this.toastr.error(
+        'We are sorry, Vendor is not approved. Please try again later.'
+      );
     } finally {
       this.spinner.hide();
     }
@@ -118,10 +150,14 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
+      await this.userService
+        .declineUser(this.vendorId, this.declineComments)
+        .toPromise();
       this.route.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
+      this.toastr.error(
+        'We are sorry, Vendor is not declined. Please try again later.'
+      );
     } finally {
       this.spinner.hide();
     }

@@ -1,12 +1,12 @@
-import { Router } from "@angular/router";
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { environment } from "src/environments/environment";
+import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.css"]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   menus: Array<{
@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     visible: boolean;
     active: boolean;
   }> = [];
-  selectedMenu = "/marketplace";
+  selectedMenu = '/marketplace';
   sideMenuOpen = true;
 
   vendor: Observable<any>;
@@ -24,8 +24,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router) {
     this.menus = environment.menus;
-    const urlPath = this.router.url.split("/");
-    this.selectedMenu = "/" + urlPath[1];
+    const urlPath = this.router.url.split('/');
+    this.selectedMenu = '/' + urlPath[1];
   }
 
   ngOnInit(): void {}

@@ -8,9 +8,8 @@ describe('ReferralContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReferralContainerComponent ]
-    })
-    .compileComponents();
+      declarations: [ReferralContainerComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,51 +1,90 @@
 <div class="container">
-
-  <h6 class="font-weight-bold">Part {{part?.id}}</h6>
+  <h6 class="font-weight-bold">Part {{ part?.id }}</h6>
   <div class="col-12 row pt-0 pl-0 pb-4 m-0 body">
-
     <div class="col-7 o-card p-2 border">
       <div class="col-12 d-flex p-0">
         <div class="col-4">
-          <img class="img-fluid h-100 w-100" alt="" height="140px" width="140px"
-            [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location" data-holder-rendered="true">
+          <img
+            class="img-fluid h-100 w-100"
+            alt=""
+            height="140px"
+            width="140px"
+            [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location"
+            data-holder-rendered="true"
+          />
         </div>
         <div class="col-4">
-          <p class="label">File: <span class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.name}}</span>
+          <p class="label">
+            File:
+            <span class="text-theme-green font-weight-bold">{{
+              part?.rfqMedia?.media?.name
+            }}</span>
           </p>
-          <p class="label">Material: <span
-              class="text-theme-green font-weight-bold">{{part?.materialPropertyValues?.join(', ')}}</span></p>
-          <p class="label">Technology: <span
-              class="text-theme-green font-weight-bold">{{part?.equipmentPropertyValues?.join(', ')}}</span></p>
-          <p class="label">Post-process: <span class="text-theme-green font-weight-bold"></span></p>
+          <p class="label">
+            Material:
+            <span class="text-theme-green font-weight-bold">{{
+              part?.materialPropertyValues?.join(', ')
+            }}</span>
+          </p>
+          <p class="label">
+            Technology:
+            <span class="text-theme-green font-weight-bold">{{
+              part?.equipmentPropertyValues?.join(', ')
+            }}</span>
+          </p>
+          <p class="label">
+            Post-process:
+            <span class="text-theme-green font-weight-bold"></span>
+          </p>
         </div>
         <div class="col-4 border-left">
-          <p class="label">Dimension: <span class="text-theme-green font-weight-bold">{{getPartDimension()}}</span></p>
-          <p class="label">Volume: <span
-              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.volume?.value}}
-              {{getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId)}}</span>
+          <p class="label">
+            Dimension:
+            <span class="text-theme-green font-weight-bold">{{
+              getPartDimension()
+            }}</span>
           </p>
-          <p class="label">Surface Roughness: <span
-              class="text-theme-green font-weight-bold">{{part?.rfqMedia?.media?.partDimension?.surfaceArea?.value}}
-              {{getUnit(part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId)}}</span>
+          <p class="label">
+            Volume:
+            <span class="text-theme-green font-weight-bold"
+              >{{ part?.rfqMedia?.media?.partDimension?.volume?.value }}
+              {{
+                getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId)
+              }}</span
+            >
           </p>
-          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold"></span></p>
+          <p class="label">
+            Surface Roughness:
+            <span class="text-theme-green font-weight-bold"
+              >{{ part?.rfqMedia?.media?.partDimension?.surfaceArea?.value }}
+              {{
+                getUnit(
+                  part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId
+                )
+              }}</span
+            >
+          </p>
+          <p class="label">
+            Tolerance: <span class="text-theme-green font-weight-bold"></span>
+          </p>
         </div>
       </div>
     </div>
 
     <div class="col-5 d-flex  pl-3">
       <div class="col-12 d-flex shipment p-3">
-
         <div class="o-card w-100 d-flex flex-column justify-content-between">
           <p class="label d-flex flex-row justify-content-between mb-5">
-            Shipment (OTY - {{part?.quantity}}) <span
-              class="float-right">{{part?.targetDeliveryDate | date:'MM/dd/yyyy'}}</span>
+            Shipment (OTY - {{ part?.quantity }})
+            <span class="float-right">{{
+              part?.targetDeliveryDate | date: 'MM/dd/yyyy'
+            }}</span>
             <!-- {{part?.targetDeliveryDate | date: 'YYY/mm/dd'}} -->
           </p>
           <span class="d-flex col-12 p-0">
             <div class="col-8 p-0">
               <p class="label">
-                Address: {{shippingAddressInfo(part?.shippingAddress)}}
+                Address: {{ shippingAddressInfo(part?.shippingAddress) }}
               </p>
             </div>
             <div class="col-8">
@@ -54,10 +93,8 @@
               </p>
             </div>
           </span>
-
         </div>
       </div>
-
     </div>
-
   </div>
+</div>

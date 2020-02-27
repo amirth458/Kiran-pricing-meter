@@ -1,5 +1,6 @@
 {
-  "basicMenu": [{
+  "basicMenu": [
+    {
       "name": "Corporate Details",
       "tooltipMessage": "High level information about your business operations.",
       "route": "basics",
@@ -9,10 +10,12 @@
       "name": "Facilities",
       "tooltipMessage": "Details regarding specific manufacturing facilities. If you have different individuals quoting for different divisions, create that delineation here",
       "route": "facilities",
-      "actions": [{
-        "name": "Add Facility",
-        "route": "add"
-      }]
+      "actions": [
+        {
+          "name": "Add Facility",
+          "route": "add"
+        }
+      ]
     },
     {
       "name": "Preferences",
@@ -24,22 +27,27 @@
       "name": "Machines",
       "tooltipMessage": "At vero eos et accusamus et",
       "route": "machines",
-      "actions": [{
-        "name": "Add Machine",
-        "route": "add"
-      }]
+      "actions": [
+        {
+          "name": "Add Machine",
+          "route": "add"
+        }
+      ]
     },
     {
       "name": "Shipping",
       "tooltipMessage": "At vero eos et accusamus et",
       "route": "shipping",
-      "actions": [{
-        "name": "Add Carrier",
-        "route": "add"
-      }]
+      "actions": [
+        {
+          "name": "Add Carrier",
+          "route": "add"
+        }
+      ]
     }
   ],
-  "adminVendor": [{
+  "adminVendor": [
+    {
       "name": "User Details",
       "tooltipMessage": "User Details.",
       "route": "user",
@@ -58,7 +66,8 @@
       "actions": ["back"]
     }
   ],
-  "unapprovedVendor": [{
+  "unapprovedVendor": [
+    {
       "name": "User Details",
       "tooltipMessage": "User Details.",
       "route": "user"
@@ -75,11 +84,13 @@
       "route": "machine"
     }
   ],
-  "process": [{
+  "process": [
+    {
       "name": "Profile",
       "tooltipMessage": "At vero eos et accusamus et",
       "route": "profile",
-      "actions": [{
+      "actions": [
+        {
           "name": "Add Process Profile",
           "route": "add"
         },
@@ -93,7 +104,8 @@
       "name": "Pricing",
       "tooltipMessage": "At vero eos et accusamus et",
       "route": "pricing",
-      "actions": [{
+      "actions": [
+        {
           "name": "Add Pricing",
           "route": "add"
         },
@@ -104,33 +116,41 @@
       ]
     }
   ],
-  "postProcess": [{
+  "postProcess": [
+    {
       "name": "Profile",
       "tooltipMessage": "At vero eos et accusamus et",
       "route": "profile",
-      "actions": [{
-        "name": "Add Post-Process",
-        "route": "add"
-      }]
+      "actions": [
+        {
+          "name": "Add Post-Process",
+          "route": "add"
+        }
+      ]
     },
     {
       "name": "Pricing",
       "tooltipMessage": "At vero eos et accusamus et",
       "route": "pricing",
-      "actions": [{
-        "name": "Add Pricing",
-        "route": "add"
-      }]
+      "actions": [
+        {
+          "name": "Add Pricing",
+          "route": "add"
+        }
+      ]
     }
   ],
-  "vendorFacility": [{
+  "vendorFacility": [
+    {
       "name": "Order",
       "tooltipMessage": "Order information",
       "route": "orders",
-      "actions": [{
-        "name": "Import",
-        "route": "import-order"
-      }]
+      "actions": [
+        {
+          "name": "Import",
+          "route": "import-order"
+        }
+      ]
     },
     {
       "name": "Sub Orders",
@@ -145,13 +165,16 @@
       "actions": []
     }
   ],
-  "pending": [{
-    "name": "Offer",
-    "tooltipMessage": "Offer",
-    "route": "",
-    "actions": []
-  }],
-  "registration": [{
+  "pending": [
+    {
+      "name": "Offer",
+      "tooltipMessage": "Offer",
+      "route": "",
+      "actions": []
+    }
+  ],
+  "registration": [
+    {
       "name": "User Details",
       "tooltipMessage": "Register Users.",
       "route": "user"
@@ -172,7 +195,8 @@
     "tooltipMessage": "The Profile Screener allows you to check whether a given process profile would be considered eligible to complete a given part.  Useful for expediting your own project assessment as well as eliminating any gaps"
   },
 
-  "payment": [{
+  "payment": [
+    {
       "name": "Waiting For Approval",
       "tooltipMessage": "Waiting for Approval",
       "route": "waiting-for-approval",

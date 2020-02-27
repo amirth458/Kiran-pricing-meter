@@ -12,31 +12,24 @@ import { VendorMetaDataTypes } from '../mockData/vendor';
   providedIn: 'root'
 })
 export class VendorService {
+  constructor(public http: HttpClient) {}
 
-  constructor(
-    public http: HttpClient
-  ) {}
-
-  getVendorMetaData(type: string): Observable < VendorMetaData[] > {
+  getVendorMetaData(type: string): Observable<VendorMetaData[]> {
     const url = `${environment.apiBaseUrl}/vendor-metadata/${type}`;
     if (type === VendorMetaDataTypes.ShippingPrivider) {
-      return this.http.get < any > (url).pipe(
-        map(res => res)
-      );
+      return this.http.get<any>(url).pipe(map(res => res));
     } else {
-      return this.http.get < any > (url).pipe(
-        map(res => res.metadataList)
-      );
+      return this.http.get<any>(url).pipe(map(res => res.metadataList));
     }
   }
 
-  getVendorDetail(id: number): Observable < Vendor > {
+  getVendorDetail(id: number): Observable<Vendor> {
     const url = `${environment.apiBaseUrl}/vendors/${id}`;
     const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
-    return this.http.get < Vendor > (url, { headers });
+    return this.http.get<Vendor>(url, { headers });
   }
 
   createVendorProfile(profile: Vendor) {
@@ -45,7 +38,7 @@ export class VendorService {
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken
     });
-    return this.http.post < Vendor > (url, profile, {
+    return this.http.post<Vendor>(url, profile, {
       headers
     });
   }
@@ -57,9 +50,8 @@ export class VendorService {
       Authorization: data.tokenType + ' ' + data.accessToken
     });
 
-    return this.http.put < Vendor > (url, profile, {
+    return this.http.put<Vendor>(url, profile, {
       headers
     });
   }
-
 }

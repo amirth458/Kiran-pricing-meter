@@ -1,90 +1,90 @@
-import { Component, OnInit, ViewChild, HostListener } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { GridOptions } from "ag-grid-community";
+import { GridOptions } from 'ag-grid-community';
 
-import { ActionCellApproveRendererComponent } from "src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component";
+import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
-import { NgxSpinnerService } from "ngx-spinner";
-import { Observable, Subscription } from "rxjs";
-import { Vendor } from "src/app/model/vendor.model";
-import { Store } from "@ngrx/store";
-import { ToastrService } from "ngx-toastr";
-import { UserService } from "src/app/service/user.service";
-import { DropdownHeaderRendererComponent } from "src/app/common/dropdown-header-renderer/dropdown-header-renderer.component";
-import { ThrowStmt } from "@angular/compiler";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Observable, Subscription } from 'rxjs';
+import { Vendor } from 'src/app/model/vendor.model';
+import { Store } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/service/user.service';
+import { DropdownHeaderRendererComponent } from 'src/app/common/dropdown-header-renderer/dropdown-header-renderer.component';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
-  selector: "app-approve-vendor",
-  templateUrl: "./approve-vendor.component.html",
-  styleUrls: ["./approve-vendor.component.css"]
+  selector: 'app-approve-vendor',
+  templateUrl: './approve-vendor.component.html',
+  styleUrls: ['./approve-vendor.component.css']
 })
 export class ApproveVendorComponent implements OnInit {
-  @ViewChild("infoModal") infoModal;
-  @ViewChild("modal") modal;
+  @ViewChild('infoModal') infoModal;
+  @ViewChild('modal') modal;
   selectedFacility = null;
 
   searchColumns = [
     {
-      name: "Vendor Name",
+      name: 'Vendor Name',
       checked: false,
-      field: "vendorName",
+      field: 'vendorName',
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Email Address",
+      name: 'Email Address',
       checked: false,
-      field: "email",
+      field: 'email',
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Country",
+      name: 'Country',
       checked: false,
-      field: "country",
+      field: 'country',
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Confidentiality",
+      name: 'Confidentiality',
       checked: false,
-      field: "confidentiality",
+      field: 'confidentiality',
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     }
   ];
   filterColumns = [
     {
-      name: "Vendor Name",
+      name: 'Vendor Name',
       checked: true,
-      field: "vendorName"
+      field: 'vendorName'
     },
     {
-      name: "Email Address",
+      name: 'Email Address',
       checked: true,
-      field: "email"
+      field: 'email'
     },
     {
-      name: "Country",
+      name: 'Country',
       checked: true,
-      field: "country"
+      field: 'country'
     },
     {
-      name: "Confidentiality",
+      name: 'Confidentiality',
       checked: true,
-      field: "confidentiality"
+      field: 'confidentiality'
     }
   ];
-  type = ["search", "filter"];
+  type = ['search', 'filter'];
 
   frameworkComponents = {
     actionCellRenderer: ActionCellApproveRendererComponent,
@@ -93,9 +93,9 @@ export class ApproveVendorComponent implements OnInit {
 
   columnDefs = [
     {
-      headerName: "",
+      headerName: '',
       headerComponentFramework: DropdownHeaderRendererComponent,
-      field: "chooseall",
+      field: 'chooseall',
       headerCheckboxSelection: true,
       checkboxSelection: true,
       hide: false,
@@ -113,39 +113,39 @@ export class ApproveVendorComponent implements OnInit {
       }
     },
     {
-      headerName: "Vendor Name",
-      field: "vendorName",
+      headerName: 'Vendor Name',
+      field: 'vendorName',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Email Address",
-      field: "email",
+      headerName: 'Email Address',
+      field: 'email',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Country",
-      field: "country",
+      headerName: 'Country',
+      field: 'country',
       hide: true,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Confidentiality",
-      field: "confidentiality",
+      headerName: 'Confidentiality',
+      field: 'confidentiality',
       hide: false,
       sortable: true,
       filter: false,
       width: 120
     },
     {
-      headerName: "Actions",
+      headerName: 'Actions',
       filter: false,
       width: 150,
-      cellRenderer: "actionCellRenderer",
+      cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
           approve: param => {
@@ -193,10 +193,10 @@ export class ApproveVendorComponent implements OnInit {
   vendorStatus = 1;
   selectedUserIds = [];
   navigation;
-  infoText = "";
+  infoText = '';
   showTypeDropDown = false;
-  declineComments = "";
-  primaryContactName = "";
+  declineComments = '';
+  primaryContactName = '';
   constructor(
     private route: Router,
     private userService: UserService,
@@ -211,7 +211,7 @@ export class ApproveVendorComponent implements OnInit {
   ngOnInit() {
     this.getAllUsers();
 
-    if (this.type.includes("filter")) {
+    if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
 
@@ -223,7 +223,7 @@ export class ApproveVendorComponent implements OnInit {
       enableColResize: true,
       rowHeight: 50,
       headerHeight: 35,
-      rowSelection: "multiple",
+      rowSelection: 'multiple',
 
       onRowClicked: event => {
         // this.onRowClick(event);
@@ -233,7 +233,7 @@ export class ApproveVendorComponent implements OnInit {
         this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
       },
       rowClassRules: {
-        "non-approved": params => {
+        'non-approved': params => {
           if (params.data.vendor) {
             return (
               !params.data.vendor.approved &&
@@ -264,7 +264,7 @@ export class ApproveVendorComponent implements OnInit {
     }, 50);
   }
 
-  @HostListener("document:click")
+  @HostListener('document:click')
   clickout() {
     this.showTypeDropDown = false;
   }
@@ -333,14 +333,14 @@ export class ApproveVendorComponent implements OnInit {
     }
     this.rowData = filteredUsers.map(user => ({
       ...user,
-      vendorName: user.vendor ? user.vendor.name : "",
-      email: user.vendor ? user.vendor.email : "",
+      vendorName: user.vendor ? user.vendor.name : '',
+      email: user.vendor ? user.vendor.email : '',
       country:
-        user.vendor && user.vendor.country ? user.vendor.country.name : "",
+        user.vendor && user.vendor.country ? user.vendor.country.name : '',
       confidentiality:
         user.vendor && user.vendor.confidentiality
           ? user.vendor.confidentiality.name
-          : ""
+          : ''
     }));
   }
 
@@ -355,7 +355,7 @@ export class ApproveVendorComponent implements OnInit {
     });
     userIds = userIds.filter(id => id !== null);
     if (userIds.length === 0) {
-      this.infoText = "approve";
+      this.infoText = 'approve';
       this.infoModal.nativeElement.click();
     } else {
       try {
@@ -363,10 +363,10 @@ export class ApproveVendorComponent implements OnInit {
         await this.userService.approveUsers(userIds).toPromise();
         await this.getAllUsers();
         this.vendorStatusChanged(this.vendorStatus);
-        this.toastr.success("Vendors are approved.");
+        this.toastr.success('Vendors are approved.');
       } catch (e) {
         this.toastr.error(
-          "We are sorry, Vendors are not approved with some error. Please try again later."
+          'We are sorry, Vendors are not approved with some error. Please try again later.'
         );
       } finally {
         this.spineer.hide();
@@ -389,17 +389,17 @@ export class ApproveVendorComponent implements OnInit {
     });
     userIds = userIds.filter(id => id !== null);
     if (userIds.length === 0) {
-      this.infoText = "decline";
+      this.infoText = 'decline';
       this.infoModal.nativeElement.click();
     } else {
       this.selectedUserIds = userIds;
-      this.primaryContactName = name.join(", ");
+      this.primaryContactName = name.join(', ');
       this.modal.nativeElement.click();
     }
   }
 
   async declineUsers(event) {
-    if (this.declineComments === "") {
+    if (this.declineComments === '') {
       return;
     }
     try {
@@ -409,11 +409,11 @@ export class ApproveVendorComponent implements OnInit {
         .toPromise();
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
-      this.toastr.success("Vendors are declined.");
+      this.toastr.success('Vendors are declined.');
       this.modal.nativeElement.click();
     } catch (e) {
       this.toastr.error(
-        "We are sorry, Vendors are not declined with some error. Please try again later."
+        'We are sorry, Vendors are not declined with some error. Please try again later.'
       );
       this.modal.nativeElement.click();
     } finally {
@@ -427,10 +427,10 @@ export class ApproveVendorComponent implements OnInit {
       await this.userService.declineUser(id).toPromise();
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
-      this.toastr.success("Vendor is decliend.");
+      this.toastr.success('Vendor is decliend.');
     } catch (e) {
       this.toastr.error(
-        "We are sorry, Vendor is not declined. Please try again later."
+        'We are sorry, Vendor is not declined. Please try again later.'
       );
     } finally {
       this.spineer.hide();
@@ -443,10 +443,10 @@ export class ApproveVendorComponent implements OnInit {
       await this.userService.approveUser(id).toPromise();
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
-      this.toastr.success("Vendor is approved.");
+      this.toastr.success('Vendor is approved.');
     } catch (e) {
       this.toastr.error(
-        "We are sorry, Vendor is not approved. Please try again later."
+        'We are sorry, Vendor is not approved. Please try again later.'
       );
     } finally {
       this.spineer.hide();
@@ -463,8 +463,8 @@ export class ApproveVendorComponent implements OnInit {
           columnInstance.setModel(column.query);
         } else {
           columnInstance.setModel({
-            type: "",
-            filter: ""
+            type: '',
+            filter: ''
           });
         }
         this.gridOptions.api.onFilterChanged();

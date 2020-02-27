@@ -1,40 +1,40 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { NgxSpinnerModule } from "ngx-spinner";
-import { NgSelectModule } from "@ng-select/ng-select";
-import { ToastrModule } from "ngx-toastr";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ToastrModule } from 'ngx-toastr';
 
-import { AppRoutingModule } from "./app-routing.module";
+import { AppRoutingModule } from './app-routing.module';
 
 // Components
-import { AppComponent } from "./app.component";
-import { LoginComponent } from "./components/login/login.component";
-import { FooterMenuComponent } from "./common/footer-menu/footer-menu.component";
+import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
+import { FooterMenuComponent } from './common/footer-menu/footer-menu.component';
 
-import { StoreModule } from "@ngrx/store";
-import { EffectsModule } from "@ngrx/effects";
-import { appReducer } from "./store/app.reducer";
-import { AppEffects } from "./store/app.effects";
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { appReducer } from './store/app.reducer';
+import { AppEffects } from './store/app.effects';
 
-import { InternationalPhoneNumberModule } from "ngx-international-phone-number";
-import { ComponentsModule } from "./components/components.module";
-import { AuthInterceptor } from "./http-interceptors/auth-inteceptor";
-import { EventEmitterService } from "./components/event-emitter.service";
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { ComponentsModule } from './components/components.module';
+import { AuthInterceptor } from './http-interceptors/auth-inteceptor';
+import { EventEmitterService } from './components/event-emitter.service';
 
-import { environment } from "src/environments/environment";
+import { environment } from 'src/environments/environment';
 
 import {
   RecaptchaModule,
   RECAPTCHA_SETTINGS,
   RecaptchaSettings,
   RECAPTCHA_BASE_URL
-} from "ng-recaptcha";
-import { RecaptchaFormsModule } from "ng-recaptcha/forms";
+} from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 @NgModule({
   imports: [
@@ -55,11 +55,11 @@ import { RecaptchaFormsModule } from "ng-recaptcha/forms";
       closeButton: true,
       newestOnTop: false,
       progressBar: false,
-      positionClass: "toast-top-right",
+      positionClass: 'toast-top-right',
       preventDuplicates: true,
       timeOut: 5000,
       extendedTimeOut: 1000,
-      easing: "ease-in"
+      easing: 'ease-in'
     }),
     ComponentsModule,
     RecaptchaModule.forRoot(),
@@ -76,7 +76,7 @@ import { RecaptchaFormsModule } from "ng-recaptcha/forms";
     },
     {
       provide: RECAPTCHA_BASE_URL,
-      useValue: "https://recaptcha.net/recaptcha/api.js" // use recaptcha.net script source for some of our users
+      useValue: 'https://recaptcha.net/recaptcha/api.js' // use recaptcha.net script source for some of our users
     },
     EventEmitterService
   ],

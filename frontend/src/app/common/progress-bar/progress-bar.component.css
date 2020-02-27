@@ -1,4 +1,3 @@
-
 .progress-wrapper .text-section {
   display: flex;
   justify-content: space-between;
@@ -17,7 +16,7 @@
 }
 
 .progress-wrapper .bar-section {
-  background-color: #EFEFEF;
+  background-color: #efefef;
   height: 13px;
   border-radius: 13px;
 }

@@ -1,5 +1,5 @@
-import { VendorProfile } from "./vendorProfile.model";
-import { UserSummary } from "./user.model";
+import { VendorProfile } from './vendorProfile.model';
+import { UserSummary } from './user.model';
 
 export interface Type {
   id: number;
@@ -147,11 +147,11 @@ export interface Part {
   processTypeId: number;
   processTypeName: string;
   materialPropertyType: string;
-  materialIds: Array<number>,
+  materialIds: Array<number>;
   materialPropertyValues: Array<string>;
   equipmentPropertyType: string;
-  equipmentPropertyValues: Array<string>,
-  equipmentIds: Array<number>,
+  equipmentPropertyValues: Array<string>;
+  equipmentIds: Array<number>;
   cuttingBondingAllowed: boolean;
   quantity: number;
   targetDeliveryDate: string;

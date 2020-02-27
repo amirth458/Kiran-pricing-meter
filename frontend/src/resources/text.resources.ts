@@ -2,9 +2,9 @@ export const resources = {
   vendor: {
     menu: [
       { name: 'Back', icon: '', tag: 'back' },
-      { name: 'Favorite', icon: '', tag: 'save'},
-      { name: 'Book', icon: '', tag: 'book'},
-      { name: 'Next', icon: '', tag: 'next'}
+      { name: 'Favorite', icon: '', tag: 'save' },
+      { name: 'Book', icon: '', tag: 'book' },
+      { name: 'Next', icon: '', tag: 'next' }
     ]
   },
   global: {
@@ -16,7 +16,8 @@ export const resources = {
       header: 'Hi, we’re 3Diligent '
     },
     vendor: {
-      header: 'Thank you for considering joining, to get started we just need a little information.'
+      header:
+        'Thank you for considering joining, to get started we just need a little information.'
     }
   },
   vendorLanding: {

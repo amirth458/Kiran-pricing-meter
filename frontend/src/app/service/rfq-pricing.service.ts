@@ -8,10 +8,14 @@ import { FilterOption } from '../model/vendor.model';
 import { Part, PartDimension, ProcessProfile } from '../model/part.model';
 import { Pageable } from '../model/pageable.model';
 import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
-import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
+import {
+  RfqData,
+  PricingProfileDetailedView,
+  PartQuote
+} from '../model/part.model';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class RfqPricingService {
   constructor(private http: HttpClient) {}
@@ -32,13 +36,13 @@ export class RfqPricingService {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append("page", filterOption.page.toString());
-      params = params.append("size", filterOption.size.toString());
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     const body = {
@@ -55,13 +59,13 @@ export class RfqPricingService {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append("page", filterOption.page.toString());
-      params = params.append("size", filterOption.size.toString());
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     const body = {
@@ -78,13 +82,13 @@ export class RfqPricingService {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
-      params = params.append("page", filterOption.page.toString());
-      params = params.append("size", filterOption.size.toString());
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
     }
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     const body = {
@@ -103,10 +107,10 @@ export class RfqPricingService {
 
   createPartQuoteDetail(quoteDetail) {
     const url = `${environment.procurementApiBaseUrl}/part-quote-detail`;
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     return this.http.post(url, quoteDetail, { headers });
@@ -114,10 +118,10 @@ export class RfqPricingService {
 
   getRfqDetail(id: number): Observable<RfqData> {
     const url = `${environment.procurementApiBaseUrl}/rfq/${id}`;
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     return this.http.get<RfqData>(url, { headers });
@@ -136,10 +140,10 @@ export class RfqPricingService {
 
   getPartQuote(partId: number): Observable<PartQuote> {
     const url = `${environment.procurementApiBaseUrl}/part-quote/parts/${partId}`;
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken,
-      "Content-Type": "application/json"
+      Authorization: data.tokenType + ' ' + data.accessToken,
+      'Content-Type': 'application/json'
     });
 
     return this.http.get<PartQuote>(url, { headers });
@@ -172,8 +176,12 @@ export class RfqPricingService {
     return this.http.post<any>(url, {});
   }
 
-  getScreenPricingBreakdown(breakDown: PricingBreakDown): Observable<PricingBreakdown> {
-    return this.http.post<PricingBreakdown>(`${environment.apiBaseUrl}/part-pricing-breakdown`, breakDown);
+  getScreenPricingBreakdown(
+    breakDown: PricingBreakDown
+  ): Observable<PricingBreakdown> {
+    return this.http.post<PricingBreakdown>(
+      `${environment.apiBaseUrl}/part-pricing-breakdown`,
+      breakDown
+    );
   }
-
 }

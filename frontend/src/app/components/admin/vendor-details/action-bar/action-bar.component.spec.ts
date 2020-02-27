@@ -7,44 +7,43 @@ describe('ActionBarComponent', () => {
   let component: AdminVendorDetailsActionBarComponent;
   let fixture: ComponentFixture<AdminVendorDetailsActionBarComponent>;
 
-
   const menus: Array<{
-    name: string,
-    tooltipMessage: string,
-    route: string,
-    actions: Array<{ name: string, route: string }>
+    name: string;
+    tooltipMessage: string;
+    route: string;
+    actions: Array<{ name: string; route: string }>;
   }> = [
-      {
-        name: 'Basic Details',
-        tooltipMessage: 'At vero eos et accusamus et',
-        route: 'basics',
-        actions: []
-      },
-      {
-        name: 'Facilities',
-        tooltipMessage: 'At vero eos et accusamus et',
-        route: 'facilities',
-        actions: [{ name: 'Add Facility', route: 'add' }]
-      },
-      {
-        name: 'Preferences',
-        tooltipMessage: 'At vero eos et accusamus et',
-        route: 'preferences',
-        actions: []
-      },
-      {
-        name: 'Machines',
-        tooltipMessage: 'At vero eos et accusamus et',
-        route: 'machines',
-        actions: [{ name: 'Add Machine', route: 'add' }]
-      },
-      {
-        name: 'Shipping',
-        tooltipMessage: 'At vero eos et accusamus et',
-        route: 'shipping',
-        actions: [{ name: 'Add Carrier', route: 'add' }]
-      }
-    ];
+    {
+      name: 'Basic Details',
+      tooltipMessage: 'At vero eos et accusamus et',
+      route: 'basics',
+      actions: []
+    },
+    {
+      name: 'Facilities',
+      tooltipMessage: 'At vero eos et accusamus et',
+      route: 'facilities',
+      actions: [{ name: 'Add Facility', route: 'add' }]
+    },
+    {
+      name: 'Preferences',
+      tooltipMessage: 'At vero eos et accusamus et',
+      route: 'preferences',
+      actions: []
+    },
+    {
+      name: 'Machines',
+      tooltipMessage: 'At vero eos et accusamus et',
+      route: 'machines',
+      actions: [{ name: 'Add Machine', route: 'add' }]
+    },
+    {
+      name: 'Shipping',
+      tooltipMessage: 'At vero eos et accusamus et',
+      route: 'shipping',
+      actions: [{ name: 'Add Carrier', route: 'add' }]
+    }
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -57,8 +56,7 @@ describe('ActionBarComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

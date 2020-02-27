@@ -12,8 +12,7 @@ describe('AdminVendorDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AdminVendorDetailsComponent, ActionBarComponent],
       imports: [RouterTestingModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

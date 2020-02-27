@@ -8,7 +8,13 @@ import { combineLatest } from 'rxjs';
 
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
-import { Part, RfqData, PartQuote, PricingProfileDetailedView, ProcessProfile } from '../../../../../model/part.model';
+import {
+  Part,
+  RfqData,
+  PartQuote,
+  PricingProfileDetailedView,
+  ProcessProfile
+} from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { UserService } from 'src/app/service/user.service';

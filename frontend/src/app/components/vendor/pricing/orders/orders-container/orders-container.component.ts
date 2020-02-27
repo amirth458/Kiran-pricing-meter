@@ -1,10 +1,10 @@
-import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: "app-orders-container",
-  templateUrl: "./orders-container.component.html",
-  styleUrls: ["./orders-container.component.css"]
+  selector: 'app-orders-container',
+  templateUrl: './orders-container.component.html',
+  styleUrls: ['./orders-container.component.css']
 })
 export class OrdersContainerComponent implements OnInit {
   actionbarMenu: Array<{
@@ -17,27 +17,27 @@ export class OrdersContainerComponent implements OnInit {
     }>;
   }> = [
     {
-      name: "Fullfillment Settings",
-      tooltipMessage: "Fullfillment Settings",
-      route: "fullfillment-settings",
-      actions: [{ name: "Save Settings", route: "save-fullfillment-setting" }]
+      name: 'Fullfillment Settings',
+      tooltipMessage: 'Fullfillment Settings',
+      route: 'fullfillment-settings',
+      actions: [{ name: 'Save Settings', route: 'save-fullfillment-setting' }]
     },
     {
-      name: "Suborder Release Queue",
-      tooltipMessage: "Suborder Release Queue",
-      route: "suborder-release-queue",
+      name: 'Suborder Release Queue',
+      tooltipMessage: 'Suborder Release Queue',
+      route: 'suborder-release-queue',
       actions: []
     },
     {
-      name: "Order Confirmation Queue",
-      tooltipMessage: "Order Confirmation Queue",
-      route: "order-confirmation-queue",
+      name: 'Order Confirmation Queue',
+      tooltipMessage: 'Order Confirmation Queue',
+      route: 'order-confirmation-queue',
       actions: []
     },
     {
-      name: "Released Orders",
-      tooltipMessage: "Released Orders",
-      route: "released-orders",
+      name: 'Released Orders',
+      tooltipMessage: 'Released Orders',
+      route: 'released-orders',
       actions: []
     }
   ];
@@ -48,25 +48,25 @@ export class OrdersContainerComponent implements OnInit {
   ngOnInit() {
     const routeArr = this.route.url
       .slice(
-        this.route.url.indexOf("pricing/orders/") + "pricing/orders/".length
+        this.route.url.indexOf('pricing/orders/') + 'pricing/orders/'.length
       )
-      .split("/");
-    this.selectedTab = "Fullfillment Settings";
+      .split('/');
+    this.selectedTab = 'Fullfillment Settings';
     switch (routeArr[0]) {
-      case "fullfillment-settings":
-        this.selectedTab = "Fullfillment Settings";
+      case 'fullfillment-settings':
+        this.selectedTab = 'Fullfillment Settings';
         break;
-      case "suborder-release-queue":
-        this.selectedTab = "Suborder Release Queue";
+      case 'suborder-release-queue':
+        this.selectedTab = 'Suborder Release Queue';
         break;
-      case "order-confirmation-queue":
-        this.selectedTab = "Order Confirmation Queue";
+      case 'order-confirmation-queue':
+        this.selectedTab = 'Order Confirmation Queue';
         break;
-      case "released-orders":
-        this.selectedTab = "Released Orders";
+      case 'released-orders':
+        this.selectedTab = 'Released Orders';
         break;
       default:
-        this.route.navigateByUrl(this.route.url + "/fullfillment-settings");
+        this.route.navigateByUrl(this.route.url + '/fullfillment-settings');
         break;
     }
   }

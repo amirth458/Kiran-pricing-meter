@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 export class ActionService {
   saveProfileSetting: Subject<any> = new Subject();
   saveFullfillmentSetting: Subject<any> = new Subject();
-  constructor() { }
+  constructor() {}
 
   triggerSaveProfileSetting() {
     this.saveProfileSetting.next();

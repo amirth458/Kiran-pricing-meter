@@ -17,15 +17,13 @@ export class TabComponent implements OnInit {
   @ContentChildren(TabItemComponent) tabs: QueryList<TabItemComponent>;
   @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   selectTab(tab: any) {
-    this.tabs.toArray().forEach(tab => tab.active = false);
+    this.tabs.toArray().forEach(tab => (tab.active = false));
     tab.active = true;
-    this.valueChange.emit({ value : tab.value });
+    this.valueChange.emit({ value: tab.value });
   }
-
 }

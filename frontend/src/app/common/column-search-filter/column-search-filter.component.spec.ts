@@ -9,56 +9,69 @@ describe('ColumnSearchFilterComponent', () => {
 
   const searchColumns = [
     {
-      name: 'Equipment', checked: false, query: {
+      name: 'Equipment',
+      checked: false,
+      query: {
         type: null,
-        filter: null,
+        filter: null
       }
     },
     {
-      name: 'Process Profile Name', checked: false,
+      name: 'Process Profile Name',
+      checked: false,
       query: {
         type: null,
-        filter: null,
+        filter: null
       }
     },
     {
-      name: 'Layer Height', checked: false,
+      name: 'Layer Height',
+      checked: false,
       query: {
         type: null,
-        filter: null,
+        filter: null
       }
     },
     {
-      name: 'Infill', checked: false,
+      name: 'Infill',
+      checked: false,
       query: {
         type: null,
-        filter: null,
+        filter: null
       }
     },
     {
-      name: 'Tolerance Base', checked: false,
+      name: 'Tolerance Base',
+      checked: false,
       query: {
         type: null,
-        filter: null,
+        filter: null
       }
-    }];
+    }
+  ];
 
   const filterColumns = [
     {
-      name: 'Equipment', checked: false
+      name: 'Equipment',
+      checked: false
     },
     {
-      name: 'Process Profile Name', checked: false
+      name: 'Process Profile Name',
+      checked: false
     },
     {
-      name: 'Layer Height', checked: false
+      name: 'Layer Height',
+      checked: false
     },
     {
-      name: 'Infill', checked: false
+      name: 'Infill',
+      checked: false
     },
     {
-      name: 'Tolerance Base', checked: false
-    }];
+      name: 'Tolerance Base',
+      checked: false
+    }
+  ];
   const options: Array<string> = [
     'is',
     `isn't`,
@@ -66,17 +79,15 @@ describe('ColumnSearchFilterComponent', () => {
     'starts with',
     'ends with',
     'is empty',
-    'is not empty',
+    'is not empty'
   ];
   const type: Array<string> = ['search', 'filter'];
-
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ColumnSearchFilterComponent],
       imports: [FormsModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -89,8 +100,6 @@ describe('ColumnSearchFilterComponent', () => {
     component.type = type;
 
     fixture.detectChanges();
-
-
   });
 
   it('should create', () => {

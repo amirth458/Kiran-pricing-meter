@@ -6,7 +6,7 @@ export interface Pageable<T> {
   totalPages: number;
   totalElements: number;
   first: boolean;
-  sort: { sorted: boolean, unsorted: boolean, empty: boolean };
+  sort: { sorted: boolean; unsorted: boolean; empty: boolean };
   size: number;
   numberOfElements: number;
   empty: boolean;

@@ -3,9 +3,9 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent
-} from "@angular/common/http";
-import { Observable } from "rxjs";
-import { Injectable } from "@angular/core";
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const localAuthInfo = localStorage.getItem("admin-auth"); // you probably want to store it in localStorage or something
+    const localAuthInfo = localStorage.getItem('admin-auth'); // you probably want to store it in localStorage or something
 
     if (!localAuthInfo) {
       return next.handle(req);
@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = JSON.parse(localAuthInfo);
     const req1 = req.clone({
       headers: req.headers.set(
-        "Authorization",
+        'Authorization',
         `${token.tokenType} ${token.accessToken}`
       )
     });

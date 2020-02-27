@@ -10,5 +10,5 @@ export class TabItemComponent {
   @Input() active = false;
   @Input() value: any;
 
-  constructor() { }
+  constructor() {}
 }

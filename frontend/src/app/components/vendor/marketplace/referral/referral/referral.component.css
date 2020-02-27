@@ -33,7 +33,7 @@
 .ag-grid-dropdown-divider {
   height: 0;
   overflow: hidden;
-  border-top: 1px solid #e9ecef
+  border-top: 1px solid #e9ecef;
 }
 .dropdown-item {
   color: white !important;

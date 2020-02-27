@@ -8,9 +8,8 @@ describe('SuborderReleaseQueueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SuborderReleaseQueueComponent ]
-    })
-    .compileComponents();
+      declarations: [SuborderReleaseQueueComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,7 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminVendorDetailsVendorComponent } from './vendor-details-vendor.component';
-import { FormsModule, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BasicDetailsComponent', () => {
@@ -14,11 +19,8 @@ describe('BasicDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AdminVendorDetailsVendorComponent],
       imports: [FormsModule, HttpClientTestingModule, ReactiveFormsModule],
-      providers: [
-        { provide: FormBuilder, useValue: formBuilder }
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: FormBuilder, useValue: formBuilder }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,7 +38,10 @@ describe('BasicDetailsComponent', () => {
       country: [null, Validators.required],
       street1: [null, Validators.required],
       street2: [null, Validators.required],
-      zipCode: [null, [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]],
+      zipCode: [
+        null,
+        [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]
+      ],
       confidentiality: null,
       vendorCertificates: null
     });

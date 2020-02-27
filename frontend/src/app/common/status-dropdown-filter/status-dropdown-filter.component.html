@@ -1,7 +1,28 @@
 <div class="menu ag-grid-dropdown">
-  <div (click)="statusChange(0)" class="dropdown-item" [ngClass]="{'active': status===0}" href="#">All</div>
+  <div
+    (click)="statusChange(0)"
+    class="dropdown-item"
+    [ngClass]="{ active: status === 0 }"
+    href="#"
+  >
+    All
+  </div>
   <div class="ag-grid-dropdown-divider"></div>
-  <div (click)="statusChange(1)" class="dropdown-item" [ngClass]="{'active': status===1}" href="#">Responded</div>
+  <div
+    (click)="statusChange(1)"
+    class="dropdown-item"
+    [ngClass]="{ active: status === 1 }"
+    href="#"
+  >
+    Responded
+  </div>
   <div class="ag-grid-dropdown-divider"></div>
-  <div (click)="statusChange(2)" class="dropdown-item" [ngClass]="{'active': status===2}" href="#">Not Responded</div>
+  <div
+    (click)="statusChange(2)"
+    class="dropdown-item"
+    [ngClass]="{ active: status === 2 }"
+    href="#"
+  >
+    Not Responded
+  </div>
 </div>

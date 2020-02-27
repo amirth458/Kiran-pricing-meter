@@ -8,7 +8,6 @@
   margin-bottom: 20px;
 }
 
-
 ul {
   height: 50px;
   list-style: none;
@@ -26,7 +25,7 @@ ul li {
   padding-left: 10px;
   margin-right: 47px;
   height: 100%;
-  border-left: 6px solid rgba(9, 40, 70, .36);
+  border-left: 6px solid rgba(9, 40, 70, 0.36);
   user-select: none;
 }
 
@@ -51,7 +50,6 @@ ul li .name:hover {
   margin-top: -8px;
 }
 
-
 .action-button {
   width: 10%;
 }
@@ -65,24 +63,23 @@ ul li .name:hover {
   margin-left: 10px;
 }
 
-
-@media(max-width: 1200px) {
+@media (max-width: 1200px) {
   ul li {
     font-size: 15px;
   }
 
   .action-button button {
-    font-size: 13px
+    font-size: 13px;
   }
 }
 
-@media(max-width: 1050px) {
+@media (max-width: 1050px) {
   ul li {
     margin-right: 28px;
   }
 }
 
-@media(max-width: 992px) {
+@media (max-width: 992px) {
   ul li {
     display: block;
   }
@@ -102,7 +99,7 @@ ul li .name:hover {
     height: 50px;
     display: flex;
     justify-content: flex-start;
-    font-size: 14px
+    font-size: 14px;
   }
 
   .action-button {
@@ -111,7 +108,7 @@ ul li .name:hover {
 
   .action-button button {
     font-size: 13px;
-    padding: 9px 12px
+    padding: 9px 12px;
   }
 }
 
@@ -119,16 +116,14 @@ ul li .name:hover {
   .wrapper {
     padding: 0px 20px;
   }
-
 }
 
 @media (max-width: 450px) {
   .action-button button {
-    font-size: 10px
+    font-size: 10px;
   }
 
   ul li {
     font-size: 13px;
   }
-
 }

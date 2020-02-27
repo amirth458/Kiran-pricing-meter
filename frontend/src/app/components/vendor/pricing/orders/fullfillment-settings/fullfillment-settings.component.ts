@@ -1,16 +1,16 @@
-import { OrdersService } from "./../../../../../service/orders.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
-import { ActionService } from "src/app/service/action.service";
-import { catchError } from "rxjs/operators";
-import { HttpErrorResponse } from "@angular/common/http";
-import { ToastrService } from "ngx-toastr";
-import { throwError } from "rxjs";
+import { OrdersService } from './../../../../../service/orders.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActionService } from 'src/app/service/action.service';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { throwError } from 'rxjs';
 
 @Component({
-  selector: "app-fullfillment-settings",
-  templateUrl: "./fullfillment-settings.component.html",
-  styleUrls: ["./fullfillment-settings.component.css"]
+  selector: 'app-fullfillment-settings',
+  templateUrl: './fullfillment-settings.component.html',
+  styleUrls: ['./fullfillment-settings.component.css']
 })
 export class FullfillmentSettingsComponent implements OnInit {
   detailForm: FormGroup = this.fb.group({
@@ -26,13 +26,13 @@ export class FullfillmentSettingsComponent implements OnInit {
   cutOff = [
     {
       id: 1,
-      name: "ITAR compliant programs",
-      description: "ITAR compliant programs"
+      name: 'ITAR compliant programs',
+      description: 'ITAR compliant programs'
     },
     {
       id: 2,
-      name: "No Of Matched Supplier",
-      description: "No Of Matched Supplier"
+      name: 'No Of Matched Supplier',
+      description: 'No Of Matched Supplier'
     }
   ];
   selectedCutOff = 0;
@@ -60,15 +60,15 @@ export class FullfillmentSettingsComponent implements OnInit {
       .setFullfillmentSetting(this.detailForm.value)
       .pipe(catchError(e => this.handleSaveError(e)))
       .subscribe(v => {
-        this.toastrService.success("Setting Saved Succesfully.");
+        this.toastrService.success('Setting Saved Succesfully.');
         this.detailForm.setValue(v);
       });
   }
 
   handleSaveError(error: HttpErrorResponse) {
-    const message = error.error.message || "Save Failed.";
+    const message = error.error.message || 'Save Failed.';
     this.toastrService.error(`${message} Please contact your admin`);
-    return throwError("Error");
+    return throwError('Error');
   }
 
   setCutOff(newValue: number) {

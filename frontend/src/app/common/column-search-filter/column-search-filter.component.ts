@@ -3,43 +3,44 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-column-search-filter',
   templateUrl: './column-search-filter.component.html',
-  styleUrls: ['./column-search-filter.component.css'],
+  styleUrls: ['./column-search-filter.component.css']
 })
 export class ColumnSearchFilterComponent implements OnInit {
-
   @Input('height') height: string;
   @Input('width') width: string;
 
-  @Output() public searchColumnsChange: EventEmitter<Array<{
-    name: string,
-    checked: boolean,
-    query: {
-      type: string,
-      filter: string
-    }
-  }>> = new EventEmitter();
-  @Output() public filterColumnsChange: EventEmitter<Array<
-    {
-      name: string,
-      checked: boolean,
-    }>> = new EventEmitter();
+  @Output() public searchColumnsChange: EventEmitter<
+    Array<{
+      name: string;
+      checked: boolean;
+      query: {
+        type: string;
+        filter: string;
+      };
+    }>
+  > = new EventEmitter();
+  @Output() public filterColumnsChange: EventEmitter<
+    Array<{
+      name: string;
+      checked: boolean;
+    }>
+  > = new EventEmitter();
 
   @Input('options') options: Array<string>;
   @Input('searchColumns') searchColumns: Array<{
-    name: string,
-    field: string,
-    checked: boolean,
+    name: string;
+    field: string;
+    checked: boolean;
     query: {
-      type: string,
-      filter: string
-    }
+      type: string;
+      filter: string;
+    };
   }>;
-  @Input('filterColumns') filterColumns: Array<
-    {
-      name: string,
-      field: string,
-      checked: boolean,
-    }>;
+  @Input('filterColumns') filterColumns: Array<{
+    name: string;
+    field: string;
+    checked: boolean;
+  }>;
   @Input('type') type: Array<string>;
 
   // Visual
@@ -51,7 +52,7 @@ export class ColumnSearchFilterComponent implements OnInit {
   // Storage
   searchColumnsStorage;
   filterColumnsStorage;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.generateSchema();
@@ -80,12 +81,12 @@ export class ColumnSearchFilterComponent implements OnInit {
       });
     });
     this.filterColumnsStorage = this.filterColumnsClone;
-
   }
 
   toggleCheck(index, type) {
     if (type === 'search') {
-      this.searchColumnsClone[index].checked = !this.searchColumnsClone[index].checked;
+      this.searchColumnsClone[index].checked = !this.searchColumnsClone[index]
+        .checked;
       this.searchColumns.map((item, i) => {
         if (item.field === this.searchColumnsClone[index].field) {
           this.searchColumns[i].checked = !this.searchColumns[i].checked;
@@ -93,14 +94,14 @@ export class ColumnSearchFilterComponent implements OnInit {
       });
       this.searchColumnsChange.emit(this.searchColumns);
     } else {
-      this.filterColumnsClone[index].checked = !this.filterColumnsClone[index].checked;
+      this.filterColumnsClone[index].checked = !this.filterColumnsClone[index]
+        .checked;
       this.filterColumns.map((item, i) => {
         if (item.field === this.filterColumnsClone[index].field) {
           this.filterColumns[i].checked = !this.filterColumns[i].checked;
         }
       });
       this.filterColumnsChange.emit(this.filterColumns);
-
     }
   }
 
@@ -111,11 +112,19 @@ export class ColumnSearchFilterComponent implements OnInit {
   search(event, type) {
     const query = event.target.value;
     if (type === 'search') {
-      this.searchColumnsClone =
-        this.searchColumnsStorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
+      this.searchColumnsClone = this.searchColumnsStorage.filter(x =>
+        x.name
+          .toString()
+          .toLowerCase()
+          .startsWith(query.toString().toLowerCase())
+      );
     } else {
-      this.filterColumnsClone =
-        this.filterColumnsStorage.filter(x => x.name.toString().toLowerCase().startsWith(query.toString().toLowerCase()));
+      this.filterColumnsClone = this.filterColumnsStorage.filter(x =>
+        x.name
+          .toString()
+          .toLowerCase()
+          .startsWith(query.toString().toLowerCase())
+      );
     }
   }
 }

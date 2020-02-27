@@ -11,37 +11,54 @@ import { MetaData } from '../model/metadata.model';
   providedIn: 'root'
 })
 export class BillingService {
-
-  constructor(public http: HttpClient) { }
-
+  constructor(public http: HttpClient) {}
 
   getPaymentStatusType(): Observable<MetaData[]> {
-    return this.http.get<any>(environment.apiBaseUrl + '/admin/metadata/payment_status_type').pipe(map(res => res.metadataList));
+    return this.http
+      .get<any>(environment.apiBaseUrl + '/admin/metadata/payment_status_type')
+      .pipe(map(res => res.metadataList));
   }
 
   getPaymentInfo(orderId: string): Observable<PaymentDetails> {
-    return this.http.get<PaymentDetails>(environment.apiBaseUrl + '/admin/billing/orders/' + orderId);
+    return this.http.get<PaymentDetails>(
+      environment.apiBaseUrl + '/admin/billing/orders/' + orderId
+    );
   }
 
   addNote(note: string, orderId: number): Observable<any> {
-    return this.http.post<any>(`${environment.apiBaseUrl}/admin/purchase-order/orders/${orderId}/notes`, { note });
+    return this.http.post<any>(
+      `${environment.apiBaseUrl}/admin/purchase-order/orders/${orderId}/notes`,
+      { note }
+    );
   }
 
-
-  getPaymentList(body: Payment, filter: FilterOption = null): Observable<Payment[]> {
+  getPaymentList(
+    body: Payment,
+    filter: FilterOption = null
+  ): Observable<Payment[]> {
     const params = new HttpParams()
-      .set("page", filter.page.toString())
-      .set("size", filter.size.toString())
-      .set("sort", filter.sort);
+      .set('page', filter.page.toString())
+      .set('size', filter.size.toString())
+      .set('sort', filter.sort);
 
-    return this.http.post<Payment[]>(`${environment.apiBaseUrl}/admin/billing/search`, body, { params });
+    return this.http.post<Payment[]>(
+      `${environment.apiBaseUrl}/admin/billing/search`,
+      body,
+      { params }
+    );
   }
 
   approveOrder(body) {
-    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/approve`, body);
+    return this.http.put<any>(
+      `${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/approve`,
+      body
+    );
   }
 
   rejectOrder(body) {
-    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/reject`, body);
+    return this.http.put<any>(
+      `${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/reject`,
+      body
+    );
   }
 }

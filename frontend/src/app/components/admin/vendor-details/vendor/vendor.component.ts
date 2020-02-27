@@ -4,7 +4,11 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import * as internationalCode from '../../../../../assets/static/internationalCode';
 import { VendorService } from '../../../../service/vendor.service';
-import { Vendor, VendorMetaData, Country } from '../../../../model/vendor.model';
+import {
+  Vendor,
+  VendorMetaData,
+  Country
+} from '../../../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../../../mockData/vendor';
 import { UserService } from '../../../../service/user.service';
 import { Router } from '@angular/router';
@@ -16,7 +20,6 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './vendor.component.html',
   styleUrls: ['./vendor.component.css']
 })
-
 export class AdminVendorDetailsVendorComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
@@ -24,10 +27,8 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
     private vendorService: VendorService,
     private userService: UserService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService,
-  ) {
-
-  }
+    private toastr: ToastrService
+  ) {}
   @ViewChild('modal') modal;
   internationalCode = internationalCode;
   vendorTypes: VendorMetaData[] = [];
@@ -49,16 +50,16 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
     primaryContactFirstName: [null, Validators.required],
     primaryContactLastName: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
-    phone: [null, [Validators.required ]],
-    vendorType: [{value: '0', disabled: true}, Validators.required],
-    vendorIndustry: [{value: '0', disabled: true}],
+    phone: [null, [Validators.required]],
+    vendorType: [{ value: '0', disabled: true }, Validators.required],
+    vendorIndustry: [{ value: '0', disabled: true }],
     city: [null, Validators.required],
     state: [null, Validators.required],
-    country: [{value: '0', disabled: true}, Validators.required],
+    country: [{ value: '0', disabled: true }, Validators.required],
     street1: [null, Validators.required],
     street2: [null],
     zipCode: [null, [Validators.required, Validators.pattern(/^[0-9\s]{5}$/)]],
-    confidentiality: {value: '0', disabled: true},
+    confidentiality: { value: '0', disabled: true },
     vendorCertificates: null
   });
 
@@ -72,7 +73,10 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
       const userId = this.router.url.split('/')[3];
       const res = await this.userService.getUserDetails(userId).toPromise();
       if (res.vendor) {
-        this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
+        this.primaryContactName =
+          res.vendor.primaryContactFirstName +
+          ' ' +
+          res.vendor.primaryContactLastName;
         const vendor = {
           id: res.vendor.id,
           name: res.vendor.name,
@@ -115,16 +119,24 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
 
   async getVendorMetaDatas() {
     try {
-      this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
-      this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
-      this.vendorIndustries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorIndustry).toPromise();
-      this.certifications = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorCertificate).toPromise();
-      this.confidentialities = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Confidentiality).toPromise();
+      this.vendorTypes = await this.vendorService
+        .getVendorMetaData(VendorMetaDataTypes.VendorType)
+        .toPromise();
+      this.countries = await this.vendorService
+        .getVendorMetaData(VendorMetaDataTypes.Country)
+        .toPromise();
+      this.vendorIndustries = await this.vendorService
+        .getVendorMetaData(VendorMetaDataTypes.VendorIndustry)
+        .toPromise();
+      this.certifications = await this.vendorService
+        .getVendorMetaData(VendorMetaDataTypes.VendorCertificate)
+        .toPromise();
+      this.confidentialities = await this.vendorService
+        .getVendorMetaData(VendorMetaDataTypes.Confidentiality)
+        .toPromise();
     } catch (e) {
-
       console.log(e);
     } finally {
-
     }
   }
 
@@ -154,7 +166,10 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
 
   showRequired(field: string, fieldType: number): boolean {
     if (fieldType === 1) {
-      return this.detailForm.value[field] === '' || this.detailForm.value[field] === null;
+      return (
+        this.detailForm.value[field] === '' ||
+        this.detailForm.value[field] === null
+      );
     } else if (fieldType === 2) {
       return Number(this.detailForm.value[field]) === 0;
     }
@@ -172,7 +187,9 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
       await this.userService.approveUser(this.vendorId).toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
+      this.toastr.error(
+        'We are sorry, Vendor is not approved. Please try again later.'
+      );
     } finally {
       this.spinner.hide();
     }
@@ -189,10 +206,14 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
     this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
+      await this.userService
+        .declineUser(this.vendorId, this.declineComments)
+        .toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
+      this.toastr.error(
+        'We are sorry, Vendor is not declined. Please try again later.'
+      );
     } finally {
       this.spinner.hide();
     }
