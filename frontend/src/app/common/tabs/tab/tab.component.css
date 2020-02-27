@@ -29,7 +29,7 @@
   margin-top: -1px;
 }
 :host .nav-tabs .nav-item .nav-link.active {
-  border-top: 4px solid #74BF09;
+  border-top: 4px solid #74bf09;
   color: var(--theme-light-green);
   margin-top: -1px;
 }

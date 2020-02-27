@@ -2,12 +2,12 @@ import {
   PartDimensionValue,
   PartCustomParameter,
   Address
-} from "./../model/part.model";
-import { Part, PartDimension } from "../model/part.model";
+} from './../model/part.model';
+import { Part, PartDimension } from '../model/part.model';
 
 export class Util {
-  static dateFormat = "MM/dd/yyyy";
-  static measurementUnit = "mm";
+  static dateFormat = 'MM/dd/yyyy';
+  static measurementUnit = 'mm';
 
   static getPartDimension(dimension: PartDimension, measurements: any = []) {
     const arr = [];
@@ -32,7 +32,7 @@ export class Util {
       );
       arr.push(`${dimension.z.value} ${measurement}`);
     }
-    return arr.join(" x ");
+    return arr.join(' x ');
   }
 
   static getPartDimensionValue(
@@ -46,19 +46,18 @@ export class Util {
       );
       return `${dimensionValue.value} ${measurement}`;
     }
-    return "";
+    return '';
   }
 
   static getBoundingBox(dimension: PartDimension, measurements: any = []) {
     if (
-      dimension && (
+      dimension &&
       dimension.x &&
       dimension.x.value &&
       dimension.y &&
       dimension.y.value &&
       dimension.z &&
       dimension.z.value
-      )
     ) {
       const measurement = Util.findMeasurementUnit(
         measurements,
@@ -70,20 +69,20 @@ export class Util {
         dimension.z.value
       ).toFixed(2)} cubic ${measurement}`;
     }
-    return "";
+    return '';
   }
 
   static shippingAddressInfo(address: Address) {
     if (!address) {
-      return "-";
+      return '-';
     }
     return [
-      address.street1 || address.street2 || "",
-      `${address.city || ""} ${address.zipcode || ""}`,
+      address.street1 || address.street2 || '',
+      `${address.city || ''} ${address.zipcode || ''}`,
       address.country.name
     ]
-      .filter(i => i.toString().trim() !== "")
-      .join(", ");
+      .filter(i => i.toString().trim() !== '')
+      .join(', ');
   }
 
   static showCustomPrameter(

@@ -1,15 +1,15 @@
 import { VendorMetaData } from './vendor.model';
 
 export class Preference {
-    id: string;
-    vendorId: string;
-    coreCompetencies: Array<string>;
-    adjacentGrowth: Array<string>;
-    rfqToExclude: Array<string>;
-    companiesToExclude: Array<string>;
-    createdBy: string;
-    createdDate: string;
-    updatedDate: string;
+  id: string;
+  vendorId: string;
+  coreCompetencies: Array<string>;
+  adjacentGrowth: Array<string>;
+  rfqToExclude: Array<string>;
+  companiesToExclude: Array<string>;
+  createdBy: string;
+  createdDate: string;
+  updatedDate: string;
 }
 
 export interface VendorPreference {

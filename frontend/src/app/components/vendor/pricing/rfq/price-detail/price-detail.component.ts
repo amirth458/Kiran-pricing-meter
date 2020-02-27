@@ -1,23 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject } from "rxjs";
-import { NgxSpinnerService } from "ngx-spinner";
+import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import { CustomerData } from "src/app/model/user.model";
-import { Part } from "src/app/model/part.model";
+import { CustomerData } from 'src/app/model/user.model';
+import { Part } from 'src/app/model/part.model';
 import {
   RfqData,
   PartQuote,
   PartDimension
-} from "../../../../../model/part.model";
-import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
-import { UserService } from "src/app/service/user.service";
+} from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
-  selector: "app-price-detail",
-  templateUrl: "./price-detail.component.html",
-  styleUrls: ["./price-detail.component.css"]
+  selector: 'app-price-detail',
+  templateUrl: './price-detail.component.html',
+  styleUrls: ['./price-detail.component.css']
 })
 export class PriceDetailComponent implements OnInit {
   public selectedId: number;
@@ -75,21 +75,21 @@ export class PriceDetailComponent implements OnInit {
         id: 0,
         title:
           this.part && this.part.manualPricingAllowed
-            ? "Manual-Price View"
-            : "Auto-Price View"
+            ? 'Manual-Price View'
+            : 'Auto-Price View'
       },
       {
         id: 1,
-        title: "Part Information"
+        title: 'Part Information'
       },
       {
         id: 2,
-        title: "Process Profile"
+        title: 'Process Profile'
       },
       this.part &&
         !this.part.manualPricingAllowed && {
           id: 3,
-          title: "Pricing Profile"
+          title: 'Pricing Profile'
         }
     ];
   }

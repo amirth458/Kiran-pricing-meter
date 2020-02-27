@@ -1,15 +1,13 @@
-
 .page-body.expanded {
-    padding-left: 75px;
+  padding-left: 75px;
+}
+
+.page-body.collapsed {
+  padding-left: 0px;
+}
+
+@media (max-width: 768px) {
+  .page-body.expanded {
+    padding-left: 65px;
   }
-  
-  .page-body.collapsed {
-    padding-left: 0px;
-  }
-  
-  @media(max-width: 768px) {
-    .page-body.expanded {
-      padding-left: 65px;
-    }
-  }
-  
+}

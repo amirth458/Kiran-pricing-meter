@@ -51,7 +51,7 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false,
         cellClass: 'text-center',
-        tooltipField: 'rfq',
+        tooltipField: 'rfq'
       },
       {
         headerName: 'Part',
@@ -60,7 +60,7 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false,
         cellClass: 'text-center',
-        tooltipField: 'part',
+        tooltipField: 'part'
       },
       {
         headerName: 'File Name',
@@ -69,7 +69,7 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false,
         cellRenderer: 'fileViewRenderer',
-        tooltipField: 'fileName',
+        tooltipField: 'fileName'
       },
       {
         headerName: 'Quantity',
@@ -78,7 +78,7 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false,
         cellClass: 'text-center',
-        tooltipField: 'quantity',
+        tooltipField: 'quantity'
       },
       {
         headerName: 'Material',
@@ -87,7 +87,7 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: dt => (dt.value || []).join(' , '),
-        tooltipField: 'materialPropertyValues',
+        tooltipField: 'materialPropertyValues'
       },
       {
         headerName: 'Technology',
@@ -96,7 +96,7 @@ export class RecentAutoPricesComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: dt => (dt.value || []).join(' , '),
-        tooltipField: 'equipmentPropertyValues',
+        tooltipField: 'equipmentPropertyValues'
       },
       // {
       //   headerName: 'Roughness',
@@ -122,8 +122,8 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         cellClass: 'text-center',
-        tooltipField: 'price',
-      }      
+        tooltipField: 'price'
+      }
     ];
 
     this.gridOptions = {

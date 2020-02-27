@@ -10,13 +10,14 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked {
+export class AdminVendorDetailsUserComponent
+  implements OnInit, AfterViewChecked {
   @ViewChild('modal') modal;
   form: FormGroup = this.fb.group({
     email: [null, Validators.required],
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
-    phone: [null, Validators.required],
+    phone: [null, Validators.required]
   });
   status = 0;
   vendorId = 0;
@@ -27,8 +28,8 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
     private router: Router,
     private userService: UserService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService,
-  ) { }
+    private toastr: ToastrService
+  ) {}
 
   async ngOnInit() {
     try {
@@ -38,12 +39,15 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
         email: res.email,
         firstName: res.firstName,
         lastName: res.lastName,
-        phone: res.phoneNo,
+        phone: res.phoneNo
       };
       this.initUser(user);
       if (res.vendor) {
         this.vendorId = res.vendor.id;
-        this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
+        this.primaryContactName =
+          res.vendor.primaryContactFirstName +
+          ' ' +
+          res.vendor.primaryContactLastName;
         if (res.vendor.approved) {
           this.status = 1; // approved
         } else {
@@ -81,7 +85,10 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
   }
 
   samePassword() {
-    if (this.form.value.passwordConfirm !== '' && this.form.value.passwordConfirm !== null) {
+    if (
+      this.form.value.passwordConfirm !== '' &&
+      this.form.value.passwordConfirm !== null
+    ) {
       if (this.form.value.password !== this.form.value.passwordConfirm) {
         return true;
       } else {
@@ -98,7 +105,9 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
       await this.userService.approveUser(this.vendorId).toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
+      this.toastr.error(
+        'We are sorry, Vendor is not approved. Please try again later.'
+      );
     } finally {
       this.spinner.hide();
     }
@@ -115,10 +124,14 @@ export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked
     this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
+      await this.userService
+        .declineUser(this.vendorId, this.declineComments)
+        .toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
+      this.toastr.error(
+        'We are sorry, Vendor is not declined. Please try again later.'
+      );
     } finally {
       this.spinner.hide();
     }

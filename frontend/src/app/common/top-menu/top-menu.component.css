@@ -7,7 +7,7 @@
 
 .navbar .logo {
   margin: 1px 0px;
-  margin-left: 55px
+  margin-left: 55px;
 }
 
 .navbar .logo span {
@@ -47,7 +47,7 @@
 
 .profile .name:hover,
 .profile i:hover {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .profile a {
@@ -88,7 +88,7 @@
   /* color: var(--theme-main-blue); */
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .navbar-nav.account-control ul.navbar-nav {
     flex-direction: row;
     justify-content: space-around;

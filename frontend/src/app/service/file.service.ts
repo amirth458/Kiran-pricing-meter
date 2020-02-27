@@ -10,10 +10,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-
 export class FileService {
-
-  constructor(public http: HttpClient, public route: Router) { }
+  constructor(public http: HttpClient, public route: Router) {}
 
   getFileNameFromPath(filePath: string): string {
     const arrFilePath = filePath.split('/');
@@ -27,7 +25,11 @@ export class FileService {
     return filePath.split(fileName)[0] + fileName;
   }
 
-  fileUpload(userId: number, vendorId: number, certFile: any): Observable < UploadedCertFile > {
+  fileUpload(
+    userId: number,
+    vendorId: number,
+    certFile: any
+  ): Observable<UploadedCertFile> {
     const url = `${environment.apiBaseUrl}/user/${userId}/vendor/${vendorId}/file`;
     const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({

@@ -1,8 +1,11 @@
 <div class="wrapper">
   <ul>
-    <li *ngFor="let menu of submenus" [class.active]="menu.route == selectedMenu">
-      <span  (click)="setSelectedRoute(menu.route)">
-        {{menu.name}}
+    <li
+      *ngFor="let menu of submenus"
+      [class.active]="menu.route == selectedMenu"
+    >
+      <span (click)="setSelectedRoute(menu.route)">
+        {{ menu.name }}
       </span>
     </li>
   </ul>

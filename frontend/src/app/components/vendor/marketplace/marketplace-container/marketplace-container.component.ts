@@ -8,18 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./marketplace-container.component.css']
 })
 export class MarketplaceContainerComponent implements OnInit {
-
   baseURL = '';
 
   sidemenuClosed: boolean;
 
-  constructor(
-    private route: Router,
-  ) {
+  constructor(private route: Router) {
     this.baseURL = this.route.url.split('/')[1];
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

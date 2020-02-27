@@ -8,9 +8,8 @@ describe('OrderInformationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrderInformationComponent ]
-    })
-    .compileComponents();
+      declarations: [OrderInformationComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,11 +1,13 @@
 <div class="wrapper shadow">
   <div class="form-row">
-
     <div class="table theme-table">
-
       <div class="page-size">
         Page Size:
-        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+        <select
+          id="page-size"
+          [(ngModel)]="pageSize"
+          (ngModelChange)="pageSizeChanged($event)"
+        >
           <option selected value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
@@ -14,34 +16,75 @@
         </select>
       </div>
 
-      <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-balham" [rowData]="rowData"
-        [gridOptions]="gridOptions">
+      <ag-grid-angular
+        style="width: 100%; height: 300px"
+        class="ag-theme-balham"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+      >
       </ag-grid-angular>
     </div>
   </div>
-  
+
   <div class="form-row">
-    <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
-        <button type="button" (click) = "approveUser()" *ngIf="status === 3 || status === 2" class="btn btn-approve theme">Approve</button>
-        <button type="button" *ngIf="status === 1" class="btn btn-approved theme">Approved</button>
-        <button type="button" (click) = "onDeclineUser($event)" *ngIf="status === 3 || status === 1" class="btn btn-decline theme">Decline</button>
-        <button type="button" *ngIf="status === 2" class="btn btn-declined theme">Declined</button>
+    <div
+      class="form-group col-md-12"
+      style="justify-content: center; align-items: flex-end; display: flex;"
+    >
+      <button
+        type="button"
+        (click)="approveUser()"
+        *ngIf="status === 3 || status === 2"
+        class="btn btn-approve theme"
+      >
+        Approve
+      </button>
+      <button type="button" *ngIf="status === 1" class="btn btn-approved theme">
+        Approved
+      </button>
+      <button
+        type="button"
+        (click)="onDeclineUser($event)"
+        *ngIf="status === 3 || status === 1"
+        class="btn btn-decline theme"
+      >
+        Decline
+      </button>
+      <button type="button" *ngIf="status === 2" class="btn btn-declined theme">
+        Declined
+      </button>
     </div>
   </div>
 </div>
 
 <!-- Button trigger modal -->
-<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#declineModal">
-</button>
+<button
+  #modal
+  type="button"
+  class="btn btn-primary d-none"
+  data-toggle="modal"
+  data-target="#declineModal"
+></button>
 
 <!-- Modal -->
-<div class="modal fade theme" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade theme"
+  id="declineModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="declineModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="declineModalLabel">Decline Comment</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -49,17 +92,31 @@
         <div class="form-row">
           <div class="form-group theme col-md-12">
             <label>Primary Contact Name</label>
-            <input class="form-control" readonly [(ngModel)]="primaryContactName" placeholder="Primary Contact Name" />
+            <input
+              class="form-control"
+              readonly
+              [(ngModel)]="primaryContactName"
+              placeholder="Primary Contact Name"
+            />
           </div>
           <div class="form-group theme col-md-12">
             <label>Comment</label>
-            <textarea required class="form-control" [(ngModel)]="declineComments" placeholder="Please describe here message to decline."></textarea>
+            <textarea
+              required
+              class="form-control"
+              [(ngModel)]="declineComments"
+              placeholder="Please describe here message to decline."
+            ></textarea>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" (click)="declineUser()">Decline</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-danger" (click)="declineUser()">
+          Decline
+        </button>
       </div>
     </div>
   </div>

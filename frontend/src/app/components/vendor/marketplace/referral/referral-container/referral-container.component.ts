@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from "@angular/router";
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-referral-container',
@@ -8,15 +8,15 @@ import { NavigationEnd, Router } from "@angular/router";
 })
 export class ReferralContainerComponent implements OnInit {
   sidemenuClosed: boolean;
-  
+
   actionbarMenu: Array<{
-    name: string,
-    tooltipMessage: string,
-    route: string,
+    name: string;
+    tooltipMessage: string;
+    route: string;
     actions: Array<{
-      name: string,
-      route: string
-    }>
+      name: string;
+      route: string;
+    }>;
   }> = [
     {
       name: 'Referral',
@@ -27,9 +27,7 @@ export class ReferralContainerComponent implements OnInit {
   ];
   selectedTab = this.actionbarMenu[0].name;
 
-  constructor(public route: Router) {
-  }
+  constructor(public route: Router) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

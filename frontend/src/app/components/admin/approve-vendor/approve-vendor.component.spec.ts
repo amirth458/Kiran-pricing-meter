@@ -14,11 +14,7 @@ describe('ApproveVendorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ApproveVendorComponent, ColumnSearchFilterComponent],
-      imports: [
-        AgGridModule.withComponents([]),
-        FormsModule,
-        HttpClientModule
-      ],
+      imports: [AgGridModule.withComponents([]), FormsModule, HttpClientModule],
       providers: [
         {
           provide: Router,
@@ -27,8 +23,7 @@ describe('ApproveVendorComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

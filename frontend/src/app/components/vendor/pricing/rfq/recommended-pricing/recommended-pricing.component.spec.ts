@@ -8,9 +8,8 @@ describe('RecommendedPricingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RecommendedPricingComponent ]
-    })
-    .compileComponents();
+      declarations: [RecommendedPricingComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

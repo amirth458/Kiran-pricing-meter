@@ -4,14 +4,13 @@ import { IHeaderAngularComp } from 'ag-grid-angular';
 @Component({
   selector: 'app-dropdown-header-renderer',
   styleUrls: ['./dropdown-header-renderer.component.css'],
-  templateUrl: './dropdown-header-renderer.component.html',
+  templateUrl: './dropdown-header-renderer.component.html'
 })
 export class DropdownHeaderRendererComponent implements IHeaderAngularComp {
-
   params;
   options = [];
   value = '';
-  constructor() { }
+  constructor() {}
 
   agInit(params): void {
     this.params = params;

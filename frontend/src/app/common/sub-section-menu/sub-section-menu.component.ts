@@ -7,10 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./sub-section-menu.component.css']
 })
 export class SubSectionMenuComponent implements OnInit {
-
-  @Input('submenus') submenus: [{ name: string, route: string }];
+  @Input('submenus') submenus: [{ name: string; route: string }];
   @Input('selectedMenu') selectedMenu: string;
-  constructor(public route: Router) { }
+  constructor(public route: Router) {}
 
   ngOnInit() {
     const urlArray = this.route.url.split('/');

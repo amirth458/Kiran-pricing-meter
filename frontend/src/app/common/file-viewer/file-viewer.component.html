@@ -1,7 +1,7 @@
 <div class="modal-container">
   <div class="modal-header">
     <h5 class="modal-title" id="modal-basic-title">
-      {{partDimension?.name}}
+      {{ partDimension?.name }}
       <span (click)="download()"><img src="assets/image/download.png"/></span>
     </h5>
     <button type="button" class="close" aria-label="Close" (click)="onClose()">
@@ -14,24 +14,34 @@
     <div class="row">
       <div class="col-6">
         <div class="d-flex flex-row">
-          <img default="./assets/image/no-preview.jpg"  class="img-fluid"
-               [src]="partDimension?.thumbnail200Location" />
+          <img
+            default="./assets/image/no-preview.jpg"
+            class="img-fluid"
+            [src]="partDimension?.thumbnail200Location"
+          />
         </div>
       </div>
       <div class="col-6">
-        <p>Part Dimensions: {{getDimension()}}</p>
+        <p>Part Dimensions: {{ getDimension() }}</p>
         <p>
-          <strong>volume - {{partDimension?.volume?.value}}</strong>
-          {{getUnit(partDimension?.volume?.unitId)}}
+          <strong>volume - {{ partDimension?.volume?.value }}</strong>
+          {{ getUnit(partDimension?.volume?.unitId) }}
         </p>
-        <p><strong>Extents- {{partDimension?.x?.value}} *
-          {{partDimension?.y?.value}}*
-          {{partDimension?.z?.value}}</strong>
-          {{getUnit(partDimension?.x?.unitId)}}
+        <p>
+          <strong
+            >Extents- {{ partDimension?.x?.value }} *
+            {{ partDimension?.y?.value }}* {{ partDimension?.z?.value }}</strong
+          >
+          {{ getUnit(partDimension?.x?.unitId) }}
         </p>
-        <p><strong>Bounding box - {{getBoundingBox()}}</strong></p>
-        <p><strong>Surface area - {{partDimension?.surfaceArea?.value}}</strong>
-          {{getUnit(partDimension?.surfaceArea?.unitId)}}
+        <p>
+          <strong>Bounding box - {{ getBoundingBox() }}</strong>
+        </p>
+        <p>
+          <strong
+            >Surface area - {{ partDimension?.surfaceArea?.value }}</strong
+          >
+          {{ getUnit(partDimension?.surfaceArea?.unitId) }}
         </p>
       </div>
     </div>

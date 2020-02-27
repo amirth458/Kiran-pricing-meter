@@ -38,14 +38,13 @@ ul li span:hover {
   cursor: pointer;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .wrapper {
     left: 65px;
-
   }
 
   ul li {
-    font-size: .8rem;
+    font-size: 0.8rem;
     padding-block: 0px 20px;
   }
 }

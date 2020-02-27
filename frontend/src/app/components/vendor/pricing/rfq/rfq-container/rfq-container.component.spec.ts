@@ -8,9 +8,8 @@ describe('RfqContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RfqContainerComponent ]
-    })
-    .compileComponents();
+      declarations: [RfqContainerComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

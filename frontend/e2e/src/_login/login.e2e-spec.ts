@@ -39,32 +39,29 @@ describe('Login Page', () => {
     page.getEmailControl().sendKeys('example@test.com');
     page.getPasswordControl().sendKeys('password');
     const btnSubmit = page.getSubmitButton();
-    btnSubmit.submit().then(
-      () => {
-        expect(page.alertMessage).toBeDefined();
-        expect(page.alertMessage.getText()).toContain('Login credentials is incorrect');
-      }
-    );
+    btnSubmit.submit().then(() => {
+      expect(page.alertMessage).toBeDefined();
+      expect(page.alertMessage.getText()).toContain(
+        'Login credentials is incorrect'
+      );
+    });
   });
 
   it('Form should return error with wrong password', () => {
     page.getEmailControl().sendKeys(Config.email);
     page.getPasswordControl().sendKeys('password');
     const btnSubmit = page.getSubmitButton();
-    btnSubmit.submit().then(
-      () => {
-        expect(page.alertMessage).toBeDefined();
-        expect(page.alertMessage.getText()).toContain('Login credentials is incorrect');
-      }
-    );
+    btnSubmit.submit().then(() => {
+      expect(page.alertMessage).toBeDefined();
+      expect(page.alertMessage.getText()).toContain(
+        'Login credentials is incorrect'
+      );
+    });
   });
 
   it('Form should work with correct credential', () => {
-    page.login().then(
-      () => {
-        expect(browser.getCurrentUrl()).toContain('/profile/vendor/basics');
-      }
-    );
+    page.login().then(() => {
+      expect(browser.getCurrentUrl()).toContain('/profile/vendor/basics');
+    });
   });
-
 });

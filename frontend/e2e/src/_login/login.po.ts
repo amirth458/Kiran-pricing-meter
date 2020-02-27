@@ -2,7 +2,6 @@ import { browser, by, element, ElementFinder } from 'protractor';
 import { Config } from '../config';
 
 export class LoginPage {
-
   url = '/login';
 
   navigateTo() {
@@ -39,5 +38,4 @@ export class LoginPage {
   get formControlError(): ElementFinder {
     return element(by.css('.errorContainer'));
   }
-
 }

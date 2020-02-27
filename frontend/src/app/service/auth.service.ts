@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from "src/environments/environment";
-import { Observable } from "rxjs";
-import { throwError } from "rxjs";
-import { Store, AppTypes, AppFields } from "../store";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
+import { Store, AppTypes, AppFields } from '../store';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthService {
   data: {};
-  url: string = environment.managementBaseUrl + "/auth/signin";
+  url: string = environment.managementBaseUrl + '/auth/signin';
 
   constructor(public http: HttpClient, private store: Store<any>) {}
 
@@ -22,7 +22,7 @@ export class AuthService {
     };
 
     const headers = new HttpHeaders();
-    headers.append("Content-Type", "application/json");
+    headers.append('Content-Type', 'application/json');
 
     const options = {
       headers
@@ -33,19 +33,19 @@ export class AuthService {
   }
 
   setAuthData(data) {
-    localStorage.setItem("admin-auth", JSON.stringify(data));
+    localStorage.setItem('admin-auth', JSON.stringify(data));
   }
 
   getAuthData() {
-    return JSON.parse(localStorage.getItem("admin-auth"));
+    return JSON.parse(localStorage.getItem('admin-auth'));
   }
 
   logout(): any {
-    localStorage.removeItem("admin-auth");
-    localStorage.removeItem("admin-remember_me");
-    localStorage.removeItem("admin-email");
-    localStorage.removeItem("admin-password");
-    localStorage.removeItem("admin-user");
+    localStorage.removeItem('admin-auth');
+    localStorage.removeItem('admin-remember_me');
+    localStorage.removeItem('admin-email');
+    localStorage.removeItem('admin-password');
+    localStorage.removeItem('admin-user');
 
     this.store.dispatch({
       type: AppTypes.UpdateState,
@@ -56,9 +56,9 @@ export class AuthService {
   }
 
   getProfile(): any {
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken
+      Authorization: data.tokenType + ' ' + data.accessToken
     });
 
     const url = `${environment.managementBaseUrl}/auth/user/me`;
@@ -68,9 +68,9 @@ export class AuthService {
   }
 
   getVendor(): any {
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
-      Authorization: data.tokenType + " " + data.accessToken
+      Authorization: data.tokenType + ' ' + data.accessToken
     });
 
     const url = `${environment.managementBaseUrl}/vendors`;
@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    const data = JSON.parse(localStorage.getItem("admin-auth"));
+    const data = JSON.parse(localStorage.getItem('admin-auth'));
     if (data) {
       const expireDate = new Date(data.expiryDate);
       const now = new Date();
@@ -94,7 +94,7 @@ export class AuthService {
 
   errorHandler(error: Response) {
     console.error(error);
-    return throwError(error || "Server Error");
+    return throwError(error || 'Server Error');
   }
 
   loginTest() {

@@ -6,8 +6,15 @@
   padding: 40px;
 }
 
-:host ::ng-deep .bidding-orders .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container,
-:host ::ng-deep .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper{
+:host
+  ::ng-deep
+  .bidding-orders
+  .ag-body-viewport.ag-layout-auto-height
+  .ag-center-cols-container,
+:host
+  ::ng-deep
+  .ag-body-viewport.ag-layout-auto-height
+  .ag-center-cols-clipper {
   min-height: auto !important;
 }
 

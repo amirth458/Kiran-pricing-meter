@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  TemplateRef
+} from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,7 +13,11 @@ import { TemplateRendererComponent } from 'src/app/common/template-renderer/temp
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillingService } from 'src/app/service/billing.service';
-import { PaymentStatusTypes, PaymentType, Payment } from 'src/app/model/billing.model';
+import {
+  PaymentStatusTypes,
+  PaymentType,
+  Payment
+} from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
 
 @Component({
@@ -16,7 +26,6 @@ import { FilterOption } from 'src/app/model/vendor.model';
   styleUrls: ['./waiting-for-approval.component.css']
 })
 export class WaitingForApprovalComponent implements OnInit {
-
   @ViewChild('viewAllInfo') viewAllInfo: TemplateRef<any>;
   @ViewChild('approveRejectAction') approveRejectAction: TemplateRef<any>;
   disableControls = false;
@@ -25,50 +34,69 @@ export class WaitingForApprovalComponent implements OnInit {
 
   searchColumns = [
     {
-      name: 'Customer Name', checked: false, field: 'customerName', query: {
+      name: 'Customer Name',
+      checked: false,
+      field: 'customerName',
+      query: {
         type: '',
-        filter: '',
+        filter: ''
       }
     },
     {
-      name: 'Customer Order ID', checked: false,
-      field: 'orderId', query: {
+      name: 'Customer Order ID',
+      checked: false,
+      field: 'orderId',
+      query: {
         type: '',
-        filter: '',
+        filter: ''
       },
-      resizeable: true,
+      resizeable: true
     },
     {
-      name: 'Note', checked: false,
-      field: 'note', query: {
+      name: 'Note',
+      checked: false,
+      field: 'note',
+      query: {
         type: '',
-        filter: '',
+        filter: ''
       }
     },
     {
-      name: 'Payment Type', checked: false,
-      field: 'paymentType', query: {
+      name: 'Payment Type',
+      checked: false,
+      field: 'paymentType',
+      query: {
         type: '',
-        filter: '',
+        filter: ''
       }
     }
   ];
 
   filterColumns = [
     {
-      name: 'Customer Name', checked: true, field: 'customerName'
+      name: 'Customer Name',
+      checked: true,
+      field: 'customerName'
     },
     {
-      name: 'Customer Order ID', checked: true, field: 'orderId'
+      name: 'Customer Order ID',
+      checked: true,
+      field: 'orderId'
     },
     {
-      name: 'Purchase Order', checked: true, field: 'poNumber'
+      name: 'Purchase Order',
+      checked: true,
+      field: 'poNumber'
     },
     {
-      name: 'Payment Type', checked: true, field: 'paymentType'
+      name: 'Payment Type',
+      checked: true,
+      field: 'paymentType'
     },
     {
-      name: 'Note', checked: true, field: 'note'
+      name: 'Note',
+      checked: true,
+      field: 'note'
     }
   ];
 
@@ -80,7 +108,8 @@ export class WaitingForApprovalComponent implements OnInit {
     {
       displayName: 'Purchase Order',
       id: 'PURCHASE_ORDER'
-    }, {
+    },
+    {
       displayName: 'Credit Card',
       id: 'CREDIT_CARD'
     }
@@ -95,7 +124,6 @@ export class WaitingForApprovalComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
 
-
   rowData;
   pageSize = 10;
 
@@ -108,7 +136,6 @@ export class WaitingForApprovalComponent implements OnInit {
     paymentType: [PaymentType.PURCHASE_ORDER],
     comment: ['']
   });
-
 
   pageType: PaymentStatusTypes = PaymentStatusTypes.WAITING_FOR_APPROVAL;
 
@@ -123,9 +150,9 @@ export class WaitingForApprovalComponent implements OnInit {
     this.navigation = this.route.getCurrentNavigation();
     const routeArr = this.route.url
       .slice(
-        this.route.url.indexOf("/billing/payment/") + "/billing/payment/".length
+        this.route.url.indexOf('/billing/payment/') + '/billing/payment/'.length
       )
-      .split("/");
+      .split('/');
 
     switch (routeArr[0]) {
       case 'waiting-for-approval':
@@ -140,15 +167,14 @@ export class WaitingForApprovalComponent implements OnInit {
       default:
         break;
     }
-
   }
-
 
   ngOnInit() {
     // this.spineer.show();
 
-
-    this.setGridColumns(PaymentStatusTypes.WAITING_FOR_APPROVAL === this.pageType);
+    this.setGridColumns(
+      PaymentStatusTypes.WAITING_FOR_APPROVAL === this.pageType
+    );
 
     this.getProfiles();
 
@@ -169,7 +195,11 @@ export class WaitingForApprovalComponent implements OnInit {
       headerHeight: 35
     };
 
-    if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
+    if (
+      this.navigation &&
+      this.navigation.extras.state &&
+      this.navigation.extras.state.toast
+    ) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type === 'success') {
         this.toastr.success(toastInfo.body);
@@ -187,8 +217,8 @@ export class WaitingForApprovalComponent implements OnInit {
         centered: true
       })
       .result.then(
-        result => { },
-        reason => { }
+        result => {},
+        reason => {}
       );
   }
 
@@ -202,7 +232,6 @@ export class WaitingForApprovalComponent implements OnInit {
     });
   }
 
-
   autoFitColumns() {
     this.gridOptions.columnApi.autoSizeColumns(['name']);
     this.gridOptions.api.sizeColumnsToFit();
@@ -214,11 +243,11 @@ export class WaitingForApprovalComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-
-
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
+      const columnInstance = this.gridOptions.api.getFilterInstance(
+        column.field
+      );
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
@@ -248,24 +277,24 @@ export class WaitingForApprovalComponent implements OnInit {
       orderId: this.selectedPurchaseOrder.orderId,
       paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
       paymentType: this.selectedPurchaseOrder.paymentType,
-      poNumber: this.selectedPurchaseOrder.poNumber,
+      poNumber: this.selectedPurchaseOrder.poNumber
     };
-    this.billingService.approveOrder(body)
-      .subscribe(res => {
+    this.billingService.approveOrder(body).subscribe(
+      res => {
         this.selectedPurchaseOrder = null;
         this.disableControls = false;
         this.getProfiles();
         this.modalService.dismissAll();
         this.toastr.success('Purchase Approved.');
       },
-        (err) => {
-          console.log({ err });
-          this.selectedPurchaseOrder = null;
-          this.disableControls = false;
-          this.modalService.dismissAll();
-          this.toastr.error(err.error.message);
-
-        });
+      err => {
+        console.log({ err });
+        this.selectedPurchaseOrder = null;
+        this.disableControls = false;
+        this.modalService.dismissAll();
+        this.toastr.error(err.error.message);
+      }
+    );
   }
 
   rejectPurchase() {
@@ -274,16 +303,17 @@ export class WaitingForApprovalComponent implements OnInit {
       orderId: this.selectedPurchaseOrder.orderId,
       paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
       paymentType: this.selectedPurchaseOrder.paymentType,
-      poNumber: this.selectedPurchaseOrder.poNumber,
+      poNumber: this.selectedPurchaseOrder.poNumber
     };
     if (this.form.value.comment) {
-      this.billingService.addNote(this.form.value.comment, this.selectedPurchaseOrder.orderId)
+      this.billingService
+        .addNote(this.form.value.comment, this.selectedPurchaseOrder.orderId)
         .subscribe(
-          (res) => {
+          res => {
             this.form.controls.comment.setValue('');
             console.log({ res });
-            this.billingService.rejectOrder(body)
-              .subscribe(result => {
+            this.billingService.rejectOrder(body).subscribe(
+              result => {
                 console.log({ reject: result });
                 this.selectedPurchaseOrder = null;
                 this.disableControls = false;
@@ -291,37 +321,39 @@ export class WaitingForApprovalComponent implements OnInit {
                 this.modalService.dismissAll();
                 this.toastr.success('Purchase Rejected.');
               },
-                (err) => {
-                  console.log({ err });
-                  this.selectedPurchaseOrder = null;
-                  this.disableControls = false;
-                  this.modalService.dismissAll();
-                  this.toastr.error(err.error.message);
-                });
+              err => {
+                console.log({ err });
+                this.selectedPurchaseOrder = null;
+                this.disableControls = false;
+                this.modalService.dismissAll();
+                this.toastr.error(err.error.message);
+              }
+            );
           },
-          (err) => {
+          err => {
             console.log({ err });
             this.disableControls = false;
             this.toastr.error(err.error.message);
-          });
+          }
+        );
     } else {
-      this.billingService.rejectOrder(body)
-        .subscribe(result => {
+      this.billingService.rejectOrder(body).subscribe(
+        result => {
           this.selectedPurchaseOrder = null;
           this.disableControls = false;
           this.getProfiles();
           this.modalService.dismissAll();
           this.toastr.success('Purchase Rejected.');
         },
-          (err) => {
-            console.log({ err });
-            this.selectedPurchaseOrder = null;
-            this.disableControls = false;
-            this.modalService.dismissAll();
-            this.toastr.error(err.error.message);
-          });
+        err => {
+          console.log({ err });
+          this.selectedPurchaseOrder = null;
+          this.disableControls = false;
+          this.modalService.dismissAll();
+          this.toastr.error(err.error.message);
+        }
+      );
     }
-
   }
   getProfiles() {
     const body: Payment = {
@@ -329,66 +361,97 @@ export class WaitingForApprovalComponent implements OnInit {
       customerName: null,
       orderId: this.form.value.orderNo || null,
       paymentStatusType: this.pageType,
-      paymentType: this.form.value.paymentType == 'null' ? null : this.form.value.paymentType,
+      paymentType:
+        this.form.value.paymentType == 'null'
+          ? null
+          : this.form.value.paymentType,
       poNumber: null,
       note: null
     };
-    const filter: FilterOption = { size: 1000, sort: "id,ASC", page: 0, q: "" };
+    const filter: FilterOption = { size: 1000, sort: 'id,ASC', page: 0, q: '' };
     if (this.gridOptions) {
       this.gridOptions.api.showLoadingOverlay();
     }
 
-    this.billingService.getPaymentList(body, filter)
-      .subscribe((res: any) => {
-        console.log({ res });
-        this.rowData = res.content;
-        if (this.gridOptions) {
-          this.gridOptions.api.hideOverlay();
-        }
-      });
-
+    this.billingService.getPaymentList(body, filter).subscribe((res: any) => {
+      console.log({ res });
+      this.rowData = res.content;
+      if (this.gridOptions) {
+        this.gridOptions.api.hideOverlay();
+      }
+    });
   }
 
   setGridColumns(waitingForApproval = false) {
     this.columnDefs = [
-      { headerName: 'Customer Name', field: 'customerName', hide: false, sortable: true, filter: false },
       {
-        headerName: 'Customer Order ID', field: 'orderId',
-        hide: false, sortable: true, filter: false,
+        headerName: 'Customer Name',
+        field: 'customerName',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Customer Order ID',
+        field: 'orderId',
+        hide: false,
+        sortable: true,
+        filter: false,
         sort: 'asc',
         width: 100
       },
       {
-        headerName: 'Purchase Order', field: 'poNumber',
-        hide: false, sortable: true, filter: false,
+        headerName: 'Purchase Order',
+        field: 'poNumber',
+        hide: false,
+        sortable: true,
+        filter: false
       },
-      { headerName: 'Note', field: 'note', hide: false, sortable: true, filter: false },
       {
-        headerName: 'Payment Type', field: 'paymentType', hide: true, sortable: true, filter: false,
-        valueFormatter: (val) => {
-          const result = (val.data.paymentType || '').replace(/_/g, ' ').toLowerCase();
+        headerName: 'Note',
+        field: 'note',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Payment Type',
+        field: 'paymentType',
+        hide: true,
+        sortable: true,
+        filter: false,
+        valueFormatter: val => {
+          const result = (val.data.paymentType || '')
+            .replace(/_/g, ' ')
+            .toLowerCase();
           if (result.length) {
-            return result[0].toUpperCase() + result.substr(1)
+            return result[0].toUpperCase() + result.substr(1);
           }
           return result;
         }
       },
       {
-        headerName: '', field: '',
+        headerName: '',
+        field: '',
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.viewAllInfo
         },
-        hide: false, sortable: false, filter: false,
+        hide: false,
+        sortable: false,
+        filter: false,
         width: 160
       },
       {
-        headerName: 'Action', field: '',
+        headerName: 'Action',
+        field: '',
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.approveRejectAction
         },
-        hide: false, sortable: false, filter: false,
+        hide: false,
+        sortable: false,
+        filter: false,
         width: 100
       }
     ];
@@ -396,10 +459,15 @@ export class WaitingForApprovalComponent implements OnInit {
     if (!waitingForApproval) {
       this.columnDefs.pop();
       this.columnDefs.splice(5, 0, {
-        headerName: 'Status', field: 'status',
-        hide: false, sortable: false, filter: false,
-        valueFormatter: (val) => {
-          const result = (val.data.paymentStatusType || '').replace(/_/g, ' ').toLowerCase();
+        headerName: 'Status',
+        field: 'status',
+        hide: false,
+        sortable: false,
+        filter: false,
+        valueFormatter: val => {
+          const result = (val.data.paymentStatusType || '')
+            .replace(/_/g, ' ')
+            .toLowerCase();
           if (result.length) {
             return result[0].toUpperCase() + result.substr(1);
           }
@@ -409,4 +477,3 @@ export class WaitingForApprovalComponent implements OnInit {
     }
   }
 }
-

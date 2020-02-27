@@ -8,9 +8,8 @@ describe('ProcessProfileDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProcessProfileDetailComponent ]
-    })
-    .compileComponents();
+      declarations: [ProcessProfileDetailComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

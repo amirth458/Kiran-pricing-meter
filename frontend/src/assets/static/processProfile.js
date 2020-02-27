@@ -1,4 +1,5 @@
-module.exports = [{
+module.exports = [
+  {
     id: 1,
     processProfileName: 'Detailed Stainless',
     equipment: 'EOS M 290',
@@ -8,7 +9,7 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
+    surfaceFinish: '100 mpa'
   },
   {
     id: 2,
@@ -20,7 +21,7 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
+    surfaceFinish: '100 mpa'
   },
   {
     id: 3,
@@ -32,7 +33,7 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
+    surfaceFinish: '100 mpa'
   },
   {
     id: 4,
@@ -44,7 +45,7 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
+    surfaceFinish: '100 mpa'
   },
   {
     id: 5,
@@ -56,8 +57,9 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
-  }, {
+    surfaceFinish: '100 mpa'
+  },
+  {
     id: 6,
     processProfileName: 'Detailed 6-4 M290',
     equipment: 'EOS M 290',
@@ -67,8 +69,9 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
-  }, {
+    surfaceFinish: '100 mpa'
+  },
+  {
     id: 7,
     processProfileName: 'P395 Nylon Standard',
     equipment: 'EOS P 395',
@@ -78,8 +81,9 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
-  }, {
+    surfaceFinish: '100 mpa'
+  },
+  {
     id: 8,
     processProfileName: 'Standard CNC',
     equipment: 'HP MJF 4200',
@@ -89,7 +93,7 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
+    surfaceFinish: '100 mpa'
   },
   {
     id: 9,
@@ -101,6 +105,6 @@ module.exports = [{
     toleranceBase: '0.005',
     tensileStrength: '100 mpa',
     tensileModulus: '100 mpa',
-    surfaceFinish: '100 mpa',
+    surfaceFinish: '100 mpa'
   }
-]
+];

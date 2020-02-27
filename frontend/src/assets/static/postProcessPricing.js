@@ -2,16 +2,15 @@
 // Needs more work along with the post-process pricing item
 // Due to not having a complete model
 
-
-
-module.exports = [{
+module.exports = [
+  {
     id: 1,
     postProcessProfileName: 'Ti 6-4 Polishing',
     postProcessPricingProfileName: '',
     condition1: '',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   },
   {
     id: 2,
@@ -20,7 +19,7 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   },
   {
     id: 3,
@@ -29,7 +28,7 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: '',
     pricingComponent1: '250',
-    pricingComponent2: '0.1 per cm2',
+    pricingComponent2: '0.1 per cm2'
   },
   {
     id: 4,
@@ -38,7 +37,7 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   },
   {
     id: 5,
@@ -47,7 +46,7 @@ module.exports = [{
     condition1: 'Surface Area > 500 cm2',
     condition2: 'Surface Area > 500 cm2',
     pricingComponent1: '10',
-    pricingComponent2: '0.008 per cm3',
+    pricingComponent2: '0.008 per cm3'
   },
   {
     id: 6,
@@ -56,7 +55,7 @@ module.exports = [{
     condition1: 'Surface Area > 500 cm2',
     condition2: '',
     pricingComponent1: '10',
-    pricingComponent2: '0.008 per cm3',
+    pricingComponent2: '0.008 per cm3'
   },
   {
     id: 7,
@@ -65,7 +64,7 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   },
   {
     id: 8,
@@ -74,7 +73,7 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   },
   {
     id: 9,
@@ -83,7 +82,7 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   },
   {
     id: 10,
@@ -92,6 +91,6 @@ module.exports = [{
     condition1: 'Build Box < 250cm3',
     condition2: 'Build Box < 250cm3',
     pricingComponent1: '250',
-    pricingComponent2: '',
+    pricingComponent2: ''
   }
-]
+];

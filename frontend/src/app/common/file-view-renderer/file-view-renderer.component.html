@@ -3,6 +3,9 @@
 </span>
 
 <ng-template #content let-modal>
-  <app-file-viewer [partInfo]="partInfo" [measurementUnits]="measurementUnits"
-                   (close)="modal.close('')"></app-file-viewer>
+  <app-file-viewer
+    [partInfo]="partInfo"
+    [measurementUnits]="measurementUnits"
+    (close)="modal.close('')"
+  ></app-file-viewer>
 </ng-template>

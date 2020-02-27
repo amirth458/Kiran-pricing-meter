@@ -1,89 +1,89 @@
 import { StatusDropdownFilterComponent } from './../../../../../common/status-dropdown-filter/status-dropdown-filter.component';
-import { Router } from "@angular/router";
-import { DropdownHeaderRendererComponent } from "./../../../../../common/dropdown-header-renderer/dropdown-header-renderer.component";
-import { ConsultantService } from "./../../../../../service/consultant.service";
-import { Component, OnInit } from "@angular/core";
-import { GridOptions, GridApi } from "ag-grid-community";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Router } from '@angular/router';
+import { DropdownHeaderRendererComponent } from './../../../../../common/dropdown-header-renderer/dropdown-header-renderer.component';
+import { ConsultantService } from './../../../../../service/consultant.service';
+import { Component, OnInit } from '@angular/core';
+import { GridOptions, GridApi } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var require: any;
-const dayjs = require("dayjs");
+const dayjs = require('dayjs');
 
 @Component({
-  selector: "app-referral",
-  templateUrl: "./referral.component.html",
-  styleUrls: ["./referral.component.css"]
+  selector: 'app-referral',
+  templateUrl: './referral.component.html',
+  styleUrls: ['./referral.component.css']
 })
 export class ReferralComponent implements OnInit {
   columnDefs = [
     {
-      headerName: "First Name",
-      field: "firstName",
+      headerName: 'First Name',
+      field: 'firstName',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Last Name",
-      field: "lastName",
+      headerName: 'Last Name',
+      field: 'lastName',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Company",
-      field: "company",
+      headerName: 'Company',
+      field: 'company',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Phone",
-      field: "phone",
+      headerName: 'Phone',
+      field: 'phone',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Email",
-      field: "email",
+      headerName: 'Email',
+      field: 'email',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Questions",
-      field: "questions",
+      headerName: 'Questions',
+      field: 'questions',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Material/Equipment Name",
-      field: "featureName",
+      headerName: 'Material/Equipment Name',
+      field: 'featureName',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Request Time",
-      field: "requestTime",
+      headerName: 'Request Time',
+      field: 'requestTime',
       hide: false,
       sortable: true,
       filter: false
     },
     {
-      headerName: "Timer",
-      field: "timer",
+      headerName: 'Timer',
+      field: 'timer',
       hide: false,
       sortable: true,
       filter: true
     },
     {
-      headerName: "Status",
-      field: "status",
+      headerName: 'Status',
+      field: 'status',
       hide: false,
       sortable: true,
-      filter: "statusFilter",
+      filter: 'statusFilter'
     }
   ];
   gridOptions: GridOptions;
@@ -112,8 +112,8 @@ export class ReferralComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => {
         // this.onRowClick(event);
-        this.router.navigateByUrl(this.router.url + "/" + event.data.id);
-      },
+        this.router.navigateByUrl(this.router.url + '/' + event.data.id);
+      }
     };
     this.getConsultants();
   }
@@ -125,7 +125,7 @@ export class ReferralComponent implements OnInit {
     try {
       while (true) {
         const res = await this.consultantService
-          .getConsultations({ page, size: 1000, sort: "id,ASC", q })
+          .getConsultations({ page, size: 1000, sort: 'id,ASC', q })
           .toPromise();
 
         if (!res.content) {
@@ -133,14 +133,14 @@ export class ReferralComponent implements OnInit {
         }
         rows.push(...res.content);
         rows.forEach(item => {
-          const responseTime = item["firstResponseTime"]
-            ? dayjs(item["firstResponseTime"])
+          const responseTime = item['firstResponseTime']
+            ? dayjs(item['firstResponseTime'])
             : dayjs();
-          item["timer"] = dayjs(responseTime.diff(item["requestTime"])).format(
-            "HH:mm:ss"
+          item['timer'] = dayjs(responseTime.diff(item['requestTime'])).format(
+            'HH:mm:ss'
           );
-          item["requestTime"] = dayjs(item["requestTime"]).format(
-            "MM/D/YYYY h:mm a"
+          item['requestTime'] = dayjs(item['requestTime']).format(
+            'MM/D/YYYY h:mm a'
           );
         });
         if (res.content.length === 0 || res.content.length < 1000) {

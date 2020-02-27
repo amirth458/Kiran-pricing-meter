@@ -20,8 +20,7 @@ describe('FacilityItemComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,27 +1,27 @@
-import { ActionService } from "./../../service/action.service";
+import { ActionService } from './../../service/action.service';
 import {
   Component,
   OnInit,
   Input,
   SimpleChanges,
   OnChanges
-} from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
-import { EventEmitterService } from "src/app/components/event-emitter.service";
+} from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { EventEmitterService } from 'src/app/components/event-emitter.service';
 
 @Component({
-  selector: "app-action-bar",
-  templateUrl: "./action-bar.component.html",
-  styleUrls: ["./action-bar.component.css"]
+  selector: 'app-action-bar',
+  templateUrl: './action-bar.component.html',
+  styleUrls: ['./action-bar.component.css']
 })
 export class ActionBarComponent implements OnInit, OnChanges {
-  @Input("menus") menus: Array<{
+  @Input('menus') menus: Array<{
     name: string;
     tooltipMessage: string;
     route: string;
     actions: Array<{ name: string; route: string }>;
   }>;
-  @Input("selectedTab") selectedTab: string;
+  @Input('selectedTab') selectedTab: string;
   baseURL;
   activeTabIndex = 0;
 
@@ -34,7 +34,7 @@ export class ActionBarComponent implements OnInit, OnChanges {
   ) {
     this.route.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
-        const routeArray = this.route.url.split("/");
+        const routeArray = this.route.url.split('/');
 
         this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
         if (routeArray.length > 2) {
@@ -68,18 +68,18 @@ export class ActionBarComponent implements OnInit, OnChanges {
   }
 
   addButton(route) {
-    if (route === "save-pricing-setting") {
+    if (route === 'save-pricing-setting') {
       this.actionService.triggerSaveProfileSetting();
-    } else if (route === "save-fullfillment-setting") {
+    } else if (route === 'save-fullfillment-setting') {
       this.actionService.triggerSaveFullfillmentSetting();
     } else {
-      this.route.navigateByUrl(this.route.url + "/" + route);
+      this.route.navigateByUrl(this.route.url + '/' + route);
     }
   }
 
   backButton() {
-    const urlArray = this.route.url.split("/");
-    if (urlArray[1] === "marketplace") {
+    const urlArray = this.route.url.split('/');
+    if (urlArray[1] === 'marketplace') {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
     } else if (urlArray.length > 6) {
       this.route.navigateByUrl(

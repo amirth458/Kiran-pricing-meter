@@ -8,14 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./footer-menu.component.css']
 })
 export class FooterMenuComponent implements OnInit {
+  constructor(public router: Router, public authService: AuthService) {}
 
-  constructor(
-    public router: Router,
-    public authService: AuthService
-  ) {
-
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

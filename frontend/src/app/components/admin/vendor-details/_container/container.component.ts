@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
-import { filter } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
-import * as tooltipData from "../../../../../assets/tooltip.json";
+import * as tooltipData from '../../../../../assets/tooltip.json';
 
 @Component({
-  selector: "app-admin-vendor-details-container",
-  templateUrl: "./container.component.html",
-  styleUrls: ["./container.component.css"]
+  selector: 'app-admin-vendor-details-container',
+  templateUrl: './container.component.html',
+  styleUrls: ['./container.component.css']
 })
 export class AdminVendorDetailsContainerComponent implements OnInit {
   actionbarMenu = tooltipData.default.adminVendor;
@@ -19,22 +19,22 @@ export class AdminVendorDetailsContainerComponent implements OnInit {
       .subscribe((event: NavigationEnd) => {
         const routeArr = this.route.url
           .slice(
-            this.route.url.indexOf("admin/vendor-details/") +
-              "admin/vendor-details/".length
+            this.route.url.indexOf('admin/vendor-details/') +
+              'admin/vendor-details/'.length
           )
-          .split("/");
+          .split('/');
         switch (routeArr[0]) {
-          case "user":
-            this.selectedTab = "User Details";
+          case 'user':
+            this.selectedTab = 'User Details';
             break;
-          case "vendor":
-            this.selectedTab = "Vendor Details";
+          case 'vendor':
+            this.selectedTab = 'Vendor Details';
             break;
-          case "machine":
-            this.selectedTab = "Machine Details";
+          case 'machine':
+            this.selectedTab = 'Machine Details';
             break;
           default:
-            this.selectedTab = "User Details";
+            this.selectedTab = 'User Details';
             break;
         }
       });
@@ -43,22 +43,22 @@ export class AdminVendorDetailsContainerComponent implements OnInit {
   ngOnInit() {
     const routeArr = this.route.url
       .slice(
-        this.route.url.indexOf("admin/vendor-details/") +
-          "admin/vendor-details/".length
+        this.route.url.indexOf('admin/vendor-details/') +
+          'admin/vendor-details/'.length
       )
-      .split("/");
+      .split('/');
     switch (routeArr[0]) {
-      case "user":
-        this.selectedTab = "User Details";
+      case 'user':
+        this.selectedTab = 'User Details';
         break;
-      case "vendor":
-        this.selectedTab = "Vendor Details";
+      case 'vendor':
+        this.selectedTab = 'Vendor Details';
         break;
-      case "machine":
-        this.selectedTab = "Machine Details";
+      case 'machine':
+        this.selectedTab = 'Machine Details';
         break;
       default:
-        this.selectedTab = "User Details";
+        this.selectedTab = 'User Details';
         break;
     }
   }

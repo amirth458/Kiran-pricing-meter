@@ -39,7 +39,7 @@ mark {
   color: var(--theme-light-green);
 }
 mark:not(:last-child)::after {
-  content: ", ";
+  content: ', ';
 }
 
 .part-header {
