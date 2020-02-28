@@ -16,17 +16,21 @@ export class AuthInterceptor implements HttpInterceptor {
     const localAuthInfo = localStorage.getItem('admin-auth'); // you probably want to store it in localStorage or something
 
     if (!localAuthInfo) {
-      return next.handle(req);
+      const req1 = req.clone({
+        headers: req.headers
+          .set('Content-Type', 'application/json; charset=utf-8')
+          .set('X-Content-Type-Options', 'nosniff')
+      });
+      return next.handle(req1);
     }
 
     const token = JSON.parse(localAuthInfo);
-    const req1 = req.clone({
-      headers: req.headers.set(
-        'Authorization',
-        `${token.tokenType} ${token.accessToken}`
-      )
+    const req2 = req.clone({
+      headers: req.headers
+        .set('Authorization', `${token.tokenType} ${token.accessToken}`)
+        .set('Content-Type', 'application/json; charset=utf-8')
+        .set('X-Content-Type-Options', 'nosniff')
     });
-
-    return next.handle(req1);
+    return next.handle(req2);
   }
 }
