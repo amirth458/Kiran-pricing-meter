@@ -116,7 +116,13 @@
           </div>
         </div>
 
-        <div class="col-12  shadow notes-action pt-3 pb-3">
+        <div
+          *ngIf="
+            orderInfo?.billingInfoView?.paymentStatusType ==
+            PaymentStatusTypes.WAITING_FOR_APPROVAL
+          "
+          class="col-12  shadow notes-action pt-3 pb-3"
+        >
           <div class="col-12 comment">
             <label class="font-weight-bold">Notes</label>
 
@@ -139,10 +145,6 @@
           <div class="col-12 mt-2 row justify-content-center">
             <div class="col-3 mr-1">
               <button
-                *ngIf="
-                  orderInfo?.billingInfoView?.paymentStatusType ==
-                  PaymentStatusTypes.WAITING_FOR_APPROVAL
-                "
                 type="button"
                 class="btn theme"
                 (click)="open(approveModal, 'md')"

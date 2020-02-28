@@ -57,12 +57,14 @@ export class PurchaseOrderItemComponent implements OnInit {
           this.orderInfo.billingInfoView &&
           this.orderInfo.billingInfoView.purchaseAgreement
         ) {
+          this.messageList =
+            this.orderInfo.billingInfoView.purchaseAgreement
+              .purchaseAgreementNoteViewList || [];
+          this.messageList = this.messageList.reverse();
         }
-        this.messageList =
-          this.orderInfo.billingInfoView.purchaseAgreement
-            .purchaseAgreementNoteViewList || [];
-        this.messageList = this.messageList.reverse();
         this.spinner.hide();
+        this.toast.error('Something went wrong. Please try again later.');
+        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       },
       err => {
         console.log({ err });
