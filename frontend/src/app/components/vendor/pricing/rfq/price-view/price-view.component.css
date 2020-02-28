@@ -14,6 +14,15 @@
   padding: 12px;
 }
 
+:host ::ng-deep .price-grid:not(.empty-grid) .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper {
+  min-height: auto !important;
+}
+
+:host ::ng-deep .price-grid.empty-grid .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper,
+:host ::ng-deep .price-grid.empty-grid .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container {
+  min-height: 35px !important;
+}
+
 :host .pricing-table tbody,
 :host .shipping-table tbody {
   border: 1px solid var(--theme-table-border);
