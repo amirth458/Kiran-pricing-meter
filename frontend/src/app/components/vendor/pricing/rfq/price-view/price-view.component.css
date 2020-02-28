@@ -2,31 +2,25 @@
   height: 90px;
 }
 
-:host .pricing-table {
-  font-size: 14px;
+:host .pricing-table,
+:host .shipping-table {
+  font-size: 12px;
 }
 
-:host .pricing-table th {
+:host .pricing-table thead th,
+:host .shipping-table thead th {
   font-weight: normal;
+  border: none;
+  padding: 12px;
 }
 
-.pricing-table tbody {
+:host .pricing-table tbody,
+:host .shipping-table tbody {
   border: 1px solid var(--theme-table-border);
 }
 
 .pricing-table thead {
   background-color: var(--theme-light-sky-blue);
-  border-radius: 2px;
-}
-
-.shipping-table tbody {
-  font-size: 14px;
-  border: 1px solid var(--theme-table-border);
-}
-
-.shipping-table thead th {
-  padding: 12px;
-  border: none;
 }
 
 .shipping-table thead {
@@ -90,9 +84,6 @@ td a.show-recommended {
 
 .confirm-row td {
   vertical-align: middle;
-}
-
-.confirm-row td {
   color: var(--theme-sky-blue);
 }
 
