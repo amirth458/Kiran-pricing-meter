@@ -5,9 +5,12 @@ import {
   OnChanges,
   SimpleChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked
 } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
@@ -31,7 +34,8 @@ import { Util } from '../../../../../util/Util';
   templateUrl: './price-view.component.html',
   styleUrls: ['./price-view.component.css']
 })
-export class PriceViewComponent implements OnInit, OnChanges {
+export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
+  @ViewChild('scroller') private scroller: ElementRef;
   @Input() part: Part;
   @Input() customer: CustomerData;
   @Input() partQuote: PartQuote;
@@ -56,6 +60,12 @@ export class PriceViewComponent implements OnInit, OnChanges {
     partsLineItemCost: [0],
     totalCost: [0]
   });
+
+  noteFormGroup: FormGroup = this.fb.group({
+    note: ['', Validators.required]
+  });
+  disableScrollDown = false;
+  loadingNote: boolean;
 
   constructor(
     private modalService: NgbModal,
@@ -172,6 +182,10 @@ export class PriceViewComponent implements OnInit, OnChanges {
       rowHeight: 35,
       headerHeight: 35
     };
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   onGridReady(ev) {
@@ -318,5 +332,32 @@ export class PriceViewComponent implements OnInit, OnChanges {
     }
     const found = this.invoiceItems.find(item => item.id === id);
     return found ? found.name : '';
+  }
+
+  sendNote(event: KeyboardEvent): void {
+    if (event.keyCode === 13 && event.ctrlKey) {
+      this.addNote();
+    }
+  }
+
+  addNote() {
+    this.loadingNote = true;
+    setTimeout(() => (this.loadingNote = false), 2000);
+  }
+
+  private onScroll() {
+    let element = this.scroller.nativeElement;
+    let atBottom =
+      element.scrollHeight - element.scrollTop === element.clientHeight;
+    this.disableScrollDown = !(this.disableScrollDown && atBottom);
+  }
+
+  private scrollToBottom(): void {
+    if (this.disableScrollDown) {
+      return;
+    }
+    try {
+      this.scroller.nativeElement.scrollTop = this.scroller.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 }
