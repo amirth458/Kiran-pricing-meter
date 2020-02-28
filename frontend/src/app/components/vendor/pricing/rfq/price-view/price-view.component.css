@@ -2,31 +2,25 @@
   height: 90px;
 }
 
-:host .pricing-table {
-  font-size: 14px;
+:host .pricing-table,
+:host .shipping-table {
+  font-size: 12px;
 }
 
-:host .pricing-table th {
+:host .pricing-table thead th,
+:host .shipping-table thead th {
   font-weight: normal;
+  border: none;
+  padding: 12px;
 }
 
-.pricing-table tbody {
+:host .pricing-table tbody,
+:host .shipping-table tbody {
   border: 1px solid var(--theme-table-border);
 }
 
 .pricing-table thead {
   background-color: var(--theme-light-sky-blue);
-  border-radius: 2px;
-}
-
-.shipping-table tbody {
-  font-size: 14px;
-  border: 1px solid var(--theme-table-border);
-}
-
-.shipping-table thead th {
-  padding: 12px;
-  border: none;
 }
 
 .shipping-table thead {
@@ -90,9 +84,6 @@ td a.show-recommended {
 
 .confirm-row td {
   vertical-align: middle;
-}
-
-.confirm-row td {
   color: var(--theme-sky-blue);
 }
 
@@ -141,6 +132,44 @@ td a.edit-price {
   font-size: 12px;
   padding: 0 15px;
   margin: 5px 0;
+}
+
+:host .message-container .date-separator {
+  text-align: center;
+  color: var(--theme-table-border);
+}
+
+:host .message-container .date-separator:before,
+:host .message-container .date-separator:after {
+  background-color: var(--theme-table-border);
+  content: '';
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: text-top;
+  width: 25%;
+}
+
+:host .message-container .date-separator div.dt-value {
+  width: 100px;
+  max-width: 100px;
+  overflow-wrap: break-word;
+  display: inline-block;
+  font-size: 11px;
+}
+
+:host .message-container .date-separator div.dt-value .time {
+  color: #000000;
+}
+
+:host .message-container .date-separator:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+:host .message-container .date-separator:after {
+  left: 0.5em;
+  margin-right: -50%;
 }
 
 :host ::ng-deep .nav-tabs .nav-link {

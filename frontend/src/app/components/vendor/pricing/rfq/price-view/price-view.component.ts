@@ -71,16 +71,14 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     private modalService: NgbModal,
     private fb: FormBuilder,
     public pricingService: RfqPricingService,
-    public toastrService: ToastrService,
+    public toaster: ToastrService,
     private datePipe: DatePipe,
     public metadataService: MetadataService,
     public currencyPipe: CurrencyPipe
   ) {
-    this.metadataService
-      .getProcessMetaData('invoice_item')
-      .subscribe(invoiceItems => {
-        this.invoiceItems = invoiceItems;
-      });
+    this.metadataService.getProcessMetaData('invoice_item').subscribe(invoiceItems => {
+      this.invoiceItems = invoiceItems;
+    });
   }
 
   ngOnInit() {
@@ -214,22 +212,15 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
 
     this.pricingForm.setValue({
       ...this.pricingForm.value,
-      toolingLineItemCost:
-        this.pricingForm.value.toolingUnitCount *
-        this.pricingForm.value.toolingUnitPrice,
-      partsLineItemCost:
-        this.pricingForm.value.partsUnitCount *
-        this.pricingForm.value.partsUnitPrice,
+      toolingLineItemCost: this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice,
+      partsLineItemCost: this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice,
       totalCost:
-        this.pricingForm.value.toolingUnitCount *
-          this.pricingForm.value.toolingUnitPrice +
-        this.pricingForm.value.partsUnitCount *
-          this.pricingForm.value.partsUnitPrice
+        this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice +
+        this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
     });
 
     const data = {
-      expiredAt:
-        this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
+      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
       id: 0,
       isExpired: null,
       isManualPricing: true,
@@ -267,14 +258,14 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       .createPartQuoteDetail(data)
       .pipe(catchError(e => this.handleError(e)))
       .subscribe(() => {
-        this.toastrService.success('Part Quote created successfully.');
+        this.toaster.success('Part Quote created successfully.');
         this.manualQuote.emit();
       });
   }
 
   handleError(error: HttpErrorResponse) {
     const message = error.error.message;
-    this.toastrService.error(`${message} Please contact your admin`);
+    this.toaster.error(`${message} Please contact your admin`);
     return throwError('Error');
   }
 
@@ -302,12 +293,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
           roughness: '',
           postProcess: '',
           price: this.partQuote
-            ? this.currencyPipe.transform(
-                this.partQuote.totalCost,
-                'USD',
-                'symbol',
-                '0.0-3'
-              )
+            ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
             : this.part.partStatusType.displayName
         }
       ];
@@ -347,8 +333,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
 
   onScroll() {
     let element = this.scroller.nativeElement;
-    let atBottom =
-      element.scrollHeight - element.scrollTop === element.clientHeight;
+    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
     this.disableScrollDown = !(this.disableScrollDown && atBottom);
   }
 
