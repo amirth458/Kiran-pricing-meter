@@ -35,18 +35,26 @@
               </thead>
               <tbody>
                 <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
-                  <td class="font-weight-bold">
+                  <td class="font-weight-bold text-theme">
                     {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
                   </td>
-                  <td class="text-center">{{ partQuoteDetail.unit }}</td>
-                  <td class="text-center">{{ partQuoteDetail.unitPrice }}</td>
-                  <td class="text-center">{{ partQuoteDetail.value }}</td>
+                  <td class="text-center text-theme">
+                    {{ partQuoteDetail.unit }}
+                  </td>
+                  <td class="text-center text-theme">
+                    {{ partQuoteDetail.unitPrice }}
+                  </td>
+                  <td class="text-center text-theme">
+                    {{ partQuoteDetail.value }}
+                  </td>
                 </tr>
                 <tr>
-                  <td class="text-center"></td>
-                  <td class="text-center"></td>
-                  <td class="text-center font-weight-bold">Subtotal</td>
-                  <td class="text-center font-weight-bold">
+                  <td class="text-center text-theme"></td>
+                  <td class="text-center text-theme"></td>
+                  <td class="text-center font-weight-bold text-theme">
+                    Subtotal
+                  </td>
+                  <td class="text-center font-weight-bold text-theme">
                     {{
                       partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3'
                     }}
