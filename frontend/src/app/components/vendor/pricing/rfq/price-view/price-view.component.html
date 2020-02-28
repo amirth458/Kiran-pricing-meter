@@ -3,9 +3,11 @@
     <!-- TABLE -->
     <div class="col-12 theme-table p-0">
       <ag-grid-angular
-        class="ag-theme-balham w-100 h-100"
+        class="ag-theme-balham price-grid w-100 h-100"
+        [class.empty-grid]="rowData?.length === 0"
         [rowData]="rowData"
         [gridOptions]="gridOptions"
+        [domLayout]="'autoHeight'"
         (gridReady)="onGridReady($event)"
       >
       </ag-grid-angular>
@@ -302,7 +304,7 @@
         </div>
 
         <div class="participant-chat text-right">
-          <span class="text-blue">Admin</span>
+          <span class="text-theme">Admin</span>
           <p>Ok Approved</p>
         </div>
 
@@ -319,7 +321,7 @@
         </div>
 
         <div class="participant-chat text-right">
-          <span class="text-blue">Admin</span>
+          <span class="text-theme">Admin</span>
           <p>Ok Approved</p>
         </div>
       </div>
