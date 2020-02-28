@@ -134,6 +134,44 @@ td a.edit-price {
   margin: 5px 0;
 }
 
+:host .message-container .date-separator {
+  text-align: center;
+  color: var(--theme-table-border);
+}
+
+:host .message-container .date-separator:before,
+:host .message-container .date-separator:after {
+  background-color: var(--theme-table-border);
+  content: '';
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: text-top;
+  width: 25%;
+}
+
+:host .message-container .date-separator div.dt-value {
+  width: 100px;
+  max-width: 100px;
+  overflow-wrap: break-word;
+  display: inline-block;
+  font-size: 11px;
+}
+
+:host .message-container .date-separator div.dt-value .time {
+  color: #000000;
+}
+
+:host .message-container .date-separator:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+:host .message-container .date-separator:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
+
 :host ::ng-deep .nav-tabs .nav-link {
   border: none;
   border-radius: 0;
