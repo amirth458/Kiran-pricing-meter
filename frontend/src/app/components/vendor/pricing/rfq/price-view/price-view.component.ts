@@ -345,14 +345,14 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     setTimeout(() => (this.loadingNote = false), 2000);
   }
 
-  private onScroll() {
+  onScroll() {
     let element = this.scroller.nativeElement;
     let atBottom =
       element.scrollHeight - element.scrollTop === element.clientHeight;
     this.disableScrollDown = !(this.disableScrollDown && atBottom);
   }
 
-  private scrollToBottom(): void {
+  scrollToBottom(): void {
     if (this.disableScrollDown) {
       return;
     }
