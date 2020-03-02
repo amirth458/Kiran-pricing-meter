@@ -26,8 +26,11 @@ import { FileViewRendererComponent } from '../../../../../common/file-view-rende
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Part } from 'src/app/model/part.model';
 import { PartQuote, Address } from '../../../../../model/part.model';
+import { PartNoteView } from '../../../../../model/part.note.model';
+import { PartNoteService } from '../../../../../service/part-note.service';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { Util } from '../../../../../util/Util';
+import { UserService } from '../../../../../service/user.service';
 
 @Component({
   selector: 'app-price-view',
@@ -67,6 +70,8 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   disableScrollDown = false;
   loadingNote: boolean;
 
+  partNoteView: PartNoteView;
+
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
@@ -74,7 +79,9 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     public toaster: ToastrService,
     private datePipe: DatePipe,
     public metadataService: MetadataService,
-    public currencyPipe: CurrencyPipe
+    public currencyPipe: CurrencyPipe,
+    public partNoteService: PartNoteService,
+    public userService: UserService
   ) {
     this.metadataService.getProcessMetaData('invoice_item').subscribe(invoiceItems => {
       this.invoiceItems = invoiceItems;
@@ -297,6 +304,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
             : this.part.partStatusType.displayName
         }
       ];
+      this.fetchAllPartNotes();
     }
   }
 
@@ -320,6 +328,13 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     return found ? found.name : '';
   }
 
+  fetchAllPartNotes() {
+    this.partNoteService.getAllPartNotes(this.part.id).subscribe(v => {
+      this.partNoteView = v;
+      this.scrollToBottom();
+    });
+  }
+
   sendNote(event: KeyboardEvent): void {
     if (event.keyCode === 13 && event.ctrlKey) {
       this.addNote();
@@ -328,7 +343,17 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
 
   addNote() {
     this.loadingNote = true;
-    setTimeout(() => (this.loadingNote = false), 2000);
+    const user: any = this.userService.getUserInfo();
+    this.partNoteService
+      .addPartNote({
+        message: this.noteFormGroup.get('note').value,
+        userId: user.id,
+        partId: this.part.id
+      } as any)
+      .subscribe(() => {
+        this.noteFormGroup.reset();
+        this.fetchAllPartNotes();
+      });
   }
 
   onScroll() {

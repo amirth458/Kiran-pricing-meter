@@ -291,11 +291,18 @@
         Notes
       </h5>
       <div class="d-flex flex-grow-1 flex-column message-container" #scroller (scroll)="onScroll()">
-        <div class="participant-chat text-left">
-          <span class="text-theme-green">Cullen</span>
-          <p>Hello I've submitted PO documents</p>
-        </div>
-
+        <ng-container *ngIf="partNoteView?.messages?.length > 0">
+          <div class="participant-chat text-left" *ngFor="let m of partNoteView.messages">
+            <span class="text-theme-green">{{ m.user.firstName || '' }} {{ m.user.lastName || '' }}</span>
+            <p>{{ m.message || '' }}</p>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="partNoteView?.messages?.length === 0">
+          <div class="participant-chat text-left">
+            No chats found
+          </div>
+        </ng-container>
+        <!--
         <div class="date-separator">
           <div class="dt-value">
             Mon, 20 2020
@@ -324,6 +331,7 @@
           <span class="text-theme">Admin</span>
           <p>Ok Approved</p>
         </div>
+        -->
       </div>
       <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
         <hr class="m-0" />
