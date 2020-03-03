@@ -10,7 +10,7 @@ import {
   ElementRef,
   AfterViewChecked
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
@@ -24,7 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { Part } from 'src/app/model/part.model';
+import { AutoPriceView, Part } from 'src/app/model/part.model';
 import { PartQuote, Address } from '../../../../../model/part.model';
 import { PartNoteView } from '../../../../../model/part.note.model';
 import { PartNoteService } from '../../../../../service/part-note.service';
@@ -62,6 +62,10 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     partsUnitPrice: [0],
     partsLineItemCost: [0],
     totalCost: [0]
+  });
+
+  dynamicForm: FormGroup = this.fb.group({
+    prices: new FormArray([])
   });
 
   noteFormGroup: FormGroup = this.fb.group({
@@ -200,6 +204,36 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
 
   changeStage(newStage) {
     this.stage = newStage;
+  }
+
+  get controls() {
+    return this.dynamicForm.controls;
+  }
+  get prices() {
+    return this.controls.prices as FormArray;
+  }
+
+  startOverrideForm() {
+    (this.partQuote.partQuoteDetails || []).forEach((quote: AutoPriceView) => {
+      this.prices.push(
+        this.fb.group({
+          partQuoteId: [quote.partQuoteId || '', Validators.required],
+          invoiceItemId: [quote.invoiceItemId || '', Validators.required],
+          value: [quote.value || 0, Validators.required],
+          unit: [quote.unit || 0, Validators.required],
+          unitPrice: [quote.unitPrice || 0, Validators.required]
+        })
+      );
+    });
+    console.log(this.dynamicForm.getRawValue(), this.dynamicForm.controls);
+    this.changeStage('edit');
+  }
+
+  resetDynamicForm() {
+    this.dynamicForm = this.fb.group({
+      prices: new FormArray([])
+    });
+    this.dynamicForm.reset();
   }
 
   openModal(content, css) {

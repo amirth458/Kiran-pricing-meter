@@ -54,6 +54,10 @@ table.pricing-table th {
   margin: 0 15px;
 }
 
+:host .over-ride {
+  cursor: pointer;
+}
+
 .price-input {
   text-align: center;
   font-size: 12px;

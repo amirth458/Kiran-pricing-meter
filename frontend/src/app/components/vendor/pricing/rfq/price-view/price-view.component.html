@@ -18,45 +18,121 @@
       <ngb-tab title="Price Detail">
         <ng-template ngbTabContent>
           <div class="table p-4">
-            <table
-              class="table table-borderless pricing-table w-75 m-0"
+            <ng-container
               *ngIf="!part?.manualPricingAllowed || part?.partStatusType.id === 3 || partQuote; else pricingSetting"
             >
-              <thead>
-                <tr>
-                  <th class="">Line Item</th>
-                  <th class="text-center">Unit Count</th>
-                  <th class="text-center">Unit Price</th>
-                  <th class="text-center">Line Item Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
-                  <td class="font-weight-bold text-theme">
-                    {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.unit }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.unitPrice }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.value }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center text-theme"></td>
-                  <td class="text-center text-theme"></td>
-                  <td class="text-center font-weight-bold text-theme">
-                    Subtotal
-                  </td>
-                  <td class="text-center font-weight-bold text-theme">
-                    {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <ng-container [ngSwitch]="stage">
+                <ng-container *ngSwitchCase="'unset'">
+                  <table class="table table-borderless pricing-table w-75 m-0">
+                    <thead>
+                      <tr>
+                        <th class="">Line Item</th>
+                        <th class="text-center">Unit Count</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Line Item Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
+                        <td class="font-weight-bold text-theme">
+                          {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.unit }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.unitPrice }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.value }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-theme">
+                          <a class="link over-ride p-0 m-0" (click)="startOverrideForm()">Override</a>
+                        </td>
+                        <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Subtotal
+                        </td>
+                        <td class="text-center font-weight-bold text-theme">
+                          {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <table [formGroup]="dynamicForm" class="table table-borderless pricing-table w-75 m-0">
+                    <thead>
+                      <tr>
+                        <th class="">Line Item</th>
+                        <th class="text-center">Unit Count</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Line Item Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="prices?.controls?.length > 0">
+                        <ng-container *ngFor="let item of prices.controls; let i = index">
+                          <tr [formGroup]="item">
+                            <td class="font-weight-bold text-theme">
+                              {{ getInvoiceItem(item.get('invoiceItemId').value) }}
+                            </td>
+                            <td class="font-weight-bold text-theme">
+                              <input type="number" class="price-input" formControlName="value" />
+                            </td>
+                            <td class="font-weight-bold text-theme">
+                              <input type="number" class="price-input" formControlName="unit" />
+                            </td>
+                            <td class="font-weight-bold text-theme">
+                              {{ item.get('unitPrice').value | currency: 'USD':'symbol':'0.0-3' }}
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </ng-container>
+                      <tr>
+                        <td class="text-theme-green">
+                          <span>See the recommended price</span>
+                        </td>
+                        <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Subtotal
+                        </td>
+                        <td class="font-weight-bold text-theme">
+                          {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr *ngIf="stage === 'edit'">
+                        <td colspan="4" class="text-right">
+                          <button class="btn orange-btn" (click)="changeStage('unset'); resetDynamicForm()">
+                            Cancel
+                          </button>
+                          <button class="btn green-btn" (click)="changeStage('confirm')">
+                            Save
+                          </button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="stage === 'confirm'" class="confirm-row">
+                        <td colspan="2">
+                          Apply this final price to part?
+                        </td>
+                        <td colspan="2" class="text-right">
+                          <button class="btn orange-btn" (click)="changeStage('unset'); resetDynamicForm()">
+                            No
+                          </button>
+                          <button class="btn green-btn">
+                            Yes
+                          </button>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
             <ng-template #pricingSetting>
               <form [formGroup]="pricingForm">
                 <table class="table table-borderless pricing-table w-75 m-0">
@@ -178,11 +254,11 @@
                     <tr>
                       <td colspan="2">
                         <!-- <a
-                      *ngIf="stage === 'edit'"
-                      (click)="openModal(recommendation, 'recommended')"
-                      class="show-recommended"
-                      >See Recommended Price</a
-                    > -->
+                    *ngIf="stage === 'edit'"
+                    (click)="openModal(recommendation, 'recommended')"
+                    class="show-recommended"
+                    >See Recommended Price</a
+                  > -->
                         <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price">Edit Price</a>
                       </td>
                       <td class="text-center font-weight-bold">Subtotal</td>
