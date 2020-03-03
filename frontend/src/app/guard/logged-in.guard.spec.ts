@@ -8,7 +8,6 @@ describe('LoggedInGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LoggedInGuard, AuthService, HttpClient, HttpHandler]
-
     });
   });
 

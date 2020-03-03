@@ -1,11 +1,10 @@
 import { browser, by, Key, element, ElementFinder } from 'protractor';
 export class MachineItems {
-
   urlAdd = '/profile/vendor/machines/add';
   urlEdit = '/profile/vendor/machines/edit/121';
 
   navigateTo(flag: boolean = true) {
-    if (flag ) {
+    if (flag) {
       browser.get(this.urlAdd);
     } else {
       browser.get(this.urlEdit);
@@ -15,18 +14,35 @@ export class MachineItems {
 
   fillData(data: any) {
     this.setDataInComponent('input[formControlName=name]', data.name);
-    this.setDataInComponent('input[formControlName=serialNumber]', data.serialNumber);
-    this.setDataInComponent('ng-select[formControlName=equipment] input', data.equipment);
+    this.setDataInComponent(
+      'input[formControlName=serialNumber]',
+      data.serialNumber
+    );
+    this.setDataInComponent(
+      'ng-select[formControlName=equipment] input',
+      data.equipment
+    );
     browser.sleep(2000);
     this.selectData('ng-select[formControlName=equipment] input');
-    this.setDataInComponent('ng-select[formControlName=material] input', data.material);
+    this.setDataInComponent(
+      'ng-select[formControlName=material] input',
+      data.material
+    );
     browser.sleep(2000);
     this.selectData('ng-select[formControlName=material] input');
 
-    this.setDataInComponent('select[formControlName=vendorFacility]', data.facility, false);
+    this.setDataInComponent(
+      'select[formControlName=vendorFacility]',
+      data.facility,
+      false
+    );
   }
 
-  setDataInComponent(cssString: string, strData: string, editable: boolean = true) {
+  setDataInComponent(
+    cssString: string,
+    strData: string,
+    editable: boolean = true
+  ) {
     if (editable) {
       element(by.css(cssString)).clear();
       element(by.css(cssString)).sendKeys(strData);

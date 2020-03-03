@@ -1,5 +1,5 @@
-import { VendorProfile } from "./vendorProfile.model";
-import { UserSummary } from "./user.model";
+import { VendorProfile } from './vendorProfile.model';
+import { UserSummary } from './user.model';
 
 export interface Type {
   id: number;
@@ -108,6 +108,15 @@ export interface PartQuote {
   expiredAt: string;
   totalCost: number;
   partQuoteInvoiceItemDetails: PartQuoteInvoiceItem[];
+  partQuoteDetails: Array<AutoPriceView>;
+}
+
+export interface AutoPriceView {
+  partQuoteId: number;
+  invoiceItemId: number;
+  value: number;
+  unit: number;
+  unitPrice: number;
 }
 
 export interface PartParameterType {
@@ -147,11 +156,11 @@ export interface Part {
   processTypeId: number;
   processTypeName: string;
   materialPropertyType: string;
-  materialIds: Array<number>,
+  materialIds: Array<number>;
   materialPropertyValues: Array<string>;
   equipmentPropertyType: string;
-  equipmentPropertyValues: Array<string>,
-  equipmentIds: Array<number>,
+  equipmentPropertyValues: Array<string>;
+  equipmentIds: Array<number>;
   cuttingBondingAllowed: boolean;
   quantity: number;
   targetDeliveryDate: string;

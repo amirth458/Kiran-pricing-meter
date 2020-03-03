@@ -1,4 +1,5 @@
-module.exports = [{
+module.exports = [
+  {
     id: 1,
     postProcessProfileName: 'Ti 6-4 Polishing',
     asset: 'Hi Power Polisher',
@@ -59,7 +60,6 @@ module.exports = [{
     surfaceFinishIncrement: ''
   },
   {
-
     id: 7,
     postProcessProfileName: 'Stainless Hand Sanding',
     asset: 'Manual Labor',
@@ -98,5 +98,5 @@ module.exports = [{
     material: 'Stainless Steel 316L',
     toleranceIncrement: '..02”/hour',
     surfaceFinishIncrement: ''
-  },
-]
+  }
+];

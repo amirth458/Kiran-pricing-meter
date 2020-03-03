@@ -377,5 +377,4 @@ export class QueuedManualPriceComponent implements OnInit {
     this.pageSize = ev.target.value;
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
   }
-
 }

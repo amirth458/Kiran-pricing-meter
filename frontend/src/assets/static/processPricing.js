@@ -1,4 +1,5 @@
-module.exports = [{
+module.exports = [
+  {
     id: 2501,
     pricingProfile: 'Mid Volume Fortus 1 ',
     processProfile: 'Detailed Stainless',
@@ -11,7 +12,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2502,
     pricingProfile: 'Mid Volume Fortus 2',
     processProfile: 'Standard Stainless',
@@ -24,7 +26,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2503,
     pricingProfile: 'Mid Volume Fortus 3',
     processProfile: 'Standard Nylon',
@@ -37,7 +40,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2504,
     pricingProfile: 'Mid Volume Fortus 4',
     processProfile: 'Detailed Nylon',
@@ -50,7 +54,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2505,
     pricingProfile: 'Mid Volume Fortus 5',
     processProfile: 'Standard 6-4 M290',
@@ -63,7 +68,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2506,
     pricingProfile: 'Mid Volume Fortus 6',
     processProfile: 'Standard 6-4 M290',
@@ -76,7 +82,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2507,
     pricingProfile: 'Mid Volume Fortus 7',
     processProfile: 'Detailed 6-4 M290',
@@ -89,7 +96,8 @@ module.exports = [{
     pricingComponent2: '$0.25/square inch',
     pricingComponent3: '$25/est. machine hr',
     pricingComponent4: '$1.50/cubic inch'
-  }, {
+  },
+  {
     id: 2508,
     pricingProfile: 'Mid Volume Fortus 8',
     processProfile: 'Detailed 6-4 M290',

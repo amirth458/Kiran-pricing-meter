@@ -8,9 +8,8 @@ describe('PastOrdersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PastOrdersComponent ]
-    })
-    .compileComponents();
+      declarations: [PastOrdersComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

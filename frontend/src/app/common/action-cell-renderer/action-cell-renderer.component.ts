@@ -3,18 +3,19 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 @Component({
   selector: 'app-action-cell-renderer',
-  templateUrl: './action-cell-renderer.component.html',
+  templateUrl: './action-cell-renderer.component.html'
 })
 export class ActionCellRendererComponent implements ICellRendererAngularComp {
-
   params;
 
-  constructor() { }
+  constructor() {}
 
   agInit(params): void {
     this.params = params;
     if (!params.action) {
-      throw new Error('Missing action parameter for ActionCellRendererComponent');
+      throw new Error(
+        'Missing action parameter for ActionCellRendererComponent'
+      );
     }
   }
 

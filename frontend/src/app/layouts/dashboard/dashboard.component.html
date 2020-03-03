@@ -1,11 +1,20 @@
 <div class="wrapper">
   <app-top-menu></app-top-menu>
 
-  <app-side-menu [menus]="menus" [(selectedMenu)]="selectedMenu" [(menuOpen)]="sideMenuOpen"
-    (toggleMenuStatus)="toggleMenuStatus($event)"></app-side-menu>
+  <app-side-menu
+    [menus]="menus"
+    [(selectedMenu)]="selectedMenu"
+    [(menuOpen)]="sideMenuOpen"
+    (toggleMenuStatus)="toggleMenuStatus($event)"
+  ></app-side-menu>
 
-  <div class="page-body" [ngClass]="sideMenuOpen? 'expanded':'collapsed'">
+  <div class="page-body" [ngClass]="sideMenuOpen ? 'expanded' : 'collapsed'">
     <router-outlet></router-outlet>
   </div>
-  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#8FBE4C" type="cog"></ngx-spinner>
+  <ngx-spinner
+    bdColor="rgba(51, 51, 51, 0.8)"
+    size="large"
+    color="#8FBE4C"
+    type="cog"
+  ></ngx-spinner>
 </div>

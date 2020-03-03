@@ -1,41 +1,41 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
-import { CurrencyPipe, DatePipe } from "@angular/common";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { GridOptions } from "ag-grid-community";
-import { NgxSpinnerService } from "ngx-spinner";
-import { ToastrService } from "ngx-toastr";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GridOptions } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
-import { catchError } from "rxjs/operators";
-import { empty } from "rxjs";
+import { catchError, switchMap } from 'rxjs/operators';
+import { empty } from 'rxjs';
 
-import { BiddingService } from "../../../../../service/bidding.service";
-import { BiddingStatus } from "../../../../../model/bidding.order";
+import { BiddingService } from '../../../../../service/bidding.service';
+import { BiddingStatus } from '../../../../../model/bidding.order';
 import {
   BidOrderItem,
   ConfirmSubOrderRelease
-} from "../../../../../model/confirm.sub-order.release";
-import { FileViewRendererComponent } from "../../../../../common/file-view-renderer/file-view-renderer.component";
-import { OrdersService } from "../../../../../service/orders.service";
-import { TemplateRendererComponent } from "../../../../../common/template-renderer/template-renderer.component";
-import { UserService } from "../../../../../service/user.service";
-import { VendorOrderDetail } from "../../../../../model/bidding.order.detail";
-import { Util } from "../../../../../util/Util";
+} from '../../../../../model/confirm.sub-order.release';
+import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
+import { OrdersService } from '../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { UserService } from '../../../../../service/user.service';
+import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
+import { Util } from '../../../../../util/Util';
 
 @Component({
-  selector: "app-vendor-details",
-  templateUrl: "./vendor-details.component.html",
-  styleUrls: ["./vendor-details.component.css"]
+  selector: 'app-vendor-details',
+  templateUrl: './vendor-details.component.html',
+  styleUrls: ['./vendor-details.component.css']
 })
 export class VendorDetailsComponent implements OnInit {
   biddingStatus = BiddingStatus;
   type;
   orderId;
   bidOrderId: number;
-  @ViewChild("pricingProfileModal") pricingProfileModal;
-  @ViewChild("statusCell") statusCell: TemplateRef<any>;
-  @ViewChild("confirmBidding") confirmBidding: TemplateRef<any>;
+  @ViewChild('pricingProfileModal') pricingProfileModal;
+  @ViewChild('statusCell') statusCell: TemplateRef<any>;
+  @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
 
   changePriority = false;
   toggleVendorList = false;
@@ -68,12 +68,12 @@ export class VendorDetailsComponent implements OnInit {
     public datePipe: DatePipe,
     public currencyPipe: CurrencyPipe
   ) {
-    if (this.router.url.includes("order-confirmation-queue")) {
-      this.type = "confirmation";
-    } else if (this.router.url.includes("released-orders")) {
-      this.type = "released";
+    if (this.router.url.includes('order-confirmation-queue')) {
+      this.type = 'confirmation';
+    } else if (this.router.url.includes('released-orders')) {
+      this.type = 'released';
     } else {
-      this.type = "release";
+      this.type = 'release';
     }
     this.initialPrice = 0;
     this.initTable();
@@ -82,7 +82,7 @@ export class VendorDetailsComponent implements OnInit {
       this.bidOrderId = v.bidOrderId || null;
       if (!this.bidOrderId) {
         this.orderDetails = JSON.parse(
-          localStorage.getItem("admin-selectedSubOrders")
+          localStorage.getItem('admin-selectedSubOrders')
         );
         (this.orderDetails || []).map(
           order => (this.initialPrice += order.priceAccepted)
@@ -129,7 +129,9 @@ export class VendorDetailsComponent implements OnInit {
                 vendorProfile: item.vendorProfile
               });
             });
-            this.priorityRows = this.matchedProfiles.filter(item => item.id !== "");
+            this.priorityRows = this.matchedProfiles.filter(
+              item => item.id !== ''
+            );
             this.spinner.hide('spooler');
             this.loadingProfiles = false;
           });
@@ -141,7 +143,7 @@ export class VendorDetailsComponent implements OnInit {
 
   prepareBidOrderInfo() {
     this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
-      this.orderDetails = v.acceptedOrderDetails || [];
+      // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.bidding = v.matchingSuppliersProfilesView || [];
       this.bidding.map(match => (match.id = ++count));
@@ -153,7 +155,7 @@ export class VendorDetailsComponent implements OnInit {
           if (!(vendors.indexOf(match.vendorName) > -1)) {
             vendors.push(match.vendorName);
           } else {
-            count = "";
+            count = '';
             status = null;
           }
           this.matchedProfiles.push({
@@ -172,6 +174,18 @@ export class VendorDetailsComponent implements OnInit {
           });
         });
       });
+      this.ordersService
+        .getPartQuotesByPartIds(
+          (v.acceptedOrderDetails || []).map(p => p.partId)
+        )
+        .pipe(
+          switchMap(parts =>
+            this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)
+          )
+        )
+        .subscribe(v => {
+          this.orderDetails = v || [];
+        });
     });
   }
 
@@ -179,37 +193,37 @@ export class VendorDetailsComponent implements OnInit {
     this.columnDefs = [
       [
         {
-          headerName: "Customer Order",
-          field: "customerOrder",
-          tooltipField: "customerOrder",
+          headerName: 'Customer Order',
+          field: 'customerOrder',
+          tooltipField: 'customerOrder',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Sub-Order",
-          field: "partId",
-          tooltipField: "partId",
+          headerName: 'Sub-Order',
+          field: 'partId',
+          tooltipField: 'partId',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "File Name",
-          field: "fileName",
-          tooltipField: "fileName",
+          headerName: 'File Name',
+          field: 'fileName',
+          tooltipField: 'fileName',
           hide: false,
           sortable: true,
           filter: false,
-          cellRenderer: "fileViewRenderer",
+          cellRenderer: 'fileViewRenderer',
           cellRendererParams: {
-            prop: "partId"
+            prop: 'partId'
           }
         },
         {
-          headerName: "Price Accepted",
-          field: "priceAccepted",
-          tooltipField: "priceAccepted",
+          headerName: 'Price Accepted',
+          field: 'priceAccepted',
+          tooltipField: 'priceAccepted',
           hide: false,
           sortable: true,
           filter: false,
@@ -223,51 +237,51 @@ export class VendorDetailsComponent implements OnInit {
           }
         },
         {
-          headerName: "Customer",
-          field: "customerName",
-          tooltipField: "customerName",
+          headerName: 'Customer',
+          field: 'customerName',
+          tooltipField: 'customerName',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Quantity",
-          field: "quantity",
-          tooltipField: "quantity",
+          headerName: 'Quantity',
+          field: 'quantity',
+          tooltipField: 'quantity',
           hide: false,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Material",
-          field: "materialPropertyValues",
-          tooltipField: "materialPropertyValues",
+          headerName: 'Material',
+          field: 'materialPropertyValues',
+          tooltipField: 'materialPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
-          valueFormatter: dt => (dt.value || []).join(" , ")
+          valueFormatter: dt => (dt.value || []).join(' , ')
         },
         {
-          headerName: "Technology",
-          field: "equipmentPropertyValues",
-          tooltipField: "equipmentPropertyValues",
+          headerName: 'Technology',
+          field: 'equipmentPropertyValues',
+          tooltipField: 'equipmentPropertyValues',
           hide: false,
           sortable: true,
           filter: false,
-          valueFormatter: dt => (dt.value || []).join(" , ")
+          valueFormatter: dt => (dt.value || []).join(' , ')
         },
         {
-          headerName: "NDA",
-          field: "nda",
-          tooltipField: "nda",
+          headerName: 'NDA',
+          field: 'nda',
+          tooltipField: 'nda',
           hide: true,
           sortable: true,
           filter: false
         },
         {
-          headerName: "Post-Process",
-          field: "postProcessTypeNames",
-          tooltipField: "postProcessTypeNames",
+          headerName: 'Post-Process',
+          field: 'postProcessTypeNames',
+          tooltipField: 'postProcessTypeNames',
           hide: false,
           sortable: true,
           filter: false
@@ -289,23 +303,23 @@ export class VendorDetailsComponent implements OnInit {
         //   filter: false
         // },
         {
-          headerName: "Delivery Date",
-          field: "deliveryDate",
-          tooltipField: "deliveryDate",
+          headerName: 'Delivery Date',
+          field: 'deliveryDate',
+          tooltipField: 'deliveryDate',
           hide: false,
           sortable: true,
           filter: false,
           valueFormatter: dt =>
             dt.value
               ? `${this.datePipe.transform(dt.value, Util.dateFormat)}`
-              : ""
+              : ''
         }
       ],
       [
         {
-          headerName: "No",
-          field: "id",
-          tooltipField: "id",
+          headerName: 'No',
+          field: 'id',
+          tooltipField: 'id',
           width: 100,
           maxWidth: 100,
           hide: false,
@@ -314,25 +328,25 @@ export class VendorDetailsComponent implements OnInit {
           rowDrag: true
         },
         {
-          headerName: "Vendor Name",
-          field: "vendorName",
-          tooltipField: "vendorName",
+          headerName: 'Vendor Name',
+          field: 'vendorName',
+          tooltipField: 'vendorName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Process Profile Name",
-          field: "processProfileName",
-          tooltipField: "processProfileName",
+          headerName: 'Process Profile Name',
+          field: 'processProfileName',
+          tooltipField: 'processProfileName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Release Priority",
-          field: "releasePriority",
-          tooltipField: "releasePriority",
+          headerName: 'Release Priority',
+          field: 'releasePriority',
+          tooltipField: 'releasePriority',
           hide: false,
           sortable: false,
           filter: false
@@ -340,9 +354,9 @@ export class VendorDetailsComponent implements OnInit {
       ],
       [
         {
-          headerName: "No",
-          field: "id",
-          tooltipField: "id",
+          headerName: 'No',
+          field: 'id',
+          tooltipField: 'id',
           width: 100,
           maxWidth: 100,
           hide: false,
@@ -350,41 +364,41 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
-          headerName: "Corporate Name",
-          field: "vendorName",
-          tooltipField: "vendorName",
+          headerName: 'Corporate Name',
+          field: 'vendorName',
+          tooltipField: 'vendorName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Facility Name",
-          field: "facilityName",
-          tooltipField: "facilityName",
+          headerName: 'Facility Name',
+          field: 'facilityName',
+          tooltipField: 'facilityName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Process Profile Name",
-          field: "processProfileName",
-          tooltipField: "processProfileName",
+          headerName: 'Process Profile Name',
+          field: 'processProfileName',
+          tooltipField: 'processProfileName',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Pricing Profile",
-          field: "pricingProfile",
-          tooltipField: "pricingProfile",
+          headerName: 'Pricing Profile',
+          field: 'pricingProfile',
+          tooltipField: 'pricingProfile',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Release Priority",
-          field: "releasePriority",
-          tooltipField: "releasePriority",
+          headerName: 'Release Priority',
+          field: 'releasePriority',
+          tooltipField: 'releasePriority',
           hide: false,
           sortable: false,
           filter: false
@@ -392,9 +406,9 @@ export class VendorDetailsComponent implements OnInit {
       ],
       [
         {
-          headerName: "Pricing No",
-          field: "id",
-          tooltipField: "id",
+          headerName: 'Pricing No',
+          field: 'id',
+          tooltipField: 'id',
           width: 100,
           maxWidth: 100,
           hide: false,
@@ -402,17 +416,17 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
-          headerName: "Pricing Profile Name",
-          field: "name",
-          tooltipField: "name",
+          headerName: 'Pricing Profile Name',
+          field: 'name',
+          tooltipField: 'name',
           hide: false,
           sortable: false,
           filter: false
         },
         {
-          headerName: "Pricing Condition 1",
-          field: "processPricingConditionList",
-          tooltipField: "processPricingConditionList",
+          headerName: 'Pricing Condition 1',
+          field: 'processPricingConditionList',
+          tooltipField: 'processPricingConditionList',
           hide: false,
           sortable: false,
           filter: false,
@@ -420,17 +434,16 @@ export class VendorDetailsComponent implements OnInit {
             const arr = [];
             (dt.value || []).map(condition => {
               arr.push(
-                `${condition.processPricingConditionType.name || ""} ${condition
-                  .operatorType.symbol || ""} ${condition.value ||
-                  ""} ${condition.unitType.symbol || ""}`
+                `${condition.processPricingConditionType.name || ''} ${condition
+                  .operatorType.symbol || ''} ${condition.value ||
+                  ''} ${condition.unitType.symbol || ''}`
               );
             });
-            return arr.length !== 0 ? arr.join(" , ") : "";
+            return arr.length !== 0 ? arr.join(' , ') : '';
           }
         }
       ]
     ];
-
     this.gridOptions = [
       {
         frameworkComponents: this.frameworkComponents,
@@ -456,7 +469,7 @@ export class VendorDetailsComponent implements OnInit {
           this.pricingProfile = ev.data;
           this.modalService.open(this.pricingProfileModal, {
             centered: true,
-            windowClass: "confirm-release-modal"
+            windowClass: 'confirm-release-modal'
           });
         }
       },
@@ -474,9 +487,9 @@ export class VendorDetailsComponent implements OnInit {
     // view bidding status
     this.columnDefs.push([
       {
-        headerName: "No",
-        field: "id",
-        tooltipField: "id",
+        headerName: 'No',
+        field: 'id',
+        tooltipField: 'id',
         width: 100,
         maxWidth: 100,
         hide: false,
@@ -484,22 +497,42 @@ export class VendorDetailsComponent implements OnInit {
         filter: false
       },
       {
-        headerName: "Vendor Name",
-        field: "vendorName",
-        tooltipField: "vendorName",
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
         hide: false,
         sortable: false,
         filter: false
       },
       {
-        headerName: "Status",
-        field: "bidProcessStatus.description",
-        tooltipField: "bidProcessStatus.description",
-        cellClass: "p-0",
+        headerName: 'Vendor Bid Price',
+        field: 'bidOfferPrice',
+        tooltipField: 'bidOfferPrice',
         hide: false,
         sortable: false,
         filter: false,
-        cellRenderer: "templateRenderer",
+        valueFormatter: dt => {
+          let value = '';
+          switch (dt.data.bidProcessStatus.name) {
+            case BiddingStatus.COUNTER_OFFER:
+              value = `$ ${dt.data.counterOfferPrice || 0}`;
+              break;
+            case BiddingStatus.ACCEPTED:
+              value = `$ ${dt.data.bidOfferPrice || 0}`;
+              break;
+          }
+          return value;
+        }
+      },
+      {
+        headerName: 'Status',
+        field: 'bidProcessStatus.description',
+        tooltipField: 'bidProcessStatus.description',
+        cellClass: 'p-0',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.statusCell
         }
@@ -508,9 +541,9 @@ export class VendorDetailsComponent implements OnInit {
     // View vendor profile matching
     this.columnDefs.push([
       {
-        headerName: "No",
-        field: "id",
-        tooltipField: "id",
+        headerName: 'No',
+        field: 'id',
+        tooltipField: 'id',
         width: 100,
         maxWidth: 100,
         hide: false,
@@ -518,45 +551,45 @@ export class VendorDetailsComponent implements OnInit {
         filter: false
       },
       {
-        headerName: "Vendor Name",
-        field: "vendorName",
-        tooltipField: "vendorName",
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
         hide: false,
         sortable: false,
         filter: false
       },
       {
-        headerName: "Facility Name",
-        field: "facilityName",
-        tooltipField: "facilityName",
+        headerName: 'Facility Name',
+        field: 'facilityName',
+        tooltipField: 'facilityName',
         hide: false,
         sortable: false,
         filter: false
       },
       {
-        headerName: "Process Profile Name",
-        field: "processProfileName",
-        tooltipField: "processProfileName",
+        headerName: 'Process Profile Name',
+        field: 'processProfileName',
+        tooltipField: 'processProfileName',
         hide: false,
         sortable: false,
         filter: false
       },
       {
-        headerName: "Pricing Profile",
-        field: "pricingProfile",
-        tooltipField: "pricingProfile",
+        headerName: 'Pricing Profile',
+        field: 'pricingProfile',
+        tooltipField: 'pricingProfile',
         hide: false,
         sortable: false,
         filter: false
       },
       {
-        headerName: "status",
-        field: "bidProcessStatus.description",
-        tooltipField: "bidProcessStatus.description",
+        headerName: 'status',
+        field: 'bidProcessStatus.description',
+        tooltipField: 'bidProcessStatus.description',
         hide: false,
         sortable: false,
         filter: false,
-        cellRenderer: "templateRenderer",
+        cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.statusCell
         }
@@ -586,8 +619,8 @@ export class VendorDetailsComponent implements OnInit {
     if (idx === 0) {
       this.gridOptions[idx].api.setSortModel([
         {
-          colId: "partId",
-          sort: "desc"
+          colId: 'partId',
+          sort: 'desc'
         }
       ]);
     } else if (idx === 2) {
@@ -610,7 +643,7 @@ export class VendorDetailsComponent implements OnInit {
       this.subOrderRelease = v;
       this.modalService.open(content, {
         centered: true,
-        windowClass: "confirm-release-modal"
+        windowClass: 'confirm-release-modal'
       });
     });
   }
@@ -669,7 +702,7 @@ export class VendorDetailsComponent implements OnInit {
     this.selectedBidding = row;
     this.modalService.open(this.confirmBidding, {
       centered: true,
-      windowClass: "bidding-confirm"
+      windowClass: 'bidding-confirm'
     });
   }
 
@@ -695,13 +728,17 @@ export class VendorDetailsComponent implements OnInit {
           })
         )
         .subscribe(v => {
-          this.toaster.success("Successfully bidding confirmed");
-          this.prepareBidOrderInfo();
+          this.toaster.success('Successfully bidding confirmed');
           this.spinner.hide();
           this.modalService.dismissAll();
+          this.router.navigateByUrl(
+            `/pricing/orders/released-orders/${this.bidOrderId}`
+          );
         });
     } else {
-      this.toaster.error('There is no process profile associated wit this bidding!');
+      this.toaster.error(
+        'There is no process profile associated wit this bidding!'
+      );
     }
   }
 }

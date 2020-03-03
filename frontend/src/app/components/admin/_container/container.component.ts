@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./container.component.css']
 })
 export class AdminContainerComponent implements OnInit, OnDestroy {
-
   baseURL = '';
 
   submenus = [];
@@ -16,10 +15,7 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
   selectedSubmenu = '';
   sidemenuClosed;
 
-
-  constructor(
-    private route: Router
-  ) {
+  constructor(private route: Router) {
     this.baseURL = this.route.url.split('/')[1];
   }
 
@@ -34,7 +30,5 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
     this.selectedSubmenu = this.baseURL + '/approve-vendor';
   }
 
-  ngOnDestroy() {
-
-  }
+  ngOnDestroy() {}
 }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -12,14 +12,14 @@ import { UserService } from '../../../../../service/user.service';
   templateUrl: './customer-order-details.component.html',
   styleUrls: ['./customer-order-details.component.css']
 })
-export class CustomerOrderDetailsComponent extends PriceDetailComponent implements OnInit{
-
+export class CustomerOrderDetailsComponent extends PriceDetailComponent
+  implements OnInit {
   constructor(
-    protected  route: ActivatedRoute,
-    protected  router: Router,
-    protected  pricingService: RfqPricingService,
-    protected  userService: UserService,
-    protected  spinner: NgxSpinnerService
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected pricingService: RfqPricingService,
+    protected userService: UserService,
+    protected spinner: NgxSpinnerService
   ) {
     super(route, router, pricingService, userService, spinner);
   }
@@ -36,5 +36,4 @@ export class CustomerOrderDetailsComponent extends PriceDetailComponent implemen
       }
     ];
   }
-
 }

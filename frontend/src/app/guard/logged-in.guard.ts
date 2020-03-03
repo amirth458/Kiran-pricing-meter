@@ -1,18 +1,18 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree
-} from "@angular/router";
-import { Observable } from "rxjs";
-import { CanActivate } from "@angular/router/src/utils/preactivation";
-import { AuthService } from "../service/auth.service";
-import { Store, AppTypes } from "../store";
-import { UserService } from "../service/user.service";
+} from '@angular/router';
+import { Observable } from 'rxjs';
+import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { AuthService } from '../service/auth.service';
+import { Store, AppTypes } from '../store';
+import { UserService } from '../service/user.service';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class LoggedInGuard implements CanActivate {
   path: ActivatedRouteSnapshot[];
@@ -29,9 +29,9 @@ export class LoggedInGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     const isLoggedIn = this.authService.isLoggedIn();
-    console.log("CanActivate", isLoggedIn);
+    console.log('CanActivate', isLoggedIn);
     if (!isLoggedIn) {
-      this.router.navigate(["/login"]);
+      this.router.navigate(['/login']);
     } else {
       this.store.dispatch({
         type: AppTypes.GetVendorInfo

@@ -7,7 +7,11 @@ import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Payment, PaymentDetails } from 'src/app/model/billing.model';
+import {
+  PaymentDetails,
+  PaymentStatusTypes
+} from 'src/app/model/billing.model';
+import { MetadataService } from 'src/app/service/metadata.service';
 
 @Component({
   selector: 'app-purchase-order-item',
@@ -15,7 +19,7 @@ import { Payment, PaymentDetails } from 'src/app/model/billing.model';
   styleUrls: ['./purchase-order-item.component.css']
 })
 export class PurchaseOrderItemComponent implements OnInit {
-
+  PaymentStatusTypes = PaymentStatusTypes;
   chatForm = this.fb.group({
     note: ['', Validators.required]
   });
@@ -32,6 +36,7 @@ export class PurchaseOrderItemComponent implements OnInit {
     public modalService: NgbModal,
     public route: Router,
     public billingService: BillingService,
+    public metadataService: MetadataService,
     public fb: FormBuilder,
     public userService: UserService,
     public spinner: NgxSpinnerService
@@ -41,7 +46,6 @@ export class PurchaseOrderItemComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.spinner.show();
     // '75'
     this.billingService.getPaymentInfo(this.selectedPurchaseOrderId).subscribe(
@@ -51,19 +55,29 @@ export class PurchaseOrderItemComponent implements OnInit {
         if (
           this.orderInfo &&
           this.orderInfo.billingInfoView &&
-          this.orderInfo.billingInfoView.purchaseAgreement) {
-
+          this.orderInfo.billingInfoView.purchaseAgreement
+        ) {
+          this.messageList =
+            this.orderInfo.billingInfoView.purchaseAgreement
+              .purchaseAgreementNoteViewList || [];
+          this.messageList = this.messageList.reverse();
+        } else {
+          this.toast.error('Something went wrong. Please try again later.');
+          this.route.navigateByUrl('/billing/payment/waiting-for-approval');
         }
-        this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
-        this.messageList = this.messageList.reverse();
         this.spinner.hide();
       },
-      (err) => {
+      err => {
         console.log({ err });
         this.spinner.hide();
         this.toast.error(err.error.message);
         this.route.navigateByUrl('/billing/payment');
-      });
+      }
+    );
+    this.metadataService.getPostProcessActionMetaData().subscribe(res => {
+      this.postProcessAction = res;
+      console.log({ r: res });
+    });
   }
 
   open(content, size: any = 'lg') {
@@ -74,8 +88,8 @@ export class PurchaseOrderItemComponent implements OnInit {
         centered: true
       })
       .result.then(
-        result => { },
-        reason => { }
+        result => {},
+        reason => {}
       );
   }
 
@@ -88,21 +102,21 @@ export class PurchaseOrderItemComponent implements OnInit {
       orderId: this.orderInfo.billingInfoView.orderId,
       paymentStatusType: this.orderInfo.billingInfoView.paymentStatusType,
       paymentType: this.orderInfo.billingInfoView.paymentType,
-      poNumber: this.orderInfo.billingInfoView.purchaseAgreement.poaNumber,
+      poNumber: this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
     };
-    this.billingService.approveOrder(body)
-      .subscribe(res => {
+    this.billingService.approveOrder(body).subscribe(
+      res => {
         this.modalService.dismissAll();
         this.toast.success('Purchase Approved.');
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       },
-        (err) => {
-          console.log({ err });
-          this.modalService.dismissAll();
-          this.toast.error(err.error.message);
-          this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-
-        });
+      err => {
+        console.log({ err });
+        this.modalService.dismissAll();
+        this.toast.error(err.error.message);
+        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
+      }
+    );
   }
 
   rejectPurchase() {
@@ -110,23 +124,22 @@ export class PurchaseOrderItemComponent implements OnInit {
       orderId: this.orderInfo.billingInfoView.orderId,
       paymentStatusType: this.orderInfo.billingInfoView.paymentStatusType,
       paymentType: this.orderInfo.billingInfoView.paymentType,
-      poNumber: this.orderInfo.billingInfoView.purchaseAgreement.poaNumber,
+      poNumber: this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
     };
-    this.billingService.rejectOrder(body)
-      .subscribe(res => {
+    this.billingService.rejectOrder(body).subscribe(
+      res => {
         console.log({ res });
         this.modalService.dismissAll();
         this.toast.success('Purchase Rejected.');
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-
       },
-        (err) => {
-          console.log({ err });
-          this.modalService.dismissAll();
-          this.toast.error(err.error.message);
-          this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-
-        });
+      err => {
+        console.log({ err });
+        this.modalService.dismissAll();
+        this.toast.error(err.error.message);
+        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
+      }
+    );
   }
 
   formatPaymentType(paymentType: string) {
@@ -139,23 +152,37 @@ export class PurchaseOrderItemComponent implements OnInit {
       return;
     }
 
-    this.billingService.addNote(this.chatForm.value.note, this.orderInfo.billingInfoView.orderId)
+    this.billingService
+      .addNote(this.chatForm.value.note, this.orderInfo.billingInfoView.orderId)
       .subscribe(
-        (res) => {
+        res => {
           console.log({ res });
           this.messageList = res.reverse();
           this.toast.success('Note Sent');
           this.chatForm.reset();
         },
-        (err) => {
+        err => {
           console.log({ err });
           this.toast.error(err.error.message);
-        });
-
+        }
+      );
   }
 
-  getpostProcessActionName(postProcessActionId: string) {
-
+  getPostProcessActions(postProcessActionId: Array<number>) {
+    const filterPostProcessAction = this.postProcessAction.filter(item =>
+      postProcessActionId.includes(item.id)
+    );
+    let result = '';
+    if (filterPostProcessAction.length) {
+      filterPostProcessAction.map((item, index) => {
+        if (index != filterPostProcessAction.length - 1) {
+          result += item.name + ', ';
+        } else {
+          result += item.name;
+        }
+      });
+    }
+    return result;
   }
 
   isDifferentDate(index: number) {
@@ -172,9 +199,9 @@ export class PurchaseOrderItemComponent implements OnInit {
     const prevDate = new Date(this.messageList[index - 1].createdDate);
 
     if (
-      (currentDate.getDate() == prevDate.getDate()) &&
-      (currentDate.getDate() == prevDate.getDate()) &&
-      (currentDate.getDate() == prevDate.getDate())
+      currentDate.getDate() == prevDate.getDate() &&
+      currentDate.getDate() == prevDate.getDate() &&
+      currentDate.getDate() == prevDate.getDate()
     ) {
       return true;
     }

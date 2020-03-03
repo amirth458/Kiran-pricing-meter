@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminVendorDetailsUserComponent } from "./vendor-details-user.component";
+import { AdminVendorDetailsUserComponent } from './vendor-details-user.component';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -20,8 +20,7 @@ describe('RegisterComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

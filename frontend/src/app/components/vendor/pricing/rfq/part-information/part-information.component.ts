@@ -1,21 +1,21 @@
-import { CustomerData } from "src/app/model/user.model";
+import { CustomerData } from 'src/app/model/user.model';
 import {
   RfqData,
   ParameterTolerance,
   PartCustomParameter,
   PartDimension
-} from "./../../../../../model/part.model";
-import { Util } from "./../../../../../util/Util";
-import { Component, OnInit, Input } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { Part } from "src/app/model/part.model";
+} from './../../../../../model/part.model';
+import { Util } from './../../../../../util/Util';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Part } from 'src/app/model/part.model';
 
-import { MetadataService } from "./../../../../../service/metadata.service";
+import { MetadataService } from './../../../../../service/metadata.service';
 
 @Component({
-  selector: "app-part-information",
-  templateUrl: "./part-information.component.html",
-  styleUrls: ["./part-information.component.css"]
+  selector: 'app-part-information',
+  templateUrl: './part-information.component.html',
+  styleUrls: ['./part-information.component.css']
 })
 export class PartInformationComponent implements OnInit {
   @Input() part: Part;
@@ -37,30 +37,33 @@ export class PartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("part", this.part);
+    console.log('part', this.part);
     this.metadataService
-      .getMetaData("measurement_unit_type")
+      .getMetaData('measurement_unit_type')
       .subscribe(v => (this.measurementUnits = v));
     this.metadataService
-      .getMetaData("country")
+      .getMetaData('country')
       .subscribe(v => (this.countries = v));
     this.metadataService
-      .getMetaData("vendor_certificate")
+      .getMetaData('vendor_certificate')
       .subscribe(v => (this.certs = v));
     this.metadataService
-      .getMetaData("post_process_action")
+      .getMetaData('post_process_action')
       .subscribe(v => (this.postProcesses = v));
     this.metadataService
-      .getMetaData("core_competence")
+      .getMetaData('core_competence')
       .subscribe(v => (this.antiMatchCerts = v));
     this.metadataService
-      .getMetaData("operator_type")
+      .getMetaData('operator_type')
       .subscribe(v => (this.operatorTypes = v));
   }
 
   getDimension() {
     const metadataList = this.measurementUnits;
-    return this.partDimension && Util.getPartDimension(this.partDimension, metadataList || []);
+    return (
+      this.partDimension &&
+      Util.getPartDimension(this.partDimension, metadataList || [])
+    );
   }
 
   getDimensionValue(dimensionValue) {
@@ -87,7 +90,7 @@ export class PartInformationComponent implements OnInit {
   getCustomerIndustries() {
     return (
       this.customer &&
-      this.customer.industries.map(industry => industry.name).join(", ")
+      this.customer.industries.map(industry => industry.name).join(', ')
     );
   }
 
@@ -101,7 +104,7 @@ export class PartInformationComponent implements OnInit {
             this.countries.find(country => country.id === item);
           return found && found.name;
         })
-        .join(", ")
+        .join(', ')
     );
   }
 
@@ -115,7 +118,7 @@ export class PartInformationComponent implements OnInit {
             this.antiMatchCerts.find(certs => certs.id === item);
           return found ? found.name : item;
         })
-        .join(", ")
+        .join(', ')
     );
   }
 
@@ -127,7 +130,7 @@ export class PartInformationComponent implements OnInit {
           const found = this.certs && this.certs.find(cert => cert.id === item);
           return found && found.name;
         })
-        .join(", ")
+        .join(', ')
     );
   }
 
@@ -142,20 +145,20 @@ export class PartInformationComponent implements OnInit {
             this.postProcesses.find(postProcess => postProcess.id == id);
           return found && found.name;
         })
-        .join(", ")
+        .join(', ')
     );
   }
 
   view3D(content) {
     this.modalService.open(content, {
       centered: true,
-      windowClass: "model-viewer-modal"
+      windowClass: 'model-viewer-modal'
     });
   }
 
   getSurfaceRoughness() {
     const found = this.part.partCustomParameterList.find(
-      item => item.partParameterType.name === "SURFACE_ROUGHNESS"
+      item => item.partParameterType.name === 'SURFACE_ROUGHNESS'
     );
     if (found) {
       return Util.showCustomPrameter(
@@ -164,20 +167,20 @@ export class PartInformationComponent implements OnInit {
         this.operatorTypes
       );
     }
-    return "";
+    return '';
   }
   getTolerance() {
     return this.part.partCustomParameterList
-      .filter(item => item.partParameterType.name !== "SURFACE_ROUGHNESS")
+      .filter(item => item.partParameterType.name !== 'SURFACE_ROUGHNESS')
       .map(item => Util.showCustomPrameter(item, this.measurementUnits))
-      .join(", ");
+      .join(', ');
   }
 
   getToleranceList() {
     return (
       this.part &&
       this.part.partCustomParameterList.filter(
-        item => item.partParameterType.name !== "SURFACE_ROUGHNESS"
+        item => item.partParameterType.name !== 'SURFACE_ROUGHNESS'
       )
     );
   }

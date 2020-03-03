@@ -1,21 +1,16 @@
-import { ActionService } from "./../../../../../service/action.service";
-import { ToastrService } from "ngx-toastr";
-import { HttpErrorResponse } from "@angular/common/http";
-import { catchError } from "rxjs/operators";
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import {
-  FormBuilder,
-  FormGroup,
-  ValidatorFn,
-  AbstractControl
-} from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
-import { throwError } from "rxjs";
+import { ActionService } from './../../../../../service/action.service';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { throwError } from 'rxjs';
 
 @Component({
-  selector: "app-pricing-settings",
-  templateUrl: "./pricing-settings.component.html",
-  styleUrls: ["./pricing-settings.component.css"]
+  selector: 'app-pricing-settings',
+  templateUrl: './pricing-settings.component.html',
+  styleUrls: ['./pricing-settings.component.css']
 })
 export class PricingSettingsComponent implements OnInit {
   detailForm: FormGroup = this.fb.group(
@@ -36,14 +31,13 @@ export class PricingSettingsComponent implements OnInit {
   defaultEligibilities = [
     {
       id: 1,
-      name: "Based on Process Profiles",
-      description:
-        "(Show all process profiles with or without matching pricing profile)"
+      name: 'Based on Process Profiles',
+      description: '(Show all process profiles with or without matching pricing profile)'
     },
     {
       id: 2,
-      name: "Based on Pricing Profiles",
-      description: "(Sort and filter based on pricing profiles)"
+      name: 'Based on Pricing Profiles',
+      description: '(Sort and filter based on pricing profiles)'
     }
   ];
   selectedEligibility = 1;
@@ -56,12 +50,10 @@ export class PricingSettingsComponent implements OnInit {
   ) {}
 
   checkBidNumber(control: FormGroup) {
-    const bidNumber = control.get("presentBidNumberFromBottom");
-    const processProfile = control.get("minElligibleProcessProfile");
+    const bidNumber = control.get('presentBidNumberFromBottom');
+    const processProfile = control.get('minElligibleProcessProfile');
 
-    return bidNumber &&
-      processProfile &&
-      (+bidNumber.value || 0) > (+processProfile.value || 0)
+    return bidNumber && processProfile && (+bidNumber.value || 0) > (+processProfile.value || 0)
       ? { invalidBidNumber: true }
       : null;
   }
@@ -70,8 +62,7 @@ export class PricingSettingsComponent implements OnInit {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
       if (defaultValue) {
         this.detailForm.setValue(defaultValue);
-        this.selectedEligibility =
-          defaultValue.autoPricingEligibilityType.id - 1;
+        this.selectedEligibility = defaultValue.autoPricingEligibilityType.id - 1;
       }
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
@@ -93,9 +84,9 @@ export class PricingSettingsComponent implements OnInit {
   }
 
   handleSaveError(error: HttpErrorResponse) {
-    const message = error.error.message || "Import Failed.";
+    const message = error.error.message || 'Import Failed.';
     this.toastrService.error(`${message} Please contact your admin`);
-    return throwError("Error");
+    return throwError('Error');
   }
 
   setManualPricingSection(newValue: number) {
@@ -112,16 +103,16 @@ export class PricingSettingsComponent implements OnInit {
   getOrderUnit(num: number) {
     num = num % 100;
     if (num >= 10 && num <= 20) {
-      return "th";
+      return 'th';
     }
     if (num % 10 === 1) {
-      return "st";
+      return 'st';
     } else if (num % 10 === 2) {
-      return "nd";
+      return 'nd';
     } else if (num % 10 === 3) {
-      return "rd";
+      return 'rd';
     } else {
-      return "th";
+      return 'th';
     }
   }
 }

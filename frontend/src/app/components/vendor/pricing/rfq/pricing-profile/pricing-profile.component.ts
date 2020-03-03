@@ -1,76 +1,76 @@
-import { RfqPricingService } from "./../../../../../service/rfq-pricing.service";
-import { TemplateRendererComponent } from "./../../../../../common/template-renderer/template-renderer.component";
-import { NgxSpinnerService } from "ngx-spinner";
-import { Router, ActivatedRoute } from "@angular/router";
+import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
+import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   Component,
   OnInit,
   ViewChild,
   TemplateRef,
   Input
-} from "@angular/core";
-import { GridOptions } from "ag-grid-community";
-import { Part } from "src/app/model/part.model";
+} from '@angular/core';
+import { GridOptions } from 'ag-grid-community';
+import { Part } from 'src/app/model/part.model';
 
 @Component({
-  selector: "app-pricing-profile",
-  templateUrl: "./pricing-profile.component.html",
-  styleUrls: ["./pricing-profile.component.css"]
+  selector: 'app-pricing-profile',
+  templateUrl: './pricing-profile.component.html',
+  styleUrls: ['./pricing-profile.component.css']
 })
 export class PricingProfileComponent implements OnInit {
   @Input() part: Part;
-  @ViewChild("dateCell") dateCell: TemplateRef<any>;
-  type = ["search", "filter"];
+  @ViewChild('dateCell') dateCell: TemplateRef<any>;
+  type = ['search', 'filter'];
 
   searchColumns = [
     {
-      name: "Vendor Name",
-      field: "vendorName",
-      tooltipField: "vendorName",
+      name: 'Vendor Name',
+      field: 'vendorName',
+      tooltipField: 'vendorName',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Pricing Profile",
-      field: "pricingProfile",
-      tooltipField: "pricingProfile",
+      name: 'Pricing Profile',
+      field: 'pricingProfile',
+      tooltipField: 'pricingProfile',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Material",
-      field: "material",
-      tooltipField: "material",
+      name: 'Material',
+      field: 'material',
+      tooltipField: 'material',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Equipment",
-      field: "equipment",
-      tooltipField: "equipment",
+      name: 'Equipment',
+      field: 'equipment',
+      tooltipField: 'equipment',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     },
     {
-      name: "Process Profile",
-      field: "processProfile",
-      tooltipField: "processProfile",
+      name: 'Process Profile',
+      field: 'processProfile',
+      tooltipField: 'processProfile',
       checked: false,
       query: {
-        type: "",
-        filter: ""
+        type: '',
+        filter: ''
       }
     }
     // {
@@ -127,33 +127,33 @@ export class PricingProfileComponent implements OnInit {
 
   filterColumns = [
     {
-      name: "Vendor Name",
-      field: "vendorName",
-      tooltipField: "vendorName",
+      name: 'Vendor Name',
+      field: 'vendorName',
+      tooltipField: 'vendorName',
       checked: true
     },
     {
-      name: "Pricing Profile",
-      field: "pricingProfile",
-      tooltipField: "pricingProfile",
+      name: 'Pricing Profile',
+      field: 'pricingProfile',
+      tooltipField: 'pricingProfile',
       checked: true
     },
     {
-      name: "Material",
-      field: "material",
-      tooltipField: "material",
+      name: 'Material',
+      field: 'material',
+      tooltipField: 'material',
       checked: true
     },
     {
-      name: "Equipment",
-      field: "equipment",
-      tooltipField: "equipment",
+      name: 'Equipment',
+      field: 'equipment',
+      tooltipField: 'equipment',
       checked: true
     },
     {
-      name: "Process Profile",
-      field: "processProfile",
-      tooltipField: "processProfile",
+      name: 'Process Profile',
+      field: 'processProfile',
+      tooltipField: 'processProfile',
       checked: true
     }
     // {
@@ -220,7 +220,7 @@ export class PricingProfileComponent implements OnInit {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
         this.router.navigateByUrl(
-          this.router.url + "/pricing-profile/" + event.data.id
+          this.router.url + '/pricing-profile/' + event.data.id
         );
       }
     };
@@ -230,41 +230,41 @@ export class PricingProfileComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
-        headerName: "Vendor Name",
-        field: "vendorName",
-        tooltipField: "vendorName",
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Pricing Profile",
-        field: "pricingProfile",
-        tooltipField: "pricingProfile",
+        headerName: 'Pricing Profile',
+        field: 'pricingProfile',
+        tooltipField: 'pricingProfile',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Material",
-        field: "material",
-        tooltipField: "material",
+        headerName: 'Material',
+        field: 'material',
+        tooltipField: 'material',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Equipment",
-        field: "equipment",
-        tooltipField: "equipment",
+        headerName: 'Equipment',
+        field: 'equipment',
+        tooltipField: 'equipment',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: "Process Profile",
-        field: "processProfile",
-        tooltipField: "processProfile",
+        headerName: 'Process Profile',
+        field: 'processProfile',
+        tooltipField: 'processProfile',
         hide: false,
         sortable: true,
         filter: false
@@ -324,10 +324,10 @@ export class PricingProfileComponent implements OnInit {
       pricingProfile: item.name,
       material: item.processProfile.processMachineServingMaterialList
         .map(item => item.machineServingMaterial.material.name)
-        .join(", "),
+        .join(', '),
       equipment: item.processProfile.processMachineServingMaterialList
         .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
-        .join(", "),
+        .join(', '),
       processProfile: item.processProfile.name
       // postProcess: "Electropolishing",
       // machinesMatched: 2,
@@ -369,7 +369,7 @@ export class PricingProfileComponent implements OnInit {
         if (column.checked) {
           columnInstance.setModel(column.query);
         } else {
-          columnInstance.setModel({ type: "", filter: "" });
+          columnInstance.setModel({ type: '', filter: '' });
         }
       }
       this.gridOptions.api.onFilterChanged();

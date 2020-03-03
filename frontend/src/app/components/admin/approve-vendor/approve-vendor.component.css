@@ -21,14 +21,14 @@
   padding: 10px 30px;
   margin-right: 40px;
   color: white !important;
-  background: #89D818;
+  background: #89d818;
   border: none;
   font-size: 14px;
 }
 .button-decline {
   padding: 10px 30px;
   color: white !important;
-  background: #EF773F;
+  background: #ef773f;
   border: none;
   font-size: 14px;
 }
@@ -54,7 +54,7 @@
 .ag-grid-dropdown-divider {
   height: 0;
   overflow: hidden;
-  border-top: 1px solid #e9ecef
+  border-top: 1px solid #e9ecef;
 }
 .dropdown-item {
   color: white !important;
@@ -80,4 +80,3 @@
   font-size: 13px;
   margin-bottom: 3px;
 }
-

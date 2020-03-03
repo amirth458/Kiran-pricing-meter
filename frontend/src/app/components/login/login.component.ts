@@ -1,19 +1,19 @@
-import { Component, OnInit, AfterViewChecked } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
-import { UserService } from "../../service/user.service";
-import { AuthService } from "../../service/auth.service";
-import { NgxSpinnerService } from "ngx-spinner";
-import { Store } from "@ngrx/store";
-import { AppTypes } from "src/app/store";
-import { environment } from "src/environments/environment";
+import { UserService } from '../../service/user.service';
+import { AuthService } from '../../service/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Store } from '@ngrx/store';
+import { AppTypes } from 'src/app/store';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, AfterViewChecked {
   userForm: FormGroup = this.fb.group({
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     remember_me: null
   });
 
-  errorMessage = "";
+  errorMessage = '';
   siteKey = environment.reCaptureKey;
 
   constructor(
@@ -36,11 +36,11 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit() {
-    const rememberMe = localStorage.getItem("admin-remember_me");
-    const email = localStorage.getItem("admin-email");
-    const password = localStorage.getItem("admin-password");
+    const rememberMe = localStorage.getItem('admin-remember_me');
+    const email = localStorage.getItem('admin-email');
+    const password = localStorage.getItem('admin-password');
 
-    if (rememberMe === "1") {
+    if (rememberMe === '1') {
       this.userForm.setValue({
         email,
         password,
@@ -53,18 +53,18 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.getElementsByClassName("needs-validation");
+    const forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
     const validation = Array.prototype.filter.call(forms, form => {
       form.addEventListener(
-        "submit",
+        'submit',
         event => {
           if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
           } else {
           }
-          form.classList.add("was-validated");
+          form.classList.add('was-validated');
         },
         false
       );
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   login() {
-    this.errorMessage = "";
+    this.errorMessage = '';
     if (!this.userForm.valid) {
       return;
     }
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       )
       .subscribe(
         (res: any) => {
-          if (!res.roles.includes("ROLE_ADMIN")) {
+          if (!res.roles.includes('ROLE_ADMIN')) {
             this.loginErrorHandler({ status: 403 });
             return;
           }
@@ -96,10 +96,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
           });
 
           if (this.userForm.value.remember_me) {
-            localStorage.setItem("admin-remember_me", "1");
-            localStorage.setItem("admin-email", this.userForm.value.email);
+            localStorage.setItem('admin-remember_me', '1');
+            localStorage.setItem('admin-email', this.userForm.value.email);
             localStorage.setItem(
-              "admin-password",
+              'admin-password',
               this.userForm.value.password
             );
           }
@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
             type: AppTypes.GetUserInfo
           });
 
-          this.router.navigate(["/marketplace"]);
+          this.router.navigate(['/marketplace']);
 
           this.spineer.hide();
         },
@@ -126,20 +126,20 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   loginErrorHandler(error) {
     switch (error.status) {
       case 404:
-        this.errorMessage = "Authentication service does not exist.";
+        this.errorMessage = 'Authentication service does not exist.';
         break;
       case 401:
-        this.errorMessage = "Login credentials is incorrect.";
+        this.errorMessage = 'Login credentials is incorrect.';
         break;
       case 403:
         this.errorMessage =
-          "Access failed. Please contact 3Diligent for support.";
+          'Access failed. Please contact 3Diligent for support.';
         break;
       case 500:
-        this.errorMessage = "Error on Server";
+        this.errorMessage = 'Error on Server';
         break;
       default:
-        this.errorMessage = "Error on Server";
+        this.errorMessage = 'Error on Server';
         break;
     }
   }

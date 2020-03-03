@@ -8,9 +8,8 @@ describe('SubOrderInformationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubOrderInformationComponent ]
-    })
-    .compileComponents();
+      declarations: [SubOrderInformationComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,7 +1,6 @@
 import { browser, by, element, ElementFinder } from 'protractor';
 
 export class FacilityDetails {
-
   url = '/profile/vendor/facilities/edit/840';
 
   navigateTo() {
@@ -20,21 +19,47 @@ export class FacilityDetails {
   fillData(data: any) {
     this.setDataInComponent('input[formControlName=name]', data.name);
     this.setDataInComponent('input[formControlName=email]', data.email);
-    this.setDataInComponent('select[formControlName=vendorType]', data.vendorType, false);
-    this.setDataInComponent('select[formControlName=vendorIndustry]', data.vendorIndustry, false);
-    this.setDataInComponent('input[formControlName=primaryContactFirstName]', data.primaryContactFirstName);
-    this.setDataInComponent('input[formControlName=primaryContactLastName]', data.primaryContactLastName);
+    this.setDataInComponent(
+      'select[formControlName=vendorType]',
+      data.vendorType,
+      false
+    );
+    this.setDataInComponent(
+      'select[formControlName=vendorIndustry]',
+      data.vendorIndustry,
+      false
+    );
+    this.setDataInComponent(
+      'input[formControlName=primaryContactFirstName]',
+      data.primaryContactFirstName
+    );
+    this.setDataInComponent(
+      'input[formControlName=primaryContactLastName]',
+      data.primaryContactLastName
+    );
     this.setDataInComponent('international-phone-number input', data.phone);
     this.setDataInComponent('input[formControlName=street1]', data.street1);
     this.setDataInComponent('input[formControlName=street2]', data.street2);
     this.setDataInComponent('input[formControlName=city]', data.city);
     this.setDataInComponent('input[formControlName=state]', data.state);
     this.setDataInComponent('input[formControlName=zipCode]', data.zipCode);
-    this.setDataInComponent('#countryComponent select[formControlName=country]', data.country, false);
-    this.setDataInComponent('select[formControlName=confidentiality]', data.confidentiality, false);
+    this.setDataInComponent(
+      '#countryComponent select[formControlName=country]',
+      data.country,
+      false
+    );
+    this.setDataInComponent(
+      'select[formControlName=confidentiality]',
+      data.confidentiality,
+      false
+    );
   }
 
-  setDataInComponent(cssString: string, strData: string, editable: boolean = true) {
+  setDataInComponent(
+    cssString: string,
+    strData: string,
+    editable: boolean = true
+  ) {
     if (editable) {
       element(by.css(cssString)).clear();
       element(by.css(cssString)).sendKeys(strData);
@@ -52,7 +77,9 @@ export class FacilityDetails {
   }
 
   getVendorIndustryControl(): ElementFinder {
-    return element(by.css('select[formControlName=vendorIndustry] option:checked'));
+    return element(
+      by.css('select[formControlName=vendorIndustry] option:checked')
+    );
   }
 
   getEmailControl(): ElementFinder {
@@ -60,7 +87,9 @@ export class FacilityDetails {
   }
 
   getCountryControl(): ElementFinder {
-    return element(by.css('#countryComponent select[formControlName=country] option:checked'));
+    return element(
+      by.css('#countryComponent select[formControlName=country] option:checked')
+    );
   }
 
   getSubmitControl(): ElementFinder {

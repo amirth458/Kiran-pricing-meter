@@ -7,10 +7,9 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ModelDetailViewComponent implements OnInit {
   @Output() close: EventEmitter<any> = new EventEmitter();
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onClose() {
     this.close.emit();

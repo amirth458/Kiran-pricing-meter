@@ -10,15 +10,15 @@ export enum AppFields {
   UserInfo = 'user-info',
   VendorInfo = 'vendor-info',
   RegisterStatus = 'register-status',
-  AuthInfo = 'auth-info',
+  AuthInfo = 'auth-info'
 }
 
 export interface AppState {
-    [AppFields.VendorInfo]: Vendor;
+  [AppFields.VendorInfo]: Vendor;
 }
 
 export const InitialState: AppState = {
-    [AppFields.VendorInfo]: null
+  [AppFields.VendorInfo]: null
 };
 
 export enum AppTypes {
@@ -28,15 +28,34 @@ export enum AppTypes {
   UpdateVendorInfo = 'update-vendor-info',
   GetUserInfo = 'get-user-info',
   RegisterStatus = 'get-register-status',
-  UpdateAuthInfo = 'update-auth-info',
+  UpdateAuthInfo = 'update-auth-info'
 }
 
-export interface UpdateState { type: AppTypes.UpdateState; payload: any; }
-export interface CreateVendorInfo { type: AppTypes.CreateVendorInfo; payload: any; }
-export interface UpdateVendorInfo { type: AppTypes.UpdateVendorInfo; payload: any; }
-export interface GetVendorInfo { type: AppTypes.GetVendorInfo; }
-export interface GetUserInfo { type: AppTypes.GetUserInfo; }
-export interface GetRegisterStatus { type: AppTypes.RegisterStatus; payload: any;  }
-export interface UpdateAuthInfo { type: AppTypes.UpdateAuthInfo; payload: any; }
+export interface UpdateState {
+  type: AppTypes.UpdateState;
+  payload: any;
+}
+export interface CreateVendorInfo {
+  type: AppTypes.CreateVendorInfo;
+  payload: any;
+}
+export interface UpdateVendorInfo {
+  type: AppTypes.UpdateVendorInfo;
+  payload: any;
+}
+export interface GetVendorInfo {
+  type: AppTypes.GetVendorInfo;
+}
+export interface GetUserInfo {
+  type: AppTypes.GetUserInfo;
+}
+export interface GetRegisterStatus {
+  type: AppTypes.RegisterStatus;
+  payload: any;
+}
+export interface UpdateAuthInfo {
+  type: AppTypes.UpdateAuthInfo;
+  payload: any;
+}
 
 export type AppAction = UpdateState;

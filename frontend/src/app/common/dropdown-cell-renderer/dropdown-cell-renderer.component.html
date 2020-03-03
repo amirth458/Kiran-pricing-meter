@@ -1,14 +1,20 @@
 <div class="action-column">
   <div class="form-group">
-    <select name="value" id="value" [required]="params.data.required || 'true'" [(ngModel)]="value" (change)="onChange()" class="form-control">
+    <select
+      name="value"
+      id="value"
+      [required]="params.data.required || 'true'"
+      [(ngModel)]="value"
+      (change)="onChange()"
+      class="form-control"
+    >
       <option value="">Choose...</option>
       <option *ngFor="let option of options" [value]="option.id">
         <ng-container *ngIf="params.colDef.field == 'unit'">
-          {{option.displayName}}
-
+          {{ option.displayName }}
         </ng-container>
         <ng-container *ngIf="params.colDef.field != 'unit'">
-          {{option.name}}
+          {{ option.name }}
         </ng-container>
       </option>
     </select>

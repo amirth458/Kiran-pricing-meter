@@ -6,16 +6,15 @@
   margin-bottom: 40px;
 }
 
-.form-row>.col:first-child,
-.form-row>[class*=col-]:first-child {
+.form-row > .col:first-child,
+.form-row > [class*='col-']:first-child {
   padding-right: 5px;
   padding-left: 0px;
 }
 
-.form-row>.col:only-child,
-.form-row>[class*=col-]:only-child {
+.form-row > .col:only-child,
+.form-row > [class*='col-']:only-child {
   padding-right: 5px;
-
 }
 
 @media (max-width: 768px) {
@@ -23,13 +22,12 @@
     padding: 40px 20px;
   }
 
-  .form-row>.col:first-child,
-  .form-row>[class*=col-]:first-child,
-  .form-row>.col:only-child,
-  .form-row>[class*=col-]:only-child {
+  .form-row > .col:first-child,
+  .form-row > [class*='col-']:first-child,
+  .form-row > .col:only-child,
+  .form-row > [class*='col-']:only-child {
     padding-right: 5px;
     padding-left: 5px;
-
   }
 }
 .link {
@@ -39,13 +37,12 @@
   color: var(--theme-light-green);
 }
 .cert_file {
-  
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 .phone-number-error {
   position: absolute;

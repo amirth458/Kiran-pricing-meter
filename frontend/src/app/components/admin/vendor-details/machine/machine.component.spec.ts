@@ -12,12 +12,13 @@ describe('MachineItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AdminVendorDetailsMachineComponent, ActionCellRendererComponent],
+      declarations: [
+        AdminVendorDetailsMachineComponent,
+        ActionCellRendererComponent
+      ],
       imports: [
         FormsModule,
-        AgGridModule.withComponents([
-          ActionCellRendererComponent
-        ])
+        AgGridModule.withComponents([ActionCellRendererComponent])
       ],
       providers: [
         {
@@ -27,8 +28,7 @@ describe('MachineItemComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

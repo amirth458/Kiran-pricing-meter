@@ -8,9 +8,8 @@ describe('StatusDropdownFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StatusDropdownFilterComponent ]
-    })
-    .compileComponents();
+      declarations: [StatusDropdownFilterComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

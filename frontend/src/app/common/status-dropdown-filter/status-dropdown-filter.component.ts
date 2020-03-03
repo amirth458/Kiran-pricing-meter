@@ -10,7 +10,7 @@ import { IFilterParams, IDoesFilterPassParams } from 'ag-grid-community';
 export class StatusDropdownFilterComponent implements IFilterAngularComp {
   status = 0;
   private params: IFilterParams;
-  constructor() { }
+  constructor() {}
 
   agInit(params: IFilterParams) {
     this.params = params;
@@ -26,7 +26,7 @@ export class StatusDropdownFilterComponent implements IFilterAngularComp {
   }
 
   getModel(): any {
-    return {value: this.status};
+    return { value: this.status };
   }
 
   setModel(model: any): void {

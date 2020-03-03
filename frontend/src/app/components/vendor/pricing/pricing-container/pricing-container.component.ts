@@ -1,19 +1,19 @@
-import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: "app-pricing-container",
-  templateUrl: "./pricing-container.component.html",
-  styleUrls: ["./pricing-container.component.css"]
+  selector: 'app-pricing-container',
+  templateUrl: './pricing-container.component.html',
+  styleUrls: ['./pricing-container.component.css']
 })
 export class PricingContainerComponent implements OnInit {
-  baseURL = "";
+  baseURL = '';
   sidemenuClosed: boolean;
   subMenus = [];
   selectedSubmenu = '';
 
   constructor(private route: Router) {
-    this.baseURL = this.route.url.split("/")[1];
+    this.baseURL = this.route.url.split('/')[1];
   }
 
   ngOnInit() {
@@ -21,7 +21,8 @@ export class PricingContainerComponent implements OnInit {
       {
         name: 'RFQ',
         route: this.baseURL + '/rfq'
-      }, {
+      },
+      {
         name: 'Orders',
         route: this.baseURL + '/orders'
       }

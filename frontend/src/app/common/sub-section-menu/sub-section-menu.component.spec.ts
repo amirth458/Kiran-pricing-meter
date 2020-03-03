@@ -18,8 +18,7 @@ describe('SubSectionMenuComponent', () => {
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

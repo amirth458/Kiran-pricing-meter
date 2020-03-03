@@ -1,23 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject } from "rxjs";
-import { NgxSpinnerService } from "ngx-spinner";
+import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import { CustomerData } from "src/app/model/user.model";
-import { Part } from "src/app/model/part.model";
-import {
-  RfqData,
-  PartQuote,
-  PartDimension
-} from "../../../../../model/part.model";
-import { RfqPricingService } from "../../../../../service/rfq-pricing.service";
-import { UserService } from "src/app/service/user.service";
+import { CustomerData } from 'src/app/model/user.model';
+import { Part } from 'src/app/model/part.model';
+import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
-  selector: "app-price-detail",
-  templateUrl: "./price-detail.component.html",
-  styleUrls: ["./price-detail.component.css"]
+  selector: 'app-price-detail',
+  templateUrl: './price-detail.component.html',
+  styleUrls: ['./price-detail.component.css']
 })
 export class PriceDetailComponent implements OnInit {
   public selectedId: number;
@@ -47,24 +43,18 @@ export class PriceDetailComponent implements OnInit {
     this.pricingService.getPartDetail(id).subscribe(part => {
       this.spinner.hide();
       this.part = part;
-      this.pricingService
-        .getRfqDetail(this.part.rfqMedia.projectRfqId)
-        .subscribe(rfq => {
-          this.rfq = rfq;
-        });
-      this.userService
-        .getCustomer(this.part.rfqMedia.media.customerId)
-        .subscribe(customer => {
-          this.customer = customer;
-        });
+      this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId).subscribe(rfq => {
+        this.rfq = rfq;
+      });
+      this.userService.getCustomer(this.part.rfqMedia.media.customerId).subscribe(customer => {
+        this.customer = customer;
+      });
       this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
         this.partQuote = partQuote;
       });
-      this.pricingService
-        .getPartDimension(this.part.id)
-        .subscribe(dimension => {
-          this.partDimension = dimension;
-        });
+      this.pricingService.getPartDimension(this.part.id).subscribe(dimension => {
+        this.partDimension = dimension;
+      });
       this.setTabInfo();
     });
   }
@@ -73,23 +63,20 @@ export class PriceDetailComponent implements OnInit {
     this.tabs = [
       {
         id: 0,
-        title:
-          this.part && this.part.manualPricingAllowed
-            ? "Manual-Price View"
-            : "Auto-Price View"
+        title: this.part && this.part.manualPricingAllowed ? 'Manual-Price View' : 'Auto-Price View'
       },
       {
         id: 1,
-        title: "Part Information"
+        title: 'Part Information'
       },
       {
         id: 2,
-        title: "Process Profile"
+        title: 'Process Profile'
       },
       this.part &&
         !this.part.manualPricingAllowed && {
           id: 3,
-          title: "Pricing Profile"
+          title: 'Pricing Profile'
         }
     ];
   }

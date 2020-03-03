@@ -1,4 +1,5 @@
-module.exports = [{
+module.exports = [
+  {
     id: 1,
     machineName: 'Alpha',
     facility: 'LA',
@@ -61,42 +62,48 @@ module.exports = [{
     equipment: 'EOS M 400',
     serialNumber: 'AC34-345',
     material: 'Inconel625'
-  }, {
+  },
+  {
     id: 9,
     machineName: 'Juliet',
     facility: 'Jersey ',
     equipment: 'EOS M 400',
     serialNumber: 'AC34-346',
     material: 'Inconel625'
-  }, {
+  },
+  {
     id: 10,
     machineName: 'Kilo',
     facility: 'Jersey',
     equipment: 'EOS M 400',
     serialNumber: 'ACA33-5',
     material: 'Stainless Steel 15-5'
-  }, {
+  },
+  {
     id: 11,
     machineName: 'Lima',
     facility: 'LA',
     equipment: 'EOS M 400',
     serialNumber: 'AC34-346',
     material: 'Stainless Steel 15-5'
-  }, {
+  },
+  {
     id: 12,
     machineName: 'Mike',
     facility: 'Jersey',
     equipment: 'EOS M 400',
     serialNumber: 'ACA33-6',
     material: 'Stainless Steel 15-5'
-  }, {
+  },
+  {
     id: 13,
     machineName: 'November',
     facility: 'LA',
     equipment: 'EOS M 400',
     serialNumber: 'AC34-347',
     material: 'Inconel625'
-  }, {
+  },
+  {
     id: 14,
     machineName: 'Oscar',
     facility: 'Youngstown',
@@ -104,5 +111,4 @@ module.exports = [{
     serialNumber: 'ACA33-7',
     material: 'Stainless Steel 15-5'
   }
-
-]
+];

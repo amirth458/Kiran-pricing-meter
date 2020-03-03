@@ -34,8 +34,7 @@ export class OrderConfirmQueueComponent implements OnInit {
     public router: Router,
     public spinner: NgxSpinnerService,
     private orderService: OrdersService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.initColumns();
@@ -48,7 +47,9 @@ export class OrderConfirmQueueComponent implements OnInit {
       pagination: true,
       paginationPageSize: this.pageSize,
       onRowClicked: event => {
-        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
+        this.router.navigateByUrl(
+          `${this.router.url}/${event.data.bidOrder.id}`
+        );
       }
     };
     this.getStartedBidOrders();
@@ -57,15 +58,13 @@ export class OrderConfirmQueueComponent implements OnInit {
   initColumns() {
     this.columnDefs = this.orderService.getOrderViewColumns();
     this.autoGroupColumnDef = {
-      headerName: 'Vendor Order ID',
+      headerName: 'Vendor Order ID'
     };
   }
-
 
   pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));
   }
-
 
   getStartedBidOrders() {
     this.spinner.show();
@@ -118,5 +117,4 @@ export class OrderConfirmQueueComponent implements OnInit {
       }
     ]);
   }
-
 }

@@ -38,14 +38,16 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
 
   onFileClicked(ev: Event, content) {
     ev.stopPropagation();
-    const partId = this.params.data.partId || (this.params.prop ? this.params.data[this.params.prop] : this.params.data.id);
+    const partId =
+      this.params.data.partId ||
+      (this.params.prop
+        ? this.params.data[this.params.prop]
+        : this.params.data.id);
     if (partId) {
       this.spinner.show();
       combineLatest(
         this.orderService.getAllMeasurementUnitType(),
-        this.orderService.getPartById(
-          partId
-        )
+        this.orderService.getPartById(partId)
       ).subscribe(([measurementUnits, order]) => {
         this.measurementUnits = measurementUnits;
         this.partInfo = order;
@@ -56,7 +58,7 @@ export class FileViewRendererComponent implements ICellRendererAngularComp {
         this.spinner.hide();
       });
     } else {
-     this.toaster.error('Invalid part id!');
+      this.toaster.error('Invalid part id!');
     }
   }
 }

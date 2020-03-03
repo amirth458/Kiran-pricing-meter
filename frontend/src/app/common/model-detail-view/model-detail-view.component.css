@@ -28,7 +28,7 @@
   flex-grow: 1;
 }
 .form-row > .col,
-.form-row > [class*="col-"] {
+.form-row > [class*='col-'] {
   padding-right: 30px;
   padding-left: 30px;
 }

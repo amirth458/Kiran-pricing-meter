@@ -1,29 +1,47 @@
 <div class="wrapper">
   <div *ngIf="tableControlReady" class="table-control">
-    <app-column-search-filter width="200px" height="100%" [type]="type" [(filterColumns)]="filterColumns"
-      (filterColumnsChange)="filterColumnsChange($event)" [(searchColumns)]="searchColumns"
-      (searchColumnsChange)="searchColumnsChange($event)">
+    <app-column-search-filter
+      width="200px"
+      height="100%"
+      [type]="type"
+      [(filterColumns)]="filterColumns"
+      (filterColumnsChange)="filterColumnsChange($event)"
+      [(searchColumns)]="searchColumns"
+      (searchColumnsChange)="searchColumnsChange($event)"
+    >
     </app-column-search-filter>
   </div>
   <div *ngIf="tableControlReady" class="table theme-table">
     <div class="table-contol">
-
       <div class="filter">
         <div class="col-9 pl-0 pr-4">
           <form [formGroup]="form" class="form-row col-12  pl-0">
             <div class="col-md-3">
               <div class="form-group theme">
-                <input type="number" formControlName="orderNo" (keyup)="getProfiles()"
-                  class="form-control form-control-sm" placeholder="Search Order" />
+                <input
+                  type="number"
+                  formControlName="orderNo"
+                  (keyup)="getProfiles()"
+                  class="form-control form-control-sm"
+                  placeholder="Search Order"
+                />
               </div>
             </div>
             <!-- *ngIf="state && (state.name !== appStatus.RFQ_CREATED && state.name !==
             appStatus.RFQ_IN_PROGRESS)" -->
             <div class="col-md-3">
               <div class="form-group theme">
-                <select class="form-control form-control-sm" formControlName="paymentType" (change)="getProfiles()">
-                  <!-- <option value="" selected>All Type Of Payment</option> -->
-                  <option *ngFor="let s of status" [value]="s.id" [text]="s.displayName"></option>
+                <select
+                  class="form-control form-control-sm"
+                  formControlName="paymentType"
+                  (change)="getProfiles()"
+                >
+                  <!-- <option value="null" selected>All Type Of Payment</option> -->
+                  <option
+                    *ngFor="let s of paymentStatusType"
+                    [value]="s.id"
+                    [text]="s.displayName"
+                  ></option>
                   <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
                 </select>
               </div>
@@ -34,7 +52,11 @@
 
       <div class="page-size">
         Page Size:
-        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+        <select
+          id="page-size"
+          [(ngModel)]="pageSize"
+          (ngModelChange)="pageSizeChanged($event)"
+        >
           <option selected value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
@@ -42,45 +64,55 @@
           <option value="200">200</option>
         </select>
       </div>
-
-
     </div>
 
-    <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="rowData" [gridOptions]="gridOptions"
-      (gridReady)="autoFitColumns()">
+    <ag-grid-angular
+      style="height: 100%;"
+      class="ag-theme-balham"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+      (gridReady)="autoFitColumns()"
+    >
     </ag-grid-angular>
-
-
   </div>
 </div>
 
-
 <ng-template #viewAllInfo let-row>
-  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)"> View All
-    Information</span>
+  <span
+    class="viewAllInfo"
+    (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)"
+  >
+    View All Information</span
+  >
 </ng-template>
-
 
 <ng-template #approveRejectAction let-row>
   <div class="d-flex justify-content-between h-100 w-100">
-    <span class="text-theme-green approve-btn"
-      (click)="selectedPurchaseOrder=row; open(approveModal, 'md')">Approve</span>
+    <span
+      class="text-theme-green approve-btn"
+      (click)="selectedPurchaseOrder = row; open(approveModal, 'md')"
+      >Approve</span
+    >
     <!-- <span class="reject-btn" (click)="selectedPurchaseOrder=row; open(rejectModal)">Reject</span> -->
   </div>
 </ng-template>
 
-
-
 <!-- Approve Modal -->
 <ng-template #approveModal let-modal>
-
-
   <div class="approveModal">
     <div class="modal-header">
-      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
-        Approve Purchase Order No {{selectedPurchaseOrder.orderId}}
+      <h5
+        class="modal-title text-theme text-capitalize w-100 pl-3"
+        id="modal-basic-title"
+      >
+        Approve Purchase Order No {{ selectedPurchaseOrder.orderId }}
       </h5>
-      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.close()"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -92,60 +124,64 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button [disabled]="disableControls" (click)="approvePurchase()" type="button" class="col btn theme">
+          <button
+            [disabled]="disableControls"
+            (click)="approvePurchase()"
+            type="button"
+            class="col btn theme"
+          >
             Approve
           </button>
         </div>
       </div>
     </div>
   </div>
-
-
 </ng-template>
 <!-- End of Approve Modal -->
 
-
-
-
 <!-- Reject Modal -->
 <ng-template #rejectModal let-modal>
-
-
   <div class="rejectModal">
     <div class="modal-header">
-      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
-        Reject Purchase Order No {{selectedPurchaseOrder.orderId}}
+      <h5
+        class="modal-title text-theme text-capitalize w-100 pl-3"
+        id="modal-basic-title"
+      >
+        Reject Purchase Order No {{ selectedPurchaseOrder.orderId }}
       </h5>
-      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.close()"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
     <div class="modal-body text-theme">
       <form [formGroup]="form">
-
         <div class="comment">
-
           <label class="">Comment</label>
           <textarea class="form-control" formControlName="comment"></textarea>
         </div>
-
       </form>
-
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button [disabled]="disableControls" (click)="rejectPurchase()" type="button"
-            class="col btn theme orange-btn">
+          <button
+            [disabled]="disableControls"
+            (click)="rejectPurchase()"
+            type="button"
+            class="col btn theme orange-btn"
+          >
             Reject
           </button>
         </div>
       </div>
     </div>
   </div>
-
-
 </ng-template>
 <!-- End of Reject Modal -->

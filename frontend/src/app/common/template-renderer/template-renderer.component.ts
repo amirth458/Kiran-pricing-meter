@@ -1,4 +1,9 @@
-import { AfterViewInit, Component, ElementRef, TemplateRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  TemplateRef
+} from '@angular/core';
 import { AgEditorComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { IAfterGuiAttachedParams } from 'ag-grid';
 
@@ -13,13 +18,14 @@ declare var $: any;
     ></ng-container>
   `
 })
-export class TemplateRendererComponent implements ICellRendererAngularComp, AgEditorComponent, AfterViewInit  {
+export class TemplateRendererComponent
+  implements ICellRendererAngularComp, AgEditorComponent, AfterViewInit {
   template: TemplateRef<any>;
-  templateContext: { $implicit: any, params: any, refreshCell: any };
+  templateContext: { $implicit: any; params: any; refreshCell: any };
   params: any;
   tooltipCell = false;
 
-  constructor(private element: ElementRef) { }
+  constructor(private element: ElementRef) {}
 
   refresh(params: any): boolean {
     this.templateContext = {
@@ -32,7 +38,11 @@ export class TemplateRendererComponent implements ICellRendererAngularComp, AgEd
 
   agInit(params: any): void {
     params.cellStartedEdit = params.hasOwnProperty('cellStartedEdit');
-    if (!params.cellStartedEdit && params.colDef.cellRendererParams && params.colDef.cellRendererParams.tooltipCell) {
+    if (
+      !params.cellStartedEdit &&
+      params.colDef.cellRendererParams &&
+      params.colDef.cellRendererParams.tooltipCell
+    ) {
       this.tooltipCell = params.colDef.cellRendererParams.tooltipCell;
       $(this.element.nativeElement).addClass('tooltip-cell');
     }
@@ -59,7 +69,7 @@ export class TemplateRendererComponent implements ICellRendererAngularComp, AgEd
 
   getValue(): any {
     const fieldDef = this.params.colDef.field.split('.');
-    if ( fieldDef.length > 0 ) {
+    if (fieldDef.length > 0) {
       let val = this.params.data;
       for (let key in fieldDef) {
         val = val[fieldDef[key]] || {};
@@ -87,7 +97,7 @@ export class TemplateRendererComponent implements ICellRendererAngularComp, AgEd
   refreshCell(): void {
     const el = this.element.nativeElement.querySelector('div');
     // determine tooltip popover
-    if (el && (el.offsetWidth < el.scrollWidth)) {
+    if (el && el.offsetWidth < el.scrollWidth) {
       $(el).popover();
     } else {
       $(el).popover('hide');
@@ -99,10 +109,11 @@ export class TemplateRendererComponent implements ICellRendererAngularComp, AgEd
   ngAfterViewInit(): void {
     if (this.tooltipCell) {
       $(() => {
-        this.params.api.addEventListener('columnResized', () => this.refreshCell());
+        this.params.api.addEventListener('columnResized', () =>
+          this.refreshCell()
+        );
         this.refreshCell();
       });
     }
   }
-
 }

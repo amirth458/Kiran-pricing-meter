@@ -7,13 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./billing-container.component.css']
 })
 export class BillingContainerComponent implements OnInit {
-  baseURL = "";
+  baseURL = '';
   sidemenuClosed: boolean;
   subMenus = [];
   selectedSubmenu = '';
 
   constructor(private route: Router) {
-    this.baseURL = this.route.url.split("/")[1];
+    this.baseURL = this.route.url.split('/')[1];
   }
 
   ngOnInit() {

@@ -7,11 +7,11 @@
   border: 1px solid white;
 }
 
-.image-section>p {
+.image-section > p {
   color: var(--theme-sky-blue);
 }
 
-.image-section>p:hover {
+.image-section > p:hover {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -41,7 +41,7 @@
 .tabs .tab-header .tab {
   padding: 0px 25px;
   height: 100%;
-  flex-grow: .5;
+  flex-grow: 0.5;
   min-width: fit-content;
 }
 
@@ -63,10 +63,10 @@ table.rfq-table {
 }
 
 table.rfq-table tbody {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
-table.rfq-table tbody tr>th[scope="row"] {
+table.rfq-table tbody tr > th[scope='row'] {
   color: white;
   background: var(--theme-grid-header);
 }
@@ -82,7 +82,7 @@ table.rfq-table tbody td {
   padding: 8px 15px;
 }
 
-.image-section .tabs .tab{
+.image-section .tabs .tab {
   font-size: 14px;
   color: var(--theme-bright-blue);
 }

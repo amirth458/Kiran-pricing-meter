@@ -22,7 +22,7 @@
 
 .viewAllInfo {
   color: var(--theme-sky-blue);
-  cursor: pointer
+  cursor: pointer;
 }
 
 .viewAllInfo:hover,
@@ -33,7 +33,7 @@
 }
 
 .approve-btn {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .reject-btn {
@@ -41,9 +41,8 @@
   color: var(--theme-orange);
 }
 
-
-.approveModal .modal-header>h5,
-.rejectModal .modal-header>h5 {
+.approveModal .modal-header > h5,
+.rejectModal .modal-header > h5 {
   border-left: 5px solid var(--theme-text-color);
 }
 
@@ -56,5 +55,4 @@
   .wrapper {
     padding: 40px 20px;
   }
-
 }

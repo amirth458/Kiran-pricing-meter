@@ -8,9 +8,8 @@ describe('FileViewRendererComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileViewRendererComponent ]
-    })
-    .compileComponents();
+      declarations: [FileViewRendererComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
