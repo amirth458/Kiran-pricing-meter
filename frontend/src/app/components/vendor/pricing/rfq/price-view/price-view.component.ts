@@ -39,10 +39,18 @@ import { UserService } from '../../../../../service/user.service';
 })
 export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('scroller') private scroller: ElementRef;
+  _partQuote: PartQuote;
   @Input() part: Part;
   @Input() customer: CustomerData;
-  @Input() partQuote: PartQuote;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
+  @Input()
+  set partQuote(value: PartQuote) {
+    this._partQuote = value || null;
+    console.log(value);
+  }
+  get partQuote(): PartQuote {
+    return this._partQuote;
+  }
 
   stage = 'unset';
 
@@ -339,6 +347,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       .subscribe(() => {
         this.toaster.success('Part Quote created successfully.');
         this.manualQuote.emit();
+        this.changeStage('unset');
       });
   }
 
