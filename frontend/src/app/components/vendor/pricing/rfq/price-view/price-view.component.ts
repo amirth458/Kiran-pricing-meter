@@ -225,11 +225,10 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
         })
       );
     });
-    console.log(this.dynamicForm.getRawValue(), this.dynamicForm.controls);
     this.changeStage('edit');
   }
 
-  calcLineItemCost(form: FormGroup) {
+  calcLineItemCost(form: any) {
     const v: any = form.getRawValue();
     return (v.unit || 0) * (v.unitPrice || 0);
   }
@@ -263,51 +262,77 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   onSave() {
     this.modalService.dismissAll();
     this.stage = 'set';
-
-    this.pricingForm.setValue({
-      ...this.pricingForm.value,
-      toolingLineItemCost: this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice,
-      partsLineItemCost: this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice,
-      totalCost:
-        this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice +
-        this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
-    });
+    let defConfig = {};
+    let totalCost = 0;
+    if (this.part.manualPricingAllowed) {
+      this.pricingForm.setValue({
+        ...this.pricingForm.value,
+        toolingLineItemCost: this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice,
+        partsLineItemCost: this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice,
+        totalCost:
+          this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice +
+          this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
+      });
+      defConfig = {
+        id: 0,
+        isManualPricing: true,
+        partQuoteDetailList: [
+          {
+            extendedCost: 0,
+            id: 0,
+            invoiceCost: this.pricingForm.value.toolingLineItemCost,
+            invoiceItemId: 4,
+            invoiceLineItemId: 0,
+            partQuoteId: 0,
+            processPricingConditionTypeId: 0,
+            unit: this.pricingForm.value.toolingUnitCount,
+            unitPrice: this.pricingForm.value.toolingUnitPrice
+          },
+          {
+            extendedCost: 0,
+            id: 0,
+            invoiceCost: this.pricingForm.value.partsLineItemCost,
+            invoiceItemId: 3,
+            invoiceLineItemId: 0,
+            partQuoteId: 0,
+            processPricingConditionTypeId: 0,
+            unit: this.pricingForm.value.partsUnitCount,
+            unitPrice: this.pricingForm.value.partsUnitPrice
+          }
+        ],
+        totalCost: this.pricingForm.value.totalCost
+      };
+    } else {
+      defConfig = {
+        id: this.partQuote.id,
+        isManualPricing: false,
+        partQuoteDetailList: (this.prices.getRawValue() || []).map(f => {
+          return {
+            extendedCost: 0,
+            id: 0,
+            invoiceCost: (f.unit || 0) * (f.unitPrice || 0),
+            invoiceItemId: f.invoiceItemId,
+            invoiceLineItemId: 0,
+            partQuoteId: f.partQuoteId,
+            processPricingConditionTypeId: 0,
+            unit: f.unit,
+            unitPrice: f.unitPrice
+          };
+        }),
+        totalCost: this.findLineItemTotalCost()
+      };
+    }
 
     const data = {
-      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
-      id: 0,
-      isExpired: null,
-      isManualPricing: true,
-      matchedProfileIds: [0],
-      partId: this.part.id,
-      partQuoteDetailList: [
-        {
-          extendedCost: 0,
-          id: 0,
-          invoiceCost: this.pricingForm.value.toolingLineItemCost,
-          invoiceItemId: 4,
-          invoiceLineItemId: 0,
-          partQuoteId: 0,
-          processPricingConditionTypeId: 0,
-          unit: this.pricingForm.value.toolingUnitCount,
-          unitPrice: this.pricingForm.value.toolingUnitPrice
-        },
-        {
-          extendedCost: 0,
-          id: 0,
-          invoiceCost: this.pricingForm.value.partsLineItemCost,
-          invoiceItemId: 3,
-          invoiceLineItemId: 0,
-          partQuoteId: 0,
-          processPricingConditionTypeId: 0,
-          unit: this.pricingForm.value.partsUnitCount,
-          unitPrice: this.pricingForm.value.partsUnitPrice
-        }
-      ],
-      totalCost: this.pricingForm.value.totalCost,
-      winningProcessPricingId: 0
+      ...defConfig,
+      ...{
+        expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
+        isExpired: null,
+        matchedProfileIds: [0],
+        partId: this.part.id,
+        winningProcessPricingId: 0
+      }
     };
-
     this.pricingService
       .createPartQuoteDetail(data)
       .pipe(catchError(e => this.handleError(e)))
