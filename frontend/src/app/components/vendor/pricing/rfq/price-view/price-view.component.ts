@@ -17,7 +17,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { GridOptions } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { throwError } from 'rxjs';
+import { empty, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
@@ -39,6 +39,7 @@ import { UserService } from '../../../../../service/user.service';
 })
 export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('scroller') private scroller: ElementRef;
+  @ViewChild('refreshWindow') private refreshWindow: ElementRef<any>;
   _partQuote: PartQuote;
   @Input() part: Part;
   @Input() customer: CustomerData;
@@ -271,7 +272,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     this.modalService.dismissAll();
     this.stage = 'set';
     let defConfig = {};
-    let totalCost = 0;
     if (this.part.manualPricingAllowed) {
       this.pricingForm.setValue({
         ...this.pricingForm.value,
@@ -283,7 +283,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       });
       defConfig = {
         id: 0,
-        isManualPricing: true,
         partQuoteDetailList: [
           {
             extendedCost: 0,
@@ -313,7 +312,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     } else {
       defConfig = {
         id: this.partQuote.id,
-        isManualPricing: false,
         partQuoteDetailList: (this.prices.getRawValue() || []).map(f => {
           return {
             extendedCost: 0,
@@ -334,6 +332,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     const data = {
       ...defConfig,
       ...{
+        isManualPricing: true,
         expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
         isExpired: null,
         matchedProfileIds: [0],
@@ -343,7 +342,12 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     };
     this.pricingService
       .createPartQuoteDetail(data)
-      .pipe(catchError(e => this.handleError(e)))
+      .pipe(
+        catchError(e => {
+          this.handleError(e);
+          return empty();
+        })
+      )
       .subscribe(() => {
         this.toaster.success('Part Quote created successfully.');
         this.manualQuote.emit();
@@ -351,10 +355,21 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       });
   }
 
+  refresh() {
+    this.changeStage('unset');
+    this.modalService.dismissAll();
+    this.resetDynamicForm();
+    this.manualQuote.emit();
+  }
+
   handleError(error: HttpErrorResponse) {
     const message = error.error.message;
-    this.toaster.error(`${message} Please contact your admin`);
-    return throwError('Error');
+    if (message.indexOf('Please refresh and try again') > 0) {
+      this.openModal(this.refreshWindow, 'refresh');
+    } else {
+      this.toaster.error(`${message} Please contact your admin`);
+      return throwError('Error');
+    }
   }
 
   onRecommendModalClose(ev) {
