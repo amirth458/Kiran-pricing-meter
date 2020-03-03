@@ -108,6 +108,15 @@ export interface PartQuote {
   expiredAt: string;
   totalCost: number;
   partQuoteInvoiceItemDetails: PartQuoteInvoiceItem[];
+  partQuoteDetails: Array<AutoPriceView>;
+}
+
+export interface AutoPriceView {
+  partQuoteId: number;
+  invoiceItemId: number;
+  value: number;
+  unit: number;
+  unitPrice: number;
 }
 
 export interface PartParameterType {

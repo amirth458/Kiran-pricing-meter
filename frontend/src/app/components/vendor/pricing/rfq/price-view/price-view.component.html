@@ -18,45 +18,143 @@
       <ngb-tab title="Price Detail">
         <ng-template ngbTabContent>
           <div class="table p-4">
-            <table
-              class="table table-borderless pricing-table w-75 m-0"
+            <ng-container
               *ngIf="!part?.manualPricingAllowed || part?.partStatusType.id === 3 || partQuote; else pricingSetting"
             >
-              <thead>
-                <tr>
-                  <th class="">Line Item</th>
-                  <th class="text-center">Unit Count</th>
-                  <th class="text-center">Unit Price</th>
-                  <th class="text-center">Line Item Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
-                  <td class="font-weight-bold text-theme">
-                    {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.unit }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.unitPrice }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.value }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center text-theme"></td>
-                  <td class="text-center text-theme"></td>
-                  <td class="text-center font-weight-bold text-theme">
-                    Subtotal
-                  </td>
-                  <td class="text-center font-weight-bold text-theme">
-                    {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <ng-container [ngSwitch]="stage">
+                <ng-container *ngSwitchCase="'unset'">
+                  <table class="table table-borderless unset pricing-table w-75 m-0">
+                    <thead>
+                      <tr>
+                        <th class="">Line Item</th>
+                        <th class="text-center">Unit Count</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Line Item Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
+                        <td class="font-weight-bold text-theme">
+                          {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.unit }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.unitPrice }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.value }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-theme">
+                          <a
+                            class="link over-ride p-0 m-0"
+                            *ngIf="!part?.manualPricingAllowed"
+                            (click)="startOverrideForm()"
+                            >Override</a
+                          >
+                        </td>
+                        <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Subtotal
+                        </td>
+                        <td class="text-center font-weight-bold text-theme">
+                          {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <table [formGroup]="dynamicForm" class="table table-borderless pricing-table w-75 m-0">
+                    <thead>
+                      <tr>
+                        <th class="">Line Item</th>
+                        <th class="text-center">Unit Count</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Line Item Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="prices?.controls?.length > 0">
+                        <ng-container *ngFor="let item of prices.controls; let i = index">
+                          <tr [formGroup]="item">
+                            <td class="font-weight-bold text-theme text-center">
+                              {{ getInvoiceItem(item.get('invoiceItemId').value) }}
+                            </td>
+                            <td class="font-weight-bold text-theme text-center">
+                              <ng-container *ngIf="stage === 'confirm'">
+                                {{ item.get('unit').value }}
+                              </ng-container>
+                              <ng-container *ngIf="stage === 'edit'">
+                                <input type="number" class="price-input" formControlName="unit" />
+                              </ng-container>
+                            </td>
+                            <td class="font-weight-bold text-theme text-center">
+                              <ng-container *ngIf="stage === 'confirm'">
+                                {{ item.get('unitPrice').value }}
+                              </ng-container>
+                              <ng-container *ngIf="stage === 'edit'">
+                                <input type="number" class="price-input" formControlName="unitPrice" />
+                              </ng-container>
+                            </td>
+                            <td class="font-weight-bold text-theme text-center">
+                              {{ calcLineItemCost(item) | currency: 'USD':'symbol':'0.0-3' }}
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </ng-container>
+                      <tr>
+                        <td class="text-theme-green">
+                          <ng-container *ngIf="stage === 'edit'">
+                            <span>See the recommended price</span>
+                          </ng-container>
+                          <ng-container *ngIf="stage === 'confirm'">
+                            <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price"
+                              >Edit Price</a
+                            >
+                          </ng-container>
+                        </td>
+                        <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Subtotal
+                        </td>
+                        <td class="font-weight-bold text-theme text-center">
+                          {{ findLineItemTotalCost() | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr *ngIf="stage === 'edit'">
+                        <td colspan="4" class="text-right">
+                          <button class="btn orange-btn" (click)="changeStage('unset'); resetDynamicForm()">
+                            Cancel
+                          </button>
+                          <button class="btn green-btn" (click)="changeStage('confirm')">
+                            Save
+                          </button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="stage === 'confirm'" class="confirm-row">
+                        <td colspan="2">
+                          Apply this final price to part?
+                        </td>
+                        <td colspan="2" class="text-right">
+                          <button class="btn orange-btn" (click)="changeStage('unset'); resetDynamicForm()">
+                            No
+                          </button>
+                          <button class="btn green-btn" (click)="openModal(confirm, 'confirm')">
+                            Yes
+                          </button>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
             <ng-template #pricingSetting>
               <form [formGroup]="pricingForm">
                 <table class="table table-borderless pricing-table w-75 m-0">
@@ -178,11 +276,11 @@
                     <tr>
                       <td colspan="2">
                         <!-- <a
-                      *ngIf="stage === 'edit'"
-                      (click)="openModal(recommendation, 'recommended')"
-                      class="show-recommended"
-                      >See Recommended Price</a
-                    > -->
+                    *ngIf="stage === 'edit'"
+                    (click)="openModal(recommendation, 'recommended')"
+                    class="show-recommended"
+                    >See Recommended Price</a
+                  > -->
                         <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price">Edit Price</a>
                       </td>
                       <td class="text-center font-weight-bold">Subtotal</td>
@@ -366,13 +464,16 @@
 
 <ng-template #confirm let-modal>
   <div class="modal-container">
-    <div class="modal-header w-100">
+    <div class="modal-header w-100 d-flex justify-content-center align-items-center">
       <h5 class="modal-title text-center" id="modal-basic-title">
-        Confirming Manual Price for Part
+        Confirming {{ part.manualPricingAllowed ? 'Manual' : 'Final' }} Price for Part
       </h5>
     </div>
     <div class="modal-body px-5 py-3">
-      <p class="text-center">Once confirmed, the manual price will be issued to the customer.<br />Are you sure?</p>
+      <p class="text-center">
+        Once confirmed, the {{ part.manualPricingAllowed ? 'manual' : 'final' }} price will be issued to the
+        customer.<br />Are you sure?
+      </p>
       <table class="w-100 table table-borderless pricing-table">
         <thead>
           <tr>
@@ -382,7 +483,7 @@
             <th class="text-center">LineItemCost</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="part.manualPricingAllowed; else defaultOverrideForm">
           <tr>
             <td class="font-weight-bold">Tooling</td>
             <td class="text-center">
@@ -423,4 +524,37 @@
       <button class="btn green-btn" (click)="onSave()">Confirm</button>
     </div>
   </div>
+</ng-template>
+
+<ng-template #defaultOverrideForm>
+  <tbody>
+    <ng-container *ngIf="prices?.controls?.length > 0">
+      <ng-container *ngFor="let item of prices.controls; let i = index">
+        <tr [formGroup]="item">
+          <td class="font-weight-bold text-center text-theme">
+            {{ getInvoiceItem(item.get('invoiceItemId').value) }}
+          </td>
+          <td class="font-weight-bold text-center text-theme">
+            {{ item.get('unit').value }}
+          </td>
+          <td class="font-weight-bold text-center text-theme">
+            {{ item.get('unitPrice').value }}
+          </td>
+          <td class="font-weight-bold text-center text-theme">
+            {{ calcLineItemCost(item) | currency: 'USD':'symbol':'0.0-3' }}
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
+    <tr>
+      <td class="text-theme-green"></td>
+      <td class="text-center text-theme"></td>
+      <td class="text-center font-weight-bold text-theme">
+        Subtotal
+      </td>
+      <td class="font-weight-bold text-theme text-center">
+        {{ findLineItemTotalCost() | currency: 'USD':'symbol':'0.0-3' }}
+      </td>
+    </tr>
+  </tbody>
 </ng-template>

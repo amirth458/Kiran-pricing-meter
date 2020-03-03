@@ -10,7 +10,7 @@ import {
   ElementRef,
   AfterViewChecked
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
@@ -24,7 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { Part } from 'src/app/model/part.model';
+import { AutoPriceView, Part } from 'src/app/model/part.model';
 import { PartQuote, Address } from '../../../../../model/part.model';
 import { PartNoteView } from '../../../../../model/part.note.model';
 import { PartNoteService } from '../../../../../service/part-note.service';
@@ -39,10 +39,18 @@ import { UserService } from '../../../../../service/user.service';
 })
 export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('scroller') private scroller: ElementRef;
+  _partQuote: PartQuote;
   @Input() part: Part;
   @Input() customer: CustomerData;
-  @Input() partQuote: PartQuote;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
+  @Input()
+  set partQuote(value: PartQuote) {
+    this._partQuote = value || null;
+    console.log(value);
+  }
+  get partQuote(): PartQuote {
+    return this._partQuote;
+  }
 
   stage = 'unset';
 
@@ -62,6 +70,10 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     partsUnitPrice: [0],
     partsLineItemCost: [0],
     totalCost: [0]
+  });
+
+  dynamicForm: FormGroup = this.fb.group({
+    prices: new FormArray([])
   });
 
   noteFormGroup: FormGroup = this.fb.group({
@@ -202,6 +214,48 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     this.stage = newStage;
   }
 
+  get controls() {
+    return this.dynamicForm.controls;
+  }
+  get prices() {
+    return this.controls.prices as FormArray;
+  }
+
+  startOverrideForm() {
+    (this.partQuote.partQuoteDetails || []).forEach((quote: AutoPriceView) => {
+      this.prices.push(
+        this.fb.group({
+          partQuoteId: [quote.partQuoteId || '', Validators.required],
+          invoiceItemId: [quote.invoiceItemId || '', Validators.required],
+          value: [quote.value || 0, Validators.required],
+          unit: [quote.unit || 0, Validators.required],
+          unitPrice: [quote.unitPrice || 0, Validators.required]
+        })
+      );
+    });
+    this.changeStage('edit');
+  }
+
+  calcLineItemCost(form: any) {
+    const v: any = form.getRawValue();
+    return (v.unit || 0) * (v.unitPrice || 0);
+  }
+
+  findLineItemTotalCost() {
+    let totalCost = 0;
+    (this.prices.getRawValue() || []).map(f => {
+      totalCost += (f.unit || 0) * (f.unitPrice || 0);
+    });
+    return totalCost;
+  }
+
+  resetDynamicForm() {
+    this.dynamicForm = this.fb.group({
+      prices: new FormArray([])
+    });
+    this.dynamicForm.reset();
+  }
+
   openModal(content, css) {
     this.modalService.open(content, {
       centered: true,
@@ -216,57 +270,84 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   onSave() {
     this.modalService.dismissAll();
     this.stage = 'set';
-
-    this.pricingForm.setValue({
-      ...this.pricingForm.value,
-      toolingLineItemCost: this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice,
-      partsLineItemCost: this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice,
-      totalCost:
-        this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice +
-        this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
-    });
+    let defConfig = {};
+    let totalCost = 0;
+    if (this.part.manualPricingAllowed) {
+      this.pricingForm.setValue({
+        ...this.pricingForm.value,
+        toolingLineItemCost: this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice,
+        partsLineItemCost: this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice,
+        totalCost:
+          this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice +
+          this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
+      });
+      defConfig = {
+        id: 0,
+        isManualPricing: true,
+        partQuoteDetailList: [
+          {
+            extendedCost: 0,
+            id: 0,
+            invoiceCost: this.pricingForm.value.toolingLineItemCost,
+            invoiceItemId: 4,
+            invoiceLineItemId: 0,
+            partQuoteId: 0,
+            processPricingConditionTypeId: 0,
+            unit: this.pricingForm.value.toolingUnitCount,
+            unitPrice: this.pricingForm.value.toolingUnitPrice
+          },
+          {
+            extendedCost: 0,
+            id: 0,
+            invoiceCost: this.pricingForm.value.partsLineItemCost,
+            invoiceItemId: 3,
+            invoiceLineItemId: 0,
+            partQuoteId: 0,
+            processPricingConditionTypeId: 0,
+            unit: this.pricingForm.value.partsUnitCount,
+            unitPrice: this.pricingForm.value.partsUnitPrice
+          }
+        ],
+        totalCost: this.pricingForm.value.totalCost
+      };
+    } else {
+      defConfig = {
+        id: this.partQuote.id,
+        isManualPricing: false,
+        partQuoteDetailList: (this.prices.getRawValue() || []).map(f => {
+          return {
+            extendedCost: 0,
+            id: 0,
+            invoiceCost: (f.unit || 0) * (f.unitPrice || 0),
+            invoiceItemId: f.invoiceItemId,
+            invoiceLineItemId: 0,
+            partQuoteId: f.partQuoteId,
+            processPricingConditionTypeId: 0,
+            unit: f.unit,
+            unitPrice: f.unitPrice
+          };
+        }),
+        totalCost: this.findLineItemTotalCost()
+      };
+    }
 
     const data = {
-      expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
-      id: 0,
-      isExpired: null,
-      isManualPricing: true,
-      matchedProfileIds: [0],
-      partId: this.part.id,
-      partQuoteDetailList: [
-        {
-          extendedCost: 0,
-          id: 0,
-          invoiceCost: this.pricingForm.value.toolingLineItemCost,
-          invoiceItemId: 4,
-          invoiceLineItemId: 0,
-          partQuoteId: 0,
-          processPricingConditionTypeId: 0,
-          unit: this.pricingForm.value.toolingUnitCount,
-          unitPrice: this.pricingForm.value.toolingUnitPrice
-        },
-        {
-          extendedCost: 0,
-          id: 0,
-          invoiceCost: this.pricingForm.value.partsLineItemCost,
-          invoiceItemId: 3,
-          invoiceLineItemId: 0,
-          partQuoteId: 0,
-          processPricingConditionTypeId: 0,
-          unit: this.pricingForm.value.partsUnitCount,
-          unitPrice: this.pricingForm.value.partsUnitPrice
-        }
-      ],
-      totalCost: this.pricingForm.value.totalCost,
-      winningProcessPricingId: 0
+      ...defConfig,
+      ...{
+        expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
+        isExpired: null,
+        matchedProfileIds: [0],
+        partId: this.part.id,
+        winningProcessPricingId: 0
+      }
     };
-
     this.pricingService
       .createPartQuoteDetail(data)
       .pipe(catchError(e => this.handleError(e)))
       .subscribe(() => {
         this.toaster.success('Part Quote created successfully.');
         this.manualQuote.emit();
+        this.changeStage('unset');
       });
   }
 
