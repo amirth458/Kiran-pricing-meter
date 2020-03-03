@@ -558,3 +558,26 @@
     </tr>
   </tbody>
 </ng-template>
+
+<ng-template #refreshWindow let-modal>
+  <div class="modal-container">
+    <div class="modal-header w-100 d-flex justify-content-center align-items-center">
+      <h5 class="modal-title text-center">
+        Customer has changed the part details
+      </h5>
+    </div>
+    <div class="modal-body px-5 py-3" ngbAutofocus>
+      <p class="text-center">
+        Please refresh your screen to get latest part information
+      </p>
+      <div class="d-flex justify-content-center align-items-center">
+        <button class="refresh-btn btn btn-theme w-auto text-theme" (click)="refresh()">
+          <i class="fas fa-redo-alt"></i>
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button class="btn green-btn" (click)="refresh()">Ok</button>
+    </div>
+  </div>
+</ng-template>
