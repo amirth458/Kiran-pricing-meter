@@ -283,7 +283,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       });
       defConfig = {
         id: 0,
-        isManualPricing: true,
         partQuoteDetailList: [
           {
             extendedCost: 0,
@@ -313,7 +312,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     } else {
       defConfig = {
         id: this.partQuote.id,
-        isManualPricing: false,
         partQuoteDetailList: (this.prices.getRawValue() || []).map(f => {
           return {
             extendedCost: 0,
@@ -334,6 +332,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     const data = {
       ...defConfig,
       ...{
+        isManualPricing: true,
         expiredAt: this.datePipe.transform(Date.now(), 'yyyy-MM-ddTHH:mm:ss.SSS') + 'Z',
         isExpired: null,
         matchedProfileIds: [0],
