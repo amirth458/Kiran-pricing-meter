@@ -49,7 +49,12 @@
                       </tr>
                       <tr>
                         <td class="text-theme">
-                          <a class="link over-ride p-0 m-0" (click)="startOverrideForm()">Override</a>
+                          <a
+                            class="link over-ride p-0 m-0"
+                            *ngIf="!part?.manualPricingAllowed"
+                            (click)="startOverrideForm()"
+                            >Override</a
+                          >
                         </td>
                         <td class="text-center text-theme"></td>
                         <td class="text-center font-weight-bold text-theme">
@@ -80,13 +85,13 @@
                               {{ getInvoiceItem(item.get('invoiceItemId').value) }}
                             </td>
                             <td class="font-weight-bold text-theme">
-                              <input type="number" class="price-input" formControlName="value" />
-                            </td>
-                            <td class="font-weight-bold text-theme">
                               <input type="number" class="price-input" formControlName="unit" />
                             </td>
                             <td class="font-weight-bold text-theme">
-                              {{ item.get('unitPrice').value | currency: 'USD':'symbol':'0.0-3' }}
+                              <input type="number" class="price-input" formControlName="unitPrice" />
+                            </td>
+                            <td class="font-weight-bold text-theme">
+                              {{ calcLineItemCost(item) | currency: 'USD':'symbol':'0.0-3' }}
                             </td>
                           </tr>
                         </ng-container>
@@ -100,7 +105,7 @@
                           Subtotal
                         </td>
                         <td class="font-weight-bold text-theme">
-                          {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                          {{ findLineItemTotalCost() | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                       </tr>
                     </tbody>

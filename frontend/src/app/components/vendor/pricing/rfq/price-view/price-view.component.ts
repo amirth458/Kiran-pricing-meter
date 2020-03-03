@@ -229,6 +229,19 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     this.changeStage('edit');
   }
 
+  calcLineItemCost(form: FormGroup) {
+    const v: any = form.getRawValue();
+    return (v.unit || 0) * (v.unitPrice || 0);
+  }
+
+  findLineItemTotalCost() {
+    let totalCost = 0;
+    (this.prices.getRawValue() || []).map(f => {
+      totalCost += (f.unit || 0) * (f.unitPrice || 0);
+    });
+    return totalCost;
+  }
+
   resetDynamicForm() {
     this.dynamicForm = this.fb.group({
       prices: new FormArray([])
