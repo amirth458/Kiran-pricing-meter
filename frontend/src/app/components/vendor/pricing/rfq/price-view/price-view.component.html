@@ -390,8 +390,13 @@
       </h5>
       <div class="d-flex flex-grow-1 flex-column message-container" #scroller (scroll)="onScroll()">
         <ng-container *ngIf="partNoteView?.messages?.length > 0">
-          <div class="participant-chat text-left" *ngFor="let m of partNoteView.messages">
-            <span class="text-theme-green">{{ m.user.firstName || '' }} {{ m.user.lastName || '' }}</span>
+          <div
+            class="participant-chat {{ user.id === m.userId ? 'text-left' : 'text-right' }}"
+            *ngFor="let m of partNoteView.messages"
+          >
+            <span class="{{ user.id === m.userId ? 'text-theme-green' : 'text-theme' }}"
+              >{{ m.user.firstName || '' }} {{ m.user.lastName || '' }}</span
+            >
             <p>{{ m.message || '' }}</p>
           </div>
         </ng-container>

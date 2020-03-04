@@ -82,8 +82,8 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   });
   disableScrollDown = false;
   loadingNote: boolean;
-
   partNoteView: PartNoteView;
+  user: any;
 
   constructor(
     private modalService: NgbModal,
@@ -102,6 +102,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.user = this.userService.getUserInfo();
     this.updateRowData();
     this.columnDefs = [
       {
@@ -439,11 +440,10 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
 
   addNote() {
     this.loadingNote = true;
-    const user: any = this.userService.getUserInfo();
     this.partNoteService
       .addPartNote({
         message: this.noteFormGroup.get('note').value,
-        userId: user.id,
+        userId: this.user.id,
         partId: this.part.id
       } as any)
       .subscribe(() => {
