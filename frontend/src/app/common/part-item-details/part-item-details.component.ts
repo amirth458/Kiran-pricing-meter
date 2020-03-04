@@ -7,7 +7,7 @@ import { Address } from '../../model/part.model';
   templateUrl: './part-item-details.component.html',
   styleUrls: ['./part-item-details.component.css']
 })
-export class PartItemDetailsComponent implements OnInit {
+export class PartItemDetailsComponent {
   @Input('part') part;
   @Input('measurementUnits') measurementUnits = {
     metadataType: 'measurement_unit_type',
@@ -839,19 +839,13 @@ export class PartItemDetailsComponent implements OnInit {
       }
     ]
   };
+  @Input('postProcessAction') postProcessAction: any;
+
   constructor() {}
 
-  ngOnInit() {}
-
   getPartDimension() {
-    console.log(this.part.rfqMedia.media.partDimension);
-
-    const metadataList =
-      this.measurementUnits && this.measurementUnits.metadataList;
-    return Util.getPartDimension(
-      this.part.rfqMedia.media.partDimension,
-      metadataList || []
-    );
+    const metadataList = this.measurementUnits && this.measurementUnits.metadataList;
+    return Util.getPartDimension(this.part.rfqMedia.media.partDimension, metadataList || []);
   }
 
   shippingAddressInfo(address: Address) {
@@ -859,9 +853,10 @@ export class PartItemDetailsComponent implements OnInit {
   }
 
   getUnit(unitId: number) {
-    return Util.findMeasurementUnit(
-      this.measurementUnits.metadataList || [],
-      unitId
-    );
+    return Util.findMeasurementUnit(this.measurementUnits.metadataList || [], unitId);
+  }
+
+  preparePostProcessValues(ids: Array<number>) {
+    return Util.preparePostProcessValues(this.postProcessAction, ids);
   }
 }

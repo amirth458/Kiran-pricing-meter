@@ -7,11 +7,9 @@ import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {
-  PaymentDetails,
-  PaymentStatusTypes
-} from 'src/app/model/billing.model';
+import { PaymentDetails, PaymentStatusTypes } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-purchase-order-item',
@@ -47,19 +45,12 @@ export class PurchaseOrderItemComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
-    // '75'
     this.billingService.getPaymentInfo(this.selectedPurchaseOrderId).subscribe(
       (res: PaymentDetails) => {
         console.log({ res });
         this.orderInfo = res;
-        if (
-          this.orderInfo &&
-          this.orderInfo.billingInfoView &&
-          this.orderInfo.billingInfoView.purchaseAgreement
-        ) {
-          this.messageList =
-            this.orderInfo.billingInfoView.purchaseAgreement
-              .purchaseAgreementNoteViewList || [];
+        if (this.orderInfo && this.orderInfo.billingInfoView && this.orderInfo.billingInfoView.purchaseAgreement) {
+          this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
           this.messageList = this.messageList.reverse();
         } else {
           this.toast.error('Something went wrong. Please try again later.');
@@ -152,37 +143,22 @@ export class PurchaseOrderItemComponent implements OnInit {
       return;
     }
 
-    this.billingService
-      .addNote(this.chatForm.value.note, this.orderInfo.billingInfoView.orderId)
-      .subscribe(
-        res => {
-          console.log({ res });
-          this.messageList = res.reverse();
-          this.toast.success('Note Sent');
-          this.chatForm.reset();
-        },
-        err => {
-          console.log({ err });
-          this.toast.error(err.error.message);
-        }
-      );
+    this.billingService.addNote(this.chatForm.value.note, this.orderInfo.billingInfoView.orderId).subscribe(
+      res => {
+        console.log({ res });
+        this.messageList = res.reverse();
+        this.toast.success('Note Sent');
+        this.chatForm.reset();
+      },
+      err => {
+        console.log({ err });
+        this.toast.error(err.error.message);
+      }
+    );
   }
 
-  getPostProcessActions(postProcessActionId: Array<number>) {
-    const filterPostProcessAction = this.postProcessAction.filter(item =>
-      postProcessActionId.includes(item.id)
-    );
-    let result = '';
-    if (filterPostProcessAction.length) {
-      filterPostProcessAction.map((item, index) => {
-        if (index != filterPostProcessAction.length - 1) {
-          result += item.name + ', ';
-        } else {
-          result += item.name;
-        }
-      });
-    }
-    return result;
+  preparePostProcessValues(ids: Array<number>) {
+    return Util.preparePostProcessValues(this.postProcessAction, ids);
   }
 
   isDifferentDate(index: number) {
