@@ -24,7 +24,7 @@ export class PricingSettingsComponent implements OnInit {
       autoPricingEligibilityType: [null],
       quoteExpirationTime: [null]
     },
-    { validators: this.checkBidNumber }
+    { validators: [this.checkBidNumber, this.profileCounts] }
   );
   manualPricingSection = 3;
 
@@ -52,10 +52,15 @@ export class PricingSettingsComponent implements OnInit {
   checkBidNumber(control: FormGroup) {
     const bidNumber = control.get('presentBidNumberFromBottom');
     const processProfile = control.get('minElligibleProcessProfile');
-
-    return bidNumber && processProfile && (+bidNumber.value || 0) > (+processProfile.value || 0)
+    return bidNumber.value && processProfile.value && (+bidNumber.value || 0) > (+processProfile.value || 0)
       ? { invalidBidNumber: true }
       : null;
+  }
+  profileCounts(control: FormGroup) {
+    const profile = control.get('minElligibleProcessProfile');
+    const pricing = control.get('minElligiblePricingProfile');
+
+    return !profile.value && !pricing.value ? { invalidCount: true } : null;
   }
 
   ngOnInit() {
