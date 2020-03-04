@@ -28,15 +28,13 @@
           <p><b>Part Dimensions:</b> {{ getDimension() }}</p>
           <p><b>Files:</b> {{ part?.rfqMedia.media.name }}</p>
           <p>
-            <b>Volumn - </b>
+            <b>Volume - </b>
             {{ getDimensionValue(part?.rfqMedia.media.partDimension.volume) }}
           </p>
           <p><b>Bounding box - </b>{{ getBoundingBox() }}</p>
           <p>
             <b>Surface area - </b>
-            {{
-              getDimensionValue(part?.rfqMedia.media.partDimension.surfaceArea)
-            }}
+            {{ getDimensionValue(part?.rfqMedia.media.partDimension.surfaceArea) }}
           </p>
           <p *ngFor="let customerParameter of getToleranceList(); index as i">
             <b>Critical Tolerance {{ i + 1 }}: </b>
