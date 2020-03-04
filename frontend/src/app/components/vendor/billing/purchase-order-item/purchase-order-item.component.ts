@@ -30,6 +30,7 @@ export class PurchaseOrderItemComponent implements OnInit {
   userInfo;
   orderInfo: PaymentDetails;
   postProcessAction = [];
+  measurementUnits = [];
   constructor(
     public toast: ToastrService,
     public location: Location,
@@ -77,6 +78,9 @@ export class PurchaseOrderItemComponent implements OnInit {
     this.metadataService.getPostProcessActionMetaData().subscribe(res => {
       this.postProcessAction = res;
       console.log({ r: res });
+    });
+    this.metadataService.getMetaData('measurement_unit_type').subscribe(res => {
+      this.measurementUnits = res;
     });
   }
 

@@ -375,6 +375,7 @@
       <app-part-item-details
         *ngFor="let part of orderInfo?.customerOrder?.partList"
         [part]="part"
+        [measurementUnits]="measurementUnits"
       >
       </app-part-item-details>
     </div>
