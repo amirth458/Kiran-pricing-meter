@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Util } from '../../util/Util';
 import { Address } from '../../model/part.model';
 
@@ -10,11 +10,11 @@ import { Address } from '../../model/part.model';
 export class PartItemDetailsComponent {
   @Input('part') part;
   @Input('measurementUnits') measurementUnits;
+  @Input('postProcessAction') postProcessAction;
+
   constructor() {}
 
   getPartDimension() {
-    console.log(this.part.rfqMedia.media.partDimension);
-
     return Util.getPartDimension(this.part.rfqMedia.media.partDimension, this.measurementUnits || []);
   }
 
