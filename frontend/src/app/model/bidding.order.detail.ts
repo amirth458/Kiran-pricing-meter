@@ -2,6 +2,7 @@ import { ProcessProfile } from './part.model';
 import { BidProcessStatusType } from './confirm.sub-order.release';
 
 export interface BiddingOrderDetail {
+  bidProcessTimeLeft: string;
   acceptedOrderDetails: Array<GetAllCustomerPartView>;
   matchingSuppliersProfilesView: Array<VendorOrderDetail>;
 }

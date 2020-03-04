@@ -16,7 +16,14 @@
       </ng-container>
       <ng-container *ngSwitchCase="'confirmation'">
         <p class="text-orange">
-          Unresponsive time left before releasing to next supplier: 17:55:44
+          <ng-container *ngIf="timeLeft">
+            Unresponsive time left before releasing to next supplier:
+            {{ timeLeft }}
+          </ng-container>
+
+          <ng-container *ngIf="!timeLeft">
+            Time Expired
+          </ng-container>
         </p>
         <p class="text-blue">Bidding In Progress</p>
       </ng-container>
