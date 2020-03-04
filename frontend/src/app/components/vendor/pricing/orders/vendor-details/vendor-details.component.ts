@@ -37,6 +37,7 @@ export class VendorDetailsComponent implements OnInit {
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
 
+  timeToExpire = null;
   changePriority = false;
   toggleVendorList = false;
   loadingProfiles = false;
@@ -145,6 +146,7 @@ export class VendorDetailsComponent implements OnInit {
     this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
       // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
+      this.timeToExpire = v.bidProcessTimeLeft;
       this.bidding = v.matchingSuppliersProfilesView || [];
       this.bidding.map(match => (match.id = ++count));
       const vendors = [];
@@ -187,6 +189,10 @@ export class VendorDetailsComponent implements OnInit {
           this.orderDetails = v || [];
         });
     });
+  }
+
+  get timeLeft() {
+    return this.timeToExpire;
   }
 
   initTable() {
