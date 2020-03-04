@@ -283,7 +283,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
           this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
       });
       defConfig = {
-        id: 0,
+        id: null,
         partQuoteDetailList: [
           {
             extendedCost: 0,
