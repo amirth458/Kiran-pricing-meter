@@ -51,8 +51,8 @@ export class PricingSettingsComponent implements OnInit {
 
   checkBidNumber(control: FormGroup) {
     const bidNumber = control.get('presentBidNumberFromBottom');
-    const processProfile = control.get('minElligibleProcessProfile');
-    return bidNumber.value && processProfile.value && (+bidNumber.value || 0) > (+processProfile.value || 0)
+    const pricingProfile = control.get('minElligiblePricingProfile');
+    return bidNumber.value && pricingProfile.value && (+bidNumber.value || 0) > (+pricingProfile.value || 0)
       ? { invalidBidNumber: true }
       : null;
   }
@@ -65,7 +65,11 @@ export class PricingSettingsComponent implements OnInit {
   checkIncrementalMargin(control: FormGroup) {
     const incrementalMarginPercent = control.get('incrementalMarginPercent');
     const incrementalMarginRate = control.get('incrementalMarginRate');
-    return incrementalMarginPercent.value && incrementalMarginRate.value ? { invalidIncrementalMargin: true } : null;
+    return incrementalMarginPercent.value && incrementalMarginRate.value
+      ? { invalidIncrementalMargin: true }
+      : !(incrementalMarginPercent.value || incrementalMarginRate.value)
+      ? { requiredIncrementalMargin: true }
+      : null;
   }
 
   ngOnInit() {
@@ -96,6 +100,8 @@ export class PricingSettingsComponent implements OnInit {
       );
     } else if (this.detailForm.errors.invalidCount) {
       this.toastrService.warning('Must set one of the cut off for manual pricing.');
+    } else if (this.detailForm.errors.requiredIncrementalMargin) {
+      this.toastrService.warning('Must set one of the Incremental Margin.');
     }
   }
 

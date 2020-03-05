@@ -62,7 +62,7 @@
         </ul>
       </div>
     </div>
-    <div class="row mb-2" *ngIf="manualPricingSection !== 1">
+    <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Of eligible pricing profile, present Bid No
       </div>
@@ -79,11 +79,13 @@
               price)
             </span>
           </div>
-          <span *ngIf="detailForm.errors && detailForm.errors.invalidBidNumber" class="footnote red px-3">Invalid</span>
+          <span *ngIf="detailForm.errors && detailForm.errors.invalidBidNumber" class="footnote red p-absolute">
+            Present Bid No must be below than Cutoff for Manual Pricing
+          </span>
         </div>
       </div>
     </div>
-    <div class="row mb-2" *ngIf="manualPricingSection !== 1">
+    <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Add what % Incremental Margin to Bid No
         {{ detailForm.value.presentBidNumberFromBottom }}
@@ -96,7 +98,7 @@
         </div>
       </div>
     </div>
-    <div class="row mb-2" *ngIf="manualPricingSection !== 1">
+    <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Add what $ Incremental Margin to Bid No
         {{ detailForm.value.presentBidNumberFromBottom }}
