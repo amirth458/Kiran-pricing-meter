@@ -26,6 +26,7 @@ import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
 import { ProgressBarComponent } from '../common/progress-bar/progress-bar.component';
 import { ImgPreloadDirective } from '../common/core/img-preload/img-preload.directive';
+import { DigitOnlyDirective } from '../common/core/digit-only/digit-only.directive';
 
 import { MarketplaceContainerComponent } from './vendor/marketplace/marketplace-container/marketplace-container.component';
 import { ReferralContainerComponent } from './vendor/marketplace/referral/referral-container/referral-container.component';
@@ -131,6 +132,7 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
     PastOrderDetailsComponent,
     VendorDetailsComponent,
     ImgPreloadDirective,
+    DigitOnlyDirective,
     ProcessProfileComponent,
     ProcessProfileDetailComponent,
     BillingContainerComponent,
@@ -175,7 +177,8 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
-    ImgPreloadDirective
+    ImgPreloadDirective,
+    DigitOnlyDirective
   ]
 })
 export class ComponentsModule {}

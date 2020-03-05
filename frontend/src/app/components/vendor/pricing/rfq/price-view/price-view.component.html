@@ -89,7 +89,14 @@
                                 {{ item.get('unit').value }}
                               </ng-container>
                               <ng-container *ngIf="stage === 'edit'">
-                                <input type="number" class="price-input" formControlName="unit" />
+                                <input
+                                  digitOnly
+                                  [min]="0"
+                                  [step]="1"
+                                  type="number"
+                                  class="price-input"
+                                  formControlName="unit"
+                                />
                               </ng-container>
                             </td>
                             <td class="font-weight-bold text-theme text-center">
@@ -97,7 +104,17 @@
                                 {{ item.get('unitPrice').value }}
                               </ng-container>
                               <ng-container *ngIf="stage === 'edit'">
-                                <input type="number" class="price-input" formControlName="unitPrice" />
+                                <input
+                                  digitOnly
+                                  decimal="true"
+                                  pattern="[0-9]+([.][0-9]+)?"
+                                  decimalSeparator="."
+                                  [min]="0"
+                                  step="0.1"
+                                  type="number"
+                                  class="price-input"
+                                  formControlName="unitPrice"
+                                />
                               </ng-container>
                             </td>
                             <td class="font-weight-bold text-theme text-center">
@@ -112,9 +129,9 @@
                             <span>See the recommended price</span>
                           </ng-container>
                           <ng-container *ngIf="stage === 'confirm'">
-                            <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price"
-                              >Edit Price</a
-                            >
+                            <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price">
+                              Edit Price
+                            </a>
                           </ng-container>
                         </td>
                         <td class="text-center text-theme"></td>
@@ -190,7 +207,17 @@
                       <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input type="number" class="price-input" formControlName="toolingUnitPrice" />
+                            <input
+                              digitOnly
+                              decimal="true"
+                              pattern="[0-9]+([.][0-9]+)?"
+                              decimalSeparator="."
+                              [min]="0"
+                              step="0.1"
+                              type="number"
+                              class="price-input"
+                              formControlName="toolingUnitPrice"
+                            />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
                             <input type="number" readonly class="price-input" formControlName="toolingUnitPrice" />
@@ -212,7 +239,6 @@
                           <ng-container *ngSwitchCase="'confirm'">
                             <input
                               type="number"
-                              readonly
                               class="price-input"
                               readonly
                               [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
@@ -228,7 +254,15 @@
                       <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input type="number" class="price-input" formControlName="partsUnitCount" />
+                            <input
+                              type="number"
+                              digitOnly
+                              [min]="0"
+                              [step]="1"
+                              type="number"
+                              class="price-input"
+                              formControlName="partsUnitCount"
+                            />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
                             <input type="number" readonly class="price-input" formControlName="partsUnitCount" />
@@ -240,7 +274,17 @@
                       <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input type="number" class="price-input" formControlName="partsUnitPrice" />
+                            <input
+                              digitOnly
+                              decimal="true"
+                              pattern="[0-9]+([.][0-9]+)?"
+                              decimalSeparator="."
+                              [min]="0"
+                              step="0.1"
+                              type="number"
+                              class="price-input"
+                              formControlName="partsUnitPrice"
+                            />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
                             <input type="number" readonly class="price-input" formControlName="partsUnitPrice" />
@@ -262,7 +306,6 @@
                           <ng-container *ngSwitchCase="'confirm'">
                             <input
                               type="number"
-                              readonly
                               class="price-input"
                               readonly
                               [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
