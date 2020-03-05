@@ -12,14 +12,8 @@
         Cutoff for Manual Pricing
       </div>
       <div class="setting-control d-flex align-items-center col-6">
-        <div
-          class="d-flex align-items-center flex-4"
-          *ngIf="manualPricingSection !== 3"
-        ></div>
-        <div
-          class="d-flex align-items-center flex-5"
-          *ngIf="manualPricingSection !== 2"
-        >
+        <div class="d-flex align-items-center flex-4" *ngIf="manualPricingSection !== 3"></div>
+        <div class="d-flex align-items-center flex-5" *ngIf="manualPricingSection !== 2">
           <input
             formControlName="minElligibleProcessProfile"
             type="number"
@@ -28,10 +22,7 @@
           />
           <span>Eligible Process Profiles</span>
         </div>
-        <div
-          class="d-flex align-items-center flex-5"
-          *ngIf="manualPricingSection !== 1"
-        >
+        <div class="d-flex align-items-center flex-5" *ngIf="manualPricingSection !== 1">
           <input
             type="number"
             formControlName="minElligiblePricingProfile"
@@ -71,7 +62,7 @@
         </ul>
       </div>
     </div>
-    <div class="row mb-2">
+    <div class="row mb-2" *ngIf="manualPricingSection !== 1">
       <div class="setting-name p-3 col-6">
         Of eligible pricing profile, present Bid No
       </div>
@@ -79,11 +70,7 @@
         <div class="d-flex align-items-center flex-4"></div>
         <div class=" flex-5">
           <div class="d-flex align-items-center mr-3">
-            <input
-              type="number"
-              formControlName="presentBidNumberFromBottom"
-              class="setting-input"
-            />
+            <input type="number" formControlName="presentBidNumberFromBottom" class="setting-input" />
             <span>
               (from bottom - {{ detailForm.value.presentBidNumberFromBottom }}
               <sup>
@@ -92,15 +79,11 @@
               price)
             </span>
           </div>
-          <span
-            *ngIf="detailForm.errors && detailForm.errors.invalidBidNumber"
-            class="footnote red px-3"
-            >Invalid</span
-          >
+          <span *ngIf="detailForm.errors && detailForm.errors.invalidBidNumber" class="footnote red px-3">Invalid</span>
         </div>
       </div>
     </div>
-    <div class="row mb-2">
+    <div class="row mb-2" *ngIf="manualPricingSection !== 1">
       <div class="setting-name p-3 col-6">
         Add what % Incremental Margin to Bid No
         {{ detailForm.value.presentBidNumberFromBottom }}
@@ -108,16 +91,12 @@
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
         <div class="d-flex align-items-center flex-5">
-          <input
-            type="number"
-            formControlName="incrementalMarginPercent"
-            class="setting-input"
-          />
+          <input type="number" formControlName="incrementalMarginPercent" class="setting-input" />
           <span>%</span>
         </div>
       </div>
     </div>
-    <div class="row mb-2">
+    <div class="row mb-2" *ngIf="manualPricingSection !== 1">
       <div class="setting-name p-3 col-6">
         Add what $ Incremental Margin to Bid No
         {{ detailForm.value.presentBidNumberFromBottom }}
@@ -125,12 +104,8 @@
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
         <div class="d-flex align-items-center flex-5">
-          <input
-            type="number"
-            formControlName="incrementalMarginRate"
-            class="setting-input"
-          />
-          <span>%</span>
+          <input type="number" formControlName="incrementalMarginRate" class="setting-input" />
+          <span>$</span>
         </div>
       </div>
     </div>
@@ -199,11 +174,7 @@
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
         <div class="d-flex align-items-center flex-5">
-          <input
-            type="number"
-            formControlName="quoteExpirationTime"
-            class="setting-input"
-          />
+          <input type="number" formControlName="quoteExpirationTime" class="setting-input" />
           <span>hours</span>
         </div>
       </div>

@@ -24,7 +24,7 @@ export class PricingSettingsComponent implements OnInit {
       autoPricingEligibilityType: [null],
       quoteExpirationTime: [null]
     },
-    { validators: [this.checkBidNumber, this.profileCounts] }
+    { validators: [this.checkBidNumber, this.profileCounts, this.checkIncrementalMargin] }
   );
   manualPricingSection = 3;
 
@@ -62,6 +62,11 @@ export class PricingSettingsComponent implements OnInit {
 
     return !profile.value && !pricing.value ? { invalidCount: true } : null;
   }
+  checkIncrementalMargin(control: FormGroup) {
+    const incrementalMarginPercent = control.get('incrementalMarginPercent');
+    const incrementalMarginRate = control.get('incrementalMarginRate');
+    return incrementalMarginPercent.value && incrementalMarginRate.value ? { invalidIncrementalMargin: true } : null;
+  }
 
   ngOnInit() {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
@@ -85,6 +90,12 @@ export class PricingSettingsComponent implements OnInit {
           this.detailForm.setValue(v);
           this.toastrService.success(`Pricing Settings Updated Successfully`);
         });
+    } else if (this.detailForm.errors.invalidIncrementalMargin) {
+      this.toastrService.warning(
+        'User can not set both for Incremental Margin Rate and Percent, Please input only one value'
+      );
+    } else if (this.detailForm.errors.invalidCount) {
+      this.toastrService.warning('Must set one of the cut off for manual pricing.');
     }
   }
 
@@ -96,6 +107,20 @@ export class PricingSettingsComponent implements OnInit {
 
   setManualPricingSection(newValue: number) {
     this.manualPricingSection = newValue;
+    const setValue = {
+      minElligiblePricingProfile: this.detailForm.value.minElligiblePricingProfile,
+      minElligibleProcessProfile: this.detailForm.value.minElligibleProcessProfile
+    };
+    switch (newValue) {
+      case 1:
+        setValue.minElligiblePricingProfile = null;
+        break;
+      case 2:
+        setValue.minElligibleProcessProfile = null;
+        break;
+    }
+    console.log({ ...this.detailForm.value, ...setValue });
+    this.detailForm.setValue({ ...this.detailForm.value, ...setValue });
   }
   setEligibility(newValue: number) {
     this.selectedEligibility = newValue;
