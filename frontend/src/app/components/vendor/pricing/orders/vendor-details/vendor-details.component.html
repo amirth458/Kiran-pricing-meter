@@ -3,11 +3,7 @@
     <p class="part-header font-weight-bold">Accepted Order Details</p>
     <ng-container [ngSwitch]="type">
       <ng-container *ngSwitchCase="'release'">
-        <button
-          class="btn green-btn release-btn"
-          [disabled]="matchedProfiles.length == 0"
-          (click)="showModal(content)"
-        >
+        <button class="btn green-btn release-btn" [disabled]="matchedProfiles.length == 0" (click)="showModal(content)">
           Release Sub Orders for Bidding
         </button>
       </ng-container>
@@ -44,10 +40,7 @@
     </div>
   </div>
 
-  <div
-    class="d-flex justify-content-between mt-4 align-items-center"
-    *ngIf="!bidOrderId"
-  >
+  <div class="d-flex justify-content-between mt-4 align-items-center" *ngIf="!bidOrderId">
     <p class="part-header font-weight-bold">Matching Suppliers Profiles</p>
     <ng-container [ngSwitch]="type">
       <ng-container *ngSwitchCase="'release'">
@@ -92,10 +85,7 @@
       </div>
     </ng-template>
   </div>
-  <div
-    class="d-flex justify-content-between mt-4 align-items-center"
-    *ngIf="bidOrderId"
-  >
+  <div class="d-flex justify-content-between mt-4 align-items-center" *ngIf="bidOrderId">
     <p class="part-header font-weight-bold">Bidding Status</p>
     <a class="priority-btn" (click)="toggleVendorList = !toggleVendorList">{{
       toggleVendorList ? 'View Vendor List' : 'View Matching Profile'
@@ -142,9 +132,7 @@
           <div class="setting-name p-3 col-6">
             Starting Release Price as % of Sale
           </div>
-          <div class="setting-value p-3 col-6">
-            % {{ subOrderRelease.initialBidSoldPricePercent }}
-          </div>
+          <div class="setting-value p-3 col-6">% {{ subOrderRelease.initialBidSoldPricePercent }}</div>
         </div>
         <div class="row mb-1">
           <div class="setting-name p-3 col-6">
@@ -152,12 +140,7 @@
           </div>
           <div class="setting-value p-3 col-6">
             $
-            {{
-              (
-                initialPrice *
-                (subOrderRelease.initialBidSoldPricePercent / 100)
-              ).toFixed(2)
-            }}
+            {{ (initialPrice * (subOrderRelease.initialBidSoldPricePercent / 100)).toFixed(2) }}
           </div>
         </div>
         <div class="row mb-1">
@@ -172,39 +155,29 @@
           <div class="setting-name p-3 col-6">
             Time Increment for Bid Increase if No vender accepts
           </div>
-          <div class="setting-value p-3 col-6">
-            {{ subOrderRelease.minBidIncreaseTimeMinutes }} min
-          </div>
+          <div class="setting-value p-3 col-6">{{ subOrderRelease.minBidIncreaseTimeMinutes }} min</div>
         </div>
         <div class="row mb-1">
           <div class="setting-name p-3 col-6">
             Increase amount by
           </div>
-          <div class="setting-value p-3 col-6">
-            {{ subOrderRelease.incrementBidAmountPercent }} %
-          </div>
+          <div class="setting-value p-3 col-6">{{ subOrderRelease.incrementBidAmountPercent }} %</div>
         </div>
         <div class="row mb-1">
           <div class="setting-name p-3 col-6">
             % of sale price without fullfillment to revert to customers
           </div>
-          <div class="setting-value p-3 col-6">
-            {{ subOrderRelease.maxPercentWithoutFulfillment }}%
-          </div>
+          <div class="setting-value p-3 col-6">{{ subOrderRelease.maxPercentWithoutFulfillment }}%</div>
         </div>
         <div class="row mb-1">
           <div class="setting-name p-3 col-6">
             Unresponsive time before releasing to next supplier
           </div>
-          <div class="setting-value p-3 col-6">
-            {{ subOrderRelease.maxBidUnresponsiveTimeMinutes }} min
-          </div>
+          <div class="setting-value p-3 col-6">{{ subOrderRelease.maxBidUnresponsiveTimeMinutes }} min</div>
         </div>
       </div>
     </div>
-    <div
-      class="modal-footer d-flex p-3 align-items-center justify-content-around"
-    >
+    <div class="modal-footer d-flex p-3 align-items-center justify-content-around">
       <button class="btn orange-btn" (click)="modal.dismiss()">Cancel</button>
       <button class="btn green-btn" (click)="confirmSubOrderRelease()">
         Confirm
@@ -216,9 +189,10 @@
 <ng-template #pricingProfileModal let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">
-        {{ pricingProfile?.vendorProfile?.name }} Profile
-      </h5>
+      <h5 class="modal-title" id="modal-basic-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
+      <a (click)="modal.dismiss()">
+        <i class="fa fa-times"></i>
+      </a>
     </div>
     <div class="modal-container px-5 py-3">
       <p class="text-center">
@@ -270,19 +244,13 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.NO_RESPONSE">
-        <strong class="text-blue">{{
-          row.bidProcessStatus.description | titlecase
-        }}</strong>
+        <strong class="text-blue">{{ row.bidProcessStatus.description | titlecase }}</strong>
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.REJECTED">
-        <strong class="text-orange">{{
-          row.bidProcessStatus.description | titlecase
-        }}</strong>
+        <strong class="text-orange">{{ row.bidProcessStatus.description | titlecase }}</strong>
       </ng-container>
       <ng-container *ngSwitchCase="biddingStatus.QUEUED_FOR_LATER">
-        <strong class="text-blue">{{
-          row.bidProcessStatus.description | titlecase
-        }}</strong>
+        <strong class="text-blue">{{ row.bidProcessStatus.description | titlecase }}</strong>
       </ng-container>
     </ng-container>
   </ng-container>
@@ -294,12 +262,7 @@
       <h5 class="modal-title text-theme-green pt-2">
         Confirm Bidding
       </h5>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="selectedBidding = null; modal.dismiss()"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="selectedBidding = null; modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -311,9 +274,7 @@
           : selectedBidding?.counterOfferPrice || 0
       }}?
     </div>
-    <div
-      class="modal-footer d-flex px-4 py-4 align-items-center justify-content-center"
-    >
+    <div class="modal-footer d-flex px-4 py-4 align-items-center justify-content-center">
       <button class="btn orange-btn m-0" (click)="modal.dismiss()">
         Cancel
       </button>
