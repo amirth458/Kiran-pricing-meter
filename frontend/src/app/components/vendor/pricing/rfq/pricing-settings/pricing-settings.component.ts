@@ -24,7 +24,7 @@ export class PricingSettingsComponent implements OnInit {
       autoPricingEligibilityType: [null],
       quoteExpirationTime: [null]
     },
-    { validators: [this.checkBidNumber, this.profileCounts] }
+    { validators: [this.checkBidNumber, this.profileCounts, this.checkIncrementalMargin] }
   );
   manualPricingSection = 3;
 
@@ -51,8 +51,8 @@ export class PricingSettingsComponent implements OnInit {
 
   checkBidNumber(control: FormGroup) {
     const bidNumber = control.get('presentBidNumberFromBottom');
-    const processProfile = control.get('minElligibleProcessProfile');
-    return bidNumber.value && processProfile.value && (+bidNumber.value || 0) > (+processProfile.value || 0)
+    const pricingProfile = control.get('minElligiblePricingProfile');
+    return bidNumber.value && pricingProfile.value && (+bidNumber.value || 0) > (+pricingProfile.value || 0)
       ? { invalidBidNumber: true }
       : null;
   }
@@ -61,6 +61,15 @@ export class PricingSettingsComponent implements OnInit {
     const pricing = control.get('minElligiblePricingProfile');
 
     return !profile.value && !pricing.value ? { invalidCount: true } : null;
+  }
+  checkIncrementalMargin(control: FormGroup) {
+    const incrementalMarginPercent = control.get('incrementalMarginPercent');
+    const incrementalMarginRate = control.get('incrementalMarginRate');
+    return incrementalMarginPercent.value && incrementalMarginRate.value
+      ? { invalidIncrementalMargin: true }
+      : !(incrementalMarginPercent.value || incrementalMarginRate.value)
+      ? { requiredIncrementalMargin: true }
+      : null;
   }
 
   ngOnInit() {
@@ -85,6 +94,14 @@ export class PricingSettingsComponent implements OnInit {
           this.detailForm.setValue(v);
           this.toastrService.success(`Pricing Settings Updated Successfully`);
         });
+    } else if (this.detailForm.errors.invalidIncrementalMargin) {
+      this.toastrService.warning(
+        'User can not set both for Incremental Margin Rate and Percent, Please input only one value'
+      );
+    } else if (this.detailForm.errors.invalidCount) {
+      this.toastrService.warning('Must set one of the cut off for manual pricing.');
+    } else if (this.detailForm.errors.requiredIncrementalMargin) {
+      this.toastrService.warning('Must set one of the Incremental Margin.');
     }
   }
 
@@ -96,6 +113,20 @@ export class PricingSettingsComponent implements OnInit {
 
   setManualPricingSection(newValue: number) {
     this.manualPricingSection = newValue;
+    const setValue = {
+      minElligiblePricingProfile: this.detailForm.value.minElligiblePricingProfile,
+      minElligibleProcessProfile: this.detailForm.value.minElligibleProcessProfile
+    };
+    switch (newValue) {
+      case 1:
+        setValue.minElligiblePricingProfile = null;
+        break;
+      case 2:
+        setValue.minElligibleProcessProfile = null;
+        break;
+    }
+    console.log({ ...this.detailForm.value, ...setValue });
+    this.detailForm.setValue({ ...this.detailForm.value, ...setValue });
   }
   setEligibility(newValue: number) {
     this.selectedEligibility = newValue;

@@ -42,6 +42,10 @@
   position: relative;
 }
 
+.p-absolute {
+  position: absolute;
+}
+
 .setting-input {
   width: 3em;
   border: none;
