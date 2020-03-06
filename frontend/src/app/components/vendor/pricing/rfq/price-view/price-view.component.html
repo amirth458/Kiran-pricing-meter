@@ -195,7 +195,7 @@
                       <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input type="number" readonly class="price-input" formControlName="toolingUnitCount" />
+                            <input type="number" class="price-input" formControlName="toolingUnitCount" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
                             <input type="number" readonly class="price-input" formControlName="toolingUnitCount" />

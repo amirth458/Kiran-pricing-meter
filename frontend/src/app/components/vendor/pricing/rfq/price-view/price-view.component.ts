@@ -64,7 +64,7 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   invoiceItems;
 
   pricingForm: FormGroup = this.fb.group({
-    toolingUnitCount: [1],
+    toolingUnitCount: [0],
     toolingUnitPrice: [0],
     toolingLineItemCost: [0],
     partsUnitCount: [0],
