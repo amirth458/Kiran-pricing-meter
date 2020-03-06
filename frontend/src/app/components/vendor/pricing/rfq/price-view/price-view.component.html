@@ -44,7 +44,7 @@
                           {{ partQuoteDetail.unitPrice }}
                         </td>
                         <td class="text-center text-theme">
-                          {{ partQuoteDetail.value }}
+                          {{ partQuoteDetail.value  | currency: 'USD':'symbol':'0.0-3'}}
                         </td>
                       </tr>
                       <tr>
@@ -229,20 +229,28 @@
                       <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input
+                            <!-- <input
                               type="number"
                               class="price-input"
                               readonly
                               [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
-                            />
+                            /> -->
+                            {{
+                              pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                                | currency: 'USD':'symbol':'0.0-3'
+                            }}
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
+                            <!-- <input
                               type="number"
                               class="price-input"
                               readonly
                               [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
-                            />
+                            /> -->
+                            {{
+                              pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                                | currency: 'USD':'symbol':'0.0-3'
+                            }}
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
                           <ng-container *ngSwitchDefault>{{ pricingForm.value.toolingLineItemCost }}</ng-container>
@@ -290,29 +298,41 @@
                             <input type="number" readonly class="price-input" formControlName="partsUnitPrice" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{ pricingForm.value.partsUnitPrice }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{
+                            pricingForm.value.partsUnitPrice | currency: 'USD':'symbol':'0.0-3'
+                          }}</ng-container>
                         </ng-container>
                       </td>
                       <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input
+                            <!-- <input
                               type="number"
                               class="price-input"
                               readonly
                               [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
-                            />
+                            /> -->
+                            {{
+                              pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice
+                                | currency: 'USD':'symbol':'0.0-3'
+                            }}
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
+                            <!-- <input
                               type="number"
                               class="price-input"
                               readonly
                               [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
-                            />
+                            /> -->
+                            {{
+                              pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice
+                                | currency: 'USD':'symbol':'0.0-3'
+                            }}
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{ pricingForm.value.partsLineItemCost }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{
+                            pricingForm.value.partsLineItemCost | currency: 'USD':'symbol':'0.0-3'
+                          }}</ng-container>
                         </ng-container>
                       </td>
                     </tr>
@@ -330,7 +350,7 @@
                       <td class="text-center font-weight-bold" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input
+                            <!-- <input
                               type="number"
                               class="price-input"
                               readonly
@@ -338,10 +358,15 @@
                                 pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
                                 pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
                               "
-                            />
+                            /> -->
+                            {{
+                              pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
+                                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                                | currency: 'USD':'symbol':'0.0-3'
+                            }}
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
+                            <!-- <input
                               type="number"
                               class="price-input"
                               readonly
@@ -349,7 +374,12 @@
                                 pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
                                 pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
                               "
-                            />
+                            /> -->
+                            {{
+                              pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
+                                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                                | currency: 'USD':'symbol':'0.0-3'
+                            }}
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
                           <ng-container *ngSwitchDefault>{{ pricingForm.value.totalCost }}</ng-container>
@@ -541,7 +571,10 @@
               {{ pricingForm.value.toolingUnitPrice }}
             </td>
             <td class="text-center">
-              {{ pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice }}
+              {{
+                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                  | currency: 'USD':'symbol':'0.0-3'
+              }}
             </td>
           </tr>
           <tr>
@@ -549,7 +582,9 @@
             <td class="text-center">{{ pricingForm.value.partsUnitCount }}</td>
             <td class="text-center">{{ pricingForm.value.partsUnitPrice }}</td>
             <td class="text-center">
-              {{ pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice }}
+              {{
+                pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice | currency: 'USD':'symbol':'0.0-3'
+              }}
             </td>
           </tr>
           <tr>
@@ -560,6 +595,7 @@
               {{
                 pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
                   pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
+                  | currency: 'USD':'symbol':'0.0-3'
               }}
             </td>
           </tr>
