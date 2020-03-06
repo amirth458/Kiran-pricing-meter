@@ -233,26 +233,17 @@ button.theme.theme-reverse:hover {
   background: var(--theme-input-bg);
 }
 
-.ng-select.ng-select-multiple
-  .ng-select-container
-  .ng-value-container
-  .ng-value {
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   background-color: var(--theme-light-green);
   color: white;
 }
 
-.ng-select:not(.ng-select-multiple)
-  .ng-select-container
-  .ng-value-container
-  .ng-value {
+.ng-select:not(.ng-select-multiple) .ng-select-container .ng-value-container .ng-value {
   color: var(--theme-secondary-blue);
 }
 
 .ng-select .ng-select-container .ng-value-container .ng-placeholder,
-.ng-select.ng-select-multiple
-  .ng-select-container
-  .ng-value-container
-  .ng-value,
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value,
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
 .ng-select.ng-select-single .ng-select-container .ng-value-container,
 .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
@@ -263,10 +254,7 @@ button.theme.theme-reverse:hover {
   color: var(--theme-secondary-blue-solid);
 }
 
-.ng-select.ng-select-multiple
-  .ng-select-container
-  .ng-value-container
-  .ng-placeholder {
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
   margin-top: 3px;
 }
 
@@ -519,6 +507,23 @@ app-dropdown-cell-renderer {
 }
 /* breakdown pricing  window */
 
+/* Refresh modal window */
+.refresh-modal .modal-dialog {
+  max-width: 500px;
+  width: 500px;
+}
+
+.refresh-modal .refresh-btn {
+  font-size: 30px !important;
+  color: var(--theme-light-blue);
+  outline: none;
+}
+
+.refresh-modal .refresh-btn:hover {
+  color: var(--theme-light-blue);
+}
+/* Refresh modal window */
+
 .approved {
   background-color: #e0f0c9 !important;
 }
@@ -573,23 +578,13 @@ app-dropdown-cell-renderer {
   width: 140px !important;
 }
 
-.confirm-release-modal
-  .ag-body-viewport.ag-layout-auto-height
-  .ag-center-cols-container,
-.confirm-release-modal
-  .ag-body-viewport.ag-layout-auto-height
-  .ag-center-cols-clipper {
+.confirm-release-modal .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container,
+.confirm-release-modal .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper {
   min-height: auto !important;
 }
 
-.confirm-release-modal
-  .grid-empty
-  .ag-body-viewport.ag-layout-auto-height
-  .ag-center-cols-container,
-.confirm-release-modal
-  .grid-empty
-  .ag-body-viewport.ag-layout-auto-height
-  .ag-center-cols-clipper {
+.confirm-release-modal .grid-empty .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container,
+.confirm-release-modal .grid-empty .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper {
   min-height: 35px !important;
   height: 35px !important;
 }

@@ -1,8 +1,4 @@
-import {
-  PartDimensionValue,
-  PartCustomParameter,
-  Address
-} from './../model/part.model';
+import { PartDimensionValue, PartCustomParameter, Address } from './../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
 
 export class Util {
@@ -12,38 +8,23 @@ export class Util {
   static getPartDimension(dimension: PartDimension, measurements: any = []) {
     const arr = [];
     if (dimension.x && dimension.x.value) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        dimension.x.unitId
-      );
+      const measurement = Util.findMeasurementUnit(measurements, dimension.x.unitId);
       arr.push(`${dimension.x.value} ${measurement}`);
     }
     if (dimension.y && dimension.y.value) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        dimension.y.unitId
-      );
+      const measurement = Util.findMeasurementUnit(measurements, dimension.y.unitId);
       arr.push(`${dimension.y.value} ${measurement}`);
     }
     if (dimension.z && dimension.z.value) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        dimension.z.unitId
-      );
+      const measurement = Util.findMeasurementUnit(measurements, dimension.z.unitId);
       arr.push(`${dimension.z.value} ${measurement}`);
     }
     return arr.join(' x ');
   }
 
-  static getPartDimensionValue(
-    dimensionValue: PartDimensionValue,
-    measurements: any = []
-  ) {
+  static getPartDimensionValue(dimensionValue: PartDimensionValue, measurements: any = []) {
     if (dimensionValue && dimensionValue.value) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        dimensionValue.unitId
-      );
+      const measurement = Util.findMeasurementUnit(measurements, dimensionValue.unitId);
       return `${dimensionValue.value} ${measurement}`;
     }
     return '';
@@ -59,15 +40,8 @@ export class Util {
       dimension.z &&
       dimension.z.value
     ) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        dimension.x.unitId
-      );
-      return `${(
-        dimension.x.value *
-        dimension.y.value *
-        dimension.z.value
-      ).toFixed(2)} cubic ${measurement}`;
+      const measurement = Util.findMeasurementUnit(measurements, dimension.x.unitId);
+      return `${(dimension.x.value * dimension.y.value * dimension.z.value).toFixed(2)} cubic ${measurement}`;
     }
     return '';
   }
@@ -85,30 +59,17 @@ export class Util {
       .join(', ');
   }
 
-  static showCustomPrameter(
-    customParameter: PartCustomParameter,
-    measurements: any = [],
-    operatorTypes: any = []
-  ) {
+  static showCustomPrameter(customParameter: PartCustomParameter, measurements: any = [], operatorTypes: any = []) {
     let string = ``;
     if (customParameter.targetValue && customParameter.targetUnitTypeId) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        customParameter.targetUnitTypeId
-      );
+      const measurement = Util.findMeasurementUnit(measurements, customParameter.targetUnitTypeId);
       string += `${customParameter.targetValue} ${measurement}`;
     }
     if (customParameter.parameterTolerance) {
-      const measurement = Util.findMeasurementUnit(
-        measurements,
-        customParameter.parameterTolerance.unitTypeId
-      );
+      const measurement = Util.findMeasurementUnit(measurements, customParameter.parameterTolerance.unitTypeId);
       string += `+/- ${customParameter.parameterTolerance.value} ${measurement}`;
     } else {
-      const operatorType = Util.findMeasurementUnit(
-        operatorTypes,
-        customParameter.targetOperatorTypeId
-      );
+      const operatorType = Util.findMeasurementUnit(operatorTypes, customParameter.targetOperatorTypeId);
       string = `${operatorType} ${string}`;
     }
     return string;
@@ -124,5 +85,20 @@ export class Util {
       accumulator += value.shippingCost || 0;
       return accumulator;
     }, 0);
+  }
+
+  static preparePostProcessValues(process: any, arr: Array<number>): string {
+    let value = '';
+    const filterPostProcessAction = process.filter(item => arr.includes(item.id));
+    if (filterPostProcessAction.length) {
+      filterPostProcessAction.map((item, index) => {
+        if (index != filterPostProcessAction.length - 1) {
+          value += item.name + ', ';
+        } else {
+          value += item.name;
+        }
+      });
+    }
+    return value;
   }
 }

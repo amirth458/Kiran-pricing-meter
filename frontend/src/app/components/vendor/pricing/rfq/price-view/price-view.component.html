@@ -1,11 +1,13 @@
 <div class="col-12 d-flex flex-row p-0">
-  <div class="col-8 p-0">
+  <div class="col-9 p-0">
     <!-- TABLE -->
     <div class="col-12 theme-table p-0">
       <ag-grid-angular
-        class="ag-theme-balham w-100 h-100"
+        class="ag-theme-balham price-grid w-100 h-100"
+        [class.empty-grid]="rowData?.length === 0"
         [rowData]="rowData"
         [gridOptions]="gridOptions"
+        [domLayout]="'autoHeight'"
         (gridReady)="onGridReady($event)"
       >
       </ag-grid-angular>
@@ -16,55 +18,163 @@
       <ngb-tab title="Price Detail">
         <ng-template ngbTabContent>
           <div class="table p-4">
-            <table
-              class="w-100 table table-borderless pricing-table"
-              *ngIf="
-                !part?.manualPricingAllowed ||
-                  part?.partStatusType.id === 3 ||
-                  partQuote;
-                else pricingSetting
-              "
+            <ng-container
+              *ngIf="!part?.manualPricingAllowed || part?.partStatusType.id === 3 || partQuote; else pricingSetting"
             >
-              <thead>
-                <tr>
-                  <th class="">Line Item</th>
-                  <th class="text-center">Unit Count</th>
-                  <th class="text-center">Unit Price</th>
-                  <th class="text-center">Line Item Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
-                  <td class="font-weight-bold text-theme">
-                    {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.unit }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.unitPrice }}
-                  </td>
-                  <td class="text-center text-theme">
-                    {{ partQuoteDetail.value }}
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center text-theme"></td>
-                  <td class="text-center text-theme"></td>
-                  <td class="text-center font-weight-bold text-theme">
-                    Subtotal
-                  </td>
-                  <td class="text-center font-weight-bold text-theme">
-                    {{
-                      partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3'
-                    }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <ng-container [ngSwitch]="stage">
+                <ng-container *ngSwitchCase="'unset'">
+                  <table class="table table-borderless unset pricing-table w-75 m-0">
+                    <thead>
+                      <tr>
+                        <th class="">Line Item</th>
+                        <th class="text-center">Unit Count</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Line Item Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
+                        <td class="font-weight-bold text-theme">
+                          {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.unit }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.unitPrice }}
+                        </td>
+                        <td class="text-center text-theme">
+                          {{ partQuoteDetail.value }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-theme">
+                          <a
+                            class="link over-ride p-0 m-0"
+                            *ngIf="!part?.manualPricingAllowed"
+                            (click)="startOverrideForm()"
+                            >Override</a
+                          >
+                        </td>
+                        <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Subtotal
+                        </td>
+                        <td class="text-center font-weight-bold text-theme">
+                          {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <table [formGroup]="dynamicForm" class="table table-borderless pricing-table w-75 m-0">
+                    <thead>
+                      <tr>
+                        <th class="">Line Item</th>
+                        <th class="text-center">Unit Count</th>
+                        <th class="text-center">Unit Price</th>
+                        <th class="text-center">Line Item Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="prices?.controls?.length > 0">
+                        <ng-container *ngFor="let item of prices.controls; let i = index">
+                          <tr [formGroup]="item">
+                            <td class="font-weight-bold text-theme text-center">
+                              {{ getInvoiceItem(item.get('invoiceItemId').value) }}
+                            </td>
+                            <td class="font-weight-bold text-theme text-center">
+                              <ng-container *ngIf="stage === 'confirm'">
+                                {{ item.get('unit').value }}
+                              </ng-container>
+                              <ng-container *ngIf="stage === 'edit'">
+                                <input
+                                  digitOnly
+                                  [min]="0"
+                                  [step]="1"
+                                  type="number"
+                                  class="price-input"
+                                  formControlName="unit"
+                                />
+                              </ng-container>
+                            </td>
+                            <td class="font-weight-bold text-theme text-center">
+                              <ng-container *ngIf="stage === 'confirm'">
+                                {{ item.get('unitPrice').value }}
+                              </ng-container>
+                              <ng-container *ngIf="stage === 'edit'">
+                                <input
+                                  digitOnly
+                                  decimal="true"
+                                  pattern="[0-9]+([.][0-9]+)?"
+                                  decimalSeparator="."
+                                  [min]="0"
+                                  step="0.1"
+                                  type="number"
+                                  class="price-input"
+                                  formControlName="unitPrice"
+                                />
+                              </ng-container>
+                            </td>
+                            <td class="font-weight-bold text-theme text-center">
+                              {{ calcLineItemCost(item) | currency: 'USD':'symbol':'0.0-3' }}
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </ng-container>
+                      <tr>
+                        <td class="text-theme-green">
+                          <ng-container *ngIf="stage === 'edit'">
+                            <span>See the recommended price</span>
+                          </ng-container>
+                          <ng-container *ngIf="stage === 'confirm'">
+                            <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price">
+                              Edit Price
+                            </a>
+                          </ng-container>
+                        </td>
+                        <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Subtotal
+                        </td>
+                        <td class="font-weight-bold text-theme text-center">
+                          {{ findLineItemTotalCost() | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr *ngIf="stage === 'edit'">
+                        <td colspan="4" class="text-right">
+                          <button class="btn orange-btn" (click)="changeStage('unset'); resetDynamicForm()">
+                            Cancel
+                          </button>
+                          <button class="btn green-btn" (click)="changeStage('confirm')">
+                            Save
+                          </button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="stage === 'confirm'" class="confirm-row">
+                        <td colspan="2">
+                          Apply this final price to part?
+                        </td>
+                        <td colspan="2" class="text-right">
+                          <button class="btn orange-btn" (click)="changeStage('unset'); resetDynamicForm()">
+                            No
+                          </button>
+                          <button class="btn green-btn" (click)="openModal(confirm, 'confirm')">
+                            Yes
+                          </button>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
             <ng-template #pricingSetting>
               <form [formGroup]="pricingForm">
-                <table class="w-100 table table-borderless pricing-table a">
+                <table class="table table-borderless pricing-table w-75 m-0">
                   <colgroup>
                     <col width="25%" />
                     <col width="25%" />
@@ -82,202 +192,142 @@
                   <tbody>
                     <tr>
                       <td class="font-weight-bold">Tooling</td>
-                      <td
-                        class="text-center"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
-                            <input
-                              type="number"
-                              class="price-input"
-                              formControlName="toolingUnitCount"
-                            />
+                            <input type="number" class="price-input" formControlName="toolingUnitCount" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
-                              type="number"
-                              readonly
-                              class="price-input"
-                              formControlName="toolingUnitCount"
-                            />
+                            <input type="number" readonly class="price-input" formControlName="toolingUnitCount" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.toolingUnitCount
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.toolingUnitCount }}</ng-container>
                         </ng-container>
                       </td>
-                      <td
-                        class="text-center"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
                             <input
+                              digitOnly
+                              decimal="true"
+                              pattern="[0-9]+([.][0-9]+)?"
+                              decimalSeparator="."
+                              [min]="0"
+                              step="0.1"
                               type="number"
                               class="price-input"
                               formControlName="toolingUnitPrice"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
-                              type="number"
-                              readonly
-                              class="price-input"
-                              formControlName="toolingUnitPrice"
-                            />
+                            <input type="number" readonly class="price-input" formControlName="toolingUnitPrice" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.toolingUnitPrice
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.toolingUnitPrice }}</ng-container>
                         </ng-container>
                       </td>
-                      <td
-                        class="text-center"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
                             <input
                               type="number"
                               class="price-input"
                               readonly
-                              [value]="
-                                pricingForm.value.toolingUnitCount *
-                                pricingForm.value.toolingUnitPrice
-                              "
+                              [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
                             <input
                               type="number"
-                              readonly
                               class="price-input"
                               readonly
-                              [value]="
-                                pricingForm.value.toolingUnitCount *
-                                pricingForm.value.toolingUnitPrice
-                              "
+                              [value]="pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.toolingLineItemCost
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.toolingLineItemCost }}</ng-container>
                         </ng-container>
                       </td>
                     </tr>
                     <tr>
                       <td class="font-weight-bold">Parts</td>
-                      <td
-                        class="text-center"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
                             <input
+                              type="number"
+                              digitOnly
+                              [min]="0"
+                              [step]="1"
                               type="number"
                               class="price-input"
                               formControlName="partsUnitCount"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
-                              type="number"
-                              readonly
-                              class="price-input"
-                              formControlName="partsUnitCount"
-                            />
+                            <input type="number" readonly class="price-input" formControlName="partsUnitCount" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.partsUnitCount
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.partsUnitCount }}</ng-container>
                         </ng-container>
                       </td>
-                      <td
-                        class="text-center"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
                             <input
+                              digitOnly
+                              decimal="true"
+                              pattern="[0-9]+([.][0-9]+)?"
+                              decimalSeparator="."
+                              [min]="0"
+                              step="0.1"
                               type="number"
                               class="price-input"
                               formControlName="partsUnitPrice"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
-                            <input
-                              type="number"
-                              readonly
-                              class="price-input"
-                              formControlName="partsUnitPrice"
-                            />
+                            <input type="number" readonly class="price-input" formControlName="partsUnitPrice" />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.partsUnitPrice
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.partsUnitPrice }}</ng-container>
                         </ng-container>
                       </td>
-                      <td
-                        class="text-center"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
                             <input
                               type="number"
                               class="price-input"
                               readonly
-                              [value]="
-                                pricingForm.value.partsUnitCount *
-                                pricingForm.value.partsUnitPrice
-                              "
+                              [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'confirm'">
                             <input
                               type="number"
-                              readonly
                               class="price-input"
                               readonly
-                              [value]="
-                                pricingForm.value.partsUnitCount *
-                                pricingForm.value.partsUnitPrice
-                              "
+                              [value]="pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice"
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.partsLineItemCost
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.partsLineItemCost }}</ng-container>
                         </ng-container>
                       </td>
                     </tr>
                     <tr>
                       <td colspan="2">
                         <!-- <a
-                      *ngIf="stage === 'edit'"
-                      (click)="openModal(recommendation, 'recommended')"
-                      class="show-recommended"
-                      >See Recommended Price</a
-                    > -->
-                        <a
-                          *ngIf="stage === 'confirm'"
-                          (click)="changeStage('edit')"
-                          class="edit-price"
-                          >Edit Price</a
-                        >
+                    *ngIf="stage === 'edit'"
+                    (click)="openModal(recommendation, 'recommended')"
+                    class="show-recommended"
+                    >See Recommended Price</a
+                  > -->
+                        <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price">Edit Price</a>
                       </td>
                       <td class="text-center font-weight-bold">Subtotal</td>
-                      <td
-                        class="text-center font-weight-bold"
-                        [ngClass]="{ unset: stage === 'unset' }"
-                      >
+                      <td class="text-center font-weight-bold" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
                             <input
@@ -285,10 +335,8 @@
                               class="price-input"
                               readonly
                               [value]="
-                                pricingForm.value.partsUnitCount *
-                                  pricingForm.value.partsUnitPrice +
-                                pricingForm.value.toolingUnitCount *
-                                  pricingForm.value.toolingUnitPrice
+                                pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
+                                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
                               "
                             />
                           </ng-container>
@@ -298,17 +346,13 @@
                               class="price-input"
                               readonly
                               [value]="
-                                pricingForm.value.partsUnitCount *
-                                  pricingForm.value.partsUnitPrice +
-                                pricingForm.value.toolingUnitCount *
-                                  pricingForm.value.toolingUnitPrice
+                                pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
+                                pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
                               "
                             />
                           </ng-container>
                           <ng-container *ngSwitchCase="'unset'">-</ng-container>
-                          <ng-container *ngSwitchDefault>{{
-                            pricingForm.value.totalCost
-                          }}</ng-container>
+                          <ng-container *ngSwitchDefault>{{ pricingForm.value.totalCost }}</ng-container>
                         </ng-container>
                       </td>
                     </tr>
@@ -317,26 +361,17 @@
                         Please edit the prices manually
                       </td>
                       <td class="text-center">
-                        <button
-                          class="btn orange-btn"
-                          (click)="changeStage('edit')"
-                        >
+                        <button class="btn orange-btn" (click)="changeStage('edit')">
                           Edit Price
                         </button>
                       </td>
                     </tr>
                     <tr *ngIf="stage === 'edit'" class="edit-row">
                       <td colspan="4" class="text-right">
-                        <button
-                          class="btn orange-btn"
-                          (click)="changeStage('unset')"
-                        >
+                        <button class="btn orange-btn" (click)="changeStage('unset')">
                           Cancel
                         </button>
-                        <button
-                          class="btn green-btn"
-                          (click)="changeStage('confirm')"
-                        >
+                        <button class="btn green-btn" (click)="changeStage('confirm')">
                           Save
                         </button>
                       </td>
@@ -346,16 +381,10 @@
                         Apply this Manual Price to Part?
                       </td>
                       <td colspan="2" class="text-right">
-                        <button
-                          class="btn orange-btn"
-                          (click)="changeStage('unset')"
-                        >
+                        <button class="btn orange-btn" (click)="changeStage('unset')">
                           No
                         </button>
-                        <button
-                          class="btn green-btn"
-                          (click)="openModal(confirm, 'confirm')"
-                        >
+                        <button class="btn green-btn" (click)="openModal(confirm, 'confirm')">
                           Yes
                         </button>
                       </td>
@@ -370,7 +399,7 @@
       <ngb-tab title="Shipping Detail">
         <ng-template ngbTabContent>
           <div class="table p-4">
-            <table class="w-100 shipping-table table-sm">
+            <table class="shipping-table w-75 m-0">
               <thead>
                 <tr>
                   <th class="text-center">Shipment</th>
@@ -397,25 +426,60 @@
     <!-- /TAB -->
   </div>
 
-  <div class="col-4">
+  <div class="col-3">
     <div class="col-12 border p-0 shadow d-flex flex-column">
       <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
         Notes
       </h5>
-      <div
-        class="d-flex flex-grow-1 flex-column message-container"
-        #scroller
-        (scroll)="onScroll()"
-      >
+      <div class="d-flex flex-grow-1 flex-column message-container" #scroller (scroll)="onScroll()">
+        <ng-container *ngIf="partNoteView?.messages?.length > 0">
+          <div
+            class="participant-chat {{ user.id === m.userId ? 'text-left' : 'text-right' }}"
+            *ngFor="let m of partNoteView.messages"
+          >
+            <span class="{{ user.id === m.userId ? 'text-theme-green' : 'text-theme' }}"
+              >{{ m.user.firstName || '' }} {{ m.user.lastName || '' }}</span
+            >
+            <p>{{ m.message || '' }}</p>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="partNoteView?.messages?.length === 0">
+          <div class="participant-chat text-left">
+            No chats found
+          </div>
+        </ng-container>
+        <!--
+        <div class="date-separator">
+          <div class="dt-value">
+            Mon, 20 2020
+            <span class="time">14.35</span>
+          </div>
+        </div>
+
+        <div class="participant-chat text-right">
+          <span class="text-theme">Admin</span>
+          <p>Ok Approved</p>
+        </div>
+
         <div class="participant-chat text-left">
-          <span class="text-light-blue">Cullen</span>
+          <span class="text-theme-green">Cullen</span>
           <p>Hello I've submitted PO documents</p>
         </div>
+
+        <div class="date-separator">
+          <div class="dt-value">
+            Mon, 20 2020
+            <span class="time">14.35</span>
+          </div>
+        </div>
+
+        <div class="participant-chat text-right">
+          <span class="text-theme">Admin</span>
+          <p>Ok Approved</p>
+        </div>
+        -->
       </div>
-      <form
-        class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom"
-        [formGroup]="noteFormGroup"
-      >
+      <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
         <hr class="m-0" />
         <div class="form-row">
           <div class="form-group theme col-12 m-0">
@@ -431,14 +495,8 @@
           </div>
         </div>
         <div class="form-row">
-          <div
-            class="form-group theme col-12 m-0 d-flex justify-content-center"
-          >
-            <button
-              class="btn btn-white pl-4 pr-4"
-              [disabled]="!noteFormGroup.valid"
-              (click)="addNote()"
-            >
+          <div class="form-group theme col-12 m-0 d-flex justify-content-center">
+            <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
               {{ loadingNote ? 'Submitting Note' : 'Add Note' }}
             </button>
           </div>
@@ -449,22 +507,20 @@
 </div>
 
 <ng-template #recommendation let-modal>
-  <app-recommended-pricing
-    (close)="onRecommendModalClose($event)"
-  ></app-recommended-pricing>
+  <app-recommended-pricing (close)="onRecommendModalClose($event)"></app-recommended-pricing>
 </ng-template>
 
 <ng-template #confirm let-modal>
   <div class="modal-container">
-    <div class="modal-header w-100">
+    <div class="modal-header w-100 d-flex justify-content-center align-items-center">
       <h5 class="modal-title text-center" id="modal-basic-title">
-        Confirming Manual Price for Part
+        Confirming {{ part.manualPricingAllowed ? 'Manual' : 'Final' }} Price for Part
       </h5>
     </div>
     <div class="modal-body px-5 py-3">
       <p class="text-center">
-        Once confirmed, the manual price will be issued to the customer.<br />Are
-        you sure?
+        Once confirmed, the {{ part.manualPricingAllowed ? 'manual' : 'final' }} price will be issued to the
+        customer.<br />Are you sure?
       </p>
       <table class="w-100 table table-borderless pricing-table">
         <thead>
@@ -475,7 +531,7 @@
             <th class="text-center">LineItemCost</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="part.manualPricingAllowed; else defaultOverrideForm">
           <tr>
             <td class="font-weight-bold">Tooling</td>
             <td class="text-center">
@@ -485,10 +541,7 @@
               {{ pricingForm.value.toolingUnitPrice }}
             </td>
             <td class="text-center">
-              {{
-                pricingForm.value.toolingUnitCount *
-                  pricingForm.value.toolingUnitPrice
-              }}
+              {{ pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice }}
             </td>
           </tr>
           <tr>
@@ -496,10 +549,7 @@
             <td class="text-center">{{ pricingForm.value.partsUnitCount }}</td>
             <td class="text-center">{{ pricingForm.value.partsUnitPrice }}</td>
             <td class="text-center">
-              {{
-                pricingForm.value.partsUnitCount *
-                  pricingForm.value.partsUnitPrice
-              }}
+              {{ pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice }}
             </td>
           </tr>
           <tr>
@@ -508,10 +558,8 @@
             <td class="text-center font-weight-bold">Subtotal</td>
             <td class="text-center font-weight-bold">
               {{
-                pricingForm.value.partsUnitCount *
-                  pricingForm.value.partsUnitPrice +
-                  pricingForm.value.toolingUnitCount *
-                    pricingForm.value.toolingUnitPrice
+                pricingForm.value.partsUnitCount * pricingForm.value.partsUnitPrice +
+                  pricingForm.value.toolingUnitCount * pricingForm.value.toolingUnitPrice
               }}
             </td>
           </tr>
@@ -522,6 +570,62 @@
     <div class="modal-footer justify-content-center">
       <button class="btn orange-btn" (click)="modal.close()">Cancel</button>
       <button class="btn green-btn" (click)="onSave()">Confirm</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #defaultOverrideForm>
+  <tbody>
+    <ng-container *ngIf="prices?.controls?.length > 0">
+      <ng-container *ngFor="let item of prices.controls; let i = index">
+        <tr [formGroup]="item">
+          <td class="font-weight-bold text-center text-theme">
+            {{ getInvoiceItem(item.get('invoiceItemId').value) }}
+          </td>
+          <td class="font-weight-bold text-center text-theme">
+            {{ item.get('unit').value }}
+          </td>
+          <td class="font-weight-bold text-center text-theme">
+            {{ item.get('unitPrice').value }}
+          </td>
+          <td class="font-weight-bold text-center text-theme">
+            {{ calcLineItemCost(item) | currency: 'USD':'symbol':'0.0-3' }}
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
+    <tr>
+      <td class="text-theme-green"></td>
+      <td class="text-center text-theme"></td>
+      <td class="text-center font-weight-bold text-theme">
+        Subtotal
+      </td>
+      <td class="font-weight-bold text-theme text-center">
+        {{ findLineItemTotalCost() | currency: 'USD':'symbol':'0.0-3' }}
+      </td>
+    </tr>
+  </tbody>
+</ng-template>
+
+<ng-template #refreshWindow let-modal>
+  <div class="modal-container">
+    <div class="modal-header w-100 d-flex justify-content-center align-items-center">
+      <h5 class="modal-title text-center">
+        Customer has changed the part details
+      </h5>
+    </div>
+    <div class="modal-body px-5 py-3" ngbAutofocus>
+      <p class="text-center">
+        Please refresh your screen to get latest part information
+      </p>
+      <div class="d-flex justify-content-center align-items-center">
+        <button class="refresh-btn btn btn-theme w-auto text-theme" (click)="refresh()">
+          <i class="fas fa-redo-alt"></i>
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button class="btn green-btn" (click)="refresh()">Ok</button>
     </div>
   </div>
 </ng-template>

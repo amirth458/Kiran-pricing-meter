@@ -16,57 +16,43 @@
         <div class="col-4">
           <p class="label">
             File:
-            <span class="text-theme-green font-weight-bold">{{
-              part?.rfqMedia?.media?.name
-            }}</span>
+            <span class="text-theme-green font-weight-bold">{{ part?.rfqMedia?.media?.name }}</span>
           </p>
           <p class="label">
             Material:
-            <span class="text-theme-green font-weight-bold">{{
-              part?.materialPropertyValues?.join(', ')
-            }}</span>
+            <span class="text-theme-green font-weight-bold">{{ part?.materialPropertyValues?.join(', ') }}</span>
           </p>
           <p class="label">
             Technology:
-            <span class="text-theme-green font-weight-bold">{{
-              part?.equipmentPropertyValues?.join(', ')
-            }}</span>
+            <span class="text-theme-green font-weight-bold">{{ part?.equipmentPropertyValues?.join(', ') }}</span>
           </p>
           <p class="label">
             Post-process:
-            <span class="text-theme-green font-weight-bold"></span>
+            <span class="text-theme-green font-weight-bold">
+              {{ preparePostProcessValues(part?.postProcessTypeIds) }}
+            </span>
           </p>
         </div>
         <div class="col-4 border-left">
           <p class="label">
             Dimension:
-            <span class="text-theme-green font-weight-bold">{{
-              getPartDimension()
-            }}</span>
+            <span class="text-theme-green font-weight-bold">{{ getPartDimension() }}</span>
           </p>
           <p class="label">
             Volume:
             <span class="text-theme-green font-weight-bold"
               >{{ part?.rfqMedia?.media?.partDimension?.volume?.value }}
-              {{
-                getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId)
-              }}</span
+              {{ getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId) }}</span
             >
           </p>
           <p class="label">
             Surface Roughness:
             <span class="text-theme-green font-weight-bold"
               >{{ part?.rfqMedia?.media?.partDimension?.surfaceArea?.value }}
-              {{
-                getUnit(
-                  part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId
-                )
-              }}</span
+              {{ getUnit(part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId) }}</span
             >
           </p>
-          <p class="label">
-            Tolerance: <span class="text-theme-green font-weight-bold"></span>
-          </p>
+          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold"></span></p>
         </div>
       </div>
     </div>
@@ -76,16 +62,12 @@
         <div class="o-card w-100 d-flex flex-column justify-content-between">
           <p class="label d-flex flex-row justify-content-between mb-5">
             Shipment (OTY - {{ part?.quantity }})
-            <span class="float-right">{{
-              part?.targetDeliveryDate | date: 'MM/dd/yyyy'
-            }}</span>
+            <span class="float-right">{{ part?.targetDeliveryDate | date: 'MM/dd/yyyy' }}</span>
             <!-- {{part?.targetDeliveryDate | date: 'YYY/mm/dd'}} -->
           </p>
           <span class="d-flex col-12 p-0">
             <div class="col-8 p-0">
-              <p class="label">
-                Address: {{ shippingAddressInfo(part?.shippingAddress) }}
-              </p>
+              <p class="label">Address: {{ shippingAddressInfo(part?.shippingAddress) }}</p>
             </div>
             <div class="col-8">
               <p class="label target-delivery font-weight-bold">

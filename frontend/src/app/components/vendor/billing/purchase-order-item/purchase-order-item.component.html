@@ -5,9 +5,7 @@
       <i class="fas fa-chevron-left"></i>
       <span class="ml-2">Previous PO</span>
     </div>
-    <div
-      class="col-md-2 row justify-content-end align-items-center text-theme-green"
-    >
+    <div class="col-md-2 row justify-content-end align-items-center text-theme-green">
       <span class="mr-2">Next PO</span>
       <i class="fas fa-chevron-right"></i>
     </div>
@@ -21,21 +19,15 @@
         <div class="col-5 mr-3 mb-3 p-3 order-info">
           <h5 class="font-weight-bold">
             Ordered on:
-            <span class="text-theme-green">{{
-              orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy'
-            }}</span>
+            <span class="text-theme-green">{{ orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy' }}</span>
           </h5>
           <p class="mb-1">
             Customer:
-            <span class="text-theme-green font-weight-bold">{{
-              orderInfo?.customerOrder?.customerName
-            }}</span>
+            <span class="text-theme-green font-weight-bold">{{ orderInfo?.customerOrder?.customerName }}</span>
           </p>
           <p class="">
             Order Id:
-            <span class="text-theme-green font-weight-bold">{{
-              orderInfo?.billingInfoView?.orderId
-            }}</span>
+            <span class="text-theme-green font-weight-bold">{{ orderInfo?.billingInfoView?.orderId }}</span>
           </p>
         </div>
 
@@ -43,14 +35,9 @@
           <h5 class="font-weight-bold">
             Purchase Method:
             <span class="text-theme-green"
-              >{{
-                formatPaymentType(orderInfo?.billingInfoView?.paymentType)
-                  | titlecase
-              }}
+              >{{ formatPaymentType(orderInfo?.billingInfoView?.paymentType) | titlecase }}
               (No
-              {{
-                orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber
-              }})</span
+              {{ orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber }})</span
             >
           </h5>
           <p class="mb-1">
@@ -60,16 +47,8 @@
             }}</span>
           </p>
           <p class="text-theme-green file-name font-weight-bold">
-            <a
-              [href]="
-                orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl || ''
-              "
-              target="_blank"
-            >
-              {{
-                orderInfo?.billingInfoView?.purchaseAgreement?.fileName ||
-                  'PO File'
-              }}</a
+            <a [href]="orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl || ''" target="_blank">
+              {{ orderInfo?.billingInfoView?.purchaseAgreement?.fileName || 'PO File' }}</a
             >
           </p>
         </div>
@@ -99,10 +78,7 @@
             <div class="d-block mt-3">
               <div class="user-name font-italic">
                 <p class="m-0">
-                  <ng-container
-                    *ngIf="message.userId == userInfo.email; else name"
-                    >Admin</ng-container
-                  >
+                  <ng-container *ngIf="message.userId == userInfo.email; else name">Admin</ng-container>
 
                   <ng-template #name>{{ message.userId }}</ng-template>
                 </p>
@@ -117,26 +93,15 @@
         </div>
 
         <div
-          *ngIf="
-            orderInfo?.billingInfoView?.paymentStatusType ==
-            PaymentStatusTypes.WAITING_FOR_APPROVAL
-          "
+          *ngIf="orderInfo?.billingInfoView?.paymentStatusType == PaymentStatusTypes.WAITING_FOR_APPROVAL"
           class="col-12  shadow notes-action pt-3 pb-3"
         >
           <div class="col-12 comment">
             <label class="font-weight-bold">Notes</label>
 
-            <div
-              [formGroup]="chatForm"
-              class="col-12 m-0 p-1 row align-items-center"
-            >
+            <div [formGroup]="chatForm" class="col-12 m-0 p-1 row align-items-center">
               <textarea formControlName="note" class="form-control"></textarea>
-              <button
-                [disabled]="!chatForm.valid"
-                type="button"
-                class="btn theme white"
-                (click)="sendNote()"
-              >
+              <button [disabled]="!chatForm.valid" type="button" class="btn theme white" (click)="sendNote()">
                 Send Note
               </button>
             </div>
@@ -144,11 +109,7 @@
 
           <div class="col-12 mt-2 row justify-content-center">
             <div class="col-3 mr-1">
-              <button
-                type="button"
-                class="btn theme"
-                (click)="open(approveModal, 'md')"
-              >
+              <button type="button" class="btn theme" (click)="open(approveModal, 'md')">
                 Approve
               </button>
             </div>
@@ -192,18 +153,12 @@
 
         <h6 class="d-flex mt-2 justify-content-between summary-item">
           <span class="name">Total Cost</span>
-          <span class="value">{{
-            orderInfo?.billingInfoView?.amount | currency: '$'
-          }}</span>
+          <span class="value">{{ orderInfo?.billingInfoView?.amount | currency: '$' }}</span>
         </h6>
 
         <br />
         <!-- TODO: -->
-        <p
-          *ngIf="false"
-          class="details-toggle text-center"
-          (click)="togglePaymentInfo()"
-        >
+        <p *ngIf="false" class="details-toggle text-center" (click)="togglePaymentInfo()">
           <span *ngIf="showPaymentDetails">Close Details</span>
           <span *ngIf="!showPaymentDetails">See Details</span>
         </p>
@@ -212,24 +167,16 @@
 
       <h5 class="col-12 mt-5 pl-0">
         Parts
-        <span
-          (click)="open(partDetailsModal, 'xl')"
-          class="ml-4 part-detail-toggle"
-          >See More Details</span
-        >
+        <span (click)="open(partDetailsModal, 'xl')" class="ml-4 part-detail-toggle">See More Details</span>
       </h5>
       <div class="row justify-content-between part-list">
-        <div
-          *ngFor="let item of orderInfo?.customerOrder?.partList"
-          class="col-5 part-item mt-2"
-        >
+        <div *ngFor="let item of orderInfo?.customerOrder?.partList" class="col-5 part-item mt-2">
           <p class="part-name">Part {{ item?.rfqMedia?.id }}.{{ item?.id }}</p>
 
           <!-- Image -->
           <img
             [src]="
-              item?.rfqMedia?.media?.partDimension?.thumbnail200Location ||
-              '../../../../../assets/image/no-preview.jpg'
+              item?.rfqMedia?.media?.partDimension?.thumbnail200Location || '../../../../../assets/image/no-preview.jpg'
             "
             alt=""
             height="80px"
@@ -240,9 +187,7 @@
           <div class="details">
             <p class="d-flex mb-1">
               <span class="name">File: </span>
-              <span class="value text-theme-green font-weight-bold">{{
-                item?.rfqMedia?.media?.name
-              }}</span>
+              <span class="value text-theme-green font-weight-bold">{{ item?.rfqMedia?.media?.name }}</span>
             </p>
             <p class="d-flex mb-1">
               <span class="name">Material: </span>
@@ -258,9 +203,9 @@
             </p>
             <p class="d-flex mb-1">
               <span class="name">Post-Process: </span>
-              <span class="value text-theme-green font-weight-bold">{{
-                getPostProcessActions(item?.postProcessTypeIds)
-              }}</span>
+              <span class="value text-theme-green font-weight-bold">
+                {{ preparePostProcessValues(item?.postProcessTypeIds) }}
+              </span>
             </p>
           </div>
         </div>
@@ -274,18 +219,10 @@
 <ng-template #approveModal let-modal>
   <div class="approveModal">
     <div class="modal-header">
-      <h5
-        class="modal-title text-theme text-capitalize w-100 pl-3"
-        id="modal-basic-title"
-      >
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
         Approve Purchase Order No {{ selectedPurchaseOrderId }}
       </h5>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.close()"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -297,11 +234,7 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button
-            (click)="approvePurchase()"
-            type="button"
-            class="col btn theme"
-          >
+          <button (click)="approvePurchase()" type="button" class="col btn theme">
             Approve
           </button>
         </div>
@@ -315,18 +248,10 @@
 <ng-template #rejectModal let-modal>
   <div class="rejectModal">
     <div class="modal-header">
-      <h5
-        class="modal-title text-theme text-capitalize w-100 pl-3"
-        id="modal-basic-title"
-      >
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
         Reject Purchase Order No {{ selectedPurchaseOrderId }}
       </h5>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.close()"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -338,11 +263,7 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button
-            (click)="rejectPurchase()"
-            type="button"
-            class="col btn theme orange-btn m-0"
-          >
+          <button (click)="rejectPurchase()" type="button" class="col btn theme orange-btn m-0">
             Reject
           </button>
         </div>
@@ -355,18 +276,10 @@
 <ng-template #partDetailsModal let-modal>
   <div class="partDetailsModal">
     <div class="modal-header">
-      <h5
-        class="modal-title text-theme text-capitalize w-100 pl-3"
-        id="modal-basic-title"
-      >
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3">
         Order No {{ orderInfo?.billingInfoView?.orderId }}
       </h5>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.close()"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -374,6 +287,7 @@
     <div class="modal-body text-theme">
       <app-part-item-details
         *ngFor="let part of orderInfo?.customerOrder?.partList"
+        [postProcessAction]="postProcessAction"
         [part]="part"
         [measurementUnits]="measurementUnits"
       >
