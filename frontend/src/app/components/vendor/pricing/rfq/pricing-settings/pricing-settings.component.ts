@@ -56,12 +56,13 @@ export class PricingSettingsComponent implements OnInit {
       ? { invalidBidNumber: true }
       : null;
   }
+
   profileCounts(control: FormGroup) {
     const profile = control.get('minElligibleProcessProfile');
     const pricing = control.get('minElligiblePricingProfile');
-
     return !profile.value && !pricing.value ? { invalidCount: true } : null;
   }
+
   checkIncrementalMargin(control: FormGroup) {
     const incrementalMarginPercent = control.get('incrementalMarginPercent');
     const incrementalMarginRate = control.get('incrementalMarginRate');
@@ -74,9 +75,17 @@ export class PricingSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
+      console.log(defaultValue);
       if (defaultValue) {
         this.detailForm.setValue(defaultValue);
         this.selectedEligibility = defaultValue.autoPricingEligibilityType.id - 1;
+        if (defaultValue.minElligibleProcessProfile && defaultValue.minElligiblePricingProfile) {
+          this.manualPricingSection = 3;
+        } else if (defaultValue.minElligibleProcessProfile) {
+          this.manualPricingSection = 1;
+        } else {
+          this.manualPricingSection = 2;
+        }
       }
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
@@ -128,6 +137,7 @@ export class PricingSettingsComponent implements OnInit {
     console.log({ ...this.detailForm.value, ...setValue });
     this.detailForm.setValue({ ...this.detailForm.value, ...setValue });
   }
+
   setEligibility(newValue: number) {
     this.selectedEligibility = newValue;
     this.detailForm.setValue({
