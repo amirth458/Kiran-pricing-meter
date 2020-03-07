@@ -36,6 +36,21 @@ export class PricingSettingsComponent implements OnInit {
   );
   profilePricingType = PricingType;
 
+  pricingDropDownItems: any = [
+    {
+      id: PricingType.PROFILE,
+      value: 'Eligible Process Profile'
+    },
+    {
+      id: PricingType.PRICING,
+      value: 'Eligible Pricing Profile'
+    },
+    {
+      id: PricingType.BOTH,
+      value: 'Eligible Process Profiles & Eligible Pricing Profiles'
+    }
+  ];
+
   defaultEligibilities = [
     {
       id: 1,

@@ -2,80 +2,84 @@
   <form class="table" [formGroup]="formGroup" (submit)="save()">
     {{ formGroup.valid }}
     <div class="row header p-3">Pricing Information</div>
-    <div
-      class="row mb-2 dropdown"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
-      id="manualPricingDropdown"
-    >
+    <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Cutoff for Manual Pricing
       </div>
       <div class="setting-control d-flex align-items-center col-6">
-        <div
-          class="d-flex align-items-center flex-4"
-          *ngIf="formGroup.get('pricingType').value !== profilePricingType.BOTH"
-        ></div>
-        <div
-          class="d-flex align-items-center flex-5"
-          *ngIf="formGroup.get('pricingType').value !== profilePricingType.PRICING"
-        >
-          <input
-            digitOnly
-            [min]="1"
-            [step]="1"
-            formControlName="minElligibleProcessProfile"
-            type="number"
-            class="setting-input"
-            (click)="$event.stopPropagation()"
-          />
-          <span>Eligible Process Profiles</span>
-        </div>
-        <div
-          class="d-flex align-items-center flex-5"
-          *ngIf="formGroup.get('pricingType').value !== profilePricingType.PROFILE"
-        >
-          <input
-            digitOnly
-            [min]="1"
-            [step]="1"
-            type="number"
-            formControlName="minElligiblePricingProfile"
-            class="setting-input"
-            (click)="$event.stopPropagation()"
-          />
-          <span>Eligible Pricing Profiles</span>
-        </div>
-        <div class="icon">
-          <i class="fa fa-chevron-down"></i>
-        </div>
-        <ul class="popup dropdown-menu" aria-labelledby="manualPricingDropdown">
-          <li
-            class="dropdown-item"
-            (click)="setManualPricingSection(1)"
-            [ngClass]="{ active: formGroup.get('pricingType').value === 1 }"
-          >
-            Eligible Process Profile
-          </li>
-          <li
-            class="dropdown-item"
-            (click)="setManualPricingSection(2)"
-            [ngClass]="{ active: formGroup.get('pricingType').value === 2 }"
-          >
-            Eligible Pricing Profile
-          </li>
-          <li
-            class="dropdown-item"
-            (click)="setManualPricingSection(3)"
-            [ngClass]="{ active: formGroup.get('pricingType').value === 3 }"
-          >
-            Eligible Process Profiles & Eligible Pricing Profiles
-          </li>
-          <div class="icon">
-            <i class="fa fa-chevron-up"></i>
+        <div class="d-flex flex-column w-100 h-100">
+          <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+            <div
+              class="d-flex justify-content-start align-items-center flex-5"
+              *ngIf="formGroup.get('pricingType').value !== profilePricingType.PRICING"
+            >
+              <input
+                digitOnly
+                [min]="1"
+                [step]="1"
+                formControlName="minElligibleProcessProfile"
+                type="number"
+                class="setting-input"
+                (click)="$event.stopPropagation()"
+              />
+              <span>Eligible Process Profiles</span>
+            </div>
+            <div
+              class="d-flex justify-content-start align-items-center flex-5"
+              *ngIf="formGroup.get('pricingType').value !== profilePricingType.PROFILE"
+            >
+              <input
+                digitOnly
+                [min]="1"
+                [step]="1"
+                type="number"
+                formControlName="minElligiblePricingProfile"
+                class="setting-input"
+                (click)="$event.stopPropagation()"
+              />
+              <span>Eligible Pricing Profiles</span>
+            </div>
+            <div
+              ngbDropdown
+              class="pricing-drop-down {{ pricingDropDown.isOpen() ? 'position-absolute popup' : '' }}"
+              #pricingDropDown="ngbDropdown"
+            >
+              <button
+                class="btn transparent text-theme-green p-0"
+                type="button"
+                id="manualPricingDropdown"
+                [class.d-none]="pricingDropDown.isOpen()"
+                ngbDropdownToggle
+              >
+                <i class="fa fa-chevron-down"></i>
+              </button>
+              <ul class="w-100" ngbDropdownMenu aria-labelledby="manualPricingDropdown">
+                <li class="position-absolute move-right">
+                  <button
+                    class="btn transparent text-theme-green align-right"
+                    type="button"
+                    (click)="pricingDropDown.close()"
+                  >
+                    <i class="fa fa-chevron-up"></i>
+                  </button>
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="setManualPricingSection(item.id)"
+                  [ngClass]="{ active: formGroup.get('pricingType').value === item.id }"
+                  *ngFor="let item of pricingDropDownItems"
+                >
+                  {{ item.value }}
+                </li>
+              </ul>
+            </div>
           </div>
-        </ul>
+          <div class="d-flex flex-row  w-100" *ngIf="formGroup.errors && formGroup.errors.hasValidProfile">
+            <span class="footnote red p-absolute">
+              please enter value zero and above
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row mb-2">

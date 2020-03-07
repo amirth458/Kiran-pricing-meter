@@ -62,11 +62,24 @@
   flex: 5;
 }
 
+:host .pricing-drop-down .dropdown-toggle:after {
+  display: none;
+}
+
+:host .pricing-drop-down .btn:hover {
+  color: var(--theme-light-green);
+}
+
+:host .pricing-drop-down .move-right {
+  right: 0;
+  top: 0;
+}
+
 .popup {
   position: absolute;
   background-color: white;
   z-index: 1;
-  top: -40px;
+  top: 0;
   left: 0;
   right: 0;
   transform: none !important;
