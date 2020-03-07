@@ -1,11 +1,15 @@
-import { ActionService } from './../../../../../service/action.service';
-import { ToastrService } from 'ngx-toastr';
-import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { ToastrService } from 'ngx-toastr';
+
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { ActionService } from '../../../../../service/action.service';
+import { PricingType } from '../../../../../model/pricing.breakdown';
 
 @Component({
   selector: 'app-pricing-settings',
@@ -13,20 +17,24 @@ import { throwError } from 'rxjs';
   styleUrls: ['./pricing-settings.component.css']
 })
 export class PricingSettingsComponent implements OnInit {
-  detailForm: FormGroup = this.fb.group(
+  formGroup: FormGroup = this.fb.group(
     {
       minElligibleProcessProfile: [null],
       minElligiblePricingProfile: [null],
       presentBidNumberFromBottom: [null],
       incrementalMarginPercent: [null],
       incrementalMarginRate: [null],
+      // NOTE: we dont use below values
       specificityPremium: [null],
       autoPricingEligibilityType: [null],
-      quoteExpirationTime: [null]
+      quoteExpirationTime: [null],
+      pricingType: [3]
     },
-    { validators: [this.checkBidNumber, this.profileCounts, this.checkIncrementalMargin] }
+    {
+      validators: [this.profile, this.checkBidNumber, this.profileCounts, this.checkIncrementalMargin]
+    }
   );
-  manualPricingSection = 3;
+  profilePricingType = PricingType;
 
   defaultEligibilities = [
     {
@@ -48,6 +56,25 @@ export class PricingSettingsComponent implements OnInit {
     private toastrService: ToastrService,
     private actionService: ActionService
   ) {}
+
+  profile(form: FormGroup) {
+    const pricingCtl = form.get('minElligiblePricingProfile');
+    const processCtl = form.get('minElligibleProcessProfile');
+    const pricingType = form.get('pricingType');
+    let valid = false;
+    switch (pricingType.value || 0) {
+      case PricingType.PROFILE:
+        valid = Number(processCtl.value) > 0;
+        break;
+      case PricingType.PRICING:
+        valid = Number(pricingCtl.value) > 0;
+        break;
+      case PricingType.BOTH:
+        valid = Number(pricingCtl.value) > 0 && Number(processCtl.value) > 0;
+        break;
+    }
+    return !valid ? { hasValidProfile: true } : null;
+  }
 
   checkBidNumber(control: FormGroup) {
     const bidNumber = control.get('presentBidNumberFromBottom');
@@ -77,15 +104,16 @@ export class PricingSettingsComponent implements OnInit {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
       console.log(defaultValue);
       if (defaultValue) {
-        this.detailForm.setValue(defaultValue);
-        this.selectedEligibility = defaultValue.autoPricingEligibilityType.id - 1;
+        let type: any = {};
         if (defaultValue.minElligibleProcessProfile && defaultValue.minElligiblePricingProfile) {
-          this.manualPricingSection = 3;
+          type.pricingType = PricingType.BOTH;
         } else if (defaultValue.minElligibleProcessProfile) {
-          this.manualPricingSection = 1;
+          type.pricingType = PricingType.PROFILE;
         } else {
-          this.manualPricingSection = 2;
+          type.pricingType = PricingType.PRICING;
         }
+        this.formGroup.setValue({ ...defaultValue, ...type });
+        this.selectedEligibility = defaultValue.autoPricingEligibilityType.id - 1;
       }
     });
     this.actionService.saveProfileSettingAction().subscribe(() => {
@@ -94,22 +122,21 @@ export class PricingSettingsComponent implements OnInit {
   }
 
   async save() {
-    console.log(this.detailForm);
-    if (this.detailForm.valid) {
+    if (this.formGroup.valid) {
       this.pricingService
-        .setPricingSetting(this.detailForm.value)
+        .setPricingSetting(this.formGroup.value)
         .pipe(catchError(e => this.handleSaveError(e)))
         .subscribe(v => {
-          this.detailForm.setValue(v);
+          this.formGroup.setValue(v);
           this.toastrService.success(`Pricing Settings Updated Successfully`);
         });
-    } else if (this.detailForm.errors.invalidIncrementalMargin) {
+    } else if (this.formGroup.errors.invalidIncrementalMargin) {
       this.toastrService.warning(
         'User can not set both for Incremental Margin Rate and Percent, Please input only one value'
       );
-    } else if (this.detailForm.errors.invalidCount) {
+    } else if (this.formGroup.errors.invalidCount) {
       this.toastrService.warning('Must set one of the cut off for manual pricing.');
-    } else if (this.detailForm.errors.requiredIncrementalMargin) {
+    } else if (this.formGroup.errors.requiredIncrementalMargin) {
       this.toastrService.warning('Must set one of the Incremental Margin.');
     }
   }
@@ -120,28 +147,28 @@ export class PricingSettingsComponent implements OnInit {
     return throwError('Error');
   }
 
-  setManualPricingSection(newValue: number) {
-    this.manualPricingSection = newValue;
+  setManualPricingSection(value: number) {
+    this.formGroup.get('pricingType').setValue(value);
     const setValue = {
-      minElligiblePricingProfile: this.detailForm.value.minElligiblePricingProfile,
-      minElligibleProcessProfile: this.detailForm.value.minElligibleProcessProfile
+      minElligiblePricingProfile: this.formGroup.value.minElligiblePricingProfile,
+      minElligibleProcessProfile: this.formGroup.value.minElligibleProcessProfile
     };
-    switch (newValue) {
-      case 1:
+    switch (value) {
+      case PricingType.PRICING:
         setValue.minElligiblePricingProfile = null;
         break;
-      case 2:
+      case PricingType.PROFILE:
         setValue.minElligibleProcessProfile = null;
         break;
     }
-    console.log({ ...this.detailForm.value, ...setValue });
-    this.detailForm.setValue({ ...this.detailForm.value, ...setValue });
+    console.log({ ...this.formGroup.value, ...setValue });
+    this.formGroup.setValue({ ...this.formGroup.value, ...setValue });
   }
 
   setEligibility(newValue: number) {
     this.selectedEligibility = newValue;
-    this.detailForm.setValue({
-      ...this.detailForm.value,
+    this.formGroup.setValue({
+      ...this.formGroup.value,
       autoPricingEligibilityType: this.defaultEligibilities[newValue]
     });
   }

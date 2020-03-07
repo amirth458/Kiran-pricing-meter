@@ -1,5 +1,6 @@
 <div class="wrapper">
-  <form class="table" [formGroup]="detailForm" (submit)="save()">
+  <form class="table" [formGroup]="formGroup" (submit)="save()">
+    {{ formGroup.valid }}
     <div class="row header p-3">Pricing Information</div>
     <div
       class="row mb-2 dropdown"
@@ -12,8 +13,14 @@
         Cutoff for Manual Pricing
       </div>
       <div class="setting-control d-flex align-items-center col-6">
-        <div class="d-flex align-items-center flex-4" *ngIf="manualPricingSection !== 3"></div>
-        <div class="d-flex align-items-center flex-5" *ngIf="manualPricingSection !== 2">
+        <div
+          class="d-flex align-items-center flex-4"
+          *ngIf="formGroup.get('pricingType').value !== profilePricingType.BOTH"
+        ></div>
+        <div
+          class="d-flex align-items-center flex-5"
+          *ngIf="formGroup.get('pricingType').value !== profilePricingType.PRICING"
+        >
           <input
             digitOnly
             [min]="1"
@@ -25,7 +32,10 @@
           />
           <span>Eligible Process Profiles</span>
         </div>
-        <div class="d-flex align-items-center flex-5" *ngIf="manualPricingSection !== 1">
+        <div
+          class="d-flex align-items-center flex-5"
+          *ngIf="formGroup.get('pricingType').value !== profilePricingType.PROFILE"
+        >
           <input
             digitOnly
             [min]="1"
@@ -44,21 +54,21 @@
           <li
             class="dropdown-item"
             (click)="setManualPricingSection(1)"
-            [ngClass]="{ active: manualPricingSection === 1 }"
+            [ngClass]="{ active: formGroup.get('pricingType').value === 1 }"
           >
             Eligible Process Profile
           </li>
           <li
             class="dropdown-item"
             (click)="setManualPricingSection(2)"
-            [ngClass]="{ active: manualPricingSection === 2 }"
+            [ngClass]="{ active: formGroup.get('pricingType').value === 2 }"
           >
             Eligible Pricing Profile
           </li>
           <li
             class="dropdown-item"
             (click)="setManualPricingSection(3)"
-            [ngClass]="{ active: manualPricingSection === 3 }"
+            [ngClass]="{ active: formGroup.get('pricingType').value === 3 }"
           >
             Eligible Process Profiles & Eligible Pricing Profiles
           </li>
@@ -85,14 +95,14 @@
               class="setting-input"
             />
             <span>
-              (from bottom - {{ detailForm.value.presentBidNumberFromBottom }}
+              (from bottom - {{ formGroup.value.presentBidNumberFromBottom }}
               <sup>
-                {{ getOrderUnit(detailForm.value.presentBidNumberFromBottom) }}
+                {{ getOrderUnit(formGroup.value.presentBidNumberFromBottom) }}
               </sup>
               price)
             </span>
           </div>
-          <span *ngIf="detailForm.errors && detailForm.errors.invalidBidNumber" class="footnote red p-absolute">
+          <span *ngIf="formGroup.errors && formGroup.errors.invalidBidNumber" class="footnote red p-absolute">
             Present Bid No must be below than Cutoff for Manual Pricing
           </span>
         </div>
@@ -101,7 +111,7 @@
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Add what % Incremental Margin to Bid No
-        {{ detailForm.value.presentBidNumberFromBottom }}
+        {{ formGroup.value.presentBidNumberFromBottom }}
       </div>
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
@@ -121,7 +131,7 @@
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Add what $ Incremental Margin to Bid No
-        {{ detailForm.value.presentBidNumberFromBottom }}
+        {{ formGroup.value.presentBidNumberFromBottom }}
       </div>
       <div class="setting-control d-flex align-items-center col-6">
         <div class="d-flex align-items-center flex-4"></div>
@@ -151,8 +161,8 @@
           id="autoPricingApproach"
         >
           {{
-            detailForm.value.autoPricingEligibilityType &&
-              detailForm.value.autoPricingEligibilityType.name
+            formGroup.value.autoPricingEligibilityType &&
+              formGroup.value.autoPricingEligibilityType.name
           }}
           <div class="icon">
             <i class="fa fa-chevron-down"></i>
@@ -160,8 +170,8 @@
         </div>
         <div class="col-6 d-flex align-items-center justify-content-center">
           {{
-            detailForm.value.autoPricingEligibilityType &&
-              detailForm.value.autoPricingEligibilityType.description
+            formGroup.value.autoPricingEligibilityType &&
+              formGroup.value.autoPricingEligibilityType.description
           }}
         </div>
         <ul class="popup dropdown-menu" aria-labelledby="autoPricingApproach">
