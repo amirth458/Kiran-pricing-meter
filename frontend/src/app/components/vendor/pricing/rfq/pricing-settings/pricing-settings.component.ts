@@ -89,11 +89,6 @@ export class PricingSettingsComponent implements OnInit {
     return valid;
   }
 
-  validate(control: FormControl) {
-    const value = control.value || 0;
-    return !(Number(value) > 0) ? { zero: true } : null;
-  }
-
   checkBidNumber(control: FormGroup) {
     const bidNumber = control.get('presentBidNumberFromBottom');
     const pricingProfile = control.get('minElligiblePricingProfile');
@@ -154,23 +149,13 @@ export class PricingSettingsComponent implements OnInit {
   }
 
   async save() {
-    if (this.formGroup.valid) {
-      this.pricingService
-        .setPricingSetting(this.formGroup.value)
-        .pipe(catchError(e => this.handleSaveError(e)))
-        .subscribe(v => {
-          this.initSettings();
-          this.toastrService.success(`Pricing Settings Updated Successfully`);
-        });
-    } else if (this.formGroup.errors.invalidIncrementalMargin) {
-      this.toastrService.warning(
-        'User can not set both for Incremental Margin Rate and Percent, Please input only one value'
-      );
-    } else if (this.formGroup.errors.invalidCount) {
-      this.toastrService.warning('Must set one of the cut off for manual pricing.');
-    } else if (this.formGroup.errors.requiredIncrementalMargin) {
-      this.toastrService.warning('Must set one of the Incremental Margin.');
-    }
+    this.pricingService
+      .setPricingSetting(this.formGroup.value)
+      .pipe(catchError(e => this.handleSaveError(e)))
+      .subscribe(v => {
+        this.initSettings();
+        this.toastrService.success(`Pricing Settings Updated Successfully`);
+      });
   }
 
   handleSaveError(error: HttpErrorResponse) {
