@@ -1,113 +1,217 @@
 <div class="wrapper">
-  <form class="table" [formGroup]="detailForm" (submit)="save()">
+  <form class="table" [formGroup]="formGroup" (submit)="save()">
     <div class="row header p-3">Pricing Information</div>
-    <div
-      class="row mb-2 dropdown"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
-      id="manualPricingDropdown"
-    >
+    <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Cutoff for Manual Pricing
       </div>
-      <div class="setting-control d-flex align-items-center col-6">
-        <div class="d-flex align-items-center flex-4" *ngIf="manualPricingSection !== 3"></div>
-        <div class="d-flex align-items-center flex-5" *ngIf="manualPricingSection !== 2">
-          <input
-            formControlName="minElligibleProcessProfile"
-            type="number"
-            class="setting-input"
-            (click)="$event.stopPropagation()"
-          />
-          <span>Eligible Process Profiles</span>
-        </div>
-        <div class="d-flex align-items-center flex-5" *ngIf="manualPricingSection !== 1">
-          <input
-            type="number"
-            formControlName="minElligiblePricingProfile"
-            class="setting-input"
-            (click)="$event.stopPropagation()"
-          />
-          <span>Eligible Pricing Profiles</span>
-        </div>
-        <div class="icon">
-          <i class="fa fa-chevron-down"></i>
-        </div>
-        <ul class="popup dropdown-menu" aria-labelledby="manualPricingDropdown">
-          <li
-            class="dropdown-item"
-            (click)="setManualPricingSection(1)"
-            [ngClass]="{ active: manualPricingSection === 1 }"
-          >
-            Eligible Process Profile
-          </li>
-          <li
-            class="dropdown-item"
-            (click)="setManualPricingSection(2)"
-            [ngClass]="{ active: manualPricingSection === 2 }"
-          >
-            Eligible Pricing Profile
-          </li>
-          <li
-            class="dropdown-item"
-            (click)="setManualPricingSection(3)"
-            [ngClass]="{ active: manualPricingSection === 3 }"
-          >
-            Eligible Process Profiles & Eligible Pricing Profiles
-          </li>
-          <div class="icon">
-            <i class="fa fa-chevron-up"></i>
+      <div class="setting-control d-flex align-items-center col-6 position-relative p-0">
+        <div class="d-flex flex-column w-100 h-100 position-absolute">
+          <div class="col-12 p-0 d-flex flex-row justify-content-center align-items-center">
+            <div class="col-11 d-flex flex-row justify-content-start align-items-center">
+              <div
+                class="col-6 p-0 d-flex flex-column justify-content-start align-items-center m-0"
+                *ngIf="formGroup.get('pricingType').value !== profilePricingType.PRICING"
+              >
+                <label class="d-flex flex-row align-items-center col-12 m-0 p-0 align-box">
+                  <input
+                    digitOnly
+                    [min]="1"
+                    [step]="1"
+                    formControlName="minElligibleProcessProfile"
+                    type="number"
+                    class="setting-input"
+                    (click)="$event.stopPropagation()"
+                  />
+                  <span>Eligible Process Profiles</span>
+                </label>
+                <div
+                  class="w-100 pt-1 pb-1 align-box"
+                  *ngIf="
+                    formGroup.errors &&
+                    (formGroup.errors.invalidProfileValue ||
+                      (formGroup.errors.invalidCutOffValue && !formGroup.get('minElligibleProcessProfile').value))
+                  "
+                >
+                  <span class="footnote red p-absolute">
+                    please enter value zero and above
+                  </span>
+                </div>
+              </div>
+              <div
+                class="col-6 p-0 d-flex flex-column justify-content-start align-items-center m-0"
+                *ngIf="formGroup.get('pricingType').value !== profilePricingType.PROFILE"
+              >
+                <label class="d-flex flex-row align-items-center col-12 m-0 p-0 align-box">
+                  <input
+                    digitOnly
+                    [min]="1"
+                    [step]="1"
+                    type="number"
+                    formControlName="minElligiblePricingProfile"
+                    class="setting-input"
+                    (click)="$event.stopPropagation()"
+                  />
+                  <span>Eligible Pricing Profiles</span>
+                </label>
+                <div
+                  class="w-100 pt-1 pb-1 align-box"
+                  *ngIf="
+                    formGroup.errors &&
+                    (formGroup.errors.invalidPricingValue ||
+                      (formGroup.errors.invalidCutOffValue && !formGroup.get('minElligiblePricingProfile').value))
+                  "
+                >
+                  <span class="footnote red p-absolute">
+                    please enter value zero and above
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-1 p-0">
+              <button
+                class="btn transparent text-theme-green p-0"
+                type="button"
+                id="manualPricingDropdown"
+                [class.d-none]="pricingDropDown.isOpen()"
+                (click)="pricingDropDown.open()"
+              >
+                <i class="fa fa-chevron-down"></i>
+              </button>
+            </div>
           </div>
-        </ul>
+          <div
+            ngbDropdown
+            class="pricing-drop-down {{ pricingDropDown.isOpen() ? 'position-absolute w-100' : '' }}"
+            #pricingDropDown="ngbDropdown"
+          >
+            <button class="btn d-none" ngbDropdownToggle>Hidden Button Trigger</button>
+            <ul class="w-100" ngbDropdownMenu aria-labelledby="manualPricingDropdown">
+              <li class="position-absolute move-right">
+                <button
+                  class="btn transparent text-theme-green align-right"
+                  type="button"
+                  (click)="pricingDropDown.close()"
+                >
+                  <i class="fa fa-chevron-up"></i>
+                </button>
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="setManualPricingSection(item.id)"
+                [ngClass]="{ active: formGroup.get('pricingType').value === item.id }"
+                *ngFor="let item of pricingDropDownItems"
+              >
+                {{ item.value }}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Of eligible pricing profile, present Bid No
       </div>
-      <div class="setting-control d-flex align-items-center col-6">
-        <div class="d-flex align-items-center flex-4"></div>
-        <div class=" flex-5">
-          <div class="d-flex align-items-center mr-3">
-            <input type="number" formControlName="presentBidNumberFromBottom" class="setting-input" />
-            <span>
-              (from bottom - {{ detailForm.value.presentBidNumberFromBottom }}
-              <sup>
-                {{ getOrderUnit(detailForm.value.presentBidNumberFromBottom) }}
-              </sup>
-              price)
-            </span>
+      <div class="setting-control d-flex align-items-center col-6 flex-column p-0">
+        <div class="d-flex flex-row col-12 p-0">
+          <div class="col-3"></div>
+          <div class="col-9 d-flex justify-content-start align-items-center flex-column pt-1 pb-1">
+            <label class="d-flex flex-row align-items-center col-12 m-0 p-0 align-box">
+              <input
+                digitOnly
+                [min]="1"
+                [step]="1"
+                type="number"
+                formControlName="presentBidNumberFromBottom"
+                class="setting-input"
+              />
+              <span>
+                (from bottom - {{ formGroup.value.presentBidNumberFromBottom }}
+                <sup>
+                  {{ getOrderUnit(formGroup.value.presentBidNumberFromBottom) }}
+                </sup>
+                price)
+              </span>
+            </label>
+            <div
+              class="w-100 pt-1 pb-1 align-box"
+              *ngIf="formGroup.errors && (formGroup.errors.invalidBidNumber || formGroup.errors.zero)"
+            >
+              <span *ngIf="formGroup.errors.invalidBidNumber" class="footnote red p-absolute">
+                Present Bid No must be below than Cutoff for Manual Pricing
+              </span>
+              <span *ngIf="formGroup.errors.zero" class="footnote red p-absolute">
+                please enter value greater than zero
+              </span>
+            </div>
           </div>
-          <span *ngIf="detailForm.errors && detailForm.errors.invalidBidNumber" class="footnote red p-absolute">
-            Present Bid No must be below than Cutoff for Manual Pricing
-          </span>
         </div>
       </div>
     </div>
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Add what % Incremental Margin to Bid No
-        {{ detailForm.value.presentBidNumberFromBottom }}
+        {{ formGroup.value.presentBidNumberFromBottom }}
       </div>
-      <div class="setting-control d-flex align-items-center col-6">
-        <div class="d-flex align-items-center flex-4"></div>
-        <div class="d-flex align-items-center flex-5">
-          <input type="number" formControlName="incrementalMarginPercent" class="setting-input" />
-          <span>%</span>
+      <div class="setting-control d-flex align-items-center justify-content-center col-6 flex-column p-0">
+        <div class="d-flex flex-row col-12 p-0">
+          <div class="col-3"></div>
+          <div class="col-9 d-flex justify-content-start align-items-center flex-column pt-1 pb-1">
+            <label class="d-flex flex-row align-items-center col-12 m-0 p-0 align-box">
+              <input
+                digitOnly
+                [min]="1"
+                [step]="1"
+                type="number"
+                formControlName="incrementalMarginPercent"
+                class="setting-input"
+              />
+              &nbsp;%
+            </label>
+            <div class="w-100 pt-1 pb-1 align-box" *ngIf="formGroup.errors && formGroup.errors.marginPercentZeroValue">
+              <span *ngIf="formGroup.errors.marginPercentZeroValue" class="footnote red p-absolute">
+                $ Incremental Margin should not be empty
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
         Add what $ Incremental Margin to Bid No
-        {{ detailForm.value.presentBidNumberFromBottom }}
+        {{ formGroup.value.presentBidNumberFromBottom }}
       </div>
-      <div class="setting-control d-flex align-items-center col-6">
-        <div class="d-flex align-items-center flex-4"></div>
-        <div class="d-flex align-items-center flex-5">
-          <input type="number" formControlName="incrementalMarginRate" class="setting-input" />
-          <span>$</span>
+      <div class="setting-control d-flex align-items-center justify-content-center flex-column col-6 p-0">
+        <div class="d-flex flex-row col-12 p-0">
+          <div class="col-3"></div>
+          <div class="col-9 d-flex justify-content-start align-items-center flex-column pt-1 pb-1">
+            <label class="d-flex flex-row align-items-center col-12 m-0 p-0 align-box">
+              <input
+                digitOnly
+                [min]="1"
+                [step]="1"
+                type="number"
+                formControlName="incrementalMarginRate"
+                class="setting-input"
+              />
+              &nbsp;$
+            </label>
+            <div
+              class="w-100 pt-1 pb-1 align-box"
+              *ngIf="
+                formGroup.errors && (formGroup.errors.invalidIncrementalMargin || formGroup.errors.marginRateZeroValue)
+              "
+            >
+              <span *ngIf="formGroup.errors.invalidIncrementalMargin" class="footnote red p-absolute">
+                Invalid incremental combination, user either % / $ Incremental Margin
+              </span>
+              <span *ngIf="formGroup.errors.marginRateZeroValue" class="footnote red p-absolute">
+                $ Incremental Margin should not be zero
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -124,8 +228,8 @@
           id="autoPricingApproach"
         >
           {{
-            detailForm.value.autoPricingEligibilityType &&
-              detailForm.value.autoPricingEligibilityType.name
+            formGroup.value.autoPricingEligibilityType &&
+              formGroup.value.autoPricingEligibilityType.name
           }}
           <div class="icon">
             <i class="fa fa-chevron-down"></i>
@@ -133,8 +237,8 @@
         </div>
         <div class="col-6 d-flex align-items-center justify-content-center">
           {{
-            detailForm.value.autoPricingEligibilityType &&
-              detailForm.value.autoPricingEligibilityType.description
+            formGroup.value.autoPricingEligibilityType &&
+              formGroup.value.autoPricingEligibilityType.description
           }}
         </div>
         <ul class="popup dropdown-menu" aria-labelledby="autoPricingApproach">
@@ -173,11 +277,30 @@
     </div> -->
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">Time to Expire Quote</div>
-      <div class="setting-control d-flex align-items-center col-6">
-        <div class="d-flex align-items-center flex-4"></div>
-        <div class="d-flex align-items-center flex-5">
-          <input type="number" formControlName="quoteExpirationTime" class="setting-input" />
-          <span>hours</span>
+      <div class="setting-control d-flex align-items-center justify-content-center flex-column col-6 p-0">
+        <div class="d-flex flex-row col-12 p-0">
+          <div class="col-3"></div>
+          <div class="col-9 d-flex justify-content-start align-items-center flex-column pt-1 pb-1">
+            <label class="d-flex flex-row align-items-center col-12 m-0 p-0 align-box">
+              <input
+                digitOnly
+                [min]="1"
+                [step]="1"
+                type="number"
+                formControlName="quoteExpirationTime"
+                class="setting-input"
+              />
+              &nbsp;Hours
+            </label>
+            <div
+              class="w-100 pt-1 pb-1 align-box"
+              *ngIf="formGroup.errors && formGroup.errors.invalidTimeExpirationValue"
+            >
+              <span *ngIf="formGroup.errors.invalidTimeExpirationValue" class="footnote red p-absolute">
+                Invalid time to expire. It should be > 0
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

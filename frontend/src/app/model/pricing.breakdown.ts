@@ -25,3 +25,9 @@ export interface PricingBreakDown {
   processPricingId: number;
   partId: number;
 }
+
+export enum PricingType {
+  PRICING = 1,
+  PROFILE = 2,
+  BOTH = 3
+}
