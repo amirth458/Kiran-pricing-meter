@@ -12,10 +12,7 @@ import { empty } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
-import {
-  BidOrderItem,
-  ConfirmSubOrderRelease
-} from '../../../../../model/confirm.sub-order.release';
+import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
@@ -82,12 +79,8 @@ export class VendorDetailsComponent implements OnInit {
       this.orderId = v.orderId || null;
       this.bidOrderId = v.bidOrderId || null;
       if (!this.bidOrderId) {
-        this.orderDetails = JSON.parse(
-          localStorage.getItem('admin-selectedSubOrders')
-        );
-        (this.orderDetails || []).map(
-          order => (this.initialPrice += order.priceAccepted)
-        );
+        this.orderDetails = JSON.parse(localStorage.getItem('admin-selectedSubOrders'));
+        (this.orderDetails || []).map(order => (this.initialPrice += order.priceAccepted));
         this.spinner.show('spooler');
         this.loadingProfiles = true;
         this.ordersService
@@ -101,8 +94,7 @@ export class VendorDetailsComponent implements OnInit {
             v.map(item => {
               const processProfileView = item.processProfileView;
               const processPricingView: any =
-                item.processPricingViews &&
-                (item.processPricingViews || []).length > 0
+                item.processPricingViews && (item.processPricingViews || []).length > 0
                   ? item.processPricingViews[0]
                   : {};
               const found = this.matchedProfiles.some(match => {
@@ -120,19 +112,15 @@ export class VendorDetailsComponent implements OnInit {
                 vendorName: item.vendorProfile ? item.vendorProfile.name : '',
                 processProfileName: processProfileView.name || '',
                 facilityName:
-                  processProfileView.processMachineServingMaterialList[0]
-                    .machineServingMaterial.vendorMachinery.vendorFacility
-                    .name || '',
-                pricingProfile:
-                  (processPricingView && processPricingView.name) || '',
+                  processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
+                    .vendorFacility.name || '',
+                pricingProfile: (processPricingView && processPricingView.name) || '',
                 releasePriority: priority,
                 pricing: item.processPricingViews || [],
                 vendorProfile: item.vendorProfile
               });
             });
-            this.priorityRows = this.matchedProfiles.filter(
-              item => item.id !== ''
-            );
+            this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
             this.spinner.hide('spooler');
             this.loadingProfiles = false;
           });
@@ -167,8 +155,7 @@ export class VendorDetailsComponent implements OnInit {
             vendorName: match.vendorName,
             processProfileName: p.name,
             facilityName:
-              p.processMachineServingMaterialList[0].machineServingMaterial
-                .vendorMachinery.vendorFacility.name,
+              p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
             pricingProfile: (p.processPricingList || []).length,
             bidProcessStatus: status,
             counterOfferPrice: match.counterOfferPrice,
@@ -177,14 +164,8 @@ export class VendorDetailsComponent implements OnInit {
         });
       });
       this.ordersService
-        .getPartQuotesByPartIds(
-          (v.acceptedOrderDetails || []).map(p => p.partId)
-        )
-        .pipe(
-          switchMap(parts =>
-            this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)
-          )
-        )
+        .getPartQuotesByPartIds((v.acceptedOrderDetails || []).map(p => p.partId))
+        .pipe(switchMap(parts => this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)))
         .subscribe(v => {
           this.orderDetails = v || [];
         });
@@ -234,12 +215,7 @@ export class VendorDetailsComponent implements OnInit {
           sortable: true,
           filter: false,
           valueFormatter: dt => {
-            return this.currencyPipe.transform(
-              dt.value || 0,
-              'USD',
-              'symbol',
-              '0.0-3'
-            );
+            return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
           }
         },
         {
@@ -315,10 +291,7 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          valueFormatter: dt =>
-            dt.value
-              ? `${this.datePipe.transform(dt.value, Util.dateFormat)}`
-              : ''
+          valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat)}` : '')
         }
       ],
       [
@@ -440,9 +413,8 @@ export class VendorDetailsComponent implements OnInit {
             const arr = [];
             (dt.value || []).map(condition => {
               arr.push(
-                `${condition.processPricingConditionType.name || ''} ${condition
-                  .operatorType.symbol || ''} ${condition.value ||
-                  ''} ${condition.unitType.symbol || ''}`
+                `${condition.processPricingConditionType.name || ''} ${condition.operatorType.symbol ||
+                  ''} ${condition.value || ''} ${condition.unitType.symbol || ''}`
               );
             });
             return arr.length !== 0 ? arr.join(' , ') : '';
@@ -636,9 +608,7 @@ export class VendorDetailsComponent implements OnInit {
 
   onRowDragEnd(ev) {
     const overNode = ev.overNode;
-    const popIndex = this.priorityRows.findIndex(
-      item => item.id === overNode.data.id
-    );
+    const popIndex = this.priorityRows.findIndex(item => item.id === overNode.data.id);
     const pushIndex = ev.overIndex;
     this.priorityRows.splice(popIndex, 1);
     this.priorityRows.splice(pushIndex, 0, overNode.data);
@@ -663,8 +633,8 @@ export class VendorDetailsComponent implements OnInit {
       if (!vendorData[pricing.vendorId]) {
         vendorData[pricing.vendorId] = {
           id: pricing.vendorId,
-          postProcessProfileIds: [pricing.profileId],
-          processProfileIds: [],
+          postProcessProfileIds: [],
+          processProfileIds: [pricing.profileId],
           releasePriority: pricing.releasePriority
         };
       } else {
@@ -678,24 +648,16 @@ export class VendorDetailsComponent implements OnInit {
     this.biddingService
       .biddingConfirmation({
         customerOrders,
-        bidOfferPrice:
-          this.initialPrice *
-          (this.subOrderRelease.initialBidSoldPricePercent / 100),
+        bidOfferPrice: this.initialPrice * (this.subOrderRelease.initialBidSoldPricePercent / 100),
         bidDuration: this.subOrderRelease.maxBidUnresponsiveTimeMinutes,
-        maxSupplierViewOpportunity: this.subOrderRelease
-          .maxSupplierViewOpportunity,
+        maxSupplierViewOpportunity: this.subOrderRelease.maxSupplierViewOpportunity,
         vendors
       } as ConfirmSubOrderRelease)
       .subscribe(v => {
         this.modalService.dismissAll();
         if (v != null) {
-          const bidOrder: BidOrderItem =
-            (v.bidOrderItemList || []).length > 0
-              ? v.bidOrderItemList[0]
-              : null;
-          this.router.navigateByUrl(
-            `/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder.id}`
-          );
+          const bidOrder: BidOrderItem = (v.bidOrderItemList || []).length > 0 ? v.bidOrderItemList[0] : null;
+          this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder.id}`);
         }
       });
   }
@@ -714,17 +676,11 @@ export class VendorDetailsComponent implements OnInit {
 
   onConfirmBidding() {
     const processProfileView =
-      (this.selectedBidding.processProfileViews || []).length > 0
-        ? this.selectedBidding.processProfileViews[0]
-        : null;
+      (this.selectedBidding.processProfileViews || []).length > 0 ? this.selectedBidding.processProfileViews[0] : null;
     if (processProfileView) {
       this.spinner.show();
       this.biddingService
-        .confirmBidOrder(
-          this.bidOrderId,
-          this.selectedBidding.bidProcessId,
-          processProfileView.vendorId
-        )
+        .confirmBidOrder(this.bidOrderId, this.selectedBidding.bidProcessId, processProfileView.vendorId)
         .pipe(
           catchError((err: any) => {
             this.toaster.error(err.error.message);
@@ -737,14 +693,10 @@ export class VendorDetailsComponent implements OnInit {
           this.toaster.success('Successfully bidding confirmed');
           this.spinner.hide();
           this.modalService.dismissAll();
-          this.router.navigateByUrl(
-            `/pricing/orders/released-orders/${this.bidOrderId}`
-          );
+          this.router.navigateByUrl(`/pricing/orders/released-orders/${this.bidOrderId}`);
         });
     } else {
-      this.toaster.error(
-        'There is no process profile associated wit this bidding!'
-      );
+      this.toaster.error('There is no process profile associated wit this bidding!');
     }
   }
 }
