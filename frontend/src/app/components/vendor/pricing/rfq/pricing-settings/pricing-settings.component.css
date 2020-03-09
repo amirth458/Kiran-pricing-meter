@@ -15,7 +15,7 @@
 }
 
 .table {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   text-align: center;
   user-select: none;
@@ -84,6 +84,10 @@
   right: 0;
   transform: none !important;
   user-select: none;
+}
+
+:host .align-box {
+  flex: 1;
 }
 
 .footnote {

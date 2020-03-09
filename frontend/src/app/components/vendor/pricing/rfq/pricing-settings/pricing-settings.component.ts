@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { ToastrService } from 'ngx-toastr';
@@ -24,18 +24,17 @@ export class PricingSettingsComponent implements OnInit {
       presentBidNumberFromBottom: [null],
       incrementalMarginPercent: [null],
       incrementalMarginRate: [null],
-      // NOTE: we dont use below values
+      // NOTE: we dont use below two values
       specificityPremium: [null],
       autoPricingEligibilityType: [null],
       quoteExpirationTime: [null],
       pricingType: [3]
     },
     {
-      validators: [this.profile, this.checkBidNumber, this.profileCounts, this.checkIncrementalMargin]
+      validators: [this.profile, this.checkBidNumber, this.checkIncrementalMargin, this.timeExpireValidation]
     }
   );
   profilePricingType = PricingType;
-
   pricingDropDownItems: any = [
     {
       id: PricingType.PROFILE,
@@ -50,7 +49,6 @@ export class PricingSettingsComponent implements OnInit {
       value: 'Eligible Process Profiles & Eligible Pricing Profiles'
     }
   ];
-
   defaultEligibilities = [
     {
       id: 1,
@@ -76,48 +74,70 @@ export class PricingSettingsComponent implements OnInit {
     const pricingCtl = form.get('minElligiblePricingProfile');
     const processCtl = form.get('minElligibleProcessProfile');
     const pricingType = form.get('pricingType');
-    let valid = false;
+    let valid: any;
     switch (pricingType.value || 0) {
       case PricingType.PROFILE:
-        valid = Number(processCtl.value) > 0;
+        valid = !(Number(processCtl.value) > 0) ? { invalidProfileValue: true } : null;
         break;
       case PricingType.PRICING:
-        valid = Number(pricingCtl.value) > 0;
+        valid = !(Number(pricingCtl.value) > 0) ? { invalidPricingValue: true } : null;
         break;
       case PricingType.BOTH:
-        valid = Number(pricingCtl.value) > 0 && Number(processCtl.value) > 0;
+        valid = !(Number(pricingCtl.value) > 0 && Number(processCtl.value) > 0) ? { invalidCutOffValue: true } : null;
         break;
     }
-    return !valid ? { hasValidProfile: true } : null;
+    return valid;
+  }
+
+  validate(control: FormControl) {
+    const value = control.value || 0;
+    return !(Number(value) > 0) ? { zero: true } : null;
   }
 
   checkBidNumber(control: FormGroup) {
     const bidNumber = control.get('presentBidNumberFromBottom');
     const pricingProfile = control.get('minElligiblePricingProfile');
+    if (!(Number(bidNumber.value) > 0)) {
+      return { zero: true };
+    }
     return bidNumber.value && pricingProfile.value && (+bidNumber.value || 0) > (+pricingProfile.value || 0)
       ? { invalidBidNumber: true }
       : null;
   }
 
-  profileCounts(control: FormGroup) {
-    const profile = control.get('minElligibleProcessProfile');
-    const pricing = control.get('minElligiblePricingProfile');
-    return !profile.value && !pricing.value ? { invalidCount: true } : null;
+  checkIncrementalMargin(control: FormGroup) {
+    const marginPercentValue = control.get('incrementalMarginPercent').value;
+    const marginRateValue = control.get('incrementalMarginRate').value;
+    if (marginPercentValue && marginRateValue) {
+      return { invalidIncrementalMargin: true };
+    } else if (!(marginPercentValue || marginRateValue)) {
+      if (marginPercentValue === null && !(Number(marginRateValue) > 0)) {
+        return { marginRateZeroValue: true };
+      }
+      if (marginRateValue === null && !(Number(marginPercentValue) > 0)) {
+        return { marginPercentZeroValue: true };
+      }
+    }
+    return null;
   }
 
-  checkIncrementalMargin(control: FormGroup) {
-    const incrementalMarginPercent = control.get('incrementalMarginPercent');
-    const incrementalMarginRate = control.get('incrementalMarginRate');
-    return incrementalMarginPercent.value && incrementalMarginRate.value
-      ? { invalidIncrementalMargin: true }
-      : !(incrementalMarginPercent.value || incrementalMarginRate.value)
-      ? { requiredIncrementalMargin: true }
-      : null;
+  timeExpireValidation(form: FormGroup) {
+    const timeExpiration = form.get('quoteExpirationTime').value;
+    if (!timeExpiration || !(Number(timeExpiration || 0) > 0)) {
+      return { invalidTimeExpirationValue: true };
+    }
+    return null;
   }
 
   ngOnInit() {
+    this.initSettings();
+    this.actionService.saveProfileSettingAction().subscribe(() => {
+      this.save();
+    });
+  }
+
+  initSettings() {
     this.pricingService.getPricingSettings().subscribe(defaultValue => {
-      console.log(defaultValue);
       if (defaultValue) {
         let type: any = {};
         if (defaultValue.minElligibleProcessProfile && defaultValue.minElligiblePricingProfile) {
@@ -131,9 +151,6 @@ export class PricingSettingsComponent implements OnInit {
         this.selectedEligibility = defaultValue.autoPricingEligibilityType.id - 1;
       }
     });
-    this.actionService.saveProfileSettingAction().subscribe(() => {
-      this.save();
-    });
   }
 
   async save() {
@@ -142,7 +159,7 @@ export class PricingSettingsComponent implements OnInit {
         .setPricingSetting(this.formGroup.value)
         .pipe(catchError(e => this.handleSaveError(e)))
         .subscribe(v => {
-          this.formGroup.setValue(v);
+          this.initSettings();
           this.toastrService.success(`Pricing Settings Updated Successfully`);
         });
     } else if (this.formGroup.errors.invalidIncrementalMargin) {
@@ -170,10 +187,10 @@ export class PricingSettingsComponent implements OnInit {
     };
     switch (value) {
       case PricingType.PRICING:
-        setValue.minElligiblePricingProfile = null;
+        setValue.minElligibleProcessProfile = null;
         break;
       case PricingType.PROFILE:
-        setValue.minElligibleProcessProfile = null;
+        setValue.minElligiblePricingProfile = null;
         break;
     }
     console.log({ ...this.formGroup.value, ...setValue });
