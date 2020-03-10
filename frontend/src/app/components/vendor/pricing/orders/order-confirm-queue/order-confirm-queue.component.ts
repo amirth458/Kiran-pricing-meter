@@ -26,15 +26,13 @@ export class OrderConfirmQueueComponent implements OnInit {
   autoGroupColumnDef = null;
   gridOptions: GridOptions;
   rowData;
+  vendorOrderID = '';
+  bidOrderStatus = '';
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
 
-  constructor(
-    public router: Router,
-    public spinner: NgxSpinnerService,
-    private orderService: OrdersService
-  ) {}
+  constructor(public router: Router, public spinner: NgxSpinnerService, private orderService: OrdersService) {}
 
   ngOnInit() {
     this.initColumns();
@@ -47,9 +45,7 @@ export class OrderConfirmQueueComponent implements OnInit {
       pagination: true,
       paginationPageSize: this.pageSize,
       onRowClicked: event => {
-        this.router.navigateByUrl(
-          `${this.router.url}/${event.data.bidOrder.id}`
-        );
+        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
     };
     this.getStartedBidOrders();
@@ -74,6 +70,21 @@ export class OrderConfirmQueueComponent implements OnInit {
     });
   }
 
+  get filteredData() {
+    return (this.rowData || []).filter(item => {
+      if (!item) {
+        return false;
+      }
+      if (
+        (this.vendorOrderID && item.bidOrder.id !== +this.vendorOrderID) ||
+        (this.bidOrderStatus && item.bidOrder.bidOrderStatusType.id !== +this.bidOrderStatus)
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   configureColumnDefs() {
     this.filterColumns.map(column => {
       this.columnDefs.map(col => {
@@ -93,9 +104,7 @@ export class OrderConfirmQueueComponent implements OnInit {
 
   searchColumnsChange(columns) {
     columns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);

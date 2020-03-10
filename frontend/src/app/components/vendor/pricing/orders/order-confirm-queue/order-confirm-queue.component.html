@@ -12,24 +12,21 @@
   </div>
   <div class="table theme-table ml-4 d-flex flex-column">
     <div class="mb-3 row d-flex">
-      <div class="form-group theme col-10 d-flex flex-row m-0">
-        <input class="form-control col-md-3" placeholder="Vendor Order ID" />
-        <select class="form-control col-md-3 ml-4" placeholder="Order Status">
-          <option value="">Bidding In Progress</option>
-          <option value="">Vendor Confirmation Received</option>
-          <option value="">Bidding Complete</option>
+      <div class="form-group theme col-9 d-flex flex-row m-0">
+        <input class="form-control col-md-3" placeholder="Vendor Order ID" [(ngModel)]="vendorOrderID" />
+        <select class="form-control col-md-3 ml-4" placeholder="Order Status" [(ngModel)]="bidOrderStatus">
+          <option value="">Choose</option>
+          <option value="2">Bidding In Progress</option>
+          <option value="3">Vendor Confirmation Received</option>
+          <option value="4">Bidding Complete</option>
         </select>
       </div>
 
-      <div class="col-2 page-size mt-2 pl-5 pr-0">
+      <div class="col-3 page-size mt-2 pl-5 pr-0">
         <span>
           Page Size:
         </span>
-        <select
-          id="page-size"
-          [(ngModel)]="pageSize"
-          (ngModelChange)="pageSizeChanged($event)"
-        >
+        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
           <option selected value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
@@ -40,7 +37,7 @@
     </div>
     <ag-grid-angular
       class="ag-theme-balham w-100 flex-grow-1"
-      [rowData]="rowData"
+      [rowData]="filteredData"
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)"
       [autoGroupColumnDef]="autoGroupColumnDef"
