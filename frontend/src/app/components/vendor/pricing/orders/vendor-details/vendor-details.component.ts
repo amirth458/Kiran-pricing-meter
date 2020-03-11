@@ -104,7 +104,7 @@ export class VendorDetailsComponent implements OnInit {
                 count++;
               }
               let id = !found ? count.toString() : '';
-              let priority = !found ? count.toString() : '';
+              let priority = !found ? count : '';
               this.matchedProfiles.push({
                 id,
                 vendorId: processProfileView.vendorId,
@@ -612,6 +612,23 @@ export class VendorDetailsComponent implements OnInit {
     const pushIndex = ev.overIndex;
     this.priorityRows.splice(popIndex, 1);
     this.priorityRows.splice(pushIndex, 0, overNode.data);
+    this.priorityRows = (this.priorityRows || []).map((row, idx) => {
+      row.releasePriority = idx + 1;
+      return row;
+    });
+    const groupedSuppliers = this.groupSupplierInfo(this.matchedProfiles, 'vendorId');
+    let arr = [];
+    (this.priorityRows || []).map(m => {
+      arr = arr.concat(groupedSuppliers[m.vendorId] || []);
+    });
+    this.matchedProfiles = arr;
+  }
+
+  groupSupplierInfo(xs: any, key: string) {
+    return xs.reduce((rv, x) => {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
   }
 
   showModal(content) {
@@ -651,6 +668,11 @@ export class VendorDetailsComponent implements OnInit {
         bidOfferPrice: this.initialPrice * (this.subOrderRelease.initialBidSoldPricePercent / 100),
         bidDuration: this.subOrderRelease.maxBidUnresponsiveTimeMinutes,
         maxSupplierViewOpportunity: this.subOrderRelease.maxSupplierViewOpportunity,
+        originalPrice: this.initialPrice,
+        startingReleasePricePercentile: this.subOrderRelease.initialBidSoldPricePercent,
+        priceIncrementPercentile: this.subOrderRelease.incrementBidAmountPercent,
+        thresholdBidPricePercentile: this.subOrderRelease.maxPercentWithoutFulfillment,
+        timeIncrement: this.subOrderRelease.minBidIncreaseTimeMinutes,
         vendors
       } as ConfirmSubOrderRelease)
       .subscribe(v => {
