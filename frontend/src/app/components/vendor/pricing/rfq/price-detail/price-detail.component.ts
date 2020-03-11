@@ -74,7 +74,7 @@ export class PriceDetailComponent implements OnInit {
         title: 'Process Profile'
       },
       this.part &&
-        !this.part.manualPricingAllowed && {
+        this.part.partStatusType.id !== 3 && {
           id: 3,
           title: 'Pricing Profile'
         }
