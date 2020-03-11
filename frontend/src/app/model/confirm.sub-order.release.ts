@@ -4,6 +4,11 @@ export interface ConfirmSubOrderRelease {
   bidDuration: number;
   maxSupplierViewOpportunity: number;
   vendors: Array<SubOrderReleaseVendor>;
+  originalPrice: number;
+  startingReleasePricePercentile: number;
+  priceIncrementPercentile: number;
+  thresholdBidPricePercentile: number;
+  timeIncrement: number;
 }
 
 interface SubOrderReleaseCustomerOrder {
