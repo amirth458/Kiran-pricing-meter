@@ -75,6 +75,9 @@ import { WaitingForApprovalComponent } from './vendor/billing/waiting-for-approv
 import { PurchaseOrderItemComponent } from './vendor/billing/purchase-order-item/purchase-order-item.component';
 import { PartItemDetailsComponent } from '../common/part-item-details/part-item-details.component';
 
+// pipes
+import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
+
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -140,7 +143,10 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
     WaitingForApprovalComponent,
     PurchaseOrderItemComponent,
     PartItemDetailsComponent,
-    WaitingForApprovalComponent
+    WaitingForApprovalComponent,
+
+    // Pipes
+    ConfirmOrderFilterPipe
   ],
   imports: [
     CommonModule,
@@ -178,7 +184,10 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
     SubSectionMenuComponent,
     TopMenuComponent,
     ImgPreloadDirective,
-    DigitOnlyDirective
+    DigitOnlyDirective,
+
+    // pipes
+    ConfirmOrderFilterPipe
   ]
 })
 export class ComponentsModule {}

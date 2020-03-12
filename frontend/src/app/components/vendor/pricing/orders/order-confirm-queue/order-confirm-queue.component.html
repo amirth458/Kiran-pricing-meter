@@ -13,22 +13,12 @@
   <div class="table theme-table ml-4 d-flex flex-column">
     <div class="mb-3 row d-flex">
       <div class="form-group theme col-9 d-flex flex-row m-0">
-        <input
-          class="form-control col-md-3"
-          placeholder="Vendor Order ID"
-          [(ngModel)]="vendorOrderID"
-          (change)="onFilterChange()"
-        />
-        <select
-          class="form-control col-md-3 ml-4"
-          placeholder="Order Status"
-          [(ngModel)]="bidOrderStatus"
-          (change)="onFilterChange()"
-        >
-          <option value="">Choose</option>
-          <option value="2">Bidding In Progress</option>
-          <option value="3">Vendor Confirmation Received</option>
-          <option value="4">Bidding Complete</option>
+        <input class="form-control col-md-3" placeholder="Vendor Order ID" [(ngModel)]="vendorOrderID" />
+        <select class="form-control col-md-3 ml-4" [(ngModel)]="bidOrderStatus">
+          <option value="" selected>Choose</option>
+          <ng-container *ngIf="status$ | async as items">
+            <option *ngFor="let status of items" [value]="status.id" [text]="status.description"></option>
+          </ng-container>
         </select>
       </div>
 
@@ -47,7 +37,7 @@
     </div>
     <ag-grid-angular
       class="ag-theme-balham w-100 flex-grow-1"
-      [rowData]="filteredData"
+      [rowData]="rowData | confirmOrderFilter: bidOrderStatus:vendorOrderID"
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)"
       [autoGroupColumnDef]="autoGroupColumnDef"
