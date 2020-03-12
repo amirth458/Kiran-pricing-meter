@@ -4,8 +4,12 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { GridOptions } from 'ag-grid-community';
 
+import { Observable } from 'rxjs';
+
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { MetadataService } from '../../../../../service/metadata.service';
+import { MetaData, MetadataConfig } from '../../../../../model/metadata.model';
 
 @Component({
   selector: 'app-order-confirm-queue',
@@ -14,25 +18,29 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
 })
 export class OrderConfirmQueueComponent implements OnInit {
   type = ['search', 'filter'];
-
   pageSize = 10;
-
   searchColumns = this.orderService.getGridSearchColumns();
   filterColumns = this.orderService.getGridFilterColumns();
 
   selectedIds = [];
-
   columnDefs: Array<any> = [];
   autoGroupColumnDef = null;
   gridOptions: GridOptions;
   rowData;
-  vendorOrderID = '';
+  vendorOrderID: number;
   bidOrderStatus = '';
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
 
-  constructor(public router: Router, public spinner: NgxSpinnerService, private orderService: OrdersService) {}
+  status$: Observable<MetaData[]>;
+
+  constructor(
+    public router: Router,
+    public spinner: NgxSpinnerService,
+    public orderService: OrdersService,
+    public metaDataService: MetadataService
+  ) {}
 
   ngOnInit() {
     this.initColumns();
@@ -44,11 +52,10 @@ export class OrderConfirmQueueComponent implements OnInit {
       headerHeight: 35,
       pagination: true,
       paginationPageSize: this.pageSize,
-      onRowClicked: event => {
-        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
-      }
+      onRowClicked: event => this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`)
     };
     this.getStartedBidOrders();
+    this.status$ = this.metaDataService.getAdminMetaData(MetadataConfig.BID_ORDER_STATUS_TYPE);
   }
 
   initColumns() {
@@ -67,21 +74,6 @@ export class OrderConfirmQueueComponent implements OnInit {
     this.orderService.getStartedBidOrders().subscribe(v => {
       this.rowData = (v || []).length > 0 ? v : [];
       this.spinner.hide();
-    });
-  }
-
-  get filteredData() {
-    return (this.rowData || []).filter(item => {
-      if (!item) {
-        return false;
-      }
-      if (
-        (this.vendorOrderID && item.bidOrder.id !== +this.vendorOrderID) ||
-        (this.bidOrderStatus && item.bidOrder.bidOrderStatusType.id !== +this.bidOrderStatus)
-      ) {
-        return false;
-      }
-      return true;
     });
   }
 
