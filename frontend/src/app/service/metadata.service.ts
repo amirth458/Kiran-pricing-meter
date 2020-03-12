@@ -4,13 +4,18 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { MetaData } from './../model/metadata.model';
+import { MetaData } from '../model/metadata.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetadataService {
   constructor(public http: HttpClient) {}
+
+  getAdminMetaData(type: string): Observable<MetaData[]> {
+    const url = `${environment.apiBaseUrl}/admin/metadata/${type}`;
+    return this.http.get<MetaData[]>(url).pipe(map((res: any) => res.metadataList || []));
+  }
 
   getMetaData(type: string): Observable<MetaData[]> {
     const url = `${environment.procurementApiBaseUrl}/metadata/${type}`;
