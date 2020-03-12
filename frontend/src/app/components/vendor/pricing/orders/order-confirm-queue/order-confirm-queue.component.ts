@@ -16,6 +16,7 @@ export class OrderConfirmQueueComponent implements OnInit {
   type = ['search', 'filter'];
 
   pageSize = 10;
+  filteredData;
 
   searchColumns = this.orderService.getGridSearchColumns();
   filterColumns = this.orderService.getGridFilterColumns();
@@ -66,12 +67,13 @@ export class OrderConfirmQueueComponent implements OnInit {
     this.spinner.show();
     this.orderService.getStartedBidOrders().subscribe(v => {
       this.rowData = (v || []).length > 0 ? v : [];
+      this.filteredData = this.rowData;
       this.spinner.hide();
     });
   }
 
-  get filteredData() {
-    return (this.rowData || []).filter(item => {
+  dataFilter() {
+    this.filteredData = (this.rowData || []).filter(item => {
       if (!item) {
         return false;
       }
@@ -93,6 +95,10 @@ export class OrderConfirmQueueComponent implements OnInit {
         }
       });
     });
+  }
+
+  onFilterChange() {
+    this.dataFilter();
   }
 
   filterColumnsChange(event) {
