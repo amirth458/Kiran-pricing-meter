@@ -73,11 +73,10 @@ export class PriceDetailComponent implements OnInit {
         id: 2,
         title: 'Process Profile'
       },
-      this.part &&
-        this.part.partStatusType.id !== 3 && {
-          id: 3,
-          title: 'Pricing Profile'
-        }
+      {
+        id: 3,
+        title: 'Pricing Profile'
+      }
     ];
   }
 

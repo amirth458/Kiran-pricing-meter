@@ -1,12 +1,9 @@
 <div class="w-100 p-3">
   <p class="match-text">
-    <ng-container *ngIf="part">
-      {{ pricingSettings?.minElligibleProcessProfile }} process profiles and
-      {{ pricingSettings?.minElligiblePricingProfile }} pricing profile matched
-      <!-- <ng-template #manualPricing>
-        Based on Pricing Profiles, we recommend
-      </ng-template> -->
-    </ng-container>
+    <ng-container *ngIf="rowData?.length; else noProfile"> {{ rowData?.length }} pricing profile matched </ng-container>
+    <ng-template #noProfile>
+      No pricing profile matched
+    </ng-template>
   </p>
   <div class="d-flex">
     <div class="table-control">
