@@ -11,7 +11,7 @@ export class ForgeService {
   constructor(public http: HttpClient) {}
 
   private getForgeToken(callback) {
-    this.http.get(environment.procurementApiBaseUrl + '/design/oauth/forge').subscribe((data: any) => {
+    this.http.get(environment.apiBaseUrl + '/design/oauth/forge').subscribe((data: any) => {
       callback(data.access_token, data.expires_in);
     });
   }
@@ -74,6 +74,6 @@ export class ForgeService {
   }
 
   public getMetadataId(connectorServiceId: number) {
-    return this.http.get(environment.procurementApiBaseUrl + '/design/3Dimage?metadataId=' + connectorServiceId);
+    return this.http.get(environment.apiBaseUrl + '/design/3Dimage?metadataId=' + connectorServiceId);
   }
 }
