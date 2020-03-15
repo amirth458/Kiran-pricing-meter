@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  TemplateRef
-} from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,11 +7,7 @@ import { TemplateRendererComponent } from 'src/app/common/template-renderer/temp
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillingService } from 'src/app/service/billing.service';
-import {
-  PaymentStatusTypes,
-  PaymentType,
-  Payment
-} from 'src/app/model/billing.model';
+import { PaymentStatusTypes, Payment } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
 
 @Component({
@@ -133,7 +123,7 @@ export class WaitingForApprovalComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     orderNo: [null],
-    paymentType: [PaymentType.PURCHASE_ORDER],
+    paymentType: [null],
     comment: ['']
   });
 
@@ -149,9 +139,7 @@ export class WaitingForApprovalComponent implements OnInit {
   ) {
     this.navigation = this.route.getCurrentNavigation();
     const routeArr = this.route.url
-      .slice(
-        this.route.url.indexOf('/billing/payment/') + '/billing/payment/'.length
-      )
+      .slice(this.route.url.indexOf('/billing/payment/') + '/billing/payment/'.length)
       .split('/');
 
     switch (routeArr[0]) {
@@ -172,9 +160,7 @@ export class WaitingForApprovalComponent implements OnInit {
   ngOnInit() {
     // this.spineer.show();
 
-    this.setGridColumns(
-      PaymentStatusTypes.WAITING_FOR_APPROVAL === this.pageType
-    );
+    this.setGridColumns(PaymentStatusTypes.WAITING_FOR_APPROVAL === this.pageType);
 
     this.getProfiles();
 
@@ -195,11 +181,7 @@ export class WaitingForApprovalComponent implements OnInit {
       headerHeight: 35
     };
 
-    if (
-      this.navigation &&
-      this.navigation.extras.state &&
-      this.navigation.extras.state.toast
-    ) {
+    if (this.navigation && this.navigation.extras.state && this.navigation.extras.state.toast) {
       const toastInfo = this.navigation.extras.state.toast;
       if (toastInfo.type === 'success') {
         this.toastr.success(toastInfo.body);
@@ -245,9 +227,7 @@ export class WaitingForApprovalComponent implements OnInit {
 
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
@@ -306,36 +286,34 @@ export class WaitingForApprovalComponent implements OnInit {
       poNumber: this.selectedPurchaseOrder.poNumber
     };
     if (this.form.value.comment) {
-      this.billingService
-        .addNote(this.form.value.comment, this.selectedPurchaseOrder.orderId)
-        .subscribe(
-          res => {
-            this.form.controls.comment.setValue('');
-            console.log({ res });
-            this.billingService.rejectOrder(body).subscribe(
-              result => {
-                console.log({ reject: result });
-                this.selectedPurchaseOrder = null;
-                this.disableControls = false;
-                this.getProfiles();
-                this.modalService.dismissAll();
-                this.toastr.success('Purchase Rejected.');
-              },
-              err => {
-                console.log({ err });
-                this.selectedPurchaseOrder = null;
-                this.disableControls = false;
-                this.modalService.dismissAll();
-                this.toastr.error(err.error.message);
-              }
-            );
-          },
-          err => {
-            console.log({ err });
-            this.disableControls = false;
-            this.toastr.error(err.error.message);
-          }
-        );
+      this.billingService.addNote(this.form.value.comment, this.selectedPurchaseOrder.orderId).subscribe(
+        res => {
+          this.form.controls.comment.setValue('');
+          console.log({ res });
+          this.billingService.rejectOrder(body).subscribe(
+            result => {
+              console.log({ reject: result });
+              this.selectedPurchaseOrder = null;
+              this.disableControls = false;
+              this.getProfiles();
+              this.modalService.dismissAll();
+              this.toastr.success('Purchase Rejected.');
+            },
+            err => {
+              console.log({ err });
+              this.selectedPurchaseOrder = null;
+              this.disableControls = false;
+              this.modalService.dismissAll();
+              this.toastr.error(err.error.message);
+            }
+          );
+        },
+        err => {
+          console.log({ err });
+          this.disableControls = false;
+          this.toastr.error(err.error.message);
+        }
+      );
     } else {
       this.billingService.rejectOrder(body).subscribe(
         result => {
@@ -361,10 +339,7 @@ export class WaitingForApprovalComponent implements OnInit {
       customerName: null,
       orderId: this.form.value.orderNo || null,
       paymentStatusType: this.pageType,
-      paymentType:
-        this.form.value.paymentType == 'null'
-          ? null
-          : this.form.value.paymentType,
+      paymentType: this.form.value.paymentType == 'null' ? null : this.form.value.paymentType,
       poNumber: null,
       note: null
     };
@@ -421,9 +396,7 @@ export class WaitingForApprovalComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: val => {
-          const result = (val.data.paymentType || '')
-            .replace(/_/g, ' ')
-            .toLowerCase();
+          const result = (val.data.paymentType || '').replace(/_/g, ' ').toLowerCase();
           if (result.length) {
             return result[0].toUpperCase() + result.substr(1);
           }
@@ -465,9 +438,7 @@ export class WaitingForApprovalComponent implements OnInit {
         sortable: false,
         filter: false,
         valueFormatter: val => {
-          const result = (val.data.paymentStatusType || '')
-            .replace(/_/g, ' ')
-            .toLowerCase();
+          const result = (val.data.paymentStatusType || '').replace(/_/g, ' ').toLowerCase();
           if (result.length) {
             return result[0].toUpperCase() + result.substr(1);
           }
