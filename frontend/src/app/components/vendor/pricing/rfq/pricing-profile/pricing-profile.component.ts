@@ -2,15 +2,11 @@ import { RfqPricingService } from './../../../../../service/rfq-pricing.service'
 import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  TemplateRef,
-  Input
-} from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { Part } from 'src/app/model/part.model';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-pricing-profile',
@@ -196,13 +192,8 @@ export class PricingProfileComponent implements OnInit {
   rowData;
   pageSize = 10;
   navigation;
-  pricingSettings;
 
-  constructor(
-    public router: Router,
-    public spinner: NgxSpinnerService,
-    private pricingService: RfqPricingService
-  ) {
+  constructor(public router: Router, public spinner: NgxSpinnerService, private pricingService: RfqPricingService) {
     this.navigation = this.router.getCurrentNavigation();
   }
 
@@ -219,9 +210,7 @@ export class PricingProfileComponent implements OnInit {
       onRowClicked: event => {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
-        this.router.navigateByUrl(
-          this.router.url + '/pricing-profile/' + event.data.id
-        );
+        this.router.navigateByUrl(this.router.url + '/pricing-profile/' + event.data.id);
       }
     };
     this.getPricingProfiles();
@@ -314,33 +303,37 @@ export class PricingProfileComponent implements OnInit {
 
   async getPricingProfiles(q = null) {
     this.spinner.show();
-    const res = await this.pricingService
+    this.pricingService
       .getPricingProfiles(this.part.id)
-      .toPromise();
+      .pipe(
+        catchError(e => {
+          const message = e.error.message;
+          this.spinner.hide();
+          console.log(message);
+          return throwError('Error');
+        })
+      )
+      .subscribe(res => {
+        this.rowData = res.map(item => ({
+          id: item.id,
+          vendorName: item.vendorProfile.name,
+          pricingProfile: item.name,
+          material: item.processProfile.processMachineServingMaterialList
+            .map(item => item.machineServingMaterial.material.name)
+            .join(', '),
+          equipment: item.processProfile.processMachineServingMaterialList
+            .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
+            .join(', '),
+          processProfile: item.processProfile.name
+          // postProcess: "Electropolishing",
+          // machinesMatched: 2,
+          // totalCost: 1238,
+          // esitmatedDelivery: "10/12/2019",
+          // matchScore: 4.9
+        }));
 
-    this.rowData = res.map(item => ({
-      id: item.id,
-      vendorName: item.vendorProfile.name,
-      pricingProfile: item.name,
-      material: item.processProfile.processMachineServingMaterialList
-        .map(item => item.machineServingMaterial.material.name)
-        .join(', '),
-      equipment: item.processProfile.processMachineServingMaterialList
-        .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
-        .join(', '),
-      processProfile: item.processProfile.name
-      // postProcess: "Electropolishing",
-      // machinesMatched: 2,
-      // totalCost: 1238,
-      // esitmatedDelivery: "10/12/2019",
-      // matchScore: 4.9
-    }));
-
-    this.pricingSettings = await this.pricingService
-      .getPricingSettings()
-      .toPromise();
-
-    this.spinner.hide();
+        this.spinner.hide();
+      });
   }
 
   configureColumnDefs() {
@@ -362,9 +355,7 @@ export class PricingProfileComponent implements OnInit {
 
   searchColumnsChange(columns) {
     columns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
