@@ -57,7 +57,10 @@
       <!-- End of Top Details Bar -->
 
       <!-- Notes -->
-      <div class="row shadow mt-4 notes">
+      <div
+        class="row shadow mt-4 notes"
+        *ngIf="orderInfo?.billingInfoView?.paymentType === paymentOrderType.PURCHASE_ORDER"
+      >
         <div class="col-12 shadow">
           <h4 class="text-center text-theme-green  w-100 mt-2 mb-2">Notes</h4>
         </div>

@@ -7,7 +7,7 @@ import { BillingService } from 'src/app/service/billing.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { PaymentDetails, PaymentStatusTypes } from 'src/app/model/billing.model';
+import { PaymentDetails, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Util } from '../../../../util/Util';
 
@@ -24,6 +24,7 @@ export class PurchaseOrderItemComponent implements OnInit {
   messageList = [];
   showPaymentDetails = false;
   selectedPurchaseOrderId = null;
+  paymentOrderType = PaymentType;
 
   userInfo;
   orderInfo: PaymentDetails;
@@ -48,10 +49,12 @@ export class PurchaseOrderItemComponent implements OnInit {
     this.spinner.show();
     this.billingService.getPaymentInfo(this.selectedPurchaseOrderId).subscribe(
       (res: PaymentDetails) => {
-        console.log({ res });
         this.orderInfo = res;
-        if (this.orderInfo && this.orderInfo.billingInfoView && this.orderInfo.billingInfoView.purchaseAgreement) {
-          this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
+        if (this.orderInfo) {
+          this.messageList = [];
+          if (this.orderInfo.billingInfoView && this.orderInfo.billingInfoView.purchaseAgreement) {
+            this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
+          }
           this.messageList = this.messageList.reverse();
         } else {
           this.toast.error('Something went wrong. Please try again later.');
