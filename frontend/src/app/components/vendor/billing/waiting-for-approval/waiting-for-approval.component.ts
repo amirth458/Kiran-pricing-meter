@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { GridOptions, ColDef } from 'ag-grid-community';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ColDef, GridOptions } from 'ag-grid-community';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillingService } from 'src/app/service/billing.service';
-import { PaymentStatusTypes, Payment } from 'src/app/model/billing.model';
+import { Payment, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
 
 @Component({
@@ -272,7 +272,11 @@ export class WaitingForApprovalComponent implements OnInit {
         this.selectedPurchaseOrder = null;
         this.disableControls = false;
         this.modalService.dismissAll();
-        this.toastr.error(err.error.message);
+        if (this.selectedPurchaseOrder.paymentType === PaymentType.CREDIT_CARD) {
+          this.toastr.error('Credit card transaction failed. Please talk to customer');
+        } else {
+          this.toastr.error(err.error.message);
+        }
       }
     );
   }
