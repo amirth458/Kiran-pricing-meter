@@ -1,5 +1,5 @@
 import { CustomerData } from 'src/app/model/user.model';
-import { RfqData, ParameterTolerance, PartCustomParameter, PartDimension } from './../../../../../model/part.model';
+import { RfqData, PartCustomParameter, PartDimension } from './../../../../../model/part.model';
 import { Util } from './../../../../../util/Util';
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,7 @@ import { MetadataService } from './../../../../../service/metadata.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ForgeService } from 'src/app/service/forge.service';
+import { MetadataConfig } from '../../../../../model/metadata.model';
 
 @Component({
   selector: 'app-part-information',
@@ -39,10 +40,12 @@ export class PartInformationComponent implements OnInit {
 
   ngOnInit() {
     console.log('part', this.part);
-    this.metadataService.getMetaData('measurement_unit_type').subscribe(v => (this.measurementUnits = v));
+    this.metadataService
+      .getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE)
+      .subscribe(v => (this.measurementUnits = v));
     this.metadataService.getMetaData('country').subscribe(v => (this.countries = v));
     this.metadataService.getMetaData('vendor_certificate').subscribe(v => (this.certs = v));
-    this.metadataService.getMetaData('post_process_action').subscribe(v => (this.postProcesses = v));
+    this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION).subscribe(v => (this.postProcesses = v));
     this.metadataService.getMetaData('core_competence').subscribe(v => (this.antiMatchCerts = v));
     this.metadataService.getMetaData('operator_type').subscribe(v => (this.operatorTypes = v));
   }

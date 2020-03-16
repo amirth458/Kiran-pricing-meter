@@ -8,6 +8,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PaymentDetails, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
+import { MetadataConfig } from '../../../../model/metadata.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Util } from '../../../../util/Util';
 
@@ -69,11 +70,10 @@ export class PurchaseOrderItemComponent implements OnInit {
         this.route.navigateByUrl('/billing/payment');
       }
     );
-    this.metadataService.getPostProcessActionMetaData().subscribe(res => {
-      this.postProcessAction = res;
-      console.log({ r: res });
-    });
-    this.metadataService.getMetaData('measurement_unit_type').subscribe(res => {
+    this.metadataService
+      .getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION)
+      .subscribe(res => (this.postProcessAction = res));
+    this.metadataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.measurementUnits = res;
     });
   }

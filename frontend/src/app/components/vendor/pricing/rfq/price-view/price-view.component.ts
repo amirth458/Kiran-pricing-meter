@@ -47,7 +47,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input()
   set partQuote(value: PartQuote) {
     this._partQuote = value || null;
-    console.log(value);
   }
   get partQuote(): PartQuote {
     return this._partQuote;
@@ -96,9 +95,9 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     public partNoteService: PartNoteService,
     public userService: UserService
   ) {
-    this.metadataService.getProcessMetaData('invoice_item').subscribe(invoiceItems => {
-      this.invoiceItems = invoiceItems;
-    });
+    this.metadataService
+      .getProcessMetaData('invoice_item')
+      .subscribe(invoiceItems => (this.invoiceItems = invoiceItems));
   }
 
   ngOnInit() {
