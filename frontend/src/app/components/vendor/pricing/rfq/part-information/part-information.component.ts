@@ -121,6 +121,8 @@ export class PartInformationComponent implements OnInit {
   }
 
   view3D(content) {
+    this.toastr.warning('It is under development.');
+    return;
     this.spinner.show();
     this.forgeService.getMetadataId(this.part.rfqMedia.media.connectorServiceId).subscribe(
       (res: any) => {
