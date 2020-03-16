@@ -1,11 +1,11 @@
 import { CustomerData } from 'src/app/model/user.model';
-import { RfqData, PartCustomParameter, PartDimension } from './../../../../../model/part.model';
-import { Util } from './../../../../../util/Util';
+import { RfqData, PartCustomParameter, PartDimension } from '../../../../../model/part.model';
+import { Util } from '../../../../../util/Util';
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Part } from 'src/app/model/part.model';
 
-import { MetadataService } from './../../../../../service/metadata.service';
+import { MetadataService } from '../../../../../service/metadata.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ForgeService } from 'src/app/service/forge.service';
