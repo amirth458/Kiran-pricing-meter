@@ -1,21 +1,39 @@
-.table-control {
+:host .table-control {
   width: 220px;
   height: 400px;
   margin-right: 10px;
 }
 
-.table {
-  /* width: 100%; */
+:host .table {
   height: 430px;
 }
 
-.btn.btn-primary {
-  width: unset !important;
-  padding: 7px 10px !important;
-  width: 100px !important;
+:host ::ng-deep .table .check-box-column app-template-renderer {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
-.match-text {
+:host .btn-show-price {
+  height: 30px;
+  padding: 5px 15px;
+}
+
+:host .btn-show-price:hover {
+  color: var(--theme-white-color);
+}
+
+:host .clear-all {
+  font-size: 12px;
+  color: var(--theme-text-color);
+  cursor: pointer;
+}
+
+:host .clear-all:hover {
+  color: var(--theme-text-color) !important;
+}
+
+:host .match-text {
   color: var(--theme-sky-blue);
 }
 

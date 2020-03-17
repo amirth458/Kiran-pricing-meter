@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { Part, PartDimension, ProcessProfile } from '../model/part.model';
+import { Part, PartDimension, PartQuoteQueryDto, ProcessProfile } from '../model/part.model';
 import { Pageable } from '../model/pageable.model';
 import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
 import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
@@ -118,14 +119,24 @@ export class RfqPricingService {
   }
 
   getPricingProfiles(partId: number): Observable<PricingProfileDetailedView[]> {
-    // if (environment.isTestDataEnabled) {
-    //   // test data
-    //   partId = 178;
-    // }
-
     const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/matched-profiles/${partId}`;
-
     return this.http.get<PricingProfileDetailedView[]>(url);
+  }
+
+  getPartQuoteByPricingIds(partId: number, processPricingIds: string): Observable<PartQuoteQueryDto[]> {
+    return this.http
+      .post<PartQuoteQueryDto[]>(`${environment.apiBaseUrl}/part-quote-by-pricing-ids?is-global-rule=false`, {
+        partId,
+        processPricingIds
+      })
+      .pipe(
+        map(arr =>
+          (arr || []).reduce((acc: any, value: PartQuoteQueryDto) => {
+            acc[value.processPricingId] = value;
+            return acc;
+          }, {})
+        )
+      );
   }
 
   getPartQuote(partId: number): Observable<PartQuote> {
