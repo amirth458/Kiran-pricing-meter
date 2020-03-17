@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       )
       .subscribe(
         (res: any) => {
-          if (!res.roles.includes('ROLE_ADMIN')) {
+          if (!res.roles.includes('ROLE_3DILIGENT_ADMIN')) {
             this.loginErrorHandler({ status: 403 });
             return;
           }
