@@ -8,11 +8,7 @@ import { FilterOption } from '../model/vendor.model';
 import { Part, PartDimension, ProcessProfile } from '../model/part.model';
 import { Pageable } from '../model/pageable.model';
 import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
-import {
-  RfqData,
-  PricingProfileDetailedView,
-  PartQuote
-} from '../model/part.model';
+import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +26,7 @@ export class RfqPricingService {
     return this.http.put(url, data);
   }
 
-  getRecentAutoPrices(
-    filterOption: FilterOption = null
-  ): Observable<Pageable<Part>> {
+  getRecentAutoPrices(filterOption: FilterOption = null): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -53,9 +47,7 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getQueuedManualPricing(
-    filterOption: FilterOption = null
-  ): Observable<Pageable<Part>> {
+  getQueuedManualPricing(filterOption: FilterOption = null): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -76,9 +68,7 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getManuallyPriced(
-    filterOption: FilterOption = null
-  ): Observable<Pageable<Part>> {
+  getManuallyPriced(filterOption: FilterOption = null): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -139,7 +129,7 @@ export class RfqPricingService {
   }
 
   getPartQuote(partId: number): Observable<PartQuote> {
-    const url = `${environment.procurementApiBaseUrl}/part-quote/parts/${partId}`;
+    const url = `${environment.procurementApiBaseUrl}/part-quote/admin/parts/${partId}`;
     const data = JSON.parse(localStorage.getItem('admin-auth'));
     const headers = new HttpHeaders({
       Authorization: data.tokenType + ' ' + data.accessToken,
@@ -159,9 +149,7 @@ export class RfqPricingService {
     return this.http.get<PartDimension>(url);
   }
 
-  getPricingProfileDetail(
-    profileIds: number[]
-  ): Observable<PricingProfileDetailedView[]> {
+  getPricingProfileDetail(profileIds: number[]): Observable<PricingProfileDetailedView[]> {
     const url = `${environment.managementBaseUrl}/process-pricing-profile/ids`;
     return this.http.post<PricingProfileDetailedView[]>(url, profileIds);
   }
@@ -176,12 +164,7 @@ export class RfqPricingService {
     return this.http.post<any>(url, {});
   }
 
-  getScreenPricingBreakdown(
-    breakDown: PricingBreakDown
-  ): Observable<PricingBreakdown> {
-    return this.http.post<PricingBreakdown>(
-      `${environment.apiBaseUrl}/part-pricing-breakdown`,
-      breakDown
-    );
+  getScreenPricingBreakdown(breakDown: PricingBreakDown): Observable<PricingBreakdown> {
+    return this.http.post<PricingBreakdown>(`${environment.apiBaseUrl}/part-pricing-breakdown`, breakDown);
   }
 }
