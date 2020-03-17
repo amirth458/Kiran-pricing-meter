@@ -1,12 +1,15 @@
-import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
-import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { GridOptions } from 'ag-grid-community';
-import { Part } from 'src/app/model/part.model';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
+
+import { Part } from 'src/app/model/part.model';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-pricing-profile',
@@ -121,7 +124,6 @@ export class PricingProfileComponent implements OnInit {
     //   }
     // }
   ];
-
   filterColumns = [
     {
       name: 'Vendor Name',
@@ -194,6 +196,8 @@ export class PricingProfileComponent implements OnInit {
   pageSize = 10;
   navigation;
 
+  selected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+
   constructor(public router: Router, public spinner: NgxSpinnerService, private pricingService: RfqPricingService) {
     this.navigation = this.router.getCurrentNavigation();
   }
@@ -208,11 +212,7 @@ export class PricingProfileComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
-      onRowClicked: event => {
-        // this.onRowClick(event);
-        //console.log('row click', event.data.id);
-        this.router.navigateByUrl(this.router.url + '/pricing-profile/' + event.data.id);
-      }
+      onRowClicked: event => this.router.navigateByUrl(`${this.router.url}/pricing-profile/${event.data.id}`)
     };
     this.getPricingProfiles();
   }
@@ -276,6 +276,15 @@ export class PricingProfileComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false
+      },
+      {
+        headerName: 'Total Cost',
+        field: 'totalCost',
+        tooltipField: 'totalCost',
+        hide: true,
+        sortable: true,
+        filter: false,
+        valueFormatter: x => (x.value ? `$ ${(x.value || 0).toFixed(2)}` : '')
       }
       // {
       //   headerName: "Post-Process",
@@ -289,14 +298,6 @@ export class PricingProfileComponent implements OnInit {
       //   headerName: "Machines Matched",
       //   field: "machinesMatched",
       //   tooltipField: "machinesMatched",
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
-      // {
-      //   headerName: "Total Cost",
-      //   field: "totalCost",
-      //   tooltipField: "totalCost",
       //   hide: false,
       //   sortable: true,
       //   filter: false
@@ -344,7 +345,8 @@ export class PricingProfileComponent implements OnInit {
           equipment: item.processProfile.processMachineServingMaterialList
             .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
             .join(', '),
-          processProfile: item.processProfile.name
+          processProfile: item.processProfile.name,
+          totalCost: null
         }));
         this.spinner.hide();
       });
@@ -379,6 +381,42 @@ export class PricingProfileComponent implements OnInit {
       }
       this.gridOptions.api.onFilterChanged();
     });
+  }
+
+  valueChange() {
+    this.selected$.next((this.rowData || []).some(i => i.selected));
+  }
+
+  showPartQuotePricingInfo() {
+    this.pricingService
+      .getPartQuoteByPricingIds(
+        this.part.id,
+        (this.rowData || [])
+          .filter(i => i.selected)
+          .map(i => i.id)
+          .join(',')
+      )
+      .subscribe(v => {
+        if (v) {
+          (this.rowData || []).map(row => {
+            if (v[row.id]) {
+              row.totalCost = v[row.id].totalCost;
+            }
+          });
+          this.gridOptions.columnApi.setColumnVisible('totalCost', true);
+          this.gridOptions.api.sizeColumnsToFit();
+        }
+      });
+  }
+
+  resetPricingFilters() {
+    this.gridOptions.columnApi.setColumnVisible('totalCost', false);
+    (this.rowData || []).map(row => {
+      row.totalCos = null;
+      row.selected = false;
+    });
+    this.valueChange();
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   onGridReady(event) {

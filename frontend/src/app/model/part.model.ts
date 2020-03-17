@@ -427,3 +427,12 @@ export interface ProcessProfileDetailedView {
   vendorProfile: VendorProfile;
   userSummary2: UserSummary;
 }
+
+export interface PartQuoteQueryDto {
+  processPricingId: number;
+  partId: number;
+  totalPartCost: number;
+  totalToolCost: number;
+  totalExtendedCost: number;
+  totalCost: number;
+}
