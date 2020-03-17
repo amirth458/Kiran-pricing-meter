@@ -47,7 +47,18 @@
       >
       </app-column-search-filter>
     </div>
-    <div class="table theme-table">
+    <div class="table theme-table position-relative">
+      <ngx-spinner
+        [name]="'spooler'"
+        bdOpacity="0.7"
+        bdColor="#fff"
+        size="small"
+        color="#74bf09"
+        type="ball-clip-rotate"
+        [fullScreen]="false"
+      >
+        <p class="m-0">Loading...</p>
+      </ngx-spinner>
       <ag-grid-angular
         class="ag-theme-balham w-100 h-100"
         [rowData]="rowData"

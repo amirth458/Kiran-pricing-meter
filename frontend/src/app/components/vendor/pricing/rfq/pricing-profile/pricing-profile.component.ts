@@ -388,6 +388,7 @@ export class PricingProfileComponent implements OnInit {
   }
 
   showPartQuotePricingInfo() {
+    this.spinner.show('spooler');
     this.pricingService
       .getPartQuoteByPricingIds(
         this.part.id,
@@ -406,6 +407,7 @@ export class PricingProfileComponent implements OnInit {
           this.gridOptions.columnApi.setColumnVisible('totalCost', true);
           this.gridOptions.api.sizeColumnsToFit();
         }
+        this.spinner.hide('spooler');
       });
   }
 
