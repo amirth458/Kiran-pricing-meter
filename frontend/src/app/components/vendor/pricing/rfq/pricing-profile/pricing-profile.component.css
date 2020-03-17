@@ -9,6 +9,12 @@
   height: 430px;
 }
 
+:host ::ng-deep .table .check-box-column app-template-renderer {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
 .btn.btn-primary {
   width: unset !important;
   padding: 7px 10px !important;

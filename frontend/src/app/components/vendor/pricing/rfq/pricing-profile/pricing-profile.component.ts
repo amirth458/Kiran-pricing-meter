@@ -16,6 +16,7 @@ import { throwError } from 'rxjs';
 export class PricingProfileComponent implements OnInit {
   @Input() part: Part;
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
+  @ViewChild('checkBoxCell') checkBoxCell: TemplateRef<any>;
   type = ['search', 'filter'];
 
   searchColumns = [
@@ -219,6 +220,24 @@ export class PricingProfileComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
+        headerName: '',
+        field: 'selected',
+        hide: false,
+        sortable: false,
+        filter: false,
+        width: 60,
+        maxWidth: 60,
+        cellClass: 'p-0 check-box-column',
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.checkBoxCell
+        },
+        cellEditor: 'templateRenderer',
+        cellEditorParams: {
+          ngTemplate: this.checkBoxCell
+        }
+      },
+      {
         headerName: 'Vendor Name',
         field: 'vendorName',
         tooltipField: 'vendorName',
@@ -315,6 +334,7 @@ export class PricingProfileComponent implements OnInit {
       )
       .subscribe(res => {
         this.rowData = res.map(item => ({
+          selected: false,
           id: item.id,
           vendorName: item.vendorProfile.name,
           pricingProfile: item.name,
@@ -325,13 +345,7 @@ export class PricingProfileComponent implements OnInit {
             .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
             .join(', '),
           processProfile: item.processProfile.name
-          // postProcess: "Electropolishing",
-          // machinesMatched: 2,
-          // totalCost: 1238,
-          // esitmatedDelivery: "10/12/2019",
-          // matchScore: 4.9
         }));
-
         this.spinner.hide();
       });
   }

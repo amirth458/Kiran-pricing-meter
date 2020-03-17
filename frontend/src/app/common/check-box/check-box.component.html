@@ -1,0 +1,15 @@
+<label class="fancy-box text-theme-green d-flex flex-row align-items-center">
+  <div class="d-inline-flex">
+    <input
+      type="checkbox"
+      [(ngModel)]="checked"
+      (change)="$event.preventDefault(); $event.stopPropagation(); checkedChange.emit(checked)"
+      [disabled]="disabled"
+    />
+    <span class="checked"><i class="fas fa-check-square"></i></span>
+    <span class="unchecked"><i class="far fa-square"></i></span>
+  </div>
+  <div class="col-auto chk-box-label" *ngIf="label">
+    {{ label }}
+  </div>
+</label>

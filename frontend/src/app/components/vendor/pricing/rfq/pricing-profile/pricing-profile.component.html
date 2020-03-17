@@ -39,6 +39,13 @@
     </div>
   </div>
 </div>
+
 <ng-template #dateCell let-row let-column="params">
   {{ row[column?.colDef?.field] | date: 'dd/MM/yyyy' }}
+</ng-template>
+
+<ng-template #checkBoxCell let-row let-column="params">
+  <div class="d-flex flex-row justify-content-center align-items-center h-100 w-100" (click)="$event.stopPropagation()">
+    <app-check-box [checked]="row[column?.colDef?.field]"></app-check-box>
+  </div>
 </ng-template>

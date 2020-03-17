@@ -1,0 +1,39 @@
+:host {
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  cursor: pointer;
+}
+
+:host .fancy-box {
+  cursor: pointer;
+  margin: 0;
+}
+
+:host .chk-box-label {
+  font-size: 13px;
+  color: var(--them-dark-blue-opaque);
+  padding: 0 1rem;
+}
+
+:host .fancy-box input[type='checkbox']:disabled ~ span {
+  color: #b0b0b0 !important;
+  cursor: not-allowed;
+}
+
+:host .fancy-box input[type='checkbox'] {
+  display: none;
+}
+
+:host .fancy-box input[type='checkbox']:checked ~ .checked {
+  display: inline-block;
+}
+
+:host .fancy-box input[type='checkbox']:checked ~ .unchecked {
+  display: none;
+}
+
+:host .fancy-box input[type='checkbox']:not(:checked) ~ .checked {
+  display: none;
+}

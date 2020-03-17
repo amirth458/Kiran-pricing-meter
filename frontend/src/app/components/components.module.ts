@@ -25,6 +25,7 @@ import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
 import { ProgressBarComponent } from '../common/progress-bar/progress-bar.component';
+import { CheckBoxComponent } from '../common/check-box/check-box.component';
 import { ImgPreloadDirective } from '../common/core/img-preload/img-preload.directive';
 import { DigitOnlyDirective } from '../common/core/digit-only/digit-only.directive';
 
@@ -84,6 +85,7 @@ import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
     ActionCellApproveRendererComponent,
     ActionCellRendererComponent,
     ColumnSearchFilterComponent,
+    CheckBoxComponent,
     DropdownCellRendererComponent,
     DropdownHeaderRendererComponent,
     MultiSelectCellEditorComponent,
@@ -178,6 +180,7 @@ import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
     ActionBarComponent,
     ActionCellRendererComponent,
     ColumnSearchFilterComponent,
+    CheckBoxComponent,
     MultiSelectCellRendererComponent,
     ProgressBarComponent,
     SideMenuComponent,
