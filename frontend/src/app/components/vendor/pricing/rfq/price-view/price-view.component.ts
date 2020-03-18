@@ -24,7 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { AutoPriceView, Part } from 'src/app/model/part.model';
+import { Part, PartQuoteInvoiceItem } from 'src/app/model/part.model';
 import { PartQuote, Address } from '../../../../../model/part.model';
 import { PartNoteView } from '../../../../../model/part.note.model';
 import { PartNoteService } from '../../../../../service/part-note.service';
@@ -223,10 +223,10 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   startOverrideForm() {
-    (this.partQuote.partQuoteDetails || []).forEach((quote: AutoPriceView) => {
+    (this.partQuote.partQuoteInvoiceItemDetails || []).forEach((quote: PartQuoteInvoiceItem) => {
       this.prices.push(
         this.fb.group({
-          partQuoteId: [quote.partQuoteId || '', Validators.required],
+          partQuoteId: [this.filterPartQuoteId() || '', Validators.required],
           invoiceItemId: [quote.invoiceItemId || '', Validators.required],
           value: [quote.value || 0, Validators.required],
           unit: [quote.unit || 0, Validators.required],
@@ -235,6 +235,16 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       );
     });
     this.changeStage('edit');
+  }
+
+  filterPartQuoteId(): number {
+    let partQuoteId = null;
+    (this.partQuote.partQuoteInvoiceItemDetails || []).forEach(v => {
+      if (v.partQuoteInvoiceLineItemDetails.length > 0) {
+        partQuoteId = v.partQuoteInvoiceLineItemDetails[0].partQuoteId;
+      }
+    });
+    return partQuoteId;
   }
 
   calcLineItemCost(form: any) {
