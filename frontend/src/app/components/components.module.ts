@@ -78,6 +78,7 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
 
 // pipes
 import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
+import { SupplierPipe } from '../pipes/supplier.pipe';
 
 @NgModule({
   declarations: [
@@ -148,7 +149,8 @@ import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
     WaitingForApprovalComponent,
 
     // Pipes
-    ConfirmOrderFilterPipe
+    ConfirmOrderFilterPipe,
+    SupplierPipe
   ],
   imports: [
     CommonModule,
@@ -190,7 +192,8 @@ import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
     DigitOnlyDirective,
 
     // pipes
-    ConfirmOrderFilterPipe
+    ConfirmOrderFilterPipe,
+    SupplierPipe
   ]
 })
 export class ComponentsModule {}
