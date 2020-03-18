@@ -120,18 +120,24 @@ export class PartInformationComponent implements OnInit {
     );
   }
 
+  open(content, size: any = 'xl') {
+    this.modalService
+      .open(content, {
+        size,
+        ariaLabelledBy: 'modal-basic-title',
+        centered: true
+      })
+      .result.then(
+        result => {},
+        reason => {}
+      );
+  }
+
   view3D(content) {
-    this.toastr.warning('It is under development.');
-    return;
     this.spinner.show();
     this.forgeService.getMetadataId(this.part.rfqMedia.media.connectorServiceId).subscribe(
       (res: any) => {
-        this.modalService.open(content, {
-          size: 'lg',
-          centered: true,
-          windowClass: 'model-viewer-modal'
-        });
-
+        this.open(content);
         const wrapper = document.querySelector('#container');
         // tslint:disable-next-line:max-line-length
         // const urn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6dG9kYXlzYnVja2V0MS9jb25uZWN0b3IzMzQxMDM1MTg2NjY5NTEwNDU2Q3VzaGlvbmVlci0yaW5fc3Ryb2tlLlNURVA=';

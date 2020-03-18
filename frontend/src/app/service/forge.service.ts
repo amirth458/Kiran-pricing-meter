@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var Autodesk;
 
@@ -8,10 +9,10 @@ declare var Autodesk;
   providedIn: 'root'
 })
 export class ForgeService {
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient, public spinner: NgxSpinnerService) {}
 
   private getForgeToken(callback) {
-    this.http.get(environment.apiBaseUrl + '/design/oauth/forge').subscribe((data: any) => {
+    this.http.get(environment.apiBaseUrl + '/admin/part/oauth/forge').subscribe((data: any) => {
       callback(data.access_token, data.expires_in);
     });
   }
@@ -64,6 +65,7 @@ export class ForgeService {
       .toPromise()
       .then((res: any) => {
         if (res.status === 'success') {
+          this.spinner.hide();
           this.initViewer(wrapper, urn, access_token);
         } else {
           setTimeout(() => {
@@ -74,6 +76,6 @@ export class ForgeService {
   }
 
   public getMetadataId(connectorServiceId: number) {
-    return this.http.get(environment.apiBaseUrl + '/design/3Dimage?metadataId=' + connectorServiceId);
+    return this.http.get(environment.apiBaseUrl + '/admin/part/3Dimage?metadataId=' + connectorServiceId);
   }
 }

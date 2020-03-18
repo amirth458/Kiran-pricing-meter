@@ -11,6 +11,10 @@
               <a>Platform View</a>
             </div>
           </div> -->
+
+          <p class="text-center">
+            <a class="view-3d" (click)="view3D(threeDModal)">View in 3D</a>
+          </p>
           <div class="image">
             <img
               [src]="part?.rfqMedia.media.partDimension.thumbnail200Location"
@@ -19,7 +23,6 @@
               onerror="this.src = 'assets/image/placeholder-image.png';"
             />
           </div>
-          <a class="view-3d" (click)="view3D(threeDModal)">View in 3D</a>
         </div>
         <div class="details ml-5 mt-4">
           <p class="quantity mb-3">
@@ -119,7 +122,7 @@
   <ng-template #threeDModal let-modal>
     <div class="saveModal">
       <div class="modal-header">
-        <h4 class="text-theme-blue text-center w-100 text-light-blue">
+        <h4 class="text-theme text-center w-100">
           3D Detail View
         </h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
