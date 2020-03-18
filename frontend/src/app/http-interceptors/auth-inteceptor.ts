@@ -7,7 +7,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const localAuthInfo = localStorage.getItem('admin-auth'); // you probably want to store it in localStorage or something
 
-    if (!localAuthInfo) {
+    if (!localAuthInfo || req.headers.get('Authorization')) {
       const req1 = req.clone({
         headers: req.headers
         // .set('Content-Type', 'application/json; charset=utf-8')
