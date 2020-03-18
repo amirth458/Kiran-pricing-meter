@@ -1,6 +1,6 @@
 <div class="w-100">
   <div class="col-12 d-flex flex-row justify-content-center align-items-center p-0 pb-2">
-    <div class="col-8 p-0">
+    <div class="col p-0">
       <p class="match-text m-0">
         <ng-container *ngIf="rowData?.length; else noProfile">
           {{ rowData?.length }} pricing profile matched
@@ -10,7 +10,7 @@
         </ng-template>
       </p>
     </div>
-    <div class="col-4 d-flex flex-row justify-content-end align-items-center p-0">
+    <div class="col d-flex flex-row justify-content-end align-items-center p-0">
       <label class="m-0 page-size">
         Page Size:
         <select id="page-size">

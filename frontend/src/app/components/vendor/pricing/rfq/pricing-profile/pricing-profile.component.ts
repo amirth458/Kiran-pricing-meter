@@ -414,7 +414,7 @@ export class PricingProfileComponent implements OnInit {
   resetPricingFilters() {
     this.gridOptions.columnApi.setColumnVisible('totalCost', false);
     (this.rowData || []).map(row => {
-      row.totalCos = null;
+      row.totalCost = null;
       row.selected = false;
     });
     this.valueChange();
