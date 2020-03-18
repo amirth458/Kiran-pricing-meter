@@ -33,7 +33,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteDetails">
+                      <tr *ngFor="let partQuoteDetail of partQuote?.partQuoteInvoiceItemDetails">
                         <td class="font-weight-bold text-theme">
                           {{ getInvoiceItem(partQuoteDetail.invoiceItemId) }}
                         </td>
@@ -44,7 +44,7 @@
                           {{ partQuoteDetail.unitPrice }}
                         </td>
                         <td class="text-center text-theme">
-                          {{ partQuoteDetail.value  | currency: 'USD':'symbol':'0.0-3'}}
+                          {{ partQuoteDetail.value | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                       </tr>
                       <tr>
