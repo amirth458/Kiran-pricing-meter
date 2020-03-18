@@ -3,7 +3,11 @@
     <p class="part-header font-weight-bold">Accepted Order Details</p>
     <ng-container [ngSwitch]="type">
       <ng-container *ngSwitchCase="'release'">
-        <button class="btn green-btn release-btn" [disabled]="matchedProfiles.length == 0" (click)="showModal(content)">
+        <button
+          class="btn green-btn release-btn"
+          [disabled]="(priorityRows | supplier: (suppliers$ | async):false).length == 0"
+          (click)="showModal(content)"
+        >
           Release Sub Orders for Bidding
         </button>
       </ng-container>
@@ -54,27 +58,56 @@
   </div>
 
   <div class="row" *ngIf="!bidOrderId">
-    <div class="col-12 theme-table" *ngIf="changePriority; else plainMode">
-      <ag-grid-angular
-        class="ag-theme-balham w-100 h-100"
-        [rowData]="priorityRows"
-        [class.grid-empty]="(priorityRows || []).length === 0"
-        [gridOptions]="gridOptions[1]"
-        (gridReady)="onGridReady(1, $event)"
-        [rowDragManaged]="true"
-        [animateRows]="true"
-        (rowDragEnd)="onRowDragEnd($event)"
-        domLayout="autoHeight"
-      ></ag-grid-angular>
-    </div>
+    <ng-container *ngIf="changePriority; else plainMode">
+      <div
+        class="col-12 theme-table"
+        *ngIf="priorityRows | supplier: (suppliers$ | async):false as allowedSupplierList"
+      >
+        <ag-grid-angular
+          class="ag-theme-balham w-100 h-100 supplier-table"
+          [rowData]="allowedSupplierList"
+          [class.grid-empty]="(allowedSupplierList || []).length === 0"
+          [gridOptions]="gridOptions[1]"
+          (gridReady)="onGridReady(1, $event)"
+          [rowDragManaged]="true"
+          [animateRows]="true"
+          (rowDragEnd)="onRowDragEnd($event)"
+          domLayout="autoHeight"
+        >
+        </ag-grid-angular>
+      </div>
+      <div class=" mt-4 w-100">
+        <p class="part-header font-weight-bold pl-3">Removed Suppliers Profiles</p>
+        <div
+          class="col-12 theme-table"
+          *ngIf="priorityRows | supplier: (suppliers$ | async):true as blockedSupplierList"
+        >
+          <ag-grid-angular
+            class="ag-theme-balham w-100 h-100 supplier-table"
+            [rowData]="blockedSupplierList"
+            [class.grid-empty]="(blockedSupplierList || []).length === 0"
+            [gridOptions]="gridOptions[1]"
+            (gridReady)="onGridReady(1, $event)"
+            [rowDragManaged]="true"
+            [animateRows]="true"
+            (rowDragEnd)="onRowDragEnd($event)"
+            domLayout="autoHeight"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </ng-container>
     <ng-template #plainMode>
-      <div class="position-relative w-100 h-100">
+      <div
+        class="position-relative w-100 h-100"
+        *ngIf="matchedProfiles | supplier: (suppliers$ | async):false as profiles"
+      >
         <ng-container *ngIf="!loadingProfiles; else loading">
           <div class="col-12 theme-table">
             <ag-grid-angular
               class="ag-theme-balham w-100 h-100"
-              [rowData]="matchedProfiles"
-              [class.grid-empty]="(matchedProfiles || []).length === 0"
+              [rowData]="profiles"
+              [class.grid-empty]="(profiles || []).length === 0"
               [gridOptions]="gridOptions[2]"
               (gridReady)="onGridReady(2, $event)"
               domLayout="autoHeight"
@@ -298,5 +331,12 @@
     >
       <p class="m-0">Loading...</p>
     </ngx-spinner>
+  </div>
+</ng-template>
+
+<ng-template #supplierStatusCell let-row let-column="params">
+  <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+    <a class="text-danger" *ngIf="row[column?.colDef?.field]" (click)="valueChange(row)">Remove from list</a>
+    <a class="text-green" *ngIf="!row[column?.colDef?.field]" (click)="valueChange(row)">Move to the list</a>
   </div>
 </ng-template>

@@ -8,7 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { catchError, switchMap } from 'rxjs/operators';
-import { empty } from 'rxjs';
+import { BehaviorSubject, empty, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
@@ -33,6 +33,7 @@ export class VendorDetailsComponent implements OnInit {
   @ViewChild('pricingProfileModal') pricingProfileModal;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
+  @ViewChild('supplierStatusCell') supplierStatusCell: TemplateRef<any>;
 
   timeToExpire = null;
   changePriority = false;
@@ -54,6 +55,9 @@ export class VendorDetailsComponent implements OnInit {
   bidding: Array<VendorOrderDetail>;
   selectedBidding: any;
 
+  blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
+  suppliers$: Observable<Array<number>>;
+
   constructor(
     public biddingService: BiddingService,
     private modalService: NgbModal,
@@ -74,7 +78,6 @@ export class VendorDetailsComponent implements OnInit {
       this.type = 'release';
     }
     this.initialPrice = 0;
-    this.initTable();
     this.route.params.subscribe(v => {
       this.orderId = v.orderId || null;
       this.bidOrderId = v.bidOrderId || null;
@@ -117,7 +120,8 @@ export class VendorDetailsComponent implements OnInit {
                 pricingProfile: (processPricingView && processPricingView.name) || '',
                 releasePriority: priority,
                 pricing: item.processPricingViews || [],
-                vendorProfile: item.vendorProfile
+                vendorProfile: item.vendorProfile,
+                active: true
               });
             });
             this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
@@ -128,6 +132,7 @@ export class VendorDetailsComponent implements OnInit {
         this.prepareBidOrderInfo();
       }
     });
+    this.suppliers$ = this.blockedSuppliers$.asObservable();
   }
 
   prepareBidOrderInfo() {
@@ -329,6 +334,20 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
+        },
+        {
+          headerName: '',
+          field: 'active',
+          cellClass: 'p-0 status-column',
+          hide: false,
+          sortable: false,
+          filter: false,
+          width: 150,
+          maxWidth: 150,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.supplierStatusCell
+          }
         }
       ],
       [
@@ -462,6 +481,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initTable();
     // view bidding status
     this.columnDefs.push([
       {
@@ -612,8 +632,18 @@ export class VendorDetailsComponent implements OnInit {
     const pushIndex = ev.overIndex;
     this.priorityRows.splice(popIndex, 1);
     this.priorityRows.splice(pushIndex, 0, overNode.data);
+    this.arrangeSuppliers();
+  }
+
+  arrangeSuppliers() {
+    let priority = 0;
     this.priorityRows = (this.priorityRows || []).map((row, idx) => {
-      row.releasePriority = idx + 1;
+      if (row.active) {
+        priority++;
+        row.releasePriority = priority;
+      } else {
+        row.releasePriority = null;
+      }
       return row;
     });
     const groupedSuppliers = this.groupSupplierInfo(this.matchedProfiles, 'vendorId');
@@ -641,23 +671,38 @@ export class VendorDetailsComponent implements OnInit {
     });
   }
 
+  valueChange(row: any) {
+    row.active = !row.active;
+    const arr = Object.assign([], this.blockedSuppliers$.getValue() || []);
+    const idx = arr.indexOf(row.vendorId);
+    if (idx === -1) {
+      arr.push(row.vendorId);
+    } else {
+      arr.splice(idx, 1);
+    }
+    this.blockedSuppliers$.next(Object.assign([], arr));
+    this.arrangeSuppliers();
+  }
+
   confirmSubOrderRelease() {
     const customerOrders = this.orderDetails.map(order => {
       return { partId: order.partId, priceAccepted: order.priceAccepted };
     });
     const vendorData = {};
-    this.matchedProfiles.map(pricing => {
-      if (!vendorData[pricing.vendorId]) {
-        vendorData[pricing.vendorId] = {
-          id: pricing.vendorId,
-          postProcessProfileIds: [],
-          processProfileIds: [pricing.profileId],
-          releasePriority: pricing.releasePriority
-        };
-      } else {
-        vendorData[pricing.vendorId].processProfileIds.push(pricing.profileId);
-      }
-    });
+    this.matchedProfiles
+      .filter(row => !((this.blockedSuppliers$.getValue() || []).indexOf(row.vendorId) > -1))
+      .map(pricing => {
+        if (!vendorData[pricing.vendorId]) {
+          vendorData[pricing.vendorId] = {
+            id: pricing.vendorId,
+            postProcessProfileIds: [],
+            processProfileIds: [pricing.profileId],
+            releasePriority: pricing.releasePriority
+          };
+        } else {
+          vendorData[pricing.vendorId].processProfileIds.push(pricing.profileId);
+        }
+      });
     const vendors = [];
     for (let key in vendorData) {
       vendors.push(vendorData[key]);
