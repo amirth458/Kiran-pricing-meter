@@ -337,6 +337,6 @@
 <ng-template #supplierStatusCell let-row let-column="params">
   <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
     <a class="text-danger" *ngIf="row[column?.colDef?.field]" (click)="valueChange(row)">Remove from list</a>
-    <a class="text-theme-green" *ngIf="!row[column?.colDef?.field]" (click)="valueChange(row)">Move to the list</a>
+    <a class="text-green" *ngIf="!row[column?.colDef?.field]" (click)="valueChange(row)">Move to the list</a>
   </div>
 </ng-template>
