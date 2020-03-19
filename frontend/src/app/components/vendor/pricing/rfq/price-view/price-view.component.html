@@ -57,8 +57,11 @@
                           >
                         </td>
                         <td class="text-center text-theme"></td>
-                        <td class="text-center font-weight-bold text-theme">
+                        <td *ngIf="!part?.isNoBid" class="text-center font-weight-bold text-theme">
                           Subtotal
+                        </td>
+                        <td *ngIf="part?.isNoBid" class="text-center font-weight-bold text-orange">
+                          No Bid
                         </td>
                         <td class="text-center font-weight-bold text-theme">
                           {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
@@ -346,7 +349,8 @@
                   > -->
                         <a *ngIf="stage === 'confirm'" (click)="changeStage('edit')" class="edit-price">Edit Price</a>
                       </td>
-                      <td class="text-center font-weight-bold">Subtotal</td>
+                      <td class="text-center font-weight-bold" *ngIf="!part?.isNoBid">Subtotal</td>
+                      <td class="text-center font-weight-bold text-orange" *ngIf="part?.isNoBid">No Bid</td>
                       <td class="text-center font-weight-bold" [ngClass]="{ unset: stage === 'unset' }">
                         <ng-container [ngSwitch]="stage">
                           <ng-container *ngSwitchCase="'edit'">
@@ -386,7 +390,7 @@
                         </ng-container>
                       </td>
                     </tr>
-                    <tr *ngIf="stage === 'unset'" class="unset-row">
+                    <tr *ngIf="stage === 'unset' && !this.pricingForm.value.noBid && !part?.isNoBid" class="unset-row">
                       <td colspan="3">
                         Please edit the prices manually
                       </td>
@@ -396,6 +400,38 @@
                         </button>
                       </td>
                     </tr>
+
+                    <tr
+                      *ngIf="stage === 'unset' && this.pricingForm.value.noBid && !this.part?.isNoBid"
+                      class="edit-row"
+                    >
+                      <td colspan="4" class="text-right">
+                        <button class="btn orange-btn" (click)="this.pricingForm.controls.noBid.setValue(false)">
+                          Cancel
+                        </button>
+                        <button class="btn green-btn" (click)="openModal(confirmNoBid, 'null')">
+                          Save
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="stage === 'unset' && !part?.isNoBid">
+                      <td colspan="3" class="no-bid">
+                        <div [formGroup]="pricingForm" class="form-check form-group theme ">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="noBid"
+                            value="noBid"
+                            id="noBid"
+                          />
+                          <label class="form-check-label mt-1" for="noBid">
+                            No Bid
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+
                     <tr *ngIf="stage === 'edit'" class="edit-row">
                       <td colspan="4" class="text-right">
                         <button class="btn orange-btn" (click)="changeStage('unset')">
@@ -662,6 +698,25 @@
     </div>
     <div class="modal-footer justify-content-center">
       <button class="btn green-btn" (click)="refresh()">Ok</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #confirmNoBid let-modal>
+  <div class="modal-container">
+    <div class="modal-header w-100 d-flex justify-content-center align-items-center">
+      <h5 class="modal-title text-center">
+        No Bid Confirmation
+      </h5>
+    </div>
+    <div class="modal-body px-5 py-3" ngbAutofocus>
+      <p class="text-center">
+        Are you sure you want to make Part {{ part.rfqMedia.projectRfqId }}.{{ part.id }} to No Quote Status ?
+      </p>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button class="btn orange-btn" (click)="modal.close()">Cancel</button>
+      <button class="btn green-btn" (click)="noBidConfirm()">Confirm</button>
     </div>
   </div>
 </ng-template>

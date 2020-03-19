@@ -178,4 +178,8 @@ export class RfqPricingService {
   getScreenPricingBreakdown(breakDown: PricingBreakDown): Observable<PricingBreakdown> {
     return this.http.post<PricingBreakdown>(`${environment.apiBaseUrl}/part-pricing-breakdown`, breakDown);
   }
+
+  setNoBid(partId: string) {
+    return this.http.patch(`${environment.apiBaseUrl}/admin/part/${partId}/no-bid`, {});
+  }
 }

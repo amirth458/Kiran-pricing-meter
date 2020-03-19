@@ -194,3 +194,8 @@ td a.edit-price {
 :host ::ng-deep .nav-tabs .nav-link.active {
   border-bottom: 4px solid var(--theme-light-green);
 }
+
+:host .no-bid input[type='checkbox'] {
+  height: 16px;
+  width: 16px;
+}

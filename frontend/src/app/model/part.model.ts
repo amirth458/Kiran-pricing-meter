@@ -177,6 +177,7 @@ export interface Part {
   order: PartOrder;
   postProcessTypeIds: number[];
   partCustomParameterList: PartCustomParameter[];
+  isNoBid: boolean;
 }
 
 export interface Address {
