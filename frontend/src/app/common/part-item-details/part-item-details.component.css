@@ -18,3 +18,8 @@
 .label.target-delivery {
   color: var(--theme-sky-blue);
 }
+
+.value-text {
+  margin-left: 5px;
+  word-break: break-all;
+}

@@ -16,19 +16,23 @@
         <div class="col-4">
           <p class="label">
             File:
-            <span class="text-theme-green font-weight-bold">{{ part?.rfqMedia?.media?.name }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{ part?.rfqMedia?.media?.name }}</span>
           </p>
           <p class="label">
             Material:
-            <span class="text-theme-green font-weight-bold">{{ part?.materialPropertyValues?.join(', ') }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{
+              part?.materialPropertyValues?.join(', ')
+            }}</span>
           </p>
           <p class="label">
             Technology:
-            <span class="text-theme-green font-weight-bold">{{ part?.equipmentPropertyValues?.join(', ') }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{
+              part?.equipmentPropertyValues?.join(', ')
+            }}</span>
           </p>
           <p class="label">
             Post-process:
-            <span class="text-theme-green font-weight-bold">
+            <span class="text-theme-green font-weight-bold value-text">
               {{ preparePostProcessValues(part?.postProcessTypeIds) }}
             </span>
           </p>
@@ -36,23 +40,23 @@
         <div class="col-4 border-left">
           <p class="label">
             Dimension:
-            <span class="text-theme-green font-weight-bold">{{ getPartDimension() }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{ getPartDimension() }}</span>
           </p>
           <p class="label">
             Volume:
-            <span class="text-theme-green font-weight-bold"
+            <span class="text-theme-green font-weight-bold value-text"
               >{{ part?.rfqMedia?.media?.partDimension?.volume?.value }}
               {{ getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId) }}</span
             >
           </p>
           <p class="label">
             Surface Roughness:
-            <span class="text-theme-green font-weight-bold"
+            <span class="text-theme-green font-weight-bold value-text"
               >{{ part?.rfqMedia?.media?.partDimension?.surfaceArea?.value }}
               {{ getUnit(part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId) }}</span
             >
           </p>
-          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold"></span></p>
+          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold value-text"></span></p>
         </div>
       </div>
     </div>
