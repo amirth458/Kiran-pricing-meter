@@ -227,7 +227,7 @@
       </button>
     </div>
   </div>
-  <div class="row summary">
+  <div class="row summary" *ngIf="orderInfo?.billingInfoView?.paymentType === paymentOrderType.CREDIT_CARD">
     <h5 class="col-12 pl-0">
       Parts
       <span (click)="open(partDetailsModal, 'xl')" class="ml-4 part-detail-toggle">See More Details</span>
