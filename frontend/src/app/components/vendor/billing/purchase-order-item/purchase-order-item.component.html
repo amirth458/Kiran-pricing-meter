@@ -35,11 +35,12 @@
         <div class="col-6 p-3 mb-3 payment-info">
           <h5 class="font-weight-bold">
             Purchase Method:
-            <span class="text-theme-green"
-              >{{ formatPaymentType(orderInfo?.billingInfoView?.paymentType) | titlecase }}
-              (No
-              {{ orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber }})</span
-            >
+            <span class="text-theme-green">
+              {{ formatPaymentType(orderInfo?.billingInfoView?.paymentType) | titlecase }}
+              <ng-container *ngIf="orderInfo?.billingInfoView?.purchaseAgreement">
+                (No{{ orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber }})
+              </ng-container>
+            </span>
           </h5>
           <p class="mb-1">
             Paid:
@@ -47,7 +48,7 @@
               orderInfo?.billingInfoView?.amount | currency: ''
             }}</span>
           </p>
-          <p class="text-theme-green file-name font-weight-bold">
+          <p class="text-theme-green file-name font-weight-bold" *ngIf="orderInfo?.billingInfoView?.purchaseAgreement">
             <a [href]="orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl || ''" target="_blank">
               {{ orderInfo?.billingInfoView?.purchaseAgreement?.fileName || 'PO File' }}</a
             >

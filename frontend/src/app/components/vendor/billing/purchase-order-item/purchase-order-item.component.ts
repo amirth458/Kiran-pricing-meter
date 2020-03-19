@@ -109,7 +109,6 @@ export class PurchaseOrderItemComponent implements OnInit {
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       },
       err => {
-        console.log({ err });
         this.modalService.dismissAll();
         this.toast.error(err.error.message);
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
