@@ -77,7 +77,7 @@ export class Util {
 
   static findMeasurementUnit(measurements: any, unitId: number): any {
     const m = (measurements || []).find(item => item.id === unitId);
-    return m ? m.symbol : Util.measurementUnit;
+    return m ? m.symbol || m.name : Util.measurementUnit;
   }
 
   static calcShippingCost(parts: Array<Part>) {

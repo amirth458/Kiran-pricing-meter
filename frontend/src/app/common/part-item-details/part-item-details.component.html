@@ -16,19 +16,23 @@
         <div class="col-4">
           <p class="label">
             File:
-            <span class="text-theme-green font-weight-bold">{{ part?.rfqMedia?.media?.name }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{ part?.rfqMedia?.media?.name }}</span>
           </p>
           <p class="label">
             Material:
-            <span class="text-theme-green font-weight-bold">{{ part?.materialPropertyValues?.join(', ') }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{
+              part?.materialPropertyValues?.join(', ')
+            }}</span>
           </p>
           <p class="label">
             Technology:
-            <span class="text-theme-green font-weight-bold">{{ part?.equipmentPropertyValues?.join(', ') }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{
+              part?.equipmentPropertyValues?.join(', ')
+            }}</span>
           </p>
           <p class="label">
             Post-process:
-            <span class="text-theme-green font-weight-bold">
+            <span class="text-theme-green font-weight-bold value-text">
               {{ preparePostProcessValues(part?.postProcessTypeIds) }}
             </span>
           </p>
@@ -36,45 +40,51 @@
         <div class="col-4 border-left">
           <p class="label">
             Dimension:
-            <span class="text-theme-green font-weight-bold">{{ getPartDimension() }}</span>
+            <span class="text-theme-green font-weight-bold value-text">{{ getPartDimension() }}</span>
           </p>
           <p class="label">
             Volume:
-            <span class="text-theme-green font-weight-bold"
+            <span class="text-theme-green font-weight-bold value-text"
               >{{ part?.rfqMedia?.media?.partDimension?.volume?.value }}
               {{ getUnit(part?.rfqMedia?.media?.partDimension?.volume?.unitId) }}</span
             >
           </p>
           <p class="label">
             Surface Roughness:
-            <span class="text-theme-green font-weight-bold"
+            <span class="text-theme-green font-weight-bold value-text"
               >{{ part?.rfqMedia?.media?.partDimension?.surfaceArea?.value }}
               {{ getUnit(part?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId) }}</span
             >
           </p>
-          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold"></span></p>
+          <p class="label">Tolerance: <span class="text-theme-green font-weight-bold value-text"></span></p>
         </div>
       </div>
     </div>
 
-    <div class="col-5 d-flex  pl-3">
-      <div class="col-12 d-flex shipment p-3">
-        <div class="o-card w-100 d-flex flex-column justify-content-between">
-          <p class="label d-flex flex-row justify-content-between mb-5">
-            Shipment (OTY - {{ part?.quantity }})
-            <span class="float-right">{{ part?.targetDeliveryDate | date: 'MM/dd/yyyy' }}</span>
-            <!-- {{part?.targetDeliveryDate | date: 'YYY/mm/dd'}} -->
-          </p>
-          <span class="d-flex col-12 p-0">
-            <div class="col-8 p-0">
-              <p class="label">Address: {{ shippingAddressInfo(part?.shippingAddress) }}</p>
-            </div>
-            <div class="col-8">
-              <p class="label target-delivery font-weight-bold">
-                Target Delivery Date
-              </p>
-            </div>
-          </span>
+    <div class="col-5 d-flex">
+      <div class="col-12 d-flex shipment pt-3 pb-3 pl-0 pr-0">
+        <div class="col col-sm shipment">
+          <table class="table p-0">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td class="pl-0 pr-0 font-weight-bold text-theme">Shipment (QTY - {{ part?.quantity }})</td>
+              </tr>
+
+              <tr>
+                <td class="pl-0 pr-0 font-italic text-theme">
+                  Address:<br />
+                  <span [innerHTML]="shippingAddressInfo(part?.shippingAddress)"> </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-0 pr-0 text-theme">
+                  Target Delivery Date:
+                  {{ part?.targetDeliveryDate | date: 'MM/dd/yyyy' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
