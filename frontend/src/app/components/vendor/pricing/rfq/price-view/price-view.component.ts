@@ -31,6 +31,7 @@ import { PartNoteService } from '../../../../../service/part-note.service';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { Util } from '../../../../../util/Util';
 import { UserService } from '../../../../../service/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-price-view',
@@ -69,7 +70,8 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     partsUnitCount: [0],
     partsUnitPrice: [0],
     partsLineItemCost: [0],
-    totalCost: [0]
+    totalCost: [0],
+    noBid: [false]
   });
 
   dynamicForm: FormGroup = this.fb.group({
@@ -93,7 +95,8 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     public metadataService: MetadataService,
     public currencyPipe: CurrencyPipe,
     public partNoteService: PartNoteService,
-    public userService: UserService
+    public userService: UserService,
+    public spinner: NgxSpinnerService
   ) {
     this.metadataService
       .getProcessMetaData('invoice_item')
@@ -474,5 +477,24 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     try {
       this.scroller.nativeElement.scrollTop = this.scroller.nativeElement.scrollHeight;
     } catch (err) {}
+  }
+
+  noBidConfirm() {
+    this.spinner.show();
+    this.pricingService.setNoBid(this.part.id.toString()).subscribe(
+      res => {
+        this.modalService.dismissAll();
+        this.spinner.hide();
+        this.toaster.success('Part set to No Bid successfully.');
+        this.changeStage('unset');
+        this.part.isNoBid = true;
+      },
+      err => {
+        console.log({ err });
+        this.spinner.hide();
+        this.modalService.dismissAll();
+        this.toaster.error('Error while setting part to No Bid.');
+      }
+    );
   }
 }

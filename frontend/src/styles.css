@@ -45,6 +45,10 @@
   color: var(--theme-light-blue);
 }
 
+.text-orange {
+  color: var(--theme-orange);
+}
+
 .text-theme-green {
   color: var(--theme-light-green);
 }
