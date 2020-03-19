@@ -1,0 +1,9 @@
+:host ::ng-deep .ag-body-viewport.ag-layout-auto-height .ag-center-cols-clipper,
+:host ::ng-deep .ag-body-viewport.ag-layout-auto-height .ag-center-cols-container {
+  min-height: 35px !important;
+}
+
+.table-header {
+  color: var(--theme-light-blue);
+  font-size: 13px;
+}

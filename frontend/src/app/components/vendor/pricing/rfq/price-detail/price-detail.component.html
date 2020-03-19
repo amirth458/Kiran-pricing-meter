@@ -1,8 +1,5 @@
 <div class="wrapper">
-  <div
-    class="header mb-3"
-    [ngClass]="{ 'manual-price': part?.manualPricingAllowed }"
-  >
+  <div class="header mb-3" [ngClass]="{ 'manual-price': part?.manualPricingAllowed }">
     <h5 class="text-center">
       {{
         part?.manualPricingAllowed === false
@@ -45,6 +42,9 @@
         </ng-container>
         <ng-container *ngSwitchCase="3">
           <app-pricing-profile [part]="part"></app-pricing-profile>
+        </ng-container>
+        <ng-container *ngSwitchCase="4">
+          <app-historical-bid [part]="part" [customer]="customer" [partQuote]="partQuote"></app-historical-bid>
         </ng-container>
       </ng-container>
     </div>

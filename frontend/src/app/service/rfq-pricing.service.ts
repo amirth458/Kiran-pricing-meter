@@ -125,7 +125,7 @@ export class RfqPricingService {
 
   getPartQuoteByPricingIds(partId: number, processPricingIds: string): Observable<PartQuoteQueryDto[]> {
     return this.http
-      .post<PartQuoteQueryDto[]>(`${environment.apiBaseUrl}/part-quote-by-pricing-ids?is-global-rule=false`, {
+      .post<PartQuoteQueryDto[]>(`${environment.apiBaseUrl}/part-quote-by-pricing-ids?is-global-rule=true`, {
         partId,
         processPricingIds
       })
