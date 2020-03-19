@@ -64,7 +64,6 @@ export class PurchaseOrderItemComponent implements OnInit {
         this.spinner.hide();
       },
       err => {
-        console.log({ err });
         this.spinner.hide();
         this.toast.error(err.error.message);
         this.route.navigateByUrl('/billing/payment');
