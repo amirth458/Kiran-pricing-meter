@@ -136,6 +136,7 @@ hr {
 
 .part-list .part-item .value {
   margin-left: 5px;
+  word-break: break-all;
 }
 
 .partDetailsModal .modal-header h5 {
