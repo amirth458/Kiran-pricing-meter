@@ -60,7 +60,8 @@ export class RfqPricingService {
       Authorization: data.tokenType + ' ' + data.accessToken,
       'Content-Type': 'application/json'
     });
-
+    // TODO:
+    // Replace constant values bellow when part status type API is available
     const body = {
       statusIds: [2, 5], // auto quoted
       isManual: true,
@@ -69,7 +70,7 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getManuallyPriced(filterOption: FilterOption = null): Observable<Pageable<Part>> {
+  getManuallyPriced(filterOption: FilterOption = null, isNoBid): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -82,10 +83,13 @@ export class RfqPricingService {
       'Content-Type': 'application/json'
     });
 
+    // TODO:
+    // Replace constant values bellow when part status type API is available
     const body = {
-      statusIds: [3], // manual qu4ote
+      statusIds: [isNoBid ? 14 : 3], // 3: manual quote, 14: No Quote
       isManual: true,
-      partId: null
+      partId: null,
+      isNoBid
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
