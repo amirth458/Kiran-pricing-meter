@@ -61,24 +61,30 @@
       </div>
     </div>
 
-    <div class="col-5 d-flex  pl-3">
-      <div class="col-12 d-flex shipment p-3">
-        <div class="o-card w-100 d-flex flex-column justify-content-between">
-          <p class="label d-flex flex-row justify-content-between mb-5">
-            Shipment (OTY - {{ part?.quantity }})
-            <span class="float-right">{{ part?.targetDeliveryDate | date: 'MM/dd/yyyy' }}</span>
-            <!-- {{part?.targetDeliveryDate | date: 'YYY/mm/dd'}} -->
-          </p>
-          <span class="d-flex col-12 p-0">
-            <div class="col-8 p-0">
-              <p class="label">Address: {{ shippingAddressInfo(part?.shippingAddress) }}</p>
-            </div>
-            <div class="col-8">
-              <p class="label target-delivery font-weight-bold">
-                Target Delivery Date
-              </p>
-            </div>
-          </span>
+    <div class="col-5 d-flex">
+      <div class="col-12 d-flex shipment pt-3 pb-3 pl-0 pr-0">
+        <div class="col col-sm shipment">
+          <table class="table p-0">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td class="pl-0 pr-0 font-weight-bold text-theme">Shipment (QTY - {{ part?.quantity }})</td>
+              </tr>
+
+              <tr>
+                <td class="pl-0 pr-0 font-italic text-theme">
+                  Address:<br />
+                  <span [innerHTML]="shippingAddressInfo(part?.shippingAddress)"> </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-0 pr-0 text-theme">
+                  Target Delivery Date:
+                  {{ part?.targetDeliveryDate | date: 'MM/dd/yyyy' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

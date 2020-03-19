@@ -18,7 +18,7 @@ export class PartItemDetailsComponent {
     return Util.getPartDimension(this.part.rfqMedia.media.partDimension, this.measurementUnits || []);
   }
 
-  shippingAddressInfo(address: Address) {
+  shippingAddressInfo(address: any) {
     return Util.shippingAddressInfo(address);
   }
 
