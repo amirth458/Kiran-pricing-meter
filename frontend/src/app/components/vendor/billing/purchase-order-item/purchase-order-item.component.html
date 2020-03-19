@@ -125,6 +125,18 @@
           </div>
         </div>
       </div>
+
+      <div
+        class="col-12 mt-2 row justify-content-center"
+        *ngIf="orderInfo?.billingInfoView?.paymentType === paymentOrderType.CREDIT_CARD"
+      >
+        <div class="col-3 mr-1 p-0">
+          <button type="button" class="btn theme w-100" (click)="open(approveModal, 'md')">
+            Approve
+          </button>
+        </div>
+      </div>
+
       <!-- End of Notes -->
     </div>
 

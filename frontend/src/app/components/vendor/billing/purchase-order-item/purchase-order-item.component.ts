@@ -100,7 +100,9 @@ export class PurchaseOrderItemComponent implements OnInit {
       orderId: this.orderInfo.billingInfoView.orderId,
       paymentStatusType: this.orderInfo.billingInfoView.paymentStatusType,
       paymentType: this.orderInfo.billingInfoView.paymentType,
-      poNumber: this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
+      poNumber: this.orderInfo.billingInfoView.purchaseAgreement
+        ? this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
+        : null
     };
     this.billingService.approveOrder(body).subscribe(
       res => {
