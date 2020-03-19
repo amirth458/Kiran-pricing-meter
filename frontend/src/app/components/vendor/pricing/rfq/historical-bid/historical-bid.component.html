@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-12">
+    <!-- TABLE -->
+    <div class="mb-2">
+      <span class="table-header">Part Information</span>
+    </div>
+    <div class="theme-table p-0">
+      <ag-grid-angular
+        class="ag-theme-balham price-grid w-100 h-100"
+        [class.empty-grid]="partInformation?.length === 0"
+        [rowData]="partInformation"
+        [gridOptions]="partInfoGridOptions"
+        [domLayout]="'autoHeight'"
+        (gridReady)="$event.api.sizeColumnsToFit()"
+      >
+      </ag-grid-angular>
+    </div>
+    <!-- /TABLE -->
+  </div>
+  <div class="col-12 mt-4 d-flex">
+    <div class="table-control mr-3">
+      <app-column-search-filter
+        width="200px"
+        height="295px"
+        [type]="type"
+        [(filterColumns)]="filterColumns"
+        (filterColumnsChange)="filterColumnsChange($event)"
+        [(searchColumns)]="searchColumns"
+        (searchColumnsChange)="searchColumnsChange($event)"
+      >
+      </app-column-search-filter>
+    </div>
+    <div class="table theme-table position-relative">
+      <ngx-spinner
+        [name]="'spooler'"
+        bdOpacity="0.7"
+        bdColor="#fff"
+        size="small"
+        color="#74bf09"
+        type="ball-clip-rotate"
+        [fullScreen]="false"
+      >
+        <p class="m-0">Loading...</p>
+      </ngx-spinner>
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

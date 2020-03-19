@@ -76,6 +76,10 @@ export class PriceDetailComponent implements OnInit {
       {
         id: 3,
         title: 'Pricing Profile'
+      },
+      {
+        id: 4,
+        title: 'Historical Bid'
       }
     ];
   }

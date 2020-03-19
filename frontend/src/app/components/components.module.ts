@@ -79,6 +79,7 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
 // pipes
 import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
 import { SupplierPipe } from '../pipes/supplier.pipe';
+import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/historical-bid.component';
 
 @NgModule({
   declarations: [
@@ -150,7 +151,8 @@ import { SupplierPipe } from '../pipes/supplier.pipe';
 
     // Pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
+    SupplierPipe,
+    HistoricalBidComponent
   ],
   imports: [
     CommonModule,
