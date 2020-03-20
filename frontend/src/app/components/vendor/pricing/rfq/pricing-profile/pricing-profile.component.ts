@@ -217,6 +217,13 @@ export class PricingProfileComponent implements OnInit {
     this.getPricingProfiles();
   }
 
+  onPageSizeChange(v) {
+    this.pageSize = v.target.value;
+    if (this.gridOptions.api) {
+      this.gridOptions.api.paginationSetPageSize(this.pageSize);
+    }
+  }
+
   initColumns() {
     this.columnDefs = [
       {
