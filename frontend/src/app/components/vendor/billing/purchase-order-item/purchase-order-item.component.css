@@ -107,10 +107,14 @@ hr {
 }
 
 .notes .notes-body {
-  height: 350px;
+  height: 370px;
   overflow: scroll;
   padding-top: 25px;
   padding-bottom: 25px;
+}
+
+.notes .notes-body.small {
+  height: 200px;
 }
 
 .part-name {
@@ -126,8 +130,12 @@ hr {
 }
 
 .part-list {
-  height: 450px;
+  max-height: 450px;
   overflow: scroll;
+}
+
+.part-list.small {
+  max-height: 300px;
 }
 
 .part-list .part-item {

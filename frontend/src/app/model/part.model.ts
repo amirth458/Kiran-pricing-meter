@@ -442,3 +442,24 @@ export interface PartQuoteQueryDto {
   totalExtendedCost: number;
   totalCost: number;
 }
+
+export enum AppPartStatus {
+  // RFQ Created
+  READY_FOR_QUOTING = 'READY_FOR_QUOTING',
+  // RFQ In Progress
+  AUTO_QUOTED = 'AUTO_QUOTED',
+  MANUAL_QUOTE = 'MANUAL_QUOTE',
+  QUOTE_EXPIRED = 'QUOTE_EXPIRED',
+  AWAITING_QUOTE = 'AWAITING_QUOTE',
+  NO_QUOTE = 'NO_QUOTE',
+  // Order In Progress
+  PLACING_ORDER = 'PLACING_ORDER',
+  PRE_PRODUCTION = 'PRE_PRODUCTION',
+  PRODUCTION = 'PRODUCTION',
+  POST_PRODUCTION = 'POST_PRODUCTION',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
+  // Order Complete
+  PART_COMPLETE = 'PART_COMPLETE',
+  PAYMENT_PENDING = 'PAYMENT_PENDING'
+}

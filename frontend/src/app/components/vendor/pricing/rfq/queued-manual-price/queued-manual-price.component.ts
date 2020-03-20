@@ -10,13 +10,21 @@ import { BehaviorSubject } from 'rxjs';
 import { Part } from '../../../../../model/part.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
-
+import { PartService } from 'src/app/service/part.service';
+import { ToastrService } from 'ngx-toastr';
+import { AppPartStatus } from '../../../../../model/part.model';
 @Component({
   selector: 'app-queued-manual-price',
   templateUrl: './queued-manual-price.component.html',
   styleUrls: ['./queued-manual-price.component.css']
 })
 export class QueuedManualPriceComponent implements OnInit {
+  AppPartStatus = AppPartStatus;
+
+  queuedManuallyQuotedId = [];
+  manuallyQuotedId = [];
+  noQuoteId = [];
+
   tabs = [
     {
       id: 0,
@@ -47,7 +55,9 @@ export class QueuedManualPriceComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private pricingService: RfqPricingService,
     private router: Router,
-    public currencyPipe: CurrencyPipe
+    public currencyPipe: CurrencyPipe,
+    public partServie: PartService,
+    public toast: ToastrService
   ) {}
 
   ngOnInit() {
@@ -287,9 +297,26 @@ export class QueuedManualPriceComponent implements OnInit {
       }
     };
 
-    this.getQueuedManualPricing();
-    this.getManuallyPriced();
-    this.getNoBid();
+    this.partServie.getPartStatusType().subscribe(
+      res => {
+        res.map(item => {
+          if (item.name === AppPartStatus.MANUAL_QUOTE) {
+            this.manuallyQuotedId.push(item.id);
+          } else if (item.name === AppPartStatus.NO_QUOTE) {
+            this.noQuoteId.push(item.id);
+          } else if (item.name === AppPartStatus.AWAITING_QUOTE || item.name === AppPartStatus.AUTO_QUOTED) {
+            this.queuedManuallyQuotedId.push(item.id);
+          }
+        });
+        this.getQueuedManualPricing();
+        this.getManuallyPriced();
+        this.getNoBid();
+      },
+      err => {
+        console.log({ err });
+        this.toast.error('Error occured while fetching part status');
+      }
+    );
 
     this.selectedTabId$.subscribe(value => {
       this.selectedTabId = value;
@@ -326,7 +353,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getQueuedManualPricing({ page, size: 1000, sort: 'id,ASC', q })
+          .getQueuedManualPricing({ page, size: 1000, sort: 'id,ASC', q }, this.queuedManuallyQuotedId)
           .toPromise();
 
         if (!res.content) {
@@ -370,7 +397,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, false)
+          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, this.manuallyQuotedId, false)
           .toPromise();
 
         if (!res.content) {
@@ -428,7 +455,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, true)
+          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, this.noQuoteId, true)
           .toPromise();
 
         if (!res.content) {

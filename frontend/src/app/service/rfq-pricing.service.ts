@@ -27,7 +27,7 @@ export class RfqPricingService {
     return this.http.put(url, data);
   }
 
-  getRecentAutoPrices(filterOption: FilterOption = null): Observable<Pageable<Part>> {
+  getRecentAutoPrices(filterOption: FilterOption = null, statusIds): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -41,14 +41,15 @@ export class RfqPricingService {
     });
 
     const body = {
-      statusIds: [2],
+      statusIds,
+      // statusIds: [2],
       isManual: false,
       partId: null
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getQueuedManualPricing(filterOption: FilterOption = null): Observable<Pageable<Part>> {
+  getQueuedManualPricing(filterOption: FilterOption = null, statusIds): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -60,17 +61,16 @@ export class RfqPricingService {
       Authorization: data.tokenType + ' ' + data.accessToken,
       'Content-Type': 'application/json'
     });
-    // TODO:
-    // Replace constant values bellow when part status type API is available
     const body = {
-      statusIds: [2, 5], // auto quoted
+      statusIds,
+      // statusIds: [2, 5], // auto quoted
       isManual: true,
       partId: null
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getManuallyPriced(filterOption: FilterOption = null, isNoBid): Observable<Pageable<Part>> {
+  getManuallyPriced(filterOption: FilterOption = null, statusIds, isNoBid): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -83,10 +83,9 @@ export class RfqPricingService {
       'Content-Type': 'application/json'
     });
 
-    // TODO:
-    // Replace constant values bellow when part status type API is available
     const body = {
-      statusIds: [isNoBid ? 14 : 3], // 3: manual quote, 14: No Quote
+      // statusIds: [isNoBid ? 14 : 3], // 3: manual quote, 14: No Quote
+      statusIds,
       isManual: true,
       partId: null,
       isNoBid
