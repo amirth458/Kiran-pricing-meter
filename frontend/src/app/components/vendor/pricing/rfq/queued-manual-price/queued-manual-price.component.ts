@@ -25,6 +25,10 @@ export class QueuedManualPriceComponent implements OnInit {
     {
       id: 1,
       title: 'Manually Priced'
+    },
+    {
+      id: 2,
+      title: 'No Bid'
     }
   ];
   selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -36,7 +40,7 @@ export class QueuedManualPriceComponent implements OnInit {
 
   columnDefs = [[], []];
   gridOptions: GridOptions;
-  rowData = [[], []];
+  rowData = [[], [], []];
   pageSize = 10;
 
   constructor(
@@ -219,6 +223,54 @@ export class QueuedManualPriceComponent implements OnInit {
           sortable: true,
           cellClass: 'text-center'
         }
+      ],
+      [
+        {
+          headerName: 'RFQ',
+          field: 'rfq',
+          tooltipField: 'rfq',
+          hide: false,
+          sortable: true,
+          filter: false,
+          cellClass: 'text-center'
+        },
+        {
+          headerName: 'Part',
+          field: 'part',
+          tooltipField: 'part',
+          hide: false,
+          sortable: true,
+          filter: false,
+          cellClass: 'text-center'
+        },
+        {
+          headerName: 'File Name',
+          field: 'fileName',
+          tooltipField: 'fileName',
+          hide: false,
+          sortable: true,
+          filter: false,
+          cellRenderer: 'fileViewRenderer'
+        },
+        {
+          headerName: 'Material',
+          field: 'materialPropertyValues',
+          tooltipField: 'materialPropertyValues',
+          hide: false,
+          sortable: true,
+          filter: false,
+          valueFormatter: dt => (dt.value || []).join(' , ')
+        },
+        {
+          headerName: 'Technology',
+          field: 'equipmentPropertyValues',
+          tooltipField: 'equipmentPropertyValues',
+          hide: false,
+          sortable: true,
+          filter: false,
+          cellClass: 'text-center',
+          valueFormatter: dt => (dt.value || []).join(' , ')
+        }
       ]
     ];
     this.gridOptions = {
@@ -234,23 +286,28 @@ export class QueuedManualPriceComponent implements OnInit {
         this.router.navigateByUrl(this.router.url + '/' + event.data.id);
       }
     };
+
+    this.getQueuedManualPricing();
+    this.getManuallyPriced();
+    this.getNoBid();
+
     this.selectedTabId$.subscribe(value => {
       this.selectedTabId = value;
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
         this.gridOptions.api.setRowData(this.rowData[value]);
+        this.gridOptions.api.hideOverlay();
         this.gridOptions.api.sizeColumnsToFit();
         this.setDefaultSort();
       }
     });
-    this.getQueuedManualPricing();
-    this.getManuallyPriced();
   }
 
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
     this.setDefaultSort();
+    this.gridOptions.api.showLoadingOverlay();
   }
 
   setDefaultSort() {
@@ -313,7 +370,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q })
+          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, false)
           .toPromise();
 
         if (!res.content) {
@@ -347,25 +404,74 @@ export class QueuedManualPriceComponent implements OnInit {
         page++;
       }
       this.rowData[1] = rows;
-      this.pricingService
-        .getPartQuotes(rows.map(item => item.id))
-        .subscribe(partQuotes => {
-          partQuotes.forEach(partQuote => {
-            const findIndex = this.rowData[1].findIndex(
-              row => row.id === partQuote.partId
-            );
-            this.rowData[1][findIndex] = {
-              ...this.rowData[1][findIndex],
-              price: this.currencyPipe.transform(
-                partQuote.totalCost,
-                'USD',
-                'symbol',
-                '0.0-3'
-              )
-            };
-          });
-          this.rowData[1] = [...this.rowData[1]];
+      this.pricingService.getPartQuotes(rows.map(item => item.id)).subscribe(partQuotes => {
+        partQuotes.forEach(partQuote => {
+          const findIndex = this.rowData[1].findIndex(row => row.id === partQuote.partId);
+          this.rowData[1][findIndex] = {
+            ...this.rowData[1][findIndex],
+            price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
+          };
         });
+        this.rowData[1] = [...this.rowData[1]];
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.spinner.hide();
+    }
+  }
+
+  async getNoBid(q = null) {
+    this.spinner.show();
+    let page = 0;
+    const rows = [];
+    try {
+      while (true) {
+        const res = await this.pricingService
+          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, true)
+          .toPromise();
+
+        if (!res.content) {
+          break;
+        }
+
+        rows.push(
+          ...res.content.map((part: Part) => ({
+            id: part.id,
+            subOrder: part.id,
+            rfq: part.rfqMedia.projectRfqId,
+            part: part.rfqMedia.projectRfqId + '.' + part.id,
+            fileName: part.rfqMedia.media.name,
+            quantity: part.quantity,
+            materialPropertyValues: part.materialPropertyValues,
+            equipmentPropertyValues: part.equipmentPropertyValues,
+            roughness: '',
+            postProcess: ''
+            // manualPrice:
+            //   part.partQuoteList && part.partQuoteList.length > 0
+            //     ? part.partQuoteList[0].totalCost
+            //       ? `$ ${part.shippingCost}`
+            //       : ''
+            //     : ''
+          }))
+        );
+
+        if (res.content.length === 0 || res.content.length < 1000) {
+          break;
+        }
+        page++;
+      }
+      this.rowData[2] = rows;
+      this.pricingService.getPartQuotes(rows.map(item => item.id)).subscribe(partQuotes => {
+        partQuotes.forEach(partQuote => {
+          const findIndex = this.rowData[2].findIndex(row => row.id === partQuote.partId);
+          this.rowData[2][findIndex] = {
+            ...this.rowData[2][findIndex],
+            price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
+          };
+        });
+        this.rowData[2] = [...this.rowData[2]];
+      });
     } catch (e) {
       console.log(e);
     } finally {
