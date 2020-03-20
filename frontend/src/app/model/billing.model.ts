@@ -64,3 +64,31 @@ export class PaymentDetails {
   billingInfoView: BillingInfoView;
   customerOrder: CustomerOrder;
 }
+
+export class BidHistory {
+  'bidNumber': number;
+  'rfq': number;
+  'rfqName': string;
+  'vendor': string;
+  'fileName': string;
+  'proposedFinish': string;
+  'partsOnPlatform': number;
+  'proposedSpecsAndTolerances': number;
+  'newEquipmentNumber': number;
+  'newMaterialNumber': number;
+  'bulidBoxVolumeMm3': number;
+  'bulidBoxVolumeCm3': number;
+  'volumeMm3': number;
+  'volumeCm3': number;
+  'areaMm2': number;
+  'areaCm2': number;
+  'vendorTotalBidAmount': number;
+  'vendorLaborAndMaterial': number;
+  'impliedProductionAndDeliveryWindow': number;
+  'taxes': number;
+  'shipping': number;
+  'vendorYield': number;
+  'xmm': number;
+  'zmm': number;
+  'ymm': number;
+}

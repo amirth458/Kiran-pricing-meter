@@ -9,28 +9,17 @@ import { Observable } from 'rxjs';
 import { map, reduce } from 'rxjs/operators';
 
 import { BiddingOrder } from '../model/bidding.order';
-import {
-  BiddingOrderDetail,
-  GetAllCustomerPartView
-} from '../model/bidding.order.detail';
+import { BiddingOrderDetail, GetAllCustomerPartView } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import {
-  Part,
-  PartQuote,
-  ProcessProfileDetailedView
-} from '../model/part.model';
+import { Part, PartQuote, ProcessProfileDetailedView } from '../model/part.model';
 import { Util } from '../util/Util';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
-  constructor(
-    private http: HttpClient,
-    public datePipe: DatePipe,
-    public currencyPipe: CurrencyPipe
-  ) {}
+  constructor(private http: HttpClient, public datePipe: DatePipe, public currencyPipe: CurrencyPipe) {}
 
   getSubOrderReleaseQueue(filterOption: FilterOption): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/part/placing-order-status`;
@@ -43,9 +32,7 @@ export class OrdersService {
   }
 
   getStartedBidOrders(): Observable<Array<BiddingOrder>> {
-    return this.http.get<Array<BiddingOrder>>(
-      `${environment.apiBaseUrl}/admin/bidding/started-bid-orders`
-    );
+    return this.http.get<Array<BiddingOrder>>(`${environment.apiBaseUrl}/admin/bidding/started-bid-orders`);
   }
 
   getPastOrders(filterOption: FilterOption): Observable<any> {
@@ -132,9 +119,7 @@ export class OrdersService {
   }
 
   getReleasedBiddingOrders(): Observable<Array<BiddingOrder>> {
-    return this.http.get<Array<BiddingOrder>>(
-      `${environment.apiBaseUrl}/admin/bidding/released-bid-orders`
-    );
+    return this.http.get<Array<BiddingOrder>>(`${environment.apiBaseUrl}/admin/bidding/released-bid-orders`);
   }
 
   getSubOrderReleaseConfirmation() {
@@ -177,7 +162,7 @@ export class OrdersService {
   getOrderViewColumns(): ColDef[] {
     const columns = [
       {
-        headerName: 'Vendor Bid',
+        headerName: 'Order ID',
         field: 'bidOrder.id',
         tooltip: params => params.value,
         sortable: true,
@@ -199,12 +184,7 @@ export class OrdersService {
         sortable: true,
         filter: false,
         valueFormatter: dt => {
-          return this.currencyPipe.transform(
-            dt.value || 0,
-            'USD',
-            'symbol',
-            '0.0-3'
-          );
+          return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
         }
       },
       {
@@ -271,7 +251,7 @@ export class OrdersService {
   getGridSearchColumns(): any {
     return [
       {
-        name: 'Vendor Bid',
+        name: 'Order ID',
         field: 'bidOrder.id',
         checked: false,
         query: {
@@ -357,7 +337,7 @@ export class OrdersService {
   getGridFilterColumns(): any {
     return [
       {
-        name: 'Vendor Bid',
+        name: 'Order ID',
         field: 'bidOrder.id',
         checked: true
       },
@@ -411,9 +391,7 @@ export class OrdersService {
   }
 
   getAllMeasurementUnitType(): Observable<any> {
-    return this.http.get<any>(
-      `${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`
-    );
+    return this.http.get<any>(`${environment.procurementApiBaseUrl}/metadata/measurement_unit_type`);
   }
 
   getPartQuotesByPartIds(partIds: Array<number>): Observable<PartQuote[]> {
@@ -421,9 +399,7 @@ export class OrdersService {
     return this.http.post<PartQuote[]>(url, { partIds });
   }
 
-  mergePartQuoteInfo(
-    parts: Array<GetAllCustomerPartView>
-  ): Observable<GetAllCustomerPartView[]> {
+  mergePartQuoteInfo(parts: Array<GetAllCustomerPartView>): Observable<GetAllCustomerPartView[]> {
     return parts.length > 0
       ? this.getPartQuotesByPartIds((parts || []).map(p => p.partId)).pipe(
           reduce((quotes: any, arr: PartQuote[]) => {

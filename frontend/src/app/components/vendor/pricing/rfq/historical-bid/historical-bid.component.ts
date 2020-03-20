@@ -4,6 +4,10 @@ import { Part, PartQuote } from 'src/app/model/part.model';
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { CurrencyPipe } from '@angular/common';
+import { BiddingService } from 'src/app/service/bidding.service';
+import { BidHistory } from 'src/app/model/billing.model';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-historical-bid',
@@ -24,15 +28,15 @@ export class HistoricalBidComponent implements OnInit {
 
   columnDefs = [];
   gridOptions: GridOptions;
-  rowData = [];
+  rowData: BidHistory[] = [];
 
   type = ['search', 'filter'];
 
   searchColumns = [
     {
-      name: 'Vendor Name',
-      field: 'vendorName',
-      tooltipField: 'vendorName',
+      name: 'RFQ',
+      field: 'rfqName',
+      tooltipField: 'rfqName',
       checked: false,
       query: {
         type: '',
@@ -40,9 +44,147 @@ export class HistoricalBidComponent implements OnInit {
       }
     },
     {
-      name: 'Pricing Profile',
-      field: 'pricingProfile',
-      tooltipField: 'pricingProfile',
+      name: 'Bid',
+      field: 'bidNumber',
+      tooltipField: 'bidNumber',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Files',
+      field: 'fileName',
+      tooltipField: 'fileName',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Finish',
+      field: 'proposedFinish',
+      tooltipField: 'proposedFinish',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Delivery',
+      field: 'impliedProductionAndDeliveryWindow',
+      tooltipField: 'impliedProductionAndDeliveryWindow',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Units',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'X',
+      field: 'xmm',
+      tooltipField: 'xmm',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Y',
+      field: 'ymm',
+      tooltipField: 'ymm',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Z',
+      field: 'zmm',
+      tooltipField: 'zmm',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Vol',
+      field: 'volumeMm3',
+      tooltipField: 'volumeMm3',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'SA',
+      field: 'areaMm2',
+      tooltipField: 'areaMm2',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'TotalBid',
+      field: 'vendorTotalBidAmount',
+      tooltipField: 'vendorTotalBidAmount',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'L&M',
+      field: 'vendorLaborAndMaterial',
+      tooltipField: 'vendorLaborAndMaterial',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Shipping',
+      field: 'shipping',
+      tooltipField: 'shipping',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Taxes',
+      field: 'taxes',
+      tooltipField: 'taxes',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'VendorShare',
+      field: 'vendorYield',
+      tooltipField: 'vendorYield',
       checked: false,
       query: {
         type: '',
@@ -52,49 +194,110 @@ export class HistoricalBidComponent implements OnInit {
   ];
   filterColumns = [
     {
-      name: 'Vendor Name',
-      field: 'vendorName',
-      tooltipField: 'vendorName',
+      name: 'RFQ',
+      field: 'rfqName',
+      tooltipField: 'rfqName',
       checked: true
     },
     {
-      name: 'Pricing Profile',
-      field: 'pricingProfile',
-      tooltipField: 'pricingProfile',
+      name: 'Bid',
+      field: 'bidNumber',
+      tooltipField: 'bidNumber',
+      checked: true
+    },
+    {
+      name: 'Files',
+      field: 'fileName',
+      tooltipField: 'fileName',
+      checked: true
+    },
+    {
+      name: 'Finish',
+      field: 'proposedFinish',
+      tooltipField: 'proposedFinish',
+      checked: true
+    },
+    {
+      name: 'Delivery',
+      field: 'impliedProductionAndDeliveryWindow',
+      tooltipField: 'impliedProductionAndDeliveryWindow',
+      checked: true
+    },
+    {
+      name: 'Units',
+      checked: true
+    },
+    {
+      name: 'X',
+      field: 'xmm',
+      tooltipField: 'xmm',
+      checked: true
+    },
+    {
+      name: 'Y',
+      field: 'ymm',
+      tooltipField: 'ymm',
+      checked: true
+    },
+    {
+      name: 'Z',
+      field: 'zmm',
+      tooltipField: 'zmm',
+      checked: true
+    },
+    {
+      name: 'Vol',
+      field: 'volumeMm3',
+      tooltipField: 'volumeMm3',
+      checked: true
+    },
+    {
+      name: 'SA',
+      field: 'areaMm2',
+      tooltipField: 'areaMm2',
+      checked: true
+    },
+    {
+      name: 'TotalBid',
+      field: 'vendorTotalBidAmount',
+      tooltipField: 'vendorTotalBidAmount',
+      checked: true
+    },
+    {
+      name: 'L&M',
+      field: 'vendorLaborAndMaterial',
+      tooltipField: 'vendorLaborAndMaterial',
+      checked: true
+    },
+    {
+      name: 'Shipping',
+      field: 'shipping',
+      tooltipField: 'shipping',
+      checked: true
+    },
+    {
+      name: 'Taxes',
+      field: 'taxes',
+      tooltipField: 'taxes',
+      checked: true
+    },
+    {
+      name: 'VendorShare',
+      field: 'vendorYield',
+      tooltipField: 'vendorYield',
       checked: true
     }
   ];
 
-  constructor(public currencyPipe: CurrencyPipe) {}
+  constructor(
+    public currencyPipe: CurrencyPipe,
+    public biddingService: BiddingService,
+    public toastr: ToastrService,
+    public spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     this.partInfoColumnDefs = [
-      {
-        headerName: 'Customer',
-        field: 'customer',
-        tooltipField: 'customer',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'RFQ',
-        field: 'rfq',
-        tooltipField: 'rfq',
-        hide: false,
-        sortable: true,
-        filter: false,
-        cellClass: 'text-center'
-      },
-      {
-        headerName: 'Part',
-        field: 'part',
-        tooltipField: 'part',
-        hide: false,
-        sortable: true,
-        filter: false,
-        cellClass: 'text-center'
-      },
       {
         headerName: 'File Name',
         field: 'fileName',
@@ -105,9 +308,9 @@ export class HistoricalBidComponent implements OnInit {
         cellRenderer: 'fileViewRenderer'
       },
       {
-        headerName: 'Quantity',
-        field: 'quantity',
-        tooltipField: 'quantity',
+        headerName: 'RFQ',
+        field: 'rfq',
+        tooltipField: 'rfq',
         hide: false,
         sortable: true,
         filter: false,
@@ -131,24 +334,6 @@ export class HistoricalBidComponent implements OnInit {
         filter: false,
         valueFormatter: dt => (dt.value || []).join(' , ')
       },
-      // {
-      //   headerName: 'Roughness',
-      //   field: 'roughness',
-      //   tooltipField: 'roughness',
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false,
-      //   cellClass: 'text-center'
-      // },
-      // {
-      //   headerName: 'Post-Process',
-      //   field: 'postProcess',
-      //   tooltipField: 'postProcess',
-      //   hide: false,
-      //   sortable: true,
-      //   filter: true,
-      //   cellClass: 'text-center'
-      // },
       {
         headerName: 'Price',
         field: 'price',
@@ -211,17 +396,128 @@ export class HistoricalBidComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        tooltipField: 'vendorName',
+        headerName: 'RFQ',
+        field: 'rfqName',
+        tooltipField: 'rfqName',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Pricing Profile',
-        field: 'pricingProfile',
-        tooltipField: 'pricingProfile',
+        headerName: 'Bid',
+        field: 'bidNumber',
+        tooltipField: 'bidNumber',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Files',
+        field: 'fileName',
+        tooltipField: 'fileName',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Finish',
+        field: 'proposedFinish',
+        tooltipField: 'proposedFinish',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Delivery',
+        field: 'impliedProductionAndDeliveryWindow',
+        tooltipField: 'impliedProductionAndDeliveryWindow',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Units',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: () => 'mm'
+      },
+      {
+        headerName: 'X',
+        field: 'xmm',
+        tooltipField: 'xmm',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Y',
+        field: 'ymm',
+        tooltipField: 'ymm',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Z',
+        field: 'zmm',
+        tooltipField: 'zmm',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Vol',
+        field: 'volumeMm3',
+        tooltipField: 'volumeMm3',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'SA',
+        field: 'areaMm2',
+        tooltipField: 'areaMm2',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'TotalBid',
+        field: 'vendorTotalBidAmount',
+        tooltipField: 'vendorTotalBidAmount',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'L&M',
+        field: 'vendorLaborAndMaterial',
+        tooltipField: 'vendorLaborAndMaterial',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Shipping',
+        field: 'shipping',
+        tooltipField: 'shipping',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Taxes',
+        field: 'taxes',
+        tooltipField: 'taxes',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'VendorShare',
+        field: 'vendorYield',
+        tooltipField: 'vendorYield',
         hide: false,
         sortable: true,
         filter: false
@@ -234,22 +530,21 @@ export class HistoricalBidComponent implements OnInit {
       this.partInformation = [
         {
           id: this.part.id,
-          subOrder: this.part.id,
-          customer: this.customer.name,
-          rfq: this.part.rfqMedia.projectRfqId,
-          part: this.part.rfqMedia.projectRfqId + '.' + this.part.id,
           fileName: this.part.rfqMedia.media.name,
-          quantity: this.part.quantity,
+          rfq: this.part.rfqMedia.projectRfqId,
           materialPropertyValues: this.part.materialPropertyValues,
           equipmentPropertyValues: this.part.equipmentPropertyValues,
-          roughness: '',
-          postProcess: '',
           price: this.partQuote
             ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
             : this.part.partStatusType.displayName
         }
       ];
     }
+    this.spinner.show('spooler');
+    this.biddingService.getBidHistory().subscribe((v: BidHistory[]) => {
+      this.rowData = v;
+      this.spinner.hide('spooler');
+    });
   }
 
   onGridReady(event) {

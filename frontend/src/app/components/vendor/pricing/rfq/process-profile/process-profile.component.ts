@@ -2,13 +2,7 @@ import { RfqPricingService } from './../../../../../service/rfq-pricing.service'
 import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  TemplateRef,
-  Input
-} from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
@@ -133,6 +127,13 @@ export class ProcessProfileComponent implements OnInit {
     this.navigation = this.router.getCurrentNavigation();
   }
 
+  onPageSizeChange(v) {
+    this.pageSize = v.target.value;
+    if (this.gridOptions.api) {
+      this.gridOptions.api.paginationSetPageSize(this.pageSize);
+    }
+  }
+
   ngOnInit() {
     this.initColumns();
     this.gridOptions = {
@@ -146,9 +147,7 @@ export class ProcessProfileComponent implements OnInit {
       onRowClicked: event => {
         // this.onRowClick(event);
         //console.log('row click', event.data.id);
-        this.router.navigateByUrl(
-          this.router.url + '/process-profile/' + event.data.id
-        );
+        this.router.navigateByUrl(this.router.url + '/process-profile/' + event.data.id);
       }
     };
     this.getProcessProfile();
@@ -210,9 +209,7 @@ export class ProcessProfileComponent implements OnInit {
   async getProcessProfile(q = null) {
     this.spinner.show();
     const res = await this.ordersService
-      .getMatchedProfiles(this.userService.getUserInfo().id, [
-        this.part.rfqMedia.id
-      ])
+      .getMatchedProfiles(this.userService.getUserInfo().id, [this.part.rfqMedia.id])
       .toPromise();
 
     this.rowData = res.map(item => ({
@@ -221,17 +218,13 @@ export class ProcessProfileComponent implements OnInit {
       vendorName: item.vendorProfile.name,
       processProfileName: item.processProfileView.name,
       facilityName:
-        item.processProfileView.processMachineServingMaterialList[0]
-          .machineServingMaterial.vendorMachinery.vendorFacility.name,
-      pricingProfile:
-        item.processPricingViews &&
-        item.processPricingViews.map(v => v.name).join(', '),
-      material: this.getAllMaterials(
-        item.processProfileView.processMachineServingMaterialList
-      ),
+        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
+          .vendorFacility.name,
+      pricingProfile: item.processPricingViews && item.processPricingViews.map(v => v.name).join(', '),
+      material: this.getAllMaterials(item.processProfileView.processMachineServingMaterialList),
       equipment:
-        item.processProfileView.processMachineServingMaterialList[0]
-          .machineServingMaterial.vendorMachinery.equipment.name
+        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment
+          .name
     }));
     this.spinner.hide();
   }
@@ -240,11 +233,7 @@ export class ProcessProfileComponent implements OnInit {
     const arr = [];
     (m || []).map(m => {
       m.machineServingMaterial.material.name;
-      if (
-        m.machineServingMaterial &&
-        m.machineServingMaterial.material &&
-        m.machineServingMaterial.material.name
-      ) {
+      if (m.machineServingMaterial && m.machineServingMaterial.material && m.machineServingMaterial.material.name) {
         arr.push(m.machineServingMaterial.material.name);
       }
     });
@@ -270,9 +259,7 @@ export class ProcessProfileComponent implements OnInit {
 
   searchColumnsChange(columns) {
     columns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
