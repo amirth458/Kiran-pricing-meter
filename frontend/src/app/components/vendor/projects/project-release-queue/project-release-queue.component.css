@@ -1,0 +1,21 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-control {
+  width: 220px;
+  height: 400px;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}

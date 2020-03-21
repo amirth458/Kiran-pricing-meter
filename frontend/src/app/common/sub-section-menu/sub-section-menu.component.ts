@@ -13,7 +13,7 @@ export class SubSectionMenuComponent implements OnInit {
 
   ngOnInit() {
     const urlArray = this.route.url.split('/');
-    if (urlArray.length > 2) {
+    if (urlArray.length > 2 && !this.selectedMenu) {
       this.selectedMenu = `${urlArray[1]}/${urlArray[2]}`;
     }
   }

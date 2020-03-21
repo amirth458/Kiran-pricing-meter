@@ -80,6 +80,11 @@ import { PartItemDetailsComponent } from '../common/part-item-details/part-item-
 import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
 import { SupplierPipe } from '../pipes/supplier.pipe';
 import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/historical-bid.component';
+import { ProjectsContainerComponent } from './vendor/projects/projects-container/projects-container.component';
+import { ProjectReleaseQueueComponent } from './vendor/projects/project-release-queue/project-release-queue.component';
+import { VendorConfirmationQueueComponent } from './vendor/projects/vendor-confirmation-queue/vendor-confirmation-queue.component';
+import { ReleasedProjectsComponent } from './vendor/projects/released-projects/released-projects.component';
+import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +157,12 @@ import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/hist
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
-    HistoricalBidComponent
+    HistoricalBidComponent,
+    ProjectsContainerComponent,
+    ProjectReleaseQueueComponent,
+    VendorConfirmationQueueComponent,
+    ReleasedProjectsComponent,
+    OrderDetailComponent
   ],
   imports: [
     CommonModule,
