@@ -437,10 +437,11 @@ export class HistoricalBidComponent implements OnInit {
       },
       {
         headerName: 'Units',
+        field: 'partOnPlatform',
+        tooltipField: 'partOnPlatform',
         hide: false,
         sortable: true,
-        filter: false,
-        valueFormatter: () => 'mm'
+        filter: false
       },
       {
         headerName: 'X',

@@ -40,6 +40,13 @@ export const environment = {
       icon: 'fas fa-file-invoice-dollar',
       visible: true,
       active: true
+    },
+    {
+      name: 'Projects',
+      route: '/projects',
+      icon: 'fas fa-folder',
+      visible: true,
+      active: true
     }
   ],
   admin_menus: [],

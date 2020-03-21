@@ -214,5 +214,25 @@
       "route": "rejected",
       "actions": []
     }
+  ],
+  "projects": [
+    {
+      "name": "Project Release Queue",
+      "tooltipMessage": "Project Release Queue",
+      "route": "project-release-queue",
+      "actions": []
+    },
+    {
+      "name": "Vendor Confirmation Queue",
+      "tooltipMessage": "Vendor Confirmation Queue",
+      "route": "vendor-confirmation-queue",
+      "actions": []
+    },
+    {
+      "name": "Released Projects",
+      "tooltipMessage": "Released Projects",
+      "route": "released-projects",
+      "actions": []
+    }
   ]
 }

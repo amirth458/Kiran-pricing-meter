@@ -66,29 +66,50 @@ export class PaymentDetails {
 }
 
 export class BidHistory {
-  'bidNumber': number;
-  'rfq': number;
-  'rfqName': string;
-  'vendor': string;
-  'fileName': string;
-  'proposedFinish': string;
-  'partsOnPlatform': number;
-  'proposedSpecsAndTolerances': number;
-  'newEquipmentNumber': number;
-  'newMaterialNumber': number;
-  'bulidBoxVolumeMm3': number;
-  'bulidBoxVolumeCm3': number;
-  'volumeMm3': number;
-  'volumeCm3': number;
-  'areaMm2': number;
-  'areaCm2': number;
-  'vendorTotalBidAmount': number;
-  'vendorLaborAndMaterial': number;
-  'impliedProductionAndDeliveryWindow': number;
-  'taxes': number;
-  'shipping': number;
-  'vendorYield': number;
-  'xmm': number;
-  'zmm': number;
-  'ymm': number;
+  bidNumber: number;
+  rfq: number;
+  rfqName: string;
+  vendor: string;
+  fileName: string;
+  proposedFinish: string;
+  partsOnPlatform: number;
+  proposedSpecsAndTolerances: number;
+  newEquipmentNumber: number;
+  newMaterialNumber: number;
+  bulidBoxVolumeMm3: number;
+  bulidBoxVolumeCm3: number;
+  volumeMm3: number;
+  volumeCm3: number;
+  areaMm2: number;
+  areaCm2: number;
+  vendorTotalBidAmount: number;
+  vendorLaborAndMaterial: number;
+  impliedProductionAndDeliveryWindow: number;
+  taxes: number;
+  shipping: number;
+  vendorYield: number;
+  xmm: number;
+  zmm: number;
+  ymm: number;
+}
+
+export class LegacyBidHistory {
+  vendor: string;
+  rfqNumber: number;
+  bidNumber: number;
+  fileName: string;
+  proposedFinish: string;
+  impliedProductionAndDeliveryWindow: number;
+  target_delivery_date: number;
+  partOnPlatform: number;
+  x: number;
+  y: number;
+  z: number;
+  surfaceArea: number;
+  vendorTotalBidAmount: number;
+  vendorLaborAndMaterial: number;
+  taxes: number;
+  shipping: number;
+  vendorYield: number;
+  isLegacy: boolean;
 }
