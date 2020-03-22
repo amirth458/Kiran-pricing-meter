@@ -77,7 +77,7 @@ export class PriceDetailComponent implements OnInit {
         id: 3,
         title: 'Pricing Profile'
       },
-      {
+      this.part.manualPricingAllowed && {
         id: 4,
         title: 'Historical Bid'
       }
