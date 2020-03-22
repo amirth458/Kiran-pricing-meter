@@ -34,6 +34,11 @@ import { BillingContainerComponent } from 'src/app/components/vendor/billing/bil
 import { PaymentContainerComponent } from 'src/app/components/vendor/billing/payment-container/payment-container.component';
 import { WaitingForApprovalComponent } from 'src/app/components/vendor/billing/waiting-for-approval/waiting-for-approval.component';
 import { PurchaseOrderItemComponent } from 'src/app/components/vendor/billing/purchase-order-item/purchase-order-item.component';
+import { VendorConfirmationQueueComponent } from 'src/app/components/vendor/projects/vendor-confirmation-queue/vendor-confirmation-queue.component';
+import { ProjectReleaseQueueComponent } from 'src/app/components/vendor/projects/project-release-queue/project-release-queue.component';
+import { ProjectsContainerComponent } from 'src/app/components/vendor/projects/projects-container/projects-container.component';
+import { ReleasedProjectsComponent } from 'src/app/components/vendor/projects/released-projects/released-projects.component';
+import { OrderDetailComponent } from 'src/app/components/vendor/projects/order-detail/order-detail.component';
 
 const routes: Routes = [
   {
@@ -188,6 +193,40 @@ const routes: Routes = [
           },
           { path: '', redirectTo: 'payment', pathMatch: 'full' },
           { path: '**', redirectTo: 'payment', pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'projects',
+        component: ProjectsContainerComponent,
+        children: [
+          {
+            path: 'project-release-queue',
+            component: ProjectReleaseQueueComponent
+          },
+          {
+            path: 'project-release-queue/:id',
+            component: OrderDetailComponent
+          },
+          {
+            path: 'vendor-confirmation-queue',
+            component: VendorConfirmationQueueComponent
+          },
+          {
+            path: 'vendor-confirmation-queue/:id',
+            component: OrderDetailComponent
+          },
+          {
+            path: 'released-projects',
+            component: ReleasedProjectsComponent
+          },
+          {
+            path: 'released-projects/:id',
+            component: OrderDetailComponent
+          },
+          {
+            path: '',
+            redirectTo: 'project-release-queue'
+          }
         ]
       },
       { path: '', redirectTo: 'marketplace', pathMatch: 'full' }

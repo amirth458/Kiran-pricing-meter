@@ -13,7 +13,7 @@
     <div class="col d-flex flex-row justify-content-end align-items-center p-0">
       <label class="m-0 page-size">
         Page Size:
-        <select id="page-size">
+        <select id="page-size" (change)="onPageSizeChange($event)">
           <option selected value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>

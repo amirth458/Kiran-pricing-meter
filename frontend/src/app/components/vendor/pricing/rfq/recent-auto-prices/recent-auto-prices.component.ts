@@ -9,7 +9,9 @@ import { CustomerService } from './../../../../../service/customer.service';
 import { FileViewRendererComponent } from './../../../../../common/file-view-renderer/file-view-renderer.component';
 import { RfqPricingService } from './../../../../../service/rfq-pricing.service';
 import { Pageable } from './../../../../../model/pageable.model';
-import { Part } from './../../../../../model/part.model';
+import { Part, AppPartStatus } from './../../../../../model/part.model';
+import { ToastrService } from 'ngx-toastr';
+import { PartService } from 'src/app/service/part.service';
 
 @Component({
   selector: 'app-recent-auto-prices',
@@ -17,6 +19,7 @@ import { Part } from './../../../../../model/part.model';
   styleUrls: ['./recent-auto-prices.component.css']
 })
 export class RecentAutoPricesComponent implements OnInit {
+  autoQuotedIds = [];
   columnDefs = [];
   gridOptions: GridOptions;
   rowData: any[] = [];
@@ -32,7 +35,9 @@ export class RecentAutoPricesComponent implements OnInit {
     public pricingService: RfqPricingService,
     public router: Router,
     public customerService: CustomerService,
-    public currencyPipe: CurrencyPipe
+    public currencyPipe: CurrencyPipe,
+    public toast: ToastrService,
+    public partService: PartService
   ) {}
 
   ngOnInit() {
@@ -138,7 +143,21 @@ export class RecentAutoPricesComponent implements OnInit {
         this.router.navigateByUrl(`${this.router.url}/${event.data.id}`);
       }
     };
-    this.getRows();
+
+    this.partService.getPartStatusType().subscribe(
+      res => {
+        res.map(item => {
+          if (item.name === AppPartStatus.AUTO_QUOTED) {
+            this.autoQuotedIds.push(item.id);
+          }
+        });
+        this.getRows();
+      },
+      err => {
+        console.log({ err });
+        this.toast.error('Error occured while fetching part status');
+      }
+    );
   }
 
   async getRows(q = null) {
@@ -148,12 +167,15 @@ export class RecentAutoPricesComponent implements OnInit {
     try {
       while (true) {
         const res: Pageable<Part> = await this.pricingService
-          .getRecentAutoPrices({
-            page,
-            size: 1000,
-            sort: 'id,ASC',
-            q
-          })
+          .getRecentAutoPrices(
+            {
+              page,
+              size: 1000,
+              sort: 'id,ASC',
+              q
+            },
+            this.autoQuotedIds
+          )
           .toPromise();
 
         if (!res.content) {
@@ -180,25 +202,16 @@ export class RecentAutoPricesComponent implements OnInit {
       }
       this.rowData = rows;
 
-      this.pricingService
-        .getPartQuotes(rows.map(item => item.id))
-        .subscribe(partQuotes => {
-          partQuotes.forEach(partQuote => {
-            const findIndex = this.rowData.findIndex(
-              row => row.id === partQuote.partId
-            );
-            this.rowData[findIndex] = {
-              ...this.rowData[findIndex],
-              price: this.currencyPipe.transform(
-                partQuote.totalCost,
-                'USD',
-                'symbol',
-                '0.0-3'
-              )
-            };
-          });
-          this.rowData = [...this.rowData];
+      this.pricingService.getPartQuotes(rows.map(item => item.id)).subscribe(partQuotes => {
+        partQuotes.forEach(partQuote => {
+          const findIndex = this.rowData.findIndex(row => row.id === partQuote.partId);
+          this.rowData[findIndex] = {
+            ...this.rowData[findIndex],
+            price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
+          };
         });
+        this.rowData = [...this.rowData];
+      });
     } catch (e) {
       console.log(e);
     } finally {

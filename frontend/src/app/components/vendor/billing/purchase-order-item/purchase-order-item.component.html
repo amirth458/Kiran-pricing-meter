@@ -111,7 +111,7 @@
         <div class="col-12 shadow">
           <h4 class="text-center text-theme-green  w-100 mt-2 mb-2">Notes</h4>
         </div>
-        <div class="col-12 d-flex flex-column-reverse notes-body">
+        <div class="col-12 d-flex flex-column-reverse notes-body" [ngClass]="{ small: messageList.length == 0 }">
           <div
             *ngFor="let message of messageList; let index = index"
             class="message"
@@ -143,10 +143,10 @@
         </div>
         <div
           *ngIf="orderInfo?.billingInfoView?.paymentStatusType == PaymentStatusTypes.WAITING_FOR_APPROVAL"
-          class="col-12  shadow notes-action pt-3 pb-3"
+          class="col-12  shadow notes-action pt-1 pb-3"
         >
           <div class="col-12 comment">
-            <label class="font-weight-bold">Notes</label>
+            <!-- <label class="font-weight-bold m-0">Notes</label> -->
 
             <div [formGroup]="chatForm" class="col-12 m-0 p-1 row align-items-center">
               <textarea formControlName="note" class="form-control"></textarea>
@@ -176,7 +176,7 @@
         Parts
         <span (click)="open(partDetailsModal, 'xl')" class="ml-4 part-detail-toggle">See More Details</span>
       </h5>
-      <div class="row justify-content-between part-list">
+      <div class="row justify-content-between part-list" [ngClass]="{ small: messageList.length === 0 }">
         <div *ngFor="let item of orderInfo?.customerOrder?.partList" class="col-5 part-item mt-2">
           <p class="part-name">Part {{ item?.rfqMedia?.id }}.{{ item?.id }}</p>
 

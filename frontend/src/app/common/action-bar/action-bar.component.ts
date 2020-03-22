@@ -1,11 +1,5 @@
 import { ActionService } from './../../service/action.service';
-import {
-  Component,
-  OnInit,
-  Input,
-  SimpleChanges,
-  OnChanges
-} from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { EventEmitterService } from 'src/app/components/event-emitter.service';
 
@@ -47,6 +41,9 @@ export class ActionBarComponent implements OnInit, OnChanges {
             });
           }
         }
+        if (routeArray[1] === 'projects') {
+          this.baseURL = 'projects';
+        }
       }
     });
   }
@@ -82,9 +79,7 @@ export class ActionBarComponent implements OnInit, OnChanges {
     if (urlArray[1] === 'marketplace') {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
     } else if (urlArray.length > 6) {
-      this.route.navigateByUrl(
-        `/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}/${urlArray[4]}`
-      );
+      this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}/${urlArray[4]}`);
     } else {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
     }
