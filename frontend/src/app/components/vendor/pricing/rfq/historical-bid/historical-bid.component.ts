@@ -5,7 +5,7 @@ import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { CurrencyPipe } from '@angular/common';
 import { BiddingService } from 'src/app/service/bidding.service';
-import { BidHistory } from 'src/app/model/billing.model';
+import { LegacyBidHistory } from 'src/app/model/billing.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -28,55 +28,78 @@ export class HistoricalBidComponent implements OnInit {
 
   columnDefs = [];
   gridOptions: GridOptions;
-  rowData: BidHistory[] = [];
+  rowData: LegacyBidHistory[] = [];
 
   type = ['search', 'filter'];
 
   searchColumns = [
     {
-      name: 'RFQ',
-      field: 'rfqName',
-      tooltipField: 'rfqName',
-      checked: false,
+      name: 'Vendor',
+      field: 'vendor',
+      tooltipField: 'vendor',
       query: {
         type: '',
         filter: ''
       }
     },
     {
-      name: 'Bid',
+      name: 'RFQ Number',
+      field: 'rfqNumber',
+      tooltipField: 'rfqNumber',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Bid Number',
       field: 'bidNumber',
       tooltipField: 'bidNumber',
-      checked: false,
       query: {
         type: '',
         filter: ''
       }
     },
     {
-      name: 'Files',
+      name: 'File Name',
       field: 'fileName',
       tooltipField: 'fileName',
-      checked: false,
       query: {
         type: '',
         filter: ''
       }
     },
     {
-      name: 'Finish',
+      name: 'Proposed Finish',
       field: 'proposedFinish',
       tooltipField: 'proposedFinish',
-      checked: false,
       query: {
         type: '',
         filter: ''
       }
     },
     {
-      name: 'Delivery',
+      name: 'Specs And Tolerance',
+      field: 'specsAndTolerance',
+      tooltipField: 'specsAndTolerance',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Implied Production And Delivery Window',
       field: 'impliedProductionAndDeliveryWindow',
       tooltipField: 'impliedProductionAndDeliveryWindow',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Target Delivery Date',
+      field: 'target_delivery_date',
+      tooltipField: 'target_delivery_date',
       checked: false,
       query: {
         type: '',
@@ -84,7 +107,9 @@ export class HistoricalBidComponent implements OnInit {
       }
     },
     {
-      name: 'Units',
+      name: 'Part On Platform',
+      field: 'partOnPlatform',
+      tooltipField: 'partOnPlatform',
       checked: false,
       query: {
         type: '',
@@ -93,8 +118,8 @@ export class HistoricalBidComponent implements OnInit {
     },
     {
       name: 'X',
-      field: 'xmm',
-      tooltipField: 'xmm',
+      field: 'x',
+      tooltipField: 'x',
       checked: false,
       query: {
         type: '',
@@ -103,8 +128,8 @@ export class HistoricalBidComponent implements OnInit {
     },
     {
       name: 'Y',
-      field: 'ymm',
-      tooltipField: 'ymm',
+      field: 'y',
+      tooltipField: 'y',
       checked: false,
       query: {
         type: '',
@@ -113,8 +138,8 @@ export class HistoricalBidComponent implements OnInit {
     },
     {
       name: 'Z',
-      field: 'zmm',
-      tooltipField: 'zmm',
+      field: 'z',
+      tooltipField: 'z',
       checked: false,
       query: {
         type: '',
@@ -122,9 +147,9 @@ export class HistoricalBidComponent implements OnInit {
       }
     },
     {
-      name: 'Vol',
-      field: 'volumeMm3',
-      tooltipField: 'volumeMm3',
+      name: 'Volume',
+      field: 'volume',
+      tooltipField: 'volume',
       checked: false,
       query: {
         type: '',
@@ -132,9 +157,9 @@ export class HistoricalBidComponent implements OnInit {
       }
     },
     {
-      name: 'SA',
-      field: 'areaMm2',
-      tooltipField: 'areaMm2',
+      name: 'Surface Area',
+      field: 'surfaceArea',
+      tooltipField: 'surfaceArea',
       checked: false,
       query: {
         type: '',
@@ -182,7 +207,7 @@ export class HistoricalBidComponent implements OnInit {
       }
     },
     {
-      name: 'VendorShare',
+      name: 'Vendor Yield',
       field: 'vendorYield',
       tooltipField: 'vendorYield',
       checked: false,
@@ -194,67 +219,87 @@ export class HistoricalBidComponent implements OnInit {
   ];
   filterColumns = [
     {
-      name: 'RFQ',
-      field: 'rfqName',
-      tooltipField: 'rfqName',
+      name: 'Vendor',
+      field: 'vendor',
+      tooltipField: 'vendor',
       checked: true
     },
     {
-      name: 'Bid',
+      name: 'RFQ Number',
+      field: 'rfqNumber',
+      tooltipField: 'rfqNumber',
+      checked: true
+    },
+    {
+      name: 'Bid Number',
       field: 'bidNumber',
       tooltipField: 'bidNumber',
       checked: true
     },
     {
-      name: 'Files',
+      name: 'File Name',
       field: 'fileName',
       tooltipField: 'fileName',
       checked: true
     },
     {
-      name: 'Finish',
+      name: 'Proposed Finish',
       field: 'proposedFinish',
       tooltipField: 'proposedFinish',
       checked: true
     },
     {
-      name: 'Delivery',
+      name: 'Specs And Tolerance',
+      field: 'specsAndTolerance',
+      tooltipField: 'specsAndTolerance',
+      checked: true
+    },
+    {
+      name: 'Implied Production And Delivery Window',
       field: 'impliedProductionAndDeliveryWindow',
       tooltipField: 'impliedProductionAndDeliveryWindow',
       checked: true
     },
     {
-      name: 'Units',
+      name: 'Target Delivery Date',
+      field: 'target_delivery_date',
+      tooltipField: 'target_delivery_date',
+      checked: true
+    },
+    {
+      name: 'Part On Platform',
+      field: 'partOnPlatform',
+      tooltipField: 'partOnPlatform',
       checked: true
     },
     {
       name: 'X',
-      field: 'xmm',
-      tooltipField: 'xmm',
+      field: 'x',
+      tooltipField: 'x',
       checked: true
     },
     {
       name: 'Y',
-      field: 'ymm',
-      tooltipField: 'ymm',
+      field: 'y',
+      tooltipField: 'y',
       checked: true
     },
     {
       name: 'Z',
-      field: 'zmm',
-      tooltipField: 'zmm',
+      field: 'z',
+      tooltipField: 'z',
       checked: true
     },
     {
-      name: 'Vol',
-      field: 'volumeMm3',
-      tooltipField: 'volumeMm3',
+      name: 'Volume',
+      field: 'volume',
+      tooltipField: 'volume',
       checked: true
     },
     {
-      name: 'SA',
-      field: 'areaMm2',
-      tooltipField: 'areaMm2',
+      name: 'Surface Area',
+      field: 'surfaceArea',
+      tooltipField: 'surfaceArea',
       checked: true
     },
     {
@@ -282,7 +327,7 @@ export class HistoricalBidComponent implements OnInit {
       checked: true
     },
     {
-      name: 'VendorShare',
+      name: 'Vendor Yield',
       field: 'vendorYield',
       tooltipField: 'vendorYield',
       checked: true
@@ -396,15 +441,23 @@ export class HistoricalBidComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
-        headerName: 'RFQ',
-        field: 'rfqName',
-        tooltipField: 'rfqName',
+        headerName: 'Vendor',
+        field: 'vendor',
+        tooltipField: 'vendor',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Bid',
+        headerName: 'RFQ Number',
+        field: 'rfqNumber',
+        tooltipField: 'rfqNumber',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Bid Number',
         field: 'bidNumber',
         tooltipField: 'bidNumber',
         hide: false,
@@ -412,7 +465,7 @@ export class HistoricalBidComponent implements OnInit {
         filter: false
       },
       {
-        headerName: 'Files',
+        headerName: 'File Name',
         field: 'fileName',
         tooltipField: 'fileName',
         hide: false,
@@ -420,7 +473,7 @@ export class HistoricalBidComponent implements OnInit {
         filter: false
       },
       {
-        headerName: 'Finish',
+        headerName: 'Proposed Finish',
         field: 'proposedFinish',
         tooltipField: 'proposedFinish',
         hide: false,
@@ -428,7 +481,15 @@ export class HistoricalBidComponent implements OnInit {
         filter: false
       },
       {
-        headerName: 'Delivery',
+        headerName: 'Specs And Tolerance',
+        field: 'specsAndTolerance',
+        tooltipField: 'specsAndTolerance',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Implied Production And Delivery Window',
         field: 'impliedProductionAndDeliveryWindow',
         tooltipField: 'impliedProductionAndDeliveryWindow',
         hide: false,
@@ -436,7 +497,15 @@ export class HistoricalBidComponent implements OnInit {
         filter: false
       },
       {
-        headerName: 'Units',
+        headerName: 'Target Delivery Date',
+        field: 'target_delivery_date',
+        tooltipField: 'target_delivery_date',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Part On Platform',
         field: 'partOnPlatform',
         tooltipField: 'partOnPlatform',
         hide: false,
@@ -445,40 +514,40 @@ export class HistoricalBidComponent implements OnInit {
       },
       {
         headerName: 'X',
-        field: 'xmm',
-        tooltipField: 'xmm',
+        field: 'x',
+        tooltipField: 'x',
         hide: false,
         sortable: true,
         filter: false
       },
       {
         headerName: 'Y',
-        field: 'ymm',
-        tooltipField: 'ymm',
+        field: 'y',
+        tooltipField: 'y',
         hide: false,
         sortable: true,
         filter: false
       },
       {
         headerName: 'Z',
-        field: 'zmm',
-        tooltipField: 'zmm',
+        field: 'z',
+        tooltipField: 'z',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Vol',
-        field: 'volumeMm3',
-        tooltipField: 'volumeMm3',
+        headerName: 'Volume',
+        field: 'volume',
+        tooltipField: 'volume',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'SA',
-        field: 'areaMm2',
-        tooltipField: 'areaMm2',
+        headerName: 'Surface Area',
+        field: 'surfaceArea',
+        tooltipField: 'surfaceArea',
         hide: false,
         sortable: true,
         filter: false
@@ -516,7 +585,7 @@ export class HistoricalBidComponent implements OnInit {
         filter: false
       },
       {
-        headerName: 'VendorShare',
+        headerName: 'Vendor Yield',
         field: 'vendorYield',
         tooltipField: 'vendorYield',
         hide: false,
@@ -542,7 +611,7 @@ export class HistoricalBidComponent implements OnInit {
       ];
     }
     this.spinner.show('spooler');
-    this.biddingService.getBidHistory().subscribe((v: BidHistory[]) => {
+    this.biddingService.getBidHistory(this.part.id).subscribe((v: LegacyBidHistory[]) => {
       this.rowData = v;
       this.spinner.hide('spooler');
     });

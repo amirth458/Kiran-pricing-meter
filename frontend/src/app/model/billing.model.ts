@@ -99,12 +99,14 @@ export class LegacyBidHistory {
   bidNumber: number;
   fileName: string;
   proposedFinish: string;
+  specsAndTolerance: number;
   impliedProductionAndDeliveryWindow: number;
   target_delivery_date: number;
   partOnPlatform: number;
   x: number;
   y: number;
   z: number;
+  volume: number;
   surfaceArea: number;
   vendorTotalBidAmount: number;
   vendorLaborAndMaterial: number;
