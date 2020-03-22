@@ -411,6 +411,7 @@ export class PricingProfileComponent implements OnInit {
               row.totalCost = v[row.id].totalCost;
             }
           });
+          this.gridOptions.api.setRowData(this.rowData || []);
           this.gridOptions.columnApi.setColumnVisible('totalCost', true);
           this.gridOptions.api.sizeColumnsToFit();
         }
