@@ -396,6 +396,10 @@ export class PricingProfileComponent implements OnInit {
 
   showPartQuotePricingInfo() {
     this.spinner.show('spooler');
+    if (!this.selected$.getValue()) {
+      (this.rowData || []).map(row => (row.selected = true));
+      this.gridOptions.api.setRowData(this.rowData || []);
+    }
     this.pricingService
       .getPartQuoteByPricingIds(
         this.part.id,
@@ -409,6 +413,8 @@ export class PricingProfileComponent implements OnInit {
           (this.rowData || []).map(row => {
             if (v[row.id]) {
               row.totalCost = v[row.id].totalCost;
+            } else {
+              row.totalCost = null;
             }
           });
           this.gridOptions.api.setRowData(this.rowData || []);
@@ -426,6 +432,7 @@ export class PricingProfileComponent implements OnInit {
       row.selected = false;
     });
     this.valueChange();
+    this.gridOptions.api.setRowData(this.rowData || []);
     this.gridOptions.api.sizeColumnsToFit();
   }
 
