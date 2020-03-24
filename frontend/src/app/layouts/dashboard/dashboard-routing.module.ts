@@ -39,6 +39,7 @@ import { ProjectReleaseQueueComponent } from 'src/app/components/vendor/projects
 import { ProjectsContainerComponent } from 'src/app/components/vendor/projects/projects-container/projects-container.component';
 import { ReleasedProjectsComponent } from 'src/app/components/vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from 'src/app/components/vendor/projects/order-detail/order-detail.component';
+import { CustomersComponent } from 'src/app/components/admin/customers/customers.component';
 
 const routes: Routes = [
   {
@@ -159,6 +160,10 @@ const routes: Routes = [
               { path: 'vendor', component: AdminVendorDetailsVendorComponent },
               { path: 'machine', component: AdminVendorDetailsMachineComponent }
             ]
+          },
+          {
+            path: 'customers',
+            component: CustomersComponent
           },
           { path: '', pathMatch: 'full', redirectTo: 'approve-vendor' },
           { path: '**', pathMatch: 'full', redirectTo: 'approve-vendor' }
