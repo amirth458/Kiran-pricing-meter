@@ -85,6 +85,7 @@ import { ProjectReleaseQueueComponent } from './vendor/projects/project-release-
 import { VendorConfirmationQueueComponent } from './vendor/projects/vendor-confirmation-queue/vendor-confirmation-queue.component';
 import { ReleasedProjectsComponent } from './vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
+import { CustomersComponent } from './admin/customers/customers.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +163,8 @@ import { OrderDetailComponent } from './vendor/projects/order-detail/order-detai
     ProjectReleaseQueueComponent,
     VendorConfirmationQueueComponent,
     ReleasedProjectsComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    CustomersComponent
   ],
   imports: [
     CommonModule,

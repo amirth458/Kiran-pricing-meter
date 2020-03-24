@@ -33,6 +33,7 @@
   --theme-tab-border: #dee2e6;
   --theme-text-color: #4a6077;
   --theme-bright-blue: #0e6dcb;
+  --theme-purple: #706cd8;
 }
 
 .bg-dark-blue {
@@ -47,6 +48,10 @@
 
 .text-orange {
   color: var(--theme-orange);
+}
+
+.text-purple {
+  color: var(--theme-purple);
 }
 
 .text-theme-green {
@@ -476,6 +481,7 @@ app-dropdown-cell-renderer {
   background-color: var(--theme-orange) !important;
   margin: 0 15px;
 }
+
 .green-btn {
   color: white;
   background-color: var(--theme-light-green);
@@ -492,6 +498,7 @@ app-dropdown-cell-renderer {
   width: 160px;
   border-radius: 2px;
 }
+
 /*Bidding Confirmation Modal*/
 
 /* breakdown pricing  window */
@@ -509,6 +516,7 @@ app-dropdown-cell-renderer {
   color: var(--them-dark-blue-opaque);
   opacity: 0.5;
 }
+
 /* breakdown pricing  window */
 
 /* Refresh modal window */
@@ -526,6 +534,7 @@ app-dropdown-cell-renderer {
 .refresh-modal .refresh-btn:hover {
   color: var(--theme-light-blue);
 }
+
 /* Refresh modal window */
 
 .approved {

@@ -27,6 +27,6 @@ export class PricingContainerComponent implements OnInit {
         route: this.baseURL + '/orders'
       }
     ];
-    this.selectedSubmenu = this.baseURL + 'rfq';
+    this.selectedSubmenu = this.baseURL + '/rfq';
   }
 }

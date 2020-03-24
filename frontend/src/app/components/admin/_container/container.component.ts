@@ -22,8 +22,12 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.submenus = [
       {
-        name: 'View Vendors',
+        name: 'Vendors',
         route: this.baseURL + '/approve-vendor'
+      },
+      {
+        name: 'Customers',
+        route: this.baseURL + '/customers'
       }
     ];
 
