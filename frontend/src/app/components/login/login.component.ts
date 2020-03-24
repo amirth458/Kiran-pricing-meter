@@ -79,11 +79,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this.spineer.show();
 
     this.authService
-      .login(
-        this.userForm.value.email,
-        this.userForm.value.password,
-        this.userForm.value.recaptchaReactive
-      )
+      .login(this.userForm.value.email, this.userForm.value.password, this.userForm.value.recaptchaReactive)
       .subscribe(
         (res: any) => {
           if (!res.roles.includes('ROLE_3DILIGENT_ADMIN')) {
@@ -98,10 +94,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
           if (this.userForm.value.remember_me) {
             localStorage.setItem('admin-remember_me', '1');
             localStorage.setItem('admin-email', this.userForm.value.email);
-            localStorage.setItem(
-              'admin-password',
-              this.userForm.value.password
-            );
+            localStorage.setItem('admin-password', this.userForm.value.password);
           }
 
           // this.store.dispatch({
@@ -124,23 +117,26 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   }
 
   loginErrorHandler(error) {
-    switch (error.status) {
-      case 404:
-        this.errorMessage = 'Authentication service does not exist.';
-        break;
-      case 401:
-        this.errorMessage = 'Login credentials is incorrect.';
-        break;
-      case 403:
-        this.errorMessage =
-          'Access failed. Please contact 3Diligent for support.';
-        break;
-      case 500:
-        this.errorMessage = 'Error on Server';
-        break;
-      default:
-        this.errorMessage = 'Error on Server';
-        break;
+    if ((error.error.message || '').indexOf('User account is locked') > -1) {
+      this.errorMessage = 'User account is locked. Please try again after 30 minutes or contact administrator';
+    } else {
+      switch (error.status) {
+        case 404:
+          this.errorMessage = 'Authentication service does not exist.';
+          break;
+        case 401:
+          this.errorMessage = 'Login credentials is incorrect.';
+          break;
+        case 403:
+          this.errorMessage = 'Access failed. Please contact 3Diligent for support.';
+          break;
+        case 500:
+          this.errorMessage = 'Error on Server';
+          break;
+        default:
+          this.errorMessage = 'Error on Server';
+          break;
+      }
     }
   }
 }
