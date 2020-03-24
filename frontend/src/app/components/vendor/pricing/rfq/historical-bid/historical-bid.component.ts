@@ -26,6 +26,8 @@ export class HistoricalBidComponent implements OnInit {
     fileViewRenderer: FileViewRendererComponent
   };
 
+  pageSize = 10;
+
   columnDefs = [];
   gridOptions: GridOptions;
   rowData: LegacyBidHistory[] = [];
@@ -402,6 +404,8 @@ export class HistoricalBidComponent implements OnInit {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       enableColResize: true,
+      pagination: true,
+      paginationPageSize: this.pageSize,
       rowHeight: 35,
       headerHeight: 35
     };
@@ -518,7 +522,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'x',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => dt.value + ' (cm)'
       },
       {
         headerName: 'Y',
@@ -526,7 +531,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'y',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => dt.value + ' (cm)'
       },
       {
         headerName: 'Z',
@@ -534,7 +540,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'z',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => dt.value + ' (cm)'
       },
       {
         headerName: 'Volume',
@@ -620,5 +627,10 @@ export class HistoricalBidComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  onPageSizeChange(ev) {
+    this.pageSize = ev.target.value;
+    this.gridOptions.api.paginationSetPageSize(this.pageSize);
   }
 }
