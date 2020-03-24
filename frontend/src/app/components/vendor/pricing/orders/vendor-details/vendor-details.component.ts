@@ -386,6 +386,15 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
+          headerName: 'Vendor Address',
+          valueGetter: params => {
+            return params.data.id
+              ? `${params.data.vendorProfile.street1 || ''}, ${params.data.vendorProfile.city || ''} ${params.data
+                  .vendorProfile.state || ''}, ${params.data.vendorProfile.country.name || ''}`
+              : '';
+          }
+        },
+        {
           headerName: 'Pricing Profile',
           field: 'pricingProfile',
           tooltipField: 'pricingProfile',
