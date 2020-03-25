@@ -167,6 +167,13 @@ export class CustomersComponent implements OnInit {
         filter: false
       },
       {
+        headerName: 'Company Name',
+        field: 'companyName',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Company Division',
         field: 'companyDivision',
         hide: false,
