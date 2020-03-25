@@ -37,8 +37,8 @@
 <ng-template #actionControl let-row>
   <div class="d-flex w-100 h-100 justify-content-between controls">
     <span class="text-theme-green" (click)="onView(row)">View</span>
-    <span class="text-purple" *ngIf="row.locked" (click)="onUnlock(row)">Unlock</span>
-    <span class="text-theme-green" *ngIf="!row.active" (click)="onActivate(row)">Activate</span>
-    <span class="text-orange" *ngIf="row.active" (click)="onDeactivate(row)">Deactivate</span>
+    <span class="text-purple" *ngIf="row.userLocked" (click)="onUnlock(row)">Unlock</span>
+    <span class="text-theme-green" *ngIf="!row.customerActive" (click)="onActivate(row)">Activate</span>
+    <span class="text-orange" *ngIf="row.customerActive" (click)="onDeactivate(row)">Deactivate</span>
   </div>
 </ng-template>

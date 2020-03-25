@@ -6,8 +6,10 @@ import { GridOptions, ColDef } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from 'src/app/service/user.service';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { CustomerService } from 'src/app/service/customer.service';
+import { FilterOption } from 'src/app/model/vendor.model';
+import { Customer } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-customers',
@@ -57,7 +59,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Email Address',
       checked: false,
-      field: 'email',
+      field: 'userEmail',
       query: {
         type: '',
         filter: ''
@@ -102,7 +104,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Email Address',
       checked: true,
-      field: 'email'
+      field: 'userEmail'
     },
     {
       name: 'Country',
@@ -120,12 +122,12 @@ export class CustomersComponent implements OnInit {
 
   gridOptions: GridOptions;
   allUsers = [];
-  rowData = [];
+  rowData: Customer[] = [];
   pageSize = 10;
   navigation;
   constructor(
     private route: Router,
-    private userService: UserService,
+    private customerService: CustomerService,
     private spineer: NgxSpinnerService,
     private toastr: ToastrService
   ) {
@@ -180,7 +182,7 @@ export class CustomersComponent implements OnInit {
       },
       {
         headerName: 'Email Address',
-        field: 'email',
+        field: 'userEmail',
         hide: false,
         sortable: true,
         filter: false
@@ -206,44 +208,56 @@ export class CustomersComponent implements OnInit {
     ];
   }
   getAllUsers() {
-    this.rowData = [
-      {
-        id: 1,
-        customerName: 'Mark Banton',
-        companyName: 'Bravo',
-        companyDivision: 'Medical Equipment',
-        industry: 'PrintCo',
-        email: 'alpha@email.com',
-        country: 'USA',
-        locked: true,
-        active: true
+    this.spineer.show();
+    const filter: FilterOption = { size: 5000, sort: 'id,ASC', page: 0, q: '' };
+
+    this.customerService.getCustomer(filter).subscribe(
+      data => {
+        this.rowData = data;
+        this.spineer.hide();
+      },
+      err => {
+        this.toastr.error('Something went wrong. Please try again.');
+        this.spineer.hide();
       }
-    ];
+    );
   }
 
-  onView(customer) {
+  onView(customer: Customer) {
+    console.log({ customer });
     this.toastr.warning('Feature in Progress');
   }
-  onUnlock(customer) {
-    this.rowData.map((c, index) => {
-      if (c.id == customer.id) {
-        this.rowData[index].locked = false;
+
+  onUnlock(customer: Customer) {
+    this.customerService.unlockCustomer(customer.customerId).subscribe(
+      res => {
+        this.getAllUsers();
+      },
+      err => {
+        this.toastr.error('Unable to perform action');
       }
-    });
+    );
   }
-  onActivate(customer) {
-    this.rowData.map((c, index) => {
-      if (c.id == customer.id) {
-        this.rowData[index].active = true;
+
+  onActivate(customer: Customer) {
+    this.customerService.activateCustomer(customer.customerId).subscribe(
+      res => {
+        this.getAllUsers();
+      },
+      err => {
+        this.toastr.error('Unable to perform action');
       }
-    });
+    );
   }
-  onDeactivate(customer) {
-    this.rowData.map((c, index) => {
-      if (c.id == customer.id) {
-        this.rowData[index].active = false;
+  onDeactivate(customer: Customer) {
+    this.customerService.deactivateCustomer(customer.customerId).subscribe(
+      res => {
+        this.getAllUsers();
+      },
+      err => {
+        this.toastr.error('Unable to perform action');
       }
-    });
+    );
   }
 
   configureColumnDefs() {
