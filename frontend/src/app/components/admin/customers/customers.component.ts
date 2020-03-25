@@ -97,11 +97,6 @@ export class CustomersComponent implements OnInit {
       field: 'industry'
     },
     {
-      name: 'Company Name',
-      checked: true,
-      field: 'companyName'
-    },
-    {
       name: 'Email Address',
       checked: true,
       field: 'userEmail'
