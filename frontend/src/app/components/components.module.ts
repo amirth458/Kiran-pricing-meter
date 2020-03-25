@@ -81,15 +81,13 @@ import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
 import { SupplierPipe } from '../pipes/supplier.pipe';
 import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/historical-bid.component';
 import { ProjectsContainerComponent } from './vendor/projects/projects-container/projects-container.component';
-import { ProjectReleaseQueueComponent } from './vendor/projects/project-release-queue/project-release-queue.component';
-import { VendorConfirmationQueueComponent } from './vendor/projects/vendor-confirmation-queue/vendor-confirmation-queue.component';
-import { ReleasedProjectsComponent } from './vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
 import { CustomersComponent } from './admin/customers/customers.component';
 import { CustomerViewComponent } from './admin/customer-view/customer-view.component';
 import { PasswordComponent } from './admin/password/password.component';
 import { ShippingComponent } from './admin/shipping/shipping.component';
 import { ContactComponent } from './admin/contact/contact.component';
+import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 
 @NgModule({
   declarations: [
@@ -164,15 +162,13 @@ import { ContactComponent } from './admin/contact/contact.component';
     SupplierPipe,
     HistoricalBidComponent,
     ProjectsContainerComponent,
-    ProjectReleaseQueueComponent,
-    VendorConfirmationQueueComponent,
-    ReleasedProjectsComponent,
     OrderDetailComponent,
     CustomersComponent,
     CustomerViewComponent,
     PasswordComponent,
     ShippingComponent,
-    ContactComponent
+    ContactComponent,
+    ProjectsListComponent
   ],
   imports: [
     CommonModule,

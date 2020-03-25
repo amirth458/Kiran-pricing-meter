@@ -26,7 +26,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
 
-import { MarketplaceContainerComponent } from 'src/app/components/vendor/marketplace/marketplace-container/marketplace-container.component';
 import { ReferralContainerComponent } from './../../components/vendor/marketplace/referral/referral-container/referral-container.component';
 import { ReferralComponent } from './../../components/vendor/marketplace/referral/referral/referral.component';
 import { ProcessProfileDetailComponent } from 'src/app/components/vendor/pricing/rfq/process-profile-detail/process-profile-detail.component';
@@ -34,16 +33,14 @@ import { BillingContainerComponent } from 'src/app/components/vendor/billing/bil
 import { PaymentContainerComponent } from 'src/app/components/vendor/billing/payment-container/payment-container.component';
 import { WaitingForApprovalComponent } from 'src/app/components/vendor/billing/waiting-for-approval/waiting-for-approval.component';
 import { PurchaseOrderItemComponent } from 'src/app/components/vendor/billing/purchase-order-item/purchase-order-item.component';
-import { VendorConfirmationQueueComponent } from 'src/app/components/vendor/projects/vendor-confirmation-queue/vendor-confirmation-queue.component';
-import { ProjectReleaseQueueComponent } from 'src/app/components/vendor/projects/project-release-queue/project-release-queue.component';
 import { ProjectsContainerComponent } from 'src/app/components/vendor/projects/projects-container/projects-container.component';
-import { ReleasedProjectsComponent } from 'src/app/components/vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from 'src/app/components/vendor/projects/order-detail/order-detail.component';
 import { CustomersComponent } from 'src/app/components/admin/customers/customers.component';
 import { CustomerViewComponent } from 'src/app/components/admin/customer-view/customer-view.component';
 import { ContactComponent } from 'src/app/components/admin/contact/contact.component';
 import { PasswordComponent } from 'src/app/components/admin/password/password.component';
 import { ShippingComponent } from 'src/app/components/admin/shipping/shipping.component';
+import { ProjectsListComponent } from 'src/app/components/vendor/projects/projects-list/projects-list.component';
 
 const routes: Routes = [
   {
@@ -221,7 +218,7 @@ const routes: Routes = [
         children: [
           {
             path: 'project-release-queue',
-            component: ProjectReleaseQueueComponent
+            component: ProjectsListComponent
           },
           {
             path: 'project-release-queue/:id',
@@ -229,7 +226,7 @@ const routes: Routes = [
           },
           {
             path: 'vendor-confirmation-queue',
-            component: VendorConfirmationQueueComponent
+            component: ProjectsListComponent
           },
           {
             path: 'vendor-confirmation-queue/:id',
@@ -237,7 +234,7 @@ const routes: Routes = [
           },
           {
             path: 'released-projects',
-            component: ReleasedProjectsComponent
+            component: ProjectsListComponent
           },
           {
             path: 'released-projects/:id',
