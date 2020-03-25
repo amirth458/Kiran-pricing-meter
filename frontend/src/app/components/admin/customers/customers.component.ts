@@ -225,7 +225,7 @@ export class CustomersComponent implements OnInit {
 
   onView(customer: Customer) {
     console.log({ customer });
-    this.toastr.warning('Feature in Progress');
+    this.route.navigateByUrl('/user-manage/view/user');
   }
 
   onUnlock(customer: Customer) {

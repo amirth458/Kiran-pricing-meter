@@ -1,0 +1,127 @@
+<div class="wrapper shadow">
+  <form [formGroup]="shippingForm" class="needs-validation">
+    <p class="title">Main Address</p>
+    <div class="form-container p-4" formGroupName="mainAddress">
+      <div class="form-row">
+        <div class="padding"></div>
+        <div class="form-group theme flex-grow-1">
+          <label>Address</label>
+          <input
+            required
+            (change)="onChange()"
+            formArrayName="address"
+            formControlName="address"
+            class="form-control"
+            placeholder="Address"
+          />
+          <span *ngIf="showRequired('address')" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>City</label>
+          <input required (change)="onChange()" formControlName="city" class="form-control" placeholder="City" />
+          <span *ngIf="showRequired('city')" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>State/Territory/Region</label>
+          <input
+            required
+            (change)="onChange()"
+            formControlName="state"
+            class="form-control"
+            placeholder="State/Territory/Region"
+          />
+          <span *ngIf="showRequired('state')" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Zip</label>
+          <input required (change)="onChange()" formControlName="zipcode" class="form-control" placeholder="Zip Code" />
+          <span *ngIf="showRequired('zipcode')" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Country</label>
+          <select required (change)="onChange()" formControlName="country" class="form-control">
+            <option selected value="">Choose...</option>
+            <option *ngFor="let item of countries" [value]="item.id">{{ item.name }}</option>
+          </select>
+          <span *ngIf="showRequired('country')" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Address Type</label>
+          <select required (change)="onChange()" formControlName="addressType" class="form-control">
+            <option selected value="">Choose...</option>
+            <option *ngFor="let item of addressTypes" [value]="item.id">{{ item.name }}</option>
+          </select>
+          <span *ngIf="showRequired('addressType')" class="footnote red">* Required</span>
+        </div>
+        <div class="padding"></div>
+      </div>
+    </div>
+    <p class="title mt-3 d-flex align-items-center justify-content-between">
+      <span>Other Addresses</span>
+      <a class="add-btn" (click)="addAddress()">+</a>
+    </p>
+    <div class="form-container p-4" formArrayName="otherAddress">
+      <div
+        class="form-row"
+        *ngFor="let item of otherAddresses.controls; let pointIndex = index"
+        [formGroupName]="pointIndex"
+      >
+        <div class="padding">
+          <a>{{ pointIndex + 1 }}</a>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Address</label>
+          <input
+            required
+            (change)="onChange()"
+            formArrayName="address"
+            formControlName="address"
+            class="form-control"
+            placeholder="Address"
+          />
+          <span *ngIf="showRequired('address', pointIndex)" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>City</label>
+          <input required (change)="onChange()" formControlName="city" class="form-control" placeholder="City" />
+          <span *ngIf="showRequired('city', pointIndex)" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>State/Territory/Region</label>
+          <input
+            required
+            (change)="onChange()"
+            formControlName="state"
+            class="form-control"
+            placeholder="State/Territory/Region"
+          />
+          <span *ngIf="showRequired('state', pointIndex)" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Zip</label>
+          <input required (change)="onChange()" formControlName="zipcode" class="form-control" placeholder="Zip Code" />
+          <span *ngIf="showRequired('zipcode', pointIndex)" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Country</label>
+          <select required (change)="onChange()" formControlName="country" class="form-control">
+            <option selected value="">Choose...</option>
+            <option *ngFor="let item of countries" [value]="item.id">{{ item.name }}</option>
+          </select>
+          <span *ngIf="showRequired('country', pointIndex)" class="footnote red">* Required</span>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Address Type</label>
+          <select required (change)="onChange()" formControlName="addressType" class="form-control">
+            <option selected value="">Choose...</option>
+            <option *ngFor="let item of addressTypes" [value]="item.id">{{ item.name }}</option>
+          </select>
+          <span *ngIf="showRequired('addressType', pointIndex)" class="footnote red">* Required</span>
+        </div>
+        <div class="padding pt-3">
+          <a class="remove-btn" (click)="removeAddress(pointIndex)">-</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

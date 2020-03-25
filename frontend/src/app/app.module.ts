@@ -28,12 +28,7 @@ import { EventEmitterService } from './components/event-emitter.service';
 
 import { environment } from 'src/environments/environment';
 
-import {
-  RecaptchaModule,
-  RECAPTCHA_SETTINGS,
-  RecaptchaSettings,
-  RECAPTCHA_BASE_URL
-} from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RECAPTCHA_BASE_URL } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 @NgModule({
