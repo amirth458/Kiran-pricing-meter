@@ -227,6 +227,8 @@ export class CustomersComponent implements OnInit {
 
   onView(customer: Customer) {
     console.log({ customer });
+    this.toastr.warning('Feature in progress');
+    return;
     this.route.navigateByUrl('/user-manage/view/user');
   }
 
