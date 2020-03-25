@@ -1,0 +1,65 @@
+<div class="wrapper shadow">
+  <form [formGroup]="contactForm" class="needs-validation" (submit)="save($event)">
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>Email Address(username)</label>
+        <input
+          required
+          readonly
+          (change)="onChange()"
+          formControlName="email"
+          class="form-control"
+          placeholder="Email"
+        />
+        <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
+      </div>
+
+      <div class="col-md-6"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>First Name</label>
+        <input
+          required
+          (change)="onChange()"
+          formControlName="firstName"
+          class="form-control"
+          placeholder="First Name"
+        />
+        <span *ngIf="showRequired('firstName', 1)" class="footnote red">* Required</span>
+      </div>
+      <div class="form-group theme col-md-6">
+        <label>Last Name</label>
+        <input required (change)="onChange()" formControlName="lastName" class="form-control" placeholder="Last Name" />
+        <span *ngIf="showRequired('lastName', 1)" class="footnote red">* Required</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group theme col-md-6 phone">
+        <label>Phone</label>
+        <international-phone-number
+          (change)="onChange()"
+          formControlName="phoneNo"
+          placeholder="Enter phone number"
+          [required]="true"
+          name="phone_number"
+        ></international-phone-number>
+        <span *ngIf="showRequired('phoneNo', 1)" class="footnote red">* Required</span>
+        <span
+          *ngIf="!showRequired('phoneNo', 1) && contactForm.controls.phoneNo.status === 'INVALID'"
+          class="footnote red"
+          >* Phone number is invalid.</span
+        >
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+    <div class="form-row mt-5" style="justify-content: center">
+      <div class="form-group col-md-3 container-continue">
+        <button type="button" (click)="save($event)" class="btn btn-contniue theme">
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

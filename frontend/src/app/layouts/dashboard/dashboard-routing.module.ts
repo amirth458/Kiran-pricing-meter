@@ -40,6 +40,10 @@ import { ProjectsContainerComponent } from 'src/app/components/vendor/projects/p
 import { ReleasedProjectsComponent } from 'src/app/components/vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from 'src/app/components/vendor/projects/order-detail/order-detail.component';
 import { CustomersComponent } from 'src/app/components/admin/customers/customers.component';
+import { CustomerViewComponent } from 'src/app/components/admin/customer-view/customer-view.component';
+import { ContactComponent } from 'src/app/components/admin/contact/contact.component';
+import { PasswordComponent } from 'src/app/components/admin/password/password.component';
+import { ShippingComponent } from 'src/app/components/admin/shipping/shipping.component';
 
 const routes: Routes = [
   {
@@ -164,6 +168,17 @@ const routes: Routes = [
           {
             path: 'customers',
             component: CustomersComponent
+          },
+          {
+            path: 'view',
+            component: CustomerViewComponent,
+            children: [
+              { path: 'user', component: ContactComponent },
+              { path: 'contact', component: PasswordComponent },
+              { path: 'shipping', component: ShippingComponent },
+              { path: '', redirectTo: 'user', pathMatch: 'full' },
+              { path: '**', redirectTo: 'user', pathMatch: 'full' }
+            ]
           },
           { path: '', pathMatch: 'full', redirectTo: 'approve-vendor' },
           { path: '**', pathMatch: 'full', redirectTo: 'approve-vendor' }

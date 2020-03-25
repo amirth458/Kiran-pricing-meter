@@ -86,6 +86,10 @@ import { VendorConfirmationQueueComponent } from './vendor/projects/vendor-confi
 import { ReleasedProjectsComponent } from './vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
 import { CustomersComponent } from './admin/customers/customers.component';
+import { CustomerViewComponent } from './admin/customer-view/customer-view.component';
+import { PasswordComponent } from './admin/password/password.component';
+import { ShippingComponent } from './admin/shipping/shipping.component';
+import { ContactComponent } from './admin/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -164,7 +168,11 @@ import { CustomersComponent } from './admin/customers/customers.component';
     VendorConfirmationQueueComponent,
     ReleasedProjectsComponent,
     OrderDetailComponent,
-    CustomersComponent
+    CustomersComponent,
+    CustomerViewComponent,
+    PasswordComponent,
+    ShippingComponent,
+    ContactComponent
   ],
   imports: [
     CommonModule,
