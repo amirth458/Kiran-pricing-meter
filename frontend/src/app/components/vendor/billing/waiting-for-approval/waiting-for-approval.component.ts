@@ -105,6 +105,25 @@ export class WaitingForApprovalComponent implements OnInit {
     }
   ];
 
+  projectType = [
+    {
+      displayName: 'ProjectType',
+      id: null
+    },
+    {
+      displayName: 'Rfq Project',
+      id: 'RFQ_PROJECT'
+    },
+    {
+      displayName: 'Production Project',
+      id: 'PRODUCTION_PROJECT'
+    },
+    {
+      displayName: 'Design Project',
+      id: 'DESIGN_PROJECT'
+    }
+  ];
+
   type = ['search', 'filter'];
 
   columnDefs: ColDef[] = [];
@@ -124,6 +143,7 @@ export class WaitingForApprovalComponent implements OnInit {
   form: FormGroup = this.fb.group({
     orderNo: [null],
     paymentType: [null],
+    projectType: [null],
     comment: ['']
   });
 
@@ -344,6 +364,7 @@ export class WaitingForApprovalComponent implements OnInit {
       orderId: this.form.value.orderNo || null,
       paymentStatusType: this.pageType,
       paymentType: this.form.value.paymentType == 'null' ? null : this.form.value.paymentType,
+      projectType: this.form.value.projectType === 'null' ? null : this.form.value.projectType,
       poNumber: null,
       note: null
     };

@@ -5,11 +5,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-vendor-confirmation-queue',
-  templateUrl: './vendor-confirmation-queue.component.html',
-  styleUrls: ['./vendor-confirmation-queue.component.css']
+  selector: 'app-projects-list',
+  templateUrl: './projects-list.component.html',
+  styleUrls: ['./projects-list.component.css']
 })
-export class VendorConfirmationQueueComponent implements OnInit {
+export class ProjectsListComponent implements OnInit {
   autoQuotedIds = [];
   columnDefs = [];
   gridOptions: GridOptions;
@@ -44,6 +44,14 @@ export class VendorConfirmationQueueComponent implements OnInit {
       {
         headerName: 'Project Type',
         field: 'projectType',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'projectType'
+      },
+      {
+        headerName: 'Same Vendor',
+        field: 'sameVendor',
         hide: false,
         sortable: true,
         filter: false,
