@@ -1,5 +1,5 @@
 <div class="wrapper shadow">
-  <form [formGroup]="contactForm" class="needs-validation" (submit)="save($event)">
+  <form [formGroup]="contactForm" class="needs-validation">
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Email Address(username)</label>
@@ -53,13 +53,6 @@
         >
       </div>
       <div class="col-md-6"></div>
-    </div>
-    <div class="form-row mt-5" style="justify-content: center">
-      <div class="form-group col-md-3 container-continue">
-        <button type="button" (click)="save($event)" class="btn btn-contniue theme">
-          Save
-        </button>
-      </div>
     </div>
   </form>
 </div>
