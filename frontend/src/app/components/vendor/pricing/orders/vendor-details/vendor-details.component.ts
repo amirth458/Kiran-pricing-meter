@@ -297,6 +297,14 @@ export class VendorDetailsComponent implements OnInit {
           sortable: true,
           filter: false,
           valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat)}` : '')
+        },
+        {
+          headerName: 'Shipping Address',
+          field: 'shippingAddress',
+          tooltipField: 'shippingAddress',
+          hide: false,
+          sortable: true,
+          filter: false
         }
       ],
       [
