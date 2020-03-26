@@ -1,5 +1,45 @@
 <div class="wrapper">
-  <p>
-    order-detail works!
-  </p>
+  <div class="row mb-3">
+    <div class="col-12">
+      <p>Order Details</p>
+      <div class="d-flex">
+        <app-part-item-details
+          *ngFor="let part of order?.partList"
+          [part]="part"
+          [measurementUnits]="measurementUnits"
+          [postProcessAction]="postProcessAction"
+        ></app-part-item-details>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 d-flex align-items-end justify-content-between">
+      <div [ngSwitch]="'release'">
+        <span *ngSwitchCase="'release'">Matching Suppliers Profiles</span>
+        <span *ngSwitchCase="'confirmation'">Matching Suppliers Queue</span>
+        <span *ngSwitchCase="'released'">Chosen Suppliers Profiles</span>
+      </div>
+      <div [ngSwitch]="'release'">
+        <div *ngSwitchCase="'release'">
+          <button class="btn theme">Release Project to Suppliers</button>
+        </div>
+        <div *ngSwitchCase="'confirmation'">
+          <button class="btn theme white">Add New Supplier</button>
+          <button class="btn theme">Release Project to Customer</button>
+        </div>
+        <div *ngSwitchCase="'released'"></div>
+      </div>
+    </div>
+    <div class="col-12">
+      <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        class="ag-theme-balham"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        domLayout="autoHeight"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
 </div>
