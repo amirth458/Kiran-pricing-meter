@@ -163,7 +163,7 @@ export class CustomersComponent implements OnInit {
         filter: false,
         valueGetter: value => {
           const data = value.data;
-          return data.userFirstName + data.userLastName;
+          return data.userFirstName + ' ' + data.userLastName;
         }
       },
       {
