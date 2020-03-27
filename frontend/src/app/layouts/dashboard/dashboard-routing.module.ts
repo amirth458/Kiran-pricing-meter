@@ -167,7 +167,7 @@ const routes: Routes = [
             component: CustomersComponent
           },
           {
-            path: 'view',
+            path: 'customers/view',
             component: CustomerViewComponent,
             children: [
               { path: 'user', component: ContactComponent },

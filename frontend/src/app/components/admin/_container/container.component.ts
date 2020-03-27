@@ -14,9 +14,11 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
   additionalSubMenus = [];
   selectedSubmenu = '';
   sidemenuClosed;
+  routeArr = [];
 
   constructor(private route: Router) {
-    this.baseURL = this.route.url.split('/')[1];
+    this.routeArr = this.route.url.split('/');
+    this.baseURL = this.routeArr[1];
   }
 
   ngOnInit() {
@@ -30,8 +32,11 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
         route: this.baseURL + '/customers'
       }
     ];
-
-    this.selectedSubmenu = this.baseURL + '/approve-vendor';
+    if (this.routeArr[2]) {
+      this.selectedSubmenu = this.baseURL + '/' + this.routeArr[2];
+    } else {
+      this.selectedSubmenu = this.baseURL + '/approve-vendor';
+    }
   }
 
   ngOnDestroy() {}

@@ -9,4 +9,7 @@ export class Customer {
   customerName: string;
   customerPhoneNo: string;
   customerActive: boolean;
+  customerDivision: string;
+  customerCountry: string;
+  customerIndustries: string;
 }

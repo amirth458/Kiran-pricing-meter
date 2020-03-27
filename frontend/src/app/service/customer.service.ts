@@ -38,4 +38,19 @@ export class CustomerService {
     const url = `${environment.apiBaseUrl}/admin/customer/${customerId}/user-unlock`;
     return this.http.put<Customer[]>(url, {});
   }
+
+  getUserById(userId) {
+    const url = `${environment.apiBaseUrl}/admin/customer/user/${userId}`;
+    return this.http.get(url);
+  }
+
+  getCustomerById(customerId) {
+    const url = `${environment.apiBaseUrl}/admin/customer/${customerId}`;
+    return this.http.get(url);
+  }
+
+  getShippingInfo(userId) {
+    const url = `${environment.apiBaseUrl}/admin/customer/user/${userId}/shipping-address`;
+    return this.http.get(url);
+  }
 }
