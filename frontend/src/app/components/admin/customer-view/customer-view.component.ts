@@ -20,19 +20,19 @@ export class CustomerViewComponent implements OnInit {
   }> = [
     {
       name: 'User Details',
-      route: 'user',
+      route: 'view/user',
       tooltipMessage: 'User Details',
       actions: []
     },
     {
       name: 'Contact',
-      route: 'contact',
+      route: 'view/contact',
       tooltipMessage: 'Contact',
       actions: []
     },
     {
       name: 'Shipping',
-      route: 'shipping',
+      route: 'view/shipping',
       tooltipMessage: 'Shipping',
       actions: []
     }
@@ -42,7 +42,9 @@ export class CustomerViewComponent implements OnInit {
   constructor(public route: Router) {}
 
   ngOnInit() {
-    const routeArr = this.route.url.slice(this.route.url.indexOf('view/') + 'view/'.length).split('/');
+    const routeArr = this.route.url
+      .slice(this.route.url.indexOf('customers/view/') + 'customers/view/'.length)
+      .split('/');
     this.selectedTab = 'Company Details';
     switch (routeArr[0]) {
       case 'user':
@@ -55,7 +57,7 @@ export class CustomerViewComponent implements OnInit {
         this.selectedTab = 'Shipping';
         break;
       default:
-        this.route.navigateByUrl(this.route.url + '/view');
+        this.route.navigateByUrl(this.route.url + '/customers/view');
         break;
     }
   }

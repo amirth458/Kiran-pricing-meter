@@ -23,7 +23,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Customer Name',
       checked: false,
-      field: 'customerName',
+      field: 'name',
       query: {
         type: '',
         filter: ''
@@ -32,7 +32,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Company Name',
       checked: false,
-      field: 'companyName',
+      field: 'customerName',
       query: {
         type: '',
         filter: ''
@@ -41,7 +41,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Company Division',
       checked: false,
-      field: 'companyDivision',
+      field: 'customerDivision',
       query: {
         type: '',
         filter: ''
@@ -50,7 +50,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Industry',
       checked: false,
-      field: 'industry',
+      field: 'customerIndustries',
       query: {
         type: '',
         filter: ''
@@ -68,7 +68,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Country',
       checked: false,
-      field: 'country',
+      field: 'customerCountry',
       query: {
         type: '',
         filter: ''
@@ -79,22 +79,22 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Customer Name',
       checked: true,
-      field: 'customerName'
+      field: 'name'
     },
     {
       name: 'Company Name',
       checked: true,
-      field: 'companyName'
+      field: 'customerName'
     },
     {
       name: 'Company Division',
       checked: true,
-      field: 'companyDivision'
+      field: 'customerDivision'
     },
     {
       name: 'Industry',
       checked: true,
-      field: 'industry'
+      field: 'customerIndustries'
     },
     {
       name: 'Email Address',
@@ -104,7 +104,7 @@ export class CustomersComponent implements OnInit {
     {
       name: 'Country',
       checked: true,
-      field: 'country'
+      field: 'customerCountry'
     }
   ];
   type = ['search', 'filter'];
@@ -130,6 +130,7 @@ export class CustomersComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.removeItem('viewCustomerInfo');
     this.setColDef();
     this.getAllUsers();
 
@@ -156,28 +157,32 @@ export class CustomersComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Customer Name',
+        field: 'name',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueGetter: value => {
+          const data = value.data;
+          return data.userFirstName + data.userLastName;
+        }
+      },
+      {
+        headerName: 'Company Name',
         field: 'customerName',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Company Name',
-        field: 'companyName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
         headerName: 'Company Division',
-        field: 'companyDivision',
+        field: 'customerDivision',
         hide: false,
         sortable: true,
         filter: false
       },
       {
         headerName: 'Industry',
-        field: 'industry',
+        field: 'customerIndustries',
         hide: false,
         sortable: true,
         filter: false
@@ -191,7 +196,7 @@ export class CustomersComponent implements OnInit {
       },
       {
         headerName: 'Country',
-        field: 'country',
+        field: 'customerCountry',
         hide: true,
         sortable: true,
         filter: false
@@ -227,9 +232,8 @@ export class CustomersComponent implements OnInit {
 
   onView(customer: Customer) {
     console.log({ customer });
-    this.toastr.warning('Feature in progress');
-    return;
-    this.route.navigateByUrl('/user-manage/view/user');
+    localStorage.setItem('viewCustomerInfo', JSON.stringify(customer));
+    this.route.navigateByUrl('/user-manage/customers/view/user');
   }
 
   onUnlock(customer: Customer) {
