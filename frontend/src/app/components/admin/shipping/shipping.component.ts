@@ -26,7 +26,7 @@ export class ShippingComponent implements OnInit {
   });
   countries = new Set();
   addressTypes = new Set();
-
+  shipping = [];
   constructor(
     public fb: FormBuilder,
     public toastrService: ToastrService,
@@ -43,6 +43,7 @@ export class ShippingComponent implements OnInit {
     customer = JSON.parse(customer);
     this.customerService.getShippingInfo(customer.userId).subscribe(
       (shipping: any) => {
+        this.shipping = shipping;
         // set default
         shipping.forEach(item => {
           if (item.country) {
