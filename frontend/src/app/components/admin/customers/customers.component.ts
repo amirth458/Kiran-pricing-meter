@@ -214,20 +214,30 @@ export class CustomersComponent implements OnInit {
       }
     ];
   }
-  getAllUsers() {
+  async getAllUsers() {
     this.spineer.show();
-    const filter: FilterOption = { size: 5000, sort: 'id,ASC', page: 0, q: '' };
+    let data = [];
+    let page = 0;
+    let filter: FilterOption = { size: 1000, sort: 'id,ASC', page, q: '' };
+    let currentData = await this.customerService.getCustomer(filter).toPromise();
+    while (currentData.length || page < 3) {
+      page = page + 1;
+      data = data.concat(currentData);
+      filter = { size: 1000, sort: 'id,ASC', page, q: '' };
+      currentData = await this.customerService.getCustomer(filter).toPromise();
+    }
+    this.rowData = data;
+    this.spineer.hide();
 
-    this.customerService.getCustomer(filter).subscribe(
-      data => {
-        this.rowData = data;
-        this.spineer.hide();
-      },
-      err => {
-        this.toastr.error('Something went wrong. Please try again.');
-        this.spineer.hide();
-      }
-    );
+    // this.customerService.getCustomer(filter).subscribe(
+    //   data => {
+    //     this.spineer.hide();
+    //   },
+    //   err => {
+    //     this.toastr.error('Something went wrong. Please try again.');
+    //     this.spineer.hide();
+    //   }
+    // );
   }
 
   onView(customer: Customer) {
