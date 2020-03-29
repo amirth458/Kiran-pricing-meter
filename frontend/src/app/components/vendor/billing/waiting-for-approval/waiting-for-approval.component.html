@@ -41,7 +41,7 @@
             <div class="col-md-3">
               <div class="form-group theme">
                 <select class="form-control form-control-sm" formControlName="projectType" (change)="getProfiles()">
-                  <!-- <option value="null" selected>All Type Of Payment</option> -->
+                  <option value="null" selected>All Type Of Project</option>
                   <option *ngFor="let s of projectType" [value]="s.id" [text]="s.displayName"></option>
                   <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
                 </select>
