@@ -14,6 +14,7 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class ProcessProfileComponent implements OnInit {
   @Input() part: Part;
+  @Input() rowData: any[];
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
   type = ['search', 'filter'];
   maxPartId;
@@ -113,7 +114,6 @@ export class ProcessProfileComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
   gridOptions: GridOptions;
-  rowData;
   pageSize = 10;
   navigation;
   pricingSettings;
@@ -150,7 +150,6 @@ export class ProcessProfileComponent implements OnInit {
         this.router.navigateByUrl(this.router.url + '/process-profile/' + event.data.id);
       }
     };
-    this.getProcessProfile();
   }
 
   initColumns() {
@@ -204,40 +203,6 @@ export class ProcessProfileComponent implements OnInit {
         tooltip: params => params.value
       }
     ];
-  }
-
-  async getProcessProfile(q = null) {
-    this.spinner.show();
-    const res = await this.ordersService
-      .getMatchedProfiles(this.userService.getUserInfo().id, [this.part.rfqMedia.id])
-      .toPromise();
-
-    this.rowData = res.map(item => ({
-      id: item.processProfileView.id,
-      profileId: item.processProfileId,
-      vendorName: item.vendorProfile.name,
-      processProfileName: item.processProfileView.name,
-      facilityName:
-        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
-          .vendorFacility.name,
-      pricingProfile: item.processPricingViews && item.processPricingViews.map(v => v.name).join(', '),
-      material: this.getAllMaterials(item.processProfileView.processMachineServingMaterialList),
-      equipment:
-        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment
-          .name
-    }));
-    this.spinner.hide();
-  }
-
-  getAllMaterials(m: any) {
-    const arr = [];
-    (m || []).map(m => {
-      m.machineServingMaterial.material.name;
-      if (m.machineServingMaterial && m.machineServingMaterial.material && m.machineServingMaterial.material.name) {
-        arr.push(m.machineServingMaterial.material.name);
-      }
-    });
-    return arr.join(',');
   }
 
   configureColumnDefs() {
