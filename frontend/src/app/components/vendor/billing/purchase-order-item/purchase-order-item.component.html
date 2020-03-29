@@ -291,12 +291,14 @@
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus>
-      <div class="w-100 row justify-content-center">
-        <div class="col-md-4">
-          <button (click)="approvePurchase()" type="button" class="col btn theme">
-            Approve
-          </button>
-        </div>
+      <div class="w-100 row justify-content-center position-relative">
+        <ng-container *ngIf="!loadingPanel; else loading">
+          <div class="col-md-4">
+            <button (click)="approvePurchase()" type="button" class="col btn theme">
+              Approve
+            </button>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
@@ -354,5 +356,21 @@
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus></div>
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center align-items-center w-100 payment-panel">
+    <ngx-spinner
+      [name]="'spooler'"
+      bdOpacity="0.7"
+      bdColor="#fff"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </ng-template>
