@@ -3,6 +3,10 @@ import { GridOptions } from 'ag-grid-community';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { ProjectType } from 'src/app/model/billing.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { Part } from 'src/app/model/part.model';
+import { PartService } from 'src/app/service/part.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -13,41 +17,59 @@ export class ProjectsListComponent implements OnInit {
   autoQuotedIds = [];
   columnDefs = [];
   gridOptions: GridOptions;
+  projectTypes = [];
+  projectType = '';
   rowData: any[] = [];
   pageSize = 10;
   navigation;
+
+  type: string = '';
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
 
-  constructor(public spinner: NgxSpinnerService, public router: Router) {}
+  constructor(
+    public spinner: NgxSpinnerService,
+    public router: Router,
+    public metadataService: MetadataService,
+    public partService: PartService
+  ) {
+    this.metadataService.getMetaData('project_type').subscribe(v => {
+      this.projectTypes = v.map(item => ({ ...item, displayName: ProjectType[item.name] }));
+    });
+
+    this.type = router.url.split('/')[2];
+  }
 
   ngOnInit() {
     this.columnDefs = [
       {
         headerName: 'Part ID',
-        field: 'partId',
+        field: 'id',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'partId'
+        tooltipField: 'id'
       },
       {
         headerName: 'Order ID',
-        field: 'orderId',
+        field: 'order.id',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'orderId'
+        tooltipField: 'order.id'
       },
       {
         headerName: 'Project Type',
-        field: 'projectType',
+        field: 'rfqMedia.projectRfq.projectType.name',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'projectType'
+        tooltipField: 'rfqMedia.projectRfq.projectType.name',
+        valueGetter: params => {
+          return ProjectType[params.data.rfqMedia.projectRfq.projectType.name];
+        }
       },
       {
         headerName: 'Same Vendor',
@@ -59,11 +81,11 @@ export class ProjectsListComponent implements OnInit {
       },
       {
         headerName: 'Customer',
-        field: 'customer',
+        field: 'order.customerName',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'customer'
+        tooltipField: 'order.customerName'
       }
     ];
 
@@ -79,9 +101,24 @@ export class ProjectsListComponent implements OnInit {
         this.router.navigateByUrl(`${this.router.url}/${event.data.id}`);
       }
     };
+
+    this.getRows();
   }
 
-  async getRows(q = null) {}
+  async getRows(q = null) {
+    this.spinner.show();
+    switch (this.type) {
+      case 'project-release-queue':
+        this.partService.getProjectReleaseQueue().subscribe(v => {
+          this.rowData = v;
+          this.spinner.hide();
+        });
+        break;
+      default:
+        this.spinner.hide();
+    }
+  }
+
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
@@ -96,5 +133,15 @@ export class ProjectsListComponent implements OnInit {
   onPageSizeChange(ev) {
     this.pageSize = ev.target.value;
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
+  }
+
+  onChangeProjectType(ev) {
+    this.projectType = ev.target.value;
+  }
+
+  get filteredData() {
+    return this.projectType === ''
+      ? this.rowData
+      : this.rowData.filter(item => item.rfqMedia.projectRfq.projectType.id == this.projectType);
   }
 }
