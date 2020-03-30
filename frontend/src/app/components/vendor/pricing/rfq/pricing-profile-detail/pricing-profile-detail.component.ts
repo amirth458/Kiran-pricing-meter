@@ -10,17 +10,9 @@ import { combineLatest } from 'rxjs';
 
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
-import {
-  Part,
-  RfqData,
-  PartQuote,
-  PricingProfileDetailedView
-} from '../../../../../model/part.model';
+import { Part, RfqData, PartQuote, PricingProfileDetailedView } from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
-import {
-  PricingBreakDown,
-  PricingBreakdown
-} from '../../../../../model/pricing.breakdown';
+import { PricingBreakDown, PricingBreakdown } from '../../../../../model/pricing.breakdown';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -441,9 +433,7 @@ export class PricingProfileDetailComponent implements OnInit {
   }
 
   backButton() {
-    this.router.navigateByUrl(
-      this.router.url.substr(0, this.router.url.indexOf('/pricing-profile'))
-    );
+    this.router.navigateByUrl(this.router.url.substr(0, this.router.url.indexOf('/pricing-profile')));
   }
 
   updateData() {
@@ -463,12 +453,7 @@ export class PricingProfileDetailComponent implements OnInit {
         roughness: '',
         postProcess: '',
         price: this.partQuote
-          ? this.currencyPipe.transform(
-              this.partQuote.totalCost,
-              'USD',
-              'symbol',
-              '0.0-3'
-            )
+          ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
           : this.part.partStatusType.displayName
       }
     ];
@@ -487,8 +472,7 @@ export class PricingProfileDetailComponent implements OnInit {
             invoiceItem: param.invoiceLineItem.invoiceItem.name,
             lineItem: param.invoiceLineItem.name,
             multiplier: param.multiplier,
-            multiplierValue:
-              param.multiplierProcessPricingParameter.invoiceLineItem.name
+            multiplierValue: param.multiplierProcessPricingParameter.invoiceLineItem.name
           });
           break;
         case 'variable_charges':
@@ -509,25 +493,18 @@ export class PricingProfileDetailComponent implements OnInit {
 
     const totalInvoice = {};
 
-    this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.forEach(
-      item => {
-        const invoiceName =
-          item.processPricingParameters.invoiceLineItem.invoiceItem.name;
-        if (totalInvoice[invoiceName]) {
-          totalInvoice[invoiceName].invoiceItemCost += parseInt(
-            item.invoiceItemCost
-          );
-          totalInvoice[invoiceName].finalInvoiceItemCost += parseInt(
-            item.finalInvoiceItemCost
-          );
-        } else {
-          totalInvoice[invoiceName] = {
-            invoiceItemCost: parseInt(item.invoiceItemCost),
-            finalInvoiceItemCost: parseInt(item.finalInvoiceItemCost)
-          };
-        }
+    this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.forEach(item => {
+      const invoiceName = item.processPricingParameters.invoiceLineItem.invoiceItem.name;
+      if (totalInvoice[invoiceName]) {
+        totalInvoice[invoiceName].invoiceItemCost += parseInt(item.invoiceItemCost);
+        totalInvoice[invoiceName].finalInvoiceItemCost += parseInt(item.finalInvoiceItemCost);
+      } else {
+        totalInvoice[invoiceName] = {
+          invoiceItemCost: parseInt(item.invoiceItemCost),
+          finalInvoiceItemCost: parseInt(item.finalInvoiceItemCost)
+        };
       }
-    );
+    });
 
     this.totalInvoice = totalInvoice;
   }
@@ -535,9 +512,7 @@ export class PricingProfileDetailComponent implements OnInit {
   getPostProcess(id) {
     const found =
       this.part.postProcessTypeIds &&
-      this.postProcesses.find(
-        postProcess => postProcess.id == this.part.postProcessTypeIds[id]
-      );
+      this.postProcesses.find(postProcess => postProcess.id == this.part.postProcessTypeIds[id]);
     return found && found.name;
   }
 
@@ -570,9 +545,7 @@ export class PricingProfileDetailComponent implements OnInit {
         });
         if ((this.breakDownInfo.costSummuryView || []).length > 0) {
           let cost = 0;
-          this.breakDownInfo.costSummuryView.map(
-            i => (cost += i.totalInvoiceItem)
-          );
+          this.breakDownInfo.costSummuryView.map(i => (cost += i.totalInvoiceItem));
           this.breakDownInfo.costSummuryView.push({
             invoiceItem: 'Total Cost',
             quantity: null,
@@ -597,15 +570,10 @@ export class PricingProfileDetailComponent implements OnInit {
 
   get pricingList() {
     return this.pricingDetail
-      ? this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.sort(
-          (a, b) => {
-            const values = ['Flat Charge', 'Variable', 'Multiplier', null];
-            return (
-              values.findIndex(item => item === a.invoiceGroup) -
-              values.findIndex(item => item === b.invoiceGroup)
-            );
-          }
-        )
+      ? this.pricingDetail.pricingProfileDetailedView.partPricingProfileViews.sort((a, b) => {
+          const values = ['Flat Charge', 'Variable', 'Multiplier', null];
+          return values.findIndex(item => item === a.invoiceGroup) - values.findIndex(item => item === b.invoiceGroup);
+        })
       : [];
   }
 }
