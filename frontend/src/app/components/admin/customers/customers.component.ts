@@ -142,7 +142,7 @@ export class CustomersComponent implements OnInit {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       pagination: true,
-      paginationPageSize: 10,
+      paginationAutoPageSize: true,
       enableColResize: true,
       rowHeight: 40,
       // headerHeight: 35,
