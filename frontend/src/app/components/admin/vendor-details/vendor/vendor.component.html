@@ -3,40 +3,24 @@
     <div class="form-row">
       <div class="form-group theme col-md-6">
         <label>Vendor Name</label>
-        <input
-          required
-          readonly
-          formControlName="name"
-          class="form-control"
-          placeholder="Vendor Name"
-        />
-        <span *ngIf="showRequired('name', 1)" class="footnote red"
-          >* Required</span
-        >
+        <input required readonly formControlName="name" class="form-control" placeholder="Vendor Name" />
+        <span *ngIf="showRequired('name', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Vendor Type</label>
         <select required formControlName="vendorType" class="form-control">
-          <option selected value="0">Choose...</option>
-          <option *ngFor="let item of vendorTypes" [value]="item.id">{{
-            item.name
-          }}</option>
+          <option selected value="">Vendor Type</option>
+          <option *ngFor="let item of vendorTypes" [value]="item.id">{{ item.name }}</option>
         </select>
-        <span *ngIf="showRequired('vendorType', 2)" class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('vendorType', 2)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Vendor Industry</label>
         <select required formControlName="vendorIndustry" class="form-control">
-          <option selected value="0">Choose...</option>
-          <option *ngFor="let item of vendorIndustries" [value]="item.id">
-            {{ item.name }}</option
-          >
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of vendorIndustries" [value]="item.id"> {{ item.name }}</option>
         </select>
-        <span *ngIf="showRequired('vendorIndustry', 2)" class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('vendorIndustry', 2)" class="footnote red">* Required</span>
       </div>
     </div>
     <div class="form-row">
@@ -49,11 +33,7 @@
           class="form-control"
           placeholder="First Name"
         />
-        <span
-          *ngIf="showRequired('primaryContactFirstName', 1)"
-          class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('primaryContactFirstName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label> &nbsp; </label>
@@ -64,25 +44,12 @@
           class="form-control"
           placeholder="Last Name"
         />
-        <span
-          *ngIf="showRequired('primaryContactLastName', 1)"
-          class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('primaryContactLastName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Email</label>
-        <input
-          readonly
-          required
-          type="email"
-          formControlName="email"
-          class="form-control"
-          placeholder="Email"
-        />
-        <span *ngIf="showRequired('email', 1)" class="footnote red"
-          >* Required</span
-        >
+        <input readonly required type="email" formControlName="email" class="form-control" placeholder="Email" />
+        <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3 phone">
         <label>Phone</label>
@@ -94,15 +61,8 @@
           [required]="true"
           name="phone_number"
         ></international-phone-number>
-        <span *ngIf="showRequired('phone', 1)" class="footnote red"
-          >* Required</span
-        >
-        <span
-          *ngIf="
-            !showRequired('phone', 1) &&
-            detailForm.controls.phone.status === 'INVALID'
-          "
-          class="footnote red"
+        <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 1) && detailForm.controls.phone.status === 'INVALID'" class="footnote red"
           >* Phone number is invalid.</span
         >
       </div>
@@ -110,41 +70,24 @@
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label>Street 1</label>
-        <input
-          readonly
-          required
-          formControlName="street1"
-          class="form-control"
-          placeholder="1234 Main St"
-        />
-        <span *ngIf="showRequired('street1', 1)" class="footnote red"
-          >* Required</span
-        >
+        <input readonly required formControlName="street1" class="form-control" placeholder="1234 Main St" />
+        <span *ngIf="showRequired('street1', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Street 2</label>
-        <input
-          readonly
-          formControlName="street2"
-          class="form-control"
-          placeholder="1234 Main St"
-        />
+        <input readonly formControlName="street2" class="form-control" placeholder="1234 Main St" />
       </div>
       <div class="form-group theme col-md-6">
         <label>City</label>
         <input readonly required formControlName="city" class="form-control" />
-        <span *ngIf="showRequired('city', 1)" class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('city', 1)" class="footnote red">* Required</span>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label>State/Territory/Region</label>
         <input readonly required formControlName="state" class="form-control" />
-        <span *ngIf="showRequired('state', 1)" class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('state', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label>Zip</label>
@@ -156,26 +99,15 @@
           placeholder="Zip Code"
           pattern="^[0-9\s]{5}$"
         />
-        <span *ngIf="showRequired('zipCode', 1)" class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('zipCode', 1)" class="footnote red">* Required</span>
       </div>
       <div id="countryComponent" class="form-group theme col-md-6">
         <label>Country</label>
-        <select
-          readonly
-          required
-          formControlName="country"
-          class="form-control"
-        >
-          <option selected value="0">Choose...</option>
-          <option *ngFor="let item of countries" [value]="item.id">{{
-            item.name
-          }}</option>
+        <select readonly required formControlName="country" class="form-control">
+          <option selected value="">Country</option>
+          <option *ngFor="let item of countries" [value]="item.id">{{ item.name }}</option>
         </select>
-        <span *ngIf="showRequired('country', 1)" class="footnote red"
-          >* Required</span
-        >
+        <span *ngIf="showRequired('country', 1)" class="footnote red">* Required</span>
       </div>
     </div>
     <div class="form-row">
@@ -184,30 +116,39 @@
           Confidentiality
         </label>
         <select readonly formControlName="confidentiality" class="form-control">
-          <option selected value="0" [disabled]="disableConfidentiality"
-            >Choose...</option
-          >
-          <option
-            *ngFor="let item of confidentialities"
-            [disabled]="disableConfidentiality"
-            [value]="item.id"
-          >
-            {{ item.name }}</option
-          >
+          <option selected value="">Confidentiality</option>
+          <option *ngFor="let item of confidentialities" [value]="item.id"> {{ item.name }}</option>
         </select>
       </div>
-      <div class="form-group theme col-md-6">
+      <!-- <div class="form-group theme col-md-6">
         <label>Certifications</label>
         <ul class="disabled-certifications">
           <li *ngFor="let item of selectedCertifications">{{ item.name }}</li>
         </ul>
+      </div> -->
+
+      <div class="form-group theme col-md-6 align-bottom">
+        <div style="width: 100%">
+          <label>Certifications</label>
+          <ng-select
+            [multiple]="true"
+            dropdownPosition="top"
+            [virtualScroll]="true"
+            [hideSelected]="true"
+            placeholder="Certifications"
+            [selectOnTab]="true"
+            [(ngModel)]="selectedCertifications"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <ng-option *ngFor="let item of certifications" [value]="item.id">
+              {{ item.name }}
+            </ng-option>
+          </ng-select>
+        </div>
       </div>
     </div>
     <div class="form-row">
-      <div
-        class="form-group col-md-12"
-        style="justify-content: center; align-items: flex-end; display: flex;"
-      >
+      <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
         <button
           type="button"
           (click)="approveUser()"
@@ -216,11 +157,7 @@
         >
           Approve
         </button>
-        <button
-          type="button"
-          *ngIf="status === 1"
-          class="btn btn-approved theme"
-        >
+        <button type="button" *ngIf="status === 1" class="btn btn-approved theme">
           Approved
         </button>
         <button
@@ -231,11 +168,7 @@
         >
           Decline
         </button>
-        <button
-          type="button"
-          *ngIf="status === 2"
-          class="btn btn-declined theme"
-        >
+        <button type="button" *ngIf="status === 2" class="btn btn-declined theme">
           Declined
         </button>
       </div>
@@ -244,13 +177,7 @@
 </div>
 
 <!-- Button trigger modal -->
-<button
-  #modal
-  type="button"
-  class="btn btn-primary d-none"
-  data-toggle="modal"
-  data-target="#declineModal"
-></button>
+<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#declineModal"></button>
 
 <!-- Modal -->
 <div
@@ -265,12 +192,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="declineModalLabel">Decline Comment</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -278,12 +200,7 @@
         <div class="form-row">
           <div class="form-group theme col-md-12">
             <label>Primary Contact Name</label>
-            <input
-              class="form-control"
-              readonly
-              [(ngModel)]="primaryContactName"
-              placeholder="Primary Contact Name"
-            />
+            <input class="form-control" readonly [(ngModel)]="primaryContactName" placeholder="Primary Contact Name" />
           </div>
           <div class="form-group theme col-md-12">
             <label>Comment</label>

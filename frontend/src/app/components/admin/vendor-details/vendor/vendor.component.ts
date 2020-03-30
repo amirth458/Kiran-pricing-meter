@@ -4,11 +4,7 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import * as internationalCode from '../../../../../assets/static/internationalCode';
 import { VendorService } from '../../../../service/vendor.service';
-import {
-  Vendor,
-  VendorMetaData,
-  Country
-} from '../../../../model/vendor.model';
+import { Vendor, VendorMetaData, Country } from '../../../../model/vendor.model';
 import { VendorMetaDataTypes } from '../../../../mockData/vendor';
 import { UserService } from '../../../../service/user.service';
 import { Router } from '@angular/router';
@@ -38,7 +34,7 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
   confidentialities: VendorMetaData[] = [];
   selectedCertifications = [];
   phoneUtil = PhoneNumberUtil.getInstance();
-  disableConfidentiality = false;
+  // disableConfidentiality = false;
   /*
   form = new FormGroup({
     first: new FormControl({value: 'Nancy', disabled: true}, Validators.required),
@@ -73,10 +69,7 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
       const userId = this.router.url.split('/')[3];
       const res = await this.userService.getUserDetails(userId).toPromise();
       if (res.vendor) {
-        this.primaryContactName =
-          res.vendor.primaryContactFirstName +
-          ' ' +
-          res.vendor.primaryContactLastName;
+        this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
         const vendor = {
           id: res.vendor.id,
           name: res.vendor.name,
@@ -119,12 +112,8 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
 
   async getVendorMetaDatas() {
     try {
-      this.vendorTypes = await this.vendorService
-        .getVendorMetaData(VendorMetaDataTypes.VendorType)
-        .toPromise();
-      this.countries = await this.vendorService
-        .getVendorMetaData(VendorMetaDataTypes.Country)
-        .toPromise();
+      this.vendorTypes = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.VendorType).toPromise();
+      this.countries = await this.vendorService.getVendorMetaData(VendorMetaDataTypes.Country).toPromise();
       this.vendorIndustries = await this.vendorService
         .getVendorMetaData(VendorMetaDataTypes.VendorIndustry)
         .toPromise();
@@ -141,8 +130,9 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
   }
 
   initForm(initValue) {
+    // console.log(initValue)
     this.selectedCertifications = initValue.vendorCertificates;
-    this.disableConfidentiality = Number(initValue.confidentiality.id) === 2;
+    // this.disableConfidentiality = initValue.confidentiality ? Number(initValue.confidentiality.id) === 2 : true;
 
     this.detailForm.setValue({
       id: initValue.id,
@@ -151,25 +141,22 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
       primaryContactLastName: initValue.primaryContactLastName,
       email: initValue.email,
       phone: initValue.phone,
-      vendorType: initValue.vendorType.id,
-      vendorIndustry: initValue.vendorIndustries[0].id,
+      vendorType: initValue.vendorType ? initValue.vendorType.id : '',
+      vendorIndustry: initValue.vendorIndustries.length ? initValue.vendorIndustries[0].id : '',
       city: initValue.city,
       state: initValue.state,
-      country: initValue.country.id,
+      country: initValue.country ? initValue.country.id : '',
       street1: initValue.street1 || '',
       street2: initValue.street2 || '',
       zipCode: initValue.zipCode,
-      confidentiality: initValue.confidentiality.id || '',
+      confidentiality: initValue.confidentiality ? initValue.confidentiality.id : '',
       vendorCertificates: []
     });
   }
 
   showRequired(field: string, fieldType: number): boolean {
     if (fieldType === 1) {
-      return (
-        this.detailForm.value[field] === '' ||
-        this.detailForm.value[field] === null
-      );
+      return this.detailForm.value[field] === '' || this.detailForm.value[field] === null;
     } else if (fieldType === 2) {
       return Number(this.detailForm.value[field]) === 0;
     }
@@ -187,9 +174,7 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
       await this.userService.approveUser(this.vendorId).toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not approved. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
     } finally {
       this.spinner.hide();
     }
@@ -206,14 +191,10 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
     this.modal.nativeElement.click();
     this.spinner.show();
     try {
-      await this.userService
-        .declineUser(this.vendorId, this.declineComments)
-        .toPromise();
+      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not declined. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
     } finally {
       this.spinner.hide();
     }
