@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { CustomerService } from 'src/app/service/customer.service';
 import { Router } from '@angular/router';
+import { Customer } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-shipping',
@@ -22,11 +23,15 @@ export class ShippingComponent implements OnInit {
       country: ['', Validators.required],
       addressType: ['', Validators.required]
     }),
-    otherAddress: this.fb.array([])
+    otherAddress: this.fb.array([]),
+    userLocked: ['', [Validators.required]],
+    userActive: ['', [Validators.required]],
+    customerActive: ['', [Validators.required]]
   });
   countries = new Set();
   addressTypes = new Set();
   shipping = [];
+  customer;
   constructor(
     public fb: FormBuilder,
     public toastrService: ToastrService,
@@ -35,15 +40,21 @@ export class ShippingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let customer: any = localStorage.getItem('viewCustomerInfo');
+    const customer: any = localStorage.getItem('viewCustomerInfo');
     if (!customer) {
       this.router.navigateByUrl('/user-manage/customers');
       return;
     }
-    customer = JSON.parse(customer);
-    this.customerService.getShippingInfo(customer.userId).subscribe(
+    this.customer = JSON.parse(customer);
+    this.customerService.getShippingInfo(this.customer.userId).subscribe(
       (shipping: any) => {
         this.shipping = shipping;
+        this.shippingForm.setValue({
+          ...this.shippingForm.value,
+          userLocked: this.customer.userLocked,
+          userActive: this.customer.userActive,
+          customerActive: this.customer.customerActive
+        });
         // set default
         shipping.forEach(item => {
           if (item.country) {
@@ -130,5 +141,43 @@ export class ShippingComponent implements OnInit {
   }
   get otherAddresses() {
     return this.shippingForm.get('otherAddress') as FormArray;
+  }
+
+  onUnlock(customer: Customer = this.customer) {
+    this.customerService.unlockCustomer(customer.customerId).subscribe(
+      res => {
+        this.shippingForm.controls.userLocked.setValue(false);
+        this.customer.userLocked = false;
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
+      },
+      err => {
+        this.toastrService.error('Unable to perform action');
+      }
+    );
+  }
+
+  onActivate(customer: Customer = this.customer) {
+    this.customerService.activateCustomer(customer.customerId).subscribe(
+      res => {
+        this.shippingForm.controls.customerActive.setValue(true);
+        this.customer.customerActive = true;
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
+      },
+      err => {
+        this.toastrService.error('Unable to perform action');
+      }
+    );
+  }
+  onDeactivate(customer: Customer = this.customer) {
+    this.customerService.deactivateCustomer(customer.customerId).subscribe(
+      res => {
+        this.shippingForm.controls.customerActive.setValue(false);
+        this.customer.customerActive = false;
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
+      },
+      err => {
+        this.toastrService.error('Unable to perform action');
+      }
+    );
   }
 }

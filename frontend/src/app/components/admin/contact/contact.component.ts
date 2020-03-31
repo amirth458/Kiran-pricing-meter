@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerService } from 'src/app/service/customer.service';
+import { Customer } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-contact',
@@ -17,27 +18,31 @@ export class ContactComponent implements OnInit {
     lastName: ['', Validators.required],
     password: [''],
     confirmPassword: [''],
-    phoneNo: ['', [Validators.required]]
+    phoneNo: ['', [Validators.required]],
+    userLocked: ['', [Validators.required]],
+    userActive: ['', [Validators.required]],
+    customerActive: ['', [Validators.required]]
   });
   user;
+  customer;
   phoneUtil = PhoneNumberUtil.getInstance();
 
   constructor(
     public fb: FormBuilder,
     public router: Router,
-    public toastrService: ToastrService,
+    public toasterService: ToastrService,
     public customerService: CustomerService
   ) {}
 
   ngOnInit() {
     this.contactForm.controls.phoneNo.disable();
-    let customer: any = localStorage.getItem('viewCustomerInfo');
+    const customer: any = localStorage.getItem('viewCustomerInfo');
     if (!customer) {
       this.router.navigateByUrl('/user-manage/customers');
       return;
     }
-    customer = JSON.parse(customer);
-    this.customerService.getUserById(customer.userId).subscribe(
+    this.customer = JSON.parse(customer);
+    this.customerService.getUserById(this.customer.userId).subscribe(
       (user: any) => {
         this.user = user;
         this.contactForm.setValue({
@@ -45,13 +50,54 @@ export class ContactComponent implements OnInit {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          phoneNo: user.phoneNo
+          phoneNo: user.phoneNo,
+          userLocked: this.customer.userLocked,
+          userActive: this.customer.userActive,
+          customerActive: this.customer.customerActive
         });
       },
       err => {
-        this.toastrService.error('Something went wrong.');
+        this.toasterService.error('Something went wrong.');
         console.log(err);
         this.router.navigateByUrl('/user-manage/customers');
+      }
+    );
+  }
+
+  onUnlock(customer: Customer = this.customer) {
+    this.customerService.unlockCustomer(customer.customerId).subscribe(
+      res => {
+        this.contactForm.controls.userLocked.setValue(false);
+        this.customer.userLocked = false;
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
+      },
+      err => {
+        this.toasterService.error('Unable to perform action');
+      }
+    );
+  }
+
+  onActivate(customer: Customer = this.customer) {
+    this.customerService.activateCustomer(customer.customerId).subscribe(
+      res => {
+        this.contactForm.controls.customerActive.setValue(true);
+        this.customer.customerActive = true;
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
+      },
+      err => {
+        this.toasterService.error('Unable to perform action');
+      }
+    );
+  }
+  onDeactivate(customer: Customer = this.customer) {
+    this.customerService.deactivateCustomer(customer.customerId).subscribe(
+      res => {
+        this.contactForm.controls.customerActive.setValue(false);
+        this.customer.customerActive = false;
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
+      },
+      err => {
+        this.toasterService.error('Unable to perform action');
       }
     );
   }
