@@ -1,5 +1,29 @@
 <div class="wrapper shadow">
   <form [formGroup]="shippingForm" class="needs-validation">
+    <div class="form-row">
+      <div class="col-md-6"></div>
+      <div class="col-md-2"></div>
+
+      <div class="form-group col-md-2 mt-3">
+        <button
+          *ngIf="shippingForm.value.userLocked === true"
+          type="button"
+          class="btn btn-primary theme btn-sky-blue w-75"
+          (click)="onUnlock()"
+        >
+          Unlock
+        </button>
+      </div>
+
+      <div *ngIf="shippingForm.value.customerActive === false" class="form-group col-md-2 mt-3">
+        <button type="button" class="btn btn-primary theme w-75" (click)="onActivate()">Activate</button>
+      </div>
+
+      <div *ngIf="shippingForm.value.customerActive === true" class="form-group col-md-2 mt-3">
+        <button type="button" class="btn btn-primary theme orange-btn w-75" (click)="onDeactivate()">Deactivate</button>
+      </div>
+    </div>
+
     <p class="title">Main Address</p>
     <div class="form-container p-4" formGroupName="mainAddress">
       <div *ngIf="shipping.length" class="form-row">

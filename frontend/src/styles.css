@@ -476,10 +476,15 @@ app-dropdown-cell-renderer {
   border-bottom: 5px solid var(--theme-light-green);
 }
 
-.orange-btn {
+.orange-btn,
+.btn-sky-blue {
   color: white;
   background-color: var(--theme-orange) !important;
   margin: 0 15px;
+}
+
+.btn-sky-blue {
+  background-color: var(--theme-sky-blue) !important;
 }
 
 .green-btn {
