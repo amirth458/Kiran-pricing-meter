@@ -183,10 +183,10 @@ export class ApproveVendorComponent implements OnInit {
             console.log(data.vendor.approvedAt, 'at');
             return new Date(data.vendor.approvedAt).toLocaleString();
           } else {
-            return '';
+            return '-';
           }
         } else {
-          return '';
+          return '-';
         }
       }
     },
