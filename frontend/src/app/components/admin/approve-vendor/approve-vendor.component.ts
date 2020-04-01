@@ -26,9 +26,9 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumns = [
     {
-      name: 'ID',
+      name: 'Vendor ID',
       checked: false,
-      field: 'customerId',
+      field: 'id',
       query: {
         type: '',
         filter: ''
@@ -73,9 +73,9 @@ export class ApproveVendorComponent implements OnInit {
   ];
   filterColumns = [
     {
-      name: 'ID',
+      name: 'Vendor ID',
       checked: true,
-      field: 'customerId'
+      field: 'id'
     },
     {
       name: 'Vendor Name',
@@ -127,11 +127,18 @@ export class ApproveVendorComponent implements OnInit {
       }
     },
     {
-      headerName: 'ID',
-      field: 'customerId',
+      headerName: 'Vendor ID',
+      field: 'id',
       hide: false,
       sortable: true,
-      filter: false
+      filter: false,
+      valueFormatter: event => {
+        const data = event.data;
+        if (data.vendor) {
+          return data.vendor.id;
+        }
+        return '';
+      }
     },
     {
       headerName: 'Vendor Name',
@@ -161,6 +168,27 @@ export class ApproveVendorComponent implements OnInit {
       sortable: true,
       filter: false,
       width: 120
+    },
+    {
+      headerName: 'Approved On',
+      field: 'approvedOn',
+      hide: false,
+      sortable: true,
+      filter: false,
+      valueFormatter: e => {
+        const data = e.data;
+        if (data.vendor) {
+          console.log(data.vendor, 'vendor');
+          if (data.vendor.approvedAt) {
+            console.log(data.vendor.approvedAt, 'at');
+            return new Date(data.vendor.approvedAt).toLocaleString();
+          } else {
+            return '';
+          }
+        } else {
+          return '';
+        }
+      }
     },
     {
       headerName: 'Actions',

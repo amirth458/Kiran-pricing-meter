@@ -21,9 +21,9 @@ export class CustomersComponent implements OnInit {
 
   searchColumns = [
     {
-      name: 'ID',
+      name: 'Customer ID',
       checked: false,
-      field: 'id',
+      field: 'customerId',
       query: {
         type: '',
         filter: ''
@@ -86,9 +86,9 @@ export class CustomersComponent implements OnInit {
   ];
   filterColumns = [
     {
-      name: 'ID',
+      name: 'Customer ID',
       checked: true,
-      field: 'id'
+      field: 'customerId'
     },
     {
       name: 'Customer Name',
@@ -170,8 +170,8 @@ export class CustomersComponent implements OnInit {
   setColDef() {
     this.columnDefs = [
       {
-        headerName: 'ID',
-        field: 'id',
+        headerName: 'Customer ID',
+        field: 'customerId',
         hide: false,
         sortable: true,
         filter: false
