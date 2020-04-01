@@ -1,16 +1,7 @@
 <div class="wrapper container-fluid">
-  <div
-    class="header d-flex align-items-center mb-3"
-    [ngClass]="{ 'manual-price': part?.manualPricingAllowed }"
-  >
-    <h5 class="text-center flex-grow-1">
-      Part {{ part?.rfqMedia.projectRfqId + '.' + part?.id }}
-    </h5>
-    <button
-      type="button"
-      class="btn btn-back theme white"
-      (click)="backButton()"
-    >
+  <div class="header d-flex align-items-center mb-3" [ngClass]="{ 'manual-price': part?.manualPricingAllowed }">
+    <h5 class="text-center flex-grow-1">Part {{ part?.rfqMedia.projectRfqId + '.' + part?.id }}</h5>
+    <button type="button" class="btn btn-back theme white" (click)="backButton()">
       <i class="fas fa-chevron-left"></i>
       <span>
         Back
@@ -28,10 +19,7 @@
       ></ag-grid-angular>
     </div>
     <div class="w-100 d-flex flex-row justify-content-end align-items-end mt-3">
-      <button
-        class="btn btn-primary"
-        (click)="viewBreakDownInfo(breakDownModal)"
-      >
+      <button class="btn btn-primary" (click)="viewBreakDownInfo(breakDownModal)">
         Show Prices
       </button>
     </div>
@@ -43,20 +31,20 @@
       </div>
       <div class="round-border p-3 mt-2">
         <p>
+          Vendor Name: &nbsp;
+          <span class="text-highlight">{{ pricingProfile?.vendorProfile.name }}</span>
+        </p>
+        <p>
           Pricing Profile Name: &nbsp;
           <span class="text-highlight">{{ pricingProfile?.name }}</span>
         </p>
         <p>
           Process Profile Name: &nbsp;
-          <span class="text-highlight">{{
-            pricingProfile?.processProfile.name
-          }}</span>
+          <span class="text-highlight">{{ pricingProfile?.processProfile.name }}</span>
         </p>
         <p>
           Pricing Parameter Set Nickname: &nbsp;
-          <span class="text-highlight">{{
-            pricingProfile?.processProfile.parameterNickName
-          }}</span>
+          <span class="text-highlight">{{ pricingProfile?.processProfile.parameterNickName }}</span>
         </p>
       </div>
     </div>
@@ -66,9 +54,7 @@
         <span class="font-weight-bold">Conditions</span>
       </div>
       <div class="round-border p-3 mt-2">
-        <p
-          *ngFor="let condition of pricingProfile?.processPricingConditionList"
-        >
+        <p *ngFor="let condition of pricingProfile?.processPricingConditionList">
           {{ condition.processPricingConditionType.name }}
           <mark>
             {{ condition.operatorType.symbol }}
@@ -82,9 +68,7 @@
 
   <div class="round-border mt-3">
     <div class="d-flex justify-content-between header px-5">
-      <span class="font-weight-bold active-tab d-flex align-items-center"
-        >Process Parameters</span
-      >
+      <span class="font-weight-bold active-tab d-flex align-items-center">Process Parameters</span>
     </div>
     <div class="px-5 py-3 process-parameters">
       <!-- Flat Charges -->
@@ -92,8 +76,7 @@
       <div id="conditionLabel" class="tables">
         <div class="controls d-flex justify-content-between mb-1">
           <label for="conditionLabel">
-            <b>Flat Charges</b>(These are base expenses associated with every
-            project)
+            <b>Flat Charges</b>(These are base expenses associated with every project)
             <span
               class="icon"
               data-toggle="tooltip"
@@ -127,8 +110,7 @@
       <div id="conditionLabel" class="tables">
         <div class="controls d-flex justify-content-between mb-1">
           <label for="conditionLabel"
-            ><b>Variable Charges</b>(These are charges that increase with the
-            size of a program)
+            ><b>Variable Charges</b>(These are charges that increase with the size of a program)
             <span
               class="icon"
               data-toggle="tooltip"
@@ -162,8 +144,7 @@
       <div id="conditionLabel" class="tables">
         <div class="controls d-flex justify-content-between mb-1">
           <label for="conditionLabel">
-            <b>Multiplier Charges</b>(These are cost considerations that are
-            applied across one or more cost inputs)
+            <b>Multiplier Charges</b>(These are cost considerations that are applied across one or more cost inputs)
             <span
               class="icon"
               data-toggle="tooltip"
@@ -200,18 +181,11 @@
       <h5 class="modal-title" id="modal-basic-title">
         {{ pricingProfile?.name }}
       </h5>
-      <button
-        type="button"
-        class="close"
-        aria-label="Close"
-        (click)="modal.dismiss()"
-      >
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div
-      class="modal-body d-flex flex-column align-items-center justify-content-center p-5"
-    >
+    <div class="modal-body d-flex flex-column align-items-center justify-content-center p-5">
       <div class="row">
         <div class="col-12">
           <table class="table price-profile-table">
@@ -235,32 +209,23 @@
                   {{ item.invoiceGroup }}
                 </td> -->
                 <td>
-                  {{
-                    item.processPricingParameters.invoiceLineItem.invoiceItem
-                      .name
-                  }}
+                  {{ item.processPricingParameters.invoiceLineItem.invoiceItem.name }}
                 </td>
                 <td>
                   {{ item.processPricingParameters.invoiceLineItem.name }}
                 </td>
                 <td class="text-center">
-                  {{
-                    item.processPricingParameters.price
-                      | currency: 'USD':'symbol':'0.0-3'
-                  }}
+                  {{ item.processPricingParameters.price | currency: 'USD':'symbol':'0.0-3' }}
                 </td>
                 <td class="text-center">
                   {{ item.processPricingParameters.quantity }}
                 </td>
                 <td class="text-center">
                   {{
-                    item.processPricingParameters.processPricingConditionType
-                      ?.name
-                      ? item.processPricingParameters
-                          .processPricingConditionType?.name +
+                    item.processPricingParameters.processPricingConditionType?.name
+                      ? item.processPricingParameters.processPricingConditionType?.name +
                         '(' +
-                        item.processPricingParameters
-                          .processPricingConditionType?.measurementType.name +
+                        item.processPricingParameters.processPricingConditionType?.measurementType.name +
                         ')'
                       : ''
                   }}
@@ -268,10 +233,7 @@
                 <td class="text-center">
                   {{
                     item.subOrderValue?.value
-                      ? item.subOrderValue?.value +
-                        '(' +
-                        item.subOrderValue?.measurementType?.name +
-                        ')'
+                      ? item.subOrderValue?.value + '(' + item.subOrderValue?.measurementType?.name + ')'
                       : ''
                   }}
                 </td>
@@ -282,9 +244,7 @@
                   {{ item.processPricingParameters?.multiplier }}
                 </td>
                 <td class="text-center">
-                  {{
-                    item.finalInvoiceItemCost | currency: 'USD':'symbol':'0.0-3'
-                  }}
+                  {{ item.finalInvoiceItemCost | currency: 'USD':'symbol':'0.0-3' }}
                 </td>
               </tr>
               <tr>
@@ -300,26 +260,17 @@
                       <tr *ngFor="let item of invoiceItemKeys">
                         <td>{{ item }}</td>
                         <td>
-                          {{
-                            totalInvoice[item].invoiceItemCost
-                              | currency: 'USD':'symbol':'0.0-3'
-                          }}
+                          {{ totalInvoice[item].invoiceItemCost | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                         <td>
-                          {{
-                            totalInvoice[item].finalInvoiceItemCost
-                              | currency: 'USD':'symbol':'0.0-3'
-                          }}
+                          {{ totalInvoice[item].finalInvoiceItemCost | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                       </tr>
                       <tr class="font-weight-bold">
                         <th>TOTAL COST</th>
                         <td></td>
                         <td>
-                          {{
-                            finalInvoiceItemCost()
-                              | currency: 'USD':'symbol':'0.0-3'
-                          }}
+                          {{ finalInvoiceItemCost() | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                       </tr>
                     </tbody>
@@ -338,16 +289,9 @@
   <div class="modal-container">
     <div class="modal-header">
       <h5 class="modal-title w-100 text-left pl-3 pr-2">
-        Pricing Breakdown for the "{{ pricingProfile?.processProfile?.name }}"
-        pricing profile
+        Pricing Breakdown for the "{{ pricingProfile?.processProfile?.name }}" pricing profile
       </h5>
-      <button
-        type="button"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-        (click)="modal.dismiss()"
-      >
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

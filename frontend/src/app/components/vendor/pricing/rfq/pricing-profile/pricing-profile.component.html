@@ -21,15 +21,11 @@
           <option value="200">200</option>
         </select>
       </label>
-      <a *ngIf="selected$ | async" class="clear-all link ml-3" (click)="resetPricingFilters()">
+      <a class="clear-all link ml-3" (click)="resetPricingFilters()">
         <i class="fa fa-times"></i>
         Clear all
       </a>
-      <button
-        [disabled]="!(selected$ | async)"
-        class="btn theme w-auto btn-show-price ml-3"
-        (click)="showPartQuotePricingInfo()"
-      >
+      <button class="btn theme w-auto btn-show-price ml-3" (click)="showPartQuotePricingInfo()">
         Show Prices
       </button>
     </div>

@@ -606,3 +606,13 @@ app-dropdown-cell-renderer {
   min-height: 35px !important;
   height: 35px !important;
 }
+
+.payment-panel {
+  height: 100px !important;
+}
+
+.payment-panel .loading-text {
+  text-align: center;
+  width: 100% !important;
+  margin-top: 20px;
+}

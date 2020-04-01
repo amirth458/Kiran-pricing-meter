@@ -27,6 +27,8 @@ export class HistoricalBidComponent implements OnInit {
   };
 
   columnDefs: ColDef[] = [];
+  pageSize = 10;
+
   gridOptions: GridOptions;
   rowData: LegacyBidHistory[] = [];
 
@@ -360,6 +362,32 @@ export class HistoricalBidComponent implements OnInit {
   ngOnInit() {
     this.partInfoColumnDefs = [
       {
+        headerName: 'Customer',
+        field: 'customer',
+        tooltipField: 'customer',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'RFQ',
+        field: 'rfq',
+        tooltipField: 'rfq',
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellClass: 'text-center'
+      },
+      {
+        headerName: 'Part',
+        field: 'part',
+        tooltipField: 'part',
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellClass: 'text-center'
+      },
+      {
         headerName: 'File Name',
         field: 'fileName',
         tooltipField: 'fileName',
@@ -369,9 +397,9 @@ export class HistoricalBidComponent implements OnInit {
         cellRenderer: 'fileViewRenderer'
       },
       {
-        headerName: 'RFQ',
-        field: 'rfq',
-        tooltipField: 'rfq',
+        headerName: 'Quantity',
+        field: 'quantity',
+        tooltipField: 'quantity',
         hide: false,
         sortable: true,
         filter: false,
@@ -394,14 +422,6 @@ export class HistoricalBidComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: dt => (dt.value || []).join(' , ')
-      },
-      {
-        headerName: 'Price',
-        field: 'price',
-        tooltipField: 'price',
-        hide: false,
-        sortable: true,
-        cellClass: 'text-center'
       }
     ];
     this.partInfoGridOptions = {
@@ -418,6 +438,8 @@ export class HistoricalBidComponent implements OnInit {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       enableColResize: true,
+      pagination: true,
+      paginationPageSize: this.pageSize,
       rowHeight: 35,
       headerHeight: 35
     };
@@ -534,7 +556,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'x',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => dt.value + ' (cm)'
       },
       {
         headerName: 'Y',
@@ -542,7 +565,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'y',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => dt.value + ' (cm)'
       },
       {
         headerName: 'Z',
@@ -550,7 +574,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'z',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => dt.value + ' (cm)'
       },
       {
         headerName: 'Volume',
@@ -633,10 +658,16 @@ export class HistoricalBidComponent implements OnInit {
       this.partInformation = [
         {
           id: this.part.id,
-          fileName: this.part.rfqMedia.media.name,
+          subOrder: this.part.id,
+          customer: this.customer.name,
           rfq: this.part.rfqMedia.projectRfqId,
+          part: this.part.rfqMedia.projectRfqId + '.' + this.part.id,
+          fileName: this.part.rfqMedia.media.name,
+          quantity: this.part.quantity,
           materialPropertyValues: this.part.materialPropertyValues,
           equipmentPropertyValues: this.part.equipmentPropertyValues,
+          roughness: '',
+          postProcess: '',
           price: this.partQuote
             ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
             : this.part.partStatusType.displayName
@@ -654,5 +685,10 @@ export class HistoricalBidComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  onPageSizeChange(ev) {
+    this.pageSize = ev.target.value;
+    this.gridOptions.api.paginationSetPageSize(this.pageSize);
   }
 }

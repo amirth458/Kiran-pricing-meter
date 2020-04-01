@@ -18,6 +18,7 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
 })
 export class PricingProfileComponent implements OnInit {
   @Input() part: Part;
+  @Input() rowData: any[];
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
   @ViewChild('checkBoxCell') checkBoxCell: TemplateRef<any>;
   type = ['search', 'filter'];
@@ -192,7 +193,6 @@ export class PricingProfileComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
   gridOptions: GridOptions;
-  rowData;
   pageSize = 10;
   navigation;
 
@@ -214,7 +214,6 @@ export class PricingProfileComponent implements OnInit {
       headerHeight: 35,
       onRowClicked: event => this.router.navigateByUrl(`${this.router.url}/pricing-profile/${event.data.id}`)
     };
-    this.getPricingProfiles();
   }
 
   onPageSizeChange(v) {
@@ -328,37 +327,6 @@ export class PricingProfileComponent implements OnInit {
     ];
   }
 
-  async getPricingProfiles(q = null) {
-    this.spinner.show();
-    this.pricingService
-      .getPricingProfiles(this.part.id)
-      .pipe(
-        catchError(e => {
-          const message = e.error.message;
-          this.spinner.hide();
-          console.log(message);
-          return throwError('Error');
-        })
-      )
-      .subscribe(res => {
-        this.rowData = res.map(item => ({
-          selected: false,
-          id: item.id,
-          vendorName: item.vendorProfile.name,
-          pricingProfile: item.name,
-          material: item.processProfile.processMachineServingMaterialList
-            .map(item => item.machineServingMaterial.material.name)
-            .join(', '),
-          equipment: item.processProfile.processMachineServingMaterialList
-            .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
-            .join(', '),
-          processProfile: item.processProfile.name,
-          totalCost: null
-        }));
-        this.spinner.hide();
-      });
-  }
-
   configureColumnDefs() {
     this.filterColumns.map(column => {
       this.columnDefs.map(col => {
@@ -396,6 +364,10 @@ export class PricingProfileComponent implements OnInit {
 
   showPartQuotePricingInfo() {
     this.spinner.show('spooler');
+    if (!this.selected$.getValue()) {
+      (this.rowData || []).map(row => (row.selected = true));
+      this.gridOptions.api.setRowData(this.rowData || []);
+    }
     this.pricingService
       .getPartQuoteByPricingIds(
         this.part.id,
@@ -409,6 +381,8 @@ export class PricingProfileComponent implements OnInit {
           (this.rowData || []).map(row => {
             if (v[row.id]) {
               row.totalCost = v[row.id].totalCost;
+            } else {
+              row.totalCost = null;
             }
           });
           this.gridOptions.api.setRowData(this.rowData || []);
@@ -426,6 +400,7 @@ export class PricingProfileComponent implements OnInit {
       row.selected = false;
     });
     this.valueChange();
+    this.gridOptions.api.setRowData(this.rowData || []);
     this.gridOptions.api.sizeColumnsToFit();
   }
 

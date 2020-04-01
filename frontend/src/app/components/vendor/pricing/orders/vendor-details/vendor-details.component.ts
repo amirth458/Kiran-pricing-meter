@@ -297,6 +297,14 @@ export class VendorDetailsComponent implements OnInit {
           sortable: true,
           filter: false,
           valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat)}` : '')
+        },
+        {
+          headerName: 'Shipping Address',
+          field: 'shippingAddress',
+          tooltipField: 'shippingAddress',
+          hide: false,
+          sortable: true,
+          filter: false
         }
       ],
       [
@@ -384,6 +392,15 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
+        },
+        {
+          headerName: 'Vendor Address',
+          valueGetter: params => {
+            return params.data.id
+              ? `${params.data.vendorProfile.street1 || ''}, ${params.data.vendorProfile.city || ''} ${params.data
+                  .vendorProfile.state || ''}, ${params.data.vendorProfile.country.name || ''}`
+              : '';
+          }
         },
         {
           headerName: 'Pricing Profile',
