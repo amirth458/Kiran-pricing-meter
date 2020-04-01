@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { Part, PartQuote } from 'src/app/model/part.model';
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
@@ -26,9 +26,9 @@ export class HistoricalBidComponent implements OnInit {
     fileViewRenderer: FileViewRendererComponent
   };
 
+  columnDefs: ColDef[] = [];
   pageSize = 10;
 
-  columnDefs = [];
   gridOptions: GridOptions;
   rowData: LegacyBidHistory[] = [];
 
@@ -179,6 +179,16 @@ export class HistoricalBidComponent implements OnInit {
       }
     },
     {
+      name: '$/unit',
+      field: 'unit',
+      tooltipField: 'unit',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
       name: 'L&M',
       field: 'vendorLaborAndMaterial',
       tooltipField: 'vendorLaborAndMaterial',
@@ -308,6 +318,12 @@ export class HistoricalBidComponent implements OnInit {
       name: 'TotalBid',
       field: 'vendorTotalBidAmount',
       tooltipField: 'vendorTotalBidAmount',
+      checked: true
+    },
+    {
+      name: '$/unit',
+      field: 'unit',
+      tooltipField: 'unit',
       checked: true
     },
     {
@@ -583,7 +599,24 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'vendorTotalBidAmount',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: value => {
+          return '$' + value.data.vendorTotalBidAmount;
+        }
+      },
+      {
+        headerName: '$/unit',
+        field: 'unit',
+        tooltipField: 'unit',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: value => {
+          console.log({ value });
+          const data = value.data;
+          const result = (data.vendorTotalBidAmount / data.partOnPlatform || '0').toString();
+          return '$' + result;
+        }
       },
       {
         headerName: 'L&M',
@@ -644,6 +677,7 @@ export class HistoricalBidComponent implements OnInit {
     this.spinner.show('spooler');
     this.biddingService.getBidHistory(this.part.id).subscribe((v: LegacyBidHistory[]) => {
       this.rowData = v;
+      console.log({ v });
       this.spinner.hide('spooler');
     });
   }

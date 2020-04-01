@@ -26,6 +26,15 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumns = [
     {
+      name: 'Vendor ID',
+      checked: false,
+      field: 'id',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
       name: 'Vendor Name',
       checked: false,
       field: 'vendorName',
@@ -63,6 +72,11 @@ export class ApproveVendorComponent implements OnInit {
     }
   ];
   filterColumns = [
+    {
+      name: 'Vendor ID',
+      checked: true,
+      field: 'id'
+    },
     {
       name: 'Vendor Name',
       checked: true,
@@ -113,6 +127,20 @@ export class ApproveVendorComponent implements OnInit {
       }
     },
     {
+      headerName: 'Vendor ID',
+      field: 'id',
+      hide: false,
+      sortable: true,
+      filter: false,
+      valueFormatter: event => {
+        const data = event.data;
+        if (data.vendor) {
+          return data.vendor.id;
+        }
+        return '';
+      }
+    },
+    {
       headerName: 'Vendor Name',
       field: 'vendorName',
       hide: false,
@@ -140,6 +168,27 @@ export class ApproveVendorComponent implements OnInit {
       sortable: true,
       filter: false,
       width: 120
+    },
+    {
+      headerName: 'Approved On',
+      field: 'approvedOn',
+      hide: false,
+      sortable: true,
+      filter: false,
+      valueFormatter: e => {
+        const data = e.data;
+        if (data.vendor) {
+          console.log(data.vendor, 'vendor');
+          if (data.vendor.approvedAt) {
+            console.log(data.vendor.approvedAt, 'at');
+            return new Date(data.vendor.approvedAt).toLocaleString();
+          } else {
+            return '-';
+          }
+        } else {
+          return '-';
+        }
+      }
     },
     {
       headerName: 'Actions',
@@ -235,10 +284,7 @@ export class ApproveVendorComponent implements OnInit {
       rowClassRules: {
         'non-approved': params => {
           if (params.data.vendor) {
-            return (
-              !params.data.vendor.approved &&
-              params.data.vendor.approvedAt === null
-            );
+            return !params.data.vendor.approved && params.data.vendor.approvedAt === null;
           }
           return false;
         },
@@ -250,10 +296,7 @@ export class ApproveVendorComponent implements OnInit {
         },
         declined: params => {
           if (params.data.vendor) {
-            return (
-              !params.data.vendor.approved &&
-              params.data.vendor.approvedAt !== null
-            );
+            return !params.data.vendor.approved && params.data.vendor.approvedAt !== null;
           }
           return false;
         }
@@ -335,12 +378,8 @@ export class ApproveVendorComponent implements OnInit {
       ...user,
       vendorName: user.vendor ? user.vendor.name : '',
       email: user.vendor ? user.vendor.email : '',
-      country:
-        user.vendor && user.vendor.country ? user.vendor.country.name : '',
-      confidentiality:
-        user.vendor && user.vendor.confidentiality
-          ? user.vendor.confidentiality.name
-          : ''
+      country: user.vendor && user.vendor.country ? user.vendor.country.name : '',
+      confidentiality: user.vendor && user.vendor.confidentiality ? user.vendor.confidentiality.name : ''
     }));
   }
 
@@ -365,9 +404,7 @@ export class ApproveVendorComponent implements OnInit {
         this.vendorStatusChanged(this.vendorStatus);
         this.toastr.success('Vendors are approved.');
       } catch (e) {
-        this.toastr.error(
-          'We are sorry, Vendors are not approved with some error. Please try again later.'
-        );
+        this.toastr.error('We are sorry, Vendors are not approved with some error. Please try again later.');
       } finally {
         this.spineer.hide();
       }
@@ -379,9 +416,7 @@ export class ApproveVendorComponent implements OnInit {
     const name = [];
     let userIds = data.map(node => {
       if (node.data.vendor) {
-        name.push(
-          `${node.data.vendor.primaryContactFirstName} ${node.data.vendor.primaryContactLastName}`
-        );
+        name.push(`${node.data.vendor.primaryContactFirstName} ${node.data.vendor.primaryContactLastName}`);
         return node.data.vendor.id;
       } else {
         return null;
@@ -404,17 +439,13 @@ export class ApproveVendorComponent implements OnInit {
     }
     try {
       this.spineer.show();
-      await this.userService
-        .declineUsers(this.selectedUserIds, this.declineComments)
-        .toPromise();
+      await this.userService.declineUsers(this.selectedUserIds, this.declineComments).toPromise();
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendors are declined.');
       this.modal.nativeElement.click();
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendors are not declined with some error. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
       this.modal.nativeElement.click();
     } finally {
       this.spineer.hide();
@@ -429,9 +460,7 @@ export class ApproveVendorComponent implements OnInit {
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendor is decliend.');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not declined. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
     } finally {
       this.spineer.hide();
     }
@@ -445,9 +474,7 @@ export class ApproveVendorComponent implements OnInit {
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendor is approved.');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not approved. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
     } finally {
       this.spineer.hide();
     }
@@ -455,9 +482,7 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
