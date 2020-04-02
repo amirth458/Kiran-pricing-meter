@@ -8,6 +8,7 @@ import { BiddingService } from 'src/app/service/bidding.service';
 import { LegacyBidHistory } from 'src/app/model/billing.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { OrdersService } from 'src/app/service/orders.service';
 
 @Component({
   selector: 'app-historical-bid',
@@ -20,6 +21,7 @@ export class HistoricalBidComponent implements OnInit {
   @Input() partQuote: PartQuote;
 
   partInfoGridOptions: GridOptions;
+  measurementUnits = [];
   partInformation = [];
   partInfoColumnDefs = [];
   frameworkComponents = {
@@ -356,10 +358,17 @@ export class HistoricalBidComponent implements OnInit {
     public currencyPipe: CurrencyPipe,
     public biddingService: BiddingService,
     public toastr: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public orderService: OrdersService
   ) {}
 
   ngOnInit() {
+    this.orderService.getAllMeasurementUnitType().subscribe(i => {
+      this.measurementUnits = i.metadataList;
+    });
+
+    this.updateRowData();
+
     this.partInfoColumnDefs = [
       {
         headerName: 'Customer',
@@ -422,6 +431,43 @@ export class HistoricalBidComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: dt => (dt.value || []).join(' , ')
+      },
+      {
+        headerName: 'X',
+        field: 'x',
+        tooltipField: 'x',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: dt => dt.data.partDimension.x.value + this.getUnitSymbol(dt.data.partDimension.x.unitId)
+      },
+      {
+        headerName: 'Y',
+        field: 'y',
+        tooltipField: 'y',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: dt => dt.data.partDimension.y.value + this.getUnitSymbol(dt.data.partDimension.y.unitId)
+      },
+      {
+        headerName: 'Z',
+        field: 'z',
+        tooltipField: 'z',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: dt => dt.data.partDimension.z.value + this.getUnitSymbol(dt.data.partDimension.z.unitId)
+      },
+      {
+        headerName: 'Volume',
+        field: 'volume',
+        tooltipField: 'volume',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: dt =>
+          dt.data.partDimension.volume.value + this.getUnitSymbol(dt.data.partDimension.volume.unitId)
       }
     ];
     this.partInfoGridOptions = {
@@ -431,7 +477,6 @@ export class HistoricalBidComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
-    this.updateRowData();
 
     this.initColumns();
     this.gridOptions = {
@@ -443,6 +488,14 @@ export class HistoricalBidComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
+  }
+
+  getUnitSymbol(unitId) {
+    const result = this.measurementUnits.filter(item => item.id == unitId);
+    if (result.length) {
+      return ' ' + result[0].symbol;
+    }
+    return '';
   }
 
   configureColumnDefs() {
@@ -670,7 +723,8 @@ export class HistoricalBidComponent implements OnInit {
           postProcess: '',
           price: this.partQuote
             ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
-            : this.part.partStatusType.displayName
+            : this.part.partStatusType.displayName,
+          partDimension: this.part.rfqMedia.media.partDimension
         }
       ];
     }
