@@ -64,15 +64,6 @@ export class ProcessProfileComponent implements OnInit {
         type: '',
         filter: ''
       }
-    },
-    {
-      name: 'PricingProfile',
-      field: 'pricingProfile',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
     }
   ];
 
@@ -100,11 +91,6 @@ export class ProcessProfileComponent implements OnInit {
     {
       name: 'Material',
       field: 'material',
-      checked: true
-    },
-    {
-      name: 'PricingProfile',
-      field: 'pricingProfile',
       checked: true
     }
   ];
@@ -189,14 +175,6 @@ export class ProcessProfileComponent implements OnInit {
       {
         headerName: 'Material',
         field: 'material',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltip: params => params.value
-      },
-      {
-        headerName: 'PricingProfile',
-        field: 'pricingProfile',
         hide: false,
         sortable: true,
         filter: false,

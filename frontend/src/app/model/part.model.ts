@@ -303,6 +303,7 @@ export interface ProcessProfile {
   name: string;
   parameterNickName: string;
   vendorId: number;
+  vendorEmailAddress?: string;
   processProfileType: Type;
   processAction: any;
   processMachineServingMaterialList: ProcessMachineServingMaterial[];

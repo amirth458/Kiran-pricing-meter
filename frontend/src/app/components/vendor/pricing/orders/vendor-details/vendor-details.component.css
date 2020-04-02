@@ -142,3 +142,7 @@ a.priority-btn:not([href]) {
 .release-btn {
   font-size: 12px;
 }
+
+.text-btn {
+  font-size: 18px;
+}
