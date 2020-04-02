@@ -20,6 +20,8 @@ import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
 
+import { DefaultEmails } from '../../../../../../assets/constants.js';
+
 @Component({
   selector: 'app-vendor-details',
   templateUrl: './vendor-details.component.html',
@@ -32,8 +34,11 @@ export class VendorDetailsComponent implements OnInit {
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
+  @ViewChild('sendEmailCell') sendEmailCell: TemplateRef<any>;
   @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
   @ViewChild('supplierStatusCell') supplierStatusCell: TemplateRef<any>;
+
+  @ViewChild('sendMailModal') sendMailModal;
 
   timeToExpire = null;
   changePriority = false;
@@ -57,6 +62,11 @@ export class VendorDetailsComponent implements OnInit {
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
+
+  from = '';
+  to = '';
+  cc = [];
+  bcc = [];
 
   constructor(
     public biddingService: BiddingService,
@@ -551,6 +561,17 @@ export class VendorDetailsComponent implements OnInit {
         cellRendererParams: {
           ngTemplate: this.statusCell
         }
+      },
+      this.type === 'confirmation' && {
+        headerName: '',
+        cellClass: 'p-0',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.sendEmailCell
+        }
       }
     ]);
     // View vendor profile matching
@@ -782,5 +803,18 @@ export class VendorDetailsComponent implements OnInit {
     } else {
       this.toaster.error('There is no process profile associated wit this bidding!');
     }
+  }
+
+  sendMail(ev = null) {
+    this.from = DefaultEmails.from;
+    this.to = DefaultEmails.to;
+    this.cc = [];
+    this.bcc = ev
+      ? [ev.processProfileViews[0].vendorEmailAddress]
+      : this.bidding.map(item => item.processProfileViews[0].vendorEmailAddress);
+    this.modalService.open(this.sendMailModal, {
+      centered: true,
+      size: 'lg'
+    });
   }
 }

@@ -118,11 +118,21 @@
       </div>
     </ng-template>
   </div>
-  <div class="d-flex justify-content-between mt-4 align-items-center" *ngIf="bidOrderId">
-    <p class="part-header font-weight-bold">Bidding Status</p>
-    <a class="priority-btn" (click)="toggleVendorList = !toggleVendorList">{{
-      toggleVendorList ? 'View Vendor List' : 'View Matching Profile'
-    }}</a>
+  <div class="d-flex justify-content-between mt-4 mb-2 align-items-center" *ngIf="bidOrderId">
+    <span class="part-header font-weight-bold">Bidding Status</span>
+    <div class="d-flex align-items-center">
+      <button
+        class="btn theme btn-primary px-4 py-2 mr-4"
+        *ngIf="type === 'confirmation'"
+        [disabled]="(bidding || []).length === 0"
+        (click)="sendMail()"
+      >
+        <small><i class="far fa-envelope"></i> &nbsp;Send Mail</small>
+      </button>
+      <a class="priority-btn text-nowrap" (click)="toggleVendorList = !toggleVendorList">{{
+        toggleVendorList ? 'View Vendor List' : 'View Matching Profile'
+      }}</a>
+    </div>
   </div>
   <div class="row" *ngIf="bidOrderId">
     <div class="col-12 theme-table bidding-orders">
@@ -339,4 +349,12 @@
     <a class="text-danger" *ngIf="row[column?.colDef?.field]" (click)="valueChange(row)">Remove from list</a>
     <a class="text-green" *ngIf="!row[column?.colDef?.field]" (click)="valueChange(row)">Move to the list</a>
   </div>
+</ng-template>
+
+<ng-template #sendEmailCell let-row let-column="params">
+  <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)"><i class="far fa-envelope"></i></span>
+</ng-template>
+
+<ng-template #sendMailModal let-modal>
+  <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
 </ng-template>

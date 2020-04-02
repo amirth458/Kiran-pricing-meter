@@ -137,6 +137,11 @@ export class OrdersService {
     return this.http.put(url, data);
   }
 
+  getProcessProfiles(rfqMediaId: number): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/part/matching-process-profile?rfq-media-id=${rfqMediaId}`;
+    return this.http.get<any>(url);
+  }
+
   getMatchedProfiles(
     userId: number,
     rfqMediaIds: number[],

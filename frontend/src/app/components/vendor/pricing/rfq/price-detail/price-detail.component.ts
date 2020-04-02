@@ -107,23 +107,16 @@ export class PriceDetailComponent implements OnInit {
 
   async getProcessProfile(q = null) {
     this.spinner.show();
-    const res = await this.ordersService
-      .getMatchedProfiles(this.userService.getUserInfo().id, [this.part.rfqMedia.id])
-      .toPromise();
+    const res = await this.ordersService.getProcessProfiles(this.part.rfqMedia.id).toPromise();
 
     this.processProfiles = res.map(item => ({
-      id: item.processProfileView.id,
+      id: item.processProfileId,
       profileId: item.processProfileId,
-      vendorName: item.vendorProfile.name,
-      processProfileName: item.processProfileView.name,
-      facilityName:
-        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
-          .vendorFacility.name,
-      pricingProfile: item.processPricingViews && item.processPricingViews.map(v => v.name).join(', '),
-      material: this.getAllMaterials(item.processProfileView.processMachineServingMaterialList),
-      equipment:
-        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment
-          .name
+      vendorName: item.corporateName,
+      processProfileName: item.processProfileName,
+      facilityName: item.facilityName,
+      material: item.material,
+      equipment: item.equipment
     }));
     this.spinner.hide();
   }

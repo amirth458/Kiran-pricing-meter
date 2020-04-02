@@ -88,6 +88,7 @@ import { PasswordComponent } from './admin/password/password.component';
 import { ShippingComponent } from './admin/shipping/shipping.component';
 import { ContactComponent } from './admin/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
+import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 
 @NgModule({
   declarations: [
@@ -157,9 +158,6 @@ import { ProjectsListComponent } from './vendor/projects/projects-list/projects-
     PartItemDetailsComponent,
     WaitingForApprovalComponent,
 
-    // Pipes
-    ConfirmOrderFilterPipe,
-    SupplierPipe,
     HistoricalBidComponent,
     ProjectsContainerComponent,
     OrderDetailComponent,
@@ -168,7 +166,12 @@ import { ProjectsListComponent } from './vendor/projects/projects-list/projects-
     PasswordComponent,
     ShippingComponent,
     ContactComponent,
-    ProjectsListComponent
+    ProjectsListComponent,
+    SendMailModalComponent,
+
+    // Pipes
+    ConfirmOrderFilterPipe,
+    SupplierPipe
   ],
   imports: [
     CommonModule,
