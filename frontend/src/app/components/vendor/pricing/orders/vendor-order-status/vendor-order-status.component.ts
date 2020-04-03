@@ -22,7 +22,7 @@ export class VendorOrderStatusComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
   gridOptions: GridOptions;
-  rowData;
+  rowData = [];
 
   jobColDefs = [];
   jobGridOptions: GridOptions;
@@ -42,7 +42,7 @@ export class VendorOrderStatusComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
-    this.gridOptions = { ...{ columnDefs: this.orderColDefs }, ...defaultOptions };
+    this.gridOptions = { ...defaultOptions, ...{ columnDefs: this.orderColDefs, pagination: false } };
     this.jobGridOptions = { ...{ columnDefs: this.jobColDefs }, ...defaultOptions };
     this.taskGridOptions = { ...{ columnDefs: this.taskColDefs }, ...defaultOptions };
   }
@@ -233,5 +233,15 @@ export class VendorOrderStatusComponent implements OnInit {
         }
       }
     ];
+  }
+
+  onGridReady(type: string) {
+    if (type === 'orders') {
+      this.gridOptions.api.sizeColumnsToFit();
+    } else if (type === 'jobs') {
+      this.jobGridOptions.api.sizeColumnsToFit();
+    } else {
+      this.taskGridOptions.api.sizeColumnsToFit();
+    }
   }
 }

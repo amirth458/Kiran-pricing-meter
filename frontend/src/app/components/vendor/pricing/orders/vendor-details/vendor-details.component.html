@@ -259,11 +259,11 @@
   <ng-container *ngIf="row.bidProcessStatus">
     <ng-container [ngSwitch]="row.bidProcessStatus.name">
       <ng-container *ngSwitchCase="biddingStatus.ACCEPTED">
-        <div class="d-flex flex-row pt-1 pb-1">
-          <strong class="text-theme-green">
+        <div class="d-flex flex-row pt-1 pb-1 align-items-center">
+          <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
           </strong>
-          <button (click)="viewOrderInfo()">
+          <button class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold" (click)="viewOrderInfo()">
             See Order Status
           </button>
           <button

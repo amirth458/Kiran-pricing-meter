@@ -1,4 +1,4 @@
-<div class="table theme-table order-grid flex-grow-1 pl-1 pr-1">
+<div class="table theme-table order-grid flex-grow-1 pb-3">
   <ag-grid-angular
     class="ag-theme-balham w-100"
     [class.grid-empty]="!(rowData?.length > 0)"
@@ -6,11 +6,12 @@
     [rowData]="rowData"
     [gridOptions]="gridOptions"
     [domLayout]="'autoHeight'"
+    (gridReady)="onGridReady('orders')"
   >
   </ag-grid-angular>
 </div>
 
-<div class="table theme-table job-grid flex-grow-1 pl-1 pr-1">
+<div class="table theme-table job-grid flex-grow-1 pt-3 pb-3">
   <ag-grid-angular
     class="ag-theme-balham w-100"
     [class.grid-empty]="!(rowData?.length > 0)"
@@ -18,11 +19,12 @@
     [rowData]="rowData"
     [gridOptions]="jobGridOptions"
     [domLayout]="'autoHeight'"
+    (gridReady)="onGridReady('jobs')"
   >
   </ag-grid-angular>
 </div>
 
-<div class="table theme-table task-grid flex-grow-1 pl-1 pr-1">
+<div class="table theme-table task-grid flex-grow-1 pt-3 pb-3">
   <ag-grid-angular
     class="ag-theme-balham w-100"
     [class.grid-empty]="!(rowData?.length > 0)"
@@ -30,6 +32,7 @@
     [rowData]="rowData"
     [gridOptions]="taskGridOptions"
     [domLayout]="'autoHeight'"
+    (gridReady)="onGridReady('tasks')"
   >
   </ag-grid-angular>
 </div>
