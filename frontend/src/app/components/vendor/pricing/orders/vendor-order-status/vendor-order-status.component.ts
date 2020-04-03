@@ -259,7 +259,7 @@ export class VendorOrderStatusComponent implements OnInit {
   }
 
   viewTasks(job: any) {
-    this.tasks = (job.tasks || []).concat(job.tasks || []);
+    this.tasks = job.tasks || [];
   }
 
   onGridReady(type: string) {
