@@ -130,6 +130,7 @@ export class ApproveVendorComponent implements OnInit {
       headerName: 'Vendor ID',
       field: 'id',
       hide: false,
+      width: 130,
       sortable: true,
       filter: false,
       valueFormatter: event => {
@@ -193,7 +194,7 @@ export class ApproveVendorComponent implements OnInit {
     {
       headerName: 'Actions',
       filter: false,
-      width: 150,
+      width: 170,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
