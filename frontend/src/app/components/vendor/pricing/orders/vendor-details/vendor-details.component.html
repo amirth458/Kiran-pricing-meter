@@ -142,6 +142,8 @@
         [class.grid-empty]="(bidding || []).length === 0"
         [rowData]="bidding"
         [gridOptions]="gridOptions[4]"
+        rowSelection="multiple"
+        [rowMultiSelectWithClick]="true"
         (gridReady)="onGridReady(4, $event)"
         domLayout="autoHeight"
       ></ag-grid-angular>
