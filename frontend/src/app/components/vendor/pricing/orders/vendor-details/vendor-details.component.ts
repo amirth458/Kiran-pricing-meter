@@ -520,7 +520,8 @@ export class VendorDetailsComponent implements OnInit {
         maxWidth: 100,
         hide: false,
         sortable: false,
-        filter: false
+        filter: false,
+        checkboxSelection: this.type === 'confirmation'
       },
       {
         headerName: 'Vendor Name',
@@ -819,7 +820,7 @@ export class VendorDetailsComponent implements OnInit {
     this.cc = [];
     this.bcc = ev
       ? [ev.processProfileViews[0].vendorEmailAddress]
-      : this.bidding.map(item => item.processProfileViews[0].vendorEmailAddress);
+      : this.gridOptions[4].api.getSelectedRows().map(item => item.processProfileViews[0].vendorEmailAddress);
     this.modalService.open(this.sendMailModal, {
       centered: true,
       size: 'lg'
