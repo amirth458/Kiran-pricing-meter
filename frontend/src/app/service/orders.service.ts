@@ -420,4 +420,10 @@ export class OrdersService {
         )
       : of([]);
   }
+
+  getVendorOrderInfo(bidProcessId: number): Observable<any> {
+    return this.http.get<any>(
+      `${environment.apiBaseUrl}/admin/vendor/vendor-order-details?include-task=true&bid-process-id=${bidProcessId}`
+    );
+  }
 }
