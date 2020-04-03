@@ -63,6 +63,7 @@ export class VendorDetailsComponent implements OnInit {
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
+  selectedBidProcessId: number;
 
   from = '';
   to = '';
@@ -156,16 +157,16 @@ export class VendorDetailsComponent implements OnInit {
       const vendors = [];
       this.bidding.map(match => {
         (match.processProfileViews || []).map(p => {
-          let count = match.id.toString();
+          let counterValue = match.id.toString();
           let status = match.bidProcessStatus;
           if (!(vendors.indexOf(match.vendorName) > -1)) {
             vendors.push(match.vendorName);
           } else {
-            count = '';
+            counterValue = '';
             status = null;
           }
           this.matchedProfiles.push({
-            id: count,
+            id: counterValue,
             vendorId: p.vendorId,
             profileId: p.id,
             vendorName: match.vendorName,
@@ -781,11 +782,14 @@ export class VendorDetailsComponent implements OnInit {
     });
   }
 
-  viewOrderInfo() {
-    this.modalService.open(this.orderStatusTemplate, {
+  viewOrderInfo(id: number) {
+    this.selectedBidProcessId = id;
+    const modalOptions: any = {
       centered: true,
-      windowClass: 'order-status-modal'
-    });
+      windowClass: 'order-status-modal',
+      scrollable: true
+    };
+    this.modalService.open(this.orderStatusTemplate, modalOptions);
   }
 
   onConfirmBidding() {

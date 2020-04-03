@@ -34,6 +34,10 @@
   --theme-text-color: #4a6077;
   --theme-bright-blue: #0e6dcb;
   --theme-purple: #706cd8;
+
+  --theme-yellow-progressbar: #ffde55;
+  --theme-light-green-progressbar: #74bf09;
+  --theme-highlighted-row: #f4f5fa;
 }
 
 .bg-dark-blue {
@@ -529,7 +533,8 @@ app-dropdown-cell-renderer {
 
 /* Vendor order info modal */
 .order-status-modal .modal-dialog {
-  max-width: 750px;
+  max-width: 75% !important;
+  width: 75% !important;
   height: 100%;
 }
 

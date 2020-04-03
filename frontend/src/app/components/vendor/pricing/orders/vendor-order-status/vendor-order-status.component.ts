@@ -1,7 +1,11 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+
 import { GridOptions } from 'ag-grid-community';
+
 import { BehaviorSubject } from 'rxjs';
+
+import { OrdersService } from '../../../../../service/orders.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-vendor-order-status',
@@ -10,28 +14,39 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class VendorOrderStatusComponent implements OnInit {
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
-  @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('jobNumberCell') jobNumberCell: TemplateRef<any>;
   @ViewChild('textCell') textCell: TemplateRef<any>;
 
-  @Input() orderId: number;
-  @Input() partId: number;
+  id: number;
+  @Input()
+  set bidProcessId(value: number) {
+    this.id = value;
+    if (value) {
+      this.getVendorOrderInfo();
+    }
+  }
+  get bidProcessId(): number {
+    return this.id;
+  }
 
   orderColDefs = [];
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
   gridOptions: GridOptions;
-  rowData = [];
+  orders = [];
 
   jobColDefs = [];
   jobGridOptions: GridOptions;
   selectedJobId$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  jobs = [];
+  selectedJob: any;
 
   taskColDefs = [];
   taskGridOptions: GridOptions;
+  tasks = [];
 
-  constructor() {}
+  constructor(public orderService: OrdersService) {}
 
   ngOnInit() {
     this.initColumns();
@@ -47,11 +62,38 @@ export class VendorOrderStatusComponent implements OnInit {
     this.taskGridOptions = { ...{ columnDefs: this.taskColDefs }, ...defaultOptions };
   }
 
+  progressIndicatorClass(item: any): string {
+    const cls = '';
+    if (item && item.value) {
+      return (item.value || '').toLowerCase().replace(/\s+/g, '-');
+    }
+    return cls;
+  }
+
+  getVendorOrderInfo() {
+    this.orderService.getVendorOrderInfo(this.id).subscribe(v => {
+      this.orders = v ? [v] : [];
+      (v.vendorSubOrders || []).map(part => {
+        const arr = [];
+        (part.jobs || []).map(job => arr.push({ ...job, ...{ partId: part.id, orderId: v.id } }));
+        this.jobs = arr;
+      });
+      this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
+      this.viewTasks(this.selectedJob || {});
+    });
+  }
+
   initColumns() {
     this.orderColDefs = [
-      { headerName: 'Vendor ID', field: 'vendorId', hide: false, sortable: true, filter: false },
-      { headerName: 'Tracking Number', field: 'trackingNumber', hide: false, sortable: true, filter: false },
-      { headerName: 'Order Status', field: 'orderStatus', hide: false, sortable: true, filter: false }
+      { headerName: 'Vendor ID', field: 'vendorId', hide: false, sortable: false, filter: false },
+      { headerName: 'Tracking Number', field: 'trackingNumber', hide: false, sortable: false, filter: false },
+      {
+        headerName: 'Order Status',
+        field: 'vendorOrderStatusType.displayName',
+        hide: false,
+        sortable: false,
+        filter: false
+      }
     ];
     this.jobColDefs = [
       {
@@ -61,7 +103,7 @@ export class VendorOrderStatusComponent implements OnInit {
         filter: false,
         width: 100,
         maxWidth: 100,
-        cellClass: 'p-0',
+        cellClass: 'p-0 progress-column',
         sort: 'desc',
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
@@ -97,13 +139,9 @@ export class VendorOrderStatusComponent implements OnInit {
       },
       {
         headerName: 'Status',
-        field: 'statusId',
+        field: 'status.value',
         hide: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.statusCell
-        }
+        filter: false
       },
       {
         headerName: 'Estimated Completion',
@@ -124,40 +162,34 @@ export class VendorOrderStatusComponent implements OnInit {
     ];
     this.taskColDefs = [
       {
-        headerName: '* Task No',
+        headerName: 'Task No',
         field: 'taskNo',
         hide: false,
         sortable: true,
         filter: false,
-        editable: true,
         width: 120,
         maxWidth: 120,
+        minWidth: 120,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.jobNumberCell
         }
       },
       {
-        headerName: '* Stage',
-        field: 'vendorTaskStageId',
+        headerName: 'Stage',
+        field: 'vendorTaskStage.value',
         hide: false,
         sortable: false,
-        filter: false,
-        editable: true,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.statusCell
-        }
+        filter: false
       },
       {
-        headerName: '* Task Description',
+        headerName: 'Task Description',
         headerTooltip: 'Task Description',
         cellClass: 'p-0',
         field: 'description',
         hide: false,
         sortable: false,
         filter: false,
-        editable: true,
         width: 250,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
@@ -172,7 +204,6 @@ export class VendorOrderStatusComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        editable: true,
         width: 250,
         minWidth: 250,
         cellRenderer: 'templateRenderer',
@@ -182,50 +213,32 @@ export class VendorOrderStatusComponent implements OnInit {
         }
       },
       {
-        headerName: '* Asset',
+        headerName: 'Asset',
         field: 'asset',
         hide: false,
         sortable: false,
         filter: false,
-        editable: true,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.textCell
         }
       },
       {
-        headerName: '* Estimated Task Time (HH:MM)',
-        headerTooltip: 'Estimated Task Time (HH:MM)',
+        headerName: 'Estimated Time To Complete Task',
+        headerTooltip: 'Estimated Time To Complete Task',
         field: 'estimatedTaskTime',
         hide: false,
         sortable: false,
-        filter: false,
-        editable: true
+        filter: false
       },
       {
-        headerName: 'Estimated Begin',
-        headerTooltip: 'Estimated Begin',
-        field: 'estimatedBeginDate',
+        headerName: 'Actual Task Time',
+        headerTooltip: 'Actual Task Time',
+        field: 'actualCompleteDateTime',
         cellClass: 'p-0',
         hide: false,
         sortable: false,
         filter: false,
-        editable: true,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.dateCell,
-          tooltipCell: true
-        }
-      },
-      {
-        headerName: 'Estimated Complete',
-        headerTooltip: 'Estimated Complete',
-        cellClass: 'p-0',
-        field: 'estimatedCompletionDate',
-        hide: false,
-        sortable: false,
-        filter: false,
-        editable: true,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.dateCell,
@@ -233,6 +246,20 @@ export class VendorOrderStatusComponent implements OnInit {
         }
       }
     ];
+  }
+
+  onFirstDataRendered() {
+    this.jobGridOptions.api.getDisplayedRowAtIndex(0).setSelected(true);
+  }
+
+  onSelectionChanged() {
+    const row = this.jobGridOptions.api.getSelectedRows()[0];
+    this.selectedJob = row;
+    this.viewTasks(row);
+  }
+
+  viewTasks(job: any) {
+    this.tasks = job.tasks || [];
   }
 
   onGridReady(type: string) {

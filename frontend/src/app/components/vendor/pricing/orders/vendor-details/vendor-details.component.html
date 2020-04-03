@@ -265,7 +265,10 @@
           <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
           </strong>
-          <button class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold" (click)="viewOrderInfo()">
+          <button
+            class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold"
+            (click)="viewOrderInfo(row?.bidProcessId)"
+          >
             See Order Status
           </button>
           <button
@@ -375,7 +378,8 @@
       </button>
     </div>
     <div class="modal-container p-4">
-      <app-vendor-order-status> </app-vendor-order-status>
+      <app-vendor-order-status [bidProcessId]="selectedBidProcessId" *ngIf="selectedBidProcessId">
+      </app-vendor-order-status>
     </div>
   </div>
 </ng-template>
