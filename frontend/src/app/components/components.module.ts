@@ -89,6 +89,7 @@ import { ShippingComponent } from './admin/shipping/shipping.component';
 import { ContactComponent } from './admin/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
+import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +172,8 @@ import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-moda
 
     // Pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
+    SupplierPipe,
+    VendorOrderStatusComponent
   ],
   imports: [
     CommonModule,
