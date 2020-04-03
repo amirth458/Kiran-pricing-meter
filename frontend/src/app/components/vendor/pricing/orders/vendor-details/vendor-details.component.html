@@ -161,7 +161,7 @@
 <ng-template #content let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">
+      <h5 class="modal-title">
         Confirm Sub-Order Release
       </h5>
     </div>
@@ -232,7 +232,7 @@
 <ng-template #pricingProfileModal let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
+      <h5 class="modal-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
       <a (click)="modal.dismiss()">
         <i class="fa fa-times"></i>
       </a>
@@ -241,7 +241,7 @@
       <p class="text-center">
         {{ pricingProfile?.processProfileName }}
       </p>
-      <div class="col-12 theme-table ">
+      <div class="col-12 theme-table">
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
           [class.grid-empty]="(pricingProfile?.pricing || []).length === 0"
@@ -263,6 +263,9 @@
           <strong class="text-theme-green">
             {{ row.bidProcessStatus.description | titlecase }}
           </strong>
+          <button (click)="viewOrderInfo()">
+            See Order Status
+          </button>
           <button
             class="btn btn-primary confirm-btn ml-4 btn-sm"
             *ngIf="type === 'confirmation' && !toggleVendorList"
@@ -357,4 +360,20 @@
 
 <ng-template #sendMailModal let-modal>
   <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
+</ng-template>
+
+<ng-template #orderStatusTemplate let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title text-left pt-2 pl-2">
+        Order Status No 123
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-container p-4">
+      <app-vendor-order-status> </app-vendor-order-status>
+    </div>
+  </div>
 </ng-template>

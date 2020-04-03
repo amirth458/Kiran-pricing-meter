@@ -39,6 +39,7 @@ export class VendorDetailsComponent implements OnInit {
   @ViewChild('supplierStatusCell') supplierStatusCell: TemplateRef<any>;
 
   @ViewChild('sendMailModal') sendMailModal;
+  @ViewChild('orderStatusTemplate') orderStatusTemplate;
 
   timeToExpire = null;
   changePriority = false;
@@ -776,6 +777,13 @@ export class VendorDetailsComponent implements OnInit {
     this.modalService.open(this.confirmBidding, {
       centered: true,
       windowClass: 'bidding-confirm'
+    });
+  }
+
+  viewOrderInfo() {
+    this.modalService.open(this.orderStatusTemplate, {
+      centered: true,
+      windowClass: 'order-status-modal'
     });
   }
 

@@ -507,22 +507,42 @@ app-dropdown-cell-renderer {
 /*Bidding Confirmation Modal*/
 
 /* breakdown pricing  window */
-.break-down-modal .modal-dialog {
+.break-down-modal .modal-dialog,
+.order-status-modal .modal-dialog {
   max-width: 600px;
 }
 
-.break-down-modal .modal-dialog .title {
+.break-down-modal .modal-dialog .title,
+.order-status-modal .modal-dialog .title {
   color: white;
   background: var(--theme-grid-header);
 }
 
-.break-down-modal .modal-title {
+.break-down-modal .modal-title,
+.order-status-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
-  color: var(--them-dark-blue-opaque);
+  color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
 }
 
 /* breakdown pricing  window */
+
+/* Vendor order info modal */
+.order-status-modal .modal-dialog {
+  max-width: 750px;
+  height: 100%;
+}
+
+.order-status-modal .modal-header {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.order-status-modal .modal-title {
+  border-left: 4px solid var(--them-dark-blue-opaque);
+  color: var(--them-dark-blue-opaque) !important;
+  opacity: 0.5;
+}
+/* Vendor order info modal */
 
 /* Refresh modal window */
 .refresh-modal .modal-dialog {
