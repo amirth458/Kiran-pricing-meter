@@ -10,12 +10,18 @@ export class Util {
   static measurementUnit = 'mm';
   static hoursMinuteConverter = 'HH:mm';
 
-  static convertMinutesToDate(minutes: number): Date {
+  static convertMinutesToDate(minutes: number): string {
     dayjs.extend(utc);
     return dayjs()
       .startOf('day')
       .add(minutes, 'minute')
       .format(Util.hoursMinuteConverter);
+  }
+
+  static dateDiff(dt: any, dt1: any, unit: any): string {
+    const first = dayjs(dt);
+    const second = dayjs(dt1);
+    return Util.convertMinutesToDate(second.diff(first, unit));
   }
 
   static getPartDimension(dimension: PartDimension, measurements: any = []) {

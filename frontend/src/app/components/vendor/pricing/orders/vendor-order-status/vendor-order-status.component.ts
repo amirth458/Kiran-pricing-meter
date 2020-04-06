@@ -191,7 +191,6 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Task Description',
         headerTooltip: 'Task Description',
-        cellClass: 'p-0',
         field: 'description',
         hide: false,
         sortable: false,
@@ -206,7 +205,6 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Notes',
         field: 'notes',
-        cellClass: 'p-0',
         hide: false,
         sortable: false,
         filter: false,
@@ -240,16 +238,10 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Actual Task Time',
         headerTooltip: 'Actual Task Time',
-        field: 'actualCompleteDateTime',
-        cellClass: 'p-0',
+        field: 'actualCompletionTime',
         hide: false,
         sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.dateCell,
-          tooltipCell: true
-        }
+        filter: false
       }
     ];
   }
@@ -267,6 +259,9 @@ export class VendorOrderStatusComponent implements OnInit {
   viewTasks(job: any) {
     (job.tasks || []).map((task: any) => {
       task.taskTime = Util.convertMinutesToDate(task.estimatedTaskTime);
+      if (task.actualBeginDateTime && task.actualCompleteDateTime) {
+        task.actualCompletionTime = Util.dateDiff(task.actualBeginDateTime, task.actualCompleteDateTime, 'minutes');
+      }
     });
     this.tasks = job.tasks || [];
     if (this.taskGridOptions && this.taskGridOptions.columnApi && this.taskGridOptions.columnApi.getColumn('taskNo')) {
