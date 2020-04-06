@@ -69,6 +69,24 @@ export class ApproveVendorComponent implements OnInit {
         type: '',
         filter: ''
       }
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: false,
+      field: 'lastLoginAttempt',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Approved On',
+      checked: false,
+      field: 'approvedOn',
+      query: {
+        type: '',
+        filter: ''
+      }
     }
   ];
   filterColumns = [
@@ -96,6 +114,16 @@ export class ApproveVendorComponent implements OnInit {
       name: 'Confidentiality',
       checked: true,
       field: 'confidentiality'
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: true,
+      field: 'lastLoginAttempt'
+    },
+    {
+      name: 'Approved On',
+      checked: true,
+      field: 'approvedOn'
     }
   ];
   type = ['search', 'filter'];
@@ -130,6 +158,7 @@ export class ApproveVendorComponent implements OnInit {
       headerName: 'Vendor ID',
       field: 'id',
       hide: false,
+      width: 130,
       sortable: true,
       filter: false,
       valueFormatter: event => {
@@ -183,17 +212,31 @@ export class ApproveVendorComponent implements OnInit {
             console.log(data.vendor.approvedAt, 'at');
             return new Date(data.vendor.approvedAt).toLocaleString();
           } else {
-            return '-';
+            return '';
           }
         } else {
-          return '-';
+          return '';
         }
+      }
+    },
+    {
+      headerName: 'Last Login Attempt',
+      field: 'lastLoginAttempt',
+      hide: true,
+      sortable: true,
+      filter: false,
+      valueFormatter: v => {
+        const value = v.value;
+        if (!value) {
+          return '';
+        }
+        return new Date(value).toLocaleString();
       }
     },
     {
       headerName: 'Actions',
       filter: false,
-      width: 150,
+      width: 170,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
