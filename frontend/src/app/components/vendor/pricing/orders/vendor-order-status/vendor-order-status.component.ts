@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
@@ -28,6 +28,9 @@ export class VendorOrderStatusComponent implements OnInit {
   get bidProcessId(): number {
     return this.id;
   }
+
+  @Input() order: number;
+  @Output() orderChange: EventEmitter<number> = new EventEmitter<number>();
 
   orderColDefs = [];
   frameworkComponents = {
@@ -80,6 +83,7 @@ export class VendorOrderStatusComponent implements OnInit {
       });
       this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
       this.viewTasks(this.selectedJob || {});
+      this.orderChange.emit(this.selectedJob.orderId);
     });
   }
 
@@ -99,6 +103,7 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Job',
         field: 'id',
+        sortable: true,
         hide: false,
         filter: false,
         width: 100,
@@ -260,6 +265,9 @@ export class VendorOrderStatusComponent implements OnInit {
 
   viewTasks(job: any) {
     this.tasks = job.tasks || [];
+    if (this.taskGridOptions && this.taskGridOptions.columnApi && this.taskGridOptions.columnApi.getColumn('taskNo')) {
+      this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
+    }
   }
 
   onGridReady(type: string) {
@@ -267,8 +275,10 @@ export class VendorOrderStatusComponent implements OnInit {
       this.gridOptions.api.sizeColumnsToFit();
     } else if (type === 'jobs') {
       this.jobGridOptions.api.sizeColumnsToFit();
+      this.jobGridOptions.columnApi.getColumn('id').setSort('desc');
     } else {
       this.taskGridOptions.api.sizeColumnsToFit();
+      this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
     }
   }
 }

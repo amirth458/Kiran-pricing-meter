@@ -18,6 +18,7 @@
     [rowData]="jobs"
     [gridOptions]="jobGridOptions"
     [domLayout]="'autoHeight'"
+    [rowSelection]="'single'"
     (selectionChanged)="onSelectionChanged()"
     (firstDataRendered)="onFirstDataRendered()"
     (gridReady)="onGridReady('jobs')"
