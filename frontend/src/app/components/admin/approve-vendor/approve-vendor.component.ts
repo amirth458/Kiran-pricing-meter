@@ -73,7 +73,7 @@ export class ApproveVendorComponent implements OnInit {
     {
       name: 'Last Login Attempt',
       checked: false,
-      field: 'userLastLoginAttempt',
+      field: 'lastLoginAttempt',
       query: {
         type: '',
         filter: ''
@@ -118,7 +118,7 @@ export class ApproveVendorComponent implements OnInit {
     {
       name: 'Last Login Attempt',
       checked: true,
-      field: 'userLastLoginAttempt'
+      field: 'lastLoginAttempt'
     },
     {
       name: 'Approved On',
@@ -211,16 +211,16 @@ export class ApproveVendorComponent implements OnInit {
             console.log(data.vendor.approvedAt, 'at');
             return new Date(data.vendor.approvedAt).toLocaleString();
           } else {
-            return '-';
+            return '';
           }
         } else {
-          return '-';
+          return '';
         }
       }
     },
     {
       headerName: 'Last Login Attempt',
-      field: 'userLastLoginAttempt',
+      field: 'lastLoginAttempt',
       hide: true,
       sortable: true,
       filter: false,
