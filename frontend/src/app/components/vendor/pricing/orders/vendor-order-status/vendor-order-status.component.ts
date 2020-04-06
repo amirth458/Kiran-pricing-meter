@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-vendor-order-status',
@@ -231,7 +232,7 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Estimated Time To Complete Task',
         headerTooltip: 'Estimated Time To Complete Task',
-        field: 'estimatedTaskTime',
+        field: 'taskTime',
         hide: false,
         sortable: false,
         filter: false
@@ -264,6 +265,9 @@ export class VendorOrderStatusComponent implements OnInit {
   }
 
   viewTasks(job: any) {
+    (job.tasks || []).map((task: any) => {
+      task.taskTime = Util.convertMinutesToDate(task.estimatedTaskTime);
+    });
     this.tasks = job.tasks || [];
     if (this.taskGridOptions && this.taskGridOptions.columnApi && this.taskGridOptions.columnApi.getColumn('taskNo')) {
       this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
