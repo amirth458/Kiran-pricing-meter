@@ -82,6 +82,15 @@ export class CustomersComponent implements OnInit {
         type: '',
         filter: ''
       }
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: false,
+      field: 'userLastLoginAttempt',
+      query: {
+        type: '',
+        filter: ''
+      }
     }
   ];
   filterColumns = [
@@ -119,6 +128,11 @@ export class CustomersComponent implements OnInit {
       name: 'Country',
       checked: true,
       field: 'customerCountry'
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: true,
+      field: 'userLastLoginAttempt'
     }
   ];
   type = ['search', 'filter'];
@@ -221,6 +235,20 @@ export class CustomersComponent implements OnInit {
         hide: true,
         sortable: true,
         filter: false
+      },
+      {
+        headerName: 'Last Login Attempt',
+        field: 'userLastLoginAttempt',
+        hide: true,
+        sortable: true,
+        filter: false,
+        valueFormatter: v => {
+          const value = v.value;
+          if (!value) {
+            return '';
+          }
+          return new Date(value).toLocaleString();
+        }
       },
       {
         headerName: '',
