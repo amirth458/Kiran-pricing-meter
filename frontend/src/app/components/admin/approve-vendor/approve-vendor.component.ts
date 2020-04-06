@@ -69,6 +69,24 @@ export class ApproveVendorComponent implements OnInit {
         type: '',
         filter: ''
       }
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: false,
+      field: 'userLastLoginAttempt',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Approved On',
+      checked: false,
+      field: 'approvedOn',
+      query: {
+        type: '',
+        filter: ''
+      }
     }
   ];
   filterColumns = [
@@ -96,6 +114,16 @@ export class ApproveVendorComponent implements OnInit {
       name: 'Confidentiality',
       checked: true,
       field: 'confidentiality'
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: true,
+      field: 'userLastLoginAttempt'
+    },
+    {
+      name: 'Approved On',
+      checked: true,
+      field: 'approvedOn'
     }
   ];
   type = ['search', 'filter'];
@@ -188,6 +216,20 @@ export class ApproveVendorComponent implements OnInit {
         } else {
           return '-';
         }
+      }
+    },
+    {
+      headerName: 'Last Login Attempt',
+      field: 'userLastLoginAttempt',
+      hide: true,
+      sortable: true,
+      filter: false,
+      valueFormatter: v => {
+        const value = v.value;
+        if (!value) {
+          return '';
+        }
+        return new Date(value).toLocaleString();
       }
     },
     {
