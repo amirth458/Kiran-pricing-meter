@@ -58,7 +58,7 @@
   width: 50%;
 }
 
-:host ::ng-deep .task-grid .completed,
+:host ::ng-deep .job-grid .completed,
 :host ::ng-deep .task-grid .completed {
   background-color: var(--theme-light-green-progressbar);
   width: 100%;
