@@ -60,6 +60,7 @@ export class VendorDetailsComponent implements OnInit {
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
   selectedBidding: any;
+  vendorOrderId: number;
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;

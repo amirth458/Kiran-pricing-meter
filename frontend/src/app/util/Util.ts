@@ -1,9 +1,28 @@
-import { PartDimensionValue, PartCustomParameter, Address } from './../model/part.model';
+import { PartDimensionValue, PartCustomParameter, Address } from '../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
+
+declare var require: any;
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
 
 export class Util {
   static dateFormat = 'MM/dd/yyyy';
   static measurementUnit = 'mm';
+  static hoursMinuteConverter = 'HH:mm';
+
+  static convertMinutesToDate(minutes: number): string {
+    dayjs.extend(utc);
+    return dayjs()
+      .startOf('day')
+      .add(minutes, 'minute')
+      .format(Util.hoursMinuteConverter);
+  }
+
+  static dateDiff(dt: any, dt1: any, unit: any): string {
+    const first = dayjs(dt);
+    const second = dayjs(dt1);
+    return Util.convertMinutesToDate(second.diff(first, unit));
+  }
 
   static getPartDimension(dimension: PartDimension, measurements: any = []) {
     const arr = [];

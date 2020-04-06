@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 
 import { GridOptions } from 'ag-grid-community';
 
@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-vendor-order-status',
@@ -28,6 +29,9 @@ export class VendorOrderStatusComponent implements OnInit {
   get bidProcessId(): number {
     return this.id;
   }
+
+  @Input() order: number;
+  @Output() orderChange: EventEmitter<number> = new EventEmitter<number>();
 
   orderColDefs = [];
   frameworkComponents = {
@@ -80,6 +84,7 @@ export class VendorOrderStatusComponent implements OnInit {
       });
       this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
       this.viewTasks(this.selectedJob || {});
+      this.orderChange.emit(this.selectedJob.orderId);
     });
   }
 
@@ -99,6 +104,7 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Job',
         field: 'id',
+        sortable: true,
         hide: false,
         filter: false,
         width: 100,
@@ -185,7 +191,6 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Task Description',
         headerTooltip: 'Task Description',
-        cellClass: 'p-0',
         field: 'description',
         hide: false,
         sortable: false,
@@ -200,7 +205,6 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Notes',
         field: 'notes',
-        cellClass: 'p-0',
         hide: false,
         sortable: false,
         filter: false,
@@ -226,7 +230,7 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Estimated Time To Complete Task',
         headerTooltip: 'Estimated Time To Complete Task',
-        field: 'estimatedTaskTime',
+        field: 'taskTime',
         hide: false,
         sortable: false,
         filter: false
@@ -234,16 +238,10 @@ export class VendorOrderStatusComponent implements OnInit {
       {
         headerName: 'Actual Task Time',
         headerTooltip: 'Actual Task Time',
-        field: 'actualCompleteDateTime',
-        cellClass: 'p-0',
+        field: 'actualCompletionTime',
         hide: false,
         sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.dateCell,
-          tooltipCell: true
-        }
+        filter: false
       }
     ];
   }
@@ -259,7 +257,16 @@ export class VendorOrderStatusComponent implements OnInit {
   }
 
   viewTasks(job: any) {
+    (job.tasks || []).map((task: any) => {
+      task.taskTime = Util.convertMinutesToDate(task.estimatedTaskTime);
+      if (task.actualBeginDateTime && task.actualCompleteDateTime) {
+        task.actualCompletionTime = Util.dateDiff(task.actualBeginDateTime, task.actualCompleteDateTime, 'minutes');
+      }
+    });
     this.tasks = job.tasks || [];
+    if (this.taskGridOptions && this.taskGridOptions.columnApi && this.taskGridOptions.columnApi.getColumn('taskNo')) {
+      this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
+    }
   }
 
   onGridReady(type: string) {
@@ -267,8 +274,10 @@ export class VendorOrderStatusComponent implements OnInit {
       this.gridOptions.api.sizeColumnsToFit();
     } else if (type === 'jobs') {
       this.jobGridOptions.api.sizeColumnsToFit();
+      this.jobGridOptions.columnApi.getColumn('id').setSort('desc');
     } else {
       this.taskGridOptions.api.sizeColumnsToFit();
+      this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
     }
   }
 }
