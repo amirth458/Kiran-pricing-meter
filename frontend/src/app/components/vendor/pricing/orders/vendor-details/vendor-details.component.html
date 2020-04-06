@@ -266,6 +266,7 @@
             {{ row.bidProcessStatus.description | titlecase }}
           </strong>
           <button
+            *ngIf="type !== 'confirmation'"
             class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold"
             (click)="viewOrderInfo(row?.bidProcessId)"
           >
