@@ -160,7 +160,7 @@ export class OrdersService {
 
   getBidOrderDetailsById(bidOrderId: number): Observable<BiddingOrderDetail> {
     return this.http.get<BiddingOrderDetail>(
-      `${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}`
+      `${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}&filterOnlyWinningVendor=true`
     );
   }
 
