@@ -727,6 +727,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   confirmSubOrderRelease() {
+    this.spinner.show('spinner1');
     const customerOrders = this.orderDetails.map(order => {
       return { partId: order.partId, priceAccepted: order.priceAccepted };
     });
@@ -763,9 +764,11 @@ export class VendorDetailsComponent implements OnInit {
         vendors
       } as ConfirmSubOrderRelease)
       .subscribe(v => {
+        this.spinner.hide('spinner1');
         this.modalService.dismissAll();
         if (v != null) {
           const bidOrder: BidOrderItem = (v.bidOrderItemList || []).length > 0 ? v.bidOrderItemList[0] : null;
+          this.toaster.success('Order Released Successfully');
           this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder.id}`);
         }
       });
