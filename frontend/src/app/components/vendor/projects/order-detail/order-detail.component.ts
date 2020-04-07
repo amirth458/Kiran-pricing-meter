@@ -4,6 +4,8 @@ import { MetadataConfig } from 'src/app/model/metadata.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { combineLatest } from 'rxjs';
 import { GridOptions } from 'ag-grid-community';
+import { ActivatedRoute } from '@angular/router';
+import { PartService } from 'src/app/service/part.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -127,9 +129,19 @@ export class OrderDetailComponent implements OnInit {
   rowData = [];
   order: any;
 
-  constructor(public orderService: OrdersService, public metadataService: MetadataService) {}
+  part;
+
+  constructor(
+    public orderService: OrdersService,
+    public metadataService: MetadataService,
+    public route: ActivatedRoute,
+    public partService: PartService
+  ) {}
 
   ngOnInit() {
+    this.route.params.subscribe(({ id }) => {
+      this.orderService.getPartById(id).subscribe(v => (this.part = v));
+    });
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),
       this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION)

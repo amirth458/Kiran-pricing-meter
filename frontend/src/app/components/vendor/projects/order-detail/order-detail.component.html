@@ -4,7 +4,6 @@
       <p>Order Details</p>
       <div class="d-flex">
         <app-part-item-details
-          *ngFor="let part of order?.partList"
           [part]="part"
           [measurementUnits]="measurementUnits"
           [postProcessAction]="postProcessAction"

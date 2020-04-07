@@ -8,24 +8,24 @@
           <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
         </select>
       </div>
-      <div class="page-size">
-        Page Size:
-        <select id="page-size" (change)="onPageSizeChange($event)">
-          <option selected value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-        </select>
-      </div>
     </div>
 
     <ag-grid-angular
       class="ag-theme-balham w-100 h-100"
-      [rowData]="filteredData"
+      [rowData]="[]"
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff70"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </div>
 

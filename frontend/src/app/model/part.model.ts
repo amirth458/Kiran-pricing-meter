@@ -10,15 +10,21 @@ export interface ProjectRfq {
   id: number;
   name: string;
   rfqStatusType: string;
-  projectProfile: string;
+  projectType: ProjectType;
   isArchived: boolean;
-  partList: Part[];
+  rfqMediaList: RfqMedia[];
 }
 
 export interface PartDimensionValue {
   value: number;
   valueInDefaultUnit: number;
   unitId: number;
+}
+
+export interface ProjectType {
+  id: number;
+  name: string;
+  description: string;
 }
 
 export interface PartDimensionStatusType {
@@ -69,10 +75,14 @@ export interface PartStatusType {
 export interface PartOrder {
   id: number;
   customerId: number;
+  customerName: string;
   vendorOrderId: number;
   orderStatusType: any;
+  paymentStatusType: any;
   isArchived: boolean;
+  isReleaseToSingleSupplier: boolean;
   partList: Part[];
+  createdDate: string;
 }
 
 export interface PartQuoteDetail {
@@ -152,6 +162,8 @@ export interface RfqMedia {
   id: number;
   projectRfqId: number;
   media: PartDimensionMedia;
+  projectRfq: ProjectRfq;
+  projectProfileName: string;
 }
 
 export interface Part {
