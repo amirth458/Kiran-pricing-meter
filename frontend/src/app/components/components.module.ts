@@ -91,6 +91,10 @@ import { ProjectsListComponent } from './vendor/projects/projects-list/projects-
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
 
+// chats
+import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
+import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
+
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -169,6 +173,8 @@ import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order
     ContactComponent,
     ProjectsListComponent,
     SendMailModalComponent,
+    ChatComponent,
+    ClosePopoverOnClickOutsideDirective,
 
     // Pipes
     ConfirmOrderFilterPipe,
@@ -213,6 +219,7 @@ import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order
     TopMenuComponent,
     ImgPreloadDirective,
     DigitOnlyDirective,
+    ClosePopoverOnClickOutsideDirective,
 
     // pipes
     ConfirmOrderFilterPipe,

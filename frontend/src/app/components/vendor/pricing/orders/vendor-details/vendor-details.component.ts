@@ -21,6 +21,7 @@ import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
 
 import { DefaultEmails } from '../../../../../../assets/constants.js';
+import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -65,6 +66,9 @@ export class VendorDetailsComponent implements OnInit {
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
   selectedBidProcessId: number;
+
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
 
   from = '';
   to = '';
@@ -568,7 +572,7 @@ export class VendorDetailsComponent implements OnInit {
       },
       this.type === 'confirmation' && {
         headerName: '',
-        cellClass: 'p-0',
+        cellClass: 'p-0 d-flex flex-row chat-column overflow-visible',
         hide: false,
         sortable: false,
         filter: false,
@@ -640,6 +644,7 @@ export class VendorDetailsComponent implements OnInit {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs[4],
       enableColResize: true,
+      // suppressRowTransform: true,
       rowHeight: 36,
       headerHeight: 35
     });
