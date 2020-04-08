@@ -1,0 +1,72 @@
+<button
+  [popoverClass]="'chat-container'"
+  [autoClose]="false"
+  [placement]="'left-top'"
+  [ngbPopover]="popContent"
+  [popoverTitle]="popTitle"
+  container="body"
+  #popOverRef="ngbPopover"
+  [closePopoverOnClickOutside]="popOverRef"
+  (click)="openChat($event)"
+  class="btn bg-transparent w-auto chat-button"
+>
+  <i class="fas fa-comment-alt"></i>
+  <span class="unread-badge position-absolute">{{ value?.chats?.length }}</span>
+</button>
+
+<ng-template #popContent>
+  <div class="col-12 border p-0 d-flex flex-column">
+    <div class="d-flex flex-grow-1 flex-column message-container" (scroll)="onScroll()">
+      <ng-container *ngIf="value?.chats?.length > 0">
+        <!--        <div-->
+        <!--          class="participant-chat {{-->
+        <!--            user.id === m.userId ? 'text-left' : 'text-right'-->
+        <!--          }}"-->
+        <!--          *ngFor="let m of value?.chats"-->
+        <!--        >-->
+        <!--          <span-->
+        <!--            class="{{-->
+        <!--              user.id === m.userId ? 'text-theme-green' : 'text-theme'-->
+        <!--            }}"-->
+        <!--          >{{ m.user.firstName || "" }} {{ m.user.lastName || "" }}</span-->
+        <!--          >-->
+        <!--          <p>{{ m.message || "" }}</p>-->
+        <!--        </div>-->
+      </ng-container>
+      <ng-container *ngIf="value?.chats?.length === 0">
+        <div class="participant-chat text-left">
+          No chats found
+        </div>
+      </ng-container>
+    </div>
+    <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
+      <hr class="m-0" />
+      <div class="form-row">
+        <div class="form-group theme col-12 m-0">
+          <label class="w-100">
+            Note
+            <textarea
+              class="form-control note-input"
+              rows="2"
+              formControlName="note"
+              (keyup.enter)="sendNote($event)"
+            ></textarea>
+          </label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group theme col-12 m-0 d-flex justify-content-center">
+          <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
+            {{ loadingNote ? 'Submitting Note' : 'Add Note' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #popTitle>
+  <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
+    Notes
+  </h5>
+</ng-template>
