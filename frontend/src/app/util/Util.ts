@@ -120,4 +120,9 @@ export class Util {
     }
     return value;
   }
+
+  static parseUtcDateTime(value: any): any {
+    dayjs.extend(utc);
+    return value ? dayjs.utc(value).format('MM/DD/YYYY HH:mm:ss') : '';
+  }
 }
