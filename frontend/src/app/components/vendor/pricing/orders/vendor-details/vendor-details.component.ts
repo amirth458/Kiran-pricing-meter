@@ -149,7 +149,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   prepareBidOrderInfo() {
-    this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
+    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released' ? true : false).subscribe(v => {
       // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.timeToExpire = v.bidProcessTimeLeft;
