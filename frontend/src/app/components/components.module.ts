@@ -90,6 +90,8 @@ import { ContactComponent } from './admin/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -193,7 +195,10 @@ import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-moda
     HttpClientModule,
     NgxSpinnerModule,
     RouterModule,
-    InternationalPhoneNumberModule
+    InternationalPhoneNumberModule,
+
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [

@@ -3,6 +3,7 @@
 @import '~ag-grid-community/dist/styles/ag-theme-balham.css';
 
 @import '~@ng-select/ng-select/themes/default.theme.css';
+@import '~ng-pick-datetime/assets/style/picker.min.css';
 
 :root {
   --theme-main-blue: #092846;
@@ -55,11 +56,15 @@
 }
 
 .text-theme-green {
-  color: var(--theme-light-green);
+  color: var(--theme-light-green) !important;
 }
 
 .text-highlight {
   color: var(--theme-light-green);
+}
+
+.theme-grey {
+  color: var(--theme-secondary-blue-solid);
 }
 
 a,

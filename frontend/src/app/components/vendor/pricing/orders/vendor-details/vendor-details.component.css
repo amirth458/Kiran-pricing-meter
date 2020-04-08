@@ -146,3 +146,12 @@ a.priority-btn:not([href]) {
 .text-btn {
   font-size: 18px;
 }
+
+:host .meeting-time span {
+  height: 20px;
+}
+
+:host .meeting-time span.time {
+  color: var(--theme-bright-blue);
+  cursor: pointer;
+}
