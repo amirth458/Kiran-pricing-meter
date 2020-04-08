@@ -23,6 +23,7 @@ import { Util } from '../../../../../util/Util';
 
 import { DefaultEmails } from '../../../../../../assets/constants.js';
 import { ZoomService } from 'src/app/service/zoom.service';
+import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -42,6 +43,7 @@ export class VendorDetailsComponent implements OnInit {
 
   @ViewChild('sendMailModal') sendMailModal;
   @ViewChild('dateTimeSelector') dateTimeSelector;
+  @ViewChild('orderStatusTemplate') orderStatusTemplate;
 
   timeToExpire = null;
   changePriority = false;
@@ -62,9 +64,14 @@ export class VendorDetailsComponent implements OnInit {
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
   selectedBidding: any;
+  vendorOrderId: number;
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
+  selectedBidProcessId: number;
+
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
 
   from = '';
   to = '';
@@ -297,7 +304,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   prepareBidOrderInfo() {
-    this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
+    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released' ? true : false).subscribe(v => {
       // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.timeToExpire = v.bidProcessTimeLeft;
@@ -315,16 +322,16 @@ export class VendorDetailsComponent implements OnInit {
       const vendors = [];
       this.bidding.map(match => {
         (match.processProfileViews || []).map(p => {
-          let count = match.id.toString();
+          let counterValue = match.id.toString();
           let status = match.bidProcessStatus;
           if (!(vendors.indexOf(match.vendorName) > -1)) {
             vendors.push(match.vendorName);
           } else {
-            count = '';
+            counterValue = '';
             status = null;
           }
           this.matchedProfiles.push({
-            id: count,
+            id: counterValue,
             vendorId: p.vendorId,
             profileId: p.id,
             vendorName: match.vendorName,
@@ -741,6 +748,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   confirmSubOrderRelease() {
+    this.spinner.show('spinner1');
     const customerOrders = this.orderDetails.map(order => {
       return { partId: order.partId, priceAccepted: order.priceAccepted };
     });
@@ -777,9 +785,11 @@ export class VendorDetailsComponent implements OnInit {
         vendors
       } as ConfirmSubOrderRelease)
       .subscribe(v => {
+        this.spinner.hide('spinner1');
         this.modalService.dismissAll();
         if (v != null) {
           const bidOrder: BidOrderItem = (v.bidOrderItemList || []).length > 0 ? v.bidOrderItemList[0] : null;
+          this.toaster.success('Order Released Successfully');
           this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder.id}`);
         }
       });
@@ -795,6 +805,16 @@ export class VendorDetailsComponent implements OnInit {
       centered: true,
       windowClass: 'bidding-confirm'
     });
+  }
+
+  viewOrderInfo(id: number) {
+    this.selectedBidProcessId = id;
+    const modalOptions: any = {
+      centered: true,
+      windowClass: 'order-status-modal',
+      scrollable: true
+    };
+    this.modalService.open(this.orderStatusTemplate, modalOptions);
   }
 
   onConfirmBidding() {
@@ -829,7 +849,7 @@ export class VendorDetailsComponent implements OnInit {
     this.cc = [];
     this.bcc = ev
       ? [ev.processProfileViews[0].vendorEmailAddress]
-      : this.bidding.map(item => item.processProfileViews[0].vendorEmailAddress);
+      : this.gridOptions[4].api.getSelectedRows().map(item => item.processProfileViews[0].vendorEmailAddress);
     this.modalService.open(this.sendMailModal, {
       centered: true,
       size: 'lg'

@@ -33,6 +33,12 @@
   cursor: pointer;
 }
 
+:host ::ng-deep .pop-over-grid .chat-column app-template-renderer {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
 :host ::ng-deep .supplier-table .status-column a.text-green {
   color: var(--theme-light-green) !important;
 }

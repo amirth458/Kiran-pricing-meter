@@ -1,0 +1,82 @@
+<div class="table theme-table order-grid flex-grow-1 pb-3">
+  <ag-grid-angular
+    class="ag-theme-balham w-100"
+    [class.grid-empty]="!(orders?.length > 0)"
+    [rowData]="orders"
+    [gridOptions]="gridOptions"
+    [domLayout]="'autoHeight'"
+    (gridReady)="onGridReady('orders')"
+  >
+  </ag-grid-angular>
+</div>
+
+<div class="table theme-table job-grid flex-grow-1 pt-3 pb-3">
+  <h6 class="w-100 text-theme">Job Details</h6>
+  <ag-grid-angular
+    class="ag-theme-balham w-100"
+    [class.grid-empty]="!(jobs?.length > 0)"
+    [rowData]="jobs"
+    [gridOptions]="jobGridOptions"
+    [domLayout]="'autoHeight'"
+    [rowSelection]="'single'"
+    (selectionChanged)="onSelectionChanged()"
+    (firstDataRendered)="onFirstDataRendered()"
+    (gridReady)="onGridReady('jobs')"
+  >
+  </ag-grid-angular>
+</div>
+
+<div class="table theme-table task-grid flex-grow-1 pt-3 pb-3">
+  <h6 class="w-100 text-theme">
+    <ng-container *ngIf="selectedJob">
+      Tasks for Job {{ selectedJob?.orderId }}.{{ selectedJob?.partId }}.{{ selectedJob?.id }}
+    </ng-container>
+    <ng-container *ngIf="!selectedJob">Tasks</ng-container>
+  </h6>
+  <ag-grid-angular
+    class="ag-theme-balham w-100"
+    [class.grid-empty]="!(tasks?.length > 0)"
+    [rowData]="tasks"
+    [gridOptions]="taskGridOptions"
+    [domLayout]="'autoHeight'"
+    (gridReady)="onGridReady('tasks')"
+  >
+  </ag-grid-angular>
+</div>
+
+<ng-template #dateCell let-row let-column="params">
+  {{ row[column?.colDef?.field] | date: 'MM/dd/yyyy' }}
+</ng-template>
+
+<ng-template #jobNumberCell let-row let-column="params">
+  <div class="d-flex flex-row align-items-center pl-2 pr-2 h-100 w-100">
+    <div class="h-auto">
+      {{ row[column?.colDef?.field] }}
+    </div>
+    <div class="progress h-auto ml-3">
+      <ng-container>
+        <div
+          class="progress-bar job-progress-bar {{ progressIndicatorClass(row?.status || row?.vendorTaskStatus) }}"
+          role="progressbar"
+          [attr.aria-valuemin]="0"
+          [attr.aria-valuemax]="100"
+        ></div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #textCell let-row let-column="params">
+  <ng-container *ngIf="!column.cellStartedEdit">
+    <div
+      (change)="column.refreshCell()"
+      class="cell-ellipsis"
+      data-toggle="popover"
+      [attr.data-content]="(row[column?.colDef?.field] | json) != '{}' ? row[column?.colDef?.field] : ''"
+      data-placement="auto"
+      data-trigger="hover"
+    >
+      {{ (row[column?.colDef?.field] | json) != '{}' ? row[column?.colDef?.field] : '' }}
+    </div>
+  </ng-container>
+</ng-template>

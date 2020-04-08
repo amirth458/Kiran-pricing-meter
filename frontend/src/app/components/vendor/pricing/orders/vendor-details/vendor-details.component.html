@@ -138,10 +138,12 @@
     <div class="col-12 theme-table bidding-orders">
       <ag-grid-angular
         *ngIf="!toggleVendorList"
-        class="ag-theme-balham w-100 h-100"
+        class="ag-theme-balham w-100 h-100 pop-over-grid"
         [class.grid-empty]="(bidding || []).length === 0"
         [rowData]="bidding"
         [gridOptions]="gridOptions[4]"
+        rowSelection="multiple"
+        [rowMultiSelectWithClick]="true"
         (gridReady)="onGridReady(4, $event)"
         domLayout="autoHeight"
       ></ag-grid-angular>
@@ -161,7 +163,7 @@
 <ng-template #content let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">
+      <h5 class="modal-title">
         Confirm Sub-Order Release
       </h5>
     </div>
@@ -226,13 +228,22 @@
         Confirm
       </button>
     </div>
+    <ngx-spinner
+      [name]="'spinner1'"
+      bdColor="rgba(255,255,255,0.5)"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+    </ngx-spinner>
   </div>
 </ng-template>
 
 <ng-template #pricingProfileModal let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
+      <h5 class="modal-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
       <a (click)="modal.dismiss()">
         <i class="fa fa-times"></i>
       </a>
@@ -241,7 +252,7 @@
       <p class="text-center">
         {{ pricingProfile?.processProfileName }}
       </p>
-      <div class="col-12 theme-table ">
+      <div class="col-12 theme-table">
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
           [class.grid-empty]="(pricingProfile?.pricing || []).length === 0"
@@ -259,10 +270,17 @@
   <ng-container *ngIf="row.bidProcessStatus">
     <ng-container [ngSwitch]="row.bidProcessStatus.name">
       <ng-container *ngSwitchCase="biddingStatus.ACCEPTED">
-        <div class="d-flex flex-row pt-1 pb-1">
-          <strong class="text-theme-green">
+        <div class="d-flex flex-row pt-1 pb-1 align-items-center">
+          <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
           </strong>
+          <button
+            *ngIf="type !== 'confirmation'"
+            class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold"
+            (click)="viewOrderInfo(row?.bidProcessId)"
+          >
+            See Order Status
+          </button>
           <button
             class="btn btn-primary confirm-btn ml-4 btn-sm"
             *ngIf="type === 'confirmation' && !toggleVendorList"
@@ -360,7 +378,7 @@
     <!-- End of Email Communication -->
 
     <!-- Note Communication -->
-    <!-- <span class="text-green text-btn p-2" (click)="sendMail(row)"><i class="fas fa-comment-alt"></i></span> -->
+    <app-chat [id]="bidOrderId" [type]="chatTypeEnum.BID_OFFER" [value]="chat" (valueChange)="chat = $event"></app-chat>
     <!--End of Note Communication -->
 
     <!-- Zoom Communication -->
@@ -420,4 +438,23 @@
 
 <ng-template #sendMailModal let-modal>
   <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
+</ng-template>
+
+<ng-template #orderStatusTemplate let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title text-left pt-2 pl-2">Order Status No {{ vendorOrderId }}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-container p-4">
+      <app-vendor-order-status
+        [(order)]="vendorOrderId"
+        [bidProcessId]="selectedBidProcessId"
+        *ngIf="selectedBidProcessId"
+      >
+      </app-vendor-order-status>
+    </div>
+  </div>
 </ng-template>

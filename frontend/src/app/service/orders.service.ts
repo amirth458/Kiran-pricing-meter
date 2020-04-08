@@ -158,9 +158,9 @@ export class OrdersService {
     return this.http.get<ProcessProfileDetailedView[]>(url, { params });
   }
 
-  getBidOrderDetailsById(bidOrderId: number): Observable<BiddingOrderDetail> {
+  getBidOrderDetailsById(bidOrderId: number, filterOnlyWinningVendor = false): Observable<BiddingOrderDetail> {
     return this.http.get<BiddingOrderDetail>(
-      `${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}`
+      `${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}&filterOnlyWinningVendor=${filterOnlyWinningVendor}`
     );
   }
 
@@ -419,5 +419,11 @@ export class OrdersService {
           })
         )
       : of([]);
+  }
+
+  getVendorOrderInfo(bidProcessId: number): Observable<any> {
+    return this.http.get<any>(
+      `${environment.apiBaseUrl}/admin/vendor/vendor-order-details?include-task=true&bid-process-id=${bidProcessId}`
+    );
   }
 }

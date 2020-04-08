@@ -89,6 +89,11 @@ import { ShippingComponent } from './admin/shipping/shipping.component';
 import { ContactComponent } from './admin/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
+import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
+
+// chats
+import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
+import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
@@ -170,10 +175,13 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ContactComponent,
     ProjectsListComponent,
     SendMailModalComponent,
+    ChatComponent,
+    ClosePopoverOnClickOutsideDirective,
 
     // Pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
+    SupplierPipe,
+    VendorOrderStatusComponent
   ],
   imports: [
     CommonModule,
@@ -216,6 +224,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     TopMenuComponent,
     ImgPreloadDirective,
     DigitOnlyDirective,
+    ClosePopoverOnClickOutsideDirective,
 
     // pipes
     ConfirmOrderFilterPipe,
