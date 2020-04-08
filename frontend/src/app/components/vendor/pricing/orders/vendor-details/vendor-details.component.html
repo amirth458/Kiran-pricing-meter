@@ -370,11 +370,69 @@
 </ng-template>
 
 <ng-template #sendEmailCell let-row let-column="params">
-  <div class="d-flex flex-row">
+  <div class="d-flex justify-content-around">
+    <!-- Email Communication -->
     <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)"
       ><i class="far fa-envelope"></i
     ></span>
+    <!-- End of Email Communication -->
+
+    <!-- Note Communication -->
     <app-chat [id]="bidOrderId" [type]="chatTypeEnum.BID_OFFER" [value]="chat" (valueChange)="chat = $event"></app-chat>
+    <!--End of Note Communication -->
+
+    <!-- Zoom Communication -->
+    <span class="text-green text-btn p-2" (click)="openDateTimeSelector(row)"><i class="far fa-calendar-alt"></i></span>
+    <div class="d-flex flex-column meeting-time text-center d-flex align-items-center ">
+      <span class="m-0 text-center ">
+        Meeting Time
+      </span>
+
+      <span
+        class="font-weight-bold time"
+        [ngClass]="{ 'theme-grey': meetingInfo[row.userId]?.isExpired || !meetingInfo[row.userId]?.startTime }"
+      >
+        <a
+          *ngIf="meetingInfo[row.userId]?.startTime"
+          [href]="
+            user?.id == meetingInfo[row.userId].hostUserId
+              ? meetingInfo[row.userId]?.videoConferenceLinkForHost
+              : meetingInfo[row.userId]?.videoConferenceLinkForParticipant
+          "
+          target="_blank"
+          class="underline"
+        >
+          {{ meetingInfo[row.userId]?.startTime | date: 'short' }}
+        </a>
+
+        <ng-container *ngIf="!meetingInfo[row.userId]?.startTime">
+          -
+        </ng-container>
+      </span>
+      <input
+        *ngIf="meetingInfo[row.userId]"
+        class="mt-4"
+        readonly
+        #dateTimeSelector
+        [owlDateTime]="dt1"
+        [owlDateTimeTrigger]="dt1"
+        [(ngModel)]="meetingInfo[row.userId].startTime"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onTimeChanged($event)"
+      />
+    </div>
+    <owl-date-time #dt1> </owl-date-time>
+    <!-- End of Zoom Communication -->
+
+    <!--
+    <p class="m-0 text-center">Meeting Time:</p>
+    <label>
+      <p *ngIf="!meetingInfo[row.userId].startTime" class="m-0 text-center font-weight-bold underline timer"
+        (click)="openDateTimeSelector()">Schedule
+        Meeting
+      </p>
+
+    </label> -->
   </div>
 </ng-template>
 
