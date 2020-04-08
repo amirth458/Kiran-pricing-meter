@@ -22,7 +22,7 @@ export class ProjectService {
     return this.http.post<any>(
       url,
       {
-        statusIds: [15]
+        statusIds: [18]
       },
       { params }
     );
@@ -37,7 +37,7 @@ export class ProjectService {
       params = params.append('size', filterOption.size.toString());
       params = params.append('sort', filterOption.sort.toString());
     }
-    return this.http.post<any>(url, [1], { params });
+    return this.http.post<any>(url, [2], { params });
   }
 
   getReleasedProjects(filterOption: FilterOption) {
@@ -49,6 +49,6 @@ export class ProjectService {
       params = params.append('size', filterOption.size.toString());
       params = params.append('sort', filterOption.sort.toString());
     }
-    return this.http.post<any>(url, [2], { params });
+    return this.http.post<any>(url, [3], { params });
   }
 }

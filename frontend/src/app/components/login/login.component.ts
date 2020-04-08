@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
             type: AppTypes.GetUserInfo
           });
 
-          this.router.navigate(['/marketplace']);
+          this.router.navigate(['/pricing']);
 
           this.spineer.hide();
         },
