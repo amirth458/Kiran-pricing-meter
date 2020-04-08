@@ -228,8 +228,19 @@ export class VendorOrderStatusComponent implements OnInit {
         }
       },
       {
-        headerName: 'Estimated Time To Complete Task',
-        headerTooltip: 'Estimated Time To Complete Task',
+        headerName: 'Estimated Completion Time',
+        headerTooltip: 'Estimated Completion Time',
+        field: 'estimatedCompletionDate',
+        hide: false,
+        sortable: false,
+        filter: false,
+        valueFormatter: dt => {
+          return dt.value ? Util.parseUtcDateTime(dt.value) : '';
+        }
+      },
+      {
+        headerName: 'Estimated Task Time',
+        headerTooltip: 'Estimated Task Time',
         field: 'taskTime',
         hide: false,
         sortable: false,
