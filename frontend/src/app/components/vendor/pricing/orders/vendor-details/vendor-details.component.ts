@@ -357,6 +357,7 @@ export class VendorDetailsComponent implements OnInit {
         .subscribe(v => {
           this.orderDetails = v || [];
         });
+      // TODO remove below code after vendor order details api start return vendor order id
       if (this.type === 'released') {
         const bidProcessIds = this.bidding.filter(bid => !!bid.bidProcessId).map(bid => bid.bidProcessId);
         this.getVendorOrders(bidProcessIds);
@@ -935,6 +936,7 @@ export class VendorDetailsComponent implements OnInit {
       );
   }
 
+  // TODO remove this method after vendor order details api start return vendor order id
   getVendorOrders(bidProcessIds: Array<number>) {
     if ((bidProcessIds || []).length > 0) {
       const arr = bidProcessIds.map(id => this.ordersService.getVendorOrderInfo(id));
