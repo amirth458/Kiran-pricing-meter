@@ -95,6 +95,8 @@ import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order
 import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
 import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
 
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -201,7 +203,10 @@ import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
     HttpClientModule,
     NgxSpinnerModule,
     RouterModule,
-    InternationalPhoneNumberModule
+    InternationalPhoneNumberModule,
+
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [

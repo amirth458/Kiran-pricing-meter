@@ -149,7 +149,6 @@ export class ApproveVendorComponent implements OnInit {
           dropdown: param => {
             event.stopPropagation();
             this.showTypeDropDown = !this.showTypeDropDown;
-            console.log(this.showTypeDropDown);
           }
         }
       }
@@ -207,9 +206,7 @@ export class ApproveVendorComponent implements OnInit {
       valueFormatter: e => {
         const data = e.data;
         if (data.vendor) {
-          console.log(data.vendor, 'vendor');
           if (data.vendor.approvedAt) {
-            console.log(data.vendor.approvedAt, 'at');
             return new Date(data.vendor.approvedAt).toLocaleString();
           } else {
             return '';
