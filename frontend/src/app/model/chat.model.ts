@@ -6,7 +6,7 @@ export interface Chat {
   vendorOrderId: number;
   partId: number;
   customerOrderId: number;
-  chats: Array<MessageNote>;
+  messageNotes: Array<MessageNote>;
   vendorId: number;
 }
 
@@ -17,7 +17,6 @@ export interface MessageNote {
   senderId: number;
   createdDate: Date;
   lastModifiedDate: Date;
-  unReadCount: number;
 }
 
 export interface ChatType {
