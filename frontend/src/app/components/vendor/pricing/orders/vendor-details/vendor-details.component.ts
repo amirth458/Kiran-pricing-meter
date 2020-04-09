@@ -216,7 +216,7 @@ export class VendorDetailsComponent implements OnInit {
           ngTemplate: this.statusCell
         }
       },
-      this.type === 'confirmation' && {
+      (this.type === 'confirmation' || this.type === 'released') && {
         headerName: '',
         cellClass: 'p-0 chat-column',
         hide: false,
