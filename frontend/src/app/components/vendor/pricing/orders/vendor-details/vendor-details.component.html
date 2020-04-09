@@ -378,7 +378,13 @@
     <!-- End of Email Communication -->
 
     <!-- Note Communication -->
-    <app-chat [id]="bidOrderId" [type]="chatTypeEnum.BID_OFFER" [value]="chat" (valueChange)="chat = $event"></app-chat>
+    <app-chat
+      [participants]="row.userId ? [row.userId] : []"
+      [id]="bidOrderId"
+      [type]="chatTypeEnum.BID_OFFER"
+      [value]="chat"
+      (valueChange)="chat = $event"
+    ></app-chat>
     <!--End of Note Communication -->
 
     <!-- Zoom Communication -->

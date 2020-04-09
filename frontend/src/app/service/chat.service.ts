@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class ChatService {
   constructor(public http: HttpClient) {}
 
-  buildParameters(id: number, type: number, vendorId: number = null) {
+  buildParameters(id: number, type: number, vendorId: number = null, participants: Array<number> = []) {
     const params: any = {
       chatType: {
         id: type
@@ -20,7 +20,8 @@ export class ChatService {
       customerOrderId: null,
       partId: null,
       vendorId,
-      vendorOrderId: null
+      vendorOrderId: null,
+      participants: null
     };
     switch (type) {
       case ChatTypeEnum.VENDOR_ORDER:
@@ -28,6 +29,7 @@ export class ChatService {
         break;
       case ChatTypeEnum.BID_OFFER:
         params.bidOrderId = id;
+        params.participants = participants;
         break;
       case ChatTypeEnum.PART_NOTE:
         params.partId = id;
@@ -43,10 +45,10 @@ export class ChatService {
     return this.http.post<Chat>(`${environment.procurementApiBaseUrl}/chat`, this.buildParameters(id, type, vendorId));
   }
 
-  create(id: number, type: number, vendorId: number = null): Observable<Chat> {
+  create(id: number, type: number, vendorId: number = null, participants: Array<number> = []): Observable<Chat> {
     return this.http.post<Chat>(
       `${environment.procurementApiBaseUrl}/chat/create-chat`,
-      this.buildParameters(id, type, vendorId)
+      this.buildParameters(id, type, vendorId, participants)
     );
   }
 
