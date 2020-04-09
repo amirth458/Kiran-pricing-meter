@@ -14,43 +14,48 @@ export class ZoomService {
     return this.http.post<Conference>(environment.procurementApiBaseUrl + '/conference', body);
   }
 
-  getConferenceByPartId(partId: string, hostUserId: number, participantUserId: number): Observable<Conference> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get<Conference>(
-      environment.procurementApiBaseUrl +
-        `/conference/part/${partId}?hostUserId=${hostUserId}&participantUserId=${participantUserId}`
-    );
+  getConferenceByPartId(partId: string, hostUserId: number, participantUserId: number = null): Observable<Conference> {
+    let url = environment.procurementApiBaseUrl + `/conference/part/${partId}?hostUserId=${hostUserId}`;
+    if (participantUserId) {
+      url += `&participantUserId=${participantUserId}`;
+    }
+    return this.http.get<Conference>(url);
   }
 
   getConferenceByVendorOrderId(
     vendorOrderId: string,
     hostUserId: number,
-    participantUserId: number
+    participantUserId: number = null
   ): Observable<Conference> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get<Conference>(
-      environment.procurementApiBaseUrl +
-        `/conference/vendor-order/${vendorOrderId}?hostUserId=${hostUserId}&participantUserId=${participantUserId}`
-    );
+    let url = environment.procurementApiBaseUrl + `/conference/vendor-order/${vendorOrderId}?hostUserId=${hostUserId}`;
+    if (participantUserId) {
+      url += `&participantUserId=${participantUserId}`;
+    }
+    return this.http.get<Conference>(url);
   }
 
   getConferenceByCustomerOrderId(
     customerOrderId: string,
     hostUserId: number,
-    participantUserId: number
+    participantUserId: number = null
   ): Observable<Conference> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get<Conference>(
-      environment.procurementApiBaseUrl +
-        `/conference/customer-order/${customerOrderId}?hostUserId=${hostUserId}&participantUserId=${participantUserId}`
-    );
+    let url =
+      environment.procurementApiBaseUrl + `/conference/customer-order/${customerOrderId}?hostUserId=${hostUserId}`;
+    if (participantUserId) {
+      url += `&participantUserId=${participantUserId}`;
+    }
+    return this.http.get<Conference>(url);
   }
 
-  getConferenceByBidOrderId(bidOrderId: string, hostUserId: number, participantUserId: number): Observable<Conference> {
-    // tslint:disable-next-line:max-line-length
-    return this.http.get<Conference>(
-      environment.procurementApiBaseUrl +
-        `/conference/bid-order/${bidOrderId}?hostUserId=${hostUserId}&participantUserId=${participantUserId}`
-    );
+  getConferenceByBidOrderId(
+    bidOrderId: string,
+    hostUserId: number,
+    participantUserId: number = null
+  ): Observable<Conference> {
+    let url = environment.procurementApiBaseUrl + `/conference/bid-order/${bidOrderId}?hostUserId=${hostUserId}`;
+    if (participantUserId) {
+      url += `&participantUserId=${participantUserId}`;
+    }
+    return this.http.get<Conference>(url);
   }
 }
