@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit {
   get id(): number {
     return this.idValue;
   }
+  @Input() participants: Array<number>;
   @Input() type: ChatTypeEnum;
   @Input() value: Chat;
 
@@ -60,7 +61,12 @@ export class ChatComponent implements OnInit {
     $event.stopPropagation();
     if (!this.value) {
       this.chatService
-        .create(this.id, this.type, this.vendor ? this.vendor.id : null)
+        .create(
+          this.id,
+          this.type,
+          this.vendor ? this.vendor.id : null,
+          (this.participants || []).length > 0 ? this.participants : []
+        )
         .pipe(
           catchError(err => {
             this.handleError(err.error.message);
@@ -68,8 +74,6 @@ export class ChatComponent implements OnInit {
           })
         )
         .subscribe(chat => (this.value = chat));
-    } else {
-      console.log('Chat already available');
     }
   }
 
