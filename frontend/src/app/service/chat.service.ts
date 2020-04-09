@@ -26,6 +26,7 @@ export class ChatService {
     switch (type) {
       case ChatTypeEnum.VENDOR_ORDER:
         params.vendorOrderId = id;
+        params.participants = participants;
         break;
       case ChatTypeEnum.BID_OFFER:
         params.bidOrderId = id;
@@ -33,6 +34,7 @@ export class ChatService {
         break;
       case ChatTypeEnum.PART_NOTE:
         params.partId = id;
+        params.participants = participants;
         break;
       case ChatTypeEnum.CUSTOMER_ORDER:
         params.customerOrderId = id;
@@ -41,8 +43,11 @@ export class ChatService {
     return params;
   }
 
-  getChat(id: number, type: number, vendorId: number = null): Observable<Chat> {
-    return this.http.post<Chat>(`${environment.procurementApiBaseUrl}/chat`, this.buildParameters(id, type, vendorId));
+  getChat(id: number, type: number, vendorId: number = null, participants: Array<number> = []): Observable<Chat> {
+    return this.http.post<Chat>(
+      `${environment.procurementApiBaseUrl}/chat`,
+      this.buildParameters(id, type, vendorId, participants)
+    );
   }
 
   create(id: number, type: number, vendorId: number = null, participants: Array<number> = []): Observable<Chat> {

@@ -9,7 +9,7 @@
   [closePopoverOnClickOutside]="popOverRef"
   (click)="openChat($event)"
   [disabled]="loading"
-  class="btn white shadow bg-transparent w-auto chat-button position-relative"
+  class="btn white bg-transparent w-auto chat-button position-relative"
 >
   <ng-container *ngIf="!loading; else loadingPanel">
     <span><i class="fas fa-comment-alt"></i></span>

@@ -29,6 +29,7 @@ export class ChatComponent implements OnInit {
   @Input() participants: Array<number>;
   @Input() type: ChatTypeEnum;
   @Input() value: Chat;
+  @Input() vendorId: number;
 
   @Output() valueChange: EventEmitter<Chat> = new EventEmitter<Chat>();
 
@@ -37,8 +38,6 @@ export class ChatComponent implements OnInit {
   });
   loading: boolean;
   disableScrollDown = false;
-
-  vendor: any;
   user: any;
 
   constructor(
@@ -51,7 +50,6 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.vendor = this.type === ChatTypeEnum.VENDOR_ORDER ? this.userService.getVendorInfo() : null;
     this.user = this.userService.getUserInfo();
     this.getChat();
   }
@@ -64,7 +62,7 @@ export class ChatComponent implements OnInit {
         .create(
           this.id,
           this.type,
-          this.vendor ? this.vendor.id : null,
+          this.type === ChatTypeEnum.VENDOR_ORDER && this.vendorId ? this.vendorId : null,
           (this.participants || []).length > 0 ? this.participants : []
         )
         .pipe(
@@ -85,7 +83,12 @@ export class ChatComponent implements OnInit {
   getChat() {
     this.loading = true;
     this.chatService
-      .getChat(this.id, this.type, this.vendor ? this.vendor.id : null)
+      .getChat(
+        this.id,
+        this.type,
+        this.type === ChatTypeEnum.VENDOR_ORDER && this.vendorId ? this.vendorId : null,
+        (this.user.is_admin || false) && this.type !== ChatTypeEnum.CUSTOMER_ORDER ? this.participants : []
+      )
       .pipe(
         catchError(err => {
           this.handleError(err.error.message);

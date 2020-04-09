@@ -8,7 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { catchError, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, empty, Observable } from 'rxjs';
+import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
@@ -181,7 +181,10 @@ export class VendorDetailsComponent implements OnInit {
         tooltipField: 'vendorName',
         hide: false,
         sortable: false,
-        filter: false
+        filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200
       },
       {
         headerName: 'Vendor Bid Price',
@@ -190,6 +193,9 @@ export class VendorDetailsComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200,
         valueFormatter: dt => {
           let value = '';
           switch (dt.data.bidProcessStatus.name) {
@@ -207,7 +213,7 @@ export class VendorDetailsComponent implements OnInit {
         headerName: 'Status',
         field: 'bidProcessStatus.description',
         tooltipField: 'bidProcessStatus.description',
-        cellClass: 'p-0',
+        cellClass: 'p-0 text-center',
         hide: false,
         sortable: false,
         filter: false,
@@ -304,7 +310,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   prepareBidOrderInfo() {
-    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released' ? true : false).subscribe(v => {
+    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released').subscribe(v => {
       // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.timeToExpire = v.bidProcessTimeLeft;
@@ -351,6 +357,11 @@ export class VendorDetailsComponent implements OnInit {
         .subscribe(v => {
           this.orderDetails = v || [];
         });
+      // TODO remove below code after vendor order details api start return vendor order id
+      if (this.type === 'released') {
+        const bidProcessIds = this.bidding.filter(bid => !!bid.bidProcessId).map(bid => bid.bidProcessId);
+        this.getVendorOrders(bidProcessIds);
+      }
     });
   }
 
@@ -923,5 +934,23 @@ export class VendorDetailsComponent implements OnInit {
           console.log({ err });
         }
       );
+  }
+
+  // TODO remove this method after vendor order details api start return vendor order id
+  getVendorOrders(bidProcessIds: Array<number>) {
+    if ((bidProcessIds || []).length > 0) {
+      const arr = bidProcessIds.map(id => this.ordersService.getVendorOrderInfo(id));
+      forkJoin(arr).subscribe(orders => {
+        const items = (orders || []).reduce((acc: any, value: any) => {
+          acc[value.bidProcessId] = value;
+          return acc;
+        }, {});
+        this.bidding = (this.bidding || []).map((bid: any) => {
+          const order = items[bid.bidProcessId];
+          bid.vendorOrderId = order ? order.id : null;
+          return bid;
+        });
+      });
+    }
   }
 }
