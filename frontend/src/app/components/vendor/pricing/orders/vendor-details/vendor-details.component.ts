@@ -218,7 +218,7 @@ export class VendorDetailsComponent implements OnInit {
       },
       this.type === 'confirmation' && {
         headerName: '',
-        cellClass: 'p-0',
+        cellClass: 'p-0 chat-column',
         hide: false,
         sortable: false,
         filter: false,
