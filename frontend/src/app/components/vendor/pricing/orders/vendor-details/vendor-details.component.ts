@@ -645,7 +645,7 @@ export class VendorDetailsComponent implements OnInit {
       columnDefs: this.columnDefs[4],
       enableColResize: true,
       // suppressRowTransform: true,
-      rowHeight: 36,
+      rowHeight: 45,
       headerHeight: 35
     });
     // View vendor profile matching grid

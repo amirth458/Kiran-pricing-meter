@@ -39,6 +39,10 @@
   width: 100%;
 }
 
+:host ::ng-deep .pop-over-grid .chat-column app-template-renderer app-chat {
+  height: auto;
+}
+
 :host ::ng-deep .supplier-table .status-column a.text-green {
   color: var(--theme-light-green) !important;
 }
