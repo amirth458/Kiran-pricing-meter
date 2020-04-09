@@ -85,7 +85,12 @@ export class ChatComponent implements OnInit {
   getChat() {
     this.loading = true;
     this.chatService
-      .getChat(this.id, this.type, this.vendor ? this.vendor.id : null)
+      .getChat(
+        this.id,
+        this.type,
+        this.vendor ? this.vendor.id : null,
+        (this.user.is_admin || false) && this.type !== ChatTypeEnum.CUSTOMER_ORDER ? this.participants : []
+      )
       .pipe(
         catchError(err => {
           this.handleError(err.error.message);
