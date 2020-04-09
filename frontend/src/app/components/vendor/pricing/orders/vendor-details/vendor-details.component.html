@@ -372,19 +372,36 @@
 <ng-template #sendEmailCell let-row let-column="params">
   <div class="d-flex flex-row justify-content-around align-items-center h-100 w-100">
     <!-- Email Communication -->
-    <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)"
-      ><i class="far fa-envelope"></i
-    ></span>
+    <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)">
+      <i class="far fa-envelope"></i>
+    </span>
     <!-- End of Email Communication -->
 
     <!-- Note Communication -->
-    <app-chat
-      [participants]="row.userId ? [row.userId] : []"
-      [id]="bidOrderId"
-      [type]="chatTypeEnum.BID_OFFER"
-      [value]="chat"
-      (valueChange)="chat = $event"
-    ></app-chat>
+    <ng-container [ngSwitch]="type">
+      <ng-container *ngSwitchCase="'confirmation'">
+        <app-chat
+          [participants]="row.userId ? [row.userId] : []"
+          [id]="bidOrderId"
+          [type]="chatTypeEnum.BID_OFFER"
+          [value]="chat"
+          (valueChange)="chat = $event"
+        >
+        </app-chat>
+      </ng-container>
+      <ng-container *ngSwitchCase="'released'">
+        <app-chat
+          *ngIf="row?.vendorOrderId"
+          [participants]="row.userId ? [row.userId] : []"
+          [id]="row?.vendorOrderId"
+          [vendorId]="row?.vendorId"
+          [type]="chatTypeEnum.VENDOR_ORDER"
+          [value]="chat"
+          (valueChange)="chat = $event"
+        >
+        </app-chat>
+      </ng-container>
+    </ng-container>
     <!--End of Note Communication -->
 
     <!-- Zoom Communication -->
