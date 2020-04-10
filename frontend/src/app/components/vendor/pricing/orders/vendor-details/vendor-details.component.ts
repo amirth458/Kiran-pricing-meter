@@ -81,6 +81,8 @@ export class VendorDetailsComponent implements OnInit {
   meetingInfo = {};
   user;
   schdulingForUserId;
+  schdulingForVendorOrderId;
+
   constructor(
     public biddingService: BiddingService,
     private modalService: NgbModal,
@@ -317,13 +319,6 @@ export class VendorDetailsComponent implements OnInit {
       this.bidding = (v.matchingSuppliersProfilesView || []).map(user => {
         return { ...user };
       });
-
-      if (this.bidding.length) {
-        this.bidding.forEach(user => {
-          this.getScheduledMeetings(user);
-        });
-      }
-
       this.bidding.map(match => (match.id = ++count));
       const vendors = [];
       this.bidding.map(match => {
@@ -361,6 +356,8 @@ export class VendorDetailsComponent implements OnInit {
       if (this.type === 'released') {
         const bidProcessIds = this.bidding.filter(bid => !!bid.bidProcessId).map(bid => bid.bidProcessId);
         this.getVendorOrders(bidProcessIds);
+      } else {
+        this.getFindAllScheduledMeeting();
       }
     });
   }
@@ -869,14 +866,11 @@ export class VendorDetailsComponent implements OnInit {
 
   openDateTimeSelector(row) {
     this.schdulingForUserId = row.userId;
+    this.schdulingForVendorOrderId = row.vendorOrderId;
     this.dateTimeSelector.nativeElement.click();
   }
 
   onTimeChanged(event) {
-    // console.log({ event });
-    // console.log('value', this.schdulingForUserId)
-    // console.log(this.meetingInfo);
-    // return;
     this.spinner.show();
     const meetingTime = new Date(event).toISOString();
     const conference: ConferenceRequest = {
@@ -887,12 +881,16 @@ export class VendorDetailsComponent implements OnInit {
       // partId: 1769,
       partId: 0,
       // bidOrderId: 0,
-      bidOrderId: this.bidOrderId,
+      bidOrderId: this.type === 'confirmation' ? this.bidOrderId : 0,
       customerOrderId: 0,
-      vendorOrderId: 0,
+      vendorOrderId: this.type === 'released' ? this.schdulingForVendorOrderId : 0,
 
-      conferenceTopic: 'Meeting for Part ' + this.bidOrderId,
-      conferencePassword: this.bidOrderId.toString(),
+      conferenceTopic:
+        'Meeting for Part ' + this.type === 'released'
+          ? this.schdulingForVendorOrderId.toString()
+          : this.bidOrderId.toString(),
+      conferencePassword:
+        this.type === 'released' ? this.schdulingForVendorOrderId.toString() : this.bidOrderId.toString(),
       startTimeInUTC: meetingTime.substr(0, meetingTime.length - 5) + 'Z',
       duration: 1
     };
@@ -917,23 +915,44 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   getScheduledMeetings(user) {
-    // this.zoomService.getConferenceByPartId('1769')
-    this.zoomService
-      .getConferenceByBidOrderId(this.bidOrderId.toString(), this.userService.getUserInfo().id, user.userId)
-      // 388)
-      .subscribe(
-        res => {
-          if (res) {
-            this.meetingInfo[(user.userId || '').toString()] = res;
-          } else {
-            this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+    if (this.type === 'released') {
+      // this.zoomService.getConferenceByPartId('1769')
+      // this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+      // return;
+      this.zoomService
+        .getConferenceByVendorOrderId(user.vendorOrderId.toString(), this.userService.getUserInfo().id, user.userId)
+        // 388)
+        .subscribe(
+          res => {
+            if (res) {
+              this.meetingInfo[(user.userId || '').toString()] = res;
+            } else {
+              this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+            }
+          },
+          err => {
+            console.log('Error while fetching meeting information');
+            console.log({ err });
           }
-        },
-        err => {
-          console.log('Error while fetching meeting information');
-          console.log({ err });
-        }
-      );
+        );
+    } else {
+      this.zoomService
+        .getConferenceByBidOrderId(this.bidOrderId.toString(), this.userService.getUserInfo().id, user.userId)
+        // 388)
+        .subscribe(
+          res => {
+            if (res) {
+              this.meetingInfo[(user.userId || '').toString()] = res;
+            } else {
+              this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+            }
+          },
+          err => {
+            console.log('Error while fetching meeting information');
+            console.log({ err });
+          }
+        );
+    }
   }
 
   // TODO remove this method after vendor order details api start return vendor order id
@@ -950,6 +969,15 @@ export class VendorDetailsComponent implements OnInit {
           bid.vendorOrderId = order ? order.id : null;
           return bid;
         });
+        this.getFindAllScheduledMeeting();
+      });
+    }
+  }
+
+  getFindAllScheduledMeeting() {
+    if (this.bidding.length) {
+      this.bidding.forEach(user => {
+        this.getScheduledMeetings(user);
       });
     }
   }

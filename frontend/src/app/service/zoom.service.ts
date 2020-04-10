@@ -3,18 +3,26 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConferenceRequest, Conference } from '../model/conference.model';
 import { environment } from 'src/environments/environment';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ZoomService {
-  constructor(public http: HttpClient) {}
+  userId;
+  constructor(public http: HttpClient, public userService: UserService) {
+    this.userId = this.userService.getUserInfo().id;
+  }
 
   createConference(body: ConferenceRequest): Observable<Conference> {
     return this.http.post<Conference>(environment.procurementApiBaseUrl + '/conference', body);
   }
 
-  getConferenceByPartId(partId: string, hostUserId: number, participantUserId: number = null): Observable<Conference> {
+  getConferenceByPartId(
+    partId: string,
+    hostUserId: number = this.userId,
+    participantUserId: number = null
+  ): Observable<Conference> {
     let url = environment.procurementApiBaseUrl + `/conference/part/${partId}?hostUserId=${hostUserId}`;
     if (participantUserId) {
       url += `&participantUserId=${participantUserId}`;
@@ -24,7 +32,7 @@ export class ZoomService {
 
   getConferenceByVendorOrderId(
     vendorOrderId: string,
-    hostUserId: number,
+    hostUserId: number = this.userId,
     participantUserId: number = null
   ): Observable<Conference> {
     let url = environment.procurementApiBaseUrl + `/conference/vendor-order/${vendorOrderId}?hostUserId=${hostUserId}`;
@@ -36,7 +44,7 @@ export class ZoomService {
 
   getConferenceByCustomerOrderId(
     customerOrderId: string,
-    hostUserId: number,
+    hostUserId: number = this.userId,
     participantUserId: number = null
   ): Observable<Conference> {
     let url =
@@ -49,7 +57,7 @@ export class ZoomService {
 
   getConferenceByBidOrderId(
     bidOrderId: string,
-    hostUserId: number,
+    hostUserId: number = this.userId,
     participantUserId: number = null
   ): Observable<Conference> {
     let url = environment.procurementApiBaseUrl + `/conference/bid-order/${bidOrderId}?hostUserId=${hostUserId}`;
