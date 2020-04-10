@@ -8,32 +8,30 @@
   #popOverRef="ngbPopover"
   [closePopoverOnClickOutside]="popOverRef"
   (click)="openChat($event)"
-  class="btn bg-transparent w-auto chat-button"
+  [disabled]="loading"
+  class="btn white bg-transparent w-auto chat-button position-relative"
 >
-  <i class="fas fa-comment-alt"></i>
-  <span class="unread-badge position-absolute">{{ value?.chats?.length }}</span>
+  <ng-container *ngIf="!loading; else loadingPanel">
+    <span><i class="fas fa-comment-alt"></i></span>
+  </ng-container>
+  <div class="unread-badge position-absolute">{{ value?.messageNotes?.length || 0 }}</div>
 </button>
 
 <ng-template #popContent>
   <div class="col-12 border p-0 d-flex flex-column">
     <div class="d-flex flex-grow-1 flex-column message-container" (scroll)="onScroll()">
-      <ng-container *ngIf="value?.chats?.length > 0">
-        <!--        <div-->
-        <!--          class="participant-chat {{-->
-        <!--            user.id === m.userId ? 'text-left' : 'text-right'-->
-        <!--          }}"-->
-        <!--          *ngFor="let m of value?.chats"-->
-        <!--        >-->
-        <!--          <span-->
-        <!--            class="{{-->
-        <!--              user.id === m.userId ? 'text-theme-green' : 'text-theme'-->
-        <!--            }}"-->
-        <!--          >{{ m.user.firstName || "" }} {{ m.user.lastName || "" }}</span-->
-        <!--          >-->
-        <!--          <p>{{ m.message || "" }}</p>-->
-        <!--        </div>-->
+      <ng-container *ngIf="value?.messageNotes?.length > 0">
+        <div
+          class="participant-chat {{ user?.id === m.senderId ? 'text-left' : 'text-right' }}"
+          *ngFor="let m of value?.messageNotes"
+        >
+          <span class="{{ user.id === m.senderId ? 'text-theme-green' : 'text-theme' }}">
+            {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }}
+          </span>
+          <p>{{ m.message || '' }}</p>
+        </div>
       </ng-container>
-      <ng-container *ngIf="value?.chats?.length === 0">
+      <ng-container *ngIf="value?.messageNotes?.length === 0">
         <div class="participant-chat text-left">
           No chats found
         </div>
@@ -57,7 +55,7 @@
       <div class="form-row">
         <div class="form-group theme col-12 m-0 d-flex justify-content-center">
           <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
-            {{ loadingNote ? 'Submitting Note' : 'Add Note' }}
+            {{ loading ? 'Submitting Note' : 'Add Note' }}
           </button>
         </div>
       </div>
@@ -69,4 +67,99 @@
   <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
     Notes
   </h5>
+</ng-template>
+
+<ng-template #loadingPanel>
+  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="0 0 135 140" fill="#74bf09">
+    <rect y="30.3115" width="15" height="79.377" rx="6">
+      <animate
+        attributeName="height"
+        begin="0.5s"
+        dur="1s"
+        values="120;110;100;90;80;70;60;50;40;140;120"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="y"
+        begin="0.5s"
+        dur="1s"
+        values="10;15;20;25;30;35;40;45;50;0;10"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect x="30" y="14.4689" width="15" height="111.062" rx="6">
+      <animate
+        attributeName="height"
+        begin="0.25s"
+        dur="1s"
+        values="120;110;100;90;80;70;60;50;40;140;120"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="y"
+        begin="0.25s"
+        dur="1s"
+        values="10;15;20;25;30;35;40;45;50;0;10"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect x="60" width="15" height="86.0623" rx="6" y="26.9688">
+      <animate
+        attributeName="height"
+        begin="0s"
+        dur="1s"
+        values="120;110;100;90;80;70;60;50;40;140;120"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="y"
+        begin="0s"
+        dur="1s"
+        values="10;15;20;25;30;35;40;45;50;0;10"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect x="90" y="14.4689" width="15" height="111.062" rx="6">
+      <animate
+        attributeName="height"
+        begin="0.25s"
+        dur="1s"
+        values="120;110;100;90;80;70;60;50;40;140;120"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="y"
+        begin="0.25s"
+        dur="1s"
+        values="10;15;20;25;30;35;40;45;50;0;10"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect x="120" y="30.3115" width="15" height="79.377" rx="6">
+      <animate
+        attributeName="height"
+        begin="0.5s"
+        dur="1s"
+        values="120;110;100;90;80;70;60;50;40;140;120"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+      <animate
+        attributeName="y"
+        begin="0.5s"
+        dur="1s"
+        values="10;15;20;25;30;35;40;45;50;0;10"
+        calcMode="linear"
+        repeatCount="indefinite"
+      />
+    </rect>
+  </svg>
 </ng-template>
