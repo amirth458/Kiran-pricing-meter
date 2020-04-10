@@ -138,7 +138,7 @@
     <div class="col-12 theme-table bidding-orders">
       <ag-grid-angular
         *ngIf="!toggleVendorList"
-        class="ag-theme-balham w-100 h-100"
+        class="ag-theme-balham w-100 h-100 pop-over-grid"
         [class.grid-empty]="(bidding || []).length === 0"
         [rowData]="bidding"
         [gridOptions]="gridOptions[4]"
@@ -370,7 +370,93 @@
 </ng-template>
 
 <ng-template #sendEmailCell let-row let-column="params">
-  <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)"><i class="far fa-envelope"></i></span>
+  <div class="d-flex flex-row justify-content-around align-items-center h-100 w-100">
+    <!-- Email Communication -->
+    <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)">
+      <i class="far fa-envelope"></i>
+    </span>
+    <!-- End of Email Communication -->
+
+    <!-- Note Communication -->
+    <ng-container [ngSwitch]="type">
+      <ng-container *ngSwitchCase="'confirmation'">
+        <app-chat
+          [participants]="row.userId ? [row.userId] : []"
+          [id]="bidOrderId"
+          [type]="chatTypeEnum.BID_OFFER"
+          [value]="chat"
+          (valueChange)="chat = $event"
+        >
+        </app-chat>
+      </ng-container>
+      <ng-container *ngSwitchCase="'released'">
+        <app-chat
+          *ngIf="row?.vendorOrderId"
+          [participants]="row.userId ? [row.userId] : []"
+          [id]="row?.vendorOrderId"
+          [vendorId]="row?.vendorId"
+          [type]="chatTypeEnum.VENDOR_ORDER"
+          [value]="chat"
+          (valueChange)="chat = $event"
+        >
+        </app-chat>
+      </ng-container>
+    </ng-container>
+    <!--End of Note Communication -->
+
+    <!-- Zoom Communication -->
+    <span class="text-green text-btn p-2" (click)="openDateTimeSelector(row)"><i class="far fa-calendar-alt"></i></span>
+    <div class="d-flex meeting-time text-center d-flex align-items-center">
+      <label class="d-flex flex-column justify-content-center align-items-center m-0">
+        <span class="m-0 text-center ">
+          Meeting Time
+        </span>
+        <span
+          class="font-weight-bold time text-center"
+          [ngClass]="{ 'theme-grey': meetingInfo[row.userId]?.isExpired || !meetingInfo[row.userId]?.startTime }"
+        >
+          <a
+            *ngIf="meetingInfo[row.userId]?.startTime"
+            [href]="
+              user?.id == meetingInfo[row.userId].hostUserId
+                ? meetingInfo[row.userId]?.videoConferenceLinkForHost
+                : meetingInfo[row.userId]?.videoConferenceLinkForParticipant
+            "
+            target="_blank"
+            class="underline"
+          >
+            {{ meetingInfo[row.userId]?.startTime | date: 'short' }}
+          </a>
+          <ng-container *ngIf="!meetingInfo[row.userId]?.startTime">
+            -
+          </ng-container>
+        </span>
+        <input
+          *ngIf="meetingInfo[row.userId]"
+          class="dt-control m-0 p-0"
+          readonly
+          #dateTimeSelector
+          [owlDateTime]="dt1"
+          [owlDateTimeTrigger]="dt1"
+          [(ngModel)]="meetingInfo[row.userId].startTime"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="onTimeChanged($event)"
+        />
+        <owl-date-time #dt1></owl-date-time>
+      </label>
+    </div>
+    <!-- End of Zoom Communication -->
+
+    <!--
+    <p class="m-0 text-center">Meeting Time:</p>
+    <label>
+      <p *ngIf="!meetingInfo[row.userId].startTime" class="m-0 text-center font-weight-bold underline timer"
+        (click)="openDateTimeSelector()">Schedule
+        Meeting
+      </p>
+
+    </label> -->
+  </div>
 </ng-template>
 
 <ng-template #sendMailModal let-modal>

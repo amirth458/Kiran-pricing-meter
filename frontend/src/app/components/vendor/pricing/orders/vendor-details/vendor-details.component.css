@@ -33,6 +33,25 @@
   cursor: pointer;
 }
 
+:host ::ng-deep .pop-over-grid app-template-renderer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+:host ::ng-deep .pop-over-grid .chat-column app-template-renderer app-chat {
+  height: auto;
+}
+
+:host ::ng-deep .pop-over-grid .chat-column .dt-control {
+  height: 0;
+  width: 0;
+  background: transparent;
+  border: none;
+}
+
 :host ::ng-deep .supplier-table .status-column a.text-green {
   color: var(--theme-light-green) !important;
 }
@@ -90,6 +109,7 @@
   font-size: 14px;
   font-weight: 500;
 }
+
 .setting-value {
   background-color: var(--theme-light-input-bg);
   font-size: 14px;
@@ -139,10 +159,24 @@ a.priority-btn:not([href]) {
   cursor: pointer;
   font-size: 12px;
 }
+
 .release-btn {
   font-size: 12px;
 }
 
 .text-btn {
   font-size: 18px;
+}
+
+:host .meeting-time {
+  width: 100px !important;
+}
+
+:host .meeting-time span {
+  height: 20px;
+}
+
+:host .meeting-time span.time {
+  color: var(--theme-bright-blue);
+  cursor: pointer;
 }

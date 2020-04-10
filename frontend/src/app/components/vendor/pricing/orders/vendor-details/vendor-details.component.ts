@@ -8,10 +8,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { catchError, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, empty, Observable } from 'rxjs';
+import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
+import { Conference, ConferenceRequest } from '../../../../../model/conference.model';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from '../../../../../service/orders.service';
@@ -21,6 +22,8 @@ import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
 
 import { DefaultEmails } from '../../../../../../assets/constants.js';
+import { ZoomService } from 'src/app/service/zoom.service';
+import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -39,6 +42,7 @@ export class VendorDetailsComponent implements OnInit {
   @ViewChild('supplierStatusCell') supplierStatusCell: TemplateRef<any>;
 
   @ViewChild('sendMailModal') sendMailModal;
+  @ViewChild('dateTimeSelector') dateTimeSelector;
   @ViewChild('orderStatusTemplate') orderStatusTemplate;
 
   timeToExpire = null;
@@ -66,11 +70,17 @@ export class VendorDetailsComponent implements OnInit {
   suppliers$: Observable<Array<number>>;
   selectedBidProcessId: number;
 
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
+
   from = '';
   to = '';
   cc = [];
   bcc = [];
 
+  meetingInfo = {};
+  user;
+  schdulingForUserId;
   constructor(
     public biddingService: BiddingService,
     private modalService: NgbModal,
@@ -81,7 +91,8 @@ export class VendorDetailsComponent implements OnInit {
     public toaster: ToastrService,
     public spinner: NgxSpinnerService,
     public datePipe: DatePipe,
-    public currencyPipe: CurrencyPipe
+    public currencyPipe: CurrencyPipe,
+    public zoomService: ZoomService
   ) {
     if (this.router.url.includes('order-confirmation-queue')) {
       this.type = 'confirmation';
@@ -148,12 +159,171 @@ export class VendorDetailsComponent implements OnInit {
     this.suppliers$ = this.blockedSuppliers$.asObservable();
   }
 
+  ngOnInit() {
+    this.user = this.userService.getUserInfo();
+
+    this.initTable();
+    // view bidding status
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        tooltipField: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200
+      },
+      {
+        headerName: 'Vendor Bid Price',
+        field: 'bidOfferPrice',
+        tooltipField: 'bidOfferPrice',
+        hide: false,
+        sortable: false,
+        filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200,
+        valueFormatter: dt => {
+          let value = '';
+          switch (dt.data.bidProcessStatus.name) {
+            case BiddingStatus.COUNTER_OFFER:
+              value = `$ ${dt.data.counterOfferPrice || 0}`;
+              break;
+            case BiddingStatus.ACCEPTED:
+              value = `$ ${dt.data.bidOfferPrice || 0}`;
+              break;
+          }
+          return value;
+        }
+      },
+      {
+        headerName: 'Status',
+        field: 'bidProcessStatus.description',
+        tooltipField: 'bidProcessStatus.description',
+        cellClass: 'p-0 text-center',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
+      },
+      (this.type === 'confirmation' || this.type === 'released') && {
+        headerName: '',
+        cellClass: 'p-0 chat-column',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.sendEmailCell
+        }
+      }
+    ]);
+    // View vendor profile matching
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        tooltipField: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Facility Name',
+        field: 'facilityName',
+        tooltipField: 'facilityName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Process Profile Name',
+        field: 'processProfileName',
+        tooltipField: 'processProfileName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Pricing Profile',
+        field: 'pricingProfile',
+        tooltipField: 'pricingProfile',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'status',
+        field: 'bidProcessStatus.description',
+        tooltipField: 'bidProcessStatus.description',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
+      }
+    ]);
+    // view bidding status grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[4],
+      enableColResize: true,
+      rowHeight: 50,
+      headerHeight: 35
+    });
+    // View vendor profile matching grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[5],
+      enableColResize: true,
+      rowHeight: 36,
+      headerHeight: 35
+    });
+  }
+
   prepareBidOrderInfo() {
-    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released' ? true : false).subscribe(v => {
+    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released').subscribe(v => {
       // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.timeToExpire = v.bidProcessTimeLeft;
-      this.bidding = v.matchingSuppliersProfilesView || [];
+      this.bidding = (v.matchingSuppliersProfilesView || []).map(user => {
+        return { ...user };
+      });
+
+      if (this.bidding.length) {
+        this.bidding.forEach(user => {
+          this.getScheduledMeetings(user);
+        });
+      }
+
       this.bidding.map(match => (match.id = ++count));
       const vendors = [];
       this.bidding.map(match => {
@@ -187,6 +357,11 @@ export class VendorDetailsComponent implements OnInit {
         .subscribe(v => {
           this.orderDetails = v || [];
         });
+      // TODO remove below code after vendor order details api start return vendor order id
+      if (this.type === 'released') {
+        const bidProcessIds = this.bidding.filter(bid => !!bid.bidProcessId).map(bid => bid.bidProcessId);
+        this.getVendorOrders(bidProcessIds);
+      }
     });
   }
 
@@ -510,149 +685,6 @@ export class VendorDetailsComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {
-    this.initTable();
-    // view bidding status
-    this.columnDefs.push([
-      {
-        headerName: 'No',
-        field: 'id',
-        tooltipField: 'id',
-        width: 100,
-        maxWidth: 100,
-        hide: false,
-        sortable: false,
-        filter: false,
-        checkboxSelection: this.type === 'confirmation'
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        tooltipField: 'vendorName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Bid Price',
-        field: 'bidOfferPrice',
-        tooltipField: 'bidOfferPrice',
-        hide: false,
-        sortable: false,
-        filter: false,
-        valueFormatter: dt => {
-          let value = '';
-          switch (dt.data.bidProcessStatus.name) {
-            case BiddingStatus.COUNTER_OFFER:
-              value = `$ ${dt.data.counterOfferPrice || 0}`;
-              break;
-            case BiddingStatus.ACCEPTED:
-              value = `$ ${dt.data.bidOfferPrice || 0}`;
-              break;
-          }
-          return value;
-        }
-      },
-      {
-        headerName: 'Status',
-        field: 'bidProcessStatus.description',
-        tooltipField: 'bidProcessStatus.description',
-        cellClass: 'p-0',
-        hide: false,
-        sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.statusCell
-        }
-      },
-      this.type === 'confirmation' && {
-        headerName: '',
-        cellClass: 'p-0',
-        hide: false,
-        sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.sendEmailCell
-        }
-      }
-    ]);
-    // View vendor profile matching
-    this.columnDefs.push([
-      {
-        headerName: 'No',
-        field: 'id',
-        tooltipField: 'id',
-        width: 100,
-        maxWidth: 100,
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        tooltipField: 'vendorName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Facility Name',
-        field: 'facilityName',
-        tooltipField: 'facilityName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Process Profile Name',
-        field: 'processProfileName',
-        tooltipField: 'processProfileName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Pricing Profile',
-        field: 'pricingProfile',
-        tooltipField: 'pricingProfile',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'status',
-        field: 'bidProcessStatus.description',
-        tooltipField: 'bidProcessStatus.description',
-        hide: false,
-        sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.statusCell
-        }
-      }
-    ]);
-    // view bidding status grid
-    this.gridOptions.push({
-      frameworkComponents: this.frameworkComponents,
-      columnDefs: this.columnDefs[4],
-      enableColResize: true,
-      rowHeight: 36,
-      headerHeight: 35
-    });
-    // View vendor profile matching grid
-    this.gridOptions.push({
-      frameworkComponents: this.frameworkComponents,
-      columnDefs: this.columnDefs[5],
-      enableColResize: true,
-      rowHeight: 36,
-      headerHeight: 35
-    });
-  }
-
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
     this.gridOptions[idx].api.sizeColumnsToFit();
@@ -833,5 +865,92 @@ export class VendorDetailsComponent implements OnInit {
       centered: true,
       size: 'lg'
     });
+  }
+
+  openDateTimeSelector(row) {
+    this.schdulingForUserId = row.userId;
+    this.dateTimeSelector.nativeElement.click();
+  }
+
+  onTimeChanged(event) {
+    // console.log({ event });
+    // console.log('value', this.schdulingForUserId)
+    // console.log(this.meetingInfo);
+    // return;
+    this.spinner.show();
+    const meetingTime = new Date(event).toISOString();
+    const conference: ConferenceRequest = {
+      hostUserId: this.userService.getUserInfo().id,
+      participantUserId: this.schdulingForUserId,
+      // participantUserId: 388, //"krtest-c1@test.com"
+
+      // partId: 1769,
+      partId: 0,
+      // bidOrderId: 0,
+      bidOrderId: this.bidOrderId,
+      customerOrderId: 0,
+      vendorOrderId: 0,
+
+      conferenceTopic: 'Meeting for Part ' + this.bidOrderId,
+      conferencePassword: this.bidOrderId.toString(),
+      startTimeInUTC: meetingTime.substr(0, meetingTime.length - 5) + 'Z',
+      duration: 1
+    };
+    this.zoomService.createConference(conference).subscribe(
+      (res: Conference) => {
+        if (res) {
+          this.meetingInfo[this.schdulingForUserId] = res;
+          this.meetingInfo[this.schdulingForUserId].startTime = new Date(res.startTime).toISOString();
+        }
+        this.spinner.hide();
+        this.toaster.success('Meeting time set.');
+        this.schdulingForUserId = null;
+      },
+      err => {
+        console.log({ err });
+        this.schdulingForUserId = null;
+        this.spinner.hide();
+        this.toaster.error('Error while setting meeting time.');
+      }
+    );
+    // console.log(this.meetingTime);
+  }
+
+  getScheduledMeetings(user) {
+    // this.zoomService.getConferenceByPartId('1769')
+    this.zoomService
+      .getConferenceByBidOrderId(this.bidOrderId.toString(), this.userService.getUserInfo().id, user.userId)
+      // 388)
+      .subscribe(
+        res => {
+          if (res) {
+            this.meetingInfo[(user.userId || '').toString()] = res;
+          } else {
+            this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+          }
+        },
+        err => {
+          console.log('Error while fetching meeting information');
+          console.log({ err });
+        }
+      );
+  }
+
+  // TODO remove this method after vendor order details api start return vendor order id
+  getVendorOrders(bidProcessIds: Array<number>) {
+    if ((bidProcessIds || []).length > 0) {
+      const arr = bidProcessIds.map(id => this.ordersService.getVendorOrderInfo(id));
+      forkJoin(arr).subscribe(orders => {
+        const items = (orders || []).reduce((acc: any, value: any) => {
+          acc[value.bidProcessId] = value;
+          return acc;
+        }, {});
+        this.bidding = (this.bidding || []).map((bid: any) => {
+          const order = items[bid.bidProcessId];
+          bid.vendorOrderId = order ? order.id : null;
+          return bid;
+        });
+      });
+    }
   }
 }
