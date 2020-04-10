@@ -28,3 +28,16 @@ export class ConferenceRequest {
   startTimeInUTC: string;
   duration: number;
 }
+
+export enum ZoomTypeEnum {
+  PART = 'PART',
+  BID_OFFER = 'BID_OFFER',
+  VENDOR_ORDER = 'VENDOR_ORDER',
+  CUSTOMER_ORDER = 'CUSTOMER_ORDER'
+}
+
+export enum ZoomParticipantEnum {
+  ADMIN = 'ADMIN',
+  VENDOR = 'VENDOR',
+  CUSTOMER = 'CUSTOMER'
+}
