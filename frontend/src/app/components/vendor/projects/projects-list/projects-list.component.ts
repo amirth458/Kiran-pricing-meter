@@ -20,7 +20,7 @@ export class ProjectsListComponent implements OnInit {
   columnDefs = [];
   gridOptions: GridOptions;
   projectTypes = [];
-  projectType = '';
+  projectType = null;
   navigation;
 
   pageSize = 10;
@@ -118,13 +118,13 @@ export class ProjectsListComponent implements OnInit {
         let ob: Observable<any> = null;
         switch (this.type) {
           case 'project-release-queue':
-            ob = this.projectService.getProjectReleaseQueue(filterOption);
+            ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
             break;
           case 'vendor-confirmation-queue':
-            ob = this.projectService.getConfirmationQueue(filterOption);
+            ob = this.projectService.getConfirmationQueue(filterOption, this.projectType);
             break;
           case 'released-projects':
-            ob = this.projectService.getReleasedProjects(filterOption);
+            ob = this.projectService.getReleasedProjects(filterOption, this.projectType);
             break;
           default:
         }
@@ -164,5 +164,6 @@ export class ProjectsListComponent implements OnInit {
 
   onChangeProjectType(ev) {
     this.projectType = ev.target.value;
+    this.setDataSource();
   }
 }

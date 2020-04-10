@@ -142,15 +142,7 @@ export class OrdersService {
     return this.http.get<any>(url);
   }
 
-  getMatchedProfiles(
-    userId: number,
-    rfqMediaIds: number[],
-    isTestDataEnabled = false
-  ): Observable<ProcessProfileDetailedView[]> {
-    if (isTestDataEnabled && environment.isTestDataEnabled) {
-      userId = 357;
-      rfqMediaIds = [159];
-    }
+  getMatchedProfiles(userId: number, rfqMediaIds: number[]): Observable<ProcessProfileDetailedView[]> {
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
     params = params.append('userId', userId.toString());

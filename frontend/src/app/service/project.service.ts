@@ -9,7 +9,7 @@ import { FilterOption } from '../model/vendor.model';
 export class ProjectService {
   constructor(public http: HttpClient) {}
 
-  getProjectReleaseQueue(filterOption: FilterOption) {
+  getProjectReleaseQueue(filterOption: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/part/search`;
     let params = new HttpParams();
 
@@ -22,13 +22,14 @@ export class ProjectService {
     return this.http.post<any>(
       url,
       {
-        statusIds: [18]
+        statusIds: [18],
+        projectType
       },
       { params }
     );
   }
 
-  getConfirmationQueue(filterOption: FilterOption) {
+  getConfirmationQueue(filterOption: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/bid-project/status`;
     let params = new HttpParams();
 
@@ -37,10 +38,10 @@ export class ProjectService {
       params = params.append('size', filterOption.size.toString());
       params = params.append('sort', filterOption.sort.toString());
     }
-    return this.http.post<any>(url, [2], { params });
+    return this.http.post<any>(url, { statusIds: [2], projectType }, { params });
   }
 
-  getReleasedProjects(filterOption: FilterOption) {
+  getReleasedProjects(filterOption: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/bid-project/status`;
     let params = new HttpParams();
 
@@ -49,6 +50,6 @@ export class ProjectService {
       params = params.append('size', filterOption.size.toString());
       params = params.append('sort', filterOption.sort.toString());
     }
-    return this.http.post<any>(url, [3], { params });
+    return this.http.post<any>(url, { statusIds: [3], projectType }, { params });
   }
 }

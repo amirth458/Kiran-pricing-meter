@@ -42,7 +42,7 @@
               <div class="form-group theme">
                 <select class="form-control form-control-sm" formControlName="projectType" (change)="getProfiles()">
                   <option value="null" selected>All Type Of Project</option>
-                  <option *ngFor="let s of projectType" [value]="s.id" [text]="s.displayName"></option>
+                  <option *ngFor="let s of projectType" [value]="s.name" [text]="s.displayName"></option>
                   <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
                 </select>
               </div>
@@ -85,7 +85,7 @@
     <span class="text-theme-green approve-btn" (click)="selectedPurchaseOrder = row; open(approveModal, 'md')"
       >Approve</span
     >
-    <span class="reject-btn ml-3" (click)="selectedPurchaseOrder = row; open(rejectModal)">Reject</span>
+    <!-- <span class="reject-btn ml-3" (click)="selectedPurchaseOrder = row; open(rejectModal)">Reject</span> -->
   </div>
 </ng-template>
 

@@ -3,8 +3,8 @@
     <div class="mb-3">
       <div class="toolbar">
         <select class="form-control form-control-sm" (change)="onChangeProjectType($event)">
-          <option value="" selected>All Type Of Project</option>
-          <option *ngFor="let s of projectTypes" [value]="s.id" [text]="s.displayName"></option>
+          <option [value]="null" selected>All Type Of Project</option>
+          <option *ngFor="let s of projectTypes" [value]="s.name" [text]="s.displayName"></option>
           <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
         </select>
       </div>
