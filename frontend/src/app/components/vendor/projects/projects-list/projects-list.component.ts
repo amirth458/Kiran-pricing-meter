@@ -132,10 +132,10 @@ export class ProjectsListComponent implements OnInit {
           this.spinner.hide('spooler');
           const rowsThisPage = data.content.map((item: Part) => ({
             id: item.id,
-            orderId: item.order.id,
+            orderId: item.order && item.order.id,
             projectType: item.rfqMedia.projectRfq.projectType.name,
-            sameVendor: item.order.isReleaseToSingleSupplier ? 'True' : 'False',
-            customerName: item.order.customerName
+            sameVendor: item.order && item.order.isReleaseToSingleSupplier ? 'True' : 'False',
+            customerName: item.order && item.order.customerName
           }));
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
           console.log(data.totalElements, params.endRow, lastRow);
@@ -163,7 +163,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   onChangeProjectType(ev) {
-    this.projectType = ev.target.value;
+    this.projectType = ev.target.value === 'null' ? null : ev.target.value;
     this.setDataSource();
   }
 }

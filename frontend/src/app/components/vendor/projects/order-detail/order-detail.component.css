@@ -20,11 +20,29 @@ p.label {
   margin-bottom: 10px;
 }
 
-.btn-primary {
-  width: 300px;
-}
-
 .table-header {
   font-weight: 600;
   color: var(--theme-dark-blue);
+}
+
+.text-green {
+  color: var(--theme-light-green) !important;
+}
+
+.text-orange {
+  color: var(--theme-orange) !important;
+}
+
+.text-blue {
+  color: var(--theme-bright-blue) !important;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+.btn-sm {
+  font-size: 13px;
+  padding: 6px 12px;
+  width: auto;
 }

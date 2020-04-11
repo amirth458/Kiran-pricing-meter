@@ -457,6 +457,18 @@ export interface PartQuoteQueryDto {
   totalCost: number;
 }
 
+export interface MatchedProcessProfile {
+  rfqMediaId: number;
+  partId: number;
+  processProfileId: number;
+  corporateName: string;
+  vendorId: number;
+  facilityName: string;
+  processProfileName: string;
+  equipment: string;
+  material: string;
+}
+
 export enum AppPartStatus {
   // RFQ Created
   READY_FOR_QUOTING = 'READY_FOR_QUOTING',
@@ -476,4 +488,18 @@ export enum AppPartStatus {
   // Order Complete
   PART_COMPLETE = 'PART_COMPLETE',
   PAYMENT_PENDING = 'PAYMENT_PENDING'
+}
+
+export interface BidProjectProcess {
+  id: number;
+  vendorId: number;
+  releasePriority: number;
+  bidProjectId: number;
+  bidProjectProcessStatusType: {
+    id: number;
+    name: string;
+    description: string;
+  };
+  matchedProcessProfileIds: number[];
+  vendorName: string;
 }
