@@ -29,7 +29,7 @@ export class FilterOption {
   size: number;
   page: number;
   sort: string;
-  q: string;
+  q?: string;
 }
 
 export class Country {

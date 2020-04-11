@@ -15,11 +15,4 @@ export class PartService {
       .get<MetaData[]>(environment.apiBaseUrl + '/admin/metadata/partstatus')
       .pipe(map((res: any) => res.metadataList || []));
   }
-
-  getProjectReleaseQueue(): Observable<any[]> {
-    const url = `${environment.apiBaseUrl}/admin/part/search`;
-    return this.http.post<any[]>(url, {
-      statusIds: [15]
-    });
-  }
 }

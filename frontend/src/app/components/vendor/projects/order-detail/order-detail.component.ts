@@ -1,9 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { OrdersService } from 'src/app/service/orders.service';
-import { MetadataConfig } from 'src/app/model/metadata.model';
-import { MetadataService } from 'src/app/service/metadata.service';
-import { combineLatest } from 'rxjs';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GridOptions } from 'ag-grid-community';
+import { combineLatest } from 'rxjs';
+
+import { OrdersService } from 'src/app/service/orders.service';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { PartService } from 'src/app/service/part.service';
+import { UserService } from 'src/app/service/user.service';
+import { Part, MatchedProcessProfile, BidProjectProcess } from 'src/app/model/part.model';
+import { MetadataConfig } from 'src/app/model/metadata.model';
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { Util } from 'src/app/util/Util';
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-order-detail',
@@ -11,146 +20,422 @@ import { GridOptions } from 'ag-grid-community';
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  @ViewChild('removeCell') removeCell: TemplateRef<any>;
+  @ViewChild('moveCell') moveCell: TemplateRef<any>;
+  @ViewChild('statusCell') statusCell: TemplateRef<any>;
+  @ViewChild('vendorCell') vendorCell: TemplateRef<any>;
+  @ViewChild('vendorProfile') vendorProfileModal: TemplateRef<any>;
+  @ViewChild('addSupplier') addSupplier: TemplateRef<any>;
+
   measurementUnits: any;
-  postProcessAction: any;
+  postProcessAction = [];
+  selectedVendor;
 
-  gridOptions: GridOptions;
-  columnDefs = [
-    [
-      {
-        headerName: 'No',
-        field: 'id',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Process Profile Name',
-        field: 'processProfileName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Released Priority',
-        field: 'releasedPriority',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: '',
-        hide: false,
-        sortable: true,
-        filter: false
-      }
-    ],
-    [
-      {
-        headerName: 'No',
-        field: 'id',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Process Profile Name',
-        field: 'processProfileName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: '',
-        hide: false,
-        sortable: true,
-        filter: false
-      }
-    ],
-    [
-      {
-        headerName: 'No',
-        field: 'id',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Process Profile Name',
-        field: 'processProfileName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Meeting Time',
-        field: 'meetingTime',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Status',
-        field: 'status',
-        hide: false,
-        sortable: true,
-        filter: false
-      }
-    ]
-  ];
-  frameworkComponents = {};
+  supplierGridOptions: GridOptions[] = [];
+  supplierColumnDefs = [];
 
-  matchingSuppliersProfile = [];
-  removedMatchingSuppliersProfile = [];
-  suppliersProfile = [];
-  rowData = [];
-  order: any;
+  vendorProfileGridOptions: GridOptions;
+  vendorProfileColumnDefs;
 
-  constructor(public orderService: OrdersService, public metadataService: MetadataService) {}
+  frameworkComponents = {
+    templateRenderer: TemplateRendererComponent
+  };
+
+  type;
+  maxNum = 3;
+  selectableCount;
+
+  matchingProfiles: MatchedProcessProfile[] = [];
+  shortListedSuppliers = [];
+  removedSuppliers = [];
+  selectedSuppliers = [];
+  availableSuppliers = [];
+
+  part: Part;
+
+  constructor(
+    public orderService: OrdersService,
+    public metadataService: MetadataService,
+    public route: ActivatedRoute,
+    public router: Router,
+    public partService: PartService,
+    public userService: UserService,
+    public toastr: ToastrService,
+    public modal: NgbModal
+  ) {
+    this.type = router.url.split('/')[2];
+  }
 
   ngOnInit() {
+    if (this.type === 'project-release-queue') {
+      this.initSuppliersTable();
+    } else {
+      this.initMatchingSuppliersQueue();
+    }
+
+    if (this.type !== 'released-projects') {
+      this.initVendorProfileTable();
+    }
+
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),
       this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION)
     ).subscribe(([measurementUnits, postProcessAction]) => {
-      this.measurementUnits = measurementUnits;
+      this.measurementUnits = measurementUnits.metadataList;
       this.postProcessAction = postProcessAction;
     });
 
-    this.gridOptions = {
+    this.route.params.subscribe(({ id }) => {
+      this.orderService.getPartById(id).subscribe(v => {
+        this.part = v;
+        this.orderService.getProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
+          this.matchingProfiles = res;
+          this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
+            (vendorId, index) => {
+              const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
+              return {
+                id: index + 1,
+                vendorId: vendorId,
+                vendorName: group[0].corporateName,
+                numberOfProfiles: group.length
+              };
+            }
+          );
+
+          if (this.type !== 'project-release-queue') {
+            this.setSuppliers(id);
+          }
+        });
+      });
+    });
+  }
+
+  initSuppliersTable() {
+    this.supplierColumnDefs = [
+      [
+        {
+          headerName: 'No',
+          valueGetter: 'node.rowIndex + 1',
+          width: 80,
+          hide: false,
+          sortable: false,
+          filter: false,
+          checkboxSelection: true,
+          rowDrag: true
+        },
+        {
+          headerName: 'Vendor Name',
+          field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.vendorCell
+          }
+        },
+        {
+          headerName: 'Quantity of Process Profiles',
+          field: 'numberOfProfiles',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: '',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.removeCell
+          },
+          width: 200,
+          hide: false,
+          sortable: false,
+          filter: false
+        }
+      ],
+      [
+        {
+          headerName: 'No',
+          valueGetter: 'node.rowIndex + 1',
+          width: 30
+        },
+        {
+          headerName: 'Vendor Name',
+          field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.vendorCell
+          }
+        },
+        {
+          headerName: '',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.moveCell
+          },
+          width: 200,
+          hide: false,
+          sortable: false,
+          filter: false
+        }
+      ]
+    ];
+
+    this.supplierGridOptions = [
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.supplierColumnDefs[0],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35,
+        rowSelection: 'multiple',
+        rowMultiSelectWithClick: true,
+        onRowSelected: ev => {
+          if (ev.node.isSelected()) {
+            if (ev.api.getSelectedRows().length > this.maxNum) {
+              this.toastr.warning(`You can select up to ${this.maxNum} suppliers.`);
+              ev.node.setSelected(false);
+            } else {
+            }
+          }
+        }
+      },
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.supplierColumnDefs[1],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35,
+        domLayout: 'autoHeight'
+      }
+    ];
+  }
+
+  initMatchingSuppliersQueue() {
+    this.supplierColumnDefs = [
+      [
+        {
+          headerName: 'No',
+          valueGetter: 'node.rowIndex + 1',
+          width: 50,
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Vendor Name',
+          field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.vendorCell
+          }
+        },
+        {
+          headerName: 'Quantity of Process Profiles',
+          field: 'numberOfProfiles',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Status',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.statusCell
+          },
+          hide: false,
+          sortable: false,
+          filter: false
+        }
+      ],
+      [
+        {
+          headerName: 'No',
+          valueGetter: 'node.rowIndex + 1',
+          checkboxSelection: true,
+          width: 30
+        },
+        {
+          headerName: 'Vendor Name',
+          field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.vendorCell
+          }
+        },
+        {
+          headerName: 'Quantity of Process Profiles',
+          field: 'numberOfProfiles',
+          hide: false,
+          sortable: false,
+          filter: false
+        }
+      ]
+    ];
+
+    this.supplierGridOptions = [
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.supplierColumnDefs[0],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35
+      },
+      {
+        frameworkComponents: this.frameworkComponents,
+        columnDefs: this.supplierColumnDefs[1],
+        enableColResize: true,
+        rowHeight: 35,
+        headerHeight: 35,
+        rowSelection: 'multiple',
+        rowMultiSelectWithClick: true,
+        onRowSelected: ev => {
+          if (ev.node.isSelected()) {
+            if (ev.api.getSelectedRows().length > this.selectableCount) {
+              this.toastr.warning(`You can select up to ${this.selectableCount} suppliers.`);
+              ev.node.setSelected(false);
+            } else {
+            }
+          }
+        }
+      }
+    ];
+  }
+
+  initVendorProfileTable() {
+    this.vendorProfileColumnDefs = [
+      {
+        headerName: 'No',
+        valueGetter: 'node.rowIndex + 1',
+        width: 30
+      },
+      {
+        headerName: 'Process Profile Name',
+        field: 'processProfileName',
+        hide: false,
+        sortable: false,
+        filter: false
+      }
+    ];
+
+    this.vendorProfileGridOptions = {
       frameworkComponents: this.frameworkComponents,
-      columnDefs: this.columnDefs[0],
-      pagination: true,
-      paginationPageSize: 10,
+      columnDefs: this.vendorProfileColumnDefs,
       enableColResize: true,
-      rowHeight: 50,
-      headerHeight: 35,
-      rowSelection: 'multiple'
+      rowHeight: 35,
+      headerHeight: 35
     };
   }
 
-  onGridReady(ev) {
-    this.gridOptions.api = ev.api;
+  onSuppliersGridReady(index, ev) {
+    this.supplierGridOptions[index].api = ev.api;
+    this.supplierGridOptions[index].api.sizeColumnsToFit();
+  }
+
+  onVendorProfileReady(ev) {
+    this.vendorProfileGridOptions.api = ev.api;
+    this.vendorProfileGridOptions.api.sizeColumnsToFit();
+  }
+
+  onRowDrag(ev) {
+    const overNode = ev.overNode;
+    const popIndex = this.shortListedSuppliers.findIndex(item => item.id === overNode.data.id);
+    const pushIndex = ev.overIndex;
+    this.shortListedSuppliers.splice(popIndex, 1);
+    this.shortListedSuppliers.splice(pushIndex, 0, overNode.data);
+  }
+
+  preparePostProcessValues(ids: Array<number>) {
+    return Util.preparePostProcessValues(this.postProcessAction, ids || []);
+  }
+
+  removeFromList(data) {
+    this.removedSuppliers = [...this.removedSuppliers, data];
+    this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.id !== data.id);
+  }
+
+  moveToList(data) {
+    this.shortListedSuppliers = [...this.shortListedSuppliers, data];
+    this.removedSuppliers = this.removedSuppliers.filter(item => item.id !== data.id);
+  }
+
+  showVendorProfiles(ev, data) {
+    ev.stopPropagation();
+
+    this.selectedVendor = data;
+    this.modal.open(this.vendorProfileModal, {
+      centered: true,
+      size: 'lg'
+    });
+  }
+
+  openNewSupplier() {
+    this.availableSuppliers = this.shortListedSuppliers.filter(
+      v => this.selectedSuppliers.find(s => s.vendorId === v.vendorId) === undefined
+    );
+    this.modal.open(this.addSupplier, {
+      centered: true,
+      size: 'lg'
+    });
+  }
+
+  get vendorProfiles() {
+    return this.matchingProfiles.filter(item => item.vendorId === this.selectedVendor.vendorId);
+  }
+
+  releaseToVendor() {
+    const selectedProfiles = this.supplierGridOptions[0].api
+      .getSelectedRows()
+      .map(item => ({
+        selectedProcessProfileId: null,
+        vendorId: item.vendorId,
+        releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
+      }))
+      .sort((a, b) => a.releasePriority - b.releasePriority);
+
+    this.orderService.releaseProdProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
+      this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
+    });
+  }
+
+  releaseNewToVendor() {
+    const selectedProfiles = this.supplierGridOptions[1].api
+      .getSelectedRows()
+      .map(item => ({
+        selectedProcessProfileId: null,
+        vendorId: item.vendorId,
+        releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
+      }))
+      .sort((a, b) => a.releasePriority - b.releasePriority);
+
+    this.orderService.releaseProdProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
+      this.setSuppliers(v.partId);
+    });
+  }
+
+  setSuppliers(partId) {
+    this.orderService.getBidProjectProcesses(partId).subscribe(v => {
+      this.selectableCount = 3 - v.length;
+      this.selectedSuppliers = v.map(res => {
+        const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
+
+        return {
+          id: res.id,
+          vendorId: res.vendorId,
+          vendorName: res.vendorName,
+          numberOfProfiles: group.length,
+          status: res.bidProjectProcessStatusType
+        };
+      });
+    });
   }
 }

@@ -4,6 +4,45 @@
   background: white;
   border-radius: 4px;
   padding: 40px;
-  display: flex;
   justify-content: space-between;
+}
+
+.header {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--theme-dark-blue);
+}
+
+h6,
+p.label {
+  font-size: 13px;
+  color: var(--theme-dark-blue);
+  margin-bottom: 10px;
+}
+
+.table-header {
+  font-weight: 600;
+  color: var(--theme-dark-blue);
+}
+
+.text-green {
+  color: var(--theme-light-green) !important;
+}
+
+.text-orange {
+  color: var(--theme-orange) !important;
+}
+
+.text-blue {
+  color: var(--theme-bright-blue) !important;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+.btn-sm {
+  font-size: 13px;
+  padding: 6px 12px;
+  width: auto;
 }

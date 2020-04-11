@@ -246,7 +246,7 @@ const routes: Routes = [
           }
         ]
       },
-      { path: '', redirectTo: 'marketplace', pathMatch: 'full' }
+      { path: '', redirectTo: 'pricing', pathMatch: 'full' }
     ]
   }
 ];

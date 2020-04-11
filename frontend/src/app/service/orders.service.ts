@@ -12,7 +12,13 @@ import { BiddingOrder } from '../model/bidding.order';
 import { BiddingOrderDetail, GetAllCustomerPartView } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { Part, PartQuote, ProcessProfileDetailedView } from '../model/part.model';
+import {
+  Part,
+  PartQuote,
+  ProcessProfileDetailedView,
+  MatchedProcessProfile,
+  BidProjectProcess
+} from '../model/part.model';
 import { Util } from '../util/Util';
 
 @Injectable({
@@ -137,20 +143,12 @@ export class OrdersService {
     return this.http.put(url, data);
   }
 
-  getProcessProfiles(rfqMediaId: number): Observable<any> {
+  getProcessProfiles(rfqMediaId: number): Observable<MatchedProcessProfile[]> {
     const url = `${environment.apiBaseUrl}/admin/part/matching-process-profile?rfq-media-id=${rfqMediaId}`;
-    return this.http.get<any>(url);
+    return this.http.get<MatchedProcessProfile[]>(url);
   }
 
-  getMatchedProfiles(
-    userId: number,
-    rfqMediaIds: number[],
-    isTestDataEnabled = false
-  ): Observable<ProcessProfileDetailedView[]> {
-    if (isTestDataEnabled && environment.isTestDataEnabled) {
-      userId = 357;
-      rfqMediaIds = [159];
-    }
+  getMatchedProfiles(userId: number, rfqMediaIds: number[]): Observable<ProcessProfileDetailedView[]> {
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
     params = params.append('userId', userId.toString());
@@ -425,5 +423,18 @@ export class OrdersService {
     return this.http.get<any>(
       `${environment.apiBaseUrl}/admin/vendor/vendor-order-details?include-task=true&bid-process-id=${bidProcessId}`
     );
+  }
+
+  releaseProdProjectBidToVendor(partId, processProfiles) {
+    const url = `${environment.apiBaseUrl}/admin/bidding/production-project/release-bid-to-vendor`;
+    return this.http.post<any>(url, {
+      partId,
+      productionProjectProcessProfiles: processProfiles
+    });
+  }
+
+  getBidProjectProcesses(partId): Observable<BidProjectProcess[]> {
+    const url = `${environment.apiBaseUrl}/admin/bidding/production-project/part/${partId}`;
+    return this.http.get<BidProjectProcess[]>(url);
   }
 }
