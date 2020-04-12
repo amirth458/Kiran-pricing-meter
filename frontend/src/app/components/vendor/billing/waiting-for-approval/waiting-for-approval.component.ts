@@ -9,6 +9,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillingService } from 'src/app/service/billing.service';
 import { Payment, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
+import { ProjectType } from 'src/app/model/billing.model';
+import { MetadataService } from 'src/app/service/metadata.service';
 
 @Component({
   selector: 'app-waiting-for-approval',
@@ -105,6 +107,8 @@ export class WaitingForApprovalComponent implements OnInit {
     }
   ];
 
+  projectType = [];
+
   type = ['search', 'filter'];
 
   columnDefs: ColDef[] = [];
@@ -124,6 +128,7 @@ export class WaitingForApprovalComponent implements OnInit {
   form: FormGroup = this.fb.group({
     orderNo: [null],
     paymentType: [null],
+    projectType: [null],
     comment: ['']
   });
 
@@ -135,12 +140,17 @@ export class WaitingForApprovalComponent implements OnInit {
     public toastr: ToastrService,
     public fb: FormBuilder,
     public modalService: NgbModal,
-    public billingService: BillingService
+    public billingService: BillingService,
+    public metadataService: MetadataService
   ) {
     this.navigation = this.route.getCurrentNavigation();
     const routeArr = this.route.url
       .slice(this.route.url.indexOf('/billing/payment/') + '/billing/payment/'.length)
       .split('/');
+
+    this.metadataService.getMetaData('project_type').subscribe(v => {
+      this.projectType = v.map(item => ({ ...item, displayName: ProjectType[item.name] }));
+    });
 
     switch (routeArr[0]) {
       case 'waiting-for-approval':
@@ -344,6 +354,7 @@ export class WaitingForApprovalComponent implements OnInit {
       orderId: this.form.value.orderNo || null,
       paymentStatusType: this.pageType,
       paymentType: this.form.value.paymentType == 'null' ? null : this.form.value.paymentType,
+      projectType: this.form.value.projectType === 'null' ? null : this.form.value.projectType,
       poNumber: null,
       note: null
     };

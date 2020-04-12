@@ -12,7 +12,13 @@ import { BiddingOrder } from '../model/bidding.order';
 import { BiddingOrderDetail, GetAllCustomerPartView } from '../model/bidding.order.detail';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { Part, PartQuote, ProcessProfileDetailedView } from '../model/part.model';
+import {
+  Part,
+  PartQuote,
+  ProcessProfileDetailedView,
+  MatchedProcessProfile,
+  BidProjectProcess
+} from '../model/part.model';
 import { Util } from '../util/Util';
 
 @Injectable({
@@ -137,15 +143,12 @@ export class OrdersService {
     return this.http.put(url, data);
   }
 
-  getMatchedProfiles(
-    userId: number,
-    rfqMediaIds: number[],
-    isTestDataEnabled = false
-  ): Observable<ProcessProfileDetailedView[]> {
-    if (isTestDataEnabled && environment.isTestDataEnabled) {
-      userId = 357;
-      rfqMediaIds = [159];
-    }
+  getProcessProfiles(rfqMediaId: number): Observable<MatchedProcessProfile[]> {
+    const url = `${environment.apiBaseUrl}/admin/part/matching-process-profile?rfq-media-id=${rfqMediaId}`;
+    return this.http.get<MatchedProcessProfile[]>(url);
+  }
+
+  getMatchedProfiles(userId: number, rfqMediaIds: number[]): Observable<ProcessProfileDetailedView[]> {
     const url = `${environment.apiBaseUrl}/admin/part/matched-profiles`;
     let params = new HttpParams();
     params = params.append('userId', userId.toString());
@@ -153,9 +156,9 @@ export class OrdersService {
     return this.http.get<ProcessProfileDetailedView[]>(url, { params });
   }
 
-  getBidOrderDetailsById(bidOrderId: number): Observable<BiddingOrderDetail> {
+  getBidOrderDetailsById(bidOrderId: number, filterOnlyWinningVendor = false): Observable<BiddingOrderDetail> {
     return this.http.get<BiddingOrderDetail>(
-      `${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}`
+      `${environment.apiBaseUrl}/admin/bidding/vendor-order-details?bidOrderId=${bidOrderId}&filterOnlyWinningVendor=${filterOnlyWinningVendor}`
     );
   }
 
@@ -414,5 +417,24 @@ export class OrdersService {
           })
         )
       : of([]);
+  }
+
+  getVendorOrderInfo(bidProcessId: number): Observable<any> {
+    return this.http.get<any>(
+      `${environment.apiBaseUrl}/admin/vendor/vendor-order-details?include-task=true&bid-process-id=${bidProcessId}`
+    );
+  }
+
+  releaseProdProjectBidToVendor(partId, processProfiles) {
+    const url = `${environment.apiBaseUrl}/admin/bidding/production-project/release-bid-to-vendor`;
+    return this.http.post<any>(url, {
+      partId,
+      productionProjectProcessProfiles: processProfiles
+    });
+  }
+
+  getBidProjectProcesses(partId): Observable<BidProjectProcess[]> {
+    const url = `${environment.apiBaseUrl}/admin/bidding/production-project/part/${partId}`;
+    return this.http.get<BidProjectProcess[]>(url);
   }
 }

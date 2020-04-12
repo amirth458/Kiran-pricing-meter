@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { CustomerData } from 'src/app/model/user.model';
@@ -9,6 +9,8 @@ import { Part } from 'src/app/model/part.model';
 import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { UserService } from 'src/app/service/user.service';
+import { OrdersService } from 'src/app/service/orders.service';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-price-detail',
@@ -25,16 +27,29 @@ export class PriceDetailComponent implements OnInit {
   public tabs = [];
   public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
 
+  processProfiles: any[] = null;
+  pricingProfiles: any[] = null;
+
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
     protected pricingService: RfqPricingService,
     protected userService: UserService,
-    protected spinner: NgxSpinnerService
+    protected spinner: NgxSpinnerService,
+    protected ordersService: OrdersService
   ) {
     this.route.params.subscribe(params => {
       this.selectedId = params.partId;
       this.getDetails(this.selectedId);
+    });
+
+    this.selectedTabId$.subscribe(v => {
+      if (v === 2 && this.processProfiles === null) {
+        this.getProcessProfile();
+      }
+      if (v === 3 && this.pricingProfiles === null) {
+        this.getPricingProfiles();
+      }
     });
   }
 
@@ -77,7 +92,7 @@ export class PriceDetailComponent implements OnInit {
         id: 3,
         title: 'Pricing Profile'
       },
-      {
+      this.part.manualPricingAllowed && {
         id: 4,
         title: 'Historical Bid'
       }
@@ -89,4 +104,62 @@ export class PriceDetailComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  async getProcessProfile(q = null) {
+    this.spinner.show();
+    const res = await this.ordersService.getProcessProfiles(this.part.rfqMedia.id).toPromise();
+
+    this.processProfiles = res.map(item => ({
+      id: item.processProfileId,
+      profileId: item.processProfileId,
+      vendorName: item.corporateName,
+      processProfileName: item.processProfileName,
+      facilityName: item.facilityName,
+      material: item.material,
+      equipment: item.equipment
+    }));
+    this.spinner.hide();
+  }
+
+  getAllMaterials(m: any) {
+    const arr = [];
+    (m || []).map(m => {
+      m.machineServingMaterial.material.name;
+      if (m.machineServingMaterial && m.machineServingMaterial.material && m.machineServingMaterial.material.name) {
+        arr.push(m.machineServingMaterial.material.name);
+      }
+    });
+    return arr.join(',');
+  }
+
+  async getPricingProfiles(q = null) {
+    this.spinner.show();
+    this.pricingService
+      .getPricingProfiles(this.part.id)
+      .pipe(
+        catchError(e => {
+          const message = e.error.message;
+          this.spinner.hide();
+          console.log(message);
+          return throwError('Error');
+        })
+      )
+      .subscribe(res => {
+        this.pricingProfiles = res.map(item => ({
+          selected: false,
+          id: item.id,
+          vendorName: item.vendorProfile.name,
+          pricingProfile: item.name,
+          material: item.processProfile.processMachineServingMaterialList
+            .map(item => item.machineServingMaterial.material.name)
+            .join(', '),
+          equipment: item.processProfile.processMachineServingMaterialList
+            .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
+            .join(', '),
+          processProfile: item.processProfile.name,
+          totalCost: null
+        }));
+        this.spinner.hide();
+      });
+  }
 }

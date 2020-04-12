@@ -10,15 +10,21 @@ export interface ProjectRfq {
   id: number;
   name: string;
   rfqStatusType: string;
-  projectProfile: string;
+  projectType: ProjectType;
   isArchived: boolean;
-  partList: Part[];
+  rfqMediaList: RfqMedia[];
 }
 
 export interface PartDimensionValue {
   value: number;
   valueInDefaultUnit: number;
   unitId: number;
+}
+
+export interface ProjectType {
+  id: number;
+  name: string;
+  description: string;
 }
 
 export interface PartDimensionStatusType {
@@ -69,10 +75,14 @@ export interface PartStatusType {
 export interface PartOrder {
   id: number;
   customerId: number;
+  customerName: string;
   vendorOrderId: number;
   orderStatusType: any;
+  paymentStatusType: any;
   isArchived: boolean;
+  isReleaseToSingleSupplier: boolean;
   partList: Part[];
+  createdDate: string;
 }
 
 export interface PartQuoteDetail {
@@ -152,6 +162,8 @@ export interface RfqMedia {
   id: number;
   projectRfqId: number;
   media: PartDimensionMedia;
+  projectRfq: ProjectRfq;
+  projectProfileName: string;
 }
 
 export interface Part {
@@ -303,6 +315,8 @@ export interface ProcessProfile {
   name: string;
   parameterNickName: string;
   vendorId: number;
+  vendorName?: string;
+  vendorEmailAddress?: string;
   processProfileType: Type;
   processAction: any;
   processMachineServingMaterialList: ProcessMachineServingMaterial[];
@@ -443,6 +457,18 @@ export interface PartQuoteQueryDto {
   totalCost: number;
 }
 
+export interface MatchedProcessProfile {
+  rfqMediaId: number;
+  partId: number;
+  processProfileId: number;
+  corporateName: string;
+  vendorId: number;
+  facilityName: string;
+  processProfileName: string;
+  equipment: string;
+  material: string;
+}
+
 export enum AppPartStatus {
   // RFQ Created
   READY_FOR_QUOTING = 'READY_FOR_QUOTING',
@@ -462,4 +488,18 @@ export enum AppPartStatus {
   // Order Complete
   PART_COMPLETE = 'PART_COMPLETE',
   PAYMENT_PENDING = 'PAYMENT_PENDING'
+}
+
+export interface BidProjectProcess {
+  id: number;
+  vendorId: number;
+  releasePriority: number;
+  bidProjectId: number;
+  bidProjectProcessStatusType: {
+    id: number;
+    name: string;
+    description: string;
+  };
+  matchedProcessProfileIds: number[];
+  vendorName: string;
 }

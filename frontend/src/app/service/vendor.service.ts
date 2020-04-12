@@ -15,7 +15,7 @@ export class VendorService {
   constructor(public http: HttpClient) {}
 
   getVendorMetaData(type: string): Observable<VendorMetaData[]> {
-    const url = `${environment.apiBaseUrl}/vendor-metadata/${type}`;
+    const url = `${environment.managementBaseUrl}/vendor-metadata/${type}`;
     if (type === VendorMetaDataTypes.ShippingPrivider) {
       return this.http.get<any>(url).pipe(map(res => res));
     } else {

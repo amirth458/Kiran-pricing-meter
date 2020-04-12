@@ -23,7 +23,7 @@ export class PartItemDetailsComponent {
   }
 
   getUnit(unitId: number) {
-    return Util.findMeasurementUnit(this.measurementUnits.metadataList || [], unitId);
+    return Util.findMeasurementUnit(this.measurementUnits || [], unitId);
   }
 
   preparePostProcessValues(ids: Array<number>) {

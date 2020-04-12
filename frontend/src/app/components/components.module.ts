@@ -81,10 +81,21 @@ import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
 import { SupplierPipe } from '../pipes/supplier.pipe';
 import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/historical-bid.component';
 import { ProjectsContainerComponent } from './vendor/projects/projects-container/projects-container.component';
-import { ProjectReleaseQueueComponent } from './vendor/projects/project-release-queue/project-release-queue.component';
-import { VendorConfirmationQueueComponent } from './vendor/projects/vendor-confirmation-queue/vendor-confirmation-queue.component';
-import { ReleasedProjectsComponent } from './vendor/projects/released-projects/released-projects.component';
 import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
+import { CustomersComponent } from './admin/customers/customers.component';
+import { CustomerViewComponent } from './admin/customer-view/customer-view.component';
+import { PasswordComponent } from './admin/password/password.component';
+import { ShippingComponent } from './admin/shipping/shipping.component';
+import { ContactComponent } from './admin/contact/contact.component';
+import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
+import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
+import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
+
+// chats
+import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
+import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
+
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
   declarations: [
@@ -154,15 +165,23 @@ import { OrderDetailComponent } from './vendor/projects/order-detail/order-detai
     PartItemDetailsComponent,
     WaitingForApprovalComponent,
 
+    HistoricalBidComponent,
+    ProjectsContainerComponent,
+    OrderDetailComponent,
+    CustomersComponent,
+    CustomerViewComponent,
+    PasswordComponent,
+    ShippingComponent,
+    ContactComponent,
+    ProjectsListComponent,
+    SendMailModalComponent,
+    ChatComponent,
+    ClosePopoverOnClickOutsideDirective,
+
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
-    HistoricalBidComponent,
-    ProjectsContainerComponent,
-    ProjectReleaseQueueComponent,
-    VendorConfirmationQueueComponent,
-    ReleasedProjectsComponent,
-    OrderDetailComponent
+    VendorOrderStatusComponent
   ],
   imports: [
     CommonModule,
@@ -184,7 +203,10 @@ import { OrderDetailComponent } from './vendor/projects/order-detail/order-detai
     HttpClientModule,
     NgxSpinnerModule,
     RouterModule,
-    InternationalPhoneNumberModule
+    InternationalPhoneNumberModule,
+
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [
@@ -202,6 +224,7 @@ import { OrderDetailComponent } from './vendor/projects/order-detail/order-detai
     TopMenuComponent,
     ImgPreloadDirective,
     DigitOnlyDirective,
+    ClosePopoverOnClickOutsideDirective,
 
     // pipes
     ConfirmOrderFilterPipe,

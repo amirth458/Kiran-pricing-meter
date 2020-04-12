@@ -24,6 +24,7 @@ export class PurchaseOrderItemComponent implements OnInit {
   });
   messageList = [];
   showPaymentDetails = false;
+  loadingPanel = false;
   selectedPurchaseOrderId = null;
   paymentOrderType = PaymentType;
 
@@ -103,18 +104,25 @@ export class PurchaseOrderItemComponent implements OnInit {
         ? this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
         : null
     };
+    this.loadingPanel = true;
+    this.spinner.show('spooler');
     this.billingService.approveOrder(body).subscribe(
       res => {
-        this.modalService.dismissAll();
+        this.closeModalWindow();
         this.toast.success('Purchase Approved.');
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       },
       err => {
-        this.modalService.dismissAll();
+        this.closeModalWindow();
         this.toast.error(err.error.message);
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       }
     );
+  }
+
+  closeModalWindow() {
+    this.spinner.hide('spooler');
+    this.modalService.dismissAll();
   }
 
   rejectPurchase() {

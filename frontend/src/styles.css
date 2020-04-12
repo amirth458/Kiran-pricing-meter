@@ -3,6 +3,7 @@
 @import '~ag-grid-community/dist/styles/ag-theme-balham.css';
 
 @import '~@ng-select/ng-select/themes/default.theme.css';
+@import '~ng-pick-datetime/assets/style/picker.min.css';
 
 :root {
   --theme-main-blue: #092846;
@@ -33,6 +34,11 @@
   --theme-tab-border: #dee2e6;
   --theme-text-color: #4a6077;
   --theme-bright-blue: #0e6dcb;
+  --theme-purple: #706cd8;
+
+  --theme-yellow-progressbar: #ffde55;
+  --theme-light-green-progressbar: #74bf09;
+  --theme-highlighted-row: #f4f5fa;
 }
 
 .bg-dark-blue {
@@ -49,12 +55,20 @@
   color: var(--theme-orange);
 }
 
+.text-purple {
+  color: var(--theme-purple);
+}
+
 .text-theme-green {
-  color: var(--theme-light-green);
+  color: var(--theme-light-green) !important;
 }
 
 .text-highlight {
   color: var(--theme-light-green);
+}
+
+.theme-grey {
+  color: var(--theme-secondary-blue-solid);
 }
 
 a,
@@ -471,11 +485,17 @@ app-dropdown-cell-renderer {
   border-bottom: 5px solid var(--theme-light-green);
 }
 
-.orange-btn {
+.orange-btn,
+.btn-sky-blue {
   color: white;
   background-color: var(--theme-orange) !important;
   margin: 0 15px;
 }
+
+.btn-sky-blue {
+  background-color: var(--theme-sky-blue) !important;
+}
+
 .green-btn {
   color: white;
   background-color: var(--theme-light-green);
@@ -492,24 +512,47 @@ app-dropdown-cell-renderer {
   width: 160px;
   border-radius: 2px;
 }
+
 /*Bidding Confirmation Modal*/
 
 /* breakdown pricing  window */
-.break-down-modal .modal-dialog {
+.break-down-modal .modal-dialog,
+.order-status-modal .modal-dialog {
   max-width: 600px;
 }
 
-.break-down-modal .modal-dialog .title {
+.break-down-modal .modal-dialog .title,
+.order-status-modal .modal-dialog .title {
   color: white;
   background: var(--theme-grid-header);
 }
 
-.break-down-modal .modal-title {
+.break-down-modal .modal-title,
+.order-status-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
-  color: var(--them-dark-blue-opaque);
+  color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
 }
+
 /* breakdown pricing  window */
+
+/* Vendor order info modal */
+.order-status-modal .modal-dialog {
+  max-width: 75% !important;
+  width: 75% !important;
+  height: 100%;
+}
+
+.order-status-modal .modal-header {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.order-status-modal .modal-title {
+  border-left: 4px solid var(--them-dark-blue-opaque);
+  color: var(--them-dark-blue-opaque) !important;
+  opacity: 0.5;
+}
+/* Vendor order info modal */
 
 /* Refresh modal window */
 .refresh-modal .modal-dialog {
@@ -526,6 +569,7 @@ app-dropdown-cell-renderer {
 .refresh-modal .refresh-btn:hover {
   color: var(--theme-light-blue);
 }
+
 /* Refresh modal window */
 
 .approved {
@@ -592,3 +636,105 @@ app-dropdown-cell-renderer {
   min-height: 35px !important;
   height: 35px !important;
 }
+
+.payment-panel {
+  height: 100px !important;
+}
+
+.payment-panel .loading-text {
+  text-align: center;
+  width: 100% !important;
+  margin-top: 20px;
+}
+
+/* AG Grid Override */
+.chat-container {
+  width: 350px;
+  max-width: 350px;
+  max-height: 550px;
+}
+
+.chat-container .popover-header,
+.chat-container .popover-body {
+  padding: 0;
+  background: var(--theme-white-color);
+}
+
+.chat-container .message-container {
+  padding: 10px 0;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.chat-container .message-container .admin-chat,
+.message-container .participant-chat {
+  font-size: 12px;
+  padding: 0 15px;
+  margin: 5px 0;
+}
+
+.chat-container .message-container .date-separator {
+  text-align: center;
+  color: var(--theme-table-border);
+}
+
+.chat-container .message-container .date-separator:before,
+.chat-container .message-container .date-separator:after {
+  background-color: var(--theme-table-border);
+  content: '';
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: text-top;
+  width: 25%;
+}
+
+.chat-container .message-container .date-separator div.dt-value {
+  width: 75px;
+  max-width: 75px;
+  overflow-wrap: break-word;
+  display: inline-block;
+  font-size: 11px;
+}
+
+.chat-container .message-container .date-separator div.dt-value .time {
+  color: #000000;
+}
+
+.chat-container .message-container .date-separator:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+.chat-container .message-container .date-separator:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
+
+.chat-button .unread-badge,
+.info-panel .unread-badge {
+  top: 5px;
+  right: 2px;
+  height: 20px;
+  display: flex;
+  padding: 0 4px;
+  z-index: 1;
+  position: absolute;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  min-width: 20px;
+  transform: scale(1) translate(50%, -50%);
+  box-sizing: border-box;
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  align-items: center;
+  font-weight: 500;
+  align-content: center;
+  border-radius: 10px;
+  flex-direction: row;
+  justify-content: center;
+  transform-origin: 100% 0%;
+  color: var(--theme-white-color);
+  background: var(--theme-orange) !important;
+}
+
+/**/

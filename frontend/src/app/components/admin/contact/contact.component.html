@@ -1,0 +1,57 @@
+<div class="wrapper shadow">
+  <form [formGroup]="contactForm" class="needs-validation">
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>Email Address(username)</label>
+        <input readonly formControlName="email" class="form-control" placeholder="Email" />
+      </div>
+
+      <div class="col-md-2"></div>
+
+      <div class="form-group col-md-2 mt-3">
+        <button
+          *ngIf="contactForm.value.userLocked === true"
+          type="button"
+          class="btn btn-primary btn-sky-blue theme w-75"
+          (click)="onUnlock()"
+        >
+          Unlock
+        </button>
+      </div>
+
+      <div *ngIf="contactForm.value.customerActive === false" class="form-group col-md-2 mt-3">
+        <button type="button" class="btn btn-primary theme w-75" (click)="onActivate()">Activate</button>
+      </div>
+
+      <div *ngIf="contactForm.value.customerActive === true" class="form-group col-md-2 mt-3">
+        <button type="button" class="btn btn-primary theme orange-btn w-75" (click)="onDeactivate()">Deactivate</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label>First Name</label>
+        <input readonly formControlName="firstName" class="form-control" placeholder="First Name" />
+      </div>
+      <div class="form-group theme col-md-6">
+        <label>Last Name</label>
+        <input readonly formControlName="lastName" class="form-control" placeholder="Last Name" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group theme col-md-6 phone">
+        <label>Phone</label>
+        <international-phone-number
+          aria-disabled="true"
+          aria-readonly="true"
+          readonly
+          formControlName="phoneNo"
+          placeholder="Enter phone number"
+          name="phone_number"
+        >
+        </international-phone-number>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+  </form>
+</div>

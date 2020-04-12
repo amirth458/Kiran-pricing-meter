@@ -1,0 +1,15 @@
+:host {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+}
+
+:host .chat-button,
+:host .chat-button:hover {
+  color: var(--theme-light-green) !important;
+}
+
+:host .chat-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

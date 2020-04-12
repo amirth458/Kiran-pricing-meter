@@ -8,10 +8,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { catchError, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, empty, Observable } from 'rxjs';
+import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingStatus } from '../../../../../model/bidding.order';
+import { Conference, ConferenceRequest } from '../../../../../model/conference.model';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from '../../../../../service/orders.service';
@@ -19,6 +20,10 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
 import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
+
+import { DefaultEmails } from '../../../../../../assets/constants.js';
+import { ZoomService } from 'src/app/service/zoom.service';
+import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -32,8 +37,13 @@ export class VendorDetailsComponent implements OnInit {
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
+  @ViewChild('sendEmailCell') sendEmailCell: TemplateRef<any>;
   @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
   @ViewChild('supplierStatusCell') supplierStatusCell: TemplateRef<any>;
+
+  @ViewChild('sendMailModal') sendMailModal;
+  @ViewChild('dateTimeSelector') dateTimeSelector;
+  @ViewChild('orderStatusTemplate') orderStatusTemplate;
 
   timeToExpire = null;
   changePriority = false;
@@ -54,9 +64,24 @@ export class VendorDetailsComponent implements OnInit {
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
   selectedBidding: any;
+  vendorOrderId: number;
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
+  selectedBidProcessId: number;
+
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
+
+  from = '';
+  to = '';
+  cc = [];
+  bcc = [];
+
+  meetingInfo = {};
+  user;
+  schdulingForUserId;
+  schdulingForVendorOrderId;
 
   constructor(
     public biddingService: BiddingService,
@@ -68,7 +93,8 @@ export class VendorDetailsComponent implements OnInit {
     public toaster: ToastrService,
     public spinner: NgxSpinnerService,
     public datePipe: DatePipe,
-    public currencyPipe: CurrencyPipe
+    public currencyPipe: CurrencyPipe,
+    public zoomService: ZoomService
   ) {
     if (this.router.url.includes('order-confirmation-queue')) {
       this.type = 'confirmation';
@@ -135,26 +161,179 @@ export class VendorDetailsComponent implements OnInit {
     this.suppliers$ = this.blockedSuppliers$.asObservable();
   }
 
+  ngOnInit() {
+    this.user = this.userService.getUserInfo();
+
+    this.initTable();
+    // view bidding status
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        tooltipField: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200
+      },
+      {
+        headerName: 'Vendor Bid Price',
+        field: 'bidOfferPrice',
+        tooltipField: 'bidOfferPrice',
+        hide: false,
+        sortable: false,
+        filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200,
+        valueFormatter: dt => {
+          let value = '';
+          switch (dt.data.bidProcessStatus.name) {
+            case BiddingStatus.COUNTER_OFFER:
+              value = `$ ${dt.data.counterOfferPrice || 0}`;
+              break;
+            case BiddingStatus.ACCEPTED:
+              value = `$ ${dt.data.bidOfferPrice || 0}`;
+              break;
+          }
+          return value;
+        }
+      },
+      {
+        headerName: 'Status',
+        field: 'bidProcessStatus.description',
+        tooltipField: 'bidProcessStatus.description',
+        cellClass: 'p-0 text-center',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
+      },
+      (this.type === 'confirmation' || this.type === 'released') && {
+        headerName: '',
+        cellClass: 'p-0 chat-column',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.sendEmailCell
+        }
+      }
+    ]);
+    // View vendor profile matching
+    this.columnDefs.push([
+      {
+        headerName: 'No',
+        field: 'id',
+        tooltipField: 'id',
+        width: 100,
+        maxWidth: 100,
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Facility Name',
+        field: 'facilityName',
+        tooltipField: 'facilityName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Process Profile Name',
+        field: 'processProfileName',
+        tooltipField: 'processProfileName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Pricing Profile',
+        field: 'pricingProfile',
+        tooltipField: 'pricingProfile',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'status',
+        field: 'bidProcessStatus.description',
+        tooltipField: 'bidProcessStatus.description',
+        hide: false,
+        sortable: false,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.statusCell
+        }
+      }
+    ]);
+    // view bidding status grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[4],
+      enableColResize: true,
+      suppressCellSelection: true,
+      rowHeight: 50,
+      headerHeight: 35
+    });
+    // View vendor profile matching grid
+    this.gridOptions.push({
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs[5],
+      enableColResize: true,
+      rowHeight: 36,
+      headerHeight: 35
+    });
+  }
+
   prepareBidOrderInfo() {
-    this.ordersService.getBidOrderDetailsById(this.bidOrderId).subscribe(v => {
+    this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released').subscribe(v => {
       // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.timeToExpire = v.bidProcessTimeLeft;
-      this.bidding = v.matchingSuppliersProfilesView || [];
+      this.bidding = (v.matchingSuppliersProfilesView || []).map(user => {
+        return { ...user };
+      });
       this.bidding.map(match => (match.id = ++count));
       const vendors = [];
       this.bidding.map(match => {
         (match.processProfileViews || []).map(p => {
-          let count = match.id.toString();
+          let counterValue = match.id.toString();
           let status = match.bidProcessStatus;
           if (!(vendors.indexOf(match.vendorName) > -1)) {
             vendors.push(match.vendorName);
           } else {
-            count = '';
+            counterValue = '';
             status = null;
           }
           this.matchedProfiles.push({
-            id: count,
+            id: counterValue,
             vendorId: p.vendorId,
             profileId: p.id,
             vendorName: match.vendorName,
@@ -174,6 +353,13 @@ export class VendorDetailsComponent implements OnInit {
         .subscribe(v => {
           this.orderDetails = v || [];
         });
+      // TODO remove below code after vendor order details api start return vendor order id
+      if (this.type === 'released') {
+        const bidProcessIds = this.bidding.filter(bid => !!bid.bidProcessId).map(bid => bid.bidProcessId);
+        this.getVendorOrders(bidProcessIds);
+      } else {
+        this.getFindAllScheduledMeeting();
+      }
     });
   }
 
@@ -297,6 +483,14 @@ export class VendorDetailsComponent implements OnInit {
           sortable: true,
           filter: false,
           valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat)}` : '')
+        },
+        {
+          headerName: 'Shipping Address',
+          field: 'shippingAddress',
+          tooltipField: 'shippingAddress',
+          hide: false,
+          sortable: true,
+          filter: false
         }
       ],
       [
@@ -384,6 +578,15 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
+        },
+        {
+          headerName: 'Vendor Address',
+          valueGetter: params => {
+            return params.data.id
+              ? `${params.data.vendorProfile.street1 || ''}, ${params.data.vendorProfile.city || ''} ${params.data
+                  .vendorProfile.state || ''}, ${params.data.vendorProfile.country.name || ''}`
+              : '';
+          }
         },
         {
           headerName: 'Pricing Profile',
@@ -480,137 +683,6 @@ export class VendorDetailsComponent implements OnInit {
     ];
   }
 
-  ngOnInit() {
-    this.initTable();
-    // view bidding status
-    this.columnDefs.push([
-      {
-        headerName: 'No',
-        field: 'id',
-        tooltipField: 'id',
-        width: 100,
-        maxWidth: 100,
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        tooltipField: 'vendorName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Bid Price',
-        field: 'bidOfferPrice',
-        tooltipField: 'bidOfferPrice',
-        hide: false,
-        sortable: false,
-        filter: false,
-        valueFormatter: dt => {
-          let value = '';
-          switch (dt.data.bidProcessStatus.name) {
-            case BiddingStatus.COUNTER_OFFER:
-              value = `$ ${dt.data.counterOfferPrice || 0}`;
-              break;
-            case BiddingStatus.ACCEPTED:
-              value = `$ ${dt.data.bidOfferPrice || 0}`;
-              break;
-          }
-          return value;
-        }
-      },
-      {
-        headerName: 'Status',
-        field: 'bidProcessStatus.description',
-        tooltipField: 'bidProcessStatus.description',
-        cellClass: 'p-0',
-        hide: false,
-        sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.statusCell
-        }
-      }
-    ]);
-    // View vendor profile matching
-    this.columnDefs.push([
-      {
-        headerName: 'No',
-        field: 'id',
-        tooltipField: 'id',
-        width: 100,
-        maxWidth: 100,
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        tooltipField: 'vendorName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Facility Name',
-        field: 'facilityName',
-        tooltipField: 'facilityName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Process Profile Name',
-        field: 'processProfileName',
-        tooltipField: 'processProfileName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Pricing Profile',
-        field: 'pricingProfile',
-        tooltipField: 'pricingProfile',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'status',
-        field: 'bidProcessStatus.description',
-        tooltipField: 'bidProcessStatus.description',
-        hide: false,
-        sortable: false,
-        filter: false,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.statusCell
-        }
-      }
-    ]);
-    // view bidding status grid
-    this.gridOptions.push({
-      frameworkComponents: this.frameworkComponents,
-      columnDefs: this.columnDefs[4],
-      enableColResize: true,
-      rowHeight: 36,
-      headerHeight: 35
-    });
-    // View vendor profile matching grid
-    this.gridOptions.push({
-      frameworkComponents: this.frameworkComponents,
-      columnDefs: this.columnDefs[5],
-      enableColResize: true,
-      rowHeight: 36,
-      headerHeight: 35
-    });
-  }
-
   onGridReady(idx, ev) {
     this.gridOptions[idx].api = ev.api;
     this.gridOptions[idx].api.sizeColumnsToFit();
@@ -685,6 +757,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   confirmSubOrderRelease() {
+    this.spinner.show('spinner1');
     const customerOrders = this.orderDetails.map(order => {
       return { partId: order.partId, priceAccepted: order.priceAccepted };
     });
@@ -721,9 +794,11 @@ export class VendorDetailsComponent implements OnInit {
         vendors
       } as ConfirmSubOrderRelease)
       .subscribe(v => {
+        this.spinner.hide('spinner1');
         this.modalService.dismissAll();
         if (v != null) {
           const bidOrder: BidOrderItem = (v.bidOrderItemList || []).length > 0 ? v.bidOrderItemList[0] : null;
+          this.toaster.success('Order Released Successfully');
           this.router.navigateByUrl(`/pricing/orders/order-confirmation-queue/${bidOrder.bidOrder.id}`);
         }
       });
@@ -739,6 +814,16 @@ export class VendorDetailsComponent implements OnInit {
       centered: true,
       windowClass: 'bidding-confirm'
     });
+  }
+
+  viewOrderInfo(id: number) {
+    this.selectedBidProcessId = id;
+    const modalOptions: any = {
+      centered: true,
+      windowClass: 'order-status-modal',
+      scrollable: true
+    };
+    this.modalService.open(this.orderStatusTemplate, modalOptions);
   }
 
   onConfirmBidding() {
@@ -764,6 +849,137 @@ export class VendorDetailsComponent implements OnInit {
         });
     } else {
       this.toaster.error('There is no process profile associated wit this bidding!');
+    }
+  }
+
+  sendMail(ev = null) {
+    this.from = DefaultEmails.from;
+    this.to = DefaultEmails.to;
+    this.cc = [];
+    this.bcc = ev
+      ? [ev.processProfileViews[0].vendorEmailAddress]
+      : this.gridOptions[4].api.getSelectedRows().map(item => item.processProfileViews[0].vendorEmailAddress);
+    this.modalService.open(this.sendMailModal, {
+      centered: true,
+      size: 'lg'
+    });
+  }
+
+  openDateTimeSelector(row) {
+    this.schdulingForUserId = row.userId;
+    this.schdulingForVendorOrderId = row.vendorOrderId;
+    this.dateTimeSelector.nativeElement.click();
+  }
+
+  onTimeChanged(event) {
+    this.spinner.show();
+    const meetingTime = new Date(event).toISOString();
+    const conference: ConferenceRequest = {
+      hostUserId: this.userService.getUserInfo().id,
+      participantUserId: this.schdulingForUserId,
+      // participantUserId: 388, //"krtest-c1@test.com"
+
+      // partId: 1769,
+      partId: 0,
+      // bidOrderId: 0,
+      bidOrderId: this.type === 'confirmation' ? this.bidOrderId : 0,
+      customerOrderId: 0,
+      vendorOrderId: this.type === 'released' ? this.schdulingForVendorOrderId : 0,
+
+      conferenceTopic:
+        'Meeting for Part ' + this.type === 'released'
+          ? this.schdulingForVendorOrderId.toString()
+          : this.bidOrderId.toString(),
+      conferencePassword:
+        this.type === 'released' ? this.schdulingForVendorOrderId.toString() : this.bidOrderId.toString(),
+      startTimeInUTC: meetingTime.substr(0, meetingTime.length - 5) + 'Z',
+      duration: 1
+    };
+    this.zoomService.createConference(conference).subscribe(
+      (res: Conference) => {
+        if (res) {
+          this.meetingInfo[this.schdulingForUserId] = res;
+          this.meetingInfo[this.schdulingForUserId].startTime = new Date(res.startTime).toISOString();
+        }
+        this.spinner.hide();
+        this.toaster.success('Meeting time set.');
+        this.schdulingForUserId = null;
+      },
+      err => {
+        console.log({ err });
+        this.schdulingForUserId = null;
+        this.spinner.hide();
+        this.toaster.error('Error while setting meeting time.');
+      }
+    );
+    // console.log(this.meetingTime);
+  }
+
+  getScheduledMeetings(user) {
+    if (this.type === 'released') {
+      // this.zoomService.getConferenceByPartId('1769')
+      // this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+      // return;
+      this.zoomService
+        .getConferenceByVendorOrderId(user.vendorOrderId.toString(), this.userService.getUserInfo().id, user.userId)
+        // 388)
+        .subscribe(
+          res => {
+            if (res) {
+              this.meetingInfo[(user.userId || '').toString()] = res;
+            } else {
+              this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+            }
+          },
+          err => {
+            console.log('Error while fetching meeting information');
+            console.log({ err });
+          }
+        );
+    } else {
+      this.zoomService
+        .getConferenceByBidOrderId(this.bidOrderId.toString(), this.userService.getUserInfo().id, user.userId)
+        // 388)
+        .subscribe(
+          res => {
+            if (res) {
+              this.meetingInfo[(user.userId || '').toString()] = res;
+            } else {
+              this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
+            }
+          },
+          err => {
+            console.log('Error while fetching meeting information');
+            console.log({ err });
+          }
+        );
+    }
+  }
+
+  // TODO remove this method after vendor order details api start return vendor order id
+  getVendorOrders(bidProcessIds: Array<number>) {
+    if ((bidProcessIds || []).length > 0) {
+      const arr = bidProcessIds.map(id => this.ordersService.getVendorOrderInfo(id));
+      forkJoin(arr).subscribe(orders => {
+        const items = (orders || []).reduce((acc: any, value: any) => {
+          acc[value.bidProcessId] = value;
+          return acc;
+        }, {});
+        this.bidding = (this.bidding || []).map((bid: any) => {
+          const order = items[bid.bidProcessId];
+          bid.vendorOrderId = order ? order.id : null;
+          return bid;
+        });
+        this.getFindAllScheduledMeeting();
+      });
+    }
+  }
+
+  getFindAllScheduledMeeting() {
+    if (this.bidding.length) {
+      this.bidding.forEach(user => {
+        this.getScheduledMeetings(user);
+      });
     }
   }
 }

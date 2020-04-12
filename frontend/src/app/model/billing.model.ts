@@ -7,6 +7,7 @@ export class Payment {
   orderId: number;
   paymentStatusType: PaymentStatusTypes;
   paymentType: PaymentType;
+  projectType: ProjectType;
   poNumber: string;
   note: string;
 }
@@ -16,6 +17,12 @@ export enum PaymentStatusTypes {
   AWAITING_FOR_RESPONSE = 'AWAITING_FOR_RESPONSE',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED'
+}
+
+export enum ProjectType {
+  RFQ_PROJECT = 'Rfq Project',
+  PRODUCTION_PROJECT = 'Production Project',
+  DESIGN_PROJECT = 'Design Project'
 }
 
 export enum PaymentType {
@@ -99,12 +106,14 @@ export class LegacyBidHistory {
   bidNumber: number;
   fileName: string;
   proposedFinish: string;
+  specsAndTolerance: number;
   impliedProductionAndDeliveryWindow: number;
   target_delivery_date: number;
   partOnPlatform: number;
   x: number;
   y: number;
   z: number;
+  volume: number;
   surfaceArea: number;
   vendorTotalBidAmount: number;
   vendorLaborAndMaterial: number;

@@ -1,0 +1,40 @@
+<div class="wrapper">
+  <div class="table theme-table">
+    <div class="mb-3">
+      <div class="toolbar">
+        <select class="form-control form-control-sm" (change)="onChangeProjectType($event)">
+          <option [value]="null" selected>All Type Of Project</option>
+          <option *ngFor="let s of projectTypes" [value]="s.name" [text]="s.displayName"></option>
+          <!-- <option *ngFor="let s of status$ | async" [value]="s.id" [text]="s.displayName"></option> -->
+        </select>
+      </div>
+    </div>
+
+    <ag-grid-angular
+      class="ag-theme-balham w-100 h-100"
+      [rowData]="[]"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff70"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
+  </div>
+</div>
+
+<ng-template #fileCell let-row>
+  <span class="file-viewer">
+    <a (click)="onFileClicked($event, row, content)">{{ row.filename }}</a>
+  </span>
+</ng-template>
+
+<ng-template #content let-modal>
+  <app-file-viewer (close)="modal.close('')"></app-file-viewer>
+</ng-template>

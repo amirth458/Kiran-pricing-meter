@@ -26,6 +26,15 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumns = [
     {
+      name: 'Vendor ID',
+      checked: false,
+      field: 'id',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
       name: 'Vendor Name',
       checked: false,
       field: 'vendorName',
@@ -60,9 +69,32 @@ export class ApproveVendorComponent implements OnInit {
         type: '',
         filter: ''
       }
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: false,
+      field: 'lastLoginAttempt',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Approved On',
+      checked: false,
+      field: 'approvedOn',
+      query: {
+        type: '',
+        filter: ''
+      }
     }
   ];
   filterColumns = [
+    {
+      name: 'Vendor ID',
+      checked: true,
+      field: 'id'
+    },
     {
       name: 'Vendor Name',
       checked: true,
@@ -82,6 +114,16 @@ export class ApproveVendorComponent implements OnInit {
       name: 'Confidentiality',
       checked: true,
       field: 'confidentiality'
+    },
+    {
+      name: 'Last Login Attempt',
+      checked: true,
+      field: 'lastLoginAttempt'
+    },
+    {
+      name: 'Approved On',
+      checked: true,
+      field: 'approvedOn'
     }
   ];
   type = ['search', 'filter'];
@@ -107,9 +149,23 @@ export class ApproveVendorComponent implements OnInit {
           dropdown: param => {
             event.stopPropagation();
             this.showTypeDropDown = !this.showTypeDropDown;
-            console.log(this.showTypeDropDown);
           }
         }
+      }
+    },
+    {
+      headerName: 'Vendor ID',
+      field: 'id',
+      hide: false,
+      width: 130,
+      sortable: true,
+      filter: false,
+      valueFormatter: event => {
+        const data = event.data;
+        if (data.vendor) {
+          return data.vendor.id;
+        }
+        return '';
       }
     },
     {
@@ -142,9 +198,42 @@ export class ApproveVendorComponent implements OnInit {
       width: 120
     },
     {
+      headerName: 'Approved On',
+      field: 'approvedOn',
+      hide: false,
+      sortable: true,
+      filter: false,
+      valueFormatter: e => {
+        const data = e.data;
+        if (data.vendor) {
+          if (data.vendor.approvedAt) {
+            return new Date(data.vendor.approvedAt).toLocaleString();
+          } else {
+            return '';
+          }
+        } else {
+          return '';
+        }
+      }
+    },
+    {
+      headerName: 'Last Login Attempt',
+      field: 'lastLoginAttempt',
+      hide: true,
+      sortable: true,
+      filter: false,
+      valueFormatter: v => {
+        const value = v.value;
+        if (!value) {
+          return '';
+        }
+        return new Date(value).toLocaleString();
+      }
+    },
+    {
       headerName: 'Actions',
       filter: false,
-      width: 150,
+      width: 170,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {
@@ -235,10 +324,7 @@ export class ApproveVendorComponent implements OnInit {
       rowClassRules: {
         'non-approved': params => {
           if (params.data.vendor) {
-            return (
-              !params.data.vendor.approved &&
-              params.data.vendor.approvedAt === null
-            );
+            return !params.data.vendor.approved && params.data.vendor.approvedAt === null;
           }
           return false;
         },
@@ -250,10 +336,7 @@ export class ApproveVendorComponent implements OnInit {
         },
         declined: params => {
           if (params.data.vendor) {
-            return (
-              !params.data.vendor.approved &&
-              params.data.vendor.approvedAt !== null
-            );
+            return !params.data.vendor.approved && params.data.vendor.approvedAt !== null;
           }
           return false;
         }
@@ -335,12 +418,8 @@ export class ApproveVendorComponent implements OnInit {
       ...user,
       vendorName: user.vendor ? user.vendor.name : '',
       email: user.vendor ? user.vendor.email : '',
-      country:
-        user.vendor && user.vendor.country ? user.vendor.country.name : '',
-      confidentiality:
-        user.vendor && user.vendor.confidentiality
-          ? user.vendor.confidentiality.name
-          : ''
+      country: user.vendor && user.vendor.country ? user.vendor.country.name : '',
+      confidentiality: user.vendor && user.vendor.confidentiality ? user.vendor.confidentiality.name : ''
     }));
   }
 
@@ -365,9 +444,7 @@ export class ApproveVendorComponent implements OnInit {
         this.vendorStatusChanged(this.vendorStatus);
         this.toastr.success('Vendors are approved.');
       } catch (e) {
-        this.toastr.error(
-          'We are sorry, Vendors are not approved with some error. Please try again later.'
-        );
+        this.toastr.error('We are sorry, Vendors are not approved with some error. Please try again later.');
       } finally {
         this.spineer.hide();
       }
@@ -379,9 +456,7 @@ export class ApproveVendorComponent implements OnInit {
     const name = [];
     let userIds = data.map(node => {
       if (node.data.vendor) {
-        name.push(
-          `${node.data.vendor.primaryContactFirstName} ${node.data.vendor.primaryContactLastName}`
-        );
+        name.push(`${node.data.vendor.primaryContactFirstName} ${node.data.vendor.primaryContactLastName}`);
         return node.data.vendor.id;
       } else {
         return null;
@@ -404,17 +479,13 @@ export class ApproveVendorComponent implements OnInit {
     }
     try {
       this.spineer.show();
-      await this.userService
-        .declineUsers(this.selectedUserIds, this.declineComments)
-        .toPromise();
+      await this.userService.declineUsers(this.selectedUserIds, this.declineComments).toPromise();
       await this.getAllUsers();
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendors are declined.');
       this.modal.nativeElement.click();
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendors are not declined with some error. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
       this.modal.nativeElement.click();
     } finally {
       this.spineer.hide();
@@ -429,9 +500,7 @@ export class ApproveVendorComponent implements OnInit {
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendor is decliend.');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not declined. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
     } finally {
       this.spineer.hide();
     }
@@ -445,9 +514,7 @@ export class ApproveVendorComponent implements OnInit {
       this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendor is approved.');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not approved. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
     } finally {
       this.spineer.hide();
     }
@@ -455,9 +522,7 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumnsChange(event) {
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);

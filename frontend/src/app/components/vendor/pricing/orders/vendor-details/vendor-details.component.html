@@ -16,12 +16,12 @@
       </ng-container>
       <ng-container *ngSwitchCase="'confirmation'">
         <p class="text-orange">
-          <ng-container *ngIf="timeLeft">
+          <ng-container *ngIf="timeLeft && bidding && bidding.length">
             Unresponsive time left before releasing to next supplier:
             {{ timeLeft }}
           </ng-container>
 
-          <ng-container *ngIf="!timeLeft">
+          <ng-container *ngIf="!timeLeft && bidding && bidding.length">
             Time Expired
           </ng-container>
         </p>
@@ -118,20 +118,32 @@
       </div>
     </ng-template>
   </div>
-  <div class="d-flex justify-content-between mt-4 align-items-center" *ngIf="bidOrderId">
-    <p class="part-header font-weight-bold">Bidding Status</p>
-    <a class="priority-btn" (click)="toggleVendorList = !toggleVendorList">{{
-      toggleVendorList ? 'View Vendor List' : 'View Matching Profile'
-    }}</a>
+  <div class="d-flex justify-content-between mt-4 mb-2 align-items-center" *ngIf="bidOrderId">
+    <span class="part-header font-weight-bold">Bidding Status</span>
+    <div class="d-flex align-items-center">
+      <button
+        class="btn theme btn-primary px-4 py-2 mr-4"
+        *ngIf="type === 'confirmation'"
+        [disabled]="(bidding || []).length === 0"
+        (click)="sendMail()"
+      >
+        <small><i class="far fa-envelope"></i> &nbsp;Send Mail</small>
+      </button>
+      <a class="priority-btn text-nowrap" (click)="toggleVendorList = !toggleVendorList">{{
+        toggleVendorList ? 'View Vendor List' : 'View Matching Profile'
+      }}</a>
+    </div>
   </div>
   <div class="row" *ngIf="bidOrderId">
     <div class="col-12 theme-table bidding-orders">
       <ag-grid-angular
         *ngIf="!toggleVendorList"
-        class="ag-theme-balham w-100 h-100"
+        class="ag-theme-balham w-100 h-100 pop-over-grid"
         [class.grid-empty]="(bidding || []).length === 0"
         [rowData]="bidding"
         [gridOptions]="gridOptions[4]"
+        rowSelection="multiple"
+        [rowMultiSelectWithClick]="true"
         (gridReady)="onGridReady(4, $event)"
         domLayout="autoHeight"
       ></ag-grid-angular>
@@ -151,7 +163,7 @@
 <ng-template #content let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">
+      <h5 class="modal-title">
         Confirm Sub-Order Release
       </h5>
     </div>
@@ -216,13 +228,22 @@
         Confirm
       </button>
     </div>
+    <ngx-spinner
+      [name]="'spinner1'"
+      bdColor="rgba(255,255,255,0.5)"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+    </ngx-spinner>
   </div>
 </ng-template>
 
 <ng-template #pricingProfileModal let-modal>
   <div class="modal-container">
     <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
+      <h5 class="modal-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
       <a (click)="modal.dismiss()">
         <i class="fa fa-times"></i>
       </a>
@@ -231,7 +252,7 @@
       <p class="text-center">
         {{ pricingProfile?.processProfileName }}
       </p>
-      <div class="col-12 theme-table ">
+      <div class="col-12 theme-table">
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
           [class.grid-empty]="(pricingProfile?.pricing || []).length === 0"
@@ -249,10 +270,17 @@
   <ng-container *ngIf="row.bidProcessStatus">
     <ng-container [ngSwitch]="row.bidProcessStatus.name">
       <ng-container *ngSwitchCase="biddingStatus.ACCEPTED">
-        <div class="d-flex flex-row pt-1 pb-1">
-          <strong class="text-theme-green">
+        <div class="d-flex flex-row pt-1 pb-1 align-items-center">
+          <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
           </strong>
+          <button
+            *ngIf="type !== 'confirmation'"
+            class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold"
+            (click)="viewOrderInfo(row?.bidProcessId)"
+          >
+            See Order Status
+          </button>
           <button
             class="btn btn-primary confirm-btn ml-4 btn-sm"
             *ngIf="type === 'confirmation' && !toggleVendorList"
@@ -338,5 +366,123 @@
   <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
     <a class="text-danger" *ngIf="row[column?.colDef?.field]" (click)="valueChange(row)">Remove from list</a>
     <a class="text-green" *ngIf="!row[column?.colDef?.field]" (click)="valueChange(row)">Move to the list</a>
+  </div>
+</ng-template>
+
+<ng-template #sendEmailCell let-row let-column="params">
+  <div class="d-flex flex-row justify-content-around align-items-center h-100 w-100">
+    <!-- Email Communication -->
+    <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)">
+      <i class="far fa-envelope"></i>
+    </span>
+    <!-- End of Email Communication -->
+
+    <!-- Note Communication -->
+    <ng-container [ngSwitch]="type">
+      <ng-container *ngSwitchCase="'confirmation' && row?.bidProcessStatus?.name !== biddingStatus.ACCEPTED">
+        <app-chat
+          [participants]="row.userId ? [row.userId] : []"
+          [id]="bidOrderId"
+          [type]="chatTypeEnum.BID_OFFER"
+          [value]="chat"
+          (valueChange)="chat = $event"
+        >
+        </app-chat>
+      </ng-container>
+      <ng-container *ngSwitchCase="'released'">
+        <app-chat
+          *ngIf="row?.vendorOrderId"
+          [participants]="row.userId ? [row.userId] : []"
+          [id]="row?.vendorOrderId"
+          [vendorId]="row?.vendorId"
+          [type]="chatTypeEnum.VENDOR_ORDER"
+          [value]="chat"
+          (valueChange)="chat = $event"
+        >
+        </app-chat>
+      </ng-container>
+    </ng-container>
+    <!--End of Note Communication -->
+
+    <!-- Zoom Communication -->
+    <ng-container *ngIf="(type == 'released' && row?.vendorOrderId) || type == 'confirmation'">
+      <span class="text-green text-btn p-2" (click)="openDateTimeSelector(row)"
+        ><i class="far fa-calendar-alt"></i
+      ></span>
+      <div class="d-flex meeting-time text-center d-flex align-items-center">
+        <label class="d-flex flex-column justify-content-center align-items-center m-0">
+          <span class="m-0 text-center ">
+            Meeting Time
+          </span>
+          <span
+            class="font-weight-bold time text-center"
+            [ngClass]="{ 'theme-grey': meetingInfo[row.userId]?.isExpired || !meetingInfo[row.userId]?.startTime }"
+          >
+            <a
+              *ngIf="meetingInfo[row.userId]?.startTime"
+              [href]="
+                user?.id == meetingInfo[row.userId].hostUserId
+                  ? meetingInfo[row.userId]?.videoConferenceLinkForHost
+                  : meetingInfo[row.userId]?.videoConferenceLinkForParticipant
+              "
+              target="_blank"
+              class="underline"
+            >
+              {{ meetingInfo[row.userId]?.startTime | date: 'short' }}
+            </a>
+            <ng-container *ngIf="!meetingInfo[row.userId]?.startTime">
+              -
+            </ng-container>
+          </span>
+          <input
+            *ngIf="meetingInfo[row.userId]"
+            class="dt-control m-0 p-0"
+            readonly
+            #dateTimeSelector
+            [owlDateTime]="dt1"
+            [owlDateTimeTrigger]="dt1"
+            [(ngModel)]="meetingInfo[row.userId].startTime"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onTimeChanged($event)"
+          />
+          <owl-date-time #dt1></owl-date-time>
+        </label>
+      </div>
+    </ng-container>
+
+    <!-- End of Zoom Communication -->
+
+    <!--
+    <p class="m-0 text-center">Meeting Time:</p>
+    <label>
+      <p *ngIf="!meetingInfo[row.userId].startTime" class="m-0 text-center font-weight-bold underline timer"
+        (click)="openDateTimeSelector()">Schedule
+        Meeting
+      </p>
+
+    </label> -->
+  </div>
+</ng-template>
+
+<ng-template #sendMailModal let-modal>
+  <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
+</ng-template>
+
+<ng-template #orderStatusTemplate let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title text-left pt-2 pl-2">Order Status No {{ vendorOrderId }}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-container p-4">
+      <app-vendor-order-status
+        [(order)]="vendorOrderId"
+        [bidProcessId]="selectedBidProcessId"
+        *ngIf="selectedBidProcessId"
+      >
+      </app-vendor-order-status>
+    </div>
   </div>
 </ng-template>

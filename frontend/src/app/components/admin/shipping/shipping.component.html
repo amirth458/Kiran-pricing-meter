@@ -1,0 +1,111 @@
+<div class="wrapper shadow">
+  <form [formGroup]="shippingForm" class="needs-validation">
+    <div class="form-row">
+      <div class="col-md-6"></div>
+      <div class="col-md-2"></div>
+
+      <div class="form-group col-md-2 mt-3">
+        <button
+          *ngIf="shippingForm.value.userLocked === true"
+          type="button"
+          class="btn btn-primary theme btn-sky-blue w-75"
+          (click)="onUnlock()"
+        >
+          Unlock
+        </button>
+      </div>
+
+      <div *ngIf="shippingForm.value.customerActive === false" class="form-group col-md-2 mt-3">
+        <button type="button" class="btn btn-primary theme w-75" (click)="onActivate()">Activate</button>
+      </div>
+
+      <div *ngIf="shippingForm.value.customerActive === true" class="form-group col-md-2 mt-3">
+        <button type="button" class="btn btn-primary theme orange-btn w-75" (click)="onDeactivate()">Deactivate</button>
+      </div>
+    </div>
+
+    <p class="title">Main Address</p>
+    <div class="form-container p-4" formGroupName="mainAddress">
+      <div *ngIf="shipping.length" class="form-row">
+        <div class="padding"></div>
+        <div class="form-group theme flex-grow-1">
+          <label>Address</label>
+          <input
+            readonly
+            required
+            formArrayName="address"
+            formControlName="address"
+            class="form-control"
+            placeholder="Address"
+          />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>City</label>
+          <input readonly required formControlName="city" class="form-control" placeholder="City" />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>State/Territory/Region</label>
+          <input readonly required formControlName="state" class="form-control" placeholder="State/Territory/Region" />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Zip</label>
+          <input readonly required formControlName="zipcode" class="form-control" placeholder="Zip Code" />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Country</label>
+          <select disabled required formControlName="country" class="form-control">
+            <option selected value="">Country</option>
+            <option *ngFor="let item of countries" [value]="item.id">{{ item.name }}</option>
+          </select>
+        </div>
+      </div>
+      <p *ngIf="!shipping.length" class="text-center text-theme">No Main Address</p>
+    </div>
+    <p class="title mt-3 d-flex align-items-center justify-content-between">
+      <span>Other Addresses</span>
+      <!-- <a class="add-btn" (click)="addAddress()">+</a> -->
+    </p>
+    <div class="form-container p-4" formArrayName="otherAddress">
+      <div
+        class="form-row"
+        *ngFor="let item of otherAddresses.controls; let pointIndex = index"
+        [formGroupName]="pointIndex"
+      >
+        <div class="padding">
+          <a>{{ pointIndex + 1 }}</a>
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Address</label>
+          <input
+            readonly
+            required
+            formArrayName="address"
+            formControlName="address"
+            class="form-control"
+            placeholder="Address"
+          />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>City</label>
+          <input readonly required formControlName="city" class="form-control" placeholder="City" />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>State/Territory/Region</label>
+          <input readonly required formControlName="state" class="form-control" placeholder="State/Territory/Region" />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Zip</label>
+          <input readonly required formControlName="zipcode" class="form-control" placeholder="Zip Code" />
+        </div>
+        <div class="form-group theme flex-grow-1">
+          <label>Country</label>
+          <select disabled required formControlName="country" class="form-control">
+            <option selected value="">Country</option>
+            <option *ngFor="let item of countries" [value]="item.id">{{ item.name }}</option>
+          </select>
+        </div>
+      </div>
+      <p *ngIf="!otherAddresses.value.length" class="text-center text-theme">No Other Address</p>
+    </div>
+  </form>
+</div>
