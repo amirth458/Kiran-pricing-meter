@@ -298,6 +298,7 @@ export class VendorDetailsComponent implements OnInit {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs[4],
       enableColResize: true,
+      suppressCellSelection: true,
       rowHeight: 50,
       headerHeight: 35
     });
