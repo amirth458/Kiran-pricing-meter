@@ -379,15 +379,22 @@
 
     <!-- Note Communication -->
     <ng-container [ngSwitch]="type">
-      <ng-container *ngSwitchCase="'confirmation' && row?.bidProcessStatus?.name !== biddingStatus.ACCEPTED">
-        <app-chat
-          [participants]="row.userId ? [row.userId] : []"
-          [id]="bidOrderId"
-          [type]="chatTypeEnum.BID_OFFER"
-          [value]="chat"
-          (valueChange)="chat = $event"
+      <ng-container *ngSwitchCase="'confirmation'">
+        <ng-container
+          *ngIf="
+            row?.bidProcessStatus?.name !== biddingStatus.REJECTED &&
+            row?.bidProcessStatus?.name !== biddingStatus.QUEUED_FOR_LATER
+          "
         >
-        </app-chat>
+          <app-chat
+            [participants]="row.userId ? [row.userId] : []"
+            [id]="bidOrderId"
+            [type]="chatTypeEnum.BID_OFFER"
+            [value]="chat"
+            (valueChange)="chat = $event"
+          >
+          </app-chat>
+        </ng-container>
       </ng-container>
       <ng-container *ngSwitchCase="'released'">
         <app-chat
