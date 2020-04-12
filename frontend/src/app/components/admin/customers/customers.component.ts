@@ -269,7 +269,7 @@ export class CustomersComponent implements OnInit {
     let page = 0;
     let filter: FilterOption = { size: 1000, sort: 'id,ASC', page, q: '' };
     let currentData = await this.customerService.getCustomer(filter).toPromise();
-    while (currentData.length || page < 3) {
+    while (currentData.length) {
       page = page + 1;
       data = data.concat(currentData);
       filter = { size: 1000, sort: 'id,ASC', page, q: '' };
