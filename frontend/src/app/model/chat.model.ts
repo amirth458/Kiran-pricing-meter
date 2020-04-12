@@ -1,3 +1,10 @@
+import { UserSummary } from './user.model';
+
+export interface ChatView {
+  chat: Chat;
+  users: Array<UserSummary>;
+}
+
 export interface Chat {
   id: number;
   chatType: ChatType;
@@ -8,6 +15,7 @@ export interface Chat {
   customerOrderId: number;
   messageNotes: Array<MessageNote>;
   vendorId: number;
+  users?: Array<UserSummary>;
 }
 
 export interface MessageNote {
@@ -17,6 +25,7 @@ export interface MessageNote {
   senderId: number;
   createdDate: Date;
   lastModifiedDate: Date;
+  user?: UserSummary;
 }
 
 export interface ChatType {

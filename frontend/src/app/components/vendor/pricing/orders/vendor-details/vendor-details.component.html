@@ -379,7 +379,7 @@
 
     <!-- Note Communication -->
     <ng-container [ngSwitch]="type">
-      <ng-container *ngSwitchCase="'confirmation'">
+      <ng-container *ngSwitchCase="'confirmation' && row?.bidProcessStatus?.name !== biddingStatus.ACCEPTED">
         <app-chat
           [participants]="row.userId ? [row.userId] : []"
           [id]="bidOrderId"

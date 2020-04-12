@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { Chat, ChatTypeEnum, MessageNote } from '../model/chat.model';
+import { map } from 'rxjs/operators';
+
+import { Chat, ChatTypeEnum, ChatView, MessageNote } from '../model/chat.model';
 import { environment } from '../../environments/environment';
+import { UserSummary } from '../model/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,17 +47,37 @@ export class ChatService {
   }
 
   getChat(id: number, type: number, vendorId: number = null, participants: Array<number> = []): Observable<Chat> {
-    return this.http.post<Chat>(
-      `${environment.procurementApiBaseUrl}/chat`,
-      this.buildParameters(id, type, vendorId, participants)
-    );
+    return this.http
+      .post<ChatView>(
+        `${environment.procurementApiBaseUrl}/chat`,
+        this.buildParameters(id, type, vendorId, participants)
+      )
+      .pipe(map(chatView => this.parseChat(chatView)));
+  }
+
+  parseChat(chatView: ChatView): Chat {
+    const chat: Chat = chatView ? chatView.chat : null;
+    if (chat) {
+      chat.users = chatView.users;
+      const users = (chatView.users || []).reduce((obj: any, value: UserSummary) => {
+        obj[value.id] = value;
+        return obj;
+      }, {});
+      chat.messageNotes = (chatView.chat.messageNotes || []).map(note => {
+        note.user = users[note.senderId];
+        return note;
+      });
+    }
+    return chat || null;
   }
 
   create(id: number, type: number, vendorId: number = null, participants: Array<number> = []): Observable<Chat> {
-    return this.http.post<Chat>(
-      `${environment.procurementApiBaseUrl}/chat/create-chat`,
-      this.buildParameters(id, type, vendorId, participants)
-    );
+    return this.http
+      .post<ChatView>(
+        `${environment.procurementApiBaseUrl}/chat/create-chat`,
+        this.buildParameters(id, type, vendorId, participants)
+      )
+      .pipe(map(chatView => this.parseChat(chatView)));
   }
 
   addMessage(text: string, chatId: number): Observable<MessageNote> {
