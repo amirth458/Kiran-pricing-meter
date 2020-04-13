@@ -14,7 +14,7 @@
   <ng-container *ngIf="!loading; else loadingPanel">
     <span><i class="fas fa-comment-alt"></i></span>
   </ng-container>
-  <div class="unread-badge position-absolute">{{ value?.messageNotes?.length || 0 }}</div>
+  <div class="unread-badge position-absolute">{{ value?.messageNotes | unReadCount: user.id }}</div>
 </button>
 
 <ng-template #popContent>
