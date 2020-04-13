@@ -357,7 +357,6 @@ export class VendorDetailsComponent implements OnInit {
         .pipe(switchMap(parts => this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)))
         .subscribe(resultData => {
           this.orderDetails = resultData || [];
-          console.log(v, resultData);
         });
       // TODO remove below code after vendor order details api start return vendor order id
       if (this.type === 'released') {
