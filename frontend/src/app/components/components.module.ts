@@ -210,7 +210,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     OwlDateTimeModule,
     OwlNativeDateTimeModule
   ],
-  providers: [DatePipe, CurrencyPipe],
+  providers: [DatePipe, CurrencyPipe, UnReadCountPipe],
   exports: [
     NgxSpinnerModule,
     AgGridModule,
