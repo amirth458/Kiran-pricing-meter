@@ -11,7 +11,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
-import { BiddingStatus } from '../../../../../model/bidding.order';
+import { BiddingOrderStatus, BiddingStatus } from '../../../../../model/bidding.order';
 import { Conference, ConferenceRequest } from '../../../../../model/conference.model';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
@@ -21,9 +21,10 @@ import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
 
-import { DefaultEmails } from '../../../../../../assets/constants.js';
+import { DefaultEmails } from '../../../../../../assets/constants';
 import { ZoomService } from 'src/app/service/zoom.service';
 import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
+import { MetaData } from '../../../../../model/metadata.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -32,6 +33,8 @@ import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 })
 export class VendorDetailsComponent implements OnInit {
   biddingStatus = BiddingStatus;
+  biddingOrderStatus = BiddingOrderStatus;
+
   type;
   orderId;
   bidOrderId: number;
@@ -65,6 +68,7 @@ export class VendorDetailsComponent implements OnInit {
   bidding: Array<VendorOrderDetail>;
   selectedBidding: any;
   vendorOrderId: number;
+  bidOrderStatus: MetaData;
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
@@ -320,6 +324,7 @@ export class VendorDetailsComponent implements OnInit {
       this.bidding = (v.matchingSuppliersProfilesView || []).map(user => {
         return { ...user };
       });
+      this.bidOrderStatus = (v ? v.bidOrderStatus || {} : {}) as MetaData;
       this.bidding.map(match => (match.id = ++count));
       const vendors = [];
       this.bidding.map(match => {
@@ -350,8 +355,8 @@ export class VendorDetailsComponent implements OnInit {
       this.ordersService
         .getPartQuotesByPartIds((v.acceptedOrderDetails || []).map(p => p.partId))
         .pipe(switchMap(parts => this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)))
-        .subscribe(v => {
-          this.orderDetails = v || [];
+        .subscribe(resultData => {
+          this.orderDetails = resultData || [];
         });
       // TODO remove below code after vendor order details api start return vendor order id
       if (this.type === 'released') {

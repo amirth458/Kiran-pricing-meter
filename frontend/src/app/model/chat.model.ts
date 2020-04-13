@@ -26,6 +26,13 @@ export interface MessageNote {
   createdDate: Date;
   lastModifiedDate: Date;
   user?: UserSummary;
+  messageNoteHistory: Array<MessageNoteHistory>;
+}
+
+export interface MessageNoteHistory {
+  id: number;
+  receiveUserId: number;
+  isRead: boolean;
 }
 
 export interface ChatType {

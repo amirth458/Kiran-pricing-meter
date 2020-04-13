@@ -1,10 +1,12 @@
 import { ProcessProfile } from './part.model';
 import { BidProcessStatusType } from './confirm.sub-order.release';
+import { MetaData } from './metadata.model';
 
 export interface BiddingOrderDetail {
   bidProcessTimeLeft: string;
   acceptedOrderDetails: Array<GetAllCustomerPartView>;
   matchingSuppliersProfilesView: Array<VendorOrderDetail>;
+  bidOrderStatus?: MetaData;
 }
 
 export interface VendorOrderDetail {
