@@ -1,6 +1,6 @@
-import { ModelDetailViewComponent } from './../common/model-detail-view/model-detail-view.component';
-import { FileViewRendererComponent } from './../common/file-view-renderer/file-view-renderer.component';
-import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
+import { ModelDetailViewComponent } from '../common/model-detail-view/model-detail-view.component';
+import { FileViewRendererComponent } from '../common/file-view-renderer/file-view-renderer.component';
+import { StatusDropdownFilterComponent } from '../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -47,10 +47,10 @@ import { AdminVendorDetailsUserComponent } from './admin/vendor-details/user/use
 import { AdminVendorDetailsVendorComponent } from './admin/vendor-details/vendor/vendor.component';
 import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machine/machine.component';
 
-import { TabItemComponent } from './../common/tabs/tab-item/tab-item.component';
-import { TabComponent } from './../common/tabs/tab/tab.component';
-import { FileViewerComponent } from './../common/file-viewer/file-viewer.component';
-import { TemplateRendererComponent } from './../common/template-renderer/template-renderer.component';
+import { TabItemComponent } from '../common/tabs/tab-item/tab-item.component';
+import { TabComponent } from '../common/tabs/tab/tab.component';
+import { FileViewerComponent } from '../common/file-viewer/file-viewer.component';
+import { TemplateRendererComponent } from '../common/template-renderer/template-renderer.component';
 import { PriceDetailComponent } from './vendor/pricing/rfq/price-detail/price-detail.component';
 import { PriceViewComponent } from './vendor/pricing/rfq/price-view/price-view.component';
 import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
@@ -90,6 +90,7 @@ import { ContactComponent } from './admin/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
+import { UnReadCountPipe } from '../pipes/un-read-count.pipe';
 
 // chats
 import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
@@ -177,11 +178,12 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     SendMailModalComponent,
     ChatComponent,
     ClosePopoverOnClickOutsideDirective,
+    VendorOrderStatusComponent,
 
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
-    VendorOrderStatusComponent
+    UnReadCountPipe
   ],
   imports: [
     CommonModule,
@@ -228,7 +230,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
     // pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
+    SupplierPipe,
+    UnReadCountPipe
   ]
 })
 export class ComponentsModule {}
