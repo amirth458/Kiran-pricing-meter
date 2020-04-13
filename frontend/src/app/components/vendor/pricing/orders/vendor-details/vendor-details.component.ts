@@ -179,7 +179,8 @@ export class VendorDetailsComponent implements OnInit {
         maxWidth: 100,
         hide: false,
         sortable: false,
-        filter: false
+        filter: false,
+        checkboxSelection: true
       },
       {
         headerName: 'Vendor Name',
