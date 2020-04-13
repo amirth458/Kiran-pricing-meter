@@ -88,4 +88,8 @@ export class ChatService {
       message: text
     });
   }
+
+  markUnreadMessage(id: number): Observable<boolean> {
+    return this.http.patch<boolean>(`${environment.procurementApiBaseUrl}/chat/message-note/${id}/mark-read`, null);
+  }
 }
