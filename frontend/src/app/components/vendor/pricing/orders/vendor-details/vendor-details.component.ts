@@ -21,7 +21,7 @@ import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
 
-import { DefaultEmails } from '../../../../../../assets/constants.js';
+import { DefaultEmails } from '../../../../../../assets/constants';
 import { ZoomService } from 'src/app/service/zoom.service';
 import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 import { MetaData } from '../../../../../model/metadata.model';
