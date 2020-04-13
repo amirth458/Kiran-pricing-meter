@@ -425,7 +425,7 @@ export class OrdersService {
     );
   }
 
-  releaseProdProjectBidToVendor(partId, processProfiles) {
+  releaseProjectBidToVendor(partId, processProfiles) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/release-bid-to-vendor`;
     return this.http.post<any>(url, {
       partId,
@@ -436,5 +436,13 @@ export class OrdersService {
   getBidProjectProcesses(partId): Observable<BidProjectProcess[]> {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/part/${partId}`;
     return this.http.get<BidProjectProcess[]>(url);
+  }
+
+  releaseProjectBidToCustomer(partId, vendorIds) {
+    const url = `${environment.apiBaseUrl}/admin/bidding/production-project/release-matching-vendors-to-customer`;
+    return this.http.put<any>(url, {
+      partId,
+      vendorIds: vendorIds
+    });
   }
 }
