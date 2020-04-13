@@ -55,7 +55,6 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.user = this.userService.getUserInfo();
     this.getChat();
-    this.isInitialised = true;
   }
 
   openChat($event) {
@@ -131,6 +130,7 @@ export class ChatComponent implements OnInit {
         this.loading = false;
         this.value = chat;
         this.updateChat();
+        this.isInitialised = true;
       });
   }
 
