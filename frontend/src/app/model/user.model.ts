@@ -42,6 +42,7 @@ export interface CustomerIndustry {
 export interface CustomerData {
   id: number;
   name: string;
+  email: string;
   division: string;
   phoneNo: string;
   industries: CustomerIndustry[];

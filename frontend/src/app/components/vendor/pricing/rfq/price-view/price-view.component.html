@@ -488,6 +488,31 @@
           </div>
         </ng-template>
       </ngb-tab>
+
+      <ngb-tab title="Customer Information">
+        <ng-template ngbTabContent>
+          <div class="d-flex text-theme m-5 customerInfo">
+            <img src="../../../../../../assets/image/avatar3.png" alt="" height="70px" width="70px" />
+            <div class="pl-3 customer-details">
+              <p class="mb-1">
+                Customer : <span class=" font-weight-bold value">{{ customer?.name || '-' }}</span>
+              </p>
+              <p class="mb-1">
+                Customer ID: <span class=" font-weight-bold value">{{ customer?.id || '-' }}</span>
+              </p>
+              <p class="mb-1">
+                Customer Name: <span class=" font-weight-bold value">{{ customer?.name || '-' }}</span>
+              </p>
+              <p class="mb-1">
+                Contact Email : <span class=" font-weight-bold value">{{ customer?.email || '-' }}</span>
+              </p>
+              <p class="mb-1">
+                Contact Phone : <span class=" font-weight-bold value">{{ customer?.phoneNo || '-' }}</span>
+              </p>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
     </ngb-tabset>
     <!-- /TAB -->
   </div>

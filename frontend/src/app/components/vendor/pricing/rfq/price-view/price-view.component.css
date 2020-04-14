@@ -199,3 +199,7 @@ td a.edit-price {
   height: 16px;
   width: 16px;
 }
+
+:host .customerInfo {
+  font-size: 13px;
+}
