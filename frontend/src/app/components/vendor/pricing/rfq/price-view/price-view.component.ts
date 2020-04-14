@@ -108,9 +108,25 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     this.updateRowData();
     this.columnDefs = [
       {
+        headerName: 'Customer Id',
+        field: 'customerId',
+        tooltipField: 'customerId',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Customer',
         field: 'customer',
         tooltipField: 'customer',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Email',
+        field: 'email',
+        tooltipField: 'email',
         hide: false,
         sortable: true,
         filter: false
@@ -399,7 +415,9 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
         {
           id: this.part.id,
           subOrder: this.part.id,
+          customerId: this.customer.id,
           customer: this.customer.name,
+          email: this.customer.email,
           rfq: this.part.rfqMedia.projectRfqId,
           part: this.part.rfqMedia.projectRfqId + '.' + this.part.id,
           fileName: this.part.rfqMedia.media.name,
