@@ -450,4 +450,14 @@ export class OrderDetailComponent implements OnInit {
       });
     });
   }
+
+  canReleaseToCustomer() {
+    return (
+      this.selectedSuppliers.length === 3 && this.selectedSuppliers.filter(item => item.status.id === 2).length === 3
+    );
+  }
+
+  canReleaseToVendor() {
+    return this.supplierGridOptions[0].api && this.supplierGridOptions[0].api.getSelectedRows().length === 3;
+  }
 }
