@@ -1,0 +1,12 @@
+:host .message-container {
+  padding: 10px 0;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+:host .message-container .admin-chat,
+:host .message-container .participant-chat {
+  font-size: 12px;
+  padding: 0 15px;
+  margin: 5px 0;
+}
