@@ -121,14 +121,14 @@ export class VendorDetailsComponent implements OnInit {
             this.userService.getUserInfo().id,
             this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
           )
-          .subscribe(v => {
+          .subscribe(suppliers => {
             this.matchedProfiles = [];
             let count = 0;
-            v.map(item => {
-              const processProfileView = item.processProfileView;
+            suppliers.map(supplier => {
+              const processProfileView = supplier.processProfileView;
               const processPricingView: any =
-                item.processPricingViews && (item.processPricingViews || []).length > 0
-                  ? item.processPricingViews[0]
+                supplier.processPricingViews && (supplier.processPricingViews || []).length > 0
+                  ? supplier.processPricingViews[0]
                   : {};
               const found = this.matchedProfiles.some(match => {
                 return match.vendorId === processProfileView.vendorId;
@@ -136,21 +136,19 @@ export class VendorDetailsComponent implements OnInit {
               if (!found) {
                 count++;
               }
-              let id = !found ? count.toString() : '';
-              let priority = !found ? count : '';
               this.matchedProfiles.push({
-                id,
+                id: !found ? processProfileView.vendorId.toString() : '',
                 vendorId: processProfileView.vendorId,
-                profileId: item.processProfileId,
-                vendorName: item.vendorProfile ? item.vendorProfile.name : '',
+                profileId: supplier.processProfileId,
+                vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
                 processProfileName: processProfileView.name || '',
                 facilityName:
                   processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
                     .vendorFacility.name || '',
                 pricingProfile: (processPricingView && processPricingView.name) || '',
-                releasePriority: priority,
-                pricing: item.processPricingViews || [],
-                vendorProfile: item.vendorProfile,
+                releasePriority: !found ? count : '',
+                pricing: supplier.processPricingViews || [],
+                vendorProfile: supplier.vendorProfile,
                 active: true
               });
             });
@@ -562,6 +560,13 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
+          headerName: 'Vendor ID',
+          field: 'vendorId',
+          hide: true,
+          sortable: true,
+          filter: false
+        },
+        {
           headerName: 'Corporate Name',
           field: 'vendorName',
           tooltipField: 'vendorName',
@@ -701,6 +706,13 @@ export class VendorDetailsComponent implements OnInit {
       ]);
     } else if (idx === 2) {
       this.gridOptions[2].api.setSuppressRowDrag(true);
+      const sort = [
+        {
+          colId: 'vendorId',
+          sort: 'asc'
+        }
+      ];
+      this.gridOptions[2].api.setSortModel(sort);
     }
   }
 
