@@ -83,3 +83,11 @@
   color: var(--theme-bright-blue);
   cursor: pointer;
 }
+
+.font-dark-blue {
+  color: var(--theme-dark-blue);
+}
+
+.font-sm {
+  font-size: 13px;
+}

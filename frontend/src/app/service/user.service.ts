@@ -148,6 +148,37 @@ export class UserService {
     return this.http.delete<any>(url);
   }
 
+  setCustomerContract(customerId, addOns, subscription) {
+    const url = `${environment.apiBaseUrl}/admin/contract`;
+    return this.http.post<any>(url, {
+      customerId,
+      addOnsIds: addOns,
+      subscriptionType: {
+        id: subscription
+      }
+    });
+  }
+
+  getCustomerContract(customerId): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/contract/customer?customer-id=${customerId}`;
+    return this.http.get<any>(url);
+  }
+
+  updateCustomerContract(contractId, addOns, subscription) {
+    const url = `${environment.apiBaseUrl}/admin/contract/${contractId}`;
+    return this.http.put<any>(url, {
+      addOnsIds: addOns,
+      subscriptionType: {
+        id: subscription
+      }
+    });
+  }
+
+  deleteCustomerContract(contractId) {
+    const url = `${environment.apiBaseUrl}/admin/contract/${contractId}`;
+    return this.http.delete<any>(url);
+  }
+
   getRegisterUserInfo() {
     return JSON.parse(localStorage.getItem('admin-RegisterUser'));
   }

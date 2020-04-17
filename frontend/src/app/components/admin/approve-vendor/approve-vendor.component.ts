@@ -33,6 +33,7 @@ export class ApproveVendorComponent implements OnInit {
   addons = [];
   contractInfo;
   vendorId;
+  totalcounts;
 
   selectedFacility = null;
 
@@ -69,7 +70,8 @@ export class ApproveVendorComponent implements OnInit {
     Country: 'country.name',
     Confidentiality: 'confidentiality.name',
     'Approved On': 'approvedAt',
-    'Last Login Attempt': 'user.lastLoginAttempt'
+    'Last Login Attempt': 'user.lastLoginAttempt',
+    'Vendor Status': 'approved'
   };
 
   constructor(
@@ -78,15 +80,16 @@ export class ApproveVendorComponent implements OnInit {
     private spineer: NgxSpinnerService,
     private metadataService: MetadataService,
     private toastr: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) {
     this.navigation = this.route.getCurrentNavigation();
     this.getSearchFilterColumns();
   }
 
   ngOnInit() {
-    this.metadataService.getSubscriptionTypes().subscribe(v => (this.subscriptions = v));
-    this.metadataService.getAddons().subscribe(v => (this.addons = v));
+    this.metadataService.getVendorSubscriptionTypes().subscribe(v => (this.subscriptions = v));
+    this.metadataService.getVendorAddons().subscribe(v => (this.addons = v));
   }
 
   async getSearchFilterColumns() {
@@ -122,7 +125,7 @@ export class ApproveVendorComponent implements OnInit {
 
     this.columnDefs.push(
       ...columns.map(column => ({
-        headerName: column.displayName,
+        headerName: column.displayName === 'Vendor Status' ? 'Vendor Approval Status' : column.displayName,
         field: this.matchingNames[column.displayName],
         hide: true,
         sortable: false,
@@ -201,7 +204,7 @@ export class ApproveVendorComponent implements OnInit {
         // this.onRowClick(event);
       },
       onCellDoubleClicked: param => {
-        const userId = param.data.id;
+        const userId = param.data.user.id;
         this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
       },
       rowClassRules: {
@@ -235,7 +238,7 @@ export class ApproveVendorComponent implements OnInit {
   configureColumnDefs() {
     this.filterColumns.map(column => {
       this.columnDefs.map(col => {
-        if (col.headerName === column.name) {
+        if ((col.headerName === 'Vendor Approval Status' ? 'Vendor Status' : col.headerName) === column.name) {
           col.hide = !column.checked;
         }
       });
@@ -378,14 +381,17 @@ export class ApproveVendorComponent implements OnInit {
     const dataSource = {
       rowCount: 0,
       getRows: params => {
+        this.spinner.show('spooler');
         this.userService
           .getAllUsers(params.startRow / this.pageSize, this.pageSize, {
             q: '',
             filterColumnsRequests: this.filterColumnsRequest
           })
           .subscribe(data => {
+            this.spinner.hide('spooler');
             const rowsThisPage = data.content;
             const lastRow = data.total <= params.endRow ? data.total : -1;
+            this.totalcounts = data.total;
             params.successCallback(rowsThisPage, lastRow);
             // this.reconfigColumns();
           });
