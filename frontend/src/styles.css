@@ -81,6 +81,10 @@ a.link {
   text-decoration: underline;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .form-control:disabled,
 .form-control[readonly] {
   background-color: #e9ecef !important;
@@ -552,6 +556,7 @@ app-dropdown-cell-renderer {
   color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
 }
+
 /* Vendor order info modal */
 
 /* Refresh modal window */
@@ -738,3 +743,23 @@ app-dropdown-cell-renderer {
 }
 
 /**/
+
+/* date control override styles start */
+.cdk-overlay-container,
+.cdk-overlay-container .cdk-overlay-backdrop,
+.cdk-overlay-container .cdk-overlay-connected-position-bounding-box,
+.cdk-overlay-container .cdk-overlay-connected-position-bounding-box .cdk-overlay-pane,
+.cdk-overlay-container .cdk-overlay-connected-position-bounding-box .cdk-overlay-pane .owl-dt-container {
+  z-index: 1051;
+}
+
+.cdk-global-scrollblock {
+  position: static;
+  overflow: hidden !important;
+}
+
+.cdk-overlay-pane.owl-dt-popup {
+  bottom: unset !important;
+  left: unset !important;
+  right: 50px;
+}
