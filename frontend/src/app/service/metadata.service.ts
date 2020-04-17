@@ -28,13 +28,23 @@ export class MetadataService {
     return this.http.get<any>(url).pipe(map(res => res.metadataList));
   }
 
-  getSubscriptionTypes(): Observable<SubscriptionType[]> {
+  getVendorSubscriptionTypes(): Observable<SubscriptionType[]> {
     const url = `${environment.apiBaseUrl}/vendor-metadata/contract/subscription-type?product-type-id=1`;
     return this.http.get<SubscriptionType[]>(url);
   }
 
-  getAddons(): Observable<Addon[]> {
+  getVendorAddons(): Observable<Addon[]> {
     const url = `${environment.apiBaseUrl}/vendor-metadata/contract/add-ons?product-type-id=1`;
+    return this.http.get<Addon[]>(url);
+  }
+
+  getCustomerSubscriptionTypes(): Observable<SubscriptionType[]> {
+    const url = `${environment.apiBaseUrl}/vendor-metadata/contract/subscription-type?product-type-id=2`;
+    return this.http.get<SubscriptionType[]>(url);
+  }
+
+  getCustomerAddons(): Observable<Addon[]> {
+    const url = `${environment.apiBaseUrl}/vendor-metadata/contract/add-ons?product-type-id=2`;
     return this.http.get<Addon[]>(url);
   }
 }

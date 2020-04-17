@@ -19,6 +19,9 @@
     </app-column-search-filter>
   </div>
   <div class="table theme-table">
+    <div class="d-flex align-items-center justify-content-end">
+      <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
+    </div>
     <ag-grid-angular
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
@@ -29,6 +32,16 @@
       [cacheBlockSize]="pageSize"
     >
     </ag-grid-angular>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff80"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </div>
 
