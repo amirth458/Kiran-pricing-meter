@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { Part, PartDimension, PartQuoteQueryDto, ProcessProfile } from '../model/part.model';
+import { Part, PartDimension, PartQuoteQueryDto, ProcessProfile, PricingProfileDetails } from '../model/part.model';
 import { Pageable } from '../model/pageable.model';
 import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
 import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
@@ -124,6 +124,27 @@ export class RfqPricingService {
   getPricingProfiles(partId: number): Observable<PricingProfileDetailedView[]> {
     const url = `${environment.procurementApiBaseUrl}/process-pricing-profile/matched-profiles/${partId}`;
     return this.http.get<PricingProfileDetailedView[]>(url);
+  }
+
+  getScreenPricingProfileByPartId(partId: number, processProfileIds: Array<number>, filterOption: FilterOption) {
+    let params = new HttpParams();
+    if (filterOption) {
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
+    }
+    // params = params.append('partId', partId.toString());
+    // params = params.append('processProfileIds', processProfileIds.toString());
+
+    const url = `${environment.apiBaseUrl}/admin/process-profile/screen-pricing-profile-by-part`;
+    // return this.http.get<PricingProfileDetailedView[]>(url, { params });
+    return this.http.post<PricingProfileDetails[]>(
+      url,
+      {
+        partId,
+        processProfileIds: processProfileIds.join(',')
+      },
+      { params }
+    );
   }
 
   getPartQuoteByPricingIds(partId: number, processPricingIds: string): Observable<PartQuoteQueryDto[]> {
