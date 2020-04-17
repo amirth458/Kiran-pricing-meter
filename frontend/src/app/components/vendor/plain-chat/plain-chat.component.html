@@ -1,0 +1,39 @@
+<div class="col-12 border p-0 shadow d-flex flex-column">
+  <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
+    Notes
+  </h5>
+  <div class="d-flex flex-grow-1 flex-column message-container" #scroller (scroll)="onScroll()">
+    <div
+      class="participant-chat {{ user?.id === m.senderId ? 'text-left' : 'text-right' }}"
+      *ngFor="let m of value?.messageNotes; let idx = index"
+    >
+      <span class="{{ user.id === m.senderId ? 'text-theme-green' : 'text-theme' }}">
+        {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }}
+      </span>
+      <p>{{ m.message || '' }}</p>
+    </div>
+  </div>
+  <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
+    <hr class="m-0" />
+    <div class="form-row">
+      <div class="form-group theme col-12 m-0">
+        <label class="w-100">
+          Note
+          <textarea
+            class="form-control note-input"
+            rows="2"
+            formControlName="note"
+            (keyup.enter)="sendNote($event)"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-12 m-0 d-flex justify-content-center">
+        <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
+          {{ loading ? 'Submitting Note' : 'Add Note' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

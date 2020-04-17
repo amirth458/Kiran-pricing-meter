@@ -95,7 +95,7 @@ import { UnReadCountPipe } from '../pipes/un-read-count.pipe';
 // chats
 import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
 import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
-
+import { PlainChatComponent } from './vendor/plain-chat/plain-chat.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
@@ -177,6 +177,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ProjectsListComponent,
     SendMailModalComponent,
     ChatComponent,
+    PlainChatComponent,
     ClosePopoverOnClickOutsideDirective,
     VendorOrderStatusComponent,
 

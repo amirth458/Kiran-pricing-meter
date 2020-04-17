@@ -46,6 +46,7 @@ export interface CustomerData {
   division: string;
   phoneNo: string;
   industries: CustomerIndustry[];
+  userId?: number;
 }
 
 export interface UserSummary {
