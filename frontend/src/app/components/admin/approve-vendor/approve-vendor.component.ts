@@ -96,14 +96,14 @@ export class ApproveVendorComponent implements OnInit {
     const columns = await this.userService.getFilterColumns().toPromise();
 
     this.filterColumns = columns.map(column => ({
-      name: column.displayName,
+      name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
       checked: true,
       field: column.displayName
     }));
 
     this.searchColumns = columns.map(column => ({
       id: column.id,
-      name: column.displayName,
+      name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
       checked: false,
       operators: column.operators,
       field: column.displayName,
@@ -125,7 +125,7 @@ export class ApproveVendorComponent implements OnInit {
 
     this.columnDefs.push(
       ...columns.map(column => ({
-        headerName: column.displayName === 'Vendor Status' ? 'Vendor Approval Status' : column.displayName,
+        headerName: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
         field: this.matchingNames[column.displayName],
         hide: true,
         sortable: false,
@@ -238,7 +238,7 @@ export class ApproveVendorComponent implements OnInit {
   configureColumnDefs() {
     this.filterColumns.map(column => {
       this.columnDefs.map(col => {
-        if ((col.headerName === 'Vendor Approval Status' ? 'Vendor Status' : col.headerName) === column.name) {
+        if (col.headerName === column.name) {
           col.hide = !column.checked;
         }
       });
