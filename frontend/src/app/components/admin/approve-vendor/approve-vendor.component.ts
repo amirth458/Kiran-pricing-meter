@@ -6,13 +6,17 @@ import { GridOptions } from 'ag-grid-community';
 import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest, throwError } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { DropdownHeaderRendererComponent } from 'src/app/common/dropdown-header-renderer/dropdown-header-renderer.component';
 import { ThrowStmt } from '@angular/compiler';
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-approve-vendor',
@@ -22,261 +26,32 @@ import { ThrowStmt } from '@angular/compiler';
 export class ApproveVendorComponent implements OnInit {
   @ViewChild('infoModal') infoModal;
   @ViewChild('modal') modal;
+  @ViewChild('subscriptionCell') subscriptionCell;
+  @ViewChild('subscriptionModal') subscriptionModal;
+
+  subscriptions = [];
+  addons = [];
+  contractInfo;
+  vendorId;
+
   selectedFacility = null;
 
-  searchColumns = [
-    {
-      name: 'Vendor ID',
-      checked: false,
-      field: 'id',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Vendor Name',
-      checked: false,
-      field: 'vendorName',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Email Address',
-      checked: false,
-      field: 'email',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Country',
-      checked: false,
-      field: 'country',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Confidentiality',
-      checked: false,
-      field: 'confidentiality',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Last Login Attempt',
-      checked: false,
-      field: 'lastLoginAttempt',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Approved On',
-      checked: false,
-      field: 'approvedOn',
-      query: {
-        type: '',
-        filter: ''
-      }
-    }
-  ];
-  filterColumns = [
-    {
-      name: 'Vendor ID',
-      checked: true,
-      field: 'id'
-    },
-    {
-      name: 'Vendor Name',
-      checked: true,
-      field: 'vendorName'
-    },
-    {
-      name: 'Email Address',
-      checked: true,
-      field: 'email'
-    },
-    {
-      name: 'Country',
-      checked: true,
-      field: 'country'
-    },
-    {
-      name: 'Confidentiality',
-      checked: true,
-      field: 'confidentiality'
-    },
-    {
-      name: 'Last Login Attempt',
-      checked: true,
-      field: 'lastLoginAttempt'
-    },
-    {
-      name: 'Approved On',
-      checked: true,
-      field: 'approvedOn'
-    }
-  ];
+  searchColumns = [];
+  filterColumns = [];
+  columnDefs = [];
+  filterColumnsRequest = [];
   type = ['search', 'filter'];
 
   frameworkComponents = {
     actionCellRenderer: ActionCellApproveRendererComponent,
-    headerRenderer: DropdownHeaderRendererComponent
+    headerRenderer: DropdownHeaderRendererComponent,
+    templateRenderer: TemplateRendererComponent
   };
-
-  columnDefs = [
-    {
-      headerName: '',
-      headerComponentFramework: DropdownHeaderRendererComponent,
-      field: 'chooseall',
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
-      hide: false,
-      sortable: false,
-      filter: false,
-      width: 80,
-      headerRendererParams: {
-        action: {
-          dropdown: param => {
-            event.stopPropagation();
-            this.showTypeDropDown = !this.showTypeDropDown;
-          }
-        }
-      }
-    },
-    {
-      headerName: 'Vendor ID',
-      field: 'id',
-      hide: false,
-      width: 130,
-      sortable: true,
-      filter: false,
-      valueFormatter: event => {
-        const data = event.data;
-        if (data.vendor) {
-          return data.vendor.id;
-        }
-        return '';
-      }
-    },
-    {
-      headerName: 'Vendor Name',
-      field: 'vendorName',
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Email Address',
-      field: 'email',
-      hide: false,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Country',
-      field: 'country',
-      hide: true,
-      sortable: true,
-      filter: false
-    },
-    {
-      headerName: 'Confidentiality',
-      field: 'confidentiality',
-      hide: false,
-      sortable: true,
-      filter: false,
-      width: 120
-    },
-    {
-      headerName: 'Approved On',
-      field: 'approvedOn',
-      hide: false,
-      sortable: true,
-      filter: false,
-      valueFormatter: e => {
-        const data = e.data;
-        if (data.vendor) {
-          if (data.vendor.approvedAt) {
-            return new Date(data.vendor.approvedAt).toLocaleString();
-          } else {
-            return '';
-          }
-        } else {
-          return '';
-        }
-      }
-    },
-    {
-      headerName: 'Last Login Attempt',
-      field: 'lastLoginAttempt',
-      hide: true,
-      sortable: true,
-      filter: false,
-      valueFormatter: v => {
-        const value = v.value;
-        if (!value) {
-          return '';
-        }
-        return new Date(value).toLocaleString();
-      }
-    },
-    {
-      headerName: 'Actions',
-      filter: false,
-      width: 170,
-      cellRenderer: 'actionCellRenderer',
-      cellRendererParams: {
-        action: {
-          approve: param => {
-            if (param.data.vendor) {
-              this.approveUser(param.data.vendor.id);
-            }
-          },
-          decline: async param => {
-            if (param.data.vendor) {
-              this.declineUser(param.data.vendor.id);
-            }
-          },
-          canEdit: false,
-          canCopy: false,
-          canDelete: false,
-          canApprove: param => {
-            if (param.data.vendor) {
-              if (param.data.vendor.approvedAt !== null) {
-                return false;
-              }
-              return true;
-            }
-            return false;
-          },
-          canDecline: param => {
-            if (param.data.vendor) {
-              if (param.data.vendor.approvedAt !== null) {
-                return false;
-              }
-              return true;
-            }
-            return false;
-          }
-        }
-      }
-    }
-  ];
 
   gridOptions: GridOptions;
   allUsers = [];
   rowData = [];
-  pageSize = 10;
+  pageSize = 50;
   vendor: Observable<Vendor>;
   sub: Subscription;
   vendorStatus = 1;
@@ -286,19 +61,128 @@ export class ApproveVendorComponent implements OnInit {
   showTypeDropDown = false;
   declineComments = '';
   primaryContactName = '';
+
+  matchingNames = {
+    'Vendor ID': 'id',
+    'Vendor Name': 'name',
+    'Email Address': 'email',
+    Country: 'country.name',
+    Confidentiality: 'confidentiality.name',
+    'Approved On': 'approvedAt',
+    'Last Login Attempt': 'user.lastLoginAttempt'
+  };
+
   constructor(
     private route: Router,
     private userService: UserService,
     private spineer: NgxSpinnerService,
-    private store: Store<any>,
-    private toastr: ToastrService
+    private metadataService: MetadataService,
+    private toastr: ToastrService,
+    private modalService: NgbModal
   ) {
-    // this.vendor = this.store.select(AppFields.App, AppFields.VendorInfo);
     this.navigation = this.route.getCurrentNavigation();
+    this.getSearchFilterColumns();
   }
 
   ngOnInit() {
-    this.getAllUsers();
+    this.metadataService.getSubscriptionTypes().subscribe(v => (this.subscriptions = v));
+    this.metadataService.getAddons().subscribe(v => (this.addons = v));
+  }
+
+  async getSearchFilterColumns() {
+    const columns = await this.userService.getFilterColumns().toPromise();
+
+    this.filterColumns = columns.map(column => ({
+      name: column.displayName,
+      checked: true,
+      field: column.displayName
+    }));
+
+    this.searchColumns = columns.map(column => ({
+      id: column.id,
+      name: column.displayName,
+      checked: false,
+      operators: column.operators,
+      field: column.displayName,
+      query: { type: '', filter: null }
+    }));
+
+    this.columnDefs = [
+      {
+        headerName: '',
+        field: 'chooseall',
+        headerCheckboxSelection: true,
+        checkboxSelection: true,
+        hide: false,
+        sortable: false,
+        filter: false,
+        width: 80
+      }
+    ];
+
+    this.columnDefs.push(
+      ...columns.map(column => ({
+        headerName: column.displayName,
+        field: this.matchingNames[column.displayName],
+        hide: true,
+        sortable: false,
+        filter: false,
+        tooltipField: this.matchingNames[column.displayName],
+        headerTooltip: column.displayName
+      }))
+    );
+
+    this.columnDefs.push({
+      headerName: 'Subscription',
+      filter: false,
+      width: 170,
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {
+        ngTemplate: this.subscriptionCell
+      }
+    });
+
+    this.columnDefs.push({
+      headerName: 'Actions',
+      filter: false,
+      width: 170,
+      cellRenderer: 'actionCellRenderer',
+      cellRendererParams: {
+        action: {
+          approve: param => {
+            if (param.data) {
+              this.approveUser(param.data.id);
+            }
+          },
+          decline: async param => {
+            if (param.data) {
+              this.declineUser(param.data.id);
+            }
+          },
+          canEdit: false,
+          canCopy: false,
+          canDelete: false,
+          canApprove: param => {
+            if (param.data) {
+              if (param.data.approvedAt !== null) {
+                return false;
+              }
+              return true;
+            }
+            return false;
+          },
+          canDecline: param => {
+            if (param.data) {
+              if (param.data.approvedAt !== null) {
+                return false;
+              }
+              return true;
+            }
+            return false;
+          }
+        }
+      }
+    });
 
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
@@ -307,10 +191,9 @@ export class ApproveVendorComponent implements OnInit {
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
-      pagination: true,
       paginationPageSize: 10,
       enableColResize: true,
-      rowHeight: 50,
+      rowHeight: 30,
       headerHeight: 35,
       rowSelection: 'multiple',
 
@@ -323,45 +206,30 @@ export class ApproveVendorComponent implements OnInit {
       },
       rowClassRules: {
         'non-approved': params => {
-          if (params.data.vendor) {
-            return !params.data.vendor.approved && params.data.vendor.approvedAt === null;
+          if (params.data) {
+            return !params.data.approved && params.data.approvedAt === null;
           }
           return false;
         },
         approved: params => {
-          if (params.data.vendor) {
-            return params.data.vendor.approved;
+          if (params.data) {
+            return params.data.approved;
           }
           return false;
         },
         declined: params => {
-          if (params.data.vendor) {
-            return !params.data.vendor.approved && params.data.vendor.approvedAt !== null;
+          if (params.data) {
+            return !params.data.approved && params.data.approvedAt !== null;
           }
           return false;
         }
       }
     };
-    setTimeout(() => {
-      this.gridOptions.api.sizeColumnsToFit();
-    }, 50);
   }
 
   @HostListener('document:click')
   clickout() {
     this.showTypeDropDown = false;
-  }
-  async getAllUsers() {
-    this.spineer.show();
-    try {
-      this.allUsers = await this.userService.getAllUsers().toPromise();
-      this.vendorStatusChanged(this.vendorStatus);
-    } catch (e) {
-      this.spineer.hide();
-      console.log(e);
-    } finally {
-      this.spineer.hide();
-    }
   }
 
   configureColumnDefs() {
@@ -374,60 +242,15 @@ export class ApproveVendorComponent implements OnInit {
     });
   }
 
-  pageSizeChanged(value) {
-    this.gridOptions.api.paginationSetPageSize(Number(value));
-    this.gridOptions.api.sizeColumnsToFit();
-  }
-
   vendorStatusChanged(value) {
     this.showTypeDropDown = false;
-    const status = Number(value);
-    this.vendorStatus = status;
-    let filteredUsers = [];
-    if (status === 0) {
-      filteredUsers = this.allUsers;
-    } else if (status === 1) {
-      // Not approved
-      filteredUsers = this.allUsers.filter(user => {
-        let flag = false;
-        if (user.vendor) {
-          flag = !user.vendor.approved && user.vendor.approvedAt === null;
-        }
-        return flag;
-      });
-    } else if (status === 2) {
-      // Approved
-      filteredUsers = this.allUsers.filter(user => {
-        let flag = false;
-        if (user.vendor) {
-          flag = user.vendor.approved;
-        }
-        return flag;
-      });
-    } else if (status === 3) {
-      // Declined
-      filteredUsers = this.allUsers.filter(user => {
-        let flag = false;
-        if (user.vendor) {
-          flag = !user.vendor.approved && user.vendor.approvedAt !== null;
-        }
-        return flag;
-      });
-    }
-    this.rowData = filteredUsers.map(user => ({
-      ...user,
-      vendorName: user.vendor ? user.vendor.name : '',
-      email: user.vendor ? user.vendor.email : '',
-      country: user.vendor && user.vendor.country ? user.vendor.country.name : '',
-      confidentiality: user.vendor && user.vendor.confidentiality ? user.vendor.confidentiality.name : ''
-    }));
   }
 
   async approveUsers(event) {
     const data = this.gridOptions.api.getSelectedNodes();
     let userIds = data.map(node => {
-      if (node.data.vendor) {
-        return node.data.vendor.id;
+      if (node.data) {
+        return node.data.id;
       } else {
         return null;
       }
@@ -440,9 +263,8 @@ export class ApproveVendorComponent implements OnInit {
       try {
         this.spineer.show();
         await this.userService.approveUsers(userIds).toPromise();
-        await this.getAllUsers();
-        this.vendorStatusChanged(this.vendorStatus);
         this.toastr.success('Vendors are approved.');
+        this.onSearch();
       } catch (e) {
         this.toastr.error('We are sorry, Vendors are not approved with some error. Please try again later.');
       } finally {
@@ -455,9 +277,9 @@ export class ApproveVendorComponent implements OnInit {
     const data = this.gridOptions.api.getSelectedNodes();
     const name = [];
     let userIds = data.map(node => {
-      if (node.data.vendor) {
-        name.push(`${node.data.vendor.primaryContactFirstName} ${node.data.vendor.primaryContactLastName}`);
-        return node.data.vendor.id;
+      if (node.data) {
+        name.push(`${node.data.primaryContactFirstName} ${node.data.primaryContactLastName}`);
+        return node.data.id;
       } else {
         return null;
       }
@@ -480,9 +302,8 @@ export class ApproveVendorComponent implements OnInit {
     try {
       this.spineer.show();
       await this.userService.declineUsers(this.selectedUserIds, this.declineComments).toPromise();
-      await this.getAllUsers();
-      this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendors are declined.');
+      this.onSearch();
       this.modal.nativeElement.click();
     } catch (e) {
       this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
@@ -496,9 +317,8 @@ export class ApproveVendorComponent implements OnInit {
     this.spineer.show();
     try {
       await this.userService.declineUser(id).toPromise();
-      await this.getAllUsers();
-      this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendor is decliend.');
+      this.onSearch();
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
     } finally {
@@ -510,9 +330,8 @@ export class ApproveVendorComponent implements OnInit {
     this.spineer.show();
     try {
       await this.userService.approveUser(id).toPromise();
-      await this.getAllUsers();
-      this.vendorStatusChanged(this.vendorStatus);
       this.toastr.success('Vendor is approved.');
+      this.onSearch();
     } catch (e) {
       this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
     } finally {
@@ -520,26 +339,19 @@ export class ApproveVendorComponent implements OnInit {
     }
   }
 
-  searchColumnsChange(event) {
+  searchColumnsChange() {
+    this.filterColumnsRequest = [];
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if (columnInstance) {
-        if (column.checked) {
-          columnInstance.setModel(column.query);
-        } else {
-          columnInstance.setModel({
-            type: '',
-            filter: ''
-          });
-        }
-        this.gridOptions.api.onFilterChanged();
+      if (column.checked && column.query.type) {
+        this.filterColumnsRequest.push({
+          id: column.id,
+          displayName: column.name,
+          selectedOperator: column.query.type,
+          searchedValue: column.query.filter
+        });
       }
     });
-  }
-
-  filterColumnsChange(event) {
-    this.reconfigColumns();
-    this.searchColumnsChange({});
+    this.onSearch();
   }
 
   reconfigColumns() {
@@ -547,5 +359,76 @@ export class ApproveVendorComponent implements OnInit {
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  filterColumnsChange() {
+    this.reconfigColumns();
+    this.searchColumnsChange();
+  }
+
+  onGridReady(ev) {
+    if (this.gridOptions) {
+      this.gridOptions.api = ev.api;
+      this.gridOptions.api.sizeColumnsToFit();
+      this.onSearch();
+    }
+  }
+
+  onSearch() {
+    const dataSource = {
+      rowCount: 0,
+      getRows: params => {
+        this.userService
+          .getAllUsers(params.startRow / this.pageSize, this.pageSize, {
+            q: '',
+            filterColumnsRequests: this.filterColumnsRequest
+          })
+          .subscribe(data => {
+            const rowsThisPage = data.content;
+            const lastRow = data.total <= params.endRow ? data.total : -1;
+            params.successCallback(rowsThisPage, lastRow);
+            // this.reconfigColumns();
+          });
+      }
+    };
+    if (this.gridOptions && this.gridOptions.api) {
+      this.gridOptions.api.setDatasource(dataSource);
+    }
+  }
+
+  subscription(ev, row) {
+    ev.stopPropagation();
+    this.vendorId = row.id;
+    this.userService
+      .getVendorContract(row.id)
+      .pipe(catchError(e => this.handleResponseError(e)))
+      .subscribe(v => {
+        console.log(v);
+        this.contractInfo = v;
+
+        this.modalService.open(this.subscriptionModal, {
+          centered: true,
+          size: 'lg'
+        });
+      });
+  }
+
+  setSubscription(v) {
+    if (this.contractInfo) {
+      this.userService.updateVendorContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(v => {
+        this.modalService.dismissAll();
+      });
+    } else {
+      this.userService.setVendorContract(this.vendorId, v.addon, v.subscription).subscribe(v => {
+        this.modalService.dismissAll();
+      });
+    }
+  }
+
+  handleResponseError(e) {
+    const message = e.error.message || 'Get Vendor Contract occurs an error.';
+    this.toastr.error(`${message} Please contact your admin`);
+
+    return throwError('Error');
   }
 }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { MetaData } from '../model/metadata.model';
+import { SubscriptionType, Addon } from '../model/subscription.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,15 @@ export class MetadataService {
   getProcessMetaData(type: string): Observable<MetaData[]> {
     const url = `${environment.managementBaseUrl}/process-metadata/${type}`;
     return this.http.get<any>(url).pipe(map(res => res.metadataList));
+  }
+
+  getSubscriptionTypes(): Observable<SubscriptionType[]> {
+    const url = `${environment.apiBaseUrl}/vendor-metadata/contract/subscription-type?product-type-id=1`;
+    return this.http.get<SubscriptionType[]>(url);
+  }
+
+  getAddons(): Observable<Addon[]> {
+    const url = `${environment.apiBaseUrl}/vendor-metadata/contract/add-ons?product-type-id=1`;
+    return this.http.get<Addon[]>(url);
   }
 }
