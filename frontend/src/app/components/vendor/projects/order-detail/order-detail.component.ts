@@ -72,10 +72,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.initMatchingSuppliersQueue();
     }
-
-    if (this.type !== 'released-projects') {
-      this.initVendorProfileTable();
-    }
+    this.initVendorProfileTable();
 
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),

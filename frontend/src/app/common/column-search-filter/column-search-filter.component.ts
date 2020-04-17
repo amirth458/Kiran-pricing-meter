@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-column-search-filter',
@@ -85,8 +85,7 @@ export class ColumnSearchFilterComponent implements OnInit {
 
   toggleCheck(index, type) {
     if (type === 'search') {
-      this.searchColumnsClone[index].checked = !this.searchColumnsClone[index]
-        .checked;
+      this.searchColumnsClone[index].checked = !this.searchColumnsClone[index].checked;
       this.searchColumns.map((item, i) => {
         if (item.field === this.searchColumnsClone[index].field) {
           this.searchColumns[i].checked = !this.searchColumns[i].checked;
@@ -94,8 +93,7 @@ export class ColumnSearchFilterComponent implements OnInit {
       });
       this.searchColumnsChange.emit(this.searchColumns);
     } else {
-      this.filterColumnsClone[index].checked = !this.filterColumnsClone[index]
-        .checked;
+      this.filterColumnsClone[index].checked = !this.filterColumnsClone[index].checked;
       this.filterColumns.map((item, i) => {
         if (item.field === this.filterColumnsClone[index].field) {
           this.filterColumns[i].checked = !this.filterColumns[i].checked;

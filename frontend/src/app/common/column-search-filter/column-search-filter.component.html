@@ -35,24 +35,13 @@
       </div>
 
       <div class="column-container" [style.height]="height">
-        <div
-          class="row"
-          *ngFor="let column of filterColumnsClone; let index = index"
-        >
+        <div class="row" *ngFor="let column of filterColumnsClone; let index = index">
           <div class="col-2">
-            <span
-              class="icon"
-              *ngIf="column.checked"
-              (click)="toggleCheck(index, 'filter')"
-            >
+            <span class="icon" *ngIf="column.checked" (click)="toggleCheck(index, 'filter')">
               <i class="fas fa-check-square"></i>
             </span>
 
-            <span
-              class="icon"
-              *ngIf="!column.checked"
-              (click)="toggleCheck(index, 'filter')"
-            >
+            <span class="icon" *ngIf="!column.checked" (click)="toggleCheck(index, 'filter')">
               <i class="far fa-square"></i>
             </span>
           </div>
@@ -83,53 +72,43 @@
       </div>
 
       <div class="column-container" [style.height]="height">
-        <div
-          class="row"
-          *ngFor="let column of searchColumnsClone; let index = index"
-        >
+        <div class="row" *ngFor="let column of searchColumnsClone; let index = index">
           <div class="col-2">
-            <span
-              class="icon"
-              *ngIf="column.checked"
-              (click)="toggleCheck(index, 'search')"
-            >
+            <span class="icon" *ngIf="column.checked" (click)="toggleCheck(index, 'search')">
               <i class="fas fa-check-square"></i>
             </span>
 
-            <span
-              class="icon"
-              *ngIf="!column.checked"
-              (click)="toggleCheck(index, 'search')"
-            >
+            <span class="icon" *ngIf="!column.checked" (click)="toggleCheck(index, 'search')">
               <i class="far fa-square"></i>
             </span>
           </div>
 
           <div class="col-10 column-name">
             <div class="container-fluid">
-              <span
-                class="row name"
-                style="margin-top: -8px"
-                title="{{ column.name }}"
-                >{{ column.name }}</span
-              >
+              <span class="row name" style="margin-top: -8px" title="{{ column.name }}">{{ column.name }}</span>
               <span class="row options" *ngIf="column.checked">
                 <div class="form-group ">
                   <select
                     required
                     id="option"
                     [(ngModel)]="searchColumns[column.id].query.type"
-                    (ngModelChange)="searchColumnsChange.emit(searchColumns)"
                     name="option"
                     class="form-control full-width"
                   >
                     <option value="">Choose...</option>
-                    <option value="contains">Contains</option>
-                    <option value="notContains">Not contains</option>
-                    <option value="equals">Equals</option>
-                    <option value="notEqual">Not equal</option>
-                    <option value="startsWith">Starts with</option>
-                    <option value="endsWith">Ends with</option>
+                    <ng-container *ngIf="!searchColumns[column.id].operators">
+                      <option value="contains">Contains</option>
+                      <option value="notContains">Not contains</option>
+                      <option value="equals">Equals</option>
+                      <option value="notEqual">Not equal</option>
+                      <option value="startsWith">Starts with</option>
+                      <option value="endsWith">Ends with</option>
+                    </ng-container>
+                    <ng-container *ngIf="searchColumns[column.id].operators">
+                      <option *ngFor="let operator of searchColumns[column.id].operators" value="{{ operator }}">{{
+                        operator
+                      }}</option>
+                    </ng-container>
                   </select>
                 </div>
               </span>

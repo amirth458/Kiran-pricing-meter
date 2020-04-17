@@ -1,0 +1,30 @@
+.label {
+  color: var(--theme-dark-blue);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.plan-code {
+  color: var(--theme-green);
+  font-size: 14px;
+}
+
+.plan-link {
+  color: var(--theme-bright-blue);
+  font-size: 12px;
+  word-break: break-word;
+}
+
+.cost {
+  color: var(--theme-dark-blue);
+  font-size: 18px;
+}
+
+.btn {
+  width: 200px;
+  margin: 0 10px;
+}
+
+.orange {
+  background-color: var(--theme-orange);
+}

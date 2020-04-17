@@ -97,6 +97,7 @@ import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-clo
 import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SubscriptionModalComponent } from '../common/subscription-modal/subscription-modal.component';
 
 @NgModule({
   declarations: [
@@ -179,6 +180,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ChatComponent,
     ClosePopoverOnClickOutsideDirective,
     VendorOrderStatusComponent,
+    SubscriptionModalComponent,
 
     // Pipes
     ConfirmOrderFilterPipe,

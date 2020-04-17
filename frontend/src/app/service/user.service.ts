@@ -69,58 +69,30 @@ export class UserService {
     if (tokenData == null) {
       return null;
     }
-    this.accessToken = crypto.AES.decrypt(
-      tokenData.accessToken.toString(),
-      environment.encryptionKey
-    );
+    this.accessToken = crypto.AES.decrypt(tokenData.accessToken.toString(), environment.encryptionKey);
     return {
       ...tokenData,
       accessToken: this.accessToken,
-      generatedIn: crypto.AES.decrypt(
-        tokenData.generatedIn.toString(),
-        environment.encryptionKey
-      ),
-      expiryDate: crypto.AES.decrypt(
-        tokenData.expiryDate.toString(),
-        environment.encryptionKey
-      )
+      generatedIn: crypto.AES.decrypt(tokenData.generatedIn.toString(), environment.encryptionKey),
+      expiryDate: crypto.AES.decrypt(tokenData.expiryDate.toString(), environment.encryptionKey)
     };
   }
 
-  saveTokenData(tokenData: {
-    accessToken: string;
-    tokenType: string;
-    generatedIn: string;
-    expiryDate: string;
-  }) {
+  saveTokenData(tokenData: { accessToken: string; tokenType: string; generatedIn: string; expiryDate: string }) {
     const tokenInfo = {
       ...tokenData
     };
     this.accessToken = tokenInfo.accessToken;
-    tokenInfo.accessToken = crypto.AES.encrypt(
-      JSON.stringify(tokenInfo.accessToken),
-      environment.encryptionKey
-    );
-    tokenInfo.generatedIn = crypto.AES.encrypt(
-      JSON.stringify(tokenInfo.generatedIn),
-      environment.encryptionKey
-    );
-    tokenInfo.expiryDate = crypto.AES.encrypt(
-      JSON.stringify(tokenInfo.expiryDate),
-      environment.encryptionKey
-    );
+    tokenInfo.accessToken = crypto.AES.encrypt(JSON.stringify(tokenInfo.accessToken), environment.encryptionKey);
+    tokenInfo.generatedIn = crypto.AES.encrypt(JSON.stringify(tokenInfo.generatedIn), environment.encryptionKey);
+    tokenInfo.expiryDate = crypto.AES.encrypt(JSON.stringify(tokenInfo.expiryDate), environment.encryptionKey);
 
     localStorage.setItem('admin-3d-token', JSON.stringify(tokenInfo));
   }
 
   tokenNeedsRefresh(): boolean {
     const tokenData = this.getTokenData();
-    const expDate = new Date(
-      crypto.AES.decrypt(
-        tokenData.expiryDate.toString(),
-        environment.encryptionKey
-      )
-    );
+    const expDate = new Date(crypto.AES.decrypt(tokenData.expiryDate.toString(), environment.encryptionKey));
     const dateNow = new Date(Date.now());
 
     if (expDate.getFullYear() >= dateNow.getFullYear()) {
@@ -143,6 +115,37 @@ export class UserService {
 
   getVendorInfo() {
     return JSON.parse(localStorage.getItem('admin-vendor'));
+  }
+
+  setVendorContract(vendorId, addOns, subscription) {
+    const url = `${environment.apiBaseUrl}/admin/contract`;
+    return this.http.post<any>(url, {
+      vendorId,
+      addOnsIds: addOns,
+      subscriptionType: {
+        id: subscription
+      }
+    });
+  }
+
+  getVendorContract(vendorId): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/contract?vendor-id=${vendorId}`;
+    return this.http.get<any>(url);
+  }
+
+  updateVendorContract(contractId, addOns, subscription) {
+    const url = `${environment.apiBaseUrl}/admin/contract/${contractId}`;
+    return this.http.put<any>(url, {
+      addOnsIds: addOns,
+      subscriptionType: {
+        id: subscription
+      }
+    });
+  }
+
+  deleteVendorContract(contractId) {
+    const url = `${environment.apiBaseUrl}/admin/contract/${contractId}`;
+    return this.http.delete<any>(url);
   }
 
   getRegisterUserInfo() {
@@ -180,16 +183,9 @@ export class UserService {
     localStorage.removeItem('admin-RegisterMachines');
   }
 
-  getAllUsers() {
-    const url = `${environment.managementBaseUrl}/users/all?vendor-profile-needed=true&vendor-machines-needed=false`;
-    const data = JSON.parse(localStorage.getItem('admin-auth'));
-    const headers = new HttpHeaders({
-      Authorization: data.tokenType + ' ' + data.accessToken,
-      'Content-Type': 'application/json'
-    });
-    return this.http.get<any>(url, {
-      headers
-    });
+  getAllUsers(page, size, filter) {
+    const url = `${environment.managementBaseUrl}/users/all/search?page=${page}&size=${size}`;
+    return this.http.post<any>(url, filter);
   }
 
   approveUsers(ids) {
@@ -304,5 +300,10 @@ export class UserService {
   getCustomer(customerId: number): Observable<CustomerData> {
     const url = `${environment.procurementApiBaseUrl}/customer/${customerId}`;
     return this.http.get<CustomerData>(url);
+  }
+
+  getFilterColumns(): Observable<any[]> {
+    const url = `${environment.managementBaseUrl}/users/user-filter-columns`;
+    return this.http.get<any[]>(url);
   }
 }
