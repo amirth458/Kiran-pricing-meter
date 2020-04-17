@@ -42,3 +42,18 @@
     <span class="text-orange" *ngIf="row.customerActive" (click)="onDeactivate(row)">Deactivate</span>
   </div>
 </ng-template>
+
+<!-- Subscription cell -->
+<ng-template #subscriptionCell let-row>
+  <span class="subscription-cell" (click)="subscription($event, row)">Subscription</span>
+</ng-template>
+
+<ng-template #subscriptionModal let-modal>
+  <app-subscription-modal
+    [subscriptions]="subscriptions"
+    [addons]="addons"
+    [contractInfo]="contractInfo"
+    (cancel)="modal.dismiss()"
+    (ok)="setSubscription($event)"
+  ></app-subscription-modal>
+</ng-template>

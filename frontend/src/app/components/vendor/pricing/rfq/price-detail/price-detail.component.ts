@@ -10,7 +10,7 @@ import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.mod
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { UserService } from 'src/app/service/user.service';
 import { OrdersService } from 'src/app/service/orders.service';
-import { catchError } from 'rxjs/operators';
+import { FilterOption } from 'src/app/model/vendor.model';
 
 @Component({
   selector: 'app-price-detail',
@@ -43,12 +43,19 @@ export class PriceDetailComponent implements OnInit {
       this.getDetails(this.selectedId);
     });
 
-    this.selectedTabId$.subscribe(v => {
+    this.selectedTabId$.subscribe(async v => {
       if (v === 2 && this.processProfiles === null) {
         this.getProcessProfile();
       }
       if (v === 3 && this.pricingProfiles === null) {
-        this.getPricingProfiles();
+        if (this.processProfiles === null) {
+          await this.getProcessProfile();
+        }
+        if (this.processProfiles.length) {
+          this.getPricingProfiles();
+        } else {
+          this.pricingProfiles = [];
+        }
       }
     });
   }
@@ -134,32 +141,45 @@ export class PriceDetailComponent implements OnInit {
 
   async getPricingProfiles(q = null) {
     this.spinner.show();
-    this.pricingService
-      .getPricingProfiles(this.part.id)
-      .pipe(
-        catchError(e => {
-          const message = e.error.message;
-          this.spinner.hide();
-          console.log(message);
-          return throwError('Error');
-        })
-      )
-      .subscribe(res => {
-        this.pricingProfiles = res.map(item => ({
-          selected: false,
-          id: item.id,
-          vendorName: item.vendorProfile.name,
-          pricingProfile: item.name,
-          material: item.processProfile.processMachineServingMaterialList
-            .map(item => item.machineServingMaterial.material.name)
-            .join(', '),
-          equipment: item.processProfile.processMachineServingMaterialList
-            .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
-            .join(', '),
-          processProfile: item.processProfile.name,
-          totalCost: null
-        }));
-        this.spinner.hide();
-      });
+    try {
+      const pageSize = 1000;
+      let data = [];
+      let page = 0;
+      let filter: FilterOption = { size: pageSize, sort: '', page, q: '' };
+
+      let currentData = await this.pricingService
+        .getScreenPricingProfileByPartId(
+          this.part.id,
+          this.processProfiles.map(profile => profile.profileId),
+          filter
+        )
+        .toPromise();
+      while (currentData.length) {
+        page = page + 1;
+        data = data.concat(currentData);
+        filter = { size: pageSize, sort: '', page, q: '' };
+        currentData = await this.pricingService
+          .getScreenPricingProfileByPartId(
+            this.part.id,
+            this.processProfiles.map(profile => profile.profileId),
+            filter
+          )
+          .toPromise();
+      }
+      this.pricingProfiles = data.map(item => ({
+        selected: false,
+        id: item.processPricingId,
+        vendorName: item.processVendorName,
+        pricingProfile: item.pricingProfileName,
+        material: item.material,
+        equipment: item.equipment,
+        processProfile: item.processProfileName,
+        totalCost: null
+      }));
+      this.spinner.hide();
+    } catch (e) {
+      this.spinner.hide();
+      this.pricingProfiles = [];
+    }
   }
 }

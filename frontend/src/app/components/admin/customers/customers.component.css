@@ -43,3 +43,8 @@
     padding: 40px 20px;
   }
 }
+
+.subscription-cell {
+  color: var(--theme-bright-blue);
+  cursor: pointer;
+}

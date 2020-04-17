@@ -34,7 +34,6 @@
 }
 .table-control {
   width: 220px;
-  height: 400px;
   margin-top: 26px;
   margin-right: 10px;
 }
@@ -42,7 +41,6 @@
 .table {
   margin-top: 25px;
   width: 100%;
-  height: 430px;
   position: relative;
 }
 .ag-grid-dropdown {
@@ -79,4 +77,17 @@
 .vendor-status {
   font-size: 13px;
   margin-bottom: 3px;
+}
+
+.subscription-cell {
+  color: var(--theme-bright-blue);
+  cursor: pointer;
+}
+
+.font-dark-blue {
+  color: var(--theme-dark-blue);
+}
+
+.font-sm {
+  font-size: 13px;
 }

@@ -94,6 +94,7 @@ import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order
 
 // chats
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SubscriptionModalComponent } from '../common/subscription-modal/subscription-modal.component';
 
 @NgModule({
   declarations: [
@@ -174,6 +175,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ProjectsListComponent,
     SendMailModalComponent,
     VendorOrderStatusComponent,
+    SubscriptionModalComponent,
 
     // Pipes
     ConfirmOrderFilterPipe,
