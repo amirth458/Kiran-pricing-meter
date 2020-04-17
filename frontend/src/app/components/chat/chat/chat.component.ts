@@ -148,24 +148,4 @@ export class ChatComponent implements OnInit {
       this.getChat();
     });
   }
-
-  onScroll() {
-    const element = document.querySelector('.message-container');
-    if (element) {
-      const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-      this.disableScrollDown = !(this.disableScrollDown && atBottom);
-    }
-  }
-
-  scrollToBottom(): void {
-    if (this.disableScrollDown) {
-      return;
-    }
-    try {
-      const element = document.querySelector('.message-container');
-      if (element) {
-        element.scrollTop = element.scrollHeight;
-      }
-    } catch (err) {}
-  }
 }
