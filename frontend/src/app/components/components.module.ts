@@ -12,6 +12,7 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
+import { ChatModule } from './chat/chat.module';
 
 import { ActionBarComponent } from '../common/action-bar/action-bar.component';
 import { ActionCellApproveRendererComponent } from '../common/action-cell-approve-renderer/action-cell-approve-renderer.component';
@@ -90,12 +91,8 @@ import { ContactComponent } from './admin/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
-import { UnReadCountPipe } from '../pipes/un-read-count.pipe';
 
 // chats
-import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
-import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
-import { PlainChatComponent } from './vendor/plain-chat/plain-chat.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
@@ -176,15 +173,11 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ContactComponent,
     ProjectsListComponent,
     SendMailModalComponent,
-    ChatComponent,
-    PlainChatComponent,
-    ClosePopoverOnClickOutsideDirective,
     VendorOrderStatusComponent,
 
     // Pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe,
-    UnReadCountPipe
+    SupplierPipe
   ],
   imports: [
     CommonModule,
@@ -209,9 +202,10 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     InternationalPhoneNumberModule,
 
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    ChatModule
   ],
-  providers: [DatePipe, CurrencyPipe, UnReadCountPipe],
+  providers: [DatePipe, CurrencyPipe],
   exports: [
     NgxSpinnerModule,
     AgGridModule,
@@ -227,12 +221,10 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     TopMenuComponent,
     ImgPreloadDirective,
     DigitOnlyDirective,
-    ClosePopoverOnClickOutsideDirective,
 
     // pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe,
-    UnReadCountPipe
+    SupplierPipe
   ]
 })
 export class ComponentsModule {}

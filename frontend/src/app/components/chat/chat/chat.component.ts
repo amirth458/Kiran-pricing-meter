@@ -7,11 +7,11 @@ import { catchError } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
-import { ChatService } from '../../../../../service/chat.service';
-import { UserService } from '../../../../../service/user.service';
-import { VendorService } from '../../../../../service/vendor.service';
-import { UnReadCountPipe } from '../../../../../pipes/un-read-count.pipe';
+import { Chat, ChatTypeEnum } from '../../../model/chat.model';
+import { ChatService } from '../../../service/chat.service';
+import { UserService } from '../../../service/user.service';
+import { VendorService } from '../../../service/vendor.service';
+import { UnReadCountPipe } from '../../../pipes/un-read-count.pipe';
 
 @Component({
   selector: 'app-chat',

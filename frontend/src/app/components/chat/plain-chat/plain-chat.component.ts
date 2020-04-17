@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-import { ChatComponent } from '../pricing/orders/chat/chat.component';
+import { ChatComponent } from '../chat/chat.component';
 import { ChatService } from '../../../service/chat.service';
 import { UserService } from '../../../service/user.service';
 import { UnReadCountPipe } from '../../../pipes/un-read-count.pipe';

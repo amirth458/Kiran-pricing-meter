@@ -1,6 +1,7 @@
 :host .message-container {
   padding: 10px 0;
   overflow-y: auto;
+  height: 250px;
   max-height: 250px;
 }
 
