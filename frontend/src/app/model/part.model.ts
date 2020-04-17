@@ -423,6 +423,16 @@ export interface PricingProfileDetailedView {
   partPricingProfileViews?: PartPricingProfileView[];
 }
 
+export interface PricingProfileDetails {
+  processPricingId: number;
+  processProfileId: number;
+  processVendorName: string;
+  pricingProfileName: string;
+  material: string;
+  equipment: string;
+  processProfileName: string;
+}
+
 export interface InvoiceItemSummary {
   invoiceItem: Type;
   unitCost: {
