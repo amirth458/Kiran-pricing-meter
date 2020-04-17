@@ -1,0 +1,14 @@
+<div class="d-flex flex-grow-1 flex-column message-container position-relative">
+  <perfect-scrollbar class="scroll-container" fxFlex="auto" [config]="config" [scrollIndicators]="true">
+    <div
+      class="participant-chat {{ user?.id === m.senderId ? 'text-left' : 'text-right' }}"
+      *ngFor="let m of value; let last = last"
+      [attr.ready]="last ? false : scrollToBottom()"
+    >
+      <span class="{{ user.id === m.senderId ? 'text-theme-green' : 'text-theme' }}">
+        {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }}
+      </span>
+      <p>{{ m.message || '' }}</p>
+    </div>
+  </perfect-scrollbar>
+</div>

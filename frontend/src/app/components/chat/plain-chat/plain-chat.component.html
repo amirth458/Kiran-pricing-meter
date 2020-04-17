@@ -2,17 +2,16 @@
   <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
     Notes
   </h5>
-  <div class="d-flex flex-grow-1 flex-column message-container" #scroller (scroll)="onScroll()">
-    <div
-      class="participant-chat {{ user?.id === m.senderId ? 'text-left' : 'text-right' }}"
-      *ngFor="let m of value?.messageNotes; let idx = index"
-    >
-      <span class="{{ user.id === m.senderId ? 'text-theme-green' : 'text-theme' }}">
-        {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }}
-      </span>
-      <p>{{ m.message || '' }}</p>
+  <ng-container *ngIf="value?.messageNotes?.length > 0">
+    <app-message-viewer [(value)]="value.messageNotes"> </app-message-viewer>
+  </ng-container>
+  <ng-container *ngIf="(value?.messageNotes?.length || 0) === 0">
+    <div class="empty-chat d-flex align-items-center justify-content-center">
+      <div class="participant-chat text-left">
+        No chats found
+      </div>
     </div>
-  </div>
+  </ng-container>
   <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
     <hr class="m-0" />
     <div class="form-row">

@@ -38,6 +38,7 @@
     "ng-pick-datetime": "^7.0.0",
     "ng-recaptcha": "^4.0.0",
     "ngx-international-phone-number": "^1.0.4",
+    "ngx-perfect-scrollbar": "^8.0.0",
     "ngx-spinner": "^7.2.0",
     "ngx-toastr": "^10.1.0",
     "rxjs": "~6.3.3",

@@ -7,11 +7,11 @@ import { catchError } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
-import { ChatService } from '../../../../../service/chat.service';
-import { UserService } from '../../../../../service/user.service';
-import { VendorService } from '../../../../../service/vendor.service';
-import { UnReadCountPipe } from '../../../../../pipes/un-read-count.pipe';
+import { Chat, ChatTypeEnum } from '../../../model/chat.model';
+import { ChatService } from '../../../service/chat.service';
+import { UserService } from '../../../service/user.service';
+import { VendorService } from '../../../service/vendor.service';
+import { UnReadCountPipe } from '../../../pipes/un-read-count.pipe';
 
 @Component({
   selector: 'app-chat',
@@ -147,25 +147,5 @@ export class ChatComponent implements OnInit {
       this.loading = false;
       this.getChat();
     });
-  }
-
-  onScroll() {
-    const element = document.querySelector('.message-container');
-    if (element) {
-      const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-      this.disableScrollDown = !(this.disableScrollDown && atBottom);
-    }
-  }
-
-  scrollToBottom(): void {
-    if (this.disableScrollDown) {
-      return;
-    }
-    try {
-      const element = document.querySelector('.message-container');
-      if (element) {
-        element.scrollTop = element.scrollHeight;
-      }
-    } catch (err) {}
   }
 }
