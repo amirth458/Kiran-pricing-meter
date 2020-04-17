@@ -73,7 +73,7 @@
         *ngIf="priorityRows | supplier: (suppliers$ | async):false as allowedSupplierList"
       >
         <ag-grid-angular
-          class="ag-theme-balham w-100 h-100 supplier-table"
+          class="ag-theme-balham w-100 h-100 supplier-table selected-suppliers"
           [rowData]="allowedSupplierList"
           [class.grid-empty]="(allowedSupplierList || []).length === 0"
           [gridOptions]="gridOptions[1]"
@@ -92,7 +92,7 @@
           *ngIf="priorityRows | supplier: (suppliers$ | async):true as blockedSupplierList"
         >
           <ag-grid-angular
-            class="ag-theme-balham w-100 h-100 supplier-table"
+            class="ag-theme-balham w-100 h-100 supplier-table removed-suppliers"
             [rowData]="blockedSupplierList"
             [class.grid-empty]="(blockedSupplierList || []).length === 0"
             [gridOptions]="gridOptions[1]"
@@ -114,7 +114,7 @@
         <ng-container *ngIf="!loadingProfiles; else loading">
           <div class="col-12 theme-table">
             <ag-grid-angular
-              class="ag-theme-balham w-100 h-100"
+              class="ag-theme-balham w-100 h-100 suppliers-profiles"
               [rowData]="profiles"
               [class.grid-empty]="(profiles || []).length === 0"
               [gridOptions]="gridOptions[2]"
@@ -158,8 +158,8 @@
       ></ag-grid-angular>
       <ag-grid-angular
         *ngIf="toggleVendorList"
-        class="ag-theme-balham w-100 h-100"
-        [class.grid-empty]="(bidding || []).length === 0"
+        class="ag-theme-balham w-100 h-100 matched-profiles"
+        [class.grid-empty]="(matchedProfiles || []).length === 0"
         [rowData]="matchedProfiles"
         [gridOptions]="gridOptions[5]"
         (gridReady)="onGridReady(5, $event)"
