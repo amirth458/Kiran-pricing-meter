@@ -140,7 +140,7 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  addNote() {
+  public addNote() {
     this.loading = true;
     this.chatService.addMessage(this.noteFormGroup.get('note').value, this.value.id).subscribe(() => {
       this.noteFormGroup.reset();
