@@ -411,7 +411,7 @@ export class OrdersService {
           }, {}),
           map((quotes: any) => {
             (parts || []).map(part => {
-              part.priceAccepted = quotes[part.partId].totalCost || null;
+              part.priceAccepted = quotes[part.partId] ? quotes[part.partId].totalCost : null;
             });
             return parts;
           })
