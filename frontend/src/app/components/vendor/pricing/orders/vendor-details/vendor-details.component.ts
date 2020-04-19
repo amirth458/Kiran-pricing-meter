@@ -342,8 +342,9 @@ export class VendorDetailsComponent implements OnInit {
             profileId: p.id,
             vendorName: match.vendorName,
             processProfileName: p.name,
-            facilityName:
-              p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name,
+            facilityName: p.processMachineServingMaterialList.length
+              ? p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name
+              : '',
             pricingProfile: (p.processPricingList || []).length,
             bidProcessStatus: status,
             counterOfferPrice: match.counterOfferPrice,
