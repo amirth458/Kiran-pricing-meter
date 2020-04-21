@@ -138,7 +138,6 @@ export class ProjectsListComponent implements OnInit {
             customerName: item.order && item.order.customerName
           }));
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-          console.log(data.totalElements, params.endRow, lastRow);
           params.successCallback(rowsThisPage, lastRow);
           // this.reconfigColumns();
         });

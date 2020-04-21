@@ -1,6 +1,6 @@
-import { ModelDetailViewComponent } from './../common/model-detail-view/model-detail-view.component';
-import { FileViewRendererComponent } from './../common/file-view-renderer/file-view-renderer.component';
-import { StatusDropdownFilterComponent } from './../common/status-dropdown-filter/status-dropdown-filter.component';
+import { ModelDetailViewComponent } from '../common/model-detail-view/model-detail-view.component';
+import { FileViewRendererComponent } from '../common/file-view-renderer/file-view-renderer.component';
+import { StatusDropdownFilterComponent } from '../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +12,7 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
+import { ChatModule } from './chat/chat.module';
 
 import { ActionBarComponent } from '../common/action-bar/action-bar.component';
 import { ActionCellApproveRendererComponent } from '../common/action-cell-approve-renderer/action-cell-approve-renderer.component';
@@ -47,10 +48,10 @@ import { AdminVendorDetailsUserComponent } from './admin/vendor-details/user/use
 import { AdminVendorDetailsVendorComponent } from './admin/vendor-details/vendor/vendor.component';
 import { AdminVendorDetailsMachineComponent } from './admin/vendor-details/machine/machine.component';
 
-import { TabItemComponent } from './../common/tabs/tab-item/tab-item.component';
-import { TabComponent } from './../common/tabs/tab/tab.component';
-import { FileViewerComponent } from './../common/file-viewer/file-viewer.component';
-import { TemplateRendererComponent } from './../common/template-renderer/template-renderer.component';
+import { TabItemComponent } from '../common/tabs/tab-item/tab-item.component';
+import { TabComponent } from '../common/tabs/tab/tab.component';
+import { FileViewerComponent } from '../common/file-viewer/file-viewer.component';
+import { TemplateRendererComponent } from '../common/template-renderer/template-renderer.component';
 import { PriceDetailComponent } from './vendor/pricing/rfq/price-detail/price-detail.component';
 import { PriceViewComponent } from './vendor/pricing/rfq/price-view/price-view.component';
 import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
@@ -92,10 +93,8 @@ import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-moda
 import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
 
 // chats
-import { ClosePopoverOnClickOutsideDirective } from '../common/core/pop-over-close/close-popover-on-click-outside.directive';
-import { ChatComponent } from './vendor/pricing/orders/chat/chat.component';
-
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { SubscriptionModalComponent } from '../common/subscription-modal/subscription-modal.component';
 
 @NgModule({
   declarations: [
@@ -175,13 +174,12 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     ContactComponent,
     ProjectsListComponent,
     SendMailModalComponent,
-    ChatComponent,
-    ClosePopoverOnClickOutsideDirective,
+    VendorOrderStatusComponent,
+    SubscriptionModalComponent,
 
     // Pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe,
-    VendorOrderStatusComponent
+    SupplierPipe
   ],
   imports: [
     CommonModule,
@@ -206,7 +204,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     InternationalPhoneNumberModule,
 
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    ChatModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [
@@ -224,7 +223,6 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     TopMenuComponent,
     ImgPreloadDirective,
     DigitOnlyDirective,
-    ClosePopoverOnClickOutsideDirective,
 
     // pipes
     ConfirmOrderFilterPipe,

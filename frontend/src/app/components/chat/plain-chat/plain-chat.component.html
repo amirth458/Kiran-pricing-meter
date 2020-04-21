@@ -1,0 +1,38 @@
+<div class="col-12 border p-0 shadow d-flex flex-column">
+  <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
+    Notes
+  </h5>
+  <ng-container *ngIf="value?.messageNotes?.length > 0">
+    <app-message-viewer [(value)]="value.messageNotes"> </app-message-viewer>
+  </ng-container>
+  <ng-container *ngIf="(value?.messageNotes?.length || 0) === 0">
+    <div class="empty-chat d-flex align-items-center justify-content-center">
+      <div class="participant-chat text-left">
+        No chats found
+      </div>
+    </div>
+  </ng-container>
+  <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
+    <hr class="m-0" />
+    <div class="form-row">
+      <div class="form-group theme col-12 m-0">
+        <label class="w-100">
+          Note
+          <textarea
+            class="form-control note-input"
+            rows="2"
+            formControlName="note"
+            (keyup.enter)="sendNote($event)"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group theme col-12 m-0 d-flex justify-content-center">
+        <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
+          {{ loading ? 'Submitting Note' : 'Add Note' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -6,11 +6,10 @@
     Decline
   </button>
 </div>
-<div class="wrapper">
+<div class="wrapper" *ngIf="gridOptions">
   <div class="table-control">
     <app-column-search-filter
       width="200px"
-      height="295px"
       [type]="type"
       [(filterColumns)]="filterColumns"
       (filterColumnsChange)="filterColumnsChange($event)"
@@ -20,75 +19,39 @@
     </app-column-search-filter>
   </div>
   <div class="table theme-table">
-    <div class="page-size">
-      Page Size:
-      <select
-        id="page-size"
-        [(ngModel)]="pageSize"
-        (ngModelChange)="pageSizeChanged($event)"
-      >
-        <option selected value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
-      </select>
+    <div class="d-flex align-items-center justify-content-end">
+      <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
     </div>
     <ag-grid-angular
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
       [rowData]="rowData"
       [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+      rowModelType="infinite"
+      [cacheBlockSize]="pageSize"
     >
     </ag-grid-angular>
-    <div class="dropdown-menu ag-grid-dropdown" *ngIf="showTypeDropDown">
-      <div
-        (click)="vendorStatusChanged(1)"
-        class="dropdown-item"
-        [ngClass]="{ active: vendorStatus === 1 }"
-        href="#"
-      >
-        Not Approved
-      </div>
-      <div class="ag-grid-dropdown-divider"></div>
-      <div
-        (click)="vendorStatusChanged(0)"
-        class="dropdown-item"
-        [ngClass]="{ active: vendorStatus === 0 }"
-        href="#"
-      >
-        All
-      </div>
-      <div class="ag-grid-dropdown-divider"></div>
-      <div
-        (click)="vendorStatusChanged(2)"
-        class="dropdown-item"
-        [ngClass]="{ active: vendorStatus === 2 }"
-        href="#"
-      >
-        Approved
-      </div>
-      <div class="ag-grid-dropdown-divider"></div>
-      <div
-        (click)="vendorStatusChanged(3)"
-        class="dropdown-item"
-        [ngClass]="{ active: vendorStatus === 3 }"
-        href="#"
-      >
-        Declined
-      </div>
-    </div>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff80"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </div>
 
 <!-- Button trigger modal -->
-<button
-  #infoModal
-  type="button"
-  class="btn btn-primary d-none"
-  data-toggle="modal"
-  data-target="#infoModal"
-></button>
+<button #infoModal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#infoModal"></button>
+
+<!-- Subscription cell -->
+<ng-template #subscriptionCell let-row>
+  <span class="subscription-cell" (click)="subscription($event, row)">Subscription</span>
+</ng-template>
 
 <!-- Modal -->
 <div
@@ -103,18 +66,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="facilityModalLabel">Notice</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        Please select user you want to {{ infoText }}
-      </div>
+      <div class="modal-body">Please select user you want to {{ infoText }}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           OK
@@ -125,13 +81,7 @@
 </div>
 
 <!-- Button trigger modal -->
-<button
-  #modal
-  type="button"
-  class="btn btn-primary d-none"
-  data-toggle="modal"
-  data-target="#declineModal"
-></button>
+<button #modal type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#declineModal"></button>
 
 <!-- Modal -->
 <div
@@ -146,12 +96,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="declineModalLabel">Decline Comment</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -159,12 +104,7 @@
         <div class="form-row">
           <div class="form-group theme col-md-12">
             <label>Primary Contact Name</label>
-            <input
-              class="form-control"
-              readonly
-              [(ngModel)]="primaryContactName"
-              placeholder="Primary Contact Name"
-            />
+            <input class="form-control" readonly [(ngModel)]="primaryContactName" placeholder="Primary Contact Name" />
           </div>
           <div class="form-group theme col-md-12">
             <label>Comment</label>
@@ -181,14 +121,20 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="declineUsers($event)"
-        >
+        <button type="button" class="btn btn-danger" (click)="declineUsers($event)">
           Decline
         </button>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #subscriptionModal let-modal>
+  <app-subscription-modal
+    [subscriptions]="subscriptions"
+    [addons]="addons"
+    [contractInfo]="contractInfo"
+    (cancel)="modal.dismiss()"
+    (ok)="setSubscription($event)"
+  ></app-subscription-modal>
+</ng-template>

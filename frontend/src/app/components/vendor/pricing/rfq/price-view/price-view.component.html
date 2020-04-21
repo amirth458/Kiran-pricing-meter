@@ -517,83 +517,9 @@
     <!-- /TAB -->
   </div>
 
-  <div class="col-3">
-    <div class="col-12 border p-0 shadow d-flex flex-column">
-      <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
-        Notes
-      </h5>
-      <div class="d-flex flex-grow-1 flex-column message-container" #scroller (scroll)="onScroll()">
-        <ng-container *ngIf="partNoteView?.messages?.length > 0">
-          <div
-            class="participant-chat {{ user.id === m.userId ? 'text-left' : 'text-right' }}"
-            *ngFor="let m of partNoteView.messages"
-          >
-            <span class="{{ user.id === m.userId ? 'text-theme-green' : 'text-theme' }}"
-              >{{ m.user.firstName || '' }} {{ m.user.lastName || '' }}</span
-            >
-            <p>{{ m.message || '' }}</p>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="partNoteView?.messages?.length === 0">
-          <div class="participant-chat text-left">
-            No chats found
-          </div>
-        </ng-container>
-        <!--
-        <div class="date-separator">
-          <div class="dt-value">
-            Mon, 20 2020
-            <span class="time">14.35</span>
-          </div>
-        </div>
-
-        <div class="participant-chat text-right">
-          <span class="text-theme">Admin</span>
-          <p>Ok Approved</p>
-        </div>
-
-        <div class="participant-chat text-left">
-          <span class="text-theme-green">Cullen</span>
-          <p>Hello I've submitted PO documents</p>
-        </div>
-
-        <div class="date-separator">
-          <div class="dt-value">
-            Mon, 20 2020
-            <span class="time">14.35</span>
-          </div>
-        </div>
-
-        <div class="participant-chat text-right">
-          <span class="text-theme">Admin</span>
-          <p>Ok Approved</p>
-        </div>
-        -->
-      </div>
-      <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
-        <hr class="m-0" />
-        <div class="form-row">
-          <div class="form-group theme col-12 m-0">
-            <label class="w-100">
-              Note
-              <textarea
-                class="form-control note-input"
-                rows="2"
-                formControlName="note"
-                (keyup.enter)="sendNote($event)"
-              ></textarea>
-            </label>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group theme col-12 m-0 d-flex justify-content-center">
-            <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
-              {{ loadingNote ? 'Submitting Note' : 'Add Note' }}
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+  <div class="col-3" *ngIf="part && customer">
+    <app-plain-chat [value]="chat" [participants]="[customer?.userId]" [type]="chatType.PART_NOTE" [id]="part.id">
+    </app-plain-chat>
   </div>
 </div>
 

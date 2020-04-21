@@ -7,8 +7,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  ElementRef,
-  AfterViewChecked
+  ElementRef
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -21,11 +20,11 @@ import { empty, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
+import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Part, PartQuoteInvoiceItem } from 'src/app/model/part.model';
 import { PartQuote, Address } from '../../../../../model/part.model';
-import { PartNoteView } from '../../../../../model/part.note.model';
 import { PartNoteService } from '../../../../../service/part-note.service';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { Util } from '../../../../../util/Util';
@@ -38,7 +37,7 @@ import { CustomerDetails } from 'src/app/model/customer.model';
   templateUrl: './price-view.component.html',
   styleUrls: ['./price-view.component.css']
 })
-export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
+export class PriceViewComponent implements OnInit, OnChanges {
   @ViewChild('scroller') private scroller: ElementRef;
   @ViewChild('refreshWindow') private refreshWindow: ElementRef<any>;
   _partQuote: PartQuote;
@@ -78,13 +77,8 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     prices: new FormArray([])
   });
 
-  noteFormGroup: FormGroup = this.fb.group({
-    note: ['', Validators.required]
-  });
-  disableScrollDown = false;
-  loadingNote: boolean;
-  partNoteView: PartNoteView;
-  user: any;
+  chatType = ChatTypeEnum;
+  chat: Chat;
 
   constructor(
     private modalService: NgbModal,
@@ -104,7 +98,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.user = this.userService.getUserInfo();
     this.updateRowData();
     this.columnDefs = [
       {
@@ -219,10 +212,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
       rowHeight: 35,
       headerHeight: 35
     };
-  }
-
-  ngAfterViewChecked() {
-    this.scrollToBottom();
   }
 
   onGridReady(ev) {
@@ -431,7 +420,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
             : this.part.partStatusType.displayName
         }
       ];
-      this.fetchAllPartNotes();
     }
   }
 
@@ -453,48 +441,6 @@ export class PriceViewComponent implements OnInit, OnChanges, AfterViewChecked {
     }
     const found = this.invoiceItems.find(item => item.id === id);
     return found ? found.name : '';
-  }
-
-  fetchAllPartNotes() {
-    this.partNoteService.getAllPartNotes(this.part.id).subscribe(v => {
-      this.partNoteView = v;
-      this.scrollToBottom();
-    });
-  }
-
-  sendNote(event: KeyboardEvent): void {
-    if (event.keyCode === 13 && event.ctrlKey) {
-      this.addNote();
-    }
-  }
-
-  addNote() {
-    this.loadingNote = true;
-    this.partNoteService
-      .addPartNote({
-        message: this.noteFormGroup.get('note').value,
-        userId: this.user.id,
-        partId: this.part.id
-      } as any)
-      .subscribe(() => {
-        this.noteFormGroup.reset();
-        this.fetchAllPartNotes();
-      });
-  }
-
-  onScroll() {
-    let element = this.scroller.nativeElement;
-    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-    this.disableScrollDown = !(this.disableScrollDown && atBottom);
-  }
-
-  scrollToBottom(): void {
-    if (this.disableScrollDown) {
-      return;
-    }
-    try {
-      this.scroller.nativeElement.scrollTop = this.scroller.nativeElement.scrollHeight;
-    } catch (err) {}
   }
 
   noBidConfirm() {

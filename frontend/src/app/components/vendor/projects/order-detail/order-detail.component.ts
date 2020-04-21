@@ -72,10 +72,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.initMatchingSuppliersQueue();
     }
-
-    if (this.type !== 'released-projects') {
-      this.initVendorProfileTable();
-    }
+    this.initVendorProfileTable();
 
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),
@@ -402,7 +399,7 @@ export class OrderDetailComponent implements OnInit {
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
 
-    this.orderService.releaseProdProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
       this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
     });
   }
@@ -417,9 +414,21 @@ export class OrderDetailComponent implements OnInit {
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
 
-    this.orderService.releaseProdProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
       this.setSuppliers(v.partId);
+      this.modal.dismissAll();
     });
+  }
+
+  releaseToCustomer() {
+    this.orderService
+      .releaseProjectBidToCustomer(
+        this.part.id,
+        this.selectedSuppliers.map(item => item.vendorId)
+      )
+      .subscribe(v => {
+        this.router.navigateByUrl(`/projects/released-projects/${this.part.id}`);
+      });
   }
 
   setSuppliers(partId) {
@@ -437,5 +446,15 @@ export class OrderDetailComponent implements OnInit {
         };
       });
     });
+  }
+
+  canReleaseToCustomer() {
+    return (
+      this.selectedSuppliers.length === 3 && this.selectedSuppliers.filter(item => item.status.id === 2).length === 3
+    );
+  }
+
+  canReleaseToVendor() {
+    return this.supplierGridOptions[0].api && this.supplierGridOptions[0].api.getSelectedRows().length === 3;
   }
 }

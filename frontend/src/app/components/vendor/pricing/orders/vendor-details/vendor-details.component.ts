@@ -11,7 +11,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
-import { BiddingStatus } from '../../../../../model/bidding.order';
+import { BiddingOrderStatus, BiddingStatus } from '../../../../../model/bidding.order';
 import { Conference, ConferenceRequest } from '../../../../../model/conference.model';
 import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
@@ -21,9 +21,10 @@ import { UserService } from '../../../../../service/user.service';
 import { VendorOrderDetail } from '../../../../../model/bidding.order.detail';
 import { Util } from '../../../../../util/Util';
 
-import { DefaultEmails } from '../../../../../../assets/constants.js';
+import { DefaultEmails } from '../../../../../../assets/constants';
 import { ZoomService } from 'src/app/service/zoom.service';
 import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
+import { MetaData } from '../../../../../model/metadata.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -32,6 +33,8 @@ import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 })
 export class VendorDetailsComponent implements OnInit {
   biddingStatus = BiddingStatus;
+  biddingOrderStatus = BiddingOrderStatus;
+
   type;
   orderId;
   bidOrderId: number;
@@ -65,6 +68,7 @@ export class VendorDetailsComponent implements OnInit {
   bidding: Array<VendorOrderDetail>;
   selectedBidding: any;
   vendorOrderId: number;
+  bidOrderStatus: MetaData;
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
@@ -117,14 +121,14 @@ export class VendorDetailsComponent implements OnInit {
             this.userService.getUserInfo().id,
             this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
           )
-          .subscribe(v => {
+          .subscribe(suppliers => {
             this.matchedProfiles = [];
             let count = 0;
-            v.map(item => {
-              const processProfileView = item.processProfileView;
+            suppliers.map(supplier => {
+              const processProfileView = supplier.processProfileView;
               const processPricingView: any =
-                item.processPricingViews && (item.processPricingViews || []).length > 0
-                  ? item.processPricingViews[0]
+                supplier.processPricingViews && (supplier.processPricingViews || []).length > 0
+                  ? supplier.processPricingViews[0]
                   : {};
               const found = this.matchedProfiles.some(match => {
                 return match.vendorId === processProfileView.vendorId;
@@ -132,21 +136,19 @@ export class VendorDetailsComponent implements OnInit {
               if (!found) {
                 count++;
               }
-              let id = !found ? count.toString() : '';
-              let priority = !found ? count : '';
               this.matchedProfiles.push({
-                id,
+                id: !found ? processProfileView.vendorId.toString() : '',
                 vendorId: processProfileView.vendorId,
-                profileId: item.processProfileId,
-                vendorName: item.vendorProfile ? item.vendorProfile.name : '',
+                profileId: supplier.processProfileId,
+                vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
                 processProfileName: processProfileView.name || '',
                 facilityName:
                   processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
                     .vendorFacility.name || '',
                 pricingProfile: (processPricingView && processPricingView.name) || '',
-                releasePriority: priority,
-                pricing: item.processPricingViews || [],
-                vendorProfile: item.vendorProfile,
+                releasePriority: !found ? count : '',
+                pricing: supplier.processPricingViews || [],
+                vendorProfile: supplier.vendorProfile,
                 active: true
               });
             });
@@ -175,7 +177,8 @@ export class VendorDetailsComponent implements OnInit {
         maxWidth: 100,
         hide: false,
         sortable: false,
-        filter: false
+        filter: false,
+        checkboxSelection: true
       },
       {
         headerName: 'Vendor Name',
@@ -320,6 +323,7 @@ export class VendorDetailsComponent implements OnInit {
       this.bidding = (v.matchingSuppliersProfilesView || []).map(user => {
         return { ...user };
       });
+      this.bidOrderStatus = (v ? v.bidOrderStatus || {} : {}) as MetaData;
       this.bidding.map(match => (match.id = ++count));
       const vendors = [];
       this.bidding.map(match => {
@@ -351,8 +355,8 @@ export class VendorDetailsComponent implements OnInit {
       this.ordersService
         .getPartQuotesByPartIds((v.acceptedOrderDetails || []).map(p => p.partId))
         .pipe(switchMap(parts => this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)))
-        .subscribe(v => {
-          this.orderDetails = v || [];
+        .subscribe(resultData => {
+          this.orderDetails = resultData || [];
         });
       // TODO remove below code after vendor order details api start return vendor order id
       if (this.type === 'released') {
@@ -557,6 +561,13 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
+          headerName: 'Vendor ID',
+          field: 'vendorId',
+          hide: true,
+          sortable: true,
+          filter: false
+        },
+        {
           headerName: 'Corporate Name',
           field: 'vendorName',
           tooltipField: 'vendorName',
@@ -696,6 +707,13 @@ export class VendorDetailsComponent implements OnInit {
       ]);
     } else if (idx === 2) {
       this.gridOptions[2].api.setSuppressRowDrag(true);
+      const sort = [
+        {
+          colId: 'vendorId',
+          sort: 'asc'
+        }
+      ];
+      this.gridOptions[2].api.setSortModel(sort);
     }
   }
 
@@ -982,5 +1000,10 @@ export class VendorDetailsComponent implements OnInit {
         this.getScheduledMeetings(user);
       });
     }
+  }
+
+  clickMeetingTime(ev) {
+    ev.stopPropagation();
+    console.log('here');
   }
 }

@@ -1,0 +1,74 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="facilityModalLabel">Subscription Setting</h5>
+    <button type="button" class="close" (click)="onCancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-5">
+    <form [formGroup]="form" class="needs-validation">
+      <div class="form-row">
+        <div class="form-group theme col-md-6">
+          <label>Subscription</label>
+          <ng-select
+            formControlName="subscription"
+            dropdownPosition="bottom"
+            [virtualScroll]="true"
+            [hideSelected]="true"
+            [selectOnTab]="true"
+            (ngModelChange)="onValueChange()"
+          >
+            <ng-option *ngFor="let item of subscriptions" [value]="item.id">
+              {{ item.name }}
+            </ng-option>
+          </ng-select>
+          <span *ngIf="form.controls.subscription.status === 'INVALID'" class="footnote red">
+            This field is invalid.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group theme col-md-6">
+          <label>Add-Ons</label>
+          <ng-select
+            formControlName="addon"
+            dropdownPosition="bottom"
+            [multiple]="true"
+            [virtualScroll]="true"
+            [hideSelected]="true"
+            [selectOnTab]="true"
+            (ngModelChange)="onValueChange()"
+          >
+            <ng-option *ngFor="let item of addons" [value]="item.id">
+              {{ item.name }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <div class="mt-2">
+            <span class="label">Plan Code:&nbsp;</span>
+            <span class="plan-code">{{ subscription?.planCode?.planCode }}</span>
+          </div>
+          <div class="mt-2">
+            <span class="label">Plan Link:&nbsp;</span>
+            <span class="plan-link">{{ subscription?.planCode?.planLink }}</span>
+          </div>
+          <div class="mt-4">
+            <span class="cost">Annual Cost {{ cost | currency: 'USD':'symbol':'0.0-3' }}</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer d-flex align-items-center justify-content-center">
+    <button type="button" class="btn theme orange" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button" class="btn theme green" (click)="onOk()">
+      OK
+    </button>
+  </div>
+</div>

@@ -1,16 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { empty } from 'rxjs';
+import { empty, forkJoin } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
-import { ChatService } from '../../../../../service/chat.service';
-import { UserService } from '../../../../../service/user.service';
-import { VendorService } from '../../../../../service/vendor.service';
+import { Chat, ChatTypeEnum } from '../../../model/chat.model';
+import { ChatService } from '../../../service/chat.service';
+import { UserService } from '../../../service/user.service';
+import { VendorService } from '../../../service/vendor.service';
+import { UnReadCountPipe } from '../../../pipes/un-read-count.pipe';
 
 @Component({
   selector: 'app-chat',
@@ -39,6 +40,7 @@ export class ChatComponent implements OnInit {
   loading: boolean;
   disableScrollDown = false;
   user: any;
+  isInitialised = false;
 
   constructor(
     public userService: UserService,
@@ -46,7 +48,8 @@ export class ChatComponent implements OnInit {
     public fb: FormBuilder,
     public chatService: ChatService,
     public toaster: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public unReadCountPipe: UnReadCountPipe
   ) {}
 
   ngOnInit() {
@@ -72,6 +75,34 @@ export class ChatComponent implements OnInit {
           })
         )
         .subscribe(chat => (this.value = chat));
+    } else {
+      this.updateChat();
+    }
+  }
+
+  updateChat() {
+    if (this.value && this.isInitialised && (this.value.messageNotes || []).length > 0) {
+      const count = this.unReadCountPipe.transform(this.value.messageNotes, this.user.id);
+      if (count > 0) {
+        this.markReadMessage();
+      }
+    }
+  }
+
+  markReadMessage() {
+    const histories = [];
+    const filteredItems = (this.value.messageNotes || []).filter(note => note.senderId !== this.user.id);
+    filteredItems.map(message => {
+      const item = message.messageNoteHistory.filter(history => !history.isRead);
+      if (item.length > 0) {
+        histories.push(item[0]);
+      }
+    });
+    if (histories.length > 0) {
+      const arr = histories.map((history: any) => this.chatService.markUnreadMessage(history.id));
+      forkJoin(arr).subscribe(v => {
+        this.getChat();
+      });
     }
   }
 
@@ -98,6 +129,8 @@ export class ChatComponent implements OnInit {
       .subscribe(chat => {
         this.loading = false;
         this.value = chat;
+        this.updateChat();
+        this.isInitialised = true;
       });
   }
 
@@ -107,32 +140,12 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  addNote() {
+  public addNote() {
     this.loading = true;
     this.chatService.addMessage(this.noteFormGroup.get('note').value, this.value.id).subscribe(() => {
       this.noteFormGroup.reset();
       this.loading = false;
       this.getChat();
     });
-  }
-
-  onScroll() {
-    const element = document.querySelector('.message-container');
-    if (element) {
-      const atBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-      this.disableScrollDown = !(this.disableScrollDown && atBottom);
-    }
-  }
-
-  scrollToBottom(): void {
-    if (this.disableScrollDown) {
-      return;
-    }
-    try {
-      const element = document.querySelector('.message-container');
-      if (element) {
-        element.scrollTop = element.scrollHeight;
-      }
-    } catch (err) {}
   }
 }

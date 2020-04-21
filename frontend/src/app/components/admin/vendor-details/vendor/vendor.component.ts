@@ -86,7 +86,7 @@ export class AdminVendorDetailsVendorComponent implements OnInit {
           street2: res.vendor.street2,
           zipCode: res.vendor.zipCode,
           confidentiality: res.vendor.confidentiality,
-          vendorCertificates: res.vendor.vendorCertificates
+          vendorCertificates: res.vendor.vendorCertificates.map(item => item.id)
         };
 
         this.initForm(vendor);

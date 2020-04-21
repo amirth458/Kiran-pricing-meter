@@ -4,12 +4,16 @@ import { Router } from '@angular/router';
 import { GridOptions, ColDef } from 'ag-grid-community';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { CustomerService } from 'src/app/service/customer.service';
+import { UserService } from 'src/app/service/user.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { Customer } from 'src/app/model/customer.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customers',
@@ -18,6 +22,8 @@ import { Customer } from 'src/app/model/customer.model';
 })
 export class CustomersComponent implements OnInit {
   @ViewChild('actionControl') actionControl: TemplateRef<any>;
+  @ViewChild('subscriptionCell') subscriptionCell;
+  @ViewChild('subscriptionModal') subscriptionModal;
 
   searchColumns = [
     {
@@ -137,6 +143,11 @@ export class CustomersComponent implements OnInit {
   ];
   type = ['search', 'filter'];
 
+  subscriptions = [];
+  addons = [];
+  contractInfo;
+  customerId;
+
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
@@ -152,12 +163,18 @@ export class CustomersComponent implements OnInit {
     private route: Router,
     private customerService: CustomerService,
     private spineer: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private metadataService: MetadataService,
+    private userService: UserService,
+    private modalService: NgbModal
   ) {
     this.navigation = this.route.getCurrentNavigation();
   }
 
   ngOnInit() {
+    this.metadataService.getCustomerSubscriptionTypes().subscribe(v => (this.subscriptions = v));
+    this.metadataService.getCustomerAddons().subscribe(v => (this.addons = v));
+
     localStorage.removeItem('viewCustomerInfo');
     this.setColDef();
     this.getAllUsers();
@@ -248,6 +265,15 @@ export class CustomersComponent implements OnInit {
             return '';
           }
           return new Date(value).toLocaleString();
+        }
+      },
+      {
+        headerName: 'Subscription',
+        filter: false,
+        width: 170,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.subscriptionCell
         }
       },
       {
@@ -372,5 +398,42 @@ export class CustomersComponent implements OnInit {
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  subscription(ev, row) {
+    console.log(row);
+    ev.stopPropagation();
+    this.customerId = row.customerId;
+    this.userService
+      .getCustomerContract(this.customerId)
+      .pipe(catchError(e => this.handleResponseError(e)))
+      .subscribe(v => {
+        console.log(v);
+        this.contractInfo = v;
+
+        this.modalService.open(this.subscriptionModal, {
+          centered: true,
+          size: 'lg'
+        });
+      });
+  }
+
+  setSubscription(v) {
+    if (this.contractInfo) {
+      this.userService.updateCustomerContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(v => {
+        this.modalService.dismissAll();
+      });
+    } else {
+      this.userService.setCustomerContract(this.customerId, v.addon, v.subscription).subscribe(v => {
+        this.modalService.dismissAll();
+      });
+    }
+  }
+
+  handleResponseError(e) {
+    const message = (e.error && e.error.message) || 'Get Customer Contract occurs an error.';
+    this.toastr.error(`${message} Please contact your admin`);
+
+    return throwError('Error');
   }
 }

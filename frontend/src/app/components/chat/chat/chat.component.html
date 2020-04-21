@@ -14,29 +14,21 @@
   <ng-container *ngIf="!loading; else loadingPanel">
     <span><i class="fas fa-comment-alt"></i></span>
   </ng-container>
-  <div class="unread-badge position-absolute">{{ value?.messageNotes?.length || 0 }}</div>
+  <div class="unread-badge position-absolute">{{ value?.messageNotes | unReadCount: user.id }}</div>
 </button>
 
 <ng-template #popContent>
   <div class="col-12 border p-0 d-flex flex-column">
-    <div class="d-flex flex-grow-1 flex-column message-container" (scroll)="onScroll()">
-      <ng-container *ngIf="value?.messageNotes?.length > 0">
-        <div
-          class="participant-chat {{ user?.id === m.senderId ? 'text-left' : 'text-right' }}"
-          *ngFor="let m of value?.messageNotes"
-        >
-          <span class="{{ user.id === m.senderId ? 'text-theme-green' : 'text-theme' }}">
-            {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }}
-          </span>
-          <p>{{ m.message || '' }}</p>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="value?.messageNotes?.length === 0">
+    <ng-container *ngIf="value?.messageNotes?.length > 0">
+      <app-message-viewer [(value)]="value.messageNotes"> </app-message-viewer>
+    </ng-container>
+    <ng-container *ngIf="(value?.messageNotes?.length || 0) === 0">
+      <div class="empty-chat d-flex align-items-center justify-content-center">
         <div class="participant-chat text-left">
           No chats found
         </div>
-      </ng-container>
-    </div>
+      </div>
+    </ng-container>
     <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
       <hr class="m-0" />
       <div class="form-row">
