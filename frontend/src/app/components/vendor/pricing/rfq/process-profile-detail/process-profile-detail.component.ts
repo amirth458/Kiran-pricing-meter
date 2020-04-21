@@ -8,13 +8,7 @@ import { combineLatest } from 'rxjs';
 
 import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
-import {
-  Part,
-  RfqData,
-  PartQuote,
-  PricingProfileDetailedView,
-  ProcessProfile
-} from '../../../../../model/part.model';
+import { Part, RfqData, PartQuote, PricingProfileDetailedView, ProcessProfile } from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { UserService } from 'src/app/service/user.service';
@@ -75,9 +69,7 @@ export class ProcessProfileDetailComponent implements OnInit {
 
         combineLatest(
           this.userService.getCustomer(this.part.rfqMedia.media.customerId),
-          this.pricingService.getPricingProfileDetail(
-            this.processProfile.processPricingList.map(item => item.id)
-          )
+          this.pricingService.getPricingProfileDetail(this.processProfile.processPricingList.map(item => item.id))
         ).subscribe(([customer, pricingProfiles]) => {
           this.pricingProfiles = pricingProfiles;
           this.customer = customer;
@@ -94,9 +86,7 @@ export class ProcessProfileDetailComponent implements OnInit {
   }
 
   backButton() {
-    this.router.navigateByUrl(
-      this.router.url.substr(0, this.router.url.indexOf('/pricing-profile'))
-    );
+    this.router.navigateByUrl(this.router.url.substr(0, this.router.url.indexOf('/process-profile')));
   }
 
   initColumnDefs() {
@@ -282,52 +272,39 @@ export class ProcessProfileDetailComponent implements OnInit {
         roughness: '',
         postProcess: '',
         price: this.partQuote
-          ? this.currencyPipe.transform(
-              this.partQuote.totalCost,
-              'USD',
-              'symbol',
-              '0.0-3'
-            )
+          ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
           : this.part.partStatusType.displayName
       }
     ];
-    this.pricingData = this.processProfile.processPricingList.map(
-      processPricing => {
-        return {
-          pricingProfileId: processPricing.id,
-          pricingProfileName: processPricing.name,
-          processProfileName: this.processProfile.name,
-          parameterSetNickname: this.processProfile.parameterNickName,
-          equipment: this.processProfile.processMachineServingMaterialList
-            .map(
-              item => item.machineServingMaterial.vendorMachinery.equipment.name
-            )
-            .join(', '),
-          material: this.processProfile.processMachineServingMaterialList
-            .map(item => item.machineServingMaterial.material.name)
-            .join(', '),
-          pricingCondition:
-            processPricing.processPricingConditions[0] &&
-            `${processPricing.processPricingConditions[0].processPricingConditionType.name} ${processPricing.processPricingConditions[0].operatorType.symbol}
+    this.pricingData = this.processProfile.processPricingList.map(processPricing => {
+      return {
+        pricingProfileId: processPricing.id,
+        pricingProfileName: processPricing.name,
+        processProfileName: this.processProfile.name,
+        parameterSetNickname: this.processProfile.parameterNickName,
+        equipment: this.processProfile.processMachineServingMaterialList
+          .map(item => item.machineServingMaterial.vendorMachinery.equipment.name)
+          .join(', '),
+        material: this.processProfile.processMachineServingMaterialList
+          .map(item => item.machineServingMaterial.material.name)
+          .join(', '),
+        pricingCondition:
+          processPricing.processPricingConditions[0] &&
+          `${processPricing.processPricingConditions[0].processPricingConditionType.name} ${processPricing.processPricingConditions[0].operatorType.symbol}
             ${processPricing.processPricingConditions[0].valueSignType.symbol} ${processPricing.processPricingConditions[0].value}
             ${processPricing.processPricingConditions[0].unitType.displayName}`
-        };
-      }
-    );
+      };
+    });
   }
 
   showPricingProfile(pricingProfileId) {
-    this.router.navigateByUrl(
-      `/pricing/rfq/manual-price/${this.partId}/pricing-profile/${pricingProfileId}`
-    );
+    this.router.navigateByUrl(`/pricing/rfq/manual-price/${this.partId}/pricing-profile/${pricingProfileId}`);
   }
 
   getPostProcess(id) {
     const found =
       this.part.postProcessTypeIds &&
-      this.postProcesses.find(
-        postProcess => postProcess.id == this.part.postProcessTypeIds[id]
-      );
+      this.postProcesses.find(postProcess => postProcess.id == this.part.postProcessTypeIds[id]);
     return found && found.name;
   }
 }
