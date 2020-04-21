@@ -1001,4 +1001,9 @@ export class VendorDetailsComponent implements OnInit {
       });
     }
   }
+
+  clickMeetingTime(ev) {
+    ev.stopPropagation();
+    console.log('here');
+  }
 }
