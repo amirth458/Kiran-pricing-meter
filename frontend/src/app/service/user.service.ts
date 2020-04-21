@@ -337,4 +337,14 @@ export class UserService {
     const url = `${environment.managementBaseUrl}/users/user-filter-columns`;
     return this.http.get<any[]>(url);
   }
+
+  getCustomerFilterColumns(): Observable<any[]> {
+    const url = `${environment.managementBaseUrl}/users/customer-user-filter-columns`;
+    return this.http.get<any[]>(url);
+  }
+
+  getAllCustomers(page, size, filter) {
+    const url = `${environment.managementBaseUrl}/users/customer/all/search?page=${page}&size=${size}`;
+    return this.http.post<any>(url, filter);
+  }
 }

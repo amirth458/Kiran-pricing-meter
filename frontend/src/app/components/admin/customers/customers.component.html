@@ -1,9 +1,8 @@
 <div class="button-wrapper shadow"></div>
-<div class="wrapper">
+<div class="wrapper" *ngIf="gridOptions">
   <div class="table-control">
     <app-column-search-filter
       width="200px"
-      height="295px"
       [type]="type"
       [(filterColumns)]="filterColumns"
       (filterColumnsChange)="filterColumnsChange($event)"
@@ -13,33 +12,38 @@
     </app-column-search-filter>
   </div>
   <div class="table theme-table">
-    <div class="page-size">
-      Page Size:
-      <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
-        <option selected value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
-      </select>
+    <div class="d-flex align-items-center justify-content-end">
+      <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
     </div>
     <ag-grid-angular
       style="width: 100%; height: 100%;"
       class="ag-theme-balham"
       [rowData]="rowData"
       (gridReady)="onGridReady($event)"
+      rowModelType="infinite"
       [gridOptions]="gridOptions"
+      [cacheBlockSize]="pageSize"
     >
     </ag-grid-angular>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff80"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </div>
 
 <ng-template #actionControl let-row>
   <div class="d-flex w-100 h-100 justify-content-between controls">
-    <span class="text-theme-green" (click)="onView(row)">View</span>
-    <span class="text-purple" *ngIf="row.userLocked" (click)="onUnlock(row)">Unlock</span>
-    <span class="text-theme-green" *ngIf="!row.customerActive" (click)="onActivate(row)">Activate</span>
-    <span class="text-orange" *ngIf="row.customerActive" (click)="onDeactivate(row)">Deactivate</span>
+    <!-- <span class="text-theme-green" (click)="onView(row)">View</span> -->
+    <span class="text-purple" *ngIf="row && row.user && row.user.isLocked" (click)="onUnlock(row)">Unlock</span>
+    <span class="text-theme-green" *ngIf="row && !row.user.activated" (click)="onActivate(row)">Activate</span>
+    <span class="text-orange" *ngIf="row && row.user.activated" (click)="onDeactivate(row)">Deactivate</span>
   </div>
 </ng-template>
 
