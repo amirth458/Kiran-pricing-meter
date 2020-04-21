@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { Part, PartQuote } from 'src/app/model/part.model';
-import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { CurrencyPipe } from '@angular/common';
 import { BiddingService } from 'src/app/service/bidding.service';
@@ -9,6 +8,7 @@ import { LegacyBidHistory } from 'src/app/model/billing.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OrdersService } from 'src/app/service/orders.service';
+import { CustomerDetails } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-historical-bid',
@@ -17,7 +17,7 @@ import { OrdersService } from 'src/app/service/orders.service';
 })
 export class HistoricalBidComponent implements OnInit {
   @Input() part: Part;
-  @Input() customer: CustomerData;
+  @Input() customer: CustomerDetails;
   @Input() partQuote: PartQuote;
 
   partInfoGridOptions: GridOptions;

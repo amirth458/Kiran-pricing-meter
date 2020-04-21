@@ -21,7 +21,6 @@ import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
-import { CustomerData } from 'src/app/model/user.model';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Part, PartQuoteInvoiceItem } from 'src/app/model/part.model';
@@ -31,6 +30,7 @@ import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { Util } from '../../../../../util/Util';
 import { UserService } from '../../../../../service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CustomerDetails } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-price-view',
@@ -42,7 +42,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
   @ViewChild('refreshWindow') private refreshWindow: ElementRef<any>;
   _partQuote: PartQuote;
   @Input() part: Part;
-  @Input() customer: CustomerData;
+  @Input() customer: CustomerDetails;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
   @Input()
   set partQuote(value: PartQuote) {
@@ -406,7 +406,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
           subOrder: this.part.id,
           customerId: this.customer.id,
           customer: this.customer.name,
-          email: this.customer.email,
+          email: this.customer.user.email,
           rfq: this.part.rfqMedia.projectRfqId,
           part: this.part.rfqMedia.projectRfqId + '.' + this.part.id,
           fileName: this.part.rfqMedia.media.name,

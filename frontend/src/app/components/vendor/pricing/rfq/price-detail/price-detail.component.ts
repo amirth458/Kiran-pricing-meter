@@ -11,6 +11,8 @@ import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { UserService } from 'src/app/service/user.service';
 import { OrdersService } from 'src/app/service/orders.service';
 import { FilterOption } from 'src/app/model/vendor.model';
+import { CustomerService } from 'src/app/service/customer.service';
+import { CustomerDetails } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-price-detail',
@@ -23,7 +25,7 @@ export class PriceDetailComponent implements OnInit {
   public rfq: RfqData;
   public partQuote: PartQuote;
   public partDimension: PartDimension;
-  public customer: CustomerData;
+  public customer: CustomerDetails;
   public tabs = [];
   public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
 
@@ -35,6 +37,7 @@ export class PriceDetailComponent implements OnInit {
     protected router: Router,
     protected pricingService: RfqPricingService,
     protected userService: UserService,
+    protected customerService: CustomerService,
     protected spinner: NgxSpinnerService,
     protected ordersService: OrdersService
   ) {
@@ -68,7 +71,7 @@ export class PriceDetailComponent implements OnInit {
       this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId).subscribe(rfq => {
         this.rfq = rfq;
       });
-      this.userService.getCustomer(this.part.rfqMedia.media.customerId).subscribe(customer => {
+      this.customerService.getCustomerDetailsById(this.part.rfqMedia.media.customerId).subscribe(customer => {
         this.customer = customer;
       });
       this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
