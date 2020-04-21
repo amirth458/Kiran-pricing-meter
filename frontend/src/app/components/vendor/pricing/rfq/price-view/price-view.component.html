@@ -495,7 +495,7 @@
             <img src="../../../../../../assets/image/user-profile-icon.png" alt="" height="60px" width="60px" />
             <div class="pl-3 customer-details">
               <p class="mb-1">
-                Customer : <span class=" font-weight-bold value">{{ customer?.name || '-' }}</span>
+                Customer : <span class=" font-weight-bold value">{{ customer?.user?.companyName || '-' }}</span>
               </p>
               <p class="mb-1">
                 Customer ID: <span class=" font-weight-bold value">{{ customer?.id || '-' }}</span>
@@ -504,7 +504,7 @@
                 Customer Name: <span class=" font-weight-bold value">{{ customer?.name || '-' }}</span>
               </p>
               <p class="mb-1">
-                Contact Email : <span class=" font-weight-bold value">{{ customer?.email || '-' }}</span>
+                Contact Email : <span class=" font-weight-bold value">{{ customer?.user?.email || '-' }}</span>
               </p>
               <p class="mb-1">
                 Contact Phone : <span class=" font-weight-bold value">{{ customer?.phoneNo || '-' }}</span>

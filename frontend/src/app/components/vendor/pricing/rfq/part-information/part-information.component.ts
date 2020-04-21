@@ -1,4 +1,3 @@
-import { CustomerData } from 'src/app/model/user.model';
 import { RfqData, PartCustomParameter, PartDimension } from '../../../../../model/part.model';
 import { Util } from '../../../../../util/Util';
 import { Component, OnInit, Input } from '@angular/core';
@@ -10,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ForgeService } from 'src/app/service/forge.service';
 import { MetadataConfig } from '../../../../../model/metadata.model';
+import { CustomerDetails } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-part-information',
@@ -19,7 +19,7 @@ import { MetadataConfig } from '../../../../../model/metadata.model';
 export class PartInformationComponent implements OnInit {
   @Input() part: Part;
   @Input() rfq: RfqData;
-  @Input() customer: CustomerData;
+  @Input() customer: CustomerDetails;
   @Input() partDimension: PartDimension;
 
   countries = [];
