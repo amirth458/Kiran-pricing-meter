@@ -85,14 +85,6 @@ export interface PartOrder {
   createdDate: string;
 }
 
-export interface PartQuoteDetail {
-  invoiceItemId: number;
-  unit: number;
-  unitPrice: number;
-  value: number;
-  partQuoteId: number;
-}
-
 export interface PartQuoteInvoiceLineItem {
   partQuoteDetailId: number;
   partQuoteId: number;
@@ -111,27 +103,21 @@ export interface PartQuoteInvoiceItem {
   unit: number;
   unitPrice: number;
   value: number;
+  finalCost: number;
   partQuoteInvoiceLineItemDetails: PartQuoteInvoiceLineItem[];
 }
 
 export interface PartQuote {
   id: number;
   partId: number;
+  vendorId: number;
+  isExpired: boolean;
   expiredAt: Date;
   totalCost: number;
+  marginCost: number;
   partQuoteInvoiceItemDetails: PartQuoteInvoiceItem[];
-  partQuoteDetails: Array<AutoPriceView>; // TODO: unused
   winningProcessPricingId: number;
   matchedProcessPricingIds: Array<number>;
-}
-
-// TODO: unused
-export interface AutoPriceView {
-  partQuoteId: number;
-  invoiceItemId: number;
-  value: number;
-  unit: number;
-  unitPrice: number;
 }
 
 export interface PartParameterType {
