@@ -21,130 +21,30 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
-  @ViewChild('actionControl') actionControl: TemplateRef<any>;
+  @ViewChild('actionControl') actionControl;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
 
-  searchColumns = [
-    {
-      name: 'Customer ID',
-      checked: false,
-      field: 'customerId',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Customer Name',
-      checked: false,
-      field: 'name',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Company Name',
-      checked: false,
-      field: 'customerName',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Company Division',
-      checked: false,
-      field: 'customerDivision',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Industry',
-      checked: false,
-      field: 'customerIndustries',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Email Address',
-      checked: false,
-      field: 'userEmail',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Country',
-      checked: false,
-      field: 'customerCountry',
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Last Login Attempt',
-      checked: false,
-      field: 'userLastLoginAttempt',
-      query: {
-        type: '',
-        filter: ''
-      }
-    }
-  ];
-  filterColumns = [
-    {
-      name: 'Customer ID',
-      checked: true,
-      field: 'customerId'
-    },
-    {
-      name: 'Customer Name',
-      checked: true,
-      field: 'name'
-    },
-    {
-      name: 'Company Name',
-      checked: true,
-      field: 'customerName'
-    },
-    {
-      name: 'Company Division',
-      checked: true,
-      field: 'customerDivision'
-    },
-    {
-      name: 'Industry',
-      checked: true,
-      field: 'customerIndustries'
-    },
-    {
-      name: 'Email Address',
-      checked: true,
-      field: 'userEmail'
-    },
-    {
-      name: 'Country',
-      checked: true,
-      field: 'customerCountry'
-    },
-    {
-      name: 'Last Login Attempt',
-      checked: true,
-      field: 'userLastLoginAttempt'
-    }
-  ];
+  searchColumns = [];
+  filterColumns = [];
   type = ['search', 'filter'];
+  filterColumnsRequest = [];
+  totalcounts = 0;
+
+  matchingNames = {
+    'Customer ID': 'customerId',
+    Name: 'name',
+    'Company Name': 'user.customerName',
+    // 'Company Division': '',
+    // Industry: '',
+    'Email Address': 'user.email',
+    // Country: 'customerCountry',
+    'Last Login Attempt': 'user.lastLoginAttempt'
+  };
 
   subscriptions = [];
   addons = [];
+
   contractInfo;
   customerId;
 
@@ -157,7 +57,7 @@ export class CustomersComponent implements OnInit {
   gridOptions: GridOptions;
   allUsers = [];
   rowData: Customer[] = [];
-  pageSize = 10;
+  pageSize = 20;
   navigation;
   constructor(
     private route: Router,
@@ -166,9 +66,11 @@ export class CustomersComponent implements OnInit {
     private toastr: ToastrService,
     private metadataService: MetadataService,
     private userService: UserService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) {
     this.navigation = this.route.getCurrentNavigation();
+    this.getSearchFilterColumns();
   }
 
   ngOnInit() {
@@ -176,8 +78,62 @@ export class CustomersComponent implements OnInit {
     this.metadataService.getCustomerAddons().subscribe(v => (this.addons = v));
 
     localStorage.removeItem('viewCustomerInfo');
-    this.setColDef();
-    this.getAllUsers();
+  }
+
+  async getSearchFilterColumns() {
+    const columns = await this.userService.getCustomerFilterColumns().toPromise();
+
+    this.filterColumns = columns.map(column => ({
+      name: column.displayName,
+      checked: true,
+      field: column.displayName
+    }));
+
+    this.searchColumns = columns.map(column => ({
+      id: column.id,
+      name: column.displayName,
+      checked: false,
+      operators: column.operators,
+      field: column.displayName,
+      query: { type: '', filter: null }
+    }));
+
+    this.columnDefs.push(
+      ...columns.map(column => ({
+        headerName: column.displayName,
+        field: this.matchingNames[column.displayName],
+        hide: true,
+        sortable: false,
+        filter: false,
+        tooltipField: this.matchingNames[column.displayName],
+        headerTooltip: column.displayName
+      }))
+    );
+
+    this.columnDefs.push(
+      ...[
+        {
+          headerName: 'Subscription',
+          filter: false,
+          width: 170,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.subscriptionCell
+          }
+        },
+        {
+          headerName: '',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.actionControl
+          },
+          hide: false,
+          sortable: false,
+          filter: false,
+          width: 240
+        }
+      ]
+    );
 
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
@@ -186,11 +142,11 @@ export class CustomersComponent implements OnInit {
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
-      pagination: true,
-      paginationAutoPageSize: true,
+      paginationPageSize: 10,
       enableColResize: true,
       rowHeight: 40,
-      // headerHeight: 35,
+      headerHeight: 40,
+      rowSelection: 'multiple',
 
       onRowClicked: event => {
         // this.onRowClick(event);
@@ -198,133 +154,16 @@ export class CustomersComponent implements OnInit {
     };
   }
 
-  setColDef() {
-    this.columnDefs = [
-      {
-        headerName: 'Customer ID',
-        field: 'customerId',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Customer Name',
-        field: 'name',
-        hide: false,
-        sortable: true,
-        filter: false,
-        valueGetter: value => {
-          const data = value.data;
-          return data.userFirstName + ' ' + data.userLastName;
-        }
-      },
-      {
-        headerName: 'Company Name',
-        field: 'customerName',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Company Division',
-        field: 'customerDivision',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Industry',
-        field: 'customerIndustries',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Email Address',
-        field: 'userEmail',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Country',
-        field: 'customerCountry',
-        hide: true,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Last Login Attempt',
-        field: 'userLastLoginAttempt',
-        hide: true,
-        sortable: true,
-        filter: false,
-        valueFormatter: v => {
-          const value = v.value;
-          if (!value) {
-            return '';
-          }
-          return new Date(value).toLocaleString();
-        }
-      },
-      {
-        headerName: 'Subscription',
-        filter: false,
-        width: 170,
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.subscriptionCell
-        }
-      },
-      {
-        headerName: '',
-        cellRenderer: 'templateRenderer',
-        cellRendererParams: {
-          ngTemplate: this.actionControl
-        },
-        hide: false,
-        sortable: false,
-        filter: false,
-        width: 240
-      }
-    ];
-  }
-  async getAllUsers() {
-    this.spineer.show();
-    let data = [];
-    let page = 0;
-    let filter: FilterOption = { size: 1000, sort: 'id,ASC', page, q: '' };
-    let currentData = await this.customerService.getCustomer(filter).toPromise();
-    while (currentData.length) {
-      page = page + 1;
-      data = data.concat(currentData);
-      filter = { size: 1000, sort: 'id,ASC', page, q: '' };
-      currentData = await this.customerService.getCustomer(filter).toPromise();
-    }
-    this.rowData = data;
-    this.spineer.hide();
-
-    // this.customerService.getCustomer(filter).subscribe(
-    //   data => {
-    //     this.spineer.hide();
-    //   },
-    //   err => {
-    //     this.toastr.error('Something went wrong. Please try again.');
-    //     this.spineer.hide();
-    //   }
-    // );
-  }
-
-  onView(customer: Customer) {
-    console.log({ customer });
-    localStorage.setItem('viewCustomerInfo', JSON.stringify(customer));
-    this.route.navigateByUrl('/user-manage/customers/view/user');
+  onView(row) {
+    console.log(row);
+    this.route.navigateByUrl(`/user-manage/customers/view/user/${row.customerId}`);
   }
 
   onUnlock(customer: Customer) {
+    console.log(customer);
     this.customerService.unlockCustomer(customer.customerId).subscribe(
       res => {
-        this.getAllUsers();
+        this.onSearch();
       },
       err => {
         this.toastr.error('Unable to perform action');
@@ -335,7 +174,7 @@ export class CustomersComponent implements OnInit {
   onActivate(customer: Customer) {
     this.customerService.activateCustomer(customer.customerId).subscribe(
       res => {
-        this.getAllUsers();
+        this.onSearch();
       },
       err => {
         this.toastr.error('Unable to perform action');
@@ -345,7 +184,7 @@ export class CustomersComponent implements OnInit {
   onDeactivate(customer: Customer) {
     this.customerService.deactivateCustomer(customer.customerId).subscribe(
       res => {
-        this.getAllUsers();
+        this.onSearch();
       },
       err => {
         this.toastr.error('Unable to perform action');
@@ -363,29 +202,52 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  onGridReady(event) {
-    this.gridOptions.api.sizeColumnsToFit();
-  }
-  pageSizeChanged(value) {
-    this.gridOptions.api.paginationSetPageSize(Number(value));
-    this.gridOptions.api.sizeColumnsToFit();
+  onGridReady(ev) {
+    if (this.gridOptions) {
+      this.gridOptions.api = ev.api;
+      this.gridOptions.api.sizeColumnsToFit();
+      this.onSearch();
+    }
   }
 
   searchColumnsChange(event) {
+    this.filterColumnsRequest = [];
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
-      if (columnInstance) {
-        if (column.checked) {
-          columnInstance.setModel(column.query);
-        } else {
-          columnInstance.setModel({
-            type: '',
-            filter: ''
-          });
-        }
-        this.gridOptions.api.onFilterChanged();
+      if (column.checked && column.query.type) {
+        this.filterColumnsRequest.push({
+          id: column.id,
+          displayName: column.name,
+          selectedOperator: column.query.type,
+          searchedValue: column.query.filter
+        });
       }
     });
+    this.onSearch();
+  }
+
+  onSearch() {
+    const dataSource = {
+      rowCount: 0,
+      getRows: params => {
+        this.spinner.show('spooler');
+        this.userService
+          .getAllCustomers(params.startRow / this.pageSize, this.pageSize, {
+            q: '',
+            filterColumnsRequests: this.filterColumnsRequest
+          })
+          .subscribe(data => {
+            this.spinner.hide('spooler');
+            const rowsThisPage = data.content;
+            const lastRow = data.total <= params.endRow ? data.total : -1;
+            this.totalcounts = data.total;
+            params.successCallback(rowsThisPage, lastRow);
+            // this.reconfigColumns();
+          });
+      }
+    };
+    if (this.gridOptions && this.gridOptions.api) {
+      this.gridOptions.api.setDatasource(dataSource);
+    }
   }
 
   filterColumnsChange(event) {
