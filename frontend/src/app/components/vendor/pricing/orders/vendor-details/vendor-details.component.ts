@@ -111,6 +111,7 @@ export class VendorDetailsComponent implements OnInit {
     this.route.params.subscribe(v => {
       this.orderId = v.orderId || null;
       this.bidOrderId = v.bidOrderId || null;
+
       if (!this.bidOrderId) {
         this.orderDetails = JSON.parse(localStorage.getItem('admin-selectedSubOrders'));
         (this.orderDetails || []).map(order => (this.initialPrice += order.priceAccepted));
@@ -178,7 +179,7 @@ export class VendorDetailsComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        checkboxSelection: true
+        checkboxSelection: this.type !== 'released' // Released
       },
       {
         headerName: 'Vendor Name',

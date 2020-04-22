@@ -33,13 +33,13 @@ export class CustomersComponent implements OnInit {
 
   matchingNames = {
     'Customer ID': 'customerId',
-    Name: 'name',
-    'Company Name': 'user.customerName',
-    // 'Company Division': '',
-    // Industry: '',
-    'Email Address': 'user.email',
-    // Country: 'customerCountry',
-    'Last Login Attempt': 'user.lastLoginAttempt'
+    Name: 'userName',
+    'Company Name': 'customerName',
+    'Company Division': 'customerDivision',
+    Industry: 'customerIndustries',
+    'Email Address': 'userEmail',
+    Country: 'customerCountry',
+    'Last Login Attempt': 'userLastLoginAttempt'
   };
 
   subscriptions = [];
@@ -148,15 +148,11 @@ export class CustomersComponent implements OnInit {
       headerHeight: 40,
       rowSelection: 'multiple',
 
-      onRowClicked: event => {
-        // this.onRowClick(event);
+      onRowDoubleClicked: event => {
+        localStorage.setItem('viewCustomerInfo', JSON.stringify(event.data));
+        this.route.navigateByUrl(`/user-manage/customers/view/user`);
       }
     };
-  }
-
-  onView(row) {
-    console.log(row);
-    this.route.navigateByUrl(`/user-manage/customers/view/user/${row.customerId}`);
   }
 
   onUnlock(customer: Customer) {

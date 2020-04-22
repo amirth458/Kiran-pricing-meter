@@ -45,8 +45,8 @@ export class CustomerViewComponent implements OnInit {
     const routeArr = this.route.url
       .slice(this.route.url.indexOf('customers/view/') + 'customers/view/'.length)
       .split('/');
-    this.selectedTab = 'Company Details';
-    switch (routeArr[0]) {
+    this.selectedTab = 'User Details';
+    switch (routeArr[1]) {
       case 'user':
         this.selectedTab = 'User Details';
         break;
