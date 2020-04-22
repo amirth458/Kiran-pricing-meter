@@ -424,13 +424,11 @@ export class PriceViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.part && changes.part.currentValue) {
-      this.updateRowData();
-    }
-    if (changes.customer && changes.customer.currentValue) {
-      this.updateRowData();
-    }
-    if (changes.partQuote && changes.partQuote.currentValue) {
+    if (
+      (changes.part && changes.part.currentValue) ||
+      (changes.customer && changes.customer.currentValue) ||
+      (changes.partQuote && changes.partQuote.currentValue)
+    ) {
       this.updateRowData();
     }
   }
@@ -453,8 +451,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
         this.changeStage('unset');
         this.part.isNoBid = true;
       },
-      err => {
-        console.log({ err });
+      () => {
         this.spinner.hide();
         this.modalService.dismissAll();
         this.toaster.error('Error while setting part to No Bid.');
