@@ -85,6 +85,23 @@ export class OrderDetailComponent implements OnInit {
     this.route.params.subscribe(({ id }) => {
       this.orderService.getPartById(id).subscribe(v => {
         this.part = v;
+
+        if (v.partStatusType.id === 18) {
+          // PART_AWAITING_RELEASE
+          if (this.type !== 'project-release-queue') {
+            this.router.navigateByUrl(`/projects/project-release-queue/${id}`);
+          }
+        } else if (v.partStatusType.id === 15) {
+          // vendor-confirmation-queue
+          if (this.type !== 'vendor-confirmation-queue') {
+            this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${id}`);
+          }
+        } else {
+          if (this.type !== 'released-projects') {
+            this.router.navigateByUrl(`/projects/released-projects/${id}`);
+          }
+        }
+
         this.orderService.getProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
           this.matchingProfiles = res;
           this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
@@ -433,7 +450,7 @@ export class OrderDetailComponent implements OnInit {
 
   setSuppliers(partId) {
     this.orderService.getBidProjectProcesses(partId).subscribe(v => {
-      this.selectableCount = 3 - v.length;
+      this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
       this.selectedSuppliers = v.map(res => {
         const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
 

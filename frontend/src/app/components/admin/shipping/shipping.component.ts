@@ -67,6 +67,7 @@ export class ShippingComponent implements OnInit {
             });
           }
           if (item.primary === true) {
+            console.log(item);
             this.shippingForm.setValue({
               ...this.shippingForm.value,
               mainAddress: {
