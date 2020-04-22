@@ -918,8 +918,9 @@ export class VendorDetailsComponent implements OnInit {
     this.zoomService.createConference(conference).subscribe(
       (res: Conference) => {
         if (res) {
-          this.meetingInfo[this.schdulingForUserId] = res;
-          this.meetingInfo[this.schdulingForUserId].startTime = new Date(res.startTime).toISOString();
+          // this.meetingInfo[res.hostUserId] = res;
+          // this.meetingInfo[res.hostUserId].startTime = new Date(res.startTime).toISOString();
+          this.getFindAllScheduledMeeting();
         }
         this.spinner.hide();
         this.toaster.success('Meeting time set.');
