@@ -389,12 +389,7 @@
     <!-- Note Communication -->
     <ng-container [ngSwitch]="type">
       <ng-container *ngSwitchCase="'confirmation'">
-        <ng-container
-          *ngIf="
-            row?.bidProcessStatus?.name !== biddingStatus.REJECTED &&
-            row?.bidProcessStatus?.name !== biddingStatus.QUEUED_FOR_LATER
-          "
-        >
+        <ng-container *ngIf="row?.bidProcessStatus?.name !== biddingStatus.REJECTED">
           <app-chat
             [participants]="row.userId ? [row.userId] : []"
             [id]="bidOrderId"
