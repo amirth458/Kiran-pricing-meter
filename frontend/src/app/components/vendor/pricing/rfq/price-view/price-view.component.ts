@@ -9,7 +9,7 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
@@ -74,7 +74,8 @@ export class PriceViewComponent implements OnInit, OnChanges {
   });
 
   dynamicForm: FormGroup = this.fb.group({
-    prices: new FormArray([])
+    prices: new FormArray([]),
+    marginCost: ['']
   });
 
   chatType = ChatTypeEnum;
@@ -226,8 +227,13 @@ export class PriceViewComponent implements OnInit, OnChanges {
   get controls() {
     return this.dynamicForm.controls;
   }
+
   get prices() {
     return this.controls.prices as FormArray;
+  }
+
+  get marginCostControl() {
+    return this.controls.marginCost as FormControl;
   }
 
   startOverrideForm() {
@@ -236,12 +242,13 @@ export class PriceViewComponent implements OnInit, OnChanges {
         this.fb.group({
           partQuoteId: [this.filterPartQuoteId() || '', Validators.required],
           invoiceItemId: [quote.invoiceItemId || '', Validators.required],
-          value: [quote.value || 0, Validators.required],
+          value: [quote.finalCost || 0, Validators.required],
           unit: [quote.unit || 0, Validators.required],
           unitPrice: [quote.unitPrice || 0, Validators.required]
         })
       );
     });
+    this.marginCostControl.setValue(this.partQuote.marginCost || 0);
     this.changeStage('edit');
   }
 
@@ -265,6 +272,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
     (this.prices.getRawValue() || []).map(f => {
       totalCost += (f.unit || 0) * (f.unitPrice || 0);
     });
+    totalCost += this.marginCostControl.value || 0;
     return totalCost;
   }
 

@@ -137,6 +137,26 @@
                             </td>
                           </tr>
                         </ng-container>
+                        <tr>
+                          <td class="font-weight-bold text-theme text-center">&nbsp;</td>
+                          <td class="font-weight-bold text-theme text-center">&nbsp;</td>
+                          <td class="font-weight-bold text-theme text-center">Margin Cost</td>
+                          <td class="font-weight-bold text-theme text-center">
+                            <ng-container *ngIf="stage === 'confirm'">
+                              {{ dynamicForm.get('marginCost').value || 0 | currency: 'USD':'symbol':'0.0-3' }}
+                            </ng-container>
+                            <ng-container *ngIf="stage === 'edit'">
+                              <input
+                                digitOnly
+                                [min]="0"
+                                [step]="1"
+                                type="number"
+                                class="price-input"
+                                formControlName="marginCost"
+                              />
+                            </ng-container>
+                          </td>
+                        </tr>
                       </ng-container>
                       <tr>
                         <td class="text-theme-green">
@@ -629,6 +649,14 @@
         </tr>
       </ng-container>
     </ng-container>
+    <tr>
+      <td class="font-weight-bold text-theme text-center">&nbsp;</td>
+      <td class="font-weight-bold text-theme text-center">&nbsp;</td>
+      <td class="font-weight-bold text-theme text-center">Margin Cost</td>
+      <td class="font-weight-bold text-theme text-center">
+        {{ dynamicForm.get('marginCost').value || 0 | currency: 'USD':'symbol':'0.0-3' }}
+      </td>
+    </tr>
     <tr>
       <td class="text-theme-green"></td>
       <td class="text-center text-theme"></td>
