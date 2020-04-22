@@ -40,16 +40,16 @@ import { CustomerDetails } from 'src/app/model/customer.model';
 export class PriceViewComponent implements OnInit, OnChanges {
   @ViewChild('scroller') private scroller: ElementRef;
   @ViewChild('refreshWindow') private refreshWindow: ElementRef<any>;
-  _partQuote: PartQuote;
+  partQuoteValue: PartQuote;
   @Input() part: Part;
   @Input() customer: CustomerDetails;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
   @Input()
   set partQuote(value: PartQuote) {
-    this._partQuote = value || null;
+    this.partQuoteValue = value || null;
   }
   get partQuote(): PartQuote {
-    return this._partQuote;
+    return this.partQuoteValue;
   }
 
   stage = 'unset';

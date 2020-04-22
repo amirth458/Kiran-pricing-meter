@@ -44,7 +44,7 @@
                           {{ partQuoteDetail.unitPrice }}
                         </td>
                         <td class="text-center text-theme">
-                          {{ partQuoteDetail.value | currency: 'USD':'symbol':'0.0-3' }}
+                          {{ partQuoteDetail.finalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                       </tr>
                       <tr>
@@ -53,10 +53,22 @@
                             class="link over-ride p-0 m-0"
                             *ngIf="!part?.manualPricingAllowed"
                             (click)="startOverrideForm()"
-                            >Override</a
                           >
+                            Override
+                          </a>
                         </td>
                         <td class="text-center text-theme"></td>
+                        <td class="text-center font-weight-bold text-theme">
+                          Margin Cost
+                        </td>
+                        <td class="text-theme text-center">
+                          {{ partQuote?.marginCost || 0 | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-theme text-center" colspan="2">
+                          &nbsp;
+                        </td>
                         <td *ngIf="!part?.isNoBid" class="text-center font-weight-bold text-theme">
                           Subtotal
                         </td>
