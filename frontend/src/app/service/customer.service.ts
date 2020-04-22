@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { Customer } from '../model/customer.model';
+import { Customer, CustomerDetails } from '../model/customer.model';
 import { FilterOption } from '../model/vendor.model';
 
 @Injectable({
@@ -52,5 +52,10 @@ export class CustomerService {
   getShippingInfo(userId) {
     const url = `${environment.apiBaseUrl}/admin/customer/user/${userId}/shipping-address`;
     return this.http.get(url);
+  }
+
+  getCustomerDetailsById(customerId: number): Observable<CustomerDetails> {
+    const url = `${environment.apiBaseUrl}/admin/customer/customer-details?customer-id=${customerId}`;
+    return this.http.get<CustomerDetails>(url);
   }
 }

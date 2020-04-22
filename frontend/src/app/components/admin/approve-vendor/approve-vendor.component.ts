@@ -348,7 +348,7 @@ export class ApproveVendorComponent implements OnInit {
       if (column.checked && column.query.type) {
         this.filterColumnsRequest.push({
           id: column.id,
-          displayName: column.name,
+          displayName: column.name === 'Approval Status' ? 'Vendor Status' : column.name,
           selectedOperator: column.query.type,
           searchedValue: column.query.filter
         });
