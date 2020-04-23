@@ -1,0 +1,20 @@
+.wrapper {
+  font-size: 13px;
+}
+
+.action-btn {
+  font-size: 24px !important;
+  width: 34px !important;
+  height: 34px !important;
+  padding: 5px !important;
+  line-height: 24px;
+  margin: 0 5px;
+}
+
+span {
+  color: var(--theme-dark-blue);
+}
+
+.color-sky-blue {
+  color: var(--theme-sky-blue) !important;
+}

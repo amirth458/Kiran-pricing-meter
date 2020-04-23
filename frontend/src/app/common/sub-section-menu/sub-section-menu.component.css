@@ -13,7 +13,6 @@ ul {
   margin: unset;
   padding: unset;
   display: flex;
-  align-items: center;
 }
 
 ul li {

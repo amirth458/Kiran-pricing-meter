@@ -1,0 +1,10 @@
+.search-box {
+  width: 100%;
+  border-bottom: 1px solid;
+}
+.search-box input,
+.search-box input:focus,
+.search-box input:active {
+  border: none;
+  outline: none;
+}
