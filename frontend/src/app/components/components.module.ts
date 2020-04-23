@@ -95,6 +95,22 @@ import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order
 // chats
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SubscriptionModalComponent } from '../common/subscription-modal/subscription-modal.component';
+import { InsightContainerComponent } from './vendor/insight/insight-container/insight-container.component';
+import { InsightHeaderComponent } from './vendor/insight/insight-header/insight-header.component';
+import { InsightGridComponent } from './vendor/insight/insight-grid/insight-grid.component';
+import { InsightCustomersComponent } from './vendor/insight/insight-customers/insight-customers.component';
+import { InsightVendorsComponent } from './vendor/insight/insight-vendors/insight-vendors.component';
+import { InsightNewUsersComponent } from './vendor/insight/insight-new-users/insight-new-users.component';
+import { InsightFacilityComponent } from './vendor/insight/insight-facility/insight-facility.component';
+import { InsightRfqComponent } from './vendor/insight/insight-rfq/insight-rfq.component';
+import { InsightPartComponent } from './vendor/insight/insight-part/insight-part.component';
+import { InsightBidComponent } from './vendor/insight/insight-bid/insight-bid.component';
+import { InsightOrderComponent } from './vendor/insight/insight-order/insight-order.component';
+import { InsightProcessProfileComponent } from './vendor/insight/insight-process-profile/insight-process-profile.component';
+import { InsightPricingProfileComponent } from './vendor/insight/insight-pricing-profile/insight-pricing-profile.component';
+import { InsightDetailComponent } from './vendor/insight/insight-detail/insight-detail.component';
+import { SearchBarComponent } from '../common/search-bar/search-bar.component';
+import { DateRangeMonthComponent } from '../common/date-range-month/date-range-month.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +134,8 @@ import { SubscriptionModalComponent } from '../common/subscription-modal/subscri
     FileViewerComponent,
     FileViewRendererComponent,
     ModelDetailViewComponent,
+    SearchBarComponent,
+    DateRangeMonthComponent,
 
     AdminContainerComponent,
     ApproveVendorComponent,
@@ -177,9 +195,24 @@ import { SubscriptionModalComponent } from '../common/subscription-modal/subscri
     VendorOrderStatusComponent,
     SubscriptionModalComponent,
 
+    InsightContainerComponent,
+    InsightHeaderComponent,
+    InsightGridComponent,
+    InsightCustomersComponent,
+    InsightVendorsComponent,
+    InsightNewUsersComponent,
+    InsightFacilityComponent,
+    InsightRfqComponent,
+    InsightPartComponent,
+    InsightBidComponent,
+    InsightOrderComponent,
+    InsightProcessProfileComponent,
+    InsightPricingProfileComponent,
+
     // Pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
+    SupplierPipe,
+    InsightDetailComponent
   ],
   imports: [
     CommonModule,

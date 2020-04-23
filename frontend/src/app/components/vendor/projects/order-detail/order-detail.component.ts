@@ -466,9 +466,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   canReleaseToCustomer() {
-    return (
-      this.selectedSuppliers.length === 3 && this.selectedSuppliers.filter(item => item.status.id === 2).length === 3
-    );
+    return this.selectedSuppliers.filter(item => item.status.id === 2).length === 3;
   }
 
   canReleaseToVendor() {

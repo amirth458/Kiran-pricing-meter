@@ -28,13 +28,6 @@ export const environment = {
       active: true
     },
     {
-      name: 'Insight',
-      route: '/insight',
-      icon: 'far fa-chart-bar',
-      visible: true,
-      active: false
-    },
-    {
       name: 'Billing',
       route: '/billing',
       icon: 'fas fa-file-invoice-dollar',
@@ -45,6 +38,13 @@ export const environment = {
       name: 'Projects',
       route: '/projects',
       icon: 'fas fa-folder',
+      visible: true,
+      active: true
+    },
+    {
+      name: 'Insight',
+      route: '/insight',
+      icon: 'fa fa-search',
       visible: true,
       active: true
     }
