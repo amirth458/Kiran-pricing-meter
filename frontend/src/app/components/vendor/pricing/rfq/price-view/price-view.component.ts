@@ -70,7 +70,8 @@ export class PriceViewComponent implements OnInit, OnChanges {
     partsUnitPrice: [0],
     partsLineItemCost: [0],
     totalCost: [0],
-    noBid: [false]
+    noBid: [false],
+    marginCost: [0]
   });
 
   dynamicForm: FormGroup = this.fb.group({
@@ -305,7 +306,8 @@ export class PriceViewComponent implements OnInit, OnChanges {
         partsLineItemCost: this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice,
         totalCost:
           this.pricingForm.value.toolingUnitCount * this.pricingForm.value.toolingUnitPrice +
-          this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice
+          this.pricingForm.value.partsUnitCount * this.pricingForm.value.partsUnitPrice +
+          (this.pricingForm.value.marginCost || 0)
       });
       defConfig = {
         id: null,
