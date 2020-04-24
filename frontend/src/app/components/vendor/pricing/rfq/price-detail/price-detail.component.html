@@ -38,10 +38,20 @@
           ></app-part-information>
         </ng-container>
         <ng-container *ngSwitchCase="2">
-          <app-process-profile [part]="part" [rowData]="processProfiles"></app-process-profile>
+          <app-process-profile
+            (toggleProfileView)="isShowingGlobalRuleProfile$.next($event)"
+            [isShowingGlobalRuleProfile]="isShowingGlobalRuleProfile$.value"
+            [part]="part"
+            [rowData]="processProfiles"
+          ></app-process-profile>
         </ng-container>
         <ng-container *ngSwitchCase="3">
-          <app-pricing-profile [part]="part" [rowData]="pricingProfiles"></app-pricing-profile>
+          <app-pricing-profile
+            (toggleProfileView)="isShowingGlobalRuleProfile$.next($event)"
+            [isShowingGlobalRuleProfile]="isShowingGlobalRuleProfile$.value"
+            [part]="part"
+            [rowData]="pricingProfiles"
+          ></app-pricing-profile>
         </ng-container>
         <ng-container *ngSwitchCase="4">
           <app-historical-bid [part]="part" [customer]="customer" [partQuote]="partQuote"></app-historical-bid>
