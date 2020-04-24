@@ -218,13 +218,17 @@ export class PriceDetailComponent implements OnInit {
         page = page + 1;
         data = data.concat(currentData);
         filter = { size: pageSize, sort: '', page, q: '' };
-        currentData = await this.pricingService
-          .getScreenPricingProfileByPartId(
-            this.part.id,
-            this.processProfiles.map(profile => profile.profileId),
-            filter
-          )
-          .toPromise();
+        if (currentData.length == pageSize) {
+          currentData = await this.pricingService
+            .getScreenPricingProfileByPartId(
+              this.part.id,
+              this.processProfiles.map(profile => profile.profileId),
+              filter
+            )
+            .toPromise();
+        } else {
+          currentData = [];
+        }
       }
       this.pricingProfiles = data.map(item => ({
         selected: false,
