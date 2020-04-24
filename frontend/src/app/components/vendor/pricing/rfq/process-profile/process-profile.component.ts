@@ -2,7 +2,7 @@ import { RfqPricingService } from './../../../../../service/rfq-pricing.service'
 import { TemplateRendererComponent } from './../../../../../common/template-renderer/template-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
@@ -15,6 +15,8 @@ import { UserService } from 'src/app/service/user.service';
 export class ProcessProfileComponent implements OnInit {
   @Input() part: Part;
   @Input() rowData: any[];
+  @Input() isShowingGlobalRuleProfile;
+  @Output() toggleProfileView: EventEmitter<boolean> = new EventEmitter(null);
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
   type = ['search', 'filter'];
   maxPartId;
@@ -104,6 +106,7 @@ export class ProcessProfileComponent implements OnInit {
   navigation;
   pricingSettings;
 
+  showViewToggle = false;
   constructor(
     public router: Router,
     public spinner: NgxSpinnerService,
@@ -111,6 +114,8 @@ export class ProcessProfileComponent implements OnInit {
     private userService: UserService
   ) {
     this.navigation = this.router.getCurrentNavigation();
+    this.toggleProfileView.emit(null);
+    this.showViewToggle = this.router.url.includes('/pricing/rfq/auto-prices');
   }
 
   onPageSizeChange(v) {
@@ -217,5 +222,9 @@ export class ProcessProfileComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  toggleView() {
+    this.toggleProfileView.emit(!this.isShowingGlobalRuleProfile);
   }
 }

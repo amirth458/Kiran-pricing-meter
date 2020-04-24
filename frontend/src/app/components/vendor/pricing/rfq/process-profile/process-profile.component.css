@@ -19,6 +19,11 @@
   color: var(--theme-sky-blue);
 }
 
+.profile-source button {
+  height: 33px;
+  width: 150px;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
