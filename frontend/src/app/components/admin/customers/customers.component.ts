@@ -254,7 +254,7 @@ export class CustomersComponent implements OnInit {
 
   filterColumnsChange() {
     this.reconfigColumns();
-    this.searchColumnsChange({});
+    this.searchColumnsChange();
   }
 
   reconfigColumns() {
