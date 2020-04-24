@@ -101,14 +101,19 @@ export class ApproveVendorComponent implements OnInit {
       field: column.displayName
     }));
 
-    this.searchColumns = columns.map(column => ({
-      id: column.id,
-      name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
-      checked: false,
-      operators: column.operators,
-      field: column.displayName,
-      query: { type: '', filter: null }
-    }));
+    const savedSearch = JSON.parse(localStorage.getItem('searchVendors') || 'null');
+
+    this.searchColumns = columns.map(column => {
+      const saved = savedSearch && savedSearch.find(item => item.id === column.id);
+      return {
+        id: column.id,
+        name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
+        checked: saved ? saved.checked : false,
+        operators: column.operators,
+        field: column.displayName,
+        query: saved ? saved.query : { type: '', filter: null }
+      };
+    });
 
     this.columnDefs = [
       {
@@ -344,6 +349,7 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumnsChange() {
     this.filterColumnsRequest = [];
+    localStorage.setItem('searchVendors', JSON.stringify(this.searchColumns));
     this.searchColumns.map(column => {
       if (column.checked && column.query.type) {
         this.filterColumnsRequest.push({
@@ -373,7 +379,7 @@ export class ApproveVendorComponent implements OnInit {
     if (this.gridOptions) {
       this.gridOptions.api = ev.api;
       this.gridOptions.api.sizeColumnsToFit();
-      this.onSearch();
+      this.searchColumnsChange();
     }
   }
 

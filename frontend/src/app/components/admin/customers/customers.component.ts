@@ -89,14 +89,19 @@ export class CustomersComponent implements OnInit {
       field: column.displayName
     }));
 
-    this.searchColumns = columns.map(column => ({
-      id: column.id,
-      name: column.displayName,
-      checked: false,
-      operators: column.operators,
-      field: column.displayName,
-      query: { type: '', filter: null }
-    }));
+    const savedSearch = JSON.parse(localStorage.getItem('searchCustomers') || 'null');
+
+    this.searchColumns = columns.map(column => {
+      const saved = savedSearch && savedSearch.find(item => item.id === column.id);
+      return {
+        id: column.id,
+        name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
+        checked: saved ? saved.checked : false,
+        operators: column.operators,
+        field: column.displayName,
+        query: saved ? saved.query : { type: '', filter: null }
+      };
+    });
 
     this.columnDefs.push(
       ...columns.map(column => ({
@@ -202,12 +207,13 @@ export class CustomersComponent implements OnInit {
     if (this.gridOptions) {
       this.gridOptions.api = ev.api;
       this.gridOptions.api.sizeColumnsToFit();
-      this.onSearch();
+      this.searchColumnsChange();
     }
   }
 
-  searchColumnsChange(event) {
+  searchColumnsChange() {
     this.filterColumnsRequest = [];
+    localStorage.setItem('searchCustomers', JSON.stringify(this.searchColumns));
     this.searchColumns.map(column => {
       if (column.checked && column.query.type) {
         this.filterColumnsRequest.push({
@@ -246,7 +252,7 @@ export class CustomersComponent implements OnInit {
     }
   }
 
-  filterColumnsChange(event) {
+  filterColumnsChange() {
     this.reconfigColumns();
     this.searchColumnsChange({});
   }
