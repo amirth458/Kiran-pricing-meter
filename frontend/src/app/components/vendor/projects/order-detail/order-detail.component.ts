@@ -441,7 +441,7 @@ export class OrderDetailComponent implements OnInit {
     this.orderService
       .releaseProjectBidToCustomer(
         this.part.id,
-        this.selectedSuppliers.map(item => item.vendorId)
+        this.selectedSuppliers.filter(item => item.status.id === 2).map(item => item.vendorId)
       )
       .subscribe(v => {
         this.router.navigateByUrl(`/projects/released-projects/${this.part.id}`);
