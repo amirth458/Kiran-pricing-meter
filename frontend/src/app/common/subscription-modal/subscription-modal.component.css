@@ -25,6 +25,7 @@
   margin: 0 10px;
 }
 
-.orange {
-  background-color: var(--theme-orange);
+.orange,
+.orange:hover {
+  background-color: var(--theme-orange) !important;
 }
