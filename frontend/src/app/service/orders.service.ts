@@ -172,6 +172,15 @@ export class OrdersService {
         filter: false
       },
       {
+        headerName: 'Sub Order IDs',
+        field: 'partIds',
+        tooltip: params => (params.value || []).join(', '),
+        sortable: true,
+        filter: false,
+        valueFormatter: params => (params.value || []).join(', '),
+        width: 240
+      },
+      {
         headerName: 'Sub Order Count',
         field: 'subOrderCount',
         tooltip: params => params.value,
@@ -263,6 +272,15 @@ export class OrdersService {
         }
       },
       {
+        name: 'Sub Order IDs',
+        field: 'partIds',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
         name: 'Sub Order Count',
         field: 'subOrderCount',
         checked: false,
@@ -342,6 +360,11 @@ export class OrdersService {
       {
         name: 'Order ID',
         field: 'bidOrder.id',
+        checked: true
+      },
+      {
+        name: 'Sub Order IDs',
+        field: 'partIds',
         checked: true
       },
       {

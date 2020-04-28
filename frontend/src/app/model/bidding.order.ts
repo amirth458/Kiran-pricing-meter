@@ -8,7 +8,14 @@ export interface BiddingOrder {
   material: string;
   process: string;
   postProcess: string;
-  deliveryDate: string;
+  deliveryDate: Array<string>;
+  equipmentIds: Array<number>;
+  equipmentPropertyType: Array<string>;
+  equipmentPropertyValues: Array<string>;
+  materialIds: Array<number>;
+  materialPropertyType: Array<string>;
+  materialPropertyValues: Array<string>;
+  partIds: Array<number>;
 }
 
 export enum BiddingStatus {
