@@ -772,8 +772,8 @@ app-dropdown-cell-renderer {
   overflow: hidden !important;
 }
 
-.cdk-overlay-pane.owl-dt-popup {
+/* .cdk-overlay-pane.owl-dt-popup {
   bottom: unset !important;
   left: unset !important;
   right: 50px;
-}
+} */

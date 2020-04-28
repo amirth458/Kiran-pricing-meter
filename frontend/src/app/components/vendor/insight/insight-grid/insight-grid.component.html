@@ -1,3 +1,15 @@
-<p>
-  insight-grid works!
-</p>
+<div class="row h-100">
+  <div class="col-12 grid-info d-flex justify-content-end">
+    <span>{{ totalCount }} results</span>
+  </div>
+  <div class="col-12 table theme-table h-100">
+    <ag-grid-angular
+      class="ag-theme-balham w-100 h-100"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+      rowModelType="infinite"
+    >
+    </ag-grid-angular>
+  </div>
+</div>

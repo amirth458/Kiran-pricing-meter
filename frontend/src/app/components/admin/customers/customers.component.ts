@@ -33,8 +33,9 @@ export class CustomersComponent implements OnInit {
 
   matchingNames = {
     'Customer ID': 'customerId',
-    Name: 'userName',
-    'Company Name': 'customerName',
+    'Customer Name': 'customerName',
+    'First Name': 'userFirstName',
+    'Last Name': 'userLastName',
     'Company Division': 'customerDivision',
     Industry: 'customerIndustries',
     'Email Address': 'userEmail',
