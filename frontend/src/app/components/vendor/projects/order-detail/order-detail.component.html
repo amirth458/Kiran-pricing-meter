@@ -197,7 +197,11 @@
     </div>
 
     <div class="modal-footer d-flex align-items-center justify-content-center">
-      <button class="btn theme btn-primary btn-sm" (click)="releaseNewToVendor()">
+      <button
+        class="btn theme btn-primary btn-sm"
+        [disabled]="!canReleaseToNewVendorFlag"
+        (click)="releaseNewToVendor()"
+      >
         Release Project to Suppliers
       </button>
     </div>
