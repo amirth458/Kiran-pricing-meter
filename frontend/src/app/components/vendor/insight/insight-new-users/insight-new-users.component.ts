@@ -6,6 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./insight-new-users.component.css']
 })
 export class InsightNewUsersComponent implements OnInit {
+  columnDefs = [
+    {
+      headerName: 'User ID',
+      field: 'user_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'user_id',
+      headerTooltip: 'User ID'
+    }
+  ];
+
   constructor() {}
 
   ngOnInit() {}

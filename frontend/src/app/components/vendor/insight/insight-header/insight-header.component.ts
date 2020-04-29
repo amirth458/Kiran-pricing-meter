@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-insight-header',
@@ -6,6 +6,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./insight-header.component.css']
 })
 export class InsightHeaderComponent implements OnInit {
+  @Input() type;
   @Output() queryChange = new EventEmitter();
   @Output() createdDateChange = new EventEmitter();
   @Output() lastAttemptChange = new EventEmitter();
@@ -28,5 +29,9 @@ export class InsightHeaderComponent implements OnInit {
     } else {
       this.lastAttemptChange.emit(ev);
     }
+  }
+
+  hasLastAttempt() {
+    return ['customer', 'vendor'].includes(this.type);
   }
 }

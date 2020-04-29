@@ -9,8 +9,8 @@ import { ReportFilterOptions } from './../model/insight.model';
 export class ReportsService {
   constructor(public http: HttpClient) {}
 
-  getCustomerReports(filter: ReportFilterOptions) {
-    const url = `${environment.apiBaseUrl}/admin/insight/reports/customer-report`;
+  getReports(type, filter) {
+    const url = `${environment.apiBaseUrl}/admin/insight/reports/${type}-report`;
     const params = new HttpParams();
     params.append('page', filter.page.toString());
     params.append('size', filter.size.toString());

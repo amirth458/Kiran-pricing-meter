@@ -8,6 +8,6 @@ export interface ReportFilterOptions {
     searchValue: string;
     beginDateUpdated?: string;
     endDateUpdated?: string;
-    lastAttemptDate: string;
+    lastAttemptDate?: string;
   };
 }
