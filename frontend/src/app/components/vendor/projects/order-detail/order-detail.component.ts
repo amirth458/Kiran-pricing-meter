@@ -103,13 +103,16 @@ export class OrderDetailComponent implements OnInit {
         }
 
         this.orderService.getProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
-          this.matchingProfiles = res;
+          // TODO: Change the filter based on subscriptionTypeId not name
+          this.matchingProfiles = res.filter(
+            vendor => vendor.subscriptionType && vendor.subscriptionType === 'SHOPSIGHT_360_PLUS'
+          );
           this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
             (vendorId, index) => {
               const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
               return {
+                vendorId,
                 id: index + 1,
-                vendorId: vendorId,
                 vendorName: group[0].corporateName,
                 numberOfProfiles: group.length
               };
@@ -416,9 +419,15 @@ export class OrderDetailComponent implements OnInit {
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
 
-    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
-      this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
-    });
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
+      v => {
+        this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
+      },
+      err => {
+        console.log({ err });
+        this.toastr.error('Vendor not subscribed to SHOPSIGHT 360 PLUS selected.');
+      }
+    );
   }
 
   releaseNewToVendor() {

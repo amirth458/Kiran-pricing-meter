@@ -463,6 +463,7 @@ export interface MatchedProcessProfile {
   processProfileName: string;
   equipment: string;
   material: string;
+  subscriptionType: string;
 }
 
 export enum AppPartStatus {
