@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { combineLatest } from 'rxjs';
 
 import { OrdersService } from 'src/app/service/orders.service';
@@ -32,7 +32,7 @@ export class OrderDetailComponent implements OnInit {
   selectedVendor;
 
   supplierGridOptions: GridOptions[] = [];
-  supplierColumnDefs = [];
+  supplierColumnDefs: Array<ColDef[]> = [];
 
   vendorProfileGridOptions: GridOptions;
   vendorProfileColumnDefs;
@@ -103,10 +103,7 @@ export class OrderDetailComponent implements OnInit {
         }
 
         this.orderService.getProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
-          // TODO: Change the filter based on subscriptionTypeId not name
-          this.matchingProfiles = res.filter(
-            vendor => vendor.subscriptionType && vendor.subscriptionType === 'SHOPSIGHT_360_PLUS'
-          );
+          this.matchingProfiles = res;
           this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
             (vendorId, index) => {
               const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
@@ -114,7 +111,9 @@ export class OrderDetailComponent implements OnInit {
                 vendorId,
                 id: index + 1,
                 vendorName: group[0].corporateName,
-                numberOfProfiles: group.length
+                numberOfProfiles: group.length,
+                subscription: group[0].subscriptionType,
+                subscriptionId: group[0].subscriptionId
               };
             }
           );
@@ -150,6 +149,14 @@ export class OrderDetailComponent implements OnInit {
           cellRendererParams: {
             ngTemplate: this.vendorCell
           }
+        },
+        {
+          headerName: 'Subscription Type',
+          field: 'subscription',
+          hide: false,
+          sortable: false,
+          filter: false,
+          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '-')
         },
         {
           headerName: 'Quantity of Process Profiles',
@@ -210,6 +217,10 @@ export class OrderDetailComponent implements OnInit {
         headerHeight: 35,
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
+        isRowSelectable: rowNode => {
+          // Only allow SHOPSIGHT 360 PLUS SUBSCRIBERS
+          return rowNode.data && rowNode.data.subscription ? rowNode.data.subscriptionId === 4 : false;
+        },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
             if (ev.api.getSelectedRows().length > this.maxNum) {
