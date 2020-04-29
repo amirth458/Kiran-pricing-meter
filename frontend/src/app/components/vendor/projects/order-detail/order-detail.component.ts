@@ -112,7 +112,8 @@ export class OrderDetailComponent implements OnInit {
                 id: index + 1,
                 vendorName: group[0].corporateName,
                 numberOfProfiles: group.length,
-                subscription: group[0].subscriptionType
+                subscription: group[0].subscriptionType,
+                subscriptionId: group[0].subscriptionId
               };
             }
           );
@@ -155,7 +156,7 @@ export class OrderDetailComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false,
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
+          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '-')
         },
         {
           headerName: 'Quantity of Process Profiles',
@@ -194,14 +195,6 @@ export class OrderDetailComponent implements OnInit {
           }
         },
         {
-          headerName: 'Subscription Type',
-          field: 'subscription',
-          hide: false,
-          sortable: false,
-          filter: false,
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
-        },
-        {
           headerName: '',
           cellRenderer: 'templateRenderer',
           cellRendererParams: {
@@ -225,7 +218,8 @@ export class OrderDetailComponent implements OnInit {
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
         isRowSelectable: rowNode => {
-          return rowNode.data && rowNode.data.subscription ? rowNode.data.subscription === 'SHOPSIGHT_360_PLUS' : false;
+          // Only allow SHOPSIGHT 360 PLUS SUBSCRIBERS
+          return rowNode.data && rowNode.data.subscription ? rowNode.data.subscriptionId === 4 : false;
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -271,14 +265,6 @@ export class OrderDetailComponent implements OnInit {
           }
         },
         {
-          headerName: 'Subscription Type',
-          field: 'subscription',
-          hide: false,
-          sortable: false,
-          filter: false,
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '-')
-        },
-        {
           headerName: 'Quantity of Process Profiles',
           field: 'numberOfProfiles',
           hide: false,
@@ -302,14 +288,6 @@ export class OrderDetailComponent implements OnInit {
           valueGetter: 'node.rowIndex + 1',
           checkboxSelection: true,
           width: 30
-        },
-        {
-          headerName: 'Subscription Type',
-          field: 'subscription',
-          hide: false,
-          sortable: false,
-          filter: false,
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
         },
         {
           headerName: 'Vendor Name',
