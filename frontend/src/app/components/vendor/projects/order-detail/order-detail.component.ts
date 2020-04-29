@@ -52,7 +52,8 @@ export class OrderDetailComponent implements OnInit {
   availableSuppliers = [];
 
   part: Part;
-
+  canReleaseToNewVendorFlag = true;
+  canReleaseToVendorFlag = true;
   constructor(
     public orderService: OrdersService,
     public metadataService: MetadataService,
@@ -429,12 +430,14 @@ export class OrderDetailComponent implements OnInit {
         releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
-
+    this.canReleaseToVendorFlag = false;
     this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
       v => {
         this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
+        this.canReleaseToVendorFlag = true;
       },
       err => {
+        this.canReleaseToVendorFlag = true;
         console.log({ err });
         this.toastr.error('Vendor not subscribed to SHOPSIGHT 360 PLUS selected.');
       }
@@ -451,10 +454,16 @@ export class OrderDetailComponent implements OnInit {
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
 
-    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
-      this.setSuppliers(v.partId);
-      this.modal.dismissAll();
-    });
+    this.canReleaseToNewVendorFlag = false;
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
+      v => {
+        this.setSuppliers(v.partId);
+        this.modal.dismissAll();
+      },
+      err => {
+        this.canReleaseToNewVendorFlag = true;
+      }
+    );
   }
 
   releaseToCustomer() {
@@ -490,6 +499,10 @@ export class OrderDetailComponent implements OnInit {
   }
 
   canReleaseToVendor() {
-    return this.supplierGridOptions[0].api && this.supplierGridOptions[0].api.getSelectedRows().length === 3;
+    return (
+      this.supplierGridOptions[0].api &&
+      this.supplierGridOptions[0].api.getSelectedRows().length === 3 &&
+      this.canReleaseToVendorFlag
+    );
   }
 }
