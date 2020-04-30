@@ -103,7 +103,7 @@ export class OrderDetailComponent implements OnInit {
           }
         }
 
-        this.orderService.getProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
+        this.orderService.getMatchingProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
           this.matchingProfiles = res;
           this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
             (vendorId, index) => {

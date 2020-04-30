@@ -50,17 +50,19 @@ export class PriceDetailComponent implements OnInit {
     this.selectedTabId$.subscribe(async v => {
       if (v === 2 && this.processProfiles === null) {
         if (this.isShowingGlobalRuleProfile$.value) {
-          this.getGlobalRuleAppliedProcessProfile();
+          // this.getGlobalRuleAppliedProcessProfile();
+          this.getProcessProfile(true);
         } else {
-          this.getProcessProfile();
+          this.getProcessProfile(false);
         }
       }
       if (v === 3 && this.pricingProfiles === null) {
         if (this.processProfiles === null) {
           if (this.isShowingGlobalRuleProfile$.value) {
-            await this.getGlobalRuleAppliedProcessProfile();
+            // await this.getGlobalRuleAppliedProcessProfile();
+            await this.getProcessProfile(true);
           } else {
-            await this.getProcessProfile();
+            await this.getProcessProfile(false);
           }
         }
 
@@ -75,17 +77,19 @@ export class PriceDetailComponent implements OnInit {
     this.isShowingGlobalRuleProfile$.subscribe(async v => {
       if (v) {
         if (this.selectedTabId$.value === 3) {
-          await this.getGlobalRuleAppliedProcessProfile();
+          // await this.getGlobalRuleAppliedProcessProfile();
+          await this.getProcessProfile(true);
           this.getPricingProfiles();
         } else {
-          this.getGlobalRuleAppliedProcessProfile();
+          // this.getGlobalRuleAppliedProcessProfile();
+          this.getProcessProfile(true);
         }
       } else if (v === false && this.processProfiles != null) {
         if (this.selectedTabId$.value === 3) {
-          await this.getProcessProfile();
+          await this.getProcessProfile(false);
           this.getPricingProfiles();
         } else {
-          this.getProcessProfile();
+          this.getProcessProfile(false);
         }
       }
 
@@ -147,9 +151,9 @@ export class PriceDetailComponent implements OnInit {
 
   ngOnInit() {}
 
-  async getProcessProfile(q = null) {
+  async getProcessProfile(applyGlobalRule = false) {
     this.spinner.show();
-    const res = await this.ordersService.getProcessProfiles(this.part.rfqMedia.id).toPromise();
+    const res = await this.ordersService.getMatchingProcessProfiles(this.part.rfqMedia.id, applyGlobalRule).toPromise();
 
     this.processProfiles = [];
     this.processProfiles = res.map(item => ({
