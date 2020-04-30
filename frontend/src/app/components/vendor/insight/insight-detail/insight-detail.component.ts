@@ -2,7 +2,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, OnInit, Input } from '@angular/core';
 import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 
-import { ReportFilterOptions } from './../../../../model/insight.model';
 import { ReportsService } from 'src/app/service/reports.service';
 
 @Component({
@@ -46,22 +45,22 @@ export class InsightDetailComponent implements OnInit {
       rowCount: 0,
       getRows: params => {
         this.spinner.show('spooler');
-        this.reportsService
-          .getCustomerReports({
-            page: params.startRow / this.pageSize,
-            size: this.pageSize,
-            sort: '',
-            filters: {
-              beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
-              endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-              searchValue: this.searchQuery,
-              lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : null
-            }
-          })
-          .subscribe(data => {
-            this.spinner.hide('spooler');
-            this.refreshData(params, data);
-          });
+        const filter = {
+          page: params.startRow / this.pageSize,
+          size: this.pageSize,
+          sort: '',
+          filters: {
+            beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
+            endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
+            searchValue: this.searchQuery,
+            lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
+          }
+        };
+
+        this.reportsService.getReports(this.type, filter).subscribe(data => {
+          this.spinner.hide('spooler');
+          this.refreshData(params, data);
+        });
       }
     };
     if (this.gridOptions && this.gridOptions.api) {

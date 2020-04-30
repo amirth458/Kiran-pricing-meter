@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-12">
       <app-insight-header
+        [type]="type"
         (queryChange)="onQueryChange($event)"
         (createdDateChange)="onCreatedDateChange($event)"
         (lastAttemptChange)="onLastAttemptChange($event)"

@@ -20,7 +20,7 @@ export class InsightContainerComponent implements OnInit {
     const menus = [
       'Customers',
       'Vendors',
-      'New Users',
+      // 'New Users',
       'Facility',
       'RFQ',
       'Part',
