@@ -220,8 +220,6 @@ export class OrderDetailComponent implements OnInit {
         rowMultiSelectWithClick: true,
         isRowSelectable: rowNode => {
           // Only allow SHOPSIGHT 360 PLUS SUBSCRIBERS
-          return true;
-          // TODO:
           return rowNode.data && rowNode.data.subscriptionId ? rowNode.data.subscriptionId === 4 : false;
         },
         onRowSelected: ev => {
