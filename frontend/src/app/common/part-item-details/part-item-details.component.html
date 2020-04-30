@@ -80,7 +80,7 @@
               <tr>
                 <td class="pl-0 pr-0 text-theme">
                   Target Delivery Date:
-                  {{ part?.targetDeliveryDate | date: 'MM/dd/yyyy' }}
+                  {{ part?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}
                 </td>
               </tr>
             </tbody>

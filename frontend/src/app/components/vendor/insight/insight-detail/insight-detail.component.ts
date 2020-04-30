@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, OnInit, Input } from '@angular/core';
 import { GridOptions, GridReadyEvent } from 'ag-grid-community';
@@ -91,5 +92,15 @@ export class InsightDetailComponent implements OnInit {
   onLastAttemptChange(ev) {
     this.lastAttemptDate = ev;
     this.onSearch();
+  }
+
+  onFilterColumnsChange(ev) {
+    this.columnDefs = this.columnDefs.map(item => ({
+      ...item,
+      hide: (ev.find(v => v.name === item.headerName) || { hide: false }).hide
+    }));
+    if (this.gridOptions && this.gridOptions.api) {
+      this.gridOptions.api.setColumnDefs(this.columnDefs);
+    }
   }
 }

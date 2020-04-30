@@ -125,6 +125,16 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'Country'
     },
     {
+      headerName: 'Facility Certs',
+      field: 'facility_certs',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'facility_certs',
+      headerTooltip: 'Facility Certs',
+      valueFormatter: v => v && v.value && v.value.join(',')
+    },
+    {
       headerName: 'Part Certs',
       field: 'part_certs',
       hide: false,
