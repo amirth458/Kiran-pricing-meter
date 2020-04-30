@@ -33,7 +33,7 @@ export class InsightPricingProfileComponent implements OnInit {
       filter: false,
       tooltipField: 'pricing_condition',
       headerTooltip: 'Pricing Condition 1',
-      valueFormatter: v => this.getPricingCondition(v)
+      valueFormatter: v => this.getPricingCondition(v.value)
     },
     {
       headerName: 'Process Profile ID',
@@ -103,8 +103,14 @@ export class InsightPricingProfileComponent implements OnInit {
 
   ngOnInit() {}
 
-  getPricingCondition(v) {
-    console.log(v);
-    return '';
+  getPricingCondition(value) {
+    return value
+      ? value
+          .map(
+            v =>
+              `${v.process_pricng_condition_type} ${v.operator_type_symbol} ${v.process_pricng_condition_value} ${v.measurement_unit_type_symbol}`
+          )
+          .join(',')
+      : '';
   }
 }

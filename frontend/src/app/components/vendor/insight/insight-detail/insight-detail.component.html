@@ -3,9 +3,11 @@
     <div class="col-12">
       <app-insight-header
         [type]="type"
+        [columns]="columnDefs"
         (queryChange)="onQueryChange($event)"
         (createdDateChange)="onCreatedDateChange($event)"
         (lastAttemptChange)="onLastAttemptChange($event)"
+        (filterColumnsChange)="onFilterColumnsChange($event)"
       ></app-insight-header>
     </div>
   </div>

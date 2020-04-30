@@ -21,7 +21,7 @@ export const environment = {
       active: true
     },
     {
-      name: 'Pricing',
+      name: 'Program',
       route: '/pricing',
       icon: 'far fa-list-alt',
       visible: true,

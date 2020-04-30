@@ -18,3 +18,28 @@ span {
 .color-sky-blue {
   color: var(--theme-sky-blue) !important;
 }
+
+.filter-columns-modal div.icon {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  background: var(--theme-btn-primary);
+  color: white;
+  height: 100%;
+}
+
+.filter-columns-modal div.icon:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.filter-columns-modal input {
+  border: 1px solid #80808036;
+}
+
+.filter-columns-modal .options {
+  height: 300px;
+  max-height: 300px;
+  overflow: scroll;
+}
