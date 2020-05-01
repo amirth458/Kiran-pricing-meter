@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { combineLatest } from 'rxjs';
 
 import { OrdersService } from 'src/app/service/orders.service';
@@ -32,7 +32,7 @@ export class OrderDetailComponent implements OnInit {
   selectedVendor;
 
   supplierGridOptions: GridOptions[] = [];
-  supplierColumnDefs = [];
+  supplierColumnDefs: Array<ColDef[]> = [];
 
   vendorProfileGridOptions: GridOptions;
   vendorProfileColumnDefs;
@@ -52,7 +52,8 @@ export class OrderDetailComponent implements OnInit {
   availableSuppliers = [];
 
   part: Part;
-
+  canReleaseToNewVendorFlag = true;
+  canReleaseToVendorFlag = true;
   constructor(
     public orderService: OrdersService,
     public metadataService: MetadataService,
@@ -101,25 +102,34 @@ export class OrderDetailComponent implements OnInit {
             this.router.navigateByUrl(`/projects/released-projects/${id}`);
           }
         }
+        this.supplierGridOptions[0].api.showLoadingOverlay();
+        this.orderService.getMatchingProcessProfiles(this.part.rfqMedia.id).subscribe(
+          res => {
+            this.matchingProfiles = res;
+            this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
+              (vendorId, index) => {
+                const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
+                return {
+                  vendorId,
+                  id: index + 1,
+                  vendorName: group[0].corporateName,
+                  numberOfProfiles: group.length,
+                  subscription: group[0].subscriptionType,
+                  subscriptionId: group[0].subscriptionId
+                };
+              }
+            );
+            this.supplierGridOptions[0].api.hideOverlay();
 
-        this.orderService.getProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
-          this.matchingProfiles = res;
-          this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
-            (vendorId, index) => {
-              const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
-              return {
-                id: index + 1,
-                vendorId: vendorId,
-                vendorName: group[0].corporateName,
-                numberOfProfiles: group.length
-              };
+            if (this.type !== 'project-release-queue') {
+              this.setSuppliers(id);
             }
-          );
-
-          if (this.type !== 'project-release-queue') {
-            this.setSuppliers(id);
+          },
+          err => {
+            console.log({ err });
+            this.supplierGridOptions[0].api.hideOverlay();
           }
-        });
+        );
       });
     });
   }
@@ -147,6 +157,14 @@ export class OrderDetailComponent implements OnInit {
           cellRendererParams: {
             ngTemplate: this.vendorCell
           }
+        },
+        {
+          headerName: 'Subscription Type',
+          field: 'subscription',
+          hide: false,
+          sortable: false,
+          filter: false,
+          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '-')
         },
         {
           headerName: 'Quantity of Process Profiles',
@@ -207,6 +225,10 @@ export class OrderDetailComponent implements OnInit {
         headerHeight: 35,
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
+        isRowSelectable: rowNode => {
+          // Only allow SHOPSIGHT 360 PLUS SUBSCRIBERS
+          return rowNode.data && rowNode.data.subscriptionId ? rowNode.data.subscriptionId === 4 : false;
+        },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
             if (ev.api.getSelectedRows().length > this.maxNum) {
@@ -415,10 +437,18 @@ export class OrderDetailComponent implements OnInit {
         releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
-
-    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
-      this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
-    });
+    this.canReleaseToVendorFlag = false;
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
+      v => {
+        this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
+        this.canReleaseToVendorFlag = true;
+      },
+      err => {
+        this.canReleaseToVendorFlag = true;
+        console.log({ err });
+        this.toastr.error('Vendor not subscribed to SHOPSIGHT 360 PLUS selected.');
+      }
+    );
   }
 
   releaseNewToVendor() {
@@ -431,17 +461,23 @@ export class OrderDetailComponent implements OnInit {
       }))
       .sort((a, b) => a.releasePriority - b.releasePriority);
 
-    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(v => {
-      this.setSuppliers(v.partId);
-      this.modal.dismissAll();
-    });
+    this.canReleaseToNewVendorFlag = false;
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
+      v => {
+        this.setSuppliers(v.partId);
+        this.modal.dismissAll();
+      },
+      err => {
+        this.canReleaseToNewVendorFlag = true;
+      }
+    );
   }
 
   releaseToCustomer() {
     this.orderService
       .releaseProjectBidToCustomer(
         this.part.id,
-        this.selectedSuppliers.map(item => item.vendorId)
+        this.selectedSuppliers.filter(item => item.status.id === 2).map(item => item.vendorId)
       )
       .subscribe(v => {
         this.router.navigateByUrl(`/projects/released-projects/${this.part.id}`);
@@ -449,29 +485,39 @@ export class OrderDetailComponent implements OnInit {
   }
 
   setSuppliers(partId) {
-    this.orderService.getBidProjectProcesses(partId).subscribe(v => {
-      this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
-      this.selectedSuppliers = v.map(res => {
-        const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
+    this.supplierGridOptions[0].api.showLoadingOverlay();
+    this.orderService.getBidProjectProcesses(partId).subscribe(
+      v => {
+        this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
+        this.selectedSuppliers = v.map(res => {
+          const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
 
-        return {
-          id: res.id,
-          vendorId: res.vendorId,
-          vendorName: res.vendorName,
-          numberOfProfiles: group.length,
-          status: res.bidProjectProcessStatusType
-        };
-      });
-    });
-  }
-
-  canReleaseToCustomer() {
-    return (
-      this.selectedSuppliers.length === 3 && this.selectedSuppliers.filter(item => item.status.id === 2).length === 3
+          return {
+            id: res.id,
+            vendorId: res.vendorId,
+            vendorName: res.vendorName,
+            numberOfProfiles: group.length,
+            status: res.bidProjectProcessStatusType
+          };
+        });
+        this.supplierGridOptions[0].api.hideOverlay();
+      },
+      err => {
+        console.log({ err });
+        this.supplierGridOptions[0].api.hideOverlay();
+      }
     );
   }
 
+  canReleaseToCustomer() {
+    return this.selectedSuppliers.filter(item => item.status.id === 2).length === 3;
+  }
+
   canReleaseToVendor() {
-    return this.supplierGridOptions[0].api && this.supplierGridOptions[0].api.getSelectedRows().length === 3;
+    return (
+      this.supplierGridOptions[0].api &&
+      this.supplierGridOptions[0].api.getSelectedRows().length === 3 &&
+      this.canReleaseToVendorFlag
+    );
   }
 }

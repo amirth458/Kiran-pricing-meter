@@ -2,6 +2,7 @@ import { ActionService } from './../../service/action.service';
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { EventEmitterService } from 'src/app/components/event-emitter.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-action-bar',
@@ -24,7 +25,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
   constructor(
     public route: Router,
     public eventEmitterService: EventEmitterService,
-    public actionService: ActionService
+    public actionService: ActionService,
+    public location: Location
   ) {
     this.route.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
@@ -80,8 +82,12 @@ export class ActionBarComponent implements OnInit, OnChanges {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
     } else if (this.route.url.includes('/user-manage/customers/view/')) {
       this.route.navigateByUrl('/user-manage/customers');
+    } else if (this.route.url.includes('/projects/')) {
+      this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
     } else if (urlArray.length > 6) {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}/${urlArray[4]}`);
+    } else if (this.route.url.includes('billing/payment/details/')) {
+      this.location.back();
     } else {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
     }

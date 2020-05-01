@@ -180,3 +180,14 @@ a.priority-btn:not([href]) {
   color: var(--theme-bright-blue);
   cursor: pointer;
 }
+
+:host .cdk-global-scrollblock {
+  position: static;
+  overflow: hidden !important;
+}
+
+:host .cdk-overlay-pane.owl-dt-popup {
+  bottom: unset !important;
+  left: unset !important;
+  right: 50px;
+}

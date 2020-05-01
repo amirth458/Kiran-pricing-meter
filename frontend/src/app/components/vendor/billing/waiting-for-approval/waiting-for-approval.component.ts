@@ -405,6 +405,14 @@ export class WaitingForApprovalComponent implements OnInit {
         filter: false
       },
       {
+        headerName: 'Project Type',
+        field: 'projectType',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: v => v && v.value && ProjectType[v.value]
+      },
+      {
         headerName: 'Payment Type',
         field: 'paymentType',
         hide: true,
@@ -428,7 +436,8 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 160
+        width: 150,
+        suppressSizeToFit: true
       },
       {
         headerName: 'Action',
@@ -440,7 +449,8 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 100
+        width: 110,
+        suppressSizeToFit: true
       }
     ];
 

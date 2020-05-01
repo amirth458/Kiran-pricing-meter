@@ -1,0 +1,45 @@
+.wrapper {
+  font-size: 13px;
+}
+
+.action-btn {
+  font-size: 24px !important;
+  width: 34px !important;
+  height: 34px !important;
+  padding: 5px !important;
+  line-height: 24px;
+  margin: 0 5px;
+}
+
+span {
+  color: var(--theme-dark-blue);
+}
+
+.color-sky-blue {
+  color: var(--theme-sky-blue) !important;
+}
+
+.filter-columns-modal div.icon {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  background: var(--theme-btn-primary);
+  color: white;
+  height: 100%;
+}
+
+.filter-columns-modal div.icon:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.filter-columns-modal input {
+  border: 1px solid #80808036;
+}
+
+.filter-columns-modal .options {
+  height: 300px;
+  max-height: 300px;
+  overflow: scroll;
+}

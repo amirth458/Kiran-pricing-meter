@@ -1,0 +1,34 @@
+<div class="wrapper shadow p-4 w-100 h-100 d-flex flex-column">
+  <div class="row">
+    <div class="col-12">
+      <app-insight-header
+        [type]="type"
+        [columns]="columnDefs"
+        (queryChange)="onQueryChange($event)"
+        (createdDateChange)="onCreatedDateChange($event)"
+        (lastAttemptChange)="onLastAttemptChange($event)"
+        (filterColumnsChange)="onFilterColumnsChange($event)"
+      ></app-insight-header>
+    </div>
+  </div>
+  <div class="row flex-grow-1">
+    <div class="col-12">
+      <app-insight-grid
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+        [totalCount]="totalCount"
+      ></app-insight-grid>
+
+      <ngx-spinner
+        [name]="'spooler'"
+        bdColor="#ffffff80"
+        size="small"
+        color="#74bf09"
+        type="ball-clip-rotate"
+        [fullScreen]="false"
+      >
+        <p class="m-0">Loading...</p>
+      </ngx-spinner>
+    </div>
+  </div>
+</div>

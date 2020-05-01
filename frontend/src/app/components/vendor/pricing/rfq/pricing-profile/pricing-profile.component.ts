@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
@@ -19,6 +19,8 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
 export class PricingProfileComponent implements OnInit {
   @Input() part: Part;
   @Input() rowData: any[];
+  @Input() isShowingGlobalRuleProfile;
+  @Output() toggleProfileView: EventEmitter<boolean> = new EventEmitter(null);
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
   @ViewChild('checkBoxCell') checkBoxCell: TemplateRef<any>;
   type = ['search', 'filter'];
@@ -197,9 +199,10 @@ export class PricingProfileComponent implements OnInit {
   navigation;
 
   selected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-
+  showViewToggle = false;
   constructor(public router: Router, public spinner: NgxSpinnerService, private pricingService: RfqPricingService) {
     this.navigation = this.router.getCurrentNavigation();
+    this.showViewToggle = this.router.url.includes('/pricing/rfq/auto-prices');
   }
 
   ngOnInit() {
@@ -407,5 +410,9 @@ export class PricingProfileComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  toggleView() {
+    this.toggleProfileView.emit(!this.isShowingGlobalRuleProfile);
   }
 }

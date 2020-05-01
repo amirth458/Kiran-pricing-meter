@@ -47,7 +47,10 @@
           route.url.includes('auto-prices/') ||
           route.url.includes('manual-price/') ||
           route.url.includes('billing/payment/details/') ||
-          route.url.includes('user-manage/customers/view'))
+          route.url.includes('user-manage/customers/view') ||
+          route.url.startsWith('/projects/project-release-queue/') ||
+          route.url.startsWith('/projects/vendor-confirmation-queue/') ||
+          route.url.startsWith('/projects/released-projects/'))
       "
     >
       <button type="button" class="btn btn-add theme white" (click)="backButton()">

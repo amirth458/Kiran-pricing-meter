@@ -42,6 +42,18 @@ import { PasswordComponent } from 'src/app/components/admin/password/password.co
 import { ShippingComponent } from 'src/app/components/admin/shipping/shipping.component';
 import { ProjectsListComponent } from 'src/app/components/vendor/projects/projects-list/projects-list.component';
 
+import { InsightContainerComponent } from './../../components/vendor/insight/insight-container/insight-container.component';
+import { InsightCustomersComponent } from './../../components/vendor/insight/insight-customers/insight-customers.component';
+import { InsightVendorsComponent } from './../../components/vendor/insight/insight-vendors/insight-vendors.component';
+// import { InsightNewUsersComponent } from './../../components/vendor/insight/insight-new-users/insight-new-users.component';
+import { InsightFacilityComponent } from './../../components/vendor/insight/insight-facility/insight-facility.component';
+import { InsightRfqComponent } from './../../components/vendor/insight/insight-rfq/insight-rfq.component';
+import { InsightPartComponent } from './../../components/vendor/insight/insight-part/insight-part.component';
+import { InsightBidComponent } from './../../components/vendor/insight/insight-bid/insight-bid.component';
+import { InsightOrderComponent } from './../../components/vendor/insight/insight-order/insight-order.component';
+import { InsightProcessProfileComponent } from './../../components/vendor/insight/insight-process-profile/insight-process-profile.component';
+import { InsightPricingProfileComponent } from './../../components/vendor/insight/insight-pricing-profile/insight-pricing-profile.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -243,6 +255,26 @@ const routes: Routes = [
           {
             path: '',
             redirectTo: 'project-release-queue'
+          }
+        ]
+      },
+      {
+        path: 'insight',
+        component: InsightContainerComponent,
+        children: [
+          { path: 'customers', component: InsightCustomersComponent },
+          { path: 'vendors', component: InsightVendorsComponent },
+          // { path: 'new-users', component: InsightNewUsersComponent },
+          { path: 'facility', component: InsightFacilityComponent },
+          { path: 'rfq', component: InsightRfqComponent },
+          { path: 'part', component: InsightPartComponent },
+          { path: 'bid', component: InsightBidComponent },
+          { path: 'order', component: InsightOrderComponent },
+          { path: 'process-profile', component: InsightProcessProfileComponent },
+          { path: 'pricing-profile', component: InsightPricingProfileComponent },
+          {
+            path: '',
+            redirectTo: 'customers'
           }
         ]
       },

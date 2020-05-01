@@ -1,0 +1,92 @@
+<div class="wrapper d-flex justify-content-between flex-wrap">
+  <div class="d-flex align-items-center">
+    <div class="search-bar mr-4">
+      <app-search-bar [(search)]="search" (searchChange)="onSearchChange($event)"></app-search-bar>
+    </div>
+    <div class="d-flex mr-3">
+      <label>
+        Created Date
+        <input
+          readonly
+          class="ml-3"
+          #dateTimeSelector
+          [owlDateTime]="dt1"
+          [owlDateTimeTrigger]="dt1"
+          [selectMode]="'range'"
+          [(ngModel)]="createdDateRange"
+          (ngModelChange)="onTimeChanged('created')"
+        />
+        <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+      </label>
+    </div>
+    <div class="d-flex mr-3" *ngIf="hasLastAttempt()">
+      <span>Last Attempt</span>
+      <input
+        class="ml-3"
+        readonly
+        #dateTimeSelector
+        [owlDateTime]="dt2"
+        [owlDateTimeTrigger]="dt2"
+        [(ngModel)]="lastAttemptDate"
+        (ngModelChange)="onTimeChanged('lastAttempt')"
+      />
+      <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+    </div>
+  </div>
+
+  <div class="actions d-flex">
+    <button class="theme white btn action-btn" (click)="onFiltercolumns()">
+      <i class="fa fa-list"></i>
+    </button>
+    <button class="theme white btn action-btn color-sky-blue">
+      <i class="far fa-chart-bar"></i>
+    </button>
+    <button class="theme white btn action-btn">
+      <i class="far fa-file-excel"></i>
+    </button>
+    <button class="theme white btn action-btn">
+      <i class="fas fa-print"></i>
+    </button>
+  </div>
+</div>
+
+<ng-template #filterColumns let-modal>
+  <div class="filter-columns-modal">
+    <div class="modal-header">
+      <div class="w-100">
+        <h4 class="modal-title text-theme-green text-capitalize w-100 text-center" id="modal-basic-title">Columns</h4>
+      </div>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row search">
+        <div class="shadow mt-3 mx-4 p-3 text-theme options w-100">
+          <div *ngFor="let option of columnsClone" class="d-flex align-items-center">
+            <span class="icon text-theme-green" *ngIf="!option.hide" (click)="setColumnVisibility(option)">
+              <i class="fas fa-check-square"></i>
+            </span>
+
+            <span class="icon text-theme-green" *ngIf="option.hide" (click)="setColumnVisibility(option)">
+              <i class="far fa-square"></i>
+            </span>
+
+            <div (click)="setColumnVisibility(option)" class="option-item active" [ngClass]="{ active: !option.hide }">
+              <p class="m-2">{{ option.name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer row justify-content-center" ngbAutofocus>
+      <div class="col-md-4">
+        <button type="button" (click)="onFilterColumnsChange()" class="col btn theme">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

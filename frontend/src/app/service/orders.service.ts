@@ -143,9 +143,13 @@ export class OrdersService {
     return this.http.put(url, data);
   }
 
-  getProcessProfiles(rfqMediaId: number): Observable<MatchedProcessProfile[]> {
-    const url = `${environment.apiBaseUrl}/admin/part/matching-process-profile?rfq-media-id=${rfqMediaId}`;
-    return this.http.get<MatchedProcessProfile[]>(url);
+  getMatchingProcessProfiles(rfqMediaId: number, isGlobalRule = false, appId = 3): Observable<MatchedProcessProfile[]> {
+    const url = `${environment.apiBaseUrl}/admin/part/matching-process-profile`;
+    return this.http.post<MatchedProcessProfile[]>(url, {
+      rfqMediaId,
+      appId,
+      isGlobalRule
+    });
   }
 
   getMatchedProfiles(userId: number, rfqMediaIds: number[]): Observable<ProcessProfileDetailedView[]> {
@@ -170,6 +174,15 @@ export class OrdersService {
         tooltip: params => params.value,
         sortable: true,
         filter: false
+      },
+      {
+        headerName: 'Sub Order IDs',
+        field: 'partIds',
+        tooltip: params => (params.value || []).join(', '),
+        sortable: true,
+        filter: false,
+        valueFormatter: params => (params.value || []).join(', '),
+        width: 240
       },
       {
         headerName: 'Sub Order Count',
@@ -263,6 +276,15 @@ export class OrdersService {
         }
       },
       {
+        name: 'Sub Order IDs',
+        field: 'partIds',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
         name: 'Sub Order Count',
         field: 'subOrderCount',
         checked: false,
@@ -342,6 +364,11 @@ export class OrdersService {
       {
         name: 'Order ID',
         field: 'bidOrder.id',
+        checked: true
+      },
+      {
+        name: 'Sub Order IDs',
+        field: 'partIds',
         checked: true
       },
       {

@@ -21,18 +21,11 @@ export const environment = {
       active: true
     },
     {
-      name: 'Pricing',
+      name: 'Program',
       route: '/pricing',
       icon: 'far fa-list-alt',
       visible: true,
       active: true
-    },
-    {
-      name: 'Insight',
-      route: '/insight',
-      icon: 'far fa-chart-bar',
-      visible: true,
-      active: false
     },
     {
       name: 'Billing',
@@ -40,14 +33,21 @@ export const environment = {
       icon: 'fas fa-file-invoice-dollar',
       visible: true,
       active: true
+    },
+    {
+      name: 'Projects',
+      route: '/projects',
+      icon: 'fas fa-folder',
+      visible: false,
+      active: false
+    },
+    {
+      name: 'Insight',
+      route: '/insight',
+      icon: 'fa fa-search',
+      visible: false,
+      active: false
     }
-    // {
-    //   name: 'Projects',
-    //   route: '/projects',
-    //   icon: 'fas fa-folder',
-    //   visible: true,
-    //   active: true
-    // }
   ],
   admin_menus: [],
   extendedmenu: [

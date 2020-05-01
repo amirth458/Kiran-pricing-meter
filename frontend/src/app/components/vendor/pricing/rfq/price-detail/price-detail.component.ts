@@ -28,6 +28,7 @@ export class PriceDetailComponent implements OnInit {
   public customer: CustomerDetails;
   public tabs = [];
   public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
+  public isShowingGlobalRuleProfile$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   processProfiles: any[] = null;
   pricingProfiles: any[] = null;
@@ -48,17 +49,52 @@ export class PriceDetailComponent implements OnInit {
 
     this.selectedTabId$.subscribe(async v => {
       if (v === 2 && this.processProfiles === null) {
-        this.getProcessProfile();
+        if (this.isShowingGlobalRuleProfile$.value) {
+          // this.getGlobalRuleAppliedProcessProfile();
+          this.getProcessProfile(true);
+        } else {
+          this.getProcessProfile(false);
+        }
       }
       if (v === 3 && this.pricingProfiles === null) {
         if (this.processProfiles === null) {
-          await this.getProcessProfile();
+          if (this.isShowingGlobalRuleProfile$.value) {
+            // await this.getGlobalRuleAppliedProcessProfile();
+            await this.getProcessProfile(true);
+          } else {
+            await this.getProcessProfile(false);
+          }
         }
+
         if (this.processProfiles.length) {
           this.getPricingProfiles();
         } else {
           this.pricingProfiles = [];
         }
+      }
+    });
+
+    this.isShowingGlobalRuleProfile$.subscribe(async v => {
+      if (v) {
+        if (this.selectedTabId$.value === 3) {
+          // await this.getGlobalRuleAppliedProcessProfile();
+          await this.getProcessProfile(true);
+          this.getPricingProfiles();
+        } else {
+          // this.getGlobalRuleAppliedProcessProfile();
+          this.getProcessProfile(true);
+        }
+      } else if (v === false && this.processProfiles != null) {
+        if (this.selectedTabId$.value === 3) {
+          await this.getProcessProfile(false);
+          this.getPricingProfiles();
+        } else {
+          this.getProcessProfile(false);
+        }
+      }
+
+      if (this.selectedTabId$.value === 2) {
+        this.pricingProfiles = null;
       }
     });
   }
@@ -115,10 +151,11 @@ export class PriceDetailComponent implements OnInit {
 
   ngOnInit() {}
 
-  async getProcessProfile(q = null) {
+  async getProcessProfile(applyGlobalRule = false) {
     this.spinner.show();
-    const res = await this.ordersService.getProcessProfiles(this.part.rfqMedia.id).toPromise();
+    const res = await this.ordersService.getMatchingProcessProfiles(this.part.rfqMedia.id, applyGlobalRule).toPromise();
 
+    this.processProfiles = [];
     this.processProfiles = res.map(item => ({
       id: item.processProfileId,
       profileId: item.processProfileId,
@@ -127,6 +164,30 @@ export class PriceDetailComponent implements OnInit {
       facilityName: item.facilityName,
       material: item.material,
       equipment: item.equipment
+    }));
+    this.spinner.hide();
+  }
+
+  async getGlobalRuleAppliedProcessProfile(q = null) {
+    this.spinner.show();
+    const res = await this.ordersService
+      .getMatchedProfiles(this.userService.getUserInfo().id, [this.part.rfqMedia.id])
+      .toPromise();
+
+    this.processProfiles = [];
+    this.processProfiles = res.map(item => ({
+      id: item.processProfileView.id,
+      profileId: item.processProfileId,
+      vendorName: item.vendorProfile.name,
+      processProfileName: item.processProfileView.name,
+      facilityName:
+        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
+          .vendorFacility.name,
+      pricingProfile: item.processPricingViews && item.processPricingViews.map(v => v.name).join(', '),
+      material: this.getAllMaterials(item.processProfileView.processMachineServingMaterialList),
+      equipment:
+        item.processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.equipment
+          .name
     }));
     this.spinner.hide();
   }
@@ -161,13 +222,17 @@ export class PriceDetailComponent implements OnInit {
         page = page + 1;
         data = data.concat(currentData);
         filter = { size: pageSize, sort: '', page, q: '' };
-        currentData = await this.pricingService
-          .getScreenPricingProfileByPartId(
-            this.part.id,
-            this.processProfiles.map(profile => profile.profileId),
-            filter
-          )
-          .toPromise();
+        if (currentData.length == pageSize) {
+          currentData = await this.pricingService
+            .getScreenPricingProfileByPartId(
+              this.part.id,
+              this.processProfiles.map(profile => profile.profileId),
+              filter
+            )
+            .toPromise();
+        } else {
+          currentData = [];
+        }
       }
       this.pricingProfiles = data.map(item => ({
         selected: false,
