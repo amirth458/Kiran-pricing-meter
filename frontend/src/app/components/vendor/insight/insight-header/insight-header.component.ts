@@ -2,6 +2,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { environment } from './../../../../../environments/environment';
+
 @Component({
   selector: 'app-insight-header',
   templateUrl: './insight-header.component.html',
@@ -16,6 +18,8 @@ export class InsightHeaderComponent implements OnInit {
   @Output() queryChange = new EventEmitter();
   @Output() createdDateChange = new EventEmitter();
   @Output() lastAttemptChange = new EventEmitter();
+
+  env = environment.env;
 
   search = '';
 

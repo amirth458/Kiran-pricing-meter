@@ -36,7 +36,7 @@ export class InsightDetailComponent implements OnInit {
 
   onGridReady(ev: GridReadyEvent) {
     this.gridOptions.api = ev.api;
-    this.gridOptions.api.sizeColumnsToFit();
+    // this.gridOptions.api.sizeColumnsToFit();
 
     this.onSearch();
   }
