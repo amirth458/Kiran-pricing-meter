@@ -488,7 +488,7 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat)}` : '')
+          valueFormatter: dt => (dt.value ? `${this.datePipe.transform(dt.value, Util.dateFormat, 'UTC')}` : '')
         },
         {
           headerName: 'Shipping Address',

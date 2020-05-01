@@ -199,9 +199,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       paginationPageSize: this.pageSize,
       onRowClicked: event => {
         if (event.data) {
-          this.router.navigateByUrl(
-            `${this.router.url}/order/${event.data.partId}`
-          );
+          this.router.navigateByUrl(`${this.router.url}/order/${event.data.partId}`);
         }
       }
     };
@@ -234,12 +232,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: dt => {
-          return this.currencyPipe.transform(
-            dt.value || 0,
-            'USD',
-            'symbol',
-            '0.0-3'
-          );
+          return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
         }
       },
       {
@@ -299,8 +292,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt =>
-          this.datePipe.transform(dt.value || '', Util.dateFormat)
+        valueFormatter: dt => this.datePipe.transform(dt.value || '', Util.dateFormat, 'UTC')
       },
       {
         headerName: '',
@@ -364,9 +356,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
 
   searchColumnsChange(columns) {
     this.searchColumns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
@@ -404,11 +394,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
   advanceToVendorSelection() {
     localStorage.setItem(
       'admin-selectedSubOrders',
-      JSON.stringify(
-        this.rowData.filter(
-          item => this.selectedIds.find(id => id === item.partId) !== undefined
-        )
-      )
+      JSON.stringify(this.rowData.filter(item => this.selectedIds.find(id => id === item.partId) !== undefined))
     );
     this.router.navigateByUrl(`${this.router.url}/vendor`, {
       state: { subOrders: this.selectedIds }
