@@ -23,6 +23,6 @@ export class BillingContainerComponent implements OnInit {
         route: this.baseURL + '/payment'
       }
     ];
-    this.selectedSubmenu = this.baseURL + 'payment';
+    this.selectedSubmenu = this.baseURL + '/payment';
   }
 }
