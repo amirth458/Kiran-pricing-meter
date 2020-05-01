@@ -294,7 +294,7 @@ export class OrderDetailComponent implements OnInit {
         {
           headerName: 'No',
           valueGetter: 'node.rowIndex + 1',
-          checkboxSelection: true,
+          checkboxSelection: v => v.data.subscription === 'SHOPSIGHT_360_PLUS',
           width: 30
         },
         {
@@ -336,7 +336,10 @@ export class OrderDetailComponent implements OnInit {
         rowMultiSelectWithClick: true,
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
-            if (ev.api.getSelectedRows().length > this.selectableCount) {
+            if (ev.data.subscription !== 'SHOPSIGHT_360_PLUS') {
+              this.toastr.warning(`This vendor doesn’t have 360 PLUS.`);
+              ev.node.setSelected(false);
+            } else if (ev.api.getSelectedRows().length > this.selectableCount) {
               this.toastr.warning(`You can select up to ${this.selectableCount} suppliers.`);
               ev.node.setSelected(false);
             } else {

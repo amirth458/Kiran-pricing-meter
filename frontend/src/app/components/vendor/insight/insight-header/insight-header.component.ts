@@ -1,5 +1,8 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { environment } from './../../../../../environments/environment';
 
 @Component({
   selector: 'app-insight-header',
@@ -16,17 +19,22 @@ export class InsightHeaderComponent implements OnInit {
   @Output() createdDateChange = new EventEmitter();
   @Output() lastAttemptChange = new EventEmitter();
 
+  env = environment.env;
+
   search = '';
 
   createdDateRange;
   lastAttemptDate;
   columnsClone = [];
 
-  constructor(public modal: NgbModal) {}
+  constructor(public modal: NgbModal, public toastr: ToastrService) {}
 
   ngOnInit() {
     const date = new Date();
-    this.createdDateRange = [new Date(date.getFullYear(), date.getMonth(), 1), date];
+    this.createdDateRange = [
+      new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30),
+      new Date(date.getFullYear(), date.getMonth(), date.getDate())
+    ];
     this.onTimeChanged('created');
 
     this.columnsClone = this.columns.map(item => ({
@@ -46,7 +54,12 @@ export class InsightHeaderComponent implements OnInit {
 
   onTimeChanged(type) {
     if (type === 'created') {
-      this.createdDateChange.emit(this.createdDateRange);
+      console.log(this.createdDateRange[1] - this.createdDateRange[0]);
+      if (this.createdDateRange[1] - this.createdDateRange[0] <= 30 * 24 * 3600 * 1000) {
+        this.createdDateChange.emit(this.createdDateRange);
+      } else {
+        this.toastr.warning('The duration should be less than or equal to 30 days');
+      }
     } else {
       this.lastAttemptChange.emit(this.lastAttemptDate);
     }

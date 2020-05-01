@@ -5,6 +5,7 @@
 export const environment = {
   production: true,
   local: false,
+  env: 'dev',
   menus: [
     {
       name: 'User Management',

@@ -5,6 +5,7 @@
 export const environment = {
   production: true,
   local: false,
+  env: 'staging',
   menus: [
     {
       name: 'User Management',
@@ -45,8 +46,8 @@ export const environment = {
       name: 'Insight',
       route: '/insight',
       icon: 'fa fa-search',
-      visible: false,
-      active: false
+      visible: true,
+      active: true
     }
   ],
   admin_menus: [],
