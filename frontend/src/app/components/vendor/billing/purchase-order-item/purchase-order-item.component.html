@@ -20,7 +20,7 @@
         <div class="col-5 mr-3 mb-3 p-3 order-info">
           <h5 class="font-weight-bold">
             Ordered on:
-            <span class="text-theme-green">{{ orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy' }}</span>
+            <span class="text-theme-green">{{ orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy':'UTC' }}</span>
           </h5>
           <p class="mb-1">
             Customer:
@@ -142,7 +142,7 @@
           </div>
         </div>
         <div
-          *ngIf="orderInfo?.billingInfoView?.paymentStatusType == PaymentStatusTypes.WAITING_FOR_APPROVAL"
+          *ngIf="orderInfo?.billingInfoView?.paymentStatusType === PaymentStatusTypes?.WAITING_FOR_APPROVAL"
           class="col-12  shadow notes-action pt-1 pb-3"
         >
           <div class="col-12 comment">
@@ -220,7 +220,13 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="orderInfo?.billingInfoView?.paymentType === paymentOrderType.CREDIT_CARD">
+  <div
+    class="row"
+    *ngIf="
+      orderInfo?.billingInfoView?.paymentType === paymentOrderType.CREDIT_CARD &&
+      orderInfo.billingInfoView.paymentStatusType === PaymentStatusTypes.WAITING_FOR_APPROVAL
+    "
+  >
     <div class="col-12 mt-2 row justify-content-center">
       <button type="button" class="btn theme w-auto pl-5 pr-5" (click)="open(approveModal, 'md')">
         Approve

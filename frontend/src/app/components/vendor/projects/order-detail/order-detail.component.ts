@@ -102,27 +102,34 @@ export class OrderDetailComponent implements OnInit {
             this.router.navigateByUrl(`/projects/released-projects/${id}`);
           }
         }
+        this.supplierGridOptions[0].api.showLoadingOverlay();
+        this.orderService.getMatchingProcessProfiles(this.part.rfqMedia.id).subscribe(
+          res => {
+            this.matchingProfiles = res;
+            this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
+              (vendorId, index) => {
+                const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
+                return {
+                  vendorId,
+                  id: index + 1,
+                  vendorName: group[0].corporateName,
+                  numberOfProfiles: group.length,
+                  subscription: group[0].subscriptionType,
+                  subscriptionId: group[0].subscriptionId
+                };
+              }
+            );
+            this.supplierGridOptions[0].api.hideOverlay();
 
-        this.orderService.getMatchingProcessProfiles(this.part.rfqMedia.id).subscribe(res => {
-          this.matchingProfiles = res;
-          this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
-            (vendorId, index) => {
-              const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
-              return {
-                vendorId,
-                id: index + 1,
-                vendorName: group[0].corporateName,
-                numberOfProfiles: group.length,
-                subscription: group[0].subscriptionType,
-                subscriptionId: group[0].subscriptionId
-              };
+            if (this.type !== 'project-release-queue') {
+              this.setSuppliers(id);
             }
-          );
-
-          if (this.type !== 'project-release-queue') {
-            this.setSuppliers(id);
+          },
+          err => {
+            console.log({ err });
+            this.supplierGridOptions[0].api.hideOverlay();
           }
-        });
+        );
       });
     });
   }
@@ -220,7 +227,7 @@ export class OrderDetailComponent implements OnInit {
         rowMultiSelectWithClick: true,
         isRowSelectable: rowNode => {
           // Only allow SHOPSIGHT 360 PLUS SUBSCRIBERS
-          return rowNode.data && rowNode.data.subscription ? rowNode.data.subscriptionId === 4 : false;
+          return rowNode.data && rowNode.data.subscriptionId ? rowNode.data.subscriptionId === 4 : false;
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -481,20 +488,28 @@ export class OrderDetailComponent implements OnInit {
   }
 
   setSuppliers(partId) {
-    this.orderService.getBidProjectProcesses(partId).subscribe(v => {
-      this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
-      this.selectedSuppliers = v.map(res => {
-        const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
+    this.supplierGridOptions[0].api.showLoadingOverlay();
+    this.orderService.getBidProjectProcesses(partId).subscribe(
+      v => {
+        this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
+        this.selectedSuppliers = v.map(res => {
+          const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
 
-        return {
-          id: res.id,
-          vendorId: res.vendorId,
-          vendorName: res.vendorName,
-          numberOfProfiles: group.length,
-          status: res.bidProjectProcessStatusType
-        };
-      });
-    });
+          return {
+            id: res.id,
+            vendorId: res.vendorId,
+            vendorName: res.vendorName,
+            numberOfProfiles: group.length,
+            status: res.bidProjectProcessStatusType
+          };
+        });
+        this.supplierGridOptions[0].api.hideOverlay();
+      },
+      err => {
+        console.log({ err });
+        this.supplierGridOptions[0].api.hideOverlay();
+      }
+    );
   }
 
   canReleaseToCustomer() {

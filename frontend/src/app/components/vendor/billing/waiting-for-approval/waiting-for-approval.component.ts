@@ -436,7 +436,8 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 160
+        width: 150,
+        suppressSizeToFit: true
       },
       {
         headerName: 'Action',
@@ -448,7 +449,8 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 100
+        width: 110,
+        suppressSizeToFit: true
       }
     ];
 
