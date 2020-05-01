@@ -49,7 +49,11 @@
 
 <!-- Subscription cell -->
 <ng-template #subscriptionCell let-row>
-  <span class="subscription-cell" (click)="subscription($event, row)">Subscription</span>
+  <div>
+    <span class="subscription-cell" *ngIf="row && row.userActive" (click)="subscription($event, row)"
+      >Subscription</span
+    >
+  </div>
 </ng-template>
 
 <ng-template #subscriptionModal let-modal>
