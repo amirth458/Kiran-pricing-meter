@@ -20,7 +20,7 @@
         <div class="col-5 mr-3 mb-3 p-3 order-info">
           <h5 class="font-weight-bold">
             Ordered on:
-            <span class="text-theme-green">{{ orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy' }}</span>
+            <span class="text-theme-green">{{ orderInfo?.customerOrder?.createdDate | date: 'MM/dd/yyyy':'UTC' }}</span>
           </h5>
           <p class="mb-1">
             Customer:
