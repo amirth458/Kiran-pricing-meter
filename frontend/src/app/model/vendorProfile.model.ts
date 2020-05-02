@@ -8,4 +8,8 @@ export class VendorProfile {
   city: string;
   state: string;
   zipCode: string;
+  confidentiality: {
+    id: number;
+    name: string;
+  };
 }
