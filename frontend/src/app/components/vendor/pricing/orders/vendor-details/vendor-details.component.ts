@@ -62,6 +62,7 @@ export class VendorDetailsComponent implements OnInit {
   subOrderRelease;
   matchedProfiles = [];
   priorityRows = [];
+  nonPriorityRows = [];
   pricingProfile: any;
   initialPrice: number;
   orderDetails = [];
@@ -134,26 +135,58 @@ export class VendorDetailsComponent implements OnInit {
               const found = this.matchedProfiles.some(match => {
                 return match.vendorId === processProfileView.vendorId;
               });
-              if (!found) {
+              if (!found && supplier.vendorProfile.confidentiality.name === 'Yes') {
+                // Filter out Vendors with NDA(ProdEx Orders) turned OFF
                 count++;
               }
-              this.matchedProfiles.push({
-                id: !found ? processProfileView.vendorId.toString() : '',
-                vendorId: processProfileView.vendorId,
-                profileId: supplier.processProfileId,
-                vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
-                processProfileName: processProfileView.name || '',
-                facilityName:
-                  processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
-                    .vendorFacility.name || '',
-                pricingProfile: (processPricingView && processPricingView.name) || '',
-                releasePriority: !found ? count : '',
-                pricing: supplier.processPricingViews || [],
-                vendorProfile: supplier.vendorProfile,
-                active: true
-              });
+              if (
+                !supplier.vendorProfile ||
+                !supplier.vendorProfile.confidentiality ||
+                !supplier.vendorProfile.confidentiality.name ||
+                supplier.vendorProfile.confidentiality.name === 'No'
+              ) {
+                // Vendors with NDA(ProdEx Orders) turned OFF
+                this.nonPriorityRows.push({
+                  id: !this.nonPriorityRows.some(match => {
+                    return match.vendorId === processProfileView.vendorId;
+                  })
+                    ? processProfileView.vendorId.toString()
+                    : '',
+                  vendorId: processProfileView.vendorId,
+                  profileId: supplier.processProfileId,
+                  vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
+                  processProfileName: processProfileView.name || '',
+                  facilityName:
+                    processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
+                      .vendorFacility.name || '',
+                  pricingProfile: (processPricingView && processPricingView.name) || '',
+                  releasePriority: '-',
+                  pricing: supplier.processPricingViews || [],
+                  vendorProfile: supplier.vendorProfile,
+                  active: false
+                });
+              } else {
+                this.matchedProfiles.push({
+                  id: !found ? processProfileView.vendorId.toString() : '',
+                  vendorId: processProfileView.vendorId,
+                  profileId: supplier.processProfileId,
+                  vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
+                  processProfileName: processProfileView.name || '',
+                  facilityName:
+                    processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
+                      .vendorFacility.name || '',
+                  pricingProfile: (processPricingView && processPricingView.name) || '',
+                  releasePriority: !found && supplier.vendorProfile.confidentiality.name === 'Yes' ? count : '',
+                  pricing: supplier.processPricingViews || [],
+                  vendorProfile: supplier.vendorProfile,
+                  active: true
+                });
+              }
             });
-            this.priorityRows = this.matchedProfiles.filter(item => item.id !== '');
+            this.matchedProfiles = this.matchedProfiles.concat(this.nonPriorityRows);
+            this.priorityRows = this.matchedProfiles.filter(
+              item => item.id !== '' && item.vendorProfile.confidentiality.name === 'Yes'
+            );
             this.spinner.hide('spooler');
             this.loadingProfiles = false;
           });
@@ -264,6 +297,14 @@ export class VendorDetailsComponent implements OnInit {
         headerName: 'Facility Name',
         field: 'facilityName',
         tooltipField: 'facilityName',
+        hide: false,
+        sortable: false,
+        filter: false
+      },
+      {
+        headerName: 'Signed ProdEx Agreement',
+        field: 'vendorProfile.confidentiality.name',
+        tooltipField: 'vendorProfile.confidentiality.name',
         hide: false,
         sortable: false,
         filter: false
@@ -585,6 +626,14 @@ export class VendorDetailsComponent implements OnInit {
           filter: false
         },
         {
+          headerName: 'Signed ProdEx Agreement',
+          field: 'vendorProfile.confidentiality.name',
+          tooltipField: 'vendorProfile.confidentiality.name',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
           headerName: 'Process Profile Name',
           field: 'processProfileName',
           tooltipField: 'processProfileName',
@@ -743,7 +792,7 @@ export class VendorDetailsComponent implements OnInit {
     (this.priorityRows || []).map(m => {
       arr = arr.concat(groupedSuppliers[m.vendorId] || []);
     });
-    this.matchedProfiles = arr;
+    this.matchedProfiles = arr.concat(this.nonPriorityRows);
   }
 
   groupSupplierInfo(xs: any, key: string) {
@@ -783,7 +832,9 @@ export class VendorDetailsComponent implements OnInit {
     });
     const vendorData = {};
     this.matchedProfiles
-      .filter(row => !((this.blockedSuppliers$.getValue() || []).indexOf(row.vendorId) > -1))
+      .filter(
+        row => row.releasePriority !== '-' && !((this.blockedSuppliers$.getValue() || []).indexOf(row.vendorId) > -1)
+      )
       .map(pricing => {
         if (!vendorData[pricing.vendorId]) {
           vendorData[pricing.vendorId] = {
