@@ -457,14 +457,23 @@ export interface MatchedProcessProfile {
   rfqMediaId: number;
   partId: number;
   processProfileId: number;
+  processProfileName: string;
   corporateName: string;
   vendorId: number;
-  facilityName: string;
-  processProfileName: string;
-  equipment: string;
+
   material: string;
   subscriptionId?: number;
   subscriptionType?: string;
+
+  facilityName: string;
+  equipment: string;
+  city: string;
+  confidentialityId: number;
+  countryId: number;
+  state: string;
+  street1: string;
+  street2: string;
+  zipCode: string;
 }
 
 export enum AppPartStatus {

@@ -153,7 +153,9 @@ export class PriceDetailComponent implements OnInit {
 
   async getProcessProfile(applyGlobalRule = false) {
     this.spinner.show();
-    const res = await this.ordersService.getMatchingProcessProfiles(this.part.rfqMedia.id, applyGlobalRule).toPromise();
+    const res = await this.ordersService
+      .getMatchingProcessProfiles([this.part.rfqMedia.id], applyGlobalRule)
+      .toPromise();
 
     this.processProfiles = [];
     this.processProfiles = res.map(item => ({
@@ -168,6 +170,7 @@ export class PriceDetailComponent implements OnInit {
     this.spinner.hide();
   }
 
+  // Not being used
   async getGlobalRuleAppliedProcessProfile(q = null) {
     this.spinner.show();
     const res = await this.ordersService
