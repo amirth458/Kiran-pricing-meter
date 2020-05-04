@@ -39,8 +39,8 @@ export const environment = {
       name: 'Projects',
       route: '/projects',
       icon: 'fas fa-folder',
-      visible: false,
-      active: false
+      visible: true,
+      active: true
     },
     {
       name: 'Insight',
