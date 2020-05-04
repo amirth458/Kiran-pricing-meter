@@ -7,7 +7,7 @@ import { OrdersService } from 'src/app/service/orders.service';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { PartService } from 'src/app/service/part.service';
 import { UserService } from 'src/app/service/user.service';
-import { Part, MatchedProcessProfile, BidProjectProcess } from 'src/app/model/part.model';
+import { Part, MatchedProcessProfile, ReferenceFile } from 'src/app/model/part.model';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { Util } from 'src/app/util/Util';
@@ -26,6 +26,7 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild('vendorCell') vendorCell: TemplateRef<any>;
   @ViewChild('vendorProfile') vendorProfileModal: TemplateRef<any>;
   @ViewChild('addSupplier') addSupplier: TemplateRef<any>;
+  @ViewChild('reference') reference: TemplateRef<any>;
 
   measurementUnits: any;
   postProcessAction = [];
@@ -44,6 +45,7 @@ export class OrderDetailComponent implements OnInit {
   type;
   maxNum = 3;
   selectableCount;
+  referenceFiles: ReferenceFile[];
 
   matchingProfiles: MatchedProcessProfile[] = [];
   shortListedSuppliers = [];
@@ -522,5 +524,33 @@ export class OrderDetailComponent implements OnInit {
       this.supplierGridOptions[0].api.getSelectedRows().length === 3 &&
       this.canReleaseToVendorFlag
     );
+  }
+
+  openReference() {
+    this.orderService.getReferenceFiles(this.part.id).subscribe(v => {
+      // this.referenceFiles = v;
+      this.referenceFiles = [
+        {
+          id: 3,
+          name: 'hrt.jpg',
+          uploadedAt: '2020-04-27T20:35:13.202+0000',
+          location:
+            'https://3diligent-connector-local.s3.us-west-2.amazonaws.com/25001/referenceMedia/2020/04/27/2020-04-27_20-35-10-2-hrt.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200504T154804Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAXDHQUQPKFHB64HM4%2F20200504%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=7d152fd716e74811ba1def24fad9f226646e1d44d627b31dd19f3b721f265d5e',
+          mediaId: 121
+        },
+        {
+          id: 2,
+          name: 'hrt.jpg',
+          uploadedAt: '2020-04-27T19:14:49.624+0000',
+          location:
+            'https://3diligent-connector-local.s3.us-west-2.amazonaws.com/25001/referenceMedia/2020/04/27/2020-04-27_19-14-49-6-hrt.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200504T154804Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAXDHQUQPKFHB64HM4%2F20200504%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=0cb2d30193d5885baf5922bfc98b3fcabef4d8f0807889bbe04e7ff8580de2f8',
+          mediaId: 121
+        }
+      ];
+      this.modal.open(this.reference, {
+        centered: true,
+        size: 'lg'
+      });
+    });
   }
 }

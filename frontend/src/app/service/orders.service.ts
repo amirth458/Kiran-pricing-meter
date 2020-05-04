@@ -472,4 +472,9 @@ export class OrdersService {
       vendorIds: vendorIds
     });
   }
+
+  getReferenceFiles(partId) {
+    const url = `${environment.apiBaseUrl}/admin/part/${partId}/reference-medias?generateSignedUrl=true`;
+    return this.http.get<any>(url);
+  }
 }

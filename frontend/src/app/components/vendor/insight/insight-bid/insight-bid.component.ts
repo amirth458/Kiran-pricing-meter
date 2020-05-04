@@ -44,6 +44,24 @@ export class InsightBidComponent implements OnInit {
       headerTooltip: 'Customer Order ID'
     },
     {
+      headerName: 'Vendor ID',
+      field: 'vendor_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_id',
+      headerTooltip: 'Vendor ID'
+    },
+    {
+      headerName: 'Vendor Name',
+      field: 'vendor_name',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_name',
+      headerTooltip: 'Vendor Name'
+    },
+    {
       headerName: 'Customer Price',
       field: 'customer_price',
       hide: false,
@@ -154,6 +172,33 @@ export class InsightBidComponent implements OnInit {
       filter: false,
       tooltipField: 'quote_price',
       headerTooltip: 'Quote Price '
+    },
+    {
+      headerName: 'Bid Order Status',
+      field: 'bid_order_status',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'bid_order_status',
+      headerTooltip: 'Bid Order Status'
+    },
+    {
+      headerName: 'Bid Order Status',
+      field: 'bid_order_status',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'bid_order_status',
+      headerTooltip: 'Bid Order Status'
+    },
+    {
+      headerName: 'Bid Winner',
+      field: 'bid_winner',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'bid_winner',
+      headerTooltip: 'Bid Winner'
     }
   ];
   constructor() {}

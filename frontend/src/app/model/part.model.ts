@@ -501,3 +501,11 @@ export interface BidProjectProcess {
   matchedProcessProfileIds: number[];
   vendorName: string;
 }
+
+export interface ReferenceFile {
+  id: number;
+  name: string;
+  uploadedAt: string;
+  location: string;
+  mediaId: number;
+}
