@@ -31,6 +31,9 @@
             {{ preparePostProcessValues(part?.postProcessTypeIds) }}
           </span>
         </p>
+        <a class="reference" (click)="openReference()">
+          Reference Files
+        </a>
       </div>
     </div>
   </div>
@@ -204,6 +207,28 @@
       >
         Release Project to Suppliers
       </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #reference let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        Reference Files
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body py-2 px-4">
+      <div *ngFor="let ref of referenceFiles" class="reference-file">
+        <div class="icon">
+          <i class="far fa-file-alt"></i>
+        </div>
+        <a [href]="ref.location" download class="download-link">{{ ref.name }}</a>
+      </div>
     </div>
   </div>
 </ng-template>
