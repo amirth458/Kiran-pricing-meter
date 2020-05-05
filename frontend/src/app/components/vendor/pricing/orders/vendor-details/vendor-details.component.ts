@@ -29,6 +29,8 @@ import { DefaultEmails } from '../../../../../../assets/constants';
 import { ZoomService } from 'src/app/service/zoom.service';
 import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 import { MetaData } from '../../../../../model/metadata.model';
+import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
+import { ProcessProfile } from 'src/app/model/part.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -43,6 +45,7 @@ export class VendorDetailsComponent implements OnInit {
   orderId;
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
+  @ViewChild('viewPricingProfile') viewPricingProfile;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('sendEmailCell') sendEmailCell: TemplateRef<any>;
   @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
@@ -85,7 +88,7 @@ export class VendorDetailsComponent implements OnInit {
     | any = [];
   priorityRows = [];
   nonPriorityRows = [];
-  pricingProfile: any;
+  processProfile: ProcessProfile;
   initialPrice: number;
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
@@ -121,7 +124,8 @@ export class VendorDetailsComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public datePipe: DatePipe,
     public currencyPipe: CurrencyPipe,
-    public zoomService: ZoomService
+    public zoomService: ZoomService,
+    public pricingService: RfqPricingService
   ) {
     if (this.router.url.includes('order-confirmation-queue')) {
       this.type = 'confirmation';
@@ -687,7 +691,11 @@ export class VendorDetailsComponent implements OnInit {
           tooltipField: 'pricingProfile',
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.viewPricingProfile
+          }
         },
         {
           headerName: 'Release Priority',
@@ -719,8 +727,8 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: 'Pricing Condition 1',
-          field: 'processPricingConditionList',
-          tooltipField: 'processPricingConditionList',
+          field: 'processPricingConditions',
+          tooltipField: 'processPricingConditions',
           hide: false,
           sortable: false,
           filter: false,
@@ -757,14 +765,7 @@ export class VendorDetailsComponent implements OnInit {
         columnDefs: this.columnDefs[2],
         enableColResize: true,
         rowHeight: 35,
-        headerHeight: 35,
-        onRowClicked: ev => {
-          this.pricingProfile = ev.data;
-          this.modalService.open(this.pricingProfileModal, {
-            centered: true,
-            windowClass: 'confirm-release-modal'
-          });
-        }
+        headerHeight: 35
       },
       {
         frameworkComponents: this.frameworkComponents,
@@ -833,6 +834,26 @@ export class VendorDetailsComponent implements OnInit {
     }, {});
   }
 
+  openPricingView(row) {
+    this.processProfile = null;
+    this.spinner.show();
+    this.pricingService.getProcessProfileDetail([row.profileId]).subscribe(
+      res => {
+        if (res.length) {
+          this.processProfile = res[0];
+        }
+        this.spinner.hide();
+        this.modalService.open(this.pricingProfileModal, {
+          centered: true,
+          windowClass: 'confirm-release-modal'
+        });
+      },
+      err => {
+        this.spinner.hide();
+        console.log({ err });
+      }
+    );
+  }
   showModal(content) {
     this.ordersService.getSubOrderReleaseConfirmation().subscribe(v => {
       this.subOrderRelease = v;
