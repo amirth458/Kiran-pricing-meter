@@ -16,7 +16,8 @@ import { Conference, ConferenceRequest } from '../../../../../model/conference.m
 import {
   BidOrderItem,
   ConfirmSubOrderRelease,
-  BidProcessStatusType
+  BidProcessStatusType,
+  MatchedProfile
 } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from '../../../../../service/orders.service';
@@ -31,6 +32,7 @@ import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 import { MetaData } from '../../../../../model/metadata.model';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { ProcessProfile } from 'src/app/model/part.model';
+import { Confidentiality } from 'src/app/model/basicDetails.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -67,25 +69,7 @@ export class VendorDetailsComponent implements OnInit {
 
   gridOptions: GridOptions[];
   subOrderRelease;
-  matchedProfiles:
-    | Array<{
-        id: string;
-        vendorId: number;
-        profileId: number;
-        vendorName: string;
-        processProfileName: string;
-        facilityName: string;
-        pricingProfile: string | number;
-        releasePriority: string | number;
-        bidProcessStatus?: BidProcessStatusType;
-        counterOfferPrice?: number;
-        bidOfferPrice?: number;
-        pricing: [];
-        vendorProfile: number;
-        confidentialityId: number;
-        active: boolean;
-      }>
-    | any = [];
+  matchedProfiles: Array<MatchedProfile> | any = [];
   priorityRows = [];
   nonPriorityRows = [];
   processProfile: ProcessProfile;
@@ -161,11 +145,11 @@ export class VendorDetailsComponent implements OnInit {
               const found = this.matchedProfiles.some(match => {
                 return match.vendorId === supplier.vendorId;
               });
-              if (!found && supplier.confidentialityId === 2) {
+              if (!found && supplier.confidentialityId === Confidentiality.YES) {
                 // Filter out Vendors with NDA(ProdEx Orders) turned ON
                 count++;
               }
-              if (!supplier.confidentialityId || supplier.confidentialityId === 1) {
+              if (!supplier.confidentialityId || supplier.confidentialityId === Confidentiality.NO) {
                 // Vendors with NDA(ProdEx Orders) turned OFF
                 this.nonPriorityRows.push({
                   id: !this.nonPriorityRows.some(match => {
@@ -178,9 +162,7 @@ export class VendorDetailsComponent implements OnInit {
                   vendorName: supplier.corporateName,
                   processProfileName: supplier.processProfileName || '',
                   facilityName: supplier.facilityName,
-                  pricingProfile: '',
                   releasePriority: '-',
-                  pricing: [],
                   vendorProfile: {
                     street1: supplier.street1,
                     street2: supplier.street2,
@@ -202,9 +184,7 @@ export class VendorDetailsComponent implements OnInit {
                   vendorName: supplier.corporateName,
                   processProfileName: supplier.processProfileName || '',
                   facilityName: supplier.facilityName || '',
-                  pricingProfile: '',
                   releasePriority: !found ? count : '',
-                  pricing: [],
                   vendorProfile: {
                     street1: supplier.street1 || '',
                     street2: supplier.street2 || '',
@@ -221,7 +201,9 @@ export class VendorDetailsComponent implements OnInit {
               }
             });
             this.matchedProfiles = this.matchedProfiles.concat(this.nonPriorityRows);
-            this.priorityRows = this.matchedProfiles.filter(item => item.id !== '' && item.confidentialityId === 2);
+            this.priorityRows = this.matchedProfiles.filter(
+              item => item.id !== '' && item.confidentialityId === Confidentiality.YES
+            );
             this.spinner.hide('spooler');
             this.loadingProfiles = false;
           });
@@ -659,9 +641,10 @@ export class VendorDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false,
-          cellClass: params => (params.value && params.value === 2 ? 'text-theme-green' : 'text-orange'),
+          cellClass: params =>
+            params.value && params.value === Confidentiality.YES ? 'text-theme-green' : 'text-orange',
           valueFormatter: params => {
-            return params.value && params.value === 2 ? 'Yes' : 'No';
+            return params.value && params.value === Confidentiality.YES ? 'Yes' : 'No';
           }
         },
         {
