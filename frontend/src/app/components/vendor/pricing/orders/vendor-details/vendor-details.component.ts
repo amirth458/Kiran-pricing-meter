@@ -168,7 +168,7 @@ export class VendorDetailsComponent implements OnInit {
                     street2: supplier.street2,
                     state: supplier.state,
                     city: supplier.city,
-                    country: supplier.countryId,
+                    country: '',
                     zipCode: supplier.zipCode,
                     subscriptionId: supplier.subscriptionId,
                     subscriptionType: supplier.subscriptionType
@@ -190,7 +190,7 @@ export class VendorDetailsComponent implements OnInit {
                     street2: supplier.street2 || '',
                     state: supplier.state || '',
                     city: supplier.city || '',
-                    country: supplier.countryId || '',
+                    country: '',
                     zipCode: supplier.zipCode || '',
                     subscriptionId: supplier.subscriptionId || '',
                     subscriptionType: supplier.subscriptionType || ''
@@ -664,7 +664,7 @@ export class VendorDetailsComponent implements OnInit {
           filter: false,
           valueGetter: params => {
             return params.data.id
-              ? `${params.data.vendorProfile.street1}, ${params.data.vendorProfile.city} ${params.data.vendorProfile.state}, ${params.data.vendorProfile.country}`
+              ? `${params.data.vendorProfile.street1}, ${params.data.vendorProfile.city} ${params.data.vendorProfile.state}`
               : '';
           }
         },
