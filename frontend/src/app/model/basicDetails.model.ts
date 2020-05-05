@@ -14,3 +14,7 @@ export class BasicDetails {
   createdDate: string;
   updatedDate: string;
 }
+export enum Confidentiality {
+  'NO' = 1,
+  'YES' = 2
+}

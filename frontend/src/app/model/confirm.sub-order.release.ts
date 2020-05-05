@@ -75,3 +75,24 @@ export interface BidOrder {
   bidOrderStatusType: BidOrderStatusType;
   winningBidProcessId: number;
 }
+export class MatchedProfile {
+  id: string;
+  vendorId: number;
+  profileId: number;
+  vendorName: string;
+  processProfileName: string;
+  facilityName: string;
+  releasePriority: string | number;
+  vendorProfile: {
+    street1: string;
+    street2: string;
+    state: string;
+    city: string;
+    country: string | number;
+    zipCode: string;
+    subscriptionId: string | number;
+    subscriptionType: string;
+  };
+  confidentialityId: number;
+  active: boolean;
+}
