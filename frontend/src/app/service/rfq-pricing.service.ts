@@ -184,9 +184,9 @@ export class RfqPricingService {
     return this.http.get<PartDimension>(url);
   }
 
-  getPricingProfileDetail(profileIds: number[]): Observable<PricingProfileDetailedView[]> {
+  getPricingProfileDetail(pricingProfileId: number[]): Observable<PricingProfileDetailedView[]> {
     const url = `${environment.managementBaseUrl}/process-pricing-profile/ids`;
-    return this.http.post<PricingProfileDetailedView[]>(url, profileIds);
+    return this.http.post<PricingProfileDetailedView[]>(url, pricingProfileId);
   }
 
   getProcessProfileDetail(profileIds: number[]): Observable<ProcessProfile[]> {

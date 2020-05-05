@@ -3,7 +3,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,7 +13,11 @@ import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingOrderStatus, BiddingStatus } from '../../../../../model/bidding.order';
 import { Conference, ConferenceRequest } from '../../../../../model/conference.model';
-import { BidOrderItem, ConfirmSubOrderRelease } from '../../../../../model/confirm.sub-order.release';
+import {
+  BidOrderItem,
+  ConfirmSubOrderRelease,
+  BidProcessStatusType
+} from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
@@ -25,6 +29,8 @@ import { DefaultEmails } from '../../../../../../assets/constants';
 import { ZoomService } from 'src/app/service/zoom.service';
 import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
 import { MetaData } from '../../../../../model/metadata.model';
+import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
+import { ProcessProfile } from 'src/app/model/part.model';
 
 @Component({
   selector: 'app-vendor-details',
@@ -39,6 +45,7 @@ export class VendorDetailsComponent implements OnInit {
   orderId;
   bidOrderId: number;
   @ViewChild('pricingProfileModal') pricingProfileModal;
+  @ViewChild('viewPricingProfile') viewPricingProfile;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('sendEmailCell') sendEmailCell: TemplateRef<any>;
   @ViewChild('confirmBidding') confirmBidding: TemplateRef<any>;
@@ -52,7 +59,7 @@ export class VendorDetailsComponent implements OnInit {
   changePriority = false;
   toggleVendorList = false;
   loadingProfiles = false;
-  columnDefs = [];
+  columnDefs: Array<ColDef[]> = [];
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent,
     templateRenderer: TemplateRendererComponent
@@ -60,10 +67,28 @@ export class VendorDetailsComponent implements OnInit {
 
   gridOptions: GridOptions[];
   subOrderRelease;
-  matchedProfiles = [];
+  matchedProfiles:
+    | Array<{
+        id: string;
+        vendorId: number;
+        profileId: number;
+        vendorName: string;
+        processProfileName: string;
+        facilityName: string;
+        pricingProfile: string | number;
+        releasePriority: string | number;
+        bidProcessStatus?: BidProcessStatusType;
+        counterOfferPrice?: number;
+        bidOfferPrice?: number;
+        pricing: [];
+        vendorProfile: number;
+        confidentialityId: number;
+        active: boolean;
+      }>
+    | any = [];
   priorityRows = [];
   nonPriorityRows = [];
-  pricingProfile: any;
+  processProfile: ProcessProfile;
   initialPrice: number;
   orderDetails = [];
   bidding: Array<VendorOrderDetail>;
@@ -99,7 +124,8 @@ export class VendorDetailsComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public datePipe: DatePipe,
     public currencyPipe: CurrencyPipe,
-    public zoomService: ZoomService
+    public zoomService: ZoomService,
+    public pricingService: RfqPricingService
   ) {
     if (this.router.url.includes('order-confirmation-queue')) {
       this.type = 'confirmation';
@@ -114,79 +140,88 @@ export class VendorDetailsComponent implements OnInit {
       this.bidOrderId = v.bidOrderId || null;
 
       if (!this.bidOrderId) {
-        this.orderDetails = JSON.parse(localStorage.getItem('admin-selectedSubOrders'));
+        const selectedSubOrders = localStorage.getItem('admin-selectedSubOrders');
+        if (!selectedSubOrders) {
+          this.router.navigateByUrl('/pricing/orders/suborder-release-queue');
+          return;
+        }
+        this.orderDetails = JSON.parse(selectedSubOrders);
         (this.orderDetails || []).map(order => (this.initialPrice += order.priceAccepted));
         this.spinner.show('spooler');
         this.loadingProfiles = true;
         this.ordersService
-          .getMatchedProfiles(
-            this.userService.getUserInfo().id,
-            this.orderDetails.map(orderDetail => orderDetail.rfqMediaId)
+          .getMatchingProcessProfiles(
+            this.orderDetails.map(orderDetail => orderDetail.rfqMediaId),
+            true
           )
           .subscribe(suppliers => {
             this.matchedProfiles = [];
             let count = 0;
             suppliers.map(supplier => {
-              const processProfileView = supplier.processProfileView;
-              const processPricingView: any =
-                supplier.processPricingViews && (supplier.processPricingViews || []).length > 0
-                  ? supplier.processPricingViews[0]
-                  : {};
               const found = this.matchedProfiles.some(match => {
-                return match.vendorId === processProfileView.vendorId;
+                return match.vendorId === supplier.vendorId;
               });
-              if (!found && supplier.vendorProfile.confidentiality.name === 'Yes') {
-                // Filter out Vendors with NDA(ProdEx Orders) turned OFF
+              if (!found && supplier.confidentialityId === 2) {
+                // Filter out Vendors with NDA(ProdEx Orders) turned ON
                 count++;
               }
-              if (
-                !supplier.vendorProfile ||
-                !supplier.vendorProfile.confidentiality ||
-                !supplier.vendorProfile.confidentiality.name ||
-                supplier.vendorProfile.confidentiality.name === 'No'
-              ) {
+              if (!supplier.confidentialityId || supplier.confidentialityId === 1) {
                 // Vendors with NDA(ProdEx Orders) turned OFF
                 this.nonPriorityRows.push({
                   id: !this.nonPriorityRows.some(match => {
-                    return match.vendorId === processProfileView.vendorId;
+                    return match.vendorId === supplier.vendorId;
                   })
-                    ? processProfileView.vendorId.toString()
+                    ? supplier.vendorId.toString()
                     : '',
-                  vendorId: processProfileView.vendorId,
+                  vendorId: supplier.vendorId,
                   profileId: supplier.processProfileId,
-                  vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
-                  processProfileName: processProfileView.name || '',
-                  facilityName:
-                    processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
-                      .vendorFacility.name || '',
-                  pricingProfile: (processPricingView && processPricingView.name) || '',
+                  vendorName: supplier.corporateName,
+                  processProfileName: supplier.processProfileName || '',
+                  facilityName: supplier.facilityName,
+                  pricingProfile: '',
                   releasePriority: '-',
-                  pricing: supplier.processPricingViews || [],
-                  vendorProfile: supplier.vendorProfile,
-                  active: false
+                  pricing: [],
+                  vendorProfile: {
+                    street1: supplier.street1,
+                    street2: supplier.street2,
+                    state: supplier.state,
+                    city: supplier.city,
+                    country: supplier.countryId,
+                    zipCode: supplier.zipCode,
+                    subscriptionId: supplier.subscriptionId,
+                    subscriptionType: supplier.subscriptionType
+                  },
+                  active: false,
+                  confidentialityId: supplier.confidentialityId
                 });
               } else {
                 this.matchedProfiles.push({
-                  id: !found ? processProfileView.vendorId.toString() : '',
-                  vendorId: processProfileView.vendorId,
+                  id: !found ? supplier.vendorId.toString() : '',
+                  vendorId: supplier.vendorId,
                   profileId: supplier.processProfileId,
-                  vendorName: supplier.vendorProfile ? supplier.vendorProfile.name : '',
-                  processProfileName: processProfileView.name || '',
-                  facilityName:
-                    processProfileView.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery
-                      .vendorFacility.name || '',
-                  pricingProfile: (processPricingView && processPricingView.name) || '',
-                  releasePriority: !found && supplier.vendorProfile.confidentiality.name === 'Yes' ? count : '',
-                  pricing: supplier.processPricingViews || [],
-                  vendorProfile: supplier.vendorProfile,
-                  active: true
+                  vendorName: supplier.corporateName,
+                  processProfileName: supplier.processProfileName || '',
+                  facilityName: supplier.facilityName || '',
+                  pricingProfile: '',
+                  releasePriority: !found ? count : '',
+                  pricing: [],
+                  vendorProfile: {
+                    street1: supplier.street1 || '',
+                    street2: supplier.street2 || '',
+                    state: supplier.state || '',
+                    city: supplier.city || '',
+                    country: supplier.countryId || '',
+                    zipCode: supplier.zipCode || '',
+                    subscriptionId: supplier.subscriptionId || '',
+                    subscriptionType: supplier.subscriptionType || ''
+                  },
+                  active: true,
+                  confidentialityId: supplier.confidentialityId
                 });
               }
             });
             this.matchedProfiles = this.matchedProfiles.concat(this.nonPriorityRows);
-            this.priorityRows = this.matchedProfiles.filter(
-              item => item.id !== '' && item.vendorProfile.confidentiality.name === 'Yes'
-            );
+            this.priorityRows = this.matchedProfiles.filter(item => item.id !== '' && item.confidentialityId === 2);
             this.spinner.hide('spooler');
             this.loadingProfiles = false;
           });
@@ -297,14 +332,6 @@ export class VendorDetailsComponent implements OnInit {
         headerName: 'Facility Name',
         field: 'facilityName',
         tooltipField: 'facilityName',
-        hide: false,
-        sortable: false,
-        filter: false
-      },
-      {
-        headerName: 'Signed ProdEx Agreement',
-        field: 'vendorProfile.confidentiality.name',
-        tooltipField: 'vendorProfile.confidentiality.name',
         hide: false,
         sortable: false,
         filter: false
@@ -627,11 +654,15 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: 'Signed ProdEx Agreement',
-          field: 'vendorProfile.confidentiality.name',
-          tooltipField: 'vendorProfile.confidentiality.name',
+          field: 'confidentialityId',
+          tooltipField: 'confidentialityId',
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          cellClass: params => (params.value && params.value === 2 ? 'text-theme-green' : 'text-orange'),
+          valueFormatter: params => {
+            return params.value && params.value === 2 ? 'Yes' : 'No';
+          }
         },
         {
           headerName: 'Process Profile Name',
@@ -643,10 +674,14 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: 'Vendor Address',
+          field: 'vendorProfile',
+          tooltipField: 'vendorProfile',
+          hide: false,
+          sortable: false,
+          filter: false,
           valueGetter: params => {
             return params.data.id
-              ? `${params.data.vendorProfile.street1 || ''}, ${params.data.vendorProfile.city || ''} ${params.data
-                  .vendorProfile.state || ''}, ${params.data.vendorProfile.country.name || ''}`
+              ? `${params.data.vendorProfile.street1}, ${params.data.vendorProfile.city} ${params.data.vendorProfile.state}, ${params.data.vendorProfile.country}`
               : '';
           }
         },
@@ -656,7 +691,11 @@ export class VendorDetailsComponent implements OnInit {
           tooltipField: 'pricingProfile',
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.viewPricingProfile
+          }
         },
         {
           headerName: 'Release Priority',
@@ -688,8 +727,8 @@ export class VendorDetailsComponent implements OnInit {
         },
         {
           headerName: 'Pricing Condition 1',
-          field: 'processPricingConditionList',
-          tooltipField: 'processPricingConditionList',
+          field: 'processPricingConditions',
+          tooltipField: 'processPricingConditions',
           hide: false,
           sortable: false,
           filter: false,
@@ -726,14 +765,7 @@ export class VendorDetailsComponent implements OnInit {
         columnDefs: this.columnDefs[2],
         enableColResize: true,
         rowHeight: 35,
-        headerHeight: 35,
-        onRowClicked: ev => {
-          this.pricingProfile = ev.data;
-          this.modalService.open(this.pricingProfileModal, {
-            centered: true,
-            windowClass: 'confirm-release-modal'
-          });
-        }
+        headerHeight: 35
       },
       {
         frameworkComponents: this.frameworkComponents,
@@ -802,6 +834,26 @@ export class VendorDetailsComponent implements OnInit {
     }, {});
   }
 
+  openPricingView(row) {
+    this.processProfile = null;
+    this.spinner.show();
+    this.pricingService.getProcessProfileDetail([row.profileId]).subscribe(
+      res => {
+        if (res.length) {
+          this.processProfile = res[0];
+        }
+        this.spinner.hide();
+        this.modalService.open(this.pricingProfileModal, {
+          centered: true,
+          windowClass: 'confirm-release-modal'
+        });
+      },
+      err => {
+        this.spinner.hide();
+        console.log({ err });
+      }
+    );
+  }
   showModal(content) {
     this.ordersService.getSubOrderReleaseConfirmation().subscribe(v => {
       this.subOrderRelease = v;
@@ -848,7 +900,8 @@ export class VendorDetailsComponent implements OnInit {
         }
       });
     const vendors = [];
-    for (let key in vendorData) {
+    // tslint:disable-next-line:forin
+    for (const key in vendorData) {
       vendors.push(vendorData[key]);
     }
     this.biddingService
@@ -948,11 +1001,7 @@ export class VendorDetailsComponent implements OnInit {
     const conference: ConferenceRequest = {
       hostUserId: this.userService.getUserInfo().id,
       participantUserId: this.schdulingForUserId,
-      // participantUserId: 388, //"krtest-c1@test.com"
-
-      // partId: 1769,
       partId: 0,
-      // bidOrderId: 0,
       bidOrderId: this.type === 'confirmation' ? this.bidOrderId : 0,
       customerOrderId: 0,
       vendorOrderId: this.type === 'released' ? this.schdulingForVendorOrderId : 0,
@@ -969,8 +1018,6 @@ export class VendorDetailsComponent implements OnInit {
     this.zoomService.createConference(conference).subscribe(
       (res: Conference) => {
         if (res) {
-          // this.meetingInfo[res.hostUserId] = res;
-          // this.meetingInfo[res.hostUserId].startTime = new Date(res.startTime).toISOString();
           this.getFindAllScheduledMeeting();
         }
         this.spinner.hide();
@@ -984,17 +1031,12 @@ export class VendorDetailsComponent implements OnInit {
         this.toaster.error('Error while setting meeting time.');
       }
     );
-    // console.log(this.meetingTime);
   }
 
   getScheduledMeetings(user) {
     if (this.type === 'released') {
-      // this.zoomService.getConferenceByPartId('1769')
-      // this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
-      // return;
       this.zoomService
         .getConferenceByVendorOrderId(user.vendorOrderId.toString(), this.userService.getUserInfo().id, user.userId)
-        // 388)
         .subscribe(
           res => {
             if (res) {
@@ -1011,7 +1053,6 @@ export class VendorDetailsComponent implements OnInit {
     } else {
       this.zoomService
         .getConferenceByBidOrderId(this.bidOrderId.toString(), this.userService.getUserInfo().id, user.userId)
-        // 388)
         .subscribe(
           res => {
             if (res) {
@@ -1057,6 +1098,5 @@ export class VendorDetailsComponent implements OnInit {
 
   clickMeetingTime(ev) {
     ev.stopPropagation();
-    console.log('here');
   }
 }
