@@ -191,3 +191,8 @@ a.priority-btn:not([href]) {
   left: unset !important;
   right: 50px;
 }
+
+:host .view-pricing:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

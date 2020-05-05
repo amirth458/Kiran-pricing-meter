@@ -250,22 +250,22 @@
 </ng-template>
 
 <ng-template #pricingProfileModal let-modal>
-  <div class="modal-container">
+  <div class="modal-container text-theme">
     <div class="modal-header">
-      <h5 class="modal-title">{{ pricingProfile?.vendorProfile?.name }} Profile</h5>
+      <h5 class="modal-title">{{ processProfile?.vendorName }} Profile</h5>
       <a (click)="modal.dismiss()">
         <i class="fa fa-times"></i>
       </a>
     </div>
     <div class="modal-container px-5 py-3">
-      <p class="text-center">
-        {{ pricingProfile?.processProfileName }}
+      <p class="text-center text-theme">
+        {{ processProfile?.name }}
       </p>
       <div class="col-12 theme-table">
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
-          [class.grid-empty]="(pricingProfile?.pricing || []).length === 0"
-          [rowData]="pricingProfile?.pricing || []"
+          [class.grid-empty]="(processProfile?.processPricingList || []).length === 0"
+          [rowData]="processProfile?.processPricingList || []"
           [gridOptions]="gridOptions[3]"
           (gridReady)="onGridReady(3, $event)"
           domLayout="autoHeight"
@@ -497,4 +497,8 @@
       </app-vendor-order-status>
     </div>
   </div>
+</ng-template>
+
+<ng-template #viewPricingProfile let-row>
+  <span class="w-100 h-100 text-theme-green font-weight-bold view-pricing" (click)="openPricingView(row)">View</span>
 </ng-template>
