@@ -8,6 +8,33 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidComponent implements OnInit {
   columnDefs = [
     {
+      headerName: 'Vendor ID',
+      field: 'vendor_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_id',
+      headerTooltip: 'Vendor ID'
+    },
+    {
+      headerName: 'Vendor Name',
+      field: 'vendor_name',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_name',
+      headerTooltip: 'Vendor Name'
+    },
+    {
+      headerName: 'Bid Winner',
+      field: 'bid_winner',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'bid_winner',
+      headerTooltip: 'Bid Winner'
+    },
+    {
       headerName: 'Bid ID',
       field: 'bid_id',
       hide: false,
@@ -42,24 +69,6 @@ export class InsightBidComponent implements OnInit {
       filter: false,
       tooltipField: 'customer_order_id',
       headerTooltip: 'Customer Order ID'
-    },
-    {
-      headerName: 'Vendor ID',
-      field: 'vendor_id',
-      hide: false,
-      sortable: false,
-      filter: false,
-      tooltipField: 'vendor_id',
-      headerTooltip: 'Vendor ID'
-    },
-    {
-      headerName: 'Vendor Name',
-      field: 'vendor_name',
-      hide: false,
-      sortable: false,
-      filter: false,
-      tooltipField: 'vendor_name',
-      headerTooltip: 'Vendor Name'
     },
     {
       headerName: 'Customer Price',
@@ -190,15 +199,6 @@ export class InsightBidComponent implements OnInit {
       filter: false,
       tooltipField: 'bid_order_status',
       headerTooltip: 'Bid Order Status'
-    },
-    {
-      headerName: 'Bid Winner',
-      field: 'bid_winner',
-      hide: false,
-      sortable: false,
-      filter: false,
-      tooltipField: 'bid_winner',
-      headerTooltip: 'Bid Winner'
     }
   ];
   constructor() {}
