@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,6 +14,12 @@ import { TemplateRendererComponent } from '../../../../../common/template-render
   styleUrls: ['./released-orders.component.css']
 })
 export class ReleasedOrdersComponent implements OnInit {
+  @ViewChild('partDetailCell') partDetailCell;
+  @ViewChild('partDetailModal') partDetailModal;
+
+  selectedOrderID;
+  selectedParts;
+
   type = ['search', 'filter'];
 
   pageSize = 10;
@@ -33,7 +40,8 @@ export class ReleasedOrdersComponent implements OnInit {
   constructor(
     public router: Router,
     public spinner: NgxSpinnerService,
-    private orderService: OrdersService
+    private orderService: OrdersService,
+    public modal: NgbModal
   ) {}
 
   ngOnInit() {
@@ -47,16 +55,22 @@ export class ReleasedOrdersComponent implements OnInit {
       pagination: true,
       paginationPageSize: this.pageSize,
       onRowClicked: event => {
-        this.router.navigateByUrl(
-          `${this.router.url}/${event.data.bidOrder.id}`
-        );
+        this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
       }
     };
     this.getReleasedBiddingOrders();
   }
 
   initColumns() {
-    this.columnDefs = this.orderService.getOrderViewColumns();
+    this.columnDefs = this.orderService.getOrderViewColumns('released-orders');
+    this.columnDefs.push({
+      headerName: '',
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {
+        ngTemplate: this.partDetailCell
+      }
+    });
+
     this.autoGroupColumnDef = {
       headerName: 'Vendor Order ID'
     };
@@ -92,9 +106,7 @@ export class ReleasedOrdersComponent implements OnInit {
 
   searchColumnsChange(columns) {
     columns.map(column => {
-      const columnInstance = this.gridOptions.api.getFilterInstance(
-        column.field
-      );
+      const columnInstance = this.gridOptions.api.getFilterInstance(column.field);
       if (columnInstance) {
         if (column.checked) {
           columnInstance.setModel(column.query);
@@ -115,5 +127,17 @@ export class ReleasedOrdersComponent implements OnInit {
         sort: 'desc'
       }
     ]);
+  }
+
+  showPartDetails(ev, v) {
+    ev.stopPropagation();
+    this.selectedOrderID = v.bidOrder.id;
+    this.selectedParts = v.partIds;
+
+    this.modal.open(this.partDetailModal, {
+      centered: true,
+      size: 'lg',
+      windowClass: 'part-detail'
+    });
   }
 }

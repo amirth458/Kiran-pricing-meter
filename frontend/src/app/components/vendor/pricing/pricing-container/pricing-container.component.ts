@@ -23,10 +23,14 @@ export class PricingContainerComponent implements OnInit {
         route: this.baseURL + '/rfq'
       },
       {
-        name: 'Orders',
+        name: 'ProdEX Order',
         route: this.baseURL + '/orders'
+      },
+      {
+        name: 'ProdEX Production Order',
+        route: this.baseURL + '/production-orders'
       }
     ];
-    this.selectedSubmenu = this.baseURL + '/rfq';
+    this.selectedSubmenu = this.baseURL + '/' + this.route.url.split('/')[2];
   }
 }

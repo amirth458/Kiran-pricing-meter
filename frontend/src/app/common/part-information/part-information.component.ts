@@ -1,15 +1,14 @@
-import { RfqData, PartCustomParameter, PartDimension } from '../../../../../model/part.model';
-import { Util } from '../../../../../util/Util';
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Part } from 'src/app/model/part.model';
-
-import { MetadataService } from '../../../../../service/metadata.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ForgeService } from 'src/app/service/forge.service';
-import { MetadataConfig } from '../../../../../model/metadata.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { Util } from 'src/app/util/Util';
+import { RfqData, PartCustomParameter, PartDimension, Part } from 'src/app/model/part.model';
+import { MetadataConfig } from 'src/app/model/metadata.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { ForgeService } from 'src/app/service/forge.service';
 
 @Component({
   selector: 'app-part-information',
@@ -39,7 +38,6 @@ export class PartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('part', this.part);
     this.metadataService
       .getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE)
       .subscribe(v => (this.measurementUnits = v));

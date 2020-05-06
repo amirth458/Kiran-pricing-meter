@@ -24,3 +24,8 @@
 .header.manual-price {
   color: var(--theme-light-blue);
 }
+
+.border-wrapper {
+  border: 1px solid var(--theme-table-border);
+  border-radius: 10px;
+}

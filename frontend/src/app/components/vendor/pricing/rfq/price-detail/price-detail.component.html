@@ -30,12 +30,14 @@
           ></app-price-view>
         </ng-container>
         <ng-container *ngSwitchCase="1">
-          <app-part-information
-            [part]="part"
-            [rfq]="rfq"
-            [customer]="customer"
-            [partDimension]="partDimension"
-          ></app-part-information>
+          <div class="border-wrapper">
+            <app-part-information
+              [part]="part"
+              [rfq]="rfq"
+              [customer]="customer"
+              [partDimension]="partDimension"
+            ></app-part-information>
+          </div>
         </ng-container>
         <ng-container *ngSwitchCase="2">
           <app-process-profile

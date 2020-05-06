@@ -53,6 +53,9 @@ import { InsightBidComponent } from './../../components/vendor/insight/insight-b
 import { InsightOrderComponent } from './../../components/vendor/insight/insight-order/insight-order.component';
 import { InsightProcessProfileComponent } from './../../components/vendor/insight/insight-process-profile/insight-process-profile.component';
 import { InsightPricingProfileComponent } from './../../components/vendor/insight/insight-pricing-profile/insight-pricing-profile.component';
+import { ProductionOrdersContainerComponent } from 'src/app/components/vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
+import { ProductionVendorDetailsComponent } from 'src/app/components/vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
+import { ProductionReleasedOrdersComponent } from 'src/app/components/vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
 
 const routes: Routes = [
   {
@@ -149,6 +152,27 @@ const routes: Routes = [
               {
                 path: '**',
                 redirectTo: 'fullfillment-settings',
+                pathMatch: 'full'
+              }
+            ]
+          },
+          {
+            path: 'production-orders',
+            component: ProductionOrdersContainerComponent,
+            children: [
+              {
+                path: 'released-orders/:bidOrderId',
+                component: ProductionVendorDetailsComponent
+              },
+              { path: 'released-orders', component: ProductionReleasedOrdersComponent },
+              {
+                path: '',
+                redirectTo: 'released-orders',
+                pathMatch: 'full'
+              },
+              {
+                path: '**',
+                redirectTo: 'released-orders',
                 pathMatch: 'full'
               }
             ]
