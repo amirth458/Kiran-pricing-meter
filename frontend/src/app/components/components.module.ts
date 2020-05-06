@@ -22,6 +22,7 @@ import { DropdownCellRendererComponent } from '../common/dropdown-cell-renderer/
 import { DropdownHeaderRendererComponent } from '../common/dropdown-header-renderer/dropdown-header-renderer.component';
 import { MultiSelectCellEditorComponent } from '../common/multi-select-cell-editor/multi-select-cell-editor.component';
 import { MultiSelectCellRendererComponent } from '../common/multi-select-cell-renderer/multi-select-cell-renderer.component';
+import { PartInformationComponent } from '../common/part-information/part-information.component';
 import { SideMenuComponent } from '../common/side-menu/side-menu.component';
 import { SubSectionMenuComponent } from '../common/sub-section-menu/sub-section-menu.component';
 import { TopMenuComponent } from '../common/top-menu/top-menu.component';
@@ -54,7 +55,6 @@ import { FileViewerComponent } from '../common/file-viewer/file-viewer.component
 import { TemplateRendererComponent } from '../common/template-renderer/template-renderer.component';
 import { PriceDetailComponent } from './vendor/pricing/rfq/price-detail/price-detail.component';
 import { PriceViewComponent } from './vendor/pricing/rfq/price-view/price-view.component';
-import { PartInformationComponent } from './vendor/pricing/rfq/part-information/part-information.component';
 import { PricingProfileComponent } from './vendor/pricing/rfq/pricing-profile/pricing-profile.component';
 import { PricingProfileDetailComponent } from './vendor/pricing/rfq/pricing-profile-detail/pricing-profile-detail.component';
 import { RecommendedPricingComponent } from './vendor/pricing/rfq/recommended-pricing/recommended-pricing.component';
@@ -111,6 +111,10 @@ import { InsightPricingProfileComponent } from './vendor/insight/insight-pricing
 import { InsightDetailComponent } from './vendor/insight/insight-detail/insight-detail.component';
 import { SearchBarComponent } from '../common/search-bar/search-bar.component';
 import { DateRangeMonthComponent } from '../common/date-range-month/date-range-month.component';
+import { MultiPartsInformationComponent } from '../common/multi-parts-information/multi-parts-information.component';
+import { ProductionOrdersContainerComponent } from './vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
+import { ProductionReleasedOrdersComponent } from './vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
+import { ProductionVendorDetailsComponent } from './vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 
 @NgModule({
   declarations: [
@@ -136,6 +140,7 @@ import { DateRangeMonthComponent } from '../common/date-range-month/date-range-m
     ModelDetailViewComponent,
     SearchBarComponent,
     DateRangeMonthComponent,
+    MultiPartsInformationComponent,
 
     AdminContainerComponent,
     ApproveVendorComponent,
@@ -212,7 +217,10 @@ import { DateRangeMonthComponent } from '../common/date-range-month/date-range-m
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
-    InsightDetailComponent
+    InsightDetailComponent,
+    ProductionOrdersContainerComponent,
+    ProductionReleasedOrdersComponent,
+    ProductionVendorDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <div class="tabs d-flex align-items-center justify-content-start">
+    <div class="tab" *ngFor="let id of partIds" [ngClass]="{ active: currentId === id }" (click)="setTab(id)">
+      {{ id }}
+    </div>
+  </div>
+  <div class="body">
+    <app-part-information
+      *ngIf="part"
+      [part]="part"
+      [rfq]="rfq"
+      [customer]="customer"
+      [partDimension]="partDimension"
+    ></app-part-information>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff80"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
+  </div>
+</div>

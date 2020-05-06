@@ -11,3 +11,12 @@
     padding: 40px 20px;
   }
 }
+
+.text-blue {
+  color: var(--theme-bright-blue) !important;
+}
+
+.text-underlined {
+  text-decoration: underline !important;
+  cursor: pointer;
+}

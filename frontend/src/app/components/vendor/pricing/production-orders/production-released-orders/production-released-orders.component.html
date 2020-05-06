@@ -6,37 +6,33 @@
       [(filterColumns)]="filterColumns"
       (filterColumnsChange)="filterColumnsChange($event)"
       [(searchColumns)]="searchColumns"
-      (searchColumnsChange)="searchColumnsChange($event)"
+      (searchColumnsChange)="searchColumnsChange()"
     >
     </app-column-search-filter>
   </div>
   <div class="table theme-table ml-4 d-flex flex-column">
-    <div class="mb-3 row">
-      <div class="form-group theme col-10 d-flex flex-row m-0">
-        <input class="form-control col-md-3" placeholder="Vendor Order ID" />
-      </div>
-
-      <div class="col-2 page-size mt-2 pl-5 pr-0">
-        <span>
-          Page Size:
-        </span>
-        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
-          <option selected value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-        </select>
-      </div>
+    <div class="d-flex align-items-center justify-content-end">
+      <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
     </div>
     <ag-grid-angular
       class="ag-theme-balham w-100 h-100 flex-grow-1"
       [rowData]="rowData"
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)"
+      rowModelType="infinite"
       [autoGroupColumnDef]="autoGroupColumnDef"
     >
     </ag-grid-angular>
+    <ngx-spinner
+      [name]="'spooler1'"
+      bdColor="#ffffff80"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </div>
 
@@ -48,7 +44,7 @@
 <ng-template #partDetailModal let-modal>
   <div class="part-detail-modal">
     <div class="modal-header">
-      <h4 class="text-theme text-center w-100">Order No {{ selectedOrderID }}</h4>
+      <h4 class="text-theme text-center w-100">ProdEX Production Order No {{ selectedOrderID }}</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>

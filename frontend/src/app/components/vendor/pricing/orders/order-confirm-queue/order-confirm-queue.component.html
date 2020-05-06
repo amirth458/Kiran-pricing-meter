@@ -45,3 +45,23 @@
     </ag-grid-angular>
   </div>
 </div>
+
+<!-- partDetails cell -->
+<ng-template #partDetailCell let-row>
+  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails($event, row)">Show Parts</a>
+</ng-template>
+
+<ng-template #partDetailModal let-modal>
+  <div class="part-detail-modal">
+    <div class="modal-header">
+      <h4 class="text-theme text-center w-100">Order No {{ selectedOrderID }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <app-multi-parts-information [partIds]="selectedParts"></app-multi-parts-information>
+    </div>
+  </div>
+</ng-template>

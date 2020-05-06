@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -17,6 +18,12 @@ import { MetaData, MetadataConfig } from '../../../../../model/metadata.model';
   styleUrls: ['./order-confirm-queue.component.css']
 })
 export class OrderConfirmQueueComponent implements OnInit {
+  @ViewChild('partDetailCell') partDetailCell;
+  @ViewChild('partDetailModal') partDetailModal;
+
+  selectedOrderID;
+  selectedParts;
+
   type = ['search', 'filter'];
   pageSize = 10;
   searchColumns = this.orderService.getGridSearchColumns();
@@ -39,7 +46,8 @@ export class OrderConfirmQueueComponent implements OnInit {
     public router: Router,
     public spinner: NgxSpinnerService,
     public orderService: OrdersService,
-    public metaDataService: MetadataService
+    public metaDataService: MetadataService,
+    public modal: NgbModal
   ) {}
 
   ngOnInit() {
@@ -59,7 +67,14 @@ export class OrderConfirmQueueComponent implements OnInit {
   }
 
   initColumns() {
-    this.columnDefs = this.orderService.getOrderViewColumns();
+    this.columnDefs = this.orderService.getOrderViewColumns('order-confirmation-queue');
+    this.columnDefs.push({
+      headerName: '',
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {
+        ngTemplate: this.partDetailCell
+      }
+    });
     this.autoGroupColumnDef = {
       headerName: 'Vendor Order ID'
     };
@@ -117,5 +132,17 @@ export class OrderConfirmQueueComponent implements OnInit {
         sort: 'desc'
       }
     ]);
+  }
+
+  showPartDetails(ev, v) {
+    ev.stopPropagation();
+    this.selectedOrderID = v.bidOrder.id;
+    this.selectedParts = v.partIds;
+
+    this.modal.open(this.partDetailModal, {
+      centered: true,
+      size: 'lg',
+      windowClass: 'part-detail'
+    });
   }
 }

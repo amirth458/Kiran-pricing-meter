@@ -101,17 +101,14 @@ export class ApproveVendorComponent implements OnInit {
       field: column.displayName
     }));
 
-    const savedSearch = JSON.parse(localStorage.getItem('searchVendors') || 'null');
-
     this.searchColumns = columns.map(column => {
-      const saved = savedSearch && savedSearch.find(item => item.id === column.id);
       return {
         id: column.id,
         name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
-        checked: saved ? saved.checked : false,
+        checked: false,
         operators: column.operators,
         field: column.displayName,
-        query: saved ? saved.query : { type: '', filter: null }
+        query: { type: '', filter: null }
       };
     });
 
@@ -349,7 +346,6 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumnsChange() {
     this.filterColumnsRequest = [];
-    localStorage.setItem('searchVendors', JSON.stringify(this.searchColumns));
     this.searchColumns.map(column => {
       if (column.checked && column.query.type) {
         this.filterColumnsRequest.push({

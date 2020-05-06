@@ -128,6 +128,13 @@ export class OrdersService {
     return this.http.get<Array<BiddingOrder>>(`${environment.apiBaseUrl}/admin/bidding/released-bid-orders`);
   }
 
+  getProductionReleasedBiddingOrders(page, size, filter): Observable<any> {
+    return this.http.post<any>(
+      `${environment.apiBaseUrl}/admin/vendor/production-project/vendor-orders?page=${page}&size=${size}`,
+      filter
+    );
+  }
+
   getSubOrderReleaseConfirmation() {
     const url = `${environment.apiBaseUrl}/admin/bidding/sub-order-release-confirmation`;
     return this.http.get<any>(url);
@@ -170,7 +177,7 @@ export class OrdersService {
     );
   }
 
-  getOrderViewColumns(): ColDef[] {
+  getOrderViewColumns(view = 'order-confirmation-queue'): ColDef[] {
     const columns = [
       {
         headerName: 'Order ID',
@@ -193,6 +200,21 @@ export class OrdersService {
         field: 'subOrderCount',
         tooltip: params => params.value,
         hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Offer IDs',
+        field: 'bidProcessIds',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: v => (v && v.value && v.value.join(',')) || ''
+      },
+      {
+        headerName: 'Vendor Order ID',
+        field: 'vendorOrderId',
+        hide: view !== 'released-orders',
         sortable: true,
         filter: false
       },
