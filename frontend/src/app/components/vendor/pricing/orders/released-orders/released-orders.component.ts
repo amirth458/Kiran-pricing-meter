@@ -62,14 +62,7 @@ export class ReleasedOrdersComponent implements OnInit {
   }
 
   initColumns() {
-    this.columnDefs = this.orderService.getOrderViewColumns('released-orders');
-    this.columnDefs.push({
-      headerName: '',
-      cellRenderer: 'templateRenderer',
-      cellRendererParams: {
-        ngTemplate: this.partDetailCell
-      }
-    });
+    this.columnDefs = this.orderService.getOrderViewColumns('released-orders', this.partDetailCell);
 
     this.autoGroupColumnDef = {
       headerName: 'Vendor Order ID'

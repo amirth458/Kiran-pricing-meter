@@ -177,7 +177,7 @@ export class OrdersService {
     );
   }
 
-  getOrderViewColumns(view = 'order-confirmation-queue'): ColDef[] {
+  getOrderViewColumns(view = 'order-confirmation-queue', partDetailCell): ColDef[] {
     const columns = [
       {
         headerName: 'Order ID',
@@ -192,8 +192,11 @@ export class OrdersService {
         tooltip: params => (params.value || []).join(', '),
         sortable: true,
         filter: false,
-        valueFormatter: params => (params.value || []).join(', '),
-        width: 240
+        width: 240,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: partDetailCell
+        }
       },
       {
         headerName: 'Sub Order Count',
@@ -502,5 +505,11 @@ export class OrdersService {
   getReferenceFiles(partId) {
     const url = `${environment.apiBaseUrl}/admin/part/${partId}/reference-medias?generateSignedUrl=true`;
     return this.http.get<any>(url);
+  }
+
+  getProductionOrderDetails(productionOrderInfo) {
+    const url = `${environment.apiBaseUrl}/admin/vendor/production-project/vendor-order-details`;
+
+    return this.http.post<any>(url, productionOrderInfo);
   }
 }

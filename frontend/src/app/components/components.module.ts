@@ -115,6 +115,7 @@ import { MultiPartsInformationComponent } from '../common/multi-parts-informatio
 import { ProductionOrdersContainerComponent } from './vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
 import { ProductionReleasedOrdersComponent } from './vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
 import { ProductionVendorDetailsComponent } from './vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
+import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat.component';
 
 @NgModule({
   declarations: [
@@ -220,7 +221,8 @@ import { ProductionVendorDetailsComponent } from './vendor/pricing/production-or
     InsightDetailComponent,
     ProductionOrdersContainerComponent,
     ProductionReleasedOrdersComponent,
-    ProductionVendorDetailsComponent
+    ProductionVendorDetailsComponent,
+    BillingChatComponent
   ],
   imports: [
     CommonModule,
