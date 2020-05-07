@@ -69,6 +69,25 @@ export class InsightDetailComponent implements OnInit {
     }
   }
 
+  onDownload() {
+    const filter = {
+      sort: '',
+      filters: {
+        beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
+        endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
+        searchValue: this.searchQuery,
+        lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
+      }
+    };
+    this.reportsService.download(this.type, filter).subscribe(data => {
+      const downloadURL = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }));
+      const link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = `${this.type}-report.csv`;
+      link.click();
+    });
+  }
+
   refreshData(params, data) {
     // const rowsThisPage = data.content;
     // const lastRow = data.total <= params.endRow ? data.total : -1;

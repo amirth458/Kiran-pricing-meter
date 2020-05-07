@@ -1,6 +1,6 @@
 <div class="col-12 border p-0 shadow d-flex flex-column">
   <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
-    Notes
+    Message to Customer
   </h5>
   <ng-container *ngIf="value?.messageNotes?.length > 0">
     <app-message-viewer [(value)]="value.messageNotes"> </app-message-viewer>
@@ -17,7 +17,7 @@
     <div class="form-row">
       <div class="form-group theme col-12 m-0">
         <label class="w-100">
-          Note
+          Notes
           <textarea
             class="form-control note-input"
             rows="2"

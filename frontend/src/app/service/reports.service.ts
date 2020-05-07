@@ -1,6 +1,6 @@
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { ReportFilterOptions } from './../model/insight.model';
 
 @Injectable({
@@ -19,6 +19,23 @@ export class ReportsService {
       url,
       { ...filter.filters },
       {
+        params: params
+      }
+    );
+  }
+
+  download(type, filter) {
+    const url = `${environment.apiBaseUrl}/admin/insight/reports/${type}-report/csv`;
+    const params = new HttpParams();
+    params.append('sort', filter.sort);
+    return this.http.post(
+      url,
+      { ...filter.filters },
+      {
+        headers: new HttpHeaders({
+          Accept: 'application/octet-stream'
+        }),
+        responseType: 'arraybuffer',
         params: params
       }
     );
