@@ -14,50 +14,63 @@
   <ng-container *ngIf="!loading; else loadingPanel">
     <span><i class="fas fa-comment-alt"></i></span>
   </ng-container>
-  <div class="unread-badge position-absolute">{{ value?.messageNotes | unReadCount: user.id }}</div>
 </button>
 
 <ng-template #popContent>
-  <div class="col-12 border p-0 d-flex flex-column">
-    <ng-container *ngIf="value?.messageNotes?.length > 0">
-      <app-message-viewer [(value)]="value.messageNotes"> </app-message-viewer>
-    </ng-container>
-    <ng-container *ngIf="(value?.messageNotes?.length || 0) === 0">
-      <div class="empty-chat d-flex align-items-center justify-content-center">
-        <div class="participant-chat text-left">
-          No chats found
+  <div class="col-12 border p-0 d-flex flex-column notes">
+    <div class="col-12 d-flex flex-column-reverse notes-body" [ngClass]="{ small: messageList.length == 0 }">
+      <div
+        *ngFor="let message of messageList; let index = index"
+        class="message"
+        [ngClass]="{ admin: message.userId == userInfo.email }"
+      >
+        <!-- TODO: -->
+        <!-- *ngIf="isDifferentDate(index)" -->
+        <!-- <hr>
+          <div class="time-stamp d-block text-center">
+            <p class="m-0 date">{{orderInfo?.customerOrder?.createdDate | date: 'fullDate'}}</p>
+            <p class=" m-0 time text-theme">{{orderInfo?.customerOrder?.createdDate | date: 'shortTime'}}</p>
+          </div> -->
+
+        <div class="d-block mt-3">
+          <div class="user-name font-italic">
+            <p class="m-0">
+              <ng-container *ngIf="message.userId == userInfo.email; else name">Admin</ng-container>
+
+              <ng-template #name>{{ message.userId }}</ng-template>
+            </p>
+          </div>
+          <div class="body">
+            <p class="m-0">
+              {{ message.note }}
+            </p>
+          </div>
         </div>
       </div>
-    </ng-container>
-    <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
-      <hr class="m-0" />
-      <div class="form-row">
-        <div class="form-group theme col-12 m-0">
-          <label class="w-100">
-            Note
-            <textarea
-              class="form-control note-input"
-              rows="2"
-              formControlName="note"
-              (keyup.enter)="sendNote($event)"
-            ></textarea>
-          </label>
+    </div>
+    <div
+      *ngIf="orderInfo?.billingInfoView?.paymentStatusType === PaymentStatusTypes?.WAITING_FOR_APPROVAL"
+      class="col-12  shadow notes-action pt-1 pb-3"
+    >
+      <div class="col-12 comment">
+        <!-- <label class="font-weight-bold m-0">Notes</label> -->
+
+        <div [formGroup]="chatForm" class="col-12 m-0 p-1 row align-items-center">
+          <textarea formControlName="note" class="form-control"></textarea>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group theme col-12 m-0 d-flex justify-content-center">
-          <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
-            {{ loading ? 'Submitting Note' : 'Add Note' }}
+        <div class="d-flex align-items-center justify-content-center">
+          <button [disabled]="!chatForm.valid" type="button" class="btn theme white mx-auto" (click)="sendNote()">
+            Send Note
           </button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #popTitle>
   <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
-    Message to Vendor
+    Message to Customer
   </h5>
 </ng-template>
 

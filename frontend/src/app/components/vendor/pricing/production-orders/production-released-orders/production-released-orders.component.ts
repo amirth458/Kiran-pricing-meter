@@ -28,8 +28,105 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   totalcounts;
   filterColumnsRequest = [];
 
-  searchColumns = this.orderService.getGridSearchColumns();
-  filterColumns = this.orderService.getGridFilterColumns();
+  searchColumns = [
+    {
+      name: 'Customer Order ID',
+      field: 'bidOrder.id',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Sub Order IDs',
+      field: 'partIds',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Vendor Order ID',
+      field: 'vendorOrderId',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Material',
+      field: 'material',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Process',
+      field: 'process',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    }
+  ];
+  filterColumns = [
+    {
+      name: 'Order ID',
+      field: 'bidOrder.id',
+      checked: true
+    },
+    {
+      name: 'Sub Order IDs',
+      field: 'partIds',
+      checked: true
+    },
+    {
+      name: 'Sub Order Count',
+      field: 'subOrderCount',
+      checked: true
+    },
+    {
+      name: 'Vendor Order ID',
+      field: 'vendorOrderId',
+      checked: true
+    },
+    {
+      name: 'Offer Price',
+      field: 'offerPrice',
+      checked: true
+    },
+    {
+      name: 'Quantity',
+      field: 'quantity',
+      checked: true
+    },
+    {
+      name: 'Material',
+      field: 'material',
+      checked: true
+    },
+    {
+      name: 'Process',
+      field: 'process',
+      checked: true
+    },
+    {
+      name: 'Delivery Date',
+      field: 'deliveryDate',
+      checked: true
+    },
+    {
+      name: 'Status',
+      field: 'bidOrder.bidOrderStatusType.description',
+      checked: true
+    }
+  ];
 
   selectedIds = [];
 
@@ -59,9 +156,15 @@ export class ProductionReleasedOrdersComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        if (event.data.bidOrder) {
-          this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
-        }
+        localStorage.setItem(
+          'selectedProductionOrder',
+          JSON.stringify({
+            vendorOrderId: event.data.vendorOrderId,
+            partIds: event.data.partIds,
+            vendorId: event.data.vendorId
+          })
+        );
+        this.router.navigateByUrl(`${this.router.url}/${event.data.customerOrderId}`);
       }
     };
   }
@@ -69,8 +172,8 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
-        headerName: 'Order ID',
-        field: 'bidOrder.id',
+        headerName: 'Customer Order ID',
+        field: 'customerOrderId',
         tooltip: params => params.value,
         sortable: true,
         filter: false
@@ -81,7 +184,18 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         tooltip: params => (params.value || []).join(', '),
         sortable: true,
         filter: false,
-        valueFormatter: params => (params.value || []).join(', '),
+        width: 240,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.partDetailCell
+        }
+      },
+      {
+        headerName: 'Vendor Order ID',
+        field: 'vendorOrderId',
+        tooltipFiled: 'vendorOrderId',
+        sortable: true,
+        filter: false,
         width: 240
       },
       {
@@ -89,12 +203,6 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         field: 'subOrderCount',
         tooltip: params => params.value,
         hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: '3D Vendor Order ID',
-        field: 'vendorOrderId',
         sortable: true,
         filter: false
       },
@@ -136,14 +244,6 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         valueFormatter: dt => (dt.value || []).join(' , ')
       },
       {
-        headerName: 'Post-Process',
-        field: 'postProcess',
-        tooltip: params => params.value,
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
         headerName: 'Delivery Date',
         field: 'deliveryDate',
         tooltip: params => params.value,
@@ -159,17 +259,6 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         }
       }
     ];
-    this.columnDefs.push({
-      headerName: '',
-      cellRenderer: 'templateRenderer',
-      cellRendererParams: {
-        ngTemplate: this.partDetailCell
-      }
-    });
-
-    this.autoGroupColumnDef = {
-      headerName: 'Vendor Order ID'
-    };
   }
   pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));
@@ -219,10 +308,10 @@ export class ProductionReleasedOrdersComponent implements OnInit {
 
   searchColumnsChange() {
     this.filterColumnsRequest = [];
-    this.searchColumns.map(column => {
+    this.searchColumns.map((column, index) => {
       if (column.checked && column.query.type) {
         this.filterColumnsRequest.push({
-          id: column.id,
+          id: index + 1,
           displayName: column.name,
           selectedOperator: column.query.type,
           searchedValue: column.query.filter

@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { Router } from '@angular/router';
@@ -9,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillingService } from 'src/app/service/billing.service';
 import { Payment, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
+import { ChatTypeEnum } from 'src/app/model/chat.model';
 import { ProjectType } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 
@@ -20,6 +22,8 @@ import { MetadataService } from 'src/app/service/metadata.service';
 export class WaitingForApprovalComponent implements OnInit {
   @ViewChild('viewAllInfo') viewAllInfo: TemplateRef<any>;
   @ViewChild('approveRejectAction') approveRejectAction: TemplateRef<any>;
+  @ViewChild('chatCell') chatCell: TemplateRef<any>;
+
   disableControls = false;
 
   tableControlReady = false;
@@ -41,13 +45,48 @@ export class WaitingForApprovalComponent implements OnInit {
       query: {
         type: '',
         filter: ''
-      },
-      resizeable: true
+      }
     },
     {
-      name: 'Note',
+      name: 'Customer RFQ ID',
       checked: false,
-      field: 'note',
+      field: 'rfqId',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Part IDs',
+      checked: false,
+      field: 'partIds',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Payment No',
+      checked: false,
+      field: 'poNumber',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Amount',
+      checked: false,
+      field: 'amount',
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
+      name: 'Project Type',
+      checked: false,
+      field: 'projectType',
       query: {
         type: '',
         filter: ''
@@ -76,19 +115,34 @@ export class WaitingForApprovalComponent implements OnInit {
       field: 'orderId'
     },
     {
-      name: 'Purchase Order',
+      name: 'Customer RFQ ID',
+      checked: true,
+      field: 'rfqId'
+    },
+    {
+      name: 'Part IDs',
+      checked: true,
+      field: 'partIds'
+    },
+    {
+      name: 'Payment No',
       checked: true,
       field: 'poNumber'
+    },
+    {
+      name: 'Amount',
+      checked: true,
+      field: 'amount'
+    },
+    {
+      name: 'Project Type',
+      checked: true,
+      field: 'projectType'
     },
     {
       name: 'Payment Type',
       checked: true,
       field: 'paymentType'
-    },
-    {
-      name: 'Note',
-      checked: true,
-      field: 'note'
     }
   ];
 
@@ -112,6 +166,7 @@ export class WaitingForApprovalComponent implements OnInit {
   type = ['search', 'filter'];
 
   columnDefs: ColDef[] = [];
+  paymentOrderType = PaymentType;
 
   gridOptions: GridOptions;
   frameworkComponents = {
@@ -141,7 +196,8 @@ export class WaitingForApprovalComponent implements OnInit {
     public fb: FormBuilder,
     public modalService: NgbModal,
     public billingService: BillingService,
-    public metadataService: MetadataService
+    public metadataService: MetadataService,
+    public currencyPipe: CurrencyPipe
   ) {
     this.navigation = this.route.getCurrentNavigation();
     const routeArr = this.route.url
@@ -391,18 +447,37 @@ export class WaitingForApprovalComponent implements OnInit {
         width: 100
       },
       {
-        headerName: 'Purchase Order',
+        headerName: 'Customer RFQ ID',
+        field: 'rfqId',
+        hide: false,
+        sortable: true,
+        filter: false,
+        width: 100
+      },
+      {
+        headerName: 'Part IDs',
+        field: 'partIds',
+        hide: false,
+        sortable: true,
+        filter: false,
+        width: 100,
+        valueFormatter: v => v && v.value && v.value.join(',')
+      },
+      {
+        headerName: 'Payment No',
         field: 'poNumber',
         hide: false,
         sortable: true,
         filter: false
       },
       {
-        headerName: 'Note',
-        field: 'note',
+        headerName: 'Amount',
+        field: 'amount',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        width: 100,
+        valueFormatter: v => v && v.value && this.currencyPipe.transform(v.value || 0, 'USD', 'symbol', '0.0-3')
       },
       {
         headerName: 'Project Type',
@@ -424,6 +499,17 @@ export class WaitingForApprovalComponent implements OnInit {
             return result[0].toUpperCase() + result.substr(1);
           }
           return result;
+        }
+      },
+      {
+        headerName: 'Note',
+        field: 'note',
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.chatCell
         }
       },
       {
