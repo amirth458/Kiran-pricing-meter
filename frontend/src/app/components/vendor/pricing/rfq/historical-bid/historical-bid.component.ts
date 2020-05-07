@@ -30,6 +30,7 @@ export class HistoricalBidComponent implements OnInit {
 
   columnDefs: ColDef[] = [];
   pageSize = 10;
+  unitId: number = null;
 
   gridOptions: GridOptions;
   rowData: LegacyBidHistory[] = [];
@@ -365,9 +366,9 @@ export class HistoricalBidComponent implements OnInit {
   ngOnInit() {
     this.orderService.getAllMeasurementUnitType().subscribe(i => {
       this.measurementUnits = i.metadataList;
+      console.log(this.measurementUnits.filter(u => u.isDefault));
+      this.updateRowData();
     });
-
-    this.updateRowData();
 
     this.partInfoColumnDefs = [
       {
@@ -491,7 +492,7 @@ export class HistoricalBidComponent implements OnInit {
   }
 
   getUnitSymbol(unitId) {
-    const result = this.measurementUnits.filter(item => item.id == unitId);
+    const result = this.measurementUnits.filter(item => item.id === unitId);
     if (result.length) {
       return ' ' + result[0].symbol;
     }
@@ -610,7 +611,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.value + ' (cm)'
+        valueFormatter: dt => dt.value + this.getUnitSymbol(this.unitId)
       },
       {
         headerName: 'Y',
@@ -619,7 +620,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.value + ' (cm)'
+        valueFormatter: dt => dt.value + this.getUnitSymbol(this.unitId)
       },
       {
         headerName: 'Z',
@@ -628,7 +629,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.value + ' (cm)'
+        valueFormatter: dt => dt.value + this.getUnitSymbol(this.unitId)
       },
       {
         headerName: 'Volume',
@@ -665,7 +666,6 @@ export class HistoricalBidComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: value => {
-          console.log({ value });
           const data = value.data;
           const result = (data.vendorTotalBidAmount / data.partOnPlatform || '0').toString();
           return '$' + result;
@@ -727,11 +727,14 @@ export class HistoricalBidComponent implements OnInit {
           partDimension: this.part.rfqMedia.media.partDimension
         }
       ];
+      if (this.part.rfqMedia && this.part.rfqMedia.media && this.part.rfqMedia.media.partDimension) {
+        const d = this.part.rfqMedia.media.partDimension;
+        this.unitId = d.volume.unitId;
+      }
     }
     this.spinner.show('spooler');
     this.biddingService.getBidHistory(this.part.id).subscribe((v: LegacyBidHistory[]) => {
       this.rowData = v;
-      console.log({ v });
       this.spinner.hide('spooler');
     });
   }
