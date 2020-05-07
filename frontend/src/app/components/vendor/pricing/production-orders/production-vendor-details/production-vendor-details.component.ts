@@ -64,6 +64,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
   gridOptions: GridOptions[];
   orderDetails = [];
   releasedVendors = [];
+  productionOrderInfo;
 
   chatTypeEnum = ChatTypeEnum;
   chat: Chat;
@@ -77,6 +78,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
   user;
   schdulingForUserId;
   schdulingForVendorOrderId;
+  selectedBidProcessId;
 
   constructor(
     public biddingService: BiddingService,
@@ -95,12 +97,13 @@ export class ProductionVendorDetailsComponent implements OnInit {
     this.route.params.subscribe(v => {
       this.customerOrderId = v.customerOrderId || null;
 
-      const productionOrderInfo = JSON.parse(localStorage.getItem('selectedProductionOrder'));
+      this.productionOrderInfo = JSON.parse(localStorage.getItem('selectedProductionOrder'));
 
       this.spinner.show('spooler');
-      this.ordersService.getProductionOrderDetails(productionOrderInfo).subscribe(orderInfo => {
+      this.ordersService.getProductionOrderDetails(this.productionOrderInfo).subscribe(orderInfo => {
         this.orderDetails = orderInfo.acceptedOrderDetails;
         this.releasedVendors = orderInfo.matchingSuppliersProfilesView;
+        this.getFindAllScheduledMeeting();
         this.spinner.hide('spooler');
       });
     });
@@ -199,14 +202,14 @@ export class ProductionVendorDetailsComponent implements OnInit {
           sortable: true,
           filter: false
         },
-        {
-          headerName: 'Post-Process',
-          field: 'postProcessTypeNames',
-          tooltipField: 'postProcessTypeNames',
-          hide: false,
-          sortable: true,
-          filter: false
-        },
+        // {
+        //   headerName: 'Post-Process',
+        //   field: 'postProcessTypeNames',
+        //   tooltipField: 'postProcessTypeNames',
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false
+        // },
         // {
         //   headerName: 'Previously Ordered',
         //   field: 'previouslyOrdered',
@@ -250,7 +253,8 @@ export class ProductionVendorDetailsComponent implements OnInit {
           maxWidth: 100,
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          valueGetter: 'node.rowIndex + 1'
         },
         {
           headerName: 'Vendor Name',
@@ -336,7 +340,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
   sendMail(ev = null) {
     this.from = DefaultEmails.from;
     this.to = DefaultEmails.to;
-    this.cc = [];
+    this.cc = [ev.vendorEmail];
     this.bcc = [];
     this.modalService.open(this.sendMailModal, {
       centered: true,
@@ -346,7 +350,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
 
   openDateTimeSelector(row) {
     this.schdulingForUserId = row.userId;
-    this.schdulingForVendorOrderId = row.vendorOrderId;
+    this.schdulingForVendorOrderId = this.productionOrderInfo.vendorOrderId;
     this.dateTimeSelector.nativeElement.click();
   }
 
@@ -384,9 +388,23 @@ export class ProductionVendorDetailsComponent implements OnInit {
     );
   }
 
+  viewOrderInfo(id: number) {
+    this.selectedBidProcessId = id;
+    const modalOptions: any = {
+      centered: true,
+      windowClass: 'order-status-modal',
+      scrollable: true
+    };
+    this.modalService.open(this.orderStatusTemplate, modalOptions);
+  }
+
   getScheduledMeetings(user) {
     this.zoomService
-      .getConferenceByVendorOrderId(user.vendorOrderId.toString(), this.userService.getUserInfo().id, user.userId)
+      .getConferenceByVendorOrderId(
+        this.productionOrderInfo.vendorOrderId.toString(),
+        this.userService.getUserInfo().id,
+        user.userId
+      )
       .subscribe(
         res => {
           if (res) {
@@ -403,11 +421,11 @@ export class ProductionVendorDetailsComponent implements OnInit {
   }
 
   getFindAllScheduledMeeting() {
-    // if (this.bidding.length) {
-    //   this.bidding.forEach(user => {
-    //     this.getScheduledMeetings(user);
-    //   });
-    // }
+    if (this.releasedVendors.length) {
+      this.releasedVendors.forEach(user => {
+        this.getScheduledMeetings(user);
+      });
+    }
   }
 
   clickMeetingTime(ev) {

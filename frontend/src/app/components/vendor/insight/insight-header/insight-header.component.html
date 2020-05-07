@@ -41,7 +41,7 @@
     <button *ngIf="env === 'dev'" class="theme white btn action-btn color-sky-blue">
       <i class="far fa-chart-bar"></i>
     </button>
-    <button *ngIf="env === 'dev'" class="theme white btn action-btn">
+    <button *ngIf="env === 'dev'" class="theme white btn action-btn" (click)="onDownload()">
       <i class="far fa-file-excel"></i>
     </button>
     <button *ngIf="env === 'dev'" class="theme white btn action-btn">

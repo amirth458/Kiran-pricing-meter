@@ -19,6 +19,8 @@ export class InsightHeaderComponent implements OnInit {
   @Output() createdDateChange = new EventEmitter();
   @Output() lastAttemptChange = new EventEmitter();
 
+  @Output() download = new EventEmitter();
+
   env = environment.env;
 
   search = '';
@@ -54,7 +56,6 @@ export class InsightHeaderComponent implements OnInit {
 
   onTimeChanged(type) {
     if (type === 'created') {
-      console.log(this.createdDateRange[1] - this.createdDateRange[0]);
       if (this.createdDateRange[1] - this.createdDateRange[0] <= 30 * 24 * 3600 * 1000) {
         this.createdDateChange.emit(this.createdDateRange);
       } else {
@@ -80,5 +81,9 @@ export class InsightHeaderComponent implements OnInit {
     this.modal.open(this.filterColumns, {
       centered: true
     });
+  }
+
+  onDownload() {
+    this.download.emit();
   }
 }

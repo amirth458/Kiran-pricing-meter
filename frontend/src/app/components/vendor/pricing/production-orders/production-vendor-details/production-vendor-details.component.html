@@ -43,8 +43,8 @@
     <!-- End of Email Communication -->
 
     <app-chat
-      [participants]="row.userId ? [row.userId] : []"
-      [id]="row?.vendorOrderId"
+      [participants]="row.vendorId ? [row.vendorId] : []"
+      [id]="productionOrderInfo?.vendorOrderId"
       [vendorId]="row?.vendorId"
       [type]="chatTypeEnum.VENDOR_ORDER"
       [value]="chat"
@@ -114,7 +114,17 @@
 </ng-template>
 
 <ng-template #statusCell let-row let-column="params">
-  toDo
+  <div class="d-flex align-items-center">
+    <strong class="text-theme">
+      {{ row.vendorOrderStatus | titlecase }}
+    </strong>
+    <button
+      class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold"
+      (click)="viewOrderInfo(row?.bidProcessId)"
+    >
+      See Order Status
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #sendMailModal let-modal>
