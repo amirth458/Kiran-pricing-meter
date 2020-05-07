@@ -38,7 +38,9 @@
 
 <!-- partDetails cell -->
 <ng-template #partDetailCell let-row>
-  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails($event, row)">Show Parts</a>
+  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails($event, row)">{{
+    row.partIds.join(', ')
+  }}</a>
 </ng-template>
 
 <ng-template #partDetailModal let-modal>

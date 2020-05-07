@@ -59,9 +59,15 @@ export class ProductionReleasedOrdersComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        if (event.data.bidOrder) {
-          this.router.navigateByUrl(`${this.router.url}/${event.data.bidOrder.id}`);
-        }
+        localStorage.setItem(
+          'selectedProductionOrder',
+          JSON.stringify({
+            vendorOrderId: event.data.vendorOrderId,
+            partIds: event.data.partIds,
+            vendorId: event.data.vendorId
+          })
+        );
+        this.router.navigateByUrl(`${this.router.url}/${event.data.customerOrderId}`);
       }
     };
   }
@@ -69,8 +75,8 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
-        headerName: 'Order ID',
-        field: 'bidOrder.id',
+        headerName: 'Customer Order ID',
+        field: 'customerOrderId',
         tooltip: params => params.value,
         sortable: true,
         filter: false
@@ -81,8 +87,11 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         tooltip: params => (params.value || []).join(', '),
         sortable: true,
         filter: false,
-        valueFormatter: params => (params.value || []).join(', '),
-        width: 240
+        width: 240,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.partDetailCell
+        }
       },
       {
         headerName: 'Sub Order Count',
@@ -159,17 +168,6 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         }
       }
     ];
-    this.columnDefs.push({
-      headerName: '',
-      cellRenderer: 'templateRenderer',
-      cellRendererParams: {
-        ngTemplate: this.partDetailCell
-      }
-    });
-
-    this.autoGroupColumnDef = {
-      headerName: 'Vendor Order ID'
-    };
   }
   pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));

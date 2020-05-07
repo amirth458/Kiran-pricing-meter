@@ -1,3 +1,141 @@
-<p>
-  production-vendor-details works!
-</p>
+<div class="wrapper container-fluid">
+  <div class="d-flex justify-content-between mt-4 align-items-center mb-2">
+    <p class="part-header font-weight-bold">Accepted ProdEx Production Order Details</p>
+  </div>
+
+  <div class="row">
+    <div class="col-12 theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [class.grid-empty]="(orderDetails || []).length === 0"
+        [rowData]="orderDetails"
+        [gridOptions]="gridOptions[0]"
+        (gridReady)="onGridReady(0, $event)"
+        domLayout="autoHeight"
+      ></ag-grid-angular>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between mt-4 align-items-center">
+    <p class="part-header font-weight-bold">Released Vendor</p>
+  </div>
+
+  <div class="row">
+    <div class="col-12 theme-table bidding-orders">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100 pop-over-grid"
+        [class.grid-empty]="(releasedVendors || []).length === 0"
+        [rowData]="releasedVendors"
+        [gridOptions]="gridOptions[1]"
+        (gridReady)="onGridReady(1, $event)"
+        domLayout="autoHeight"
+      ></ag-grid-angular>
+    </div>
+  </div>
+</div>
+
+<ng-template #sendEmailCell let-row let-column="params">
+  <div class="d-flex flex-row justify-content-around align-items-center h-100 w-100">
+    <!-- Email Communication -->
+    <span class="text-green text-btn p-2" title="Send mail" (click)="sendMail(row)">
+      <i class="far fa-envelope"></i>
+    </span>
+    <!-- End of Email Communication -->
+
+    <app-chat
+      [participants]="row.userId ? [row.userId] : []"
+      [id]="row?.vendorOrderId"
+      [vendorId]="row?.vendorId"
+      [type]="chatTypeEnum.VENDOR_ORDER"
+      [value]="chat"
+      (valueChange)="chat = $event"
+    >
+    </app-chat>
+
+    <!-- Zoom Communication -->
+    <ng-container>
+      <span class="text-green text-btn p-2" (click)="openDateTimeSelector(row)">
+        <i class="far fa-calendar-alt"></i>
+      </span>
+      <div class="d-flex meeting-time text-center d-flex align-items-center" (click)="openDateTimeSelector(row)">
+        <span class="d-flex flex-column justify-content-center align-items-center m-0">
+          <span class="m-0 text-center ">
+            Meeting Time
+          </span>
+          <span
+            class="font-weight-bold time text-center"
+            [ngClass]="{ 'theme-grey': meetingInfo[row.userId]?.isExpired || !meetingInfo[row.userId]?.startTime }"
+          >
+            <a
+              *ngIf="meetingInfo[row.userId]?.startTime"
+              [href]="
+                user?.id == meetingInfo[row.userId].hostUserId
+                  ? meetingInfo[row.userId]?.videoConferenceLinkForHost
+                  : meetingInfo[row.userId]?.videoConferenceLinkForParticipant
+              "
+              target="_blank"
+              class="underline"
+            >
+              {{ meetingInfo[row.userId]?.startTime | date: 'short' }}
+            </a>
+            <ng-container *ngIf="!meetingInfo[row.userId]?.startTime">
+              -
+            </ng-container>
+          </span>
+          <input
+            *ngIf="meetingInfo[row.userId]"
+            class="dt-control m-0 p-0"
+            style="pointer-events: none;"
+            readonly
+            #dateTimeSelector
+            [owlDateTime]="dt1"
+            [owlDateTimeTrigger]="dt1"
+            [(ngModel)]="meetingInfo[row.userId].startTime"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onTimeChanged($event)"
+          />
+        </span>
+      </div>
+      <owl-date-time #dt1></owl-date-time>
+    </ng-container>
+
+    <!-- End of Zoom Communication -->
+
+    <!--
+    <p class="m-0 text-center">Meeting Time:</p>
+    <label>
+      <p *ngIf="!meetingInfo[row.userId].startTime" class="m-0 text-center font-weight-bold underline timer"
+        (click)="openDateTimeSelector()">Schedule
+        Meeting
+      </p>
+
+    </label> -->
+  </div>
+</ng-template>
+
+<ng-template #statusCell let-row let-column="params">
+  toDo
+</ng-template>
+
+<ng-template #sendMailModal let-modal>
+  <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
+</ng-template>
+
+<ng-template #orderStatusTemplate let-modal>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h5 class="modal-title text-left pt-2 pl-2">Order Status No {{ vendorOrderId }}</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-container p-4">
+      <app-vendor-order-status
+        [(order)]="vendorOrderId"
+        [bidProcessId]="selectedBidProcessId"
+        *ngIf="selectedBidProcessId"
+      >
+      </app-vendor-order-status>
+    </div>
+  </div>
+</ng-template>

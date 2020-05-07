@@ -67,14 +67,7 @@ export class OrderConfirmQueueComponent implements OnInit {
   }
 
   initColumns() {
-    this.columnDefs = this.orderService.getOrderViewColumns('order-confirmation-queue');
-    this.columnDefs.push({
-      headerName: '',
-      cellRenderer: 'templateRenderer',
-      cellRendererParams: {
-        ngTemplate: this.partDetailCell
-      }
-    });
+    this.columnDefs = this.orderService.getOrderViewColumns('order-confirmation-queue', this.partDetailCell);
     this.autoGroupColumnDef = {
       headerName: 'Vendor Order ID'
     };

@@ -42,46 +42,6 @@ hr {
   cursor: pointer;
 }
 
-.notes .notes-body {
-  /* height: 300px; */
-}
-
-.notes .notes-body .message {
-  text-align: left;
-  font-size: 12px;
-}
-
-.notes .notes-body .message .time-stamp .date {
-  color: grey;
-}
-
-.notes .notes-body .message .user-name {
-  color: var(--theme-sky-blue);
-}
-
-.notes .notes-body .message .body {
-  font-size: 14px;
-}
-
-.notes .notes-body .message.admin {
-  text-align: right;
-}
-
-.notes .notes-body .message.admin .user-name {
-  color: rgb(122, 40, 122);
-}
-
-.notes .notes-action .comment .btn {
-  height: 40px;
-  width: 105px;
-  position: absolute;
-  right: 20px;
-}
-
-.notes .notes-action .comment > div > textarea {
-  padding-right: 135px;
-}
-
 .summary .order-summary {
   background: var(--theme-tab-border);
   height: 100;

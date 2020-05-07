@@ -1,0 +1,53 @@
+:host {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+}
+
+:host .chat-button,
+:host .chat-button:hover {
+  color: var(--theme-light-green) !important;
+}
+
+:host .chat-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .notes .notes-body {
+  /* height: 300px; */
+}
+
+::ng-deep .notes .notes-body .message {
+  text-align: left;
+  font-size: 12px;
+}
+
+::ng-deep .notes .notes-body .message .time-stamp .date {
+  color: grey;
+}
+
+::ng-deep .notes .notes-body .message .user-name {
+  color: var(--theme-sky-blue);
+}
+
+::ng-deep .notes .notes-body .message .body {
+  font-size: 14px;
+}
+
+::ng-deep .notes .notes-body .message.admin {
+  text-align: right;
+}
+
+::ng-deep .notes .notes-body .message.admin .user-name {
+  color: rgb(122, 40, 122);
+}
+
+::ng-deep .notes .notes-action .comment .btn {
+  height: 40px;
+  width: 105px;
+}
+
+::ng-deep .notes .notes-action .comment > div > textarea {
+  padding-right: 135px;
+}

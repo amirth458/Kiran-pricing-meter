@@ -161,7 +161,7 @@ const routes: Routes = [
             component: ProductionOrdersContainerComponent,
             children: [
               {
-                path: 'released-orders/:bidOrderId',
+                path: 'released-orders/:customerOrderId',
                 component: ProductionVendorDetailsComponent
               },
               { path: 'released-orders', component: ProductionReleasedOrdersComponent },

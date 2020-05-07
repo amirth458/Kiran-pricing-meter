@@ -75,9 +75,13 @@
 </div>
 
 <ng-template #viewAllInfo let-row>
-  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)">
-    View All Information</span
-  >
+  <span class="viewAllInfo" (click)="route.navigateByUrl('/billing/payment/details/' + row.orderId)"> View</span>
+</ng-template>
+
+<ng-template #chatCell let-row>
+  <div *ngIf="row.paymentType === paymentOrderType.PURCHASE_ORDER">
+    <app-billing-chat [purchaseOrderId]="row.orderId"></app-billing-chat>
+  </div>
 </ng-template>
 
 <ng-template #approveRejectAction let-row>

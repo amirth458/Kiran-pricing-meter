@@ -54,6 +54,7 @@ export class CustomersComponent implements OnInit {
   };
 
   columnDefs: ColDef[] = [];
+  requests = 0;
 
   gridOptions: GridOptions;
   allUsers = [];
@@ -90,17 +91,14 @@ export class CustomersComponent implements OnInit {
       field: column.displayName
     }));
 
-    const savedSearch = JSON.parse(localStorage.getItem('searchCustomers') || 'null');
-
     this.searchColumns = columns.map(column => {
-      const saved = savedSearch && savedSearch.find(item => item.id === column.id);
       return {
         id: column.id,
         name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
-        checked: saved ? saved.checked : false,
+        checked: false,
         operators: column.operators,
         field: column.displayName,
-        query: saved ? saved.query : { type: '', filter: null }
+        query: { type: '', filter: null }
       };
     });
 
@@ -214,7 +212,6 @@ export class CustomersComponent implements OnInit {
 
   searchColumnsChange() {
     this.filterColumnsRequest = [];
-    localStorage.setItem('searchCustomers', JSON.stringify(this.searchColumns));
     this.searchColumns.map(column => {
       if (column.checked && column.query.type) {
         this.filterColumnsRequest.push({
@@ -233,13 +230,16 @@ export class CustomersComponent implements OnInit {
       rowCount: 0,
       getRows: params => {
         this.spinner.show('spooler');
+        this.requests++;
         this.userService
           .getAllCustomers(params.startRow / this.pageSize, this.pageSize, {
             q: '',
             filterColumnsRequests: this.filterColumnsRequest
           })
           .subscribe(data => {
-            this.spinner.hide('spooler');
+            if (--this.requests === 0) {
+              this.spinner.hide('spooler');
+            }
             const rowsThisPage = data.content;
             const lastRow = data.total <= params.endRow ? data.total : -1;
             this.totalcounts = data.total;

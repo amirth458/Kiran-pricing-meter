@@ -19,9 +19,7 @@ import { Util } from '../../../../util/Util';
 })
 export class PurchaseOrderItemComponent implements OnInit {
   PaymentStatusTypes = PaymentStatusTypes;
-  chatForm = this.fb.group({
-    note: ['', Validators.required]
-  });
+
   messageList = [];
   showPaymentDetails = false;
   loadingPanel = false;
@@ -44,7 +42,6 @@ export class PurchaseOrderItemComponent implements OnInit {
     public spinner: NgxSpinnerService
   ) {
     this.selectedPurchaseOrderId = this.route.url.split('/').pop();
-    this.userInfo = this.userService.getUserInfo();
   }
 
   ngOnInit() {
@@ -152,51 +149,7 @@ export class PurchaseOrderItemComponent implements OnInit {
     return paymentType ? paymentType.replace('_', ' ') : '';
   }
 
-  sendNote() {
-    if (!this.chatForm.valid) {
-      this.toast.warning('Please enter note to send');
-      return;
-    }
-
-    this.billingService.addNote(this.chatForm.value.note, this.orderInfo.billingInfoView.orderId).subscribe(
-      res => {
-        console.log({ res });
-        this.messageList = res.reverse();
-        this.toast.success('Note Sent');
-        this.chatForm.reset();
-      },
-      err => {
-        console.log({ err });
-        this.toast.error(err.error.message);
-      }
-    );
-  }
-
   preparePostProcessValues(ids: Array<number>) {
     return Util.preparePostProcessValues(this.postProcessAction, ids);
-  }
-
-  isDifferentDate(index: number) {
-    if (index == 0) {
-      return false;
-    }
-    const current = this.messageList[index].createdDate;
-    const prev = this.messageList[index - 1].createdDate;
-    if (!current || !prev) {
-      return false;
-    }
-
-    const currentDate = new Date(this.messageList[index].createdDate);
-    const prevDate = new Date(this.messageList[index - 1].createdDate);
-
-    if (
-      currentDate.getDate() == prevDate.getDate() &&
-      currentDate.getDate() == prevDate.getDate() &&
-      currentDate.getDate() == prevDate.getDate()
-    ) {
-      return true;
-    }
-
-    return false;
   }
 }
