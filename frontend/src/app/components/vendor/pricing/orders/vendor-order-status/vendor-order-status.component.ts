@@ -93,7 +93,17 @@ export class VendorOrderStatusComponent implements OnInit {
   initColumns() {
     this.orderColDefs = [
       { headerName: 'Vendor ID', field: 'vendorId', hide: false, sortable: false, filter: false },
-      { headerName: 'Tracking Number', field: 'trackingNumber', hide: false, sortable: false, filter: false },
+      {
+        headerName: 'Tracking Number',
+        field: 'trackingNumber',
+        hide: false,
+        sortable: false,
+        filter: false,
+        valueFormatter: (dt: any) => {
+          const carrier = dt.data && dt.data.shippingProvider ? `(${dt.data.shippingProvider.name})` : '';
+          return dt.value ? `${dt.value} ${carrier}` : '';
+        }
+      },
       {
         headerName: 'Order Status',
         field: 'vendorOrderStatusType.displayName',
