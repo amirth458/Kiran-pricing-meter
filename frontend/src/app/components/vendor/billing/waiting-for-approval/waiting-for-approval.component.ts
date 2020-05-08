@@ -448,7 +448,7 @@ export class WaitingForApprovalComponent implements OnInit {
       },
       {
         headerName: 'Customer RFQ ID',
-        field: 'rfqId',
+        field: 'projectRfqId',
         hide: false,
         sortable: true,
         filter: false,
