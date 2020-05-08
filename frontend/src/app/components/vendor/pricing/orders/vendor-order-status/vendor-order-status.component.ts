@@ -84,14 +84,26 @@ export class VendorOrderStatusComponent implements OnInit {
       });
       this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
       this.viewTasks(this.selectedJob || {});
-      this.orderChange.emit(this.selectedJob.orderId);
+      if (this.selectedJob && this.selectedJob.orderId) {
+        this.orderChange.emit(this.selectedJob.orderId);
+      }
     });
   }
 
   initColumns() {
     this.orderColDefs = [
       { headerName: 'Vendor ID', field: 'vendorId', hide: false, sortable: false, filter: false },
-      { headerName: 'Tracking Number', field: 'trackingNumber', hide: false, sortable: false, filter: false },
+      {
+        headerName: 'Tracking Number',
+        field: 'trackingNumber',
+        hide: false,
+        sortable: false,
+        filter: false,
+        valueFormatter: (dt: any) => {
+          const carrier = dt.data && dt.data.shippingProvider ? `(${dt.data.shippingProvider.name})` : '';
+          return dt.value ? `${dt.value} ${carrier}` : '';
+        }
+      },
       {
         headerName: 'Order Status',
         field: 'vendorOrderStatusType.displayName',
