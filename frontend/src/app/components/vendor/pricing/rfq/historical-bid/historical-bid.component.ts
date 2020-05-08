@@ -7,7 +7,6 @@ import { BiddingService } from 'src/app/service/bidding.service';
 import { LegacyBidHistory } from 'src/app/model/billing.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { OrdersService } from 'src/app/service/orders.service';
 import { CustomerDetails } from 'src/app/model/customer.model';
 
 @Component({
@@ -21,7 +20,6 @@ export class HistoricalBidComponent implements OnInit {
   @Input() partQuote: PartQuote;
 
   partInfoGridOptions: GridOptions;
-  measurementUnits = [];
   partInformation = [];
   partInfoColumnDefs = [];
   frameworkComponents = {
@@ -358,17 +356,10 @@ export class HistoricalBidComponent implements OnInit {
     public currencyPipe: CurrencyPipe,
     public biddingService: BiddingService,
     public toastr: ToastrService,
-    public spinner: NgxSpinnerService,
-    public orderService: OrdersService
+    public spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {
-    this.orderService.getAllMeasurementUnitType().subscribe(i => {
-      this.measurementUnits = i.metadataList;
-      console.log(this.measurementUnits.filter(u => u.isDefault));
-      this.updateRowData();
-    });
-
     this.partInfoColumnDefs = [
       {
         headerName: 'Customer',
@@ -476,7 +467,6 @@ export class HistoricalBidComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
-
     this.initColumns();
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -487,14 +477,7 @@ export class HistoricalBidComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35
     };
-  }
-
-  getUnitSymbol(unitId) {
-    const result = this.measurementUnits.filter(item => item.id === unitId);
-    if (result.length) {
-      return ' ' + result[0].symbol;
-    }
-    return '';
+    this.updateRowData();
   }
 
   configureColumnDefs() {
@@ -726,10 +709,6 @@ export class HistoricalBidComponent implements OnInit {
           partDimension: this.part.rfqMedia.media.partDimension
         }
       ];
-      if (this.part.rfqMedia && this.part.rfqMedia.media && this.part.rfqMedia.media.partDimension) {
-        const d = this.part.rfqMedia.media.partDimension;
-        this.unitId = d.volume.unitId;
-      }
     }
     this.spinner.show('spooler');
     this.biddingService.getBidHistory(this.part.id).subscribe((v: LegacyBidHistory[]) => {
