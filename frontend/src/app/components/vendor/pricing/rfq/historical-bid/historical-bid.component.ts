@@ -30,7 +30,6 @@ export class HistoricalBidComponent implements OnInit {
 
   columnDefs: ColDef[] = [];
   pageSize = 10;
-  unitId: number = null;
 
   gridOptions: GridOptions;
   rowData: LegacyBidHistory[] = [];
@@ -440,7 +439,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.data.partDimension.x.value + this.getUnitSymbol(dt.data.partDimension.x.unitId)
+        valueFormatter: dt => `${dt.data.partDimension.x.valueInDefaultUnit} (cm)`
       },
       {
         headerName: 'Y',
@@ -449,7 +448,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.data.partDimension.y.value + this.getUnitSymbol(dt.data.partDimension.y.unitId)
+        valueFormatter: dt => `${dt.data.partDimension.y.valueInDefaultUnit} (cm)`
       },
       {
         headerName: 'Z',
@@ -458,7 +457,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.data.partDimension.z.value + this.getUnitSymbol(dt.data.partDimension.z.unitId)
+        valueFormatter: dt => `${dt.data.partDimension.z.valueInDefaultUnit} (cm)`
       },
       {
         headerName: 'Volume',
@@ -467,8 +466,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt =>
-          dt.data.partDimension.volume.value + this.getUnitSymbol(dt.data.partDimension.volume.unitId)
+        valueFormatter: dt => `${dt.data.partDimension.volume.valueInDefaultUnit} (cm)`
       }
     ];
     this.partInfoGridOptions = {
@@ -611,7 +609,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.value + this.getUnitSymbol(this.unitId)
+        valueFormatter: dt => `${dt.value} (cm)`
       },
       {
         headerName: 'Y',
@@ -620,7 +618,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.value + this.getUnitSymbol(this.unitId)
+        valueFormatter: dt => `${dt.value} (cm)`
       },
       {
         headerName: 'Z',
@@ -629,7 +627,7 @@ export class HistoricalBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: dt => dt.value + this.getUnitSymbol(this.unitId)
+        valueFormatter: dt => `${dt.value} (cm)`
       },
       {
         headerName: 'Volume',
@@ -637,7 +635,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'volume',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        valueFormatter: dt => `${dt.value} (cm)`
       },
       {
         headerName: 'Surface Area',
