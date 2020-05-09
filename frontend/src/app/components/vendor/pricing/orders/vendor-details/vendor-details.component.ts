@@ -13,12 +13,7 @@ import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 import { BiddingService } from '../../../../../service/bidding.service';
 import { BiddingOrderStatus, BiddingStatus } from '../../../../../model/bidding.order';
 import { Conference, ConferenceRequest } from '../../../../../model/conference.model';
-import {
-  BidOrderItem,
-  ConfirmSubOrderRelease,
-  BidProcessStatusType,
-  MatchedProfile
-} from '../../../../../model/confirm.sub-order.release';
+import { BidOrderItem, ConfirmSubOrderRelease, MatchedProfile } from '../../../../../model/confirm.sub-order.release';
 import { FileViewRendererComponent } from '../../../../../common/file-view-renderer/file-view-renderer.component';
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
