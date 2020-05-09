@@ -253,7 +253,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         valueFormatter: dt => {
           const arr = [];
           (dt.value || []).map(dt => {
-            arr.push(this.datePipe.transform(dt, Util.dateFormat, 'UTC'));
+            arr.push(this.datePipe.transform(dt, Util.dateFormat));
           });
           return arr.length !== 0 ? arr.join(', ') : '';
         }

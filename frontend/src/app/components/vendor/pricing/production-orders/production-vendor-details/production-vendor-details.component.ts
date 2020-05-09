@@ -65,6 +65,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
   orderDetails = [];
   releasedVendors = [];
   productionOrderInfo;
+  vendorOrderId;
 
   chatTypeEnum = ChatTypeEnum;
   chat: Chat;
@@ -78,7 +79,6 @@ export class ProductionVendorDetailsComponent implements OnInit {
   user;
   schdulingForUserId;
   schdulingForVendorOrderId;
-  selectedBidProcessId;
 
   constructor(
     public biddingService: BiddingService,
@@ -98,6 +98,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
       this.customerOrderId = v.customerOrderId || null;
 
       this.productionOrderInfo = JSON.parse(localStorage.getItem('selectedProductionOrder'));
+      this.vendorOrderId = this.productionOrderInfo.vendorOrderId;
 
       this.spinner.show('spooler');
       this.ordersService.getProductionOrderDetails(this.productionOrderInfo).subscribe(orderInfo => {
@@ -388,8 +389,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
     );
   }
 
-  viewOrderInfo(id: number) {
-    this.selectedBidProcessId = id;
+  viewOrderInfo() {
     const modalOptions: any = {
       centered: true,
       windowClass: 'order-status-modal',
