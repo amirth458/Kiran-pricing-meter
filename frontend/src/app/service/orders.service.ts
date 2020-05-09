@@ -481,6 +481,12 @@ export class OrdersService {
     );
   }
 
+  getVendorOrderInfoByOrderId(orderId: number): Observable<any> {
+    return this.http.get<any>(
+      `${environment.apiBaseUrl}/admin/vendor/vendor-order-details?include-task=true&vendor-order-id=${orderId}`
+    );
+  }
+
   releaseProjectBidToVendor(partId, processProfiles) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/release-bid-to-vendor`;
     return this.http.post<any>(url, {

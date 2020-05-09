@@ -44,7 +44,7 @@
 
     <app-chat
       [participants]="row.vendorId ? [row.vendorId] : []"
-      [id]="productionOrderInfo?.vendorOrderId"
+      [id]="vendorOrderId"
       [vendorId]="row?.vendorId"
       [type]="chatTypeEnum.VENDOR_ORDER"
       [value]="chat"
@@ -118,10 +118,7 @@
     <strong class="text-theme">
       {{ row.vendorOrderStatus | titlecase }}
     </strong>
-    <button
-      class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold"
-      (click)="viewOrderInfo(row?.bidProcessId)"
-    >
+    <button class="pl-5 bg-transparent text-theme-green border-0 font-weight-bold" (click)="viewOrderInfo()">
       See Order Status
     </button>
   </div>
@@ -140,12 +137,7 @@
       </button>
     </div>
     <div class="modal-container p-4">
-      <app-vendor-order-status
-        [(order)]="vendorOrderId"
-        [bidProcessId]="selectedBidProcessId"
-        *ngIf="selectedBidProcessId"
-      >
-      </app-vendor-order-status>
+      <app-vendor-order-status [order]="vendorOrderId" [bidProcessId]="null"> </app-vendor-order-status>
     </div>
   </div>
 </ng-template>

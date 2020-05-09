@@ -53,6 +53,10 @@ export class VendorOrderStatusComponent implements OnInit {
   constructor(public orderService: OrdersService) {}
 
   ngOnInit() {
+    if (!this.bidProcessId) {
+      this.getVendorOrderInfoByOrderId();
+    }
+
     this.initColumns();
     const defaultOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -87,6 +91,20 @@ export class VendorOrderStatusComponent implements OnInit {
       if (this.selectedJob && this.selectedJob.orderId) {
         this.orderChange.emit(this.selectedJob.orderId);
       }
+    });
+  }
+
+  getVendorOrderInfoByOrderId() {
+    this.orderService.getVendorOrderInfoByOrderId(this.order).subscribe(v => {
+      this.orders = v ? [v] : [];
+      (v.vendorSubOrders || []).map(part => {
+        const arr = [];
+        (part.jobs || []).map(job => arr.push({ ...job, ...{ partId: part.id, orderId: v.id } }));
+        this.jobs = arr;
+      });
+      this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
+      this.viewTasks(this.selectedJob || {});
+      this.orderChange.emit(this.selectedJob.orderId);
     });
   }
 
