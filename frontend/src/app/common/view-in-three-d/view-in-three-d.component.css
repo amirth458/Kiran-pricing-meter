@@ -1,0 +1,22 @@
+#view3D > span {
+  color: var(--theme-sky-blue);
+  font-size: 12px;
+  text-align: center;
+  padding: unset;
+  margin: unset;
+  width: fit-content;
+}
+
+#view3D > span:not(.theme-grey):hover {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+#view3D > span.theme-grey {
+  color: var(--theme-secondary-blue-solid);
+}
+
+#view3D > span.theme-grey:hover {
+  cursor: not-allowed;
+}
