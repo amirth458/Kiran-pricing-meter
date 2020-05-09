@@ -11,10 +11,7 @@
               <a>Platform View</a>
             </div>
           </div> -->
-
-          <p class="text-center">
-            <a class="view-3d" (click)="view3D(threeDModal)">View in 3D</a>
-          </p>
+          <app-view-in-three-d [connectorServiceId]="part?.rfqMedia?.media?.connectorServiceId"></app-view-in-three-d>
           <div class="image">
             <img
               [src]="part?.rfqMedia.media.partDimension.thumbnail200Location"
@@ -117,27 +114,4 @@
       </div>
     </div>
   </div>
-
-  <!-- 3D Modal -->
-  <ng-template #threeDModal let-modal>
-    <div class="saveModal">
-      <div class="modal-header">
-        <h4 class="text-theme text-center w-100">
-          3D Detail View
-        </h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div
-        class="modal-body text-theme d-flex justify-content-center p-0"
-        style="min-height: 450px; max-width: 1200px;"
-        id="container"
-      ></div>
-
-      <div ngbAutofocus></div>
-    </div>
-  </ng-template>
-  <!-- End of 3D Modal -->
 </div>

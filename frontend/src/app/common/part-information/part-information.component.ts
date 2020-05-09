@@ -131,24 +131,6 @@ export class PartInformationComponent implements OnInit {
       );
   }
 
-  view3D(content) {
-    this.spinner.show();
-    this.forgeService.getMetadataId(this.part.rfqMedia.media.connectorServiceId).subscribe(
-      (res: any) => {
-        this.open(content);
-        const wrapper = document.querySelector('#container');
-        // tslint:disable-next-line:max-line-length
-        // const urn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6dG9kYXlzYnVja2V0MS9jb25uZWN0b3IzMzQxMDM1MTg2NjY5NTEwNDU2Q3VzaGlvbmVlci0yaW5fc3Ryb2tlLlNURVA=';
-        this.forgeService.start(wrapper, res.urn);
-      },
-      err => {
-        console.log({ err });
-        this.toastr.error('Error while fetching file Urn.');
-        this.spinner.hide();
-      }
-    );
-  }
-
   getSurfaceRoughness() {
     const found = this.part.partCustomParameterList.find(item => item.partParameterType.name === 'SURFACE_ROUGHNESS');
     if (found) {
