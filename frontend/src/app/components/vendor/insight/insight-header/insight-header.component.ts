@@ -32,9 +32,12 @@ export class InsightHeaderComponent implements OnInit {
   constructor(public modal: NgbModal, public toastr: ToastrService) {}
 
   ngOnInit() {
+    console.log({ type: this.type });
     const date = new Date();
     this.createdDateRange = [
-      new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30),
+      this.type === 'bid'
+        ? new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7)
+        : new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30),
       new Date(date.getFullYear(), date.getMonth(), date.getDate())
     ];
     this.onTimeChanged('created');
