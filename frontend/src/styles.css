@@ -67,6 +67,10 @@
   color: var(--theme-light-green);
 }
 
+.text-light-blue {
+  color: var(--theme-sky-blue);
+}
+
 .theme-grey {
   color: var(--theme-secondary-blue-solid);
 }
