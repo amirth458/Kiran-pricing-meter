@@ -103,7 +103,8 @@
             [gridOptions]="supplierGridOptions[0]"
             (gridReady)="onSuppliersGridReady(0, $event)"
             domLayout="autoHeight"
-          ></ag-grid-angular>
+          >
+          </ag-grid-angular>
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="'released-projects'">
@@ -119,7 +120,8 @@
             [gridOptions]="supplierGridOptions[0]"
             (gridReady)="onSuppliersGridReady(0, $event)"
             domLayout="autoHeight"
-          ></ag-grid-angular>
+          >
+          </ag-grid-angular>
         </div>
       </ng-container>
     </ng-container>
@@ -173,7 +175,8 @@
         [gridOptions]="vendorProfileGridOptions"
         (gridReady)="onVendorProfileReady($event)"
         domLayout="autoHeight"
-      ></ag-grid-angular>
+      >
+      </ag-grid-angular>
     </div>
   </div>
 </ng-template>
@@ -196,7 +199,8 @@
         [gridOptions]="supplierGridOptions[1]"
         (gridReady)="onSuppliersGridReady(1, $event)"
         domLayout="autoHeight"
-      ></ag-grid-angular>
+      >
+      </ag-grid-angular>
     </div>
 
     <div class="modal-footer d-flex align-items-center justify-content-center">
@@ -214,7 +218,7 @@
 <ng-template #reference let-modal>
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+      <h5 class="modal-title text-theme-green text-center text-capitalize w-100 pl-3" id="modal-basic-title">
         Reference Files
       </h5>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
@@ -228,6 +232,9 @@
           <i class="far fa-file-alt"></i>
         </div>
         <a [href]="ref.location" download class="download-link">{{ ref.name }}</a>
+      </div>
+      <div class="w-100" *ngIf="!(referenceFiles?.length || 0) > 0">
+        <h5 class="w-100 text-center text-theme">No reference files found</h5>
       </div>
     </div>
   </div>
