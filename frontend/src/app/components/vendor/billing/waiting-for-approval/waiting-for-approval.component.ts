@@ -325,12 +325,14 @@ export class WaitingForApprovalComponent implements OnInit {
       paymentType: this.selectedPurchaseOrder.paymentType,
       poNumber: this.selectedPurchaseOrder.poNumber
     };
+    this.spineer.show();
     this.billingService.approveOrder(body).subscribe(
       res => {
         this.selectedPurchaseOrder = null;
         this.disableControls = false;
         this.getProfiles();
         this.modalService.dismissAll();
+        this.spineer.hide();
         this.toastr.success('Purchase Approved.');
       },
       err => {
@@ -338,10 +340,11 @@ export class WaitingForApprovalComponent implements OnInit {
         this.selectedPurchaseOrder = null;
         this.disableControls = false;
         this.modalService.dismissAll();
+        this.spineer.hide();
         if (this.selectedPurchaseOrder.paymentType === PaymentType.CREDIT_CARD) {
           this.toastr.error('Credit card transaction failed. Please talk to customer');
         } else {
-          this.toastr.error(err.error.message);
+          this.toastr.error('Error While Approving Purchase.');
         }
       }
     );
@@ -355,53 +358,26 @@ export class WaitingForApprovalComponent implements OnInit {
       paymentType: this.selectedPurchaseOrder.paymentType,
       poNumber: this.selectedPurchaseOrder.poNumber
     };
-    if (this.form.value.comment) {
-      this.billingService.addNote(this.form.value.comment, this.selectedPurchaseOrder.orderId).subscribe(
-        res => {
-          this.form.controls.comment.setValue('');
-          console.log({ res });
-          this.billingService.rejectOrder(body).subscribe(
-            result => {
-              console.log({ reject: result });
-              this.selectedPurchaseOrder = null;
-              this.disableControls = false;
-              this.getProfiles();
-              this.modalService.dismissAll();
-              this.toastr.success('Purchase Rejected.');
-            },
-            err => {
-              console.log({ err });
-              this.selectedPurchaseOrder = null;
-              this.disableControls = false;
-              this.modalService.dismissAll();
-              this.toastr.error(err.error.message);
-            }
-          );
-        },
-        err => {
-          console.log({ err });
-          this.disableControls = false;
-          this.toastr.error(err.error.message);
-        }
-      );
-    } else {
-      this.billingService.rejectOrder(body).subscribe(
-        result => {
-          this.selectedPurchaseOrder = null;
-          this.disableControls = false;
-          this.getProfiles();
-          this.modalService.dismissAll();
-          this.toastr.success('Purchase Rejected.');
-        },
-        err => {
-          console.log({ err });
-          this.selectedPurchaseOrder = null;
-          this.disableControls = false;
-          this.modalService.dismissAll();
-          this.toastr.error(err.error.message);
-        }
-      );
-    }
+
+    this.spineer.show();
+    this.billingService.rejectOrder(body).subscribe(
+      result => {
+        this.selectedPurchaseOrder = null;
+        this.disableControls = false;
+        this.getProfiles();
+        this.modalService.dismissAll();
+        this.spineer.hide();
+        this.toastr.success('Purchase Rejected.');
+      },
+      err => {
+        console.log({ err });
+        this.selectedPurchaseOrder = null;
+        this.disableControls = false;
+        this.modalService.dismissAll();
+        this.spineer.hide();
+        this.toastr.error('Error While Rejecting Purchase.');
+      }
+    );
   }
   getProfiles() {
     const body: Payment = {
@@ -522,7 +498,7 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 150,
+        width: 100,
         suppressSizeToFit: true
       },
       {
@@ -535,7 +511,7 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 110,
+        width: 150,
         suppressSizeToFit: true
       }
     ];

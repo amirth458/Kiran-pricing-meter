@@ -63,7 +63,7 @@ export class PurchaseOrderItemComponent implements OnInit {
       },
       err => {
         this.spinner.hide();
-        this.toast.error(err.error.message);
+        this.toast.error('Error While Fetching Payment Info.');
         this.route.navigateByUrl('/billing/payment');
       }
     );
@@ -111,7 +111,7 @@ export class PurchaseOrderItemComponent implements OnInit {
       },
       err => {
         this.closeModalWindow();
-        this.toast.error(err.error.message);
+        this.toast.error('Error While Approving Purchase.');
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       }
     );
@@ -127,19 +127,23 @@ export class PurchaseOrderItemComponent implements OnInit {
       orderId: this.orderInfo.billingInfoView.orderId,
       paymentStatusType: this.orderInfo.billingInfoView.paymentStatusType,
       paymentType: this.orderInfo.billingInfoView.paymentType,
-      poNumber: this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
+      poNumber: this.orderInfo.billingInfoView.purchaseAgreement
+        ? this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
+        : null
     };
+    this.loadingPanel = true;
+    this.spinner.show('spooler');
     this.billingService.rejectOrder(body).subscribe(
       res => {
         console.log({ res });
-        this.modalService.dismissAll();
+        this.closeModalWindow();
         this.toast.success('Purchase Rejected.');
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       },
       err => {
         console.log({ err });
-        this.modalService.dismissAll();
-        this.toast.error(err.error.message);
+        this.closeModalWindow();
+        this.toast.error('Error While Rejecting Purchase.');
         this.route.navigateByUrl('/billing/payment/waiting-for-approval');
       }
     );
