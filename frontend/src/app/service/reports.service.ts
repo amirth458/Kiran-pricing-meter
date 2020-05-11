@@ -24,10 +24,11 @@ export class ReportsService {
     );
   }
 
-  download(type, filter) {
+  download(type, filter, uploadToZoho = false) {
     const url = `${environment.apiBaseUrl}/admin/insight/reports/${type}-report/csv`;
     const params = new HttpParams();
     params.append('sort', filter.sort);
+    params.append('upload_to_zoho', uploadToZoho.toString());
     return this.http.post(
       url,
       { ...filter.filters },

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightPricingProfileComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Profile ID',
+      headerName: 'Process Pricing ID',
       field: 'process_pricing_id',
       hide: false,
       sortable: false,
@@ -26,13 +26,13 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'Pricing Profile Name'
     },
     {
-      headerName: 'Pricing Condition 1',
+      headerName: 'Pricing Condition',
       field: 'pricing_condition',
       hide: false,
       sortable: false,
       filter: false,
-      tooltipField: 'pricing_condition',
-      headerTooltip: 'Pricing Condition 1',
+      headerTooltip: 'Pricing Condition',
+      tooltip: v => this.getPricingCondition(v.value),
       valueFormatter: v => this.getPricingCondition(v.value)
     },
     {
