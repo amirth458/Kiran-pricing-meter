@@ -41,7 +41,7 @@
     <button *ngIf="env === 'dev'" class="theme white btn action-btn color-sky-blue">
       <i class="far fa-chart-bar"></i>
     </button>
-    <button *ngIf="env === 'dev'" class="theme white btn action-btn" (click)="onDownload()">
+    <button *ngIf="env === 'dev'" class="theme white btn action-btn" (click)="onExport()">
       <i class="far fa-file-excel"></i>
     </button>
     <button *ngIf="env === 'dev'" class="theme white btn action-btn">
@@ -87,6 +87,31 @@
           Confirm
         </button>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #exportModal let-modal>
+  <div class="filter-columns-modal">
+    <div class="modal-header">
+      <div class="w-100">
+        <h4 class="modal-title text-theme-green text-capitalize w-100 text-center" id="modal-basic-title">
+          Export Report
+        </h4>
+      </div>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-footer row justify-content-center align-items-center px-5 py-3" ngbAutofocus>
+      <button type="button" (click)="onUploadToZoho()" class="col btn theme white m-2">
+        Upload to Zoho
+      </button>
+
+      <button type="button" (click)="onDownload()" class="col btn theme white m-2">
+        Download
+      </button>
     </div>
   </div>
 </ng-template>
