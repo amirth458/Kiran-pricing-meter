@@ -46,7 +46,8 @@
   border-left: 5px solid var(--theme-text-color);
 }
 
-.approveModal .modal-body p {
+.approveModal .modal-body p,
+.rejectModal .modal-body p {
   font-size: 19px;
   font-weight: 400;
 }

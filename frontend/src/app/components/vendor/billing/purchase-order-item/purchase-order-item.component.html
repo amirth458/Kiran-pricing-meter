@@ -116,6 +116,10 @@
       <button type="button" class="btn theme w-auto pl-5 pr-5" (click)="open(approveModal, 'md')">
         Approve
       </button>
+
+      <button type="button" class="btn orange-btn w-auto ml-5 pl-5 pr-5" (click)="open(rejectModal, 'md')">
+        Reject
+      </button>
     </div>
   </div>
   <div class="row summary">
@@ -196,7 +200,7 @@
 </ng-template>
 <!-- End of Approve Modal -->
 
-<!-- Approve Modal -->
+<!-- Reject Modal -->
 <ng-template #rejectModal let-modal>
   <div class="rejectModal">
     <div class="modal-header">
@@ -213,17 +217,19 @@
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus>
-      <div class="w-100 row justify-content-center">
-        <div class="col-md-4">
-          <button (click)="rejectPurchase()" type="button" class="col btn theme orange-btn m-0">
-            Reject
-          </button>
-        </div>
+      <div class="w-100 row justify-content-center position-relative">
+        <ng-container *ngIf="!loadingPanel; else loading">
+          <div class="col-md-4">
+            <button (click)="rejectPurchase()" type="button" class="col btn theme orange-btn m-0">
+              Reject
+            </button>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
 </ng-template>
-<!-- End of Approve Modal -->
+<!-- End of Reject Modal -->
 
 <ng-template #partDetailsModal let-modal>
   <div class="partDetailsModal">
