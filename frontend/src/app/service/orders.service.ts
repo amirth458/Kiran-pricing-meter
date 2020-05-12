@@ -275,8 +275,8 @@ export class OrdersService {
         filter: false,
         valueFormatter: dt => {
           const arr = [];
-          (dt.value || []).map(dt => {
-            arr.push(this.datePipe.transform(dt, Util.dateFormat, 'UTC'));
+          (dt.value || []).map(value => {
+            arr.push(this.datePipe.transform(value, Util.dateFormat, 'UTC'));
           });
           return arr.length !== 0 ? arr.join(', ') : '';
         }
