@@ -24,8 +24,8 @@ export class ReleasedOrdersComponent implements OnInit {
 
   pageSize = 10;
 
-  searchColumns = this.orderService.getGridSearchColumns();
-  filterColumns = this.orderService.getGridFilterColumns();
+  searchColumns = this.orderService.getGridSearchColumns(true);
+  filterColumns = this.orderService.getGridFilterColumns(true);
 
   selectedIds = [];
 
