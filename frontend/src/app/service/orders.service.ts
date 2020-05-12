@@ -293,7 +293,7 @@ export class OrdersService {
     return columns;
   }
 
-  getGridSearchColumns(): any {
+  getGridSearchColumns(released: boolean = false): any {
     return [
       {
         name: 'Order ID',
@@ -316,6 +316,24 @@ export class OrdersService {
       {
         name: 'Sub Order Count',
         field: 'subOrderCount',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      {
+        name: 'Offer IDs',
+        field: 'bidProcessIds',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      released && {
+        name: 'Vendor Order ID',
+        field: 'vendorOrderId',
         checked: false,
         query: {
           type: '',
@@ -350,8 +368,8 @@ export class OrdersService {
         }
       },
       {
-        name: 'Process',
-        field: 'process',
+        name: 'Technology',
+        field: 'equipmentPropertyValues',
         checked: false,
         query: {
           type: '',
@@ -388,7 +406,7 @@ export class OrdersService {
     ];
   }
 
-  getGridFilterColumns(): any {
+  getGridFilterColumns(released: boolean = false): any {
     return [
       {
         name: 'Order ID',
@@ -403,6 +421,16 @@ export class OrdersService {
       {
         name: 'Sub Order Count',
         field: 'subOrderCount',
+        checked: true
+      },
+      {
+        name: 'Offer IDs',
+        field: 'bidProcessIds',
+        checked: true
+      },
+      released && {
+        name: 'Vendor Order ID',
+        field: 'vendorOrderId',
         checked: true
       },
       {
@@ -421,8 +449,8 @@ export class OrdersService {
         checked: true
       },
       {
-        name: 'Process',
-        field: 'process',
+        name: 'Technology',
+        field: 'equipmentPropertyValues',
         checked: true
       },
       {
@@ -504,7 +532,7 @@ export class OrdersService {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/release-matching-vendors-to-customer`;
     return this.http.put<any>(url, {
       partId,
-      vendorIds: vendorIds
+      vendorIds
     });
   }
 
