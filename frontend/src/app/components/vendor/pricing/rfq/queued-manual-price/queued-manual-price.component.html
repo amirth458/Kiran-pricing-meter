@@ -6,17 +6,27 @@
       [tabTitle]="tab.title"
       [active]="(selectedTabId$ | async) === tab.id"
     ></app-tab-item>
-    <div class="content px-3 py-5">
+    <div class="content px-3 pt-2 pb-5">
       <div class="table theme-table">
-        <div class="page-size">
-          Page Size:
-          <select id="page-size" (change)="onPageSizeChange($event)">
-            <option selected value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="200">200</option>
-          </select>
+        <div class="d-flex justify-content-end align-items-baseline mb-2">
+          <div class="page-size">
+            Page Size:
+            <select id="page-size" (change)="onPageSizeChange($event)">
+              <option selected value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+            </select>
+          </div>
+          <button
+            *ngIf="(selectedTabId$ | async) === 1"
+            type="button"
+            class="ml-2 btn theme p-2 show-rfq"
+            (click)="toggleExpiry()"
+          >
+            {{ showExpiredRFQ ? 'Show Active RFQ' : 'Show Expired RFQ' }}
+          </button>
         </div>
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"
