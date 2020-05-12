@@ -17,6 +17,12 @@ export class ProductionOrdersContainerComponent implements OnInit {
     }>;
   }> = [
     {
+      name: 'Pricing Settings',
+      tooltipMessage: 'Pricing Settings',
+      route: 'pricing-settings',
+      actions: [{ name: 'Save Settings', route: 'save-production-setting' }]
+    },
+    {
       name: 'Released Orders',
       tooltipMessage: 'Released Orders',
       route: 'released-orders',
@@ -31,13 +37,16 @@ export class ProductionOrdersContainerComponent implements OnInit {
     const routeArr = this.route.url
       .slice(this.route.url.indexOf('pricing/production-orders/') + 'pricing/production-orders/'.length)
       .split('/');
-    this.selectedTab = 'Released Orders';
+    this.selectedTab = 'Pricing Settings';
     switch (routeArr[0]) {
+      case 'pricing-settings':
+        this.selectedTab = 'Pricing Settings';
+        break;
       case 'released-orders':
         this.selectedTab = 'Released Orders';
         break;
       default:
-        this.route.navigateByUrl(this.route.url + '/released-orders');
+        this.route.navigateByUrl(this.route.url + '/pricing-settings');
         break;
     }
   }

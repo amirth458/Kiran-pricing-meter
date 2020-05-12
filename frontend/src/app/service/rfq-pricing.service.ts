@@ -206,4 +206,21 @@ export class RfqPricingService {
   setNoBid(partId: string) {
     return this.http.patch(`${environment.apiBaseUrl}/admin/part/${partId}/no-bid`, {});
   }
+
+  getProductionPricingSettings(): Observable<any> {
+    const projectTypeId = 3;
+    const url = `${environment.apiBaseUrl}/product-price-setting/${projectTypeId}`;
+    return this.http.get(url);
+  }
+
+  setProductionPricingSetting(data): Observable<any> {
+    const projectTypeId = 3;
+    const url = `${environment.apiBaseUrl}/product-price-setting`;
+    return this.http.post(url, {
+      ...data,
+      projectType: {
+        id: projectTypeId
+      }
+    });
+  }
 }
