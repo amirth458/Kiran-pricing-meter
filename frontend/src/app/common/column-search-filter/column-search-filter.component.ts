@@ -67,18 +67,22 @@ export class ColumnSearchFilterComponent implements OnInit {
 
   generateSchema() {
     this.searchColumns.map((column, index) => {
-      this.searchColumnsClone.push({
-        ...column,
-        id: index
-      });
+      if (column) {
+        this.searchColumnsClone.push({
+          ...column,
+          id: index
+        });
+      }
     });
     this.searchColumnsStorage = this.searchColumnsClone;
 
     this.filterColumns.map((column, index) => {
-      this.filterColumnsClone.push({
-        ...column,
-        id: index
-      });
+      if (column) {
+        this.filterColumnsClone.push({
+          ...column,
+          id: index
+        });
+      }
     });
     this.filterColumnsStorage = this.filterColumnsClone;
   }
