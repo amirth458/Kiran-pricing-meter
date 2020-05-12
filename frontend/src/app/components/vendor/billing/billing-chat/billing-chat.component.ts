@@ -33,6 +33,12 @@ export class BillingChatComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.userService.getUserInfo();
+  }
+
+  openChat($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
     this.loading = true;
     this.billingService.getPaymentInfo(this.purchaseOrderId).subscribe(
       (res: PaymentDetails) => {
@@ -53,11 +59,6 @@ export class BillingChatComponent implements OnInit {
         this.toast.error(err.error.message);
       }
     );
-  }
-
-  openChat($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
   }
 
   sendNote() {

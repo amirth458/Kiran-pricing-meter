@@ -1,0 +1,28 @@
+<p *ngIf="id" id="view3D" class="d-flex justify-content-center">
+  <span (click)="res !== null ? open(threeDModal) : null" [ngClass]="{ 'theme-grey': res === null }">
+    View in 3D
+  </span>
+</p>
+
+<!-- 3D Modal -->
+<ng-template #threeDModal let-modal>
+  <div class="saveModal">
+    <div class="modal-header">
+      <h4 class="text-theme-blue text-center w-100 text-light-blue">
+        3D Detail View
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div
+      class="modal-body text-theme d-flex justify-content-center p-0"
+      style="min-height: 450px; max-width: 1200px;"
+      id="container"
+    ></div>
+
+    <div ngbAutofocus></div>
+  </div>
+</ng-template>
+<!-- End of 3D Modal -->

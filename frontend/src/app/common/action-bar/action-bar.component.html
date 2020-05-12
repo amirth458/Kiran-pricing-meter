@@ -50,7 +50,8 @@
           route.url.includes('user-manage/customers/view') ||
           route.url.startsWith('/projects/project-release-queue/') ||
           route.url.startsWith('/projects/vendor-confirmation-queue/') ||
-          route.url.startsWith('/projects/released-projects/'))
+          route.url.startsWith('/projects/released-projects/') ||
+          route.url.startsWith('/pricing/production-orders/released-orders/'))
       "
     >
       <button type="button" class="btn btn-add theme white" (click)="backButton()">

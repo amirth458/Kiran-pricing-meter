@@ -89,7 +89,7 @@
     <span class="text-theme-green approve-btn" (click)="selectedPurchaseOrder = row; open(approveModal, 'md')"
       >Approve</span
     >
-    <!-- <span class="reject-btn ml-3" (click)="selectedPurchaseOrder = row; open(rejectModal)">Reject</span> -->
+    <span class="reject-btn ml-3" (click)="selectedPurchaseOrder = row; open(rejectModal, 'md')">Reject</span>
   </div>
 </ng-template>
 
@@ -135,12 +135,7 @@
     </div>
 
     <div class="modal-body text-theme">
-      <form [formGroup]="form">
-        <div class="comment">
-          <label class="">Comment</label>
-          <textarea class="form-control" formControlName="comment"></textarea>
-        </div>
-      </form>
+      <p class="text-center">Do you want to reject this Purchase Order ?</p>
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus>

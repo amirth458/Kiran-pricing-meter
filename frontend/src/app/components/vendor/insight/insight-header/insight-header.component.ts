@@ -11,6 +11,7 @@ import { environment } from './../../../../../environments/environment';
 })
 export class InsightHeaderComponent implements OnInit {
   @ViewChild('filterColumns') filterColumns;
+  @ViewChild('exportModal') exportModal;
 
   @Input() type;
   @Input() columns;
@@ -20,6 +21,7 @@ export class InsightHeaderComponent implements OnInit {
   @Output() lastAttemptChange = new EventEmitter();
 
   @Output() download = new EventEmitter();
+  @Output() uploadToZoho = new EventEmitter();
 
   env = environment.env;
 
@@ -34,7 +36,9 @@ export class InsightHeaderComponent implements OnInit {
   ngOnInit() {
     const date = new Date();
     this.createdDateRange = [
-      new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30),
+      this.type === 'bid'
+        ? new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7)
+        : new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30),
       new Date(date.getFullYear(), date.getMonth(), date.getDate())
     ];
     this.onTimeChanged('created');
@@ -83,7 +87,19 @@ export class InsightHeaderComponent implements OnInit {
     });
   }
 
+  onExport() {
+    this.modal.open(this.exportModal, {
+      centered: true
+    });
+  }
+
   onDownload() {
     this.download.emit();
+    this.modal.dismissAll();
+  }
+
+  onUploadToZoho() {
+    this.uploadToZoho.emit();
+    this.modal.dismissAll();
   }
 }

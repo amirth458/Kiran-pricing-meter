@@ -116,6 +116,7 @@ import { ProductionOrdersContainerComponent } from './vendor/pricing/production-
 import { ProductionReleasedOrdersComponent } from './vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
 import { ProductionVendorDetailsComponent } from './vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat.component';
+import { ViewInThreeDComponent } from '../common/view-in-three-d/view-in-three-d.component';
 
 @NgModule({
   declarations: [
@@ -214,7 +215,7 @@ import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat
     InsightOrderComponent,
     InsightProcessProfileComponent,
     InsightPricingProfileComponent,
-
+    ViewInThreeDComponent,
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,

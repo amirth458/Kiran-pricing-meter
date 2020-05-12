@@ -190,15 +190,6 @@ export class InsightBidComponent implements OnInit {
       filter: false,
       tooltipField: 'bid_order_status',
       headerTooltip: 'Bid Order Status'
-    },
-    {
-      headerName: 'Bid Order Status',
-      field: 'bid_order_status',
-      hide: false,
-      sortable: false,
-      filter: false,
-      tooltipField: 'bid_order_status',
-      headerTooltip: 'Bid Order Status'
     }
   ];
   constructor() {}

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ForgeMetadata } from '../model/forge.modal';
+import { Observable } from 'rxjs';
 
 declare var Autodesk;
 
@@ -75,7 +77,9 @@ export class ForgeService {
       });
   }
 
-  public getMetadataId(connectorServiceId: number) {
-    return this.http.get(environment.apiBaseUrl + '/admin/part/3Dimage?metadataId=' + connectorServiceId);
+  public getMetadataId(connectorServiceId: number): Observable<ForgeMetadata> {
+    return this.http.get<ForgeMetadata>(
+      environment.apiBaseUrl + '/admin/part/3Dimage?metadataId=' + connectorServiceId
+    );
   }
 }
