@@ -23,6 +23,7 @@ export class QueuedManualPriceComponent implements OnInit {
 
   queuedManuallyQuotedId = [];
   manuallyQuotedId = [];
+  quoteExpiredId = [];
   noQuoteId = [];
 
   tabs = [
@@ -48,8 +49,9 @@ export class QueuedManualPriceComponent implements OnInit {
 
   columnDefs = [[], []];
   gridOptions: GridOptions;
-  rowData = [[], [], []];
+  rowData = [[], [], [], []];
   pageSize = 10;
+  showExpiredRFQ = false;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -306,11 +308,14 @@ export class QueuedManualPriceComponent implements OnInit {
             this.noQuoteId.push(item.id);
           } else if (item.name === AppPartStatus.AWAITING_QUOTE || item.name === AppPartStatus.AUTO_QUOTED) {
             this.queuedManuallyQuotedId.push(item.id);
+          } else if (item.name === AppPartStatus.QUOTE_EXPIRED) {
+            this.quoteExpiredId.push(item.id);
           }
         });
         this.getQueuedManualPricing();
-        this.getManuallyPriced();
+        this.getManuallyPriced(null, true);
         this.getNoBid();
+        this.getManuallyPriced(null, false);
       },
       err => {
         console.log({ err });
@@ -322,12 +327,23 @@ export class QueuedManualPriceComponent implements OnInit {
       this.selectedTabId = value;
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
-        this.gridOptions.api.setRowData(this.rowData[value]);
+        if (value === 1 && this.showExpiredRFQ === true) {
+          this.gridOptions.api.setRowData(this.rowData[3]);
+        } else {
+          this.showExpiredRFQ = false;
+          this.gridOptions.api.setRowData(this.rowData[value]);
+        }
+
         this.gridOptions.api.hideOverlay();
         this.gridOptions.api.sizeColumnsToFit();
         this.setDefaultSort();
       }
     });
+  }
+
+  toggleExpiry() {
+    this.showExpiredRFQ = !this.showExpiredRFQ;
+    this.selectedTabId$.next(this.selectedTabId);
   }
 
   onGridReady(ev) {
@@ -390,14 +406,19 @@ export class QueuedManualPriceComponent implements OnInit {
     }
   }
 
-  async getManuallyPriced(q = null) {
+  async getManuallyPriced(q = null, activeRFQ = true) {
     this.spinner.show();
     let page = 0;
     const rows = [];
     try {
       while (true) {
         const res = await this.pricingService
-          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, this.manuallyQuotedId, false)
+          .getManuallyPriced(
+            { page, size: 1000, sort: 'id,ASC', q },
+            activeRFQ ? this.manuallyQuotedId : this.quoteExpiredId,
+            false,
+            activeRFQ ? null : false
+          )
           .toPromise();
 
         if (!res.content) {
@@ -430,16 +451,16 @@ export class QueuedManualPriceComponent implements OnInit {
         }
         page++;
       }
-      this.rowData[1] = rows;
+      this.rowData[activeRFQ ? 1 : 3] = rows;
       this.pricingService.getPartQuotes(rows.map(item => item.id)).subscribe(partQuotes => {
         partQuotes.forEach(partQuote => {
-          const findIndex = this.rowData[1].findIndex(row => row.id === partQuote.partId);
-          this.rowData[1][findIndex] = {
-            ...this.rowData[1][findIndex],
+          const findIndex = this.rowData[activeRFQ ? 1 : 3].findIndex(row => row.id === partQuote.partId);
+          this.rowData[activeRFQ ? 1 : 3][findIndex] = {
+            ...this.rowData[activeRFQ ? 1 : 3][findIndex],
             price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
           };
         });
-        this.rowData[1] = [...this.rowData[1]];
+        this.rowData[activeRFQ ? 1 : 3] = [...this.rowData[activeRFQ ? 1 : 3]];
       });
     } catch (e) {
       console.log(e);

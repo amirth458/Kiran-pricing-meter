@@ -70,7 +70,12 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getManuallyPriced(filterOption: FilterOption = null, statusIds, isNoBid): Observable<Pageable<Part>> {
+  getManuallyPriced(
+    filterOption: FilterOption = null,
+    statusIds,
+    isNoBid,
+    isOrderPlaced = null
+  ): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -88,7 +93,8 @@ export class RfqPricingService {
       statusIds,
       isManual: true,
       partId: null,
-      isNoBid
+      isNoBid,
+      isOrderPlaced
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
