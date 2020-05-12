@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 
 import { ReportsService } from 'src/app/service/reports.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-insight-detail',
@@ -23,7 +24,7 @@ export class InsightDetailComponent implements OnInit {
   createdDateRange;
   lastAttemptDate;
 
-  constructor(public spinner: NgxSpinnerService, public reportsService: ReportsService) {}
+  constructor(public spinner: NgxSpinnerService, public reportsService: ReportsService, public toastr: ToastrService) {}
 
   ngOnInit() {
     this.gridOptions = {
@@ -79,12 +80,33 @@ export class InsightDetailComponent implements OnInit {
         lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
       }
     };
-    this.reportsService.download(this.type, filter).subscribe(data => {
+    this.spinner.show();
+
+    this.reportsService.download(this.type, filter, false).subscribe(data => {
+      this.spinner.hide();
       const downloadURL = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }));
       const link = document.createElement('a');
       link.href = downloadURL;
       link.download = `${this.type}-report.csv`;
       link.click();
+    });
+  }
+
+  onUploadToZoho() {
+    const filter = {
+      sort: '',
+      filters: {
+        beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
+        endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
+        searchValue: this.searchQuery,
+        lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
+      }
+    };
+
+    this.spinner.show();
+    this.reportsService.download(this.type, filter, true).subscribe(() => {
+      this.spinner.hide();
+      this.toastr.success('Request received. Please check in Zoho after 10 minutes.');
     });
   }
 

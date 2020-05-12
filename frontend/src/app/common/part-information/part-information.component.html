@@ -107,7 +107,7 @@
             </tr>
             <tr>
               <th scope="row">Required Shipment</th>
-              <td>{{ part?.targetDeliveryDate | date }}</td>
+              <td>{{ part?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}</td>
             </tr>
           </tbody>
         </table>
