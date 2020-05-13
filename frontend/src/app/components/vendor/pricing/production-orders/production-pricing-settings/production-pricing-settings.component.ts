@@ -9,7 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { ActionService } from 'src/app/service/action.service';
-import { MetadataService } from 'src/app/service/metadata.service';
 
 @Component({
   selector: 'app-production-pricing-settings',

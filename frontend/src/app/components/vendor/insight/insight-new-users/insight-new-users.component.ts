@@ -11,7 +11,7 @@ export class InsightNewUsersComponent implements OnInit {
       headerName: 'User ID',
       field: 'user_id',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'user_id',
       headerTooltip: 'User ID'

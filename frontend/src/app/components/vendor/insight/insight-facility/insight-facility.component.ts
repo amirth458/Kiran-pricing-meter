@@ -11,7 +11,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Vendor Id',
       field: 'vendor_id',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'vendor_id',
       headerTooltip: 'Vendor Id'
@@ -20,7 +20,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Company Name',
       field: 'vendor_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'vendor_name',
       headerTooltip: 'Company Name'
@@ -29,7 +29,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Facilty ID',
       field: 'facility_id',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_id',
       headerTooltip: 'Facilty ID'
@@ -38,7 +38,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Facility Name',
       field: 'facility_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_name',
       headerTooltip: 'Facility Name'
@@ -47,7 +47,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Quoter First Name',
       field: 'quoter_first_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'quoter_first_name',
       headerTooltip: 'Quoter First Name'
@@ -56,7 +56,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Quoter Last Name',
       field: 'quoter_last_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'quoter_last_name',
       headerTooltip: 'Quoter Last Name'
@@ -65,7 +65,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Quoter Email',
       field: 'quoting_email',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'quoting_email',
       headerTooltip: 'Quoter Email'
@@ -74,7 +74,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Facilty Address1',
       field: 'facility_address_1',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_address_1',
       headerTooltip: 'Facilty Address1'
@@ -83,7 +83,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Facilty Address2',
       field: 'facility_address_2',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_address_2',
       headerTooltip: 'Facilty Address2'
@@ -92,7 +92,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'City',
       field: 'facility_city',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_city',
       headerTooltip: 'City'
@@ -101,7 +101,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'State',
       field: 'facility_state',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_state',
       headerTooltip: 'State'
@@ -110,7 +110,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Postal',
       field: 'facility_postal',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_postal',
       headerTooltip: 'Postal'
@@ -119,7 +119,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Country',
       field: 'facility_country',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_country',
       headerTooltip: 'Country'
@@ -128,7 +128,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Facility Certs',
       field: 'facility_certs',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'facility_certs',
       headerTooltip: 'Facility Certs',
@@ -138,7 +138,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Part Certs',
       field: 'part_certs',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'part_certs',
       headerTooltip: 'Part Certs',
@@ -148,7 +148,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Equipment Count',
       field: 'equipment_count',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'equipment_count',
       headerTooltip: 'Equipment Count'
@@ -157,7 +157,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Equipment offered',
       field: 'equipments',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'equipments',
       headerTooltip: 'Equipment offered',
@@ -167,7 +167,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Process Profile Count',
       field: 'process_profile_count',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'process_profile_count',
       headerTooltip: 'Process Profile Count'
@@ -176,7 +176,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Pricing Profile Count',
       field: 'pricing_profile_count',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'pricing_profile_count',
       headerTooltip: 'Pricing Profile Count'
@@ -185,7 +185,7 @@ export class InsightFacilityComponent implements OnInit {
       headerName: 'Created Date',
       field: 'created_date',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'Created Date'

@@ -9,7 +9,6 @@ import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 export class InsightGridComponent implements OnInit {
   @Input() gridOptions: GridOptions;
   @Input() rowData: any[];
-  @Input() totalCount: number;
 
   @Output() gridReady: EventEmitter<any> = new EventEmitter();
 
