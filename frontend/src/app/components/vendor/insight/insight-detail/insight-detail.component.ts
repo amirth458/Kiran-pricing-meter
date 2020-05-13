@@ -18,7 +18,9 @@ export class InsightDetailComponent implements OnInit {
   gridOptions: GridOptions;
   rowData = [];
   totalCount = 0;
-  pageSize = 20;
+  pageSize = 50;
+
+  sortQuery = '';
 
   searchQuery = '';
   createdDateRange;
@@ -31,7 +33,13 @@ export class InsightDetailComponent implements OnInit {
       columnDefs: this.columnDefs,
       enableColResize: true,
       rowHeight: 30,
-      headerHeight: 30
+      headerHeight: 30,
+      onSortChanged: params => {
+        const sortModel = params.api.getSortModel();
+        // const column = params.columnApi.getColumn(sortModel[0].colId);
+
+        this.sortQuery = `${sortModel[0].colId},${sortModel[0].sort}`;
+      }
     };
   }
 
@@ -50,7 +58,7 @@ export class InsightDetailComponent implements OnInit {
         const filter = {
           page: params.startRow / this.pageSize,
           size: this.pageSize,
-          sort: '',
+          sort: this.sortQuery,
           filters: {
             beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
             endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
@@ -111,13 +119,11 @@ export class InsightDetailComponent implements OnInit {
   }
 
   refreshData(params, data) {
-    // const rowsThisPage = data.content;
-    // const lastRow = data.total <= params.endRow ? data.total : -1;
-    // this.totalCount = data.total;
-    // params.successCallback(rowsThisPage, lastRow);
-    this.totalCount = data.length;
+    this.totalCount += data.length;
+    const lastRow = data.length < this.pageSize ? this.totalCount : -1;
 
-    params.successCallback(data, this.totalCount);
+    console.log(this.totalCount);
+    params.successCallback(data, lastRow);
   }
 
   onQueryChange(ev) {

@@ -15,11 +15,7 @@
   </div>
   <div class="row flex-grow-1">
     <div class="col-12">
-      <app-insight-grid
-        [gridOptions]="gridOptions"
-        (gridReady)="onGridReady($event)"
-        [totalCount]="totalCount"
-      ></app-insight-grid>
+      <app-insight-grid [gridOptions]="gridOptions" (gridReady)="onGridReady($event)"></app-insight-grid>
 
       <ngx-spinner
         [name]="'spooler'"

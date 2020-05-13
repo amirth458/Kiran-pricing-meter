@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class ActionService {
   saveProfileSetting: Subject<any> = new Subject();
   saveFullfillmentSetting: Subject<any> = new Subject();
+  saveProductionSetting: Subject<any> = new Subject();
   constructor() {}
 
   triggerSaveProfileSetting() {
@@ -15,10 +16,17 @@ export class ActionService {
   triggerSaveFullfillmentSetting() {
     this.saveFullfillmentSetting.next();
   }
+  triggerSaveProductionSetting() {
+    this.saveProductionSetting.next();
+  }
+
   saveProfileSettingAction() {
     return this.saveProfileSetting.asObservable();
   }
   saveFullfillmentSettingAction() {
     return this.saveFullfillmentSetting.asObservable();
+  }
+  saveProductionSettingAction() {
+    return this.saveProductionSetting.asObservable();
   }
 }

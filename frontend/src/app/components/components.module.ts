@@ -117,6 +117,7 @@ import { ProductionReleasedOrdersComponent } from './vendor/pricing/production-o
 import { ProductionVendorDetailsComponent } from './vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat.component';
 import { ViewInThreeDComponent } from '../common/view-in-three-d/view-in-three-d.component';
+import { ProductionPricingSettingsComponent } from './vendor/pricing/production-orders/production-pricing-settings/production-pricing-settings.component';
 
 @NgModule({
   declarations: [
@@ -223,7 +224,8 @@ import { ViewInThreeDComponent } from '../common/view-in-three-d/view-in-three-d
     ProductionOrdersContainerComponent,
     ProductionReleasedOrdersComponent,
     ProductionVendorDetailsComponent,
-    BillingChatComponent
+    BillingChatComponent,
+    ProductionPricingSettingsComponent
   ],
   imports: [
     CommonModule,

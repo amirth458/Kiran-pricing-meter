@@ -11,7 +11,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'rfq_id',
       headerTooltip: 'RFQ ID'
@@ -20,7 +20,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'RFQ Name',
       field: 'rfq_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'rfq_name',
       headerTooltip: 'RFQ Name'
@@ -29,7 +29,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'RFQ Status',
       field: 'rfq_status',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'rfq_status',
       headerTooltip: 'RFQ Status'
@@ -38,7 +38,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Account Name',
       field: 'account_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'account_name',
       headerTooltip: 'Account Name'
@@ -47,7 +47,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Customer First Name',
       field: 'customer_first',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'customer_first',
       headerTooltip: 'Customer First Name'
@@ -56,7 +56,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Customer Last Name',
       field: 'customer_last',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'customer_last',
       headerTooltip: 'Customer Last Name'
@@ -65,7 +65,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Customer Phone',
       field: 'customer_phone',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'customer_phone',
       headerTooltip: 'Customer Phone'
@@ -74,7 +74,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Customer Email',
       field: 'email',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'email',
       headerTooltip: 'Customer Email'
@@ -83,7 +83,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Created Date',
       field: 'created_date',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'Created Date'
@@ -92,7 +92,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'NDA',
       field: 'nda',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'nda',
       headerTooltip: 'NDA'
@@ -101,7 +101,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Region',
       field: 'regions',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'regions',
       headerTooltip: 'Region'
@@ -110,7 +110,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Part Certs',
       field: 'part_certs',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'part_certs',
       headerTooltip: 'Part Certs'
@@ -119,7 +119,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'CAD File Count',
       field: 'cad_file_count',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'cad_file_count',
       headerTooltip: 'CAD File Count'
@@ -128,7 +128,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'Part Count',
       field: 'part_count',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'part_count',
       headerTooltip: 'Part Count'

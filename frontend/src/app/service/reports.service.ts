@@ -11,24 +11,28 @@ export class ReportsService {
 
   getReports(type, filter) {
     const url = `${environment.apiBaseUrl}/admin/insight/reports/${type}-report`;
-    const params = new HttpParams();
-    params.append('page', filter.page.toString());
-    params.append('size', filter.size.toString());
-    params.append('sort', filter.sort);
+    let params = new HttpParams();
+    params = params.append('page', filter.page.toString());
+    params = params.append('size', filter.size.toString());
+    if (filter.sort) {
+      params = params.append('sort', filter.sort);
+    }
     return this.http.post(
       url,
       { ...filter.filters },
       {
-        params: params
+        params
       }
     );
   }
 
   download(type, filter, uploadToZoho = false) {
     const url = `${environment.apiBaseUrl}/admin/insight/reports/${type}-report/csv`;
-    const params = new HttpParams();
-    params.append('sort', filter.sort);
-    params.append('upload_to_zoho', uploadToZoho.toString());
+    let params = new HttpParams();
+    if (filter.sort) {
+      params = params.append('sort', filter.sort);
+    }
+    params = params.append('upload_to_zoho', uploadToZoho.toString());
     return this.http.post(
       url,
       { ...filter.filters },
@@ -37,7 +41,7 @@ export class ReportsService {
           Accept: 'application/octet-stream'
         }),
         responseType: 'arraybuffer',
-        params: params
+        params
       }
     );
   }

@@ -11,7 +11,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Order ID',
       field: 'order_id',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'order_id',
       headerTooltip: 'Order ID'
@@ -20,7 +20,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Order Status',
       field: 'order_status',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'order_status',
       headerTooltip: 'Order Status'
@@ -29,7 +29,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Order Price',
       field: 'order_price',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'order_price',
       headerTooltip: 'Order Price'
@@ -38,7 +38,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Vendor Price',
       field: 'vendor_price',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'vendor_price',
       headerTooltip: 'Vendor Price'
@@ -47,7 +47,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Margin, %',
       field: 'margin_percent',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'margin_percent',
       headerTooltip: 'Margin, %'
@@ -56,7 +56,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Number of Parts',
       field: 'number_of_parts',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'number_of_parts',
       headerTooltip: 'Number of Parts'
@@ -65,7 +65,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Total No of Quantity',
       field: 'total_no_of_qty',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'total_no_of_qty',
       headerTooltip: 'Total No of Quantity'
@@ -74,7 +74,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Customer Name',
       field: 'customer_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'customer_name',
       headerTooltip: 'Customer Name'
@@ -83,7 +83,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Customer Email',
       field: 'customer_email',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'customer_email',
       headerTooltip: 'Customer Email'
@@ -92,7 +92,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Vendor Name',
       field: 'vendor_name',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'vendor_name',
       headerTooltip: 'Vendor Name'
@@ -101,7 +101,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Vendor Email',
       field: 'vendor_email',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'vendor_email',
       headerTooltip: 'Vendor Email'
@@ -110,7 +110,7 @@ export class InsightOrderComponent implements OnInit {
       headerName: 'Created Date',
       field: 'created_date',
       hide: false,
-      sortable: false,
+      sortable: true,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'Created Date'
