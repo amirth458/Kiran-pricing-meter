@@ -8,175 +8,175 @@ import { Component, OnInit } from '@angular/core';
 export class InsightVendorsComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Vendor ID',
+      headerName: 'vendor_id',
       field: 'vendor_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_id',
-      headerTooltip: 'Vendor ID'
+      headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'Company Name',
+      headerName: 'company_name',
       field: 'company_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'company_name',
-      headerTooltip: 'Company Name'
+      headerTooltip: 'company_name'
     },
     {
-      headerName: 'First Name',
+      headerName: 'first_name',
       field: 'first_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'first_name',
-      headerTooltip: 'First Name'
+      headerTooltip: 'first_name'
     },
     {
-      headerName: 'Last Name',
+      headerName: 'last_name',
       field: 'last_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_name',
-      headerTooltip: 'Last Name'
+      headerTooltip: 'last_name'
     },
     {
-      headerName: 'Email',
+      headerName: 'email',
       field: 'email',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'email',
-      headerTooltip: 'Email'
+      headerTooltip: 'email'
     },
     {
-      headerName: 'Address1',
+      headerName: 'address_1',
       field: 'address_1',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'address_1',
-      headerTooltip: 'Address1'
+      headerTooltip: 'address_1'
     },
     {
-      headerName: 'Address2',
+      headerName: 'address_2',
       field: 'address_2',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'address_2',
-      headerTooltip: 'Address2'
+      headerTooltip: 'address_2'
     },
     {
-      headerName: 'City',
+      headerName: 'city',
       field: 'city',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'city',
-      headerTooltip: 'City'
+      headerTooltip: 'city'
     },
     {
-      headerName: 'State',
+      headerName: 'state',
       field: 'state',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'state',
-      headerTooltip: 'State'
+      headerTooltip: 'state'
     },
     {
-      headerName: 'Postal',
+      headerName: 'postal',
       field: 'postal',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'postal',
-      headerTooltip: 'Postal'
+      headerTooltip: 'postal'
     },
     {
-      headerName: 'Country',
+      headerName: 'country',
       field: 'country',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'country',
-      headerTooltip: 'Country'
+      headerTooltip: 'country'
     },
     {
-      headerName: 'Facility Count',
+      headerName: 'facility_count',
       field: 'facility_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'facility_count',
-      headerTooltip: 'Facility Count'
+      headerTooltip: 'facility_count'
     },
     {
-      headerName: 'Machine Count',
+      headerName: 'equipment_count',
       field: 'equipment_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'equipment_count',
-      headerTooltip: 'Machine Count'
+      headerTooltip: 'equipment_count'
     },
     {
-      headerName: 'Material Count',
+      headerName: 'material_count',
       field: 'material_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material_count',
-      headerTooltip: 'Material Count'
+      headerTooltip: 'material_count'
     },
     {
-      headerName: 'Process Profiles Count',
+      headerName: 'process_profile_count',
       field: 'process_profile_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_profile_count',
-      headerTooltip: 'Process Profiles Count'
+      headerTooltip: 'process_profile_count'
     },
     {
-      headerName: 'Pricing Profiles Count',
+      headerName: 'pricing_profile_count',
       field: 'pricing_profile_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'pricing_profile_count',
-      headerTooltip: 'Pricing Profiles Count'
+      headerTooltip: 'pricing_profile_count'
     },
     {
-      headerName: 'Prequote Request Count',
+      headerName: 'prequote_request_count',
       field: 'prequote_request_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'prequote_request_count',
-      headerTooltip: 'Prequote Request CountD'
+      headerTooltip: 'prequote_request_count'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     },
     {
-      headerName: 'Last login',
+      headerName: 'last_login',
       field: 'last_login',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_login',
-      headerTooltip: 'Last  login'
+      headerTooltip: 'last_login'
     }
   ];
 

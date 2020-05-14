@@ -8,188 +8,188 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidprocessComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Vendor ID',
+      headerName: 'vendor_id',
       field: 'vendor_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_id',
-      headerTooltip: 'Vendor ID'
+      headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'Vendor Name',
+      headerName: 'vendor_name',
       field: 'vendor_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_name',
-      headerTooltip: 'Vendor Name'
+      headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'Bid Winner',
+      headerName: 'bid_winner',
       field: 'bid_winner',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'bid_winner',
-      headerTooltip: 'Bid Winner'
+      headerTooltip: 'bid_winner'
     },
     {
-      headerName: 'Bid ID',
+      headerName: 'bid_id',
       field: 'bid_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'bid_id',
-      headerTooltip: 'Bid ID'
+      headerTooltip: 'bid_id'
     },
     {
-      headerName: 'RFQ ID',
+      headerName: 'rfq_id',
       field: 'rfq_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_id',
-      headerTooltip: 'RFQ ID'
+      headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'Part ID',
+      headerName: 'part_id',
       field: 'part_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'part_id',
-      headerTooltip: 'Part ID'
+      headerTooltip: 'part_id'
     },
     {
-      headerName: 'Customer Order ID',
+      headerName: 'customer_order_id',
       field: 'customer_order_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_order_id',
-      headerTooltip: 'Customer Order ID'
+      headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'Customer Price',
+      headerName: 'customer_price',
       field: 'customer_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_price',
-      headerTooltip: 'Customer Price'
+      headerTooltip: 'customer_price'
     },
     {
-      headerName: 'Vendor Price',
+      headerName: 'vendor_price',
       field: 'vendor_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_price',
-      headerTooltip: 'Vendor Price'
+      headerTooltip: 'vendor_price'
     },
     {
-      headerName: 'Counter Price',
+      headerName: 'counter_price',
       field: 'counter_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'counter_price',
-      headerTooltip: 'Counter Price'
+      headerTooltip: 'counter_price'
     },
     {
-      headerName: 'Bid Accepted',
+      headerName: 'bid_accepted',
       field: 'bid_accepted',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'bid_accepted',
-      headerTooltip: 'Bid Accepted'
+      headerTooltip: 'bid_accepted'
     },
     {
-      headerName: 'Counter Accepted',
+      headerName: 'counter_accepted',
       field: 'counter_accepted',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'counter_accepted',
-      headerTooltip: 'Counter Accepted'
+      headerTooltip: 'counter_accepted'
     },
     {
-      headerName: 'Material ID',
+      headerName: 'material_id',
       field: 'material_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material_id',
-      headerTooltip: 'Material ID',
+      headerTooltip: 'material_id',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Material Name',
+      headerName: 'material_name',
       field: 'material_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material_name',
-      headerTooltip: 'Material Name',
+      headerTooltip: 'material_name',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Tech ID',
+      headerName: 'equipment_id',
       field: 'equipment_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'equipment_id',
-      headerTooltip: 'Tech ID',
+      headerTooltip: 'equipment_id',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Tech Name',
+      headerName: 'equipment_name',
       field: 'equipment_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'equipment_name',
-      headerTooltip: 'Tech Name',
+      headerTooltip: 'equipment_name',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Created By',
+      headerName: 'created_by',
       field: 'created_by',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_by',
-      headerTooltip: 'Created By'
+      headerTooltip: 'created_by'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     },
     {
-      headerName: 'Quote Price',
+      headerName: 'quote_price',
       field: 'quote_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'quote_price',
-      headerTooltip: 'Quote Price '
+      headerTooltip: 'quote_price'
     },
     {
-      headerName: 'Bid Order Status',
+      headerName: 'bid_order_status',
       field: 'bid_order_status',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'bid_order_status',
-      headerTooltip: 'Bid Order Status'
+      headerTooltip: 'bid_order_status'
     }
   ];
 
