@@ -8,134 +8,134 @@ import { Component, OnInit } from '@angular/core';
 export class InsightProcessProfileComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Process Profile ID',
+      headerName: 'process_profile_id',
       field: 'process_profile_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_profile_id',
-      headerTooltip: 'Process Profile ID'
+      headerTooltip: 'process_profile_id'
     },
     {
-      headerName: 'Tech ID',
+      headerName: 'equipment_ids',
       field: 'equipment_ids',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'equipment_ids',
-      headerTooltip: 'Tech ID',
+      headerTooltip: 'equipment_ids',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Tech Name',
+      headerName: 'equipment_names',
       field: 'equipment_names',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'equipment_names',
-      headerTooltip: 'Tech Name',
+      headerTooltip: 'equipment_names',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Material ID',
+      headerName: 'material_ids',
       field: 'material_ids',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material_ids',
-      headerTooltip: 'Material ID',
+      headerTooltip: 'material_ids',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Material Name',
+      headerName: 'material_names',
       field: 'material_names',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material_names',
-      headerTooltip: 'Material Name',
+      headerTooltip: 'material_names',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Parameter Set Nickname',
+      headerName: 'paramter_nick_name',
       field: 'paramter_nick_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'paramter_nick_name',
-      headerTooltip: 'Parameter Set Nickname'
+      headerTooltip: 'paramter_nick_name'
     },
     {
-      headerName: 'Active',
+      headerName: 'active',
       field: 'active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'active',
-      headerTooltip: 'Active'
+      headerTooltip: 'active'
     },
     {
-      headerName: 'Created By',
+      headerName: 'created_by',
       field: 'created_by',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_by',
-      headerTooltip: 'Created By'
+      headerTooltip: 'created_by'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     },
     {
-      headerName: 'Vendor ID',
+      headerName: 'vendor_id',
       field: 'vendor_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_id',
-      headerTooltip: 'Vendor ID'
+      headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'Vendor Name',
+      headerName: 'vendor_name',
       field: 'vendor_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_name',
-      headerTooltip: 'Vendor Name'
+      headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'Process Action',
+      headerName: 'process_action',
       field: 'process_action',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_action',
-      headerTooltip: 'Process Action'
+      headerTooltip: 'process_action'
     },
     {
-      headerName: 'Process Type',
+      headerName: 'process_type',
       field: 'process_type',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_type',
-      headerTooltip: 'Process Type'
+      headerTooltip: 'process_type'
     },
     {
-      headerName: 'Process Profile Type',
+      headerName: 'process_profile_type',
       field: 'process_profile_type',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_profile_type',
-      headerTooltip: 'Process Profile Type'
+      headerTooltip: 'process_profile_type'
     }
   ];
   constructor() {}

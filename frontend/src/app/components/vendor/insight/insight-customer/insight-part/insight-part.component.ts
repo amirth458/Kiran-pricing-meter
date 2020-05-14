@@ -8,159 +8,159 @@ import { Component, OnInit } from '@angular/core';
 export class InsightPartComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Part ID',
+      headerName: 'part_id',
       field: 'part_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'part_id',
-      headerTooltip: 'Part ID'
+      headerTooltip: 'part_id'
     },
     {
-      headerName: 'RFQ ID',
+      headerName: 'rfq_id',
       field: 'rfq_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_id',
-      headerTooltip: 'RFQ ID'
+      headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'Customer Order ID',
+      headerName: 'customer_order_id',
       field: 'customer_order_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_order_id',
-      headerTooltip: 'Customer Order ID'
+      headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'File Name',
+      headerName: 'file_name',
       field: 'file_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'file_name',
-      headerTooltip: 'File Name'
+      headerTooltip: 'file_name'
     },
     {
-      headerName: 'Part Status',
+      headerName: 'part_status',
       field: 'part_status',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'part_status',
-      headerTooltip: 'Part Status'
+      headerTooltip: 'part_status'
     },
     {
-      headerName: 'Part Quote Price',
+      headerName: 'part_quote_price',
       field: 'part_quote_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'part_quote_price',
-      headerTooltip: 'Part Quote Price'
+      headerTooltip: 'part_quote_price'
     },
     {
-      headerName: 'Customer Account Name',
+      headerName: 'customer_name',
       field: 'customer_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_name',
-      headerTooltip: 'Customer Account Name'
+      headerTooltip: 'customer_name'
     },
     {
-      headerName: 'Customer Email',
+      headerName: 'customer_email',
       field: 'customer_email',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_email',
-      headerTooltip: 'Customer Email'
+      headerTooltip: 'customer_email'
     },
     {
-      headerName: 'Quantity',
+      headerName: 'quantity',
       field: 'quantity',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'quantity',
-      headerTooltip: 'Quantity'
+      headerTooltip: 'quantity'
     },
     {
-      headerName: 'Material Count',
+      headerName: 'material_count',
       field: 'material_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material_count',
-      headerTooltip: 'Material Count'
+      headerTooltip: 'material_count'
     },
     {
-      headerName: 'Material',
+      headerName: 'material',
       field: 'material',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'material',
-      headerTooltip: 'Material',
+      headerTooltip: 'material',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Tech Count',
+      headerName: 'equipment_count',
       field: 'equipment_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'equipment_count',
-      headerTooltip: 'Tech Count'
+      headerTooltip: 'equipment_count'
     },
     {
-      headerName: 'Technology',
+      headerName: 'technology',
       field: 'technology',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'technology',
-      headerTooltip: 'Technology',
+      headerTooltip: 'technology',
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Post Process',
+      headerName: 'post_process',
       field: 'post_process',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'post_process',
-      headerTooltip: 'Post Process'
+      headerTooltip: 'post_process'
     },
     {
-      headerName: 'Target Delivery Date',
+      headerName: 'target_delivery_date',
       field: 'target_delivery_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'target_delivery_date',
-      headerTooltip: 'Target Delivery Date'
+      headerTooltip: 'target_delivery_date'
     },
     {
-      headerName: 'Shipping Address',
+      headerName: 'shipping_address',
       field: 'shipping_address',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'shipping_address',
-      headerTooltip: 'Shipping Address'
+      headerTooltip: 'shipping_address'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     }
   ];
   constructor() {}

@@ -8,95 +8,95 @@ import { Component, OnInit } from '@angular/core';
 export class InsightPricingProfileComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Process Pricing ID',
+      headerName: 'process_pricing_id',
       field: 'process_pricing_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_pricing_id',
-      headerTooltip: 'Profile ID'
+      headerTooltip: 'process_pricing_id'
     },
     {
-      headerName: 'Pricing Profile Name',
+      headerName: 'pricing_profile_name',
       field: 'pricing_profile_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'pricing_profile_name',
-      headerTooltip: 'Pricing Profile Name'
+      headerTooltip: 'pricing_profile_name'
     },
     {
-      headerName: 'Pricing Condition',
+      headerName: 'pricing_condition',
       field: 'pricing_condition',
       hide: false,
       sortable: true,
       filter: false,
-      headerTooltip: 'Pricing Condition',
-      tooltip: v => this.getPricingCondition(v.value),
+      tooltipField: 'pricing_condition',
+      headerTooltip: 'pricing_condition',
       valueFormatter: v => this.getPricingCondition(v.value)
     },
     {
-      headerName: 'Process Profile ID',
+      headerName: 'process_profile_id',
       field: 'process_profile_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_profile_id',
-      headerTooltip: 'Process Profile ID'
+      headerTooltip: 'process_profile_id'
     },
     {
-      headerName: 'Process Profile Name',
+      headerName: 'process_profile_name',
       field: 'process_profile_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'process_profile_name',
-      headerTooltip: 'Process Profile Name'
+      headerTooltip: 'process_profile_name'
     },
     {
-      headerName: 'Parameter Name',
+      headerName: 'parameter_name',
       field: 'parameter_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'parameter_name',
-      headerTooltip: 'Parameter Name'
+      headerTooltip: 'parameter_name'
     },
     {
-      headerName: 'Active',
+      headerName: 'active',
       field: 'active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'active',
-      headerTooltip: 'Active'
+      headerTooltip: 'active'
     },
     {
-      headerName: 'Shopsight Company Name',
+      headerName: 'vendor_name',
       field: 'vendor_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_name',
-      headerTooltip: 'Shopsight Company Name'
+      headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'Created By',
+      headerName: 'created_by',
       field: 'created_by',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_by',
-      headerTooltip: 'Created By'
+      headerTooltip: 'created_by'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     }
   ];
   constructor() {}

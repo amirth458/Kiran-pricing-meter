@@ -8,130 +8,130 @@ import { Component, OnInit } from '@angular/core';
 export class InsightRfqComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'RFQ ID',
+      headerName: 'rfq_id',
       field: 'rfq_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_id',
-      headerTooltip: 'RFQ ID'
+      headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'RFQ Name',
+      headerName: 'rfq_name',
       field: 'rfq_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_name',
-      headerTooltip: 'RFQ Name'
+      headerTooltip: 'rfq_name'
     },
     {
-      headerName: 'RFQ Status',
+      headerName: 'rfq_status',
       field: 'rfq_status',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_status',
-      headerTooltip: 'RFQ Status'
+      headerTooltip: 'rfq_status'
     },
     {
-      headerName: 'Account Name',
+      headerName: 'account_name',
       field: 'account_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'account_name',
-      headerTooltip: 'Account Name'
+      headerTooltip: 'account_name'
     },
     {
-      headerName: 'Customer First Name',
+      headerName: 'customer_first',
       field: 'customer_first',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_first',
-      headerTooltip: 'Customer First Name'
+      headerTooltip: 'customer_first'
     },
     {
-      headerName: 'Customer Last Name',
+      headerName: 'customer_last',
       field: 'customer_last',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_last',
-      headerTooltip: 'Customer Last Name'
+      headerTooltip: 'customer_last'
     },
     {
-      headerName: 'Customer Phone',
+      headerName: 'customer_phone',
       field: 'customer_phone',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_phone',
-      headerTooltip: 'Customer Phone'
+      headerTooltip: 'customer_phone'
     },
     {
-      headerName: 'Customer Email',
+      headerName: 'email',
       field: 'email',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'email',
-      headerTooltip: 'Customer Email'
+      headerTooltip: 'email'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     },
     {
-      headerName: 'NDA',
+      headerName: 'nda',
       field: 'nda',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'nda',
-      headerTooltip: 'NDA'
+      headerTooltip: 'nda'
     },
     {
-      headerName: 'Region',
+      headerName: 'regions',
       field: 'regions',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'regions',
-      headerTooltip: 'Region'
+      headerTooltip: 'regions'
     },
     {
-      headerName: 'Part Certs',
+      headerName: 'part_certs',
       field: 'part_certs',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'part_certs',
-      headerTooltip: 'Part Certs'
+      headerTooltip: 'part_certs'
     },
     {
-      headerName: 'CAD File Count',
+      headerName: 'cad_file_count',
       field: 'cad_file_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'cad_file_count',
-      headerTooltip: 'CAD File Count'
+      headerTooltip: 'cad_file_count'
     },
     {
-      headerName: 'Part Count',
+      headerName: 'part_count',
       field: 'part_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'part_count',
-      headerTooltip: 'Part Count'
+      headerTooltip: 'part_count'
     }
   ];
   constructor() {}
