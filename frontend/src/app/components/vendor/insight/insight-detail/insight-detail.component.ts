@@ -92,7 +92,7 @@ export class InsightDetailComponent implements OnInit {
     };
     this.spinner.show();
 
-    this.reportsService.download(this.type, filter, false).subscribe(data => {
+    this.reportsService.download(this.type, filter, false).subscribe((data: any) => {
       this.spinner.hide();
       const downloadURL = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }));
       const link = document.createElement('a');
