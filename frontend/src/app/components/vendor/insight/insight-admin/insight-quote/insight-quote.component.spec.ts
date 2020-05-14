@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InsightBidComponent } from './insight-bid.component';
+import { InsightQuoteComponent } from './insight-quote.component';
 
-describe('InsightBidComponent', () => {
-  let component: InsightBidComponent;
-  let fixture: ComponentFixture<InsightBidComponent>;
+describe('InsightQuoteComponent', () => {
+  let component: InsightQuoteComponent;
+  let fixture: ComponentFixture<InsightQuoteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InsightBidComponent]
+      declarations: [InsightQuoteComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InsightBidComponent);
+    fixture = TestBed.createComponent(InsightQuoteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

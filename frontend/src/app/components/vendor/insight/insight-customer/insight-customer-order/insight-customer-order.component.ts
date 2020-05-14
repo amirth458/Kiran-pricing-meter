@@ -1,121 +1,132 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-insight-order',
-  templateUrl: './insight-order.component.html',
-  styleUrls: ['./insight-order.component.css']
+  selector: 'app-insight-customer-order',
+  templateUrl: './insight-customer-order.component.html',
+  styleUrls: ['./insight-customer-order.component.css']
 })
-export class InsightOrderComponent implements OnInit {
+export class InsightCustomerOrderComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Order ID',
+      headerName: 'order_id',
       field: 'order_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'order_id',
-      headerTooltip: 'Order ID'
+      headerTooltip: 'order_id'
     },
     {
-      headerName: 'Order Status',
+      headerName: 'order_status',
       field: 'order_status',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'order_status',
-      headerTooltip: 'Order Status'
+      headerTooltip: 'order_status'
     },
     {
-      headerName: 'Order Price',
+      headerName: 'order_price',
       field: 'order_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'order_price',
-      headerTooltip: 'Order Price'
+      headerTooltip: 'order_price'
     },
     {
-      headerName: 'Vendor Price',
+      headerName: 'vendor_price',
       field: 'vendor_price',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_price',
-      headerTooltip: 'Vendor Price'
+      headerTooltip: 'vendor_price'
     },
     {
-      headerName: 'Margin, %',
+      headerName: 'rfq_ids',
+      field: 'rfq_ids',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'rfq_ids',
+      headerTooltip: 'rfq_ids',
+      valueFormatter: v => v.value && v.value.join(', ')
+    },
+    {
+      headerName: 'margin_percent',
       field: 'margin_percent',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'margin_percent',
-      headerTooltip: 'Margin, %'
+      headerTooltip: 'margin_percent'
     },
     {
-      headerName: 'Number of Parts',
+      headerName: 'number_of_parts',
       field: 'number_of_parts',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'number_of_parts',
-      headerTooltip: 'Number of Parts'
+      headerTooltip: 'number_of_parts'
     },
     {
-      headerName: 'Total No of Quantity',
+      headerName: 'total_no_of_qty',
       field: 'total_no_of_qty',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'total_no_of_qty',
-      headerTooltip: 'Total No of Quantity'
+      headerTooltip: 'total_no_of_qty'
     },
     {
-      headerName: 'Customer Name',
+      headerName: 'customer_name',
       field: 'customer_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_name',
-      headerTooltip: 'Customer Name'
+      headerTooltip: 'customer_name'
     },
     {
-      headerName: 'Customer Email',
+      headerName: 'customer_email',
       field: 'customer_email',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'customer_email',
-      headerTooltip: 'Customer Email'
+      headerTooltip: 'customer_email'
     },
     {
-      headerName: 'Vendor Name',
+      headerName: 'vendor_name',
       field: 'vendor_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_name',
-      headerTooltip: 'Vendor Name'
+      headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'Vendor Email',
+      headerName: 'vendor_email',
       field: 'vendor_email',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'vendor_email',
-      headerTooltip: 'Vendor Email'
+      headerTooltip: 'vendor_email'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     }
   ];
+
   constructor() {}
 
   ngOnInit() {}

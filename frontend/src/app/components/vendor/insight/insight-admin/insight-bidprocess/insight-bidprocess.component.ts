@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-insight-bid',
-  templateUrl: './insight-bid.component.html',
-  styleUrls: ['./insight-bid.component.css']
+  selector: 'app-insight-bidprocess',
+  templateUrl: './insight-bidprocess.component.html',
+  styleUrls: ['./insight-bidprocess.component.css']
 })
-export class InsightBidComponent implements OnInit {
+export class InsightBidprocessComponent implements OnInit {
   columnDefs = [
     {
       headerName: 'Vendor ID',
@@ -192,6 +192,7 @@ export class InsightBidComponent implements OnInit {
       headerTooltip: 'Bid Order Status'
     }
   ];
+
   constructor() {}
 
   ngOnInit() {}

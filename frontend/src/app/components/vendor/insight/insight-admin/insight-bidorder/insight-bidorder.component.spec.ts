@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InsightOrderComponent } from './insight-order.component';
+import { InsightBidorderComponent } from './insight-bidorder.component';
 
-describe('InsightOrderComponent', () => {
-  let component: InsightOrderComponent;
-  let fixture: ComponentFixture<InsightOrderComponent>;
+describe('InsightBidorderComponent', () => {
+  let component: InsightBidorderComponent;
+  let fixture: ComponentFixture<InsightBidorderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InsightOrderComponent]
+      declarations: [InsightBidorderComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InsightOrderComponent);
+    fixture = TestBed.createComponent(InsightBidorderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

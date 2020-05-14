@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InsightNewUsersComponent } from './insight-new-users.component';
+import { InsightBidprocessComponent } from './insight-bidprocess.component';
 
-describe('InsightNewUsersComponent', () => {
-  let component: InsightNewUsersComponent;
-  let fixture: ComponentFixture<InsightNewUsersComponent>;
+describe('InsightBidprocessComponent', () => {
+  let component: InsightBidprocessComponent;
+  let fixture: ComponentFixture<InsightBidprocessComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InsightNewUsersComponent]
+      declarations: [InsightBidprocessComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InsightNewUsersComponent);
+    fixture = TestBed.createComponent(InsightBidprocessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

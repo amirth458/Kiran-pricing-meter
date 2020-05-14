@@ -17,18 +17,7 @@ export class InsightContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    const menus = [
-      'Customers',
-      'Vendors',
-      // 'New Users',
-      'Facility',
-      'RFQ',
-      'Part',
-      'Bid',
-      'Order',
-      'Process Profile',
-      'Pricing Profile'
-    ];
+    const menus = ['Customer', 'Vendor', 'Admin'];
 
     this.subMenus = menus.map(item => ({
       name: item,

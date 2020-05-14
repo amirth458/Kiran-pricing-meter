@@ -43,20 +43,29 @@ import { ShippingComponent } from 'src/app/components/admin/shipping/shipping.co
 import { ProjectsListComponent } from 'src/app/components/vendor/projects/projects-list/projects-list.component';
 
 import { InsightContainerComponent } from './../../components/vendor/insight/insight-container/insight-container.component';
-import { InsightCustomersComponent } from './../../components/vendor/insight/insight-customers/insight-customers.component';
-import { InsightVendorsComponent } from './../../components/vendor/insight/insight-vendors/insight-vendors.component';
+import { InsightCustomersComponent } from '../../components/vendor/insight/insight-customer/insight-customers/insight-customers.component';
+import { InsightVendorsComponent } from '../../components/vendor/insight/insight-vendor/insight-vendors/insight-vendors.component';
 // import { InsightNewUsersComponent } from './../../components/vendor/insight/insight-new-users/insight-new-users.component';
-import { InsightFacilityComponent } from './../../components/vendor/insight/insight-facility/insight-facility.component';
-import { InsightRfqComponent } from './../../components/vendor/insight/insight-rfq/insight-rfq.component';
-import { InsightPartComponent } from './../../components/vendor/insight/insight-part/insight-part.component';
-import { InsightBidComponent } from './../../components/vendor/insight/insight-bid/insight-bid.component';
-import { InsightOrderComponent } from './../../components/vendor/insight/insight-order/insight-order.component';
-import { InsightProcessProfileComponent } from './../../components/vendor/insight/insight-process-profile/insight-process-profile.component';
-import { InsightPricingProfileComponent } from './../../components/vendor/insight/insight-pricing-profile/insight-pricing-profile.component';
+import { InsightFacilityComponent } from '../../components/vendor/insight/insight-vendor/insight-facility/insight-facility.component';
+import { InsightRfqComponent } from '../../components/vendor/insight/insight-customer/insight-rfq/insight-rfq.component';
+import { InsightPartComponent } from '../../components/vendor/insight/insight-customer/insight-part/insight-part.component';
+import { InsightProcessProfileComponent } from '../../components/vendor/insight/insight-vendor/insight-process-profile/insight-process-profile.component';
+import { InsightPricingProfileComponent } from '../../components/vendor/insight/insight-vendor/insight-pricing-profile/insight-pricing-profile.component';
 import { ProductionOrdersContainerComponent } from 'src/app/components/vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
 import { ProductionVendorDetailsComponent } from 'src/app/components/vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { ProductionReleasedOrdersComponent } from 'src/app/components/vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
 import { ProductionPricingSettingsComponent } from 'src/app/components/vendor/pricing/production-orders/production-pricing-settings/production-pricing-settings.component';
+import { InsightAdminContainerComponent } from 'src/app/components/vendor/insight/insight-admin/insight-admin-container/insight-admin-container.component';
+import { InsightQuoteComponent } from 'src/app/components/vendor/insight/insight-admin/insight-quote/insight-quote.component';
+import { InsightVendorSuborderComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-suborder/insight-vendor-suborder.component';
+import { InsightVendorOrderComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-order/insight-vendor-order.component';
+import { InsightBidorderitemComponent } from 'src/app/components/vendor/insight/insight-admin/insight-bidorderitem/insight-bidorderitem.component';
+import { InsightBidorderComponent } from 'src/app/components/vendor/insight/insight-admin/insight-bidorder/insight-bidorder.component';
+import { InsightBidprocessComponent } from 'src/app/components/vendor/insight/insight-admin/insight-bidprocess/insight-bidprocess.component';
+import { InsightCustomerOrderComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-order/insight-customer-order.component';
+import { InsightCustomerSuborderComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-suborder/insight-customer-suborder.component';
+import { InsightCustomerContainerComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-container/insight-customer-container.component';
+import { InsightVendorContainerComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-container/insight-vendor-container.component';
 
 const routes: Routes = [
   {
@@ -288,19 +297,45 @@ const routes: Routes = [
         path: 'insight',
         component: InsightContainerComponent,
         children: [
-          { path: 'customers', component: InsightCustomersComponent },
-          { path: 'vendors', component: InsightVendorsComponent },
-          // { path: 'new-users', component: InsightNewUsersComponent },
-          { path: 'facility', component: InsightFacilityComponent },
-          { path: 'rfq', component: InsightRfqComponent },
-          { path: 'part', component: InsightPartComponent },
-          { path: 'bid', component: InsightBidComponent },
-          { path: 'order', component: InsightOrderComponent },
-          { path: 'process-profile', component: InsightProcessProfileComponent },
-          { path: 'pricing-profile', component: InsightPricingProfileComponent },
+          {
+            path: 'admin',
+            component: InsightAdminContainerComponent,
+            children: [
+              { path: 'quote', component: InsightQuoteComponent },
+              { path: 'bid-order', component: InsightBidorderComponent },
+              { path: 'bid-order-item', component: InsightBidorderitemComponent },
+              { path: 'bid-process', component: InsightBidprocessComponent },
+              { path: '', redirectTo: 'quote' }
+            ]
+          },
+          {
+            path: 'customer',
+            component: InsightCustomerContainerComponent,
+            children: [
+              { path: 'customers', component: InsightCustomersComponent },
+              { path: 'rfq', component: InsightRfqComponent },
+              { path: 'part', component: InsightPartComponent },
+              { path: 'order', component: InsightCustomerOrderComponent },
+              { path: 'sub-order', component: InsightCustomerSuborderComponent },
+              { path: '', redirectTo: 'customers' }
+            ]
+          },
+          {
+            path: 'vendor',
+            component: InsightVendorContainerComponent,
+            children: [
+              { path: 'vendors', component: InsightVendorsComponent },
+              { path: 'facility', component: InsightFacilityComponent },
+              { path: 'order', component: InsightVendorOrderComponent },
+              { path: 'sub-order', component: InsightVendorSuborderComponent },
+              { path: 'process-profile', component: InsightProcessProfileComponent },
+              { path: 'pricing-profile', component: InsightPricingProfileComponent },
+              { path: '', redirectTo: 'vendors' }
+            ]
+          },
           {
             path: '',
-            redirectTo: 'customers'
+            redirectTo: 'customer'
           }
         ]
       },
