@@ -8,166 +8,184 @@ import { Component, OnInit } from '@angular/core';
 export class InsightCustomersComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'User ID',
+      headerName: 'user_id',
       field: 'user_id',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'user_id',
-      headerTooltip: 'User ID'
+      headerTooltip: 'user_id'
     },
     {
-      headerName: 'First Name',
+      headerName: 'customer_id',
+      field: 'customer_id',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'customer_id',
+      headerTooltip: 'customer_id'
+    },
+    {
+      headerName: 'first_name',
       field: 'first_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'first_name',
-      headerTooltip: 'First Name'
+      headerTooltip: 'first_name'
     },
     {
-      headerName: 'Last Name',
+      headerName: 'last_name',
       field: 'last_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_name',
-      headerTooltip: 'Last Name'
+      headerTooltip: 'last_name'
     },
     {
-      headerName: 'Email',
+      headerName: 'email',
       field: 'email',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'email',
-      headerTooltip: 'Email'
+      headerTooltip: 'email'
     },
     {
-      headerName: 'Phone',
+      headerName: 'phone_no',
       field: 'phone_no',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'phone_no',
-      headerTooltip: 'Phone'
+      headerTooltip: 'phone_no'
     },
     {
-      headerName: 'Company Name',
+      headerName: 'company_name',
       field: 'company_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'company_name',
-      headerTooltip: 'Company Name'
+      headerTooltip: 'company_name'
     },
     {
-      headerName: 'Department',
+      headerName: 'department',
       field: 'department',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'department',
-      headerTooltip: 'Department'
+      headerTooltip: 'department'
     },
     {
-      headerName: 'Last Login Attempt',
+      headerName: 'division',
+      field: 'division',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'division',
+      headerTooltip: 'division'
+    },
+    {
+      headerName: 'last_login_attempt',
       field: 'last_login_attempt',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_login_attempt',
-      headerTooltip: 'Last Login Attempt'
+      headerTooltip: 'last_login_attempt'
     },
     {
-      headerName: 'Last 30 Active',
+      headerName: 'last_30_active',
       field: 'last_30_active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_30_active',
-      headerTooltip: 'Last 30 Active'
+      headerTooltip: 'last_30_active'
     },
     {
-      headerName: 'Last 14 Active',
+      headerName: 'last_14_active',
       field: 'last_14_active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_14_active',
-      headerTooltip: 'Last 14 Active'
+      headerTooltip: 'last_14_active'
     },
     {
-      headerName: 'Last 7 Active',
+      headerName: 'last_7_active',
       field: 'last_7_active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'last_7_active',
-      headerTooltip: 'Last 7 Active'
+      headerTooltip: 'last_7_active'
     },
     {
-      headerName: 'RFQ Count Active',
+      headerName: 'rfq_count_active',
       field: 'rfq_count_active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_count_active',
-      headerTooltip: 'RFQ Count Active'
+      headerTooltip: 'rfq_count_active'
     },
     {
-      headerName: 'RFQ Count Inactive',
+      headerName: 'rfq_count_inactive',
       field: 'rfq_count_inactive',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_count_inactive',
-      headerTooltip: 'RFQ Count Inactive'
+      headerTooltip: 'rfq_count_inactive'
     },
     {
-      headerName: 'Total RFQ Count',
+      headerName: 'total_rfq_count',
       field: 'total_rfq_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'total_rfq_count',
-      headerTooltip: 'Total RFQ Count'
+      headerTooltip: 'total_rfq_count'
     },
     {
-      headerName: 'Order Count Active',
+      headerName: 'order_count_active',
       field: 'order_count_active',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'order_count_active',
-      headerTooltip: 'Order Count Active'
+      headerTooltip: 'order_count_active'
     },
     {
-      headerName: 'Order Count Inactive',
+      headerName: 'order_count_inactive',
       field: 'order_count_inactive',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'order_count_inactive',
-      headerTooltip: 'Order Count Inactive'
+      headerTooltip: 'order_count_inactive'
     },
     {
-      headerName: 'Total Order Count',
+      headerName: 'total_order_count',
       field: 'total_order_count',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'total_order_count',
-      headerTooltip: 'Total Order Count'
+      headerTooltip: 'total_order_count'
     },
     {
-      headerName: 'Created Date',
+      headerName: 'created_date',
       field: 'created_date',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'created_date',
-      headerTooltip: 'Created Date'
+      headerTooltip: 'created_date'
     }
   ];
 

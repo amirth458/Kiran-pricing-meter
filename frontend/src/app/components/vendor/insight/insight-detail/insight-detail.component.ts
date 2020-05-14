@@ -34,10 +34,12 @@ export class InsightDetailComponent implements OnInit {
       enableColResize: true,
       rowHeight: 30,
       headerHeight: 30,
+      paginationPageSize: this.pageSize,
+      cacheBlockSize: this.pageSize,
       onSortChanged: params => {
         const sortModel = params.api.getSortModel();
         // const column = params.columnApi.getColumn(sortModel[0].colId);
-
+        this.totalCount = 0;
         this.sortQuery = `${sortModel[0].colId},${sortModel[0].sort}`;
       }
     };
@@ -122,7 +124,6 @@ export class InsightDetailComponent implements OnInit {
     this.totalCount += data.length;
     const lastRow = data.length < this.pageSize ? this.totalCount : -1;
 
-    console.log(this.totalCount);
     params.successCallback(data, lastRow);
   }
 

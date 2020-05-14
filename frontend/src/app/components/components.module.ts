@@ -98,16 +98,13 @@ import { SubscriptionModalComponent } from '../common/subscription-modal/subscri
 import { InsightContainerComponent } from './vendor/insight/insight-container/insight-container.component';
 import { InsightHeaderComponent } from './vendor/insight/insight-header/insight-header.component';
 import { InsightGridComponent } from './vendor/insight/insight-grid/insight-grid.component';
-import { InsightCustomersComponent } from './vendor/insight/insight-customers/insight-customers.component';
-import { InsightVendorsComponent } from './vendor/insight/insight-vendors/insight-vendors.component';
-import { InsightNewUsersComponent } from './vendor/insight/insight-new-users/insight-new-users.component';
-import { InsightFacilityComponent } from './vendor/insight/insight-facility/insight-facility.component';
-import { InsightRfqComponent } from './vendor/insight/insight-rfq/insight-rfq.component';
-import { InsightPartComponent } from './vendor/insight/insight-part/insight-part.component';
-import { InsightBidComponent } from './vendor/insight/insight-bid/insight-bid.component';
-import { InsightOrderComponent } from './vendor/insight/insight-order/insight-order.component';
-import { InsightProcessProfileComponent } from './vendor/insight/insight-process-profile/insight-process-profile.component';
-import { InsightPricingProfileComponent } from './vendor/insight/insight-pricing-profile/insight-pricing-profile.component';
+import { InsightCustomersComponent } from './vendor/insight/insight-customer/insight-customers/insight-customers.component';
+import { InsightVendorsComponent } from './vendor/insight/insight-vendor/insight-vendors/insight-vendors.component';
+import { InsightFacilityComponent } from './vendor/insight/insight-vendor/insight-facility/insight-facility.component';
+import { InsightRfqComponent } from './vendor/insight/insight-customer/insight-rfq/insight-rfq.component';
+import { InsightPartComponent } from './vendor/insight/insight-customer/insight-part/insight-part.component';
+import { InsightProcessProfileComponent } from './vendor/insight/insight-vendor/insight-process-profile/insight-process-profile.component';
+import { InsightPricingProfileComponent } from './vendor/insight/insight-vendor/insight-pricing-profile/insight-pricing-profile.component';
 import { InsightDetailComponent } from './vendor/insight/insight-detail/insight-detail.component';
 import { SearchBarComponent } from '../common/search-bar/search-bar.component';
 import { DateRangeMonthComponent } from '../common/date-range-month/date-range-month.component';
@@ -118,6 +115,17 @@ import { ProductionVendorDetailsComponent } from './vendor/pricing/production-or
 import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat.component';
 import { ViewInThreeDComponent } from '../common/view-in-three-d/view-in-three-d.component';
 import { ProductionPricingSettingsComponent } from './vendor/pricing/production-orders/production-pricing-settings/production-pricing-settings.component';
+import { InsightVendorContainerComponent } from './vendor/insight/insight-vendor/insight-vendor-container/insight-vendor-container.component';
+import { InsightCustomerContainerComponent } from './vendor/insight/insight-customer/insight-customer-container/insight-customer-container.component';
+import { InsightAdminContainerComponent } from './vendor/insight/insight-admin/insight-admin-container/insight-admin-container.component';
+import { InsightQuoteComponent } from './vendor/insight/insight-admin/insight-quote/insight-quote.component';
+import { InsightBidorderComponent } from './vendor/insight/insight-admin/insight-bidorder/insight-bidorder.component';
+import { InsightBidorderitemComponent } from './vendor/insight/insight-admin/insight-bidorderitem/insight-bidorderitem.component';
+import { InsightBidprocessComponent } from './vendor/insight/insight-admin/insight-bidprocess/insight-bidprocess.component';
+import { InsightVendorOrderComponent } from './vendor/insight/insight-vendor/insight-vendor-order/insight-vendor-order.component';
+import { InsightVendorSuborderComponent } from './vendor/insight/insight-vendor/insight-vendor-suborder/insight-vendor-suborder.component';
+import { InsightCustomerSuborderComponent } from './vendor/insight/insight-customer/insight-customer-suborder/insight-customer-suborder.component';
+import { InsightCustomerOrderComponent } from './vendor/insight/insight-customer/insight-customer-order/insight-customer-order.component';
 
 @NgModule({
   declarations: [
@@ -208,12 +216,9 @@ import { ProductionPricingSettingsComponent } from './vendor/pricing/production-
     InsightGridComponent,
     InsightCustomersComponent,
     InsightVendorsComponent,
-    InsightNewUsersComponent,
     InsightFacilityComponent,
     InsightRfqComponent,
     InsightPartComponent,
-    InsightBidComponent,
-    InsightOrderComponent,
     InsightProcessProfileComponent,
     InsightPricingProfileComponent,
     ViewInThreeDComponent,
@@ -225,7 +230,18 @@ import { ProductionPricingSettingsComponent } from './vendor/pricing/production-
     ProductionReleasedOrdersComponent,
     ProductionVendorDetailsComponent,
     BillingChatComponent,
-    ProductionPricingSettingsComponent
+    ProductionPricingSettingsComponent,
+    InsightVendorContainerComponent,
+    InsightCustomerContainerComponent,
+    InsightAdminContainerComponent,
+    InsightQuoteComponent,
+    InsightBidorderComponent,
+    InsightBidorderitemComponent,
+    InsightBidprocessComponent,
+    InsightVendorOrderComponent,
+    InsightVendorSuborderComponent,
+    InsightCustomerSuborderComponent,
+    InsightCustomerOrderComponent
   ],
   imports: [
     CommonModule,
