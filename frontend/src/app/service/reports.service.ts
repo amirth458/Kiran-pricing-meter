@@ -33,16 +33,20 @@ export class ReportsService {
       params = params.append('sort', filter.sort);
     }
     params = params.append('upload_to_zoho', uploadToZoho.toString());
-    return this.http.post(
-      url,
-      { ...filter.filters },
-      {
-        headers: new HttpHeaders({
-          Accept: 'application/octet-stream'
-        }),
-        responseType: 'arraybuffer',
-        params
-      }
-    );
+    let options = {
+      params,
+      headers: new HttpHeaders({
+        Accept: `application/${uploadToZoho ? 'json' : 'octet-stream'}`
+      })
+    };
+    if (!uploadToZoho) {
+      options = {
+        ...options,
+        ...{
+          responseType: 'arraybuffer'
+        }
+      };
+    }
+    return this.http.post(url, { ...filter.filters }, options);
   }
 }
