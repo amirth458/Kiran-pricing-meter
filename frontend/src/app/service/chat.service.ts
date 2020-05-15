@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Chat, ChatTypeEnum, ChatView, MessageNote } from '../model/chat.model';
+import { Chat, ChatAttachment, ChatAttachmentView, ChatTypeEnum, ChatView, MessageNote } from '../model/chat.model';
 import { environment } from '../../environments/environment';
 import { UserSummary } from '../model/user.model';
 
@@ -91,5 +91,21 @@ export class ChatService {
 
   markUnreadMessage(id: number): Observable<boolean> {
     return this.http.patch<boolean>(`${environment.procurementApiBaseUrl}/chat/message-note/${id}/mark-read`, null);
+  }
+
+  uploadAttachment(chatId: number, file: File): Observable<ChatAttachment> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name.replace(/(?:\.(?![^.]+$)|[^\w.])+/g, '_'));
+    return this.http.post<ChatAttachment>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}`, formData);
+  }
+
+  getAllChatAttachments(chatId: number): Observable<ChatAttachmentView> {
+    return this.http.get<ChatAttachmentView>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}`);
+  }
+
+  deleteChatAttachment(chatId: number, attachmentId: number): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.procurementApiBaseUrl}/chat-attachments/${chatId}/attachment/${attachmentId}`
+    );
   }
 }

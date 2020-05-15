@@ -720,6 +720,10 @@ app-dropdown-cell-renderer {
   margin-right: -50%;
 }
 
+.chat-container .attachment-btn {
+  right: 10px;
+}
+
 .chat-button .unread-badge,
 .info-panel .unread-badge {
   top: 5px;
@@ -781,3 +785,149 @@ app-dropdown-cell-renderer {
   left: unset !important;
   right: 50px;
 } */
+
+/* Reference Files Modal */
+.attachment-modal {
+  z-index: 1061;
+}
+
+.attachment-modal .file-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.attachment-modal .modal-dialog {
+  max-width: 900px;
+}
+
+.attachment-modal .modal-header {
+  border: none;
+}
+
+.attachment-modal .file-items .list-item {
+  height: 120px;
+  border: 1px solid #ccc;
+}
+
+.attachment-modal .file-items .file-name {
+  font-size: 13px;
+  color: var(--theme-light-blue) !important;
+  text-decoration: underline;
+  cursor: pointer;
+  width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.attachment-modal .file-items .doc-icon {
+  font-size: 64px;
+}
+
+.attachment-modal .attached-file {
+  height: 250px;
+  width: 250px;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 0 auto;
+  border: 1px solid #cccccc;
+}
+
+.attachment-modal .modal-body {
+  max-height: 400px;
+}
+
+.attachment-modal .modal-body {
+  max-height: 600px !important;
+}
+
+.attachment-modal .modal-body.attachment-body {
+  max-height: 700px;
+}
+
+/* Reference Files Modal */
+
+/* Upload Container */
+.upload-container {
+  height: 500px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  border: dashed 1px #979797;
+  position: relative;
+}
+
+.upload-container.has-files {
+  padding: 0;
+  border: none;
+}
+
+.upload-container .file-icon {
+  font-size: 48px;
+}
+
+.file-container {
+  height: 500px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.upload-container.file-over {
+  background: #f5f5f5;
+  border: dashed 2px var(--theme-light-blue);
+}
+
+.upload-container h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--theme-light-blue);
+}
+
+.upload-container .file-picker {
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.upload-container .btn-browse {
+  border-radius: 20px;
+  border: none;
+}
+
+.upload-container .files-list {
+  padding: 2rem;
+}
+
+.upload-container .single-file {
+  border: dashed 1px #979797;
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 200px;
+}
+
+.upload-container .single-file .name {
+  font-size: 14px;
+  font-weight: 500;
+  word-wrap: break-word;
+  color: #353f4a;
+  margin: 0;
+}
+
+.upload-container .single-file .size {
+  font-size: 12px;
+  font-weight: 500;
+  color: #a4a4a4;
+  margin: 0 0 0.25rem;
+}
+
+.upload-container .single-file .delete {
+  cursor: pointer;
+}
+
+/* Upload Container */
