@@ -31,8 +31,8 @@
             {{ preparePostProcessValues(part?.postProcessTypeIds) }}
           </span>
         </p>
-        <a class="reference" (click)="openReference()">
-          Reference Files
+        <a *ngIf="referenceFileCount > 0" class="reference" (click)="openReference()">
+          Reference Files ({{ referenceFileCount }})
         </a>
       </div>
     </div>

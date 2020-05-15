@@ -46,7 +46,7 @@ export class OrderDetailComponent implements OnInit {
   maxNum = 3;
   selectableCount;
   referenceFiles: ReferenceFile[];
-
+  referenceFileCount = 0;
   matchingProfiles: MatchedProcessProfile[] = [];
   shortListedSuppliers = [];
   removedSuppliers = [];
@@ -134,6 +134,8 @@ export class OrderDetailComponent implements OnInit {
         );
       });
     });
+
+    this.getReferenceFileCount();
   }
 
   initSuppliersTable() {
@@ -523,6 +525,15 @@ export class OrderDetailComponent implements OnInit {
       this.supplierGridOptions[0].api &&
       this.supplierGridOptions[0].api.getSelectedRows().length === 3 &&
       this.canReleaseToVendorFlag
+    );
+  }
+
+  getReferenceFileCount() {
+    this.orderService.getReferenceFileCountByPartId(this.part.id).subscribe(
+      res => {
+        this.referenceFileCount = res;
+      },
+      err => {}
     );
   }
 

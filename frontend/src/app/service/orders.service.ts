@@ -541,6 +541,14 @@ export class OrdersService {
     return this.http.get<any>(url);
   }
 
+  getReferenceFileCountByPartId(partId: number): Observable<number> {
+    return this.http.get<number>(`${environment.apiBaseUrl}/reference-media/parts/${partId}/count`);
+  }
+
+  getReferenceFileCountByMediaId(rfqMediaId: number): Observable<number> {
+    return this.http.get<number>(`${environment.apiBaseUrl}//reference-media/rfq-medias/${rfqMediaId}/count`);
+  }
+
   getProductionOrderDetails(productionOrderInfo) {
     const url = `${environment.apiBaseUrl}/admin/vendor/production-project/vendor-order-details`;
 
