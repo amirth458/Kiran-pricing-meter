@@ -89,6 +89,8 @@ export class OrderDetailComponent implements OnInit {
       this.orderService.getPartById(id).subscribe(v => {
         this.part = v;
 
+        this.getReferenceFileCount();
+
         if (v.partStatusType.id === 18) {
           // PART_AWAITING_RELEASE
           if (this.type !== 'project-release-queue') {
@@ -134,8 +136,6 @@ export class OrderDetailComponent implements OnInit {
         );
       });
     });
-
-    this.getReferenceFileCount();
   }
 
   initSuppliersTable() {

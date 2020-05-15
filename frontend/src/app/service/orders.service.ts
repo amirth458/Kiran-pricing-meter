@@ -542,11 +542,7 @@ export class OrdersService {
   }
 
   getReferenceFileCountByPartId(partId: number): Observable<number> {
-    return this.http.get<number>(`${environment.apiBaseUrl}/reference-media/parts/${partId}/count`);
-  }
-
-  getReferenceFileCountByMediaId(rfqMediaId: number): Observable<number> {
-    return this.http.get<number>(`${environment.apiBaseUrl}//reference-media/rfq-medias/${rfqMediaId}/count`);
+    return this.http.get<number>(`${environment.apiBaseUrl}/admin/part/${partId}/reference-medias/count`);
   }
 
   getProductionOrderDetails(productionOrderInfo) {
