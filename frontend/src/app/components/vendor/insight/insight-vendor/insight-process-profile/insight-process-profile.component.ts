@@ -57,13 +57,13 @@ export class InsightProcessProfileComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'paramter_nick_name',
-      field: 'paramter_nick_name',
+      headerName: 'parameter_nick_name',
+      field: 'parameter_nick_name',
       hide: false,
       sortable: true,
       filter: false,
-      tooltipField: 'paramter_nick_name',
-      headerTooltip: 'paramter_nick_name'
+      tooltipField: 'parameter_nick_name',
+      headerTooltip: 'parameter_nick_name'
     },
     {
       headerName: 'active',

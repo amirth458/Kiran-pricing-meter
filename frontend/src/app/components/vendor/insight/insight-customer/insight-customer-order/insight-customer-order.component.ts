@@ -44,13 +44,13 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'vendor_price'
     },
     {
-      headerName: 'rfq_ids',
-      field: 'rfq_ids',
+      headerName: 'part_ids',
+      field: 'part_ids',
       hide: false,
       sortable: true,
       filter: false,
-      tooltipField: 'rfq_ids',
-      headerTooltip: 'rfq_ids',
+      tooltipField: 'part_ids',
+      headerTooltip: 'part_ids',
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {

@@ -12,8 +12,10 @@ export class ReportsService {
   getReports(type, filter) {
     const url = `${environment.apiBaseUrl}/admin/insight/reports/${type}-report`;
     let params = new HttpParams();
-    params = params.append('page', filter.page.toString());
-    params = params.append('size', filter.size.toString());
+    if (filter.size > 0) {
+      params = params.append('page', filter.page.toString());
+      params = params.append('size', filter.size.toString());
+    }
     if (filter.sort) {
       params = params.append('sort', filter.sort);
     }
