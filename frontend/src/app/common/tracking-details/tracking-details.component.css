@@ -1,0 +1,58 @@
+:host .tag {
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+:host .tag:hover {
+  text-decoration: none;
+}
+
+.modal-body .info {
+  border-radius: 10px;
+}
+
+.modal-body .info p {
+  font-size: 12px;
+}
+
+.modal-body .info p > span {
+  font-weight: normal;
+}
+
+.modal-body .step-tracking {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.modal-body .step-tracking .step {
+  font-size: 13px;
+}
+
+.modal-body .step-tracking .step span.icon {
+  font-size: 30px;
+}
+
+.modal-body .step-tracking .desc .state {
+}
+
+.modal-body .step-tracking .desc .time {
+  font-style: italic;
+}
+
+.modal-body .step-tracking .desc .time:after {
+  content: ')';
+}
+
+.modal-body .step-tracking .desc .time:before {
+  content: '(';
+}
+
+.modal-body .step-tracking .desc .location::before {
+  content: ' at';
+}
+
+.modal-body .step-tracking .road > div:first-child > span {
+  border-right: 2px dotted var(--theme-light-green);
+  height: 20px;
+}
