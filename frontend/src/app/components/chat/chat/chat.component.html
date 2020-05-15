@@ -47,10 +47,16 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group theme col-12 m-0 d-flex justify-content-center">
+        <div class="form-group theme col-12 m-0 d-flex justify-content-center position-relative">
           <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
             {{ loading ? 'Submitting Note' : 'Add Note' }}
           </button>
+          <app-attachment
+            *ngIf="value && value.id"
+            [chatId]="value.id"
+            class="d-block position-absolute attachment-btn"
+          >
+          </app-attachment>
         </div>
       </div>
     </form>

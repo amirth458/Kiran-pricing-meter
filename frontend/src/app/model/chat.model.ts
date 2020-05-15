@@ -47,3 +47,18 @@ export enum ChatTypeEnum {
   VENDOR_ORDER = 3,
   CUSTOMER_ORDER = 4
 }
+
+export interface ChatAttachmentView {
+  attachments: Array<ChatAttachment>;
+  users: Array<UserSummary>;
+}
+
+export interface ChatAttachment {
+  id: number;
+  name: string;
+  userId: number;
+  chatId: number;
+  createdDate: Date;
+  lastModifiedDate: Date;
+  location: string;
+}
