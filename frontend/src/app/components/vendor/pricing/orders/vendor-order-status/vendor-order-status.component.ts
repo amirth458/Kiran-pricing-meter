@@ -15,6 +15,7 @@ import { Util } from '../../../../../util/Util';
 })
 export class VendorOrderStatusComponent implements OnInit {
   @ViewChild('dateCell') dateCell: TemplateRef<any>;
+  @ViewChild('trackingNumber') trackingNumber: TemplateRef<any>;
   @ViewChild('jobNumberCell') jobNumberCell: TemplateRef<any>;
   @ViewChild('textCell') textCell: TemplateRef<any>;
 
@@ -89,7 +90,9 @@ export class VendorOrderStatusComponent implements OnInit {
       this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
       this.viewTasks(this.selectedJob || {});
       if (this.selectedJob && this.selectedJob.orderId) {
-        this.orderChange.emit(this.selectedJob.orderId);
+        if (this.selectedJob && this.selectedJob.orderId) {
+          this.orderChange.emit(this.selectedJob.orderId);
+        }
       }
     });
   }
@@ -104,7 +107,9 @@ export class VendorOrderStatusComponent implements OnInit {
       });
       this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
       this.viewTasks(this.selectedJob || {});
-      this.orderChange.emit(this.selectedJob.orderId);
+      if (this.selectedJob && this.selectedJob.orderId) {
+        this.orderChange.emit(this.selectedJob.orderId);
+      }
     });
   }
 
@@ -117,7 +122,12 @@ export class VendorOrderStatusComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.trackingNumber
+        },
         valueFormatter: (dt: any) => {
+          console.log({ dt });
           const carrier = dt.data && dt.data.shippingProvider ? `(${dt.data.shippingProvider.name})` : '';
           return dt.value ? `${dt.value} ${carrier}` : '';
         }
