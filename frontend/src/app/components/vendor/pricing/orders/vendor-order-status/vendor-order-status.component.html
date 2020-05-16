@@ -80,3 +80,10 @@
     </div>
   </ng-container>
 </ng-template>
+
+<ng-template #trackingNumber let-row>
+  <div class="w-100 h-100" *ngIf="row?.trackingNumber && row?.shippingProvider?.name">
+    <app-tracking-details [trackingNumber]="row?.trackingNumber" [carrier]="row?.shippingProvider?.name">
+    </app-tracking-details>
+  </div>
+</ng-template>

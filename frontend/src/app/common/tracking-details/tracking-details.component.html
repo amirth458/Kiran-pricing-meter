@@ -1,0 +1,95 @@
+<div *ngIf="trackingNumber && carrier" class="wrapper text-theme tag">
+  <span (click)="isCarrierSupported ? open(shipmentTracking, 'md') : unsupportedCarrier()">
+    {{ trackingNumber }}
+  </span>
+</div>
+
+<!-- Shipment Tracking -->
+<ng-template #shipmentTracking let-modal>
+  <div class="shipmentTracking">
+    <div class="modal-header">
+      <h5 class="text-theme-green text-center w-100">
+        Shipment Tracking
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div ngbAutofocus *ngIf="trackingInfo; else loading" class="modal-body text-theme">
+      <div class="border p-4 info">
+        <h6 class="text-theme-green mb-2" *ngIf="trackingInfo?.successfull === true">Item Delivered</h6>
+        <p
+          class="font-weight-bold mb-2"
+          *ngIf="
+            trackingInfo?.response?.shipments &&
+            (trackingInfo?.response?.shipments)[0]?.origin?.address?.addressLocality
+          "
+        >
+          From : <span>{{ (trackingInfo?.response?.shipments)[0]?.origin?.address?.addressLocality }}</span>
+        </p>
+        <p
+          class="font-weight-bold mb-2"
+          *ngIf="
+            trackingInfo?.response?.shipments &&
+            (trackingInfo?.response?.shipments)[0]?.destination?.address?.addressLocality
+          "
+        >
+          To : <span>{{ (trackingInfo?.response?.shipments)[0]?.destination?.address?.addressLocality }}</span>
+        </p>
+        <p class="font-weight-bold mb-2">
+          Tracking Number : <span>{{ trackingInfo?.trackingNumber }}</span>
+        </p>
+        <p class="font-weight-bold mb-2">
+          Carrier : <span>{{ trackingInfo?.carrier }}</span>
+        </p>
+        <p class="font-weight-bold mb-2" *ngIf="trackingInfo?.response?.trackInfo?.trackSummary">
+          Note : <span>{{ trackingInfo?.response?.trackInfo?.trackSummary }}</span>
+        </p>
+      </div>
+
+      <div ngbAutofocus class="step-tracking mt-4">
+        <ng-container *ngFor="let detail of trackingInfo?.trackDetail; let index = index">
+          <div class="row d-flex align-items-center step">
+            <div class="col-2 text-center">
+              <span class="text-theme-green icon">
+                <i class="fas fa-check-circle"></i>
+              </span>
+            </div>
+            <div class="col pl-0">
+              <p class="mb-0 desc">
+                <ng-container *ngFor="let item of formatTrackingDetails(detail); let i = index">
+                  <span [ngClass]="{ 'state font-weight-bold': i === 0, time: i === 1, location: i === 2 }">
+                    {{ item }}
+                  </span>
+                </ng-container>
+              </p>
+            </div>
+          </div>
+          <div *ngIf="trackingInfo?.trackDetail?.length !== index + 1" class="row road">
+            <div class="col-2 text-center">
+              <span></span>
+            </div>
+            <div class="col"></div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- End of Shipment Tracking -->
+
+<ng-template #loading>
+  <div ngbAutofocus class="d-flex justify-content-center align-items-center loading-panel h-100 w-100">
+    <ngx-spinner
+      [name]="'spooler'"
+      bdOpacity="0.7"
+      bdColor="#fff"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
+  </div>
+</ng-template>

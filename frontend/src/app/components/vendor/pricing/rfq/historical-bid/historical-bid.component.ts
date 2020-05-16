@@ -494,7 +494,7 @@ export class HistoricalBidComponent implements OnInit {
     this.configureColumnDefs();
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
-    this.gridOptions.api.sizeColumnsToFit();
+    // this.gridOptions.api.sizeColumnsToFit();
   }
 
   searchColumnsChange(columns) {
@@ -519,7 +519,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'vendor',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        pinned: 'left'
       },
       {
         headerName: 'RFQ Number',
@@ -527,7 +528,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'rfqNumber',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        width: 130
       },
       {
         headerName: 'Bid Number',
@@ -535,7 +537,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'bidNumber',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        width: 130
       },
       {
         headerName: 'File Name',
@@ -583,7 +586,8 @@ export class HistoricalBidComponent implements OnInit {
         tooltipField: 'partOnPlatform',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        width: 130
       },
       {
         headerName: 'X',
@@ -719,7 +723,7 @@ export class HistoricalBidComponent implements OnInit {
 
   onGridReady(event) {
     this.gridOptions.api = event.api;
-    this.gridOptions.api.sizeColumnsToFit();
+    // this.gridOptions.api.sizeColumnsToFit();
   }
 
   onPageSizeChange(ev) {

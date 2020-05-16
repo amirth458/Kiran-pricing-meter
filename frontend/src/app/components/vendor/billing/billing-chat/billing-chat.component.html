@@ -18,11 +18,11 @@
 
 <ng-template #popContent>
   <div class="col-12 border p-0 d-flex flex-column notes">
-    <div class="col-12 d-flex flex-column-reverse notes-body" [ngClass]="{ small: messageList.length == 0 }">
+    <div class="col-12 d-flex flex-column-reverse notes-body" [ngClass]="{ small: messageList?.length == 0 }">
       <div
         *ngFor="let message of messageList; let index = index"
         class="message"
-        [ngClass]="{ admin: message.userId == userInfo.email }"
+        [ngClass]="{ admin: message?.userId == userInfo.email }"
       >
         <!-- TODO: -->
         <!-- *ngIf="isDifferentDate(index)" -->
@@ -35,23 +35,20 @@
         <div class="d-block mt-3">
           <div class="user-name font-italic">
             <p class="m-0">
-              <ng-container *ngIf="message.userId == userInfo.email; else name">Admin</ng-container>
+              <ng-container *ngIf="message?.userId == userInfo.email; else name">Admin</ng-container>
 
-              <ng-template #name>{{ message.userId }}</ng-template>
+              <ng-template #name>{{ message?.userId }}</ng-template>
             </p>
           </div>
           <div class="body">
             <p class="m-0">
-              {{ message.note }}
+              {{ message?.note }}
             </p>
           </div>
         </div>
       </div>
     </div>
-    <div
-      *ngIf="orderInfo?.billingInfoView?.paymentStatusType === PaymentStatusTypes?.WAITING_FOR_APPROVAL"
-      class="col-12  shadow notes-action pt-1 pb-3"
-    >
+    <div *ngIf="canSendMessage" class="col-12  shadow notes-action pt-1 pb-3">
       <div class="col-12 comment">
         <!-- <label class="font-weight-bold m-0">Notes</label> -->
 

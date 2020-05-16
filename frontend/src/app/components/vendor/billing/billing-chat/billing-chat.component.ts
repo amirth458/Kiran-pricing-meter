@@ -17,6 +17,7 @@ export class BillingChatComponent implements OnInit {
   userInfo;
   messageList;
   orderInfo;
+  paymentStatusType;
   loading = false;
   PaymentStatusTypes = PaymentStatusTypes;
 
@@ -35,6 +36,14 @@ export class BillingChatComponent implements OnInit {
     this.userInfo = this.userService.getUserInfo();
   }
 
+  get canSendMessage() {
+    return (
+      this.paymentStatusType &&
+      (this.paymentStatusType === PaymentStatusTypes.WAITING_FOR_APPROVAL ||
+        this.paymentStatusType === PaymentStatusTypes.REJECTED)
+    );
+  }
+
   openChat($event) {
     $event.preventDefault();
     $event.stopPropagation();
@@ -47,8 +56,9 @@ export class BillingChatComponent implements OnInit {
           this.messageList = [];
           if (this.orderInfo.billingInfoView && this.orderInfo.billingInfoView.purchaseAgreement) {
             this.messageList = this.orderInfo.billingInfoView.purchaseAgreement.purchaseAgreementNoteViewList || [];
+            this.paymentStatusType = this.orderInfo.billingInfoView.paymentStatusType;
           }
-          this.messageList = this.messageList.reverse();
+          this.messageList = (this.messageList || []).reverse();
         } else {
           this.toast.error('Something went wrong. Please try again later.');
         }
@@ -56,7 +66,8 @@ export class BillingChatComponent implements OnInit {
       },
       err => {
         this.loading = false;
-        this.toast.error(err.error.message);
+        console.log(err);
+        this.toast.error('Something went wrong. Please try again later.');
       }
     );
   }
@@ -70,13 +81,13 @@ export class BillingChatComponent implements OnInit {
     this.billingService.addNote(this.chatForm.value.note, this.orderInfo.billingInfoView.orderId).subscribe(
       res => {
         console.log({ res });
-        this.messageList = res.reverse();
+        this.messageList = (res || []).reverse();
         this.toast.success('Note Sent');
         this.chatForm.reset();
       },
       err => {
         console.log({ err });
-        this.toast.error(err.error.message);
+        this.toast.error('Something went wrong. Please try again later.');
       }
     );
   }
