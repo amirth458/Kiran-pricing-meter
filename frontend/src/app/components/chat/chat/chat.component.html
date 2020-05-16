@@ -52,11 +52,19 @@
             {{ loading ? 'Submitting Note' : 'Add Note' }}
           </button>
           <app-attachment
-            *ngIf="value && value.id"
+            *ngIf="value && value.id && (value.participants || []).indexOf(user.id) > -1"
             [chatId]="value.id"
+            [openAttachment]="trigger$ | async"
             class="d-block position-absolute attachment-btn"
           >
           </app-attachment>
+          <button
+            *ngIf="!(value && value.id && (value.participants || []).indexOf(user.id) > -1)"
+            class="d-block position-absolute attachment-btn btn btn-white pl-3 pr-3 text-theme-green"
+            (click)="addNote(true)"
+          >
+            <i class="fas fa-paperclip"></i>
+          </button>
         </div>
       </div>
     </form>
