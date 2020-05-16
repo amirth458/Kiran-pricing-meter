@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { empty, forkJoin } from 'rxjs';
+import { empty, forkJoin, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -41,6 +41,8 @@ export class ChatComponent implements OnInit {
   disableScrollDown = false;
   user: any;
   isInitialised = false;
+
+  trigger$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public userService: UserService,
@@ -140,12 +142,16 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  public addNote() {
+  public addNote(attachment: boolean = false) {
     this.loading = true;
-    this.chatService.addMessage(this.noteFormGroup.get('note').value, this.value.id).subscribe(() => {
+    const text = attachment ? 'Hi' : this.noteFormGroup.get('note').value;
+    this.chatService.addMessage(text, this.value.id).subscribe(() => {
       this.noteFormGroup.reset();
       this.loading = false;
       this.getChat();
+      if (attachment) {
+        this.trigger$.next(true);
+      }
     });
   }
 }

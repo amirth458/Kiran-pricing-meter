@@ -30,6 +30,13 @@ export class AttachmentComponent implements OnInit {
     return this._chatId;
   }
 
+  @Input()
+  set openAttachment(value: boolean) {
+    if (value) {
+      this.getAllChatAttachments(value);
+    }
+  }
+
   files: any[] = [];
   users: Array<UserSummary>;
   user: any;
@@ -126,7 +133,7 @@ export class AttachmentComponent implements OnInit {
     }
   }
 
-  getAllChatAttachments() {
+  getAllChatAttachments(openAttachment: boolean = false) {
     this.chatService
       .getAllChatAttachments(this.chatId)
       .pipe(
@@ -138,6 +145,9 @@ export class AttachmentComponent implements OnInit {
       .subscribe(v => {
         this.users = v.users;
         this.attachments = v.attachments;
+        if (openAttachment) {
+          this.content.nativeElement.click();
+        }
       });
   }
 }
