@@ -134,15 +134,6 @@ export class InsightQuoteComponent implements OnInit {
       filter: false,
       tooltipField: 'active',
       headerTooltip: 'active'
-    },
-    {
-      headerName: 'total_row_count',
-      field: 'total_row_count',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'total_row_count',
-      headerTooltip: 'total_row_count'
     }
   ];
 

@@ -208,15 +208,6 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'total_row_count',
-      field: 'total_row_count',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'total_row_count',
-      headerTooltip: 'total_row_count'
-    },
-    {
       headerName: 'vendor_id',
       field: 'vendor_id',
       hide: false,

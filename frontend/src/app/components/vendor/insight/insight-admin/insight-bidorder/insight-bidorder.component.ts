@@ -90,15 +90,6 @@ export class InsightBidorderComponent implements OnInit {
       tooltipField: 'part_quote_ids',
       headerTooltip: 'part_quote_ids',
       valueFormatter: v => v && v.value && v.value.join(',')
-    },
-    {
-      headerName: 'total_row_count',
-      field: 'total_row_count',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'total_row_count',
-      headerTooltip: 'total_row_count'
     }
   ];
 
