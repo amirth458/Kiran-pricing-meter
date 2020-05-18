@@ -41,6 +41,7 @@ export class ChatService {
         break;
       case ChatTypeEnum.CUSTOMER_ORDER:
         params.customerOrderId = id;
+        params.participants = participants;
         break;
     }
     return params;

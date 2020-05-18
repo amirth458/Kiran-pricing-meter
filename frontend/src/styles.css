@@ -879,6 +879,15 @@ app-dropdown-cell-renderer {
   border: dashed 2px var(--theme-light-blue);
 }
 
+.upload-container .plus-icon {
+  font-size: 6em;
+}
+
+.upload-container h6 {
+  font-size: 14px;
+  color: var(--theme-light-blue);
+}
+
 .upload-container h3 {
   font-size: 20px;
   font-weight: 600;
