@@ -175,7 +175,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         headerName: 'Customer Order ID',
         field: 'customerOrderId',
         tooltip: params => params.value,
-        sortable: true,
+        sortable: false,
         filter: false
       },
       {

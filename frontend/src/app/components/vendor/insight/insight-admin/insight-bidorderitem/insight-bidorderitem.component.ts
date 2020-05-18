@@ -80,15 +80,6 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'total_row_count',
-      field: 'total_row_count',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'total_row_count',
-      headerTooltip: 'total_row_count'
-    },
-    {
       headerName: 'vendor_price',
       field: 'vendor_price',
       hide: false,
