@@ -127,6 +127,7 @@ import { InsightVendorSuborderComponent } from './vendor/insight/insight-vendor/
 import { InsightCustomerSuborderComponent } from './vendor/insight/insight-customer/insight-customer-suborder/insight-customer-suborder.component';
 import { InsightCustomerOrderComponent } from './vendor/insight/insight-customer/insight-customer-order/insight-customer-order.component';
 import { TrackingDetailsComponent } from '../common/tracking-details/tracking-details.component';
+import { ProjectSettingsComponent } from './vendor/projects/project-settings/project-settings.component';
 
 @NgModule({
   declarations: [
@@ -243,7 +244,8 @@ import { TrackingDetailsComponent } from '../common/tracking-details/tracking-de
     InsightVendorSuborderComponent,
     InsightCustomerSuborderComponent,
     InsightCustomerOrderComponent,
-    TrackingDetailsComponent
+    TrackingDetailsComponent,
+    ProjectSettingsComponent
   ],
   imports: [
     CommonModule,

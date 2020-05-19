@@ -42,6 +42,9 @@ export class ProjectsContainerComponent implements OnInit {
       const routeArr = this.router.url.slice(this.router.url.indexOf('/projects/') + '/projects/'.length).split('/');
 
       switch (routeArr[0]) {
+        case 'settings':
+          this.selectedTab = 'Settings';
+          break;
         case 'project-release-queue':
           this.selectedTab = 'Project Release Queue';
           break;
