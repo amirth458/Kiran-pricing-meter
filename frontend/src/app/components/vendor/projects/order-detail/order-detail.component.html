@@ -5,7 +5,7 @@
       <div class="d-flex flex-column align-items-start">
         <h6>Part {{ part?.id }}</h6>
         <img height="100px" [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location" />
-        <p class="label">
+        <p class="label text-truncate" placement="auto" [ngbTooltip]="part?.rfqMedia?.media?.name">
           File:
           <span class="text-theme-green font-weight-bold value-text">{{ part?.rfqMedia?.media?.name }}</span>
         </p>

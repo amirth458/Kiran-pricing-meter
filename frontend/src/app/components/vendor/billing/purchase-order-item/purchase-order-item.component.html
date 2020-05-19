@@ -141,7 +141,7 @@
         />
         <!-- Part Details -->
         <div class="details">
-          <p class="d-flex mb-1">
+          <p class="d-flex mb-1 text-truncate" placement="auto" [ngbTooltip]="item?.rfqMedia?.media?.name">
             <span class="name">File: </span>
             <span class="value text-theme-green font-weight-bold">{{ item?.rfqMedia?.media?.name }}</span>
           </p>
