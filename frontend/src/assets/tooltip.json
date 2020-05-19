@@ -217,12 +217,6 @@
   ],
   "projects": [
     {
-      "name": "Settings",
-      "tooltipMessage": "Settings",
-      "route": "settings",
-      "actions": [{ "name": "Save Settings", "route": "save-project-setting" }]
-    },
-    {
       "name": "Project Release Queue",
       "tooltipMessage": "Project Release Queue",
       "route": "project-release-queue",
