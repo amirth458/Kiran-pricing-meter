@@ -66,6 +66,7 @@ import { InsightCustomerOrderComponent } from 'src/app/components/vendor/insight
 import { InsightCustomerSuborderComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-suborder/insight-customer-suborder.component';
 import { InsightCustomerContainerComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-container/insight-customer-container.component';
 import { InsightVendorContainerComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-container/insight-vendor-container.component';
+import { ProjectSettingsComponent } from 'src/app/components/vendor/projects/project-settings/project-settings.component';
 
 const routes: Routes = [
   {
@@ -263,6 +264,10 @@ const routes: Routes = [
         path: 'projects',
         component: ProjectsContainerComponent,
         children: [
+          {
+            path: 'settings',
+            component: ProjectSettingsComponent
+          },
           {
             path: 'project-release-queue',
             component: ProjectsListComponent

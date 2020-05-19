@@ -8,6 +8,7 @@ export class ActionService {
   saveProfileSetting: Subject<any> = new Subject();
   saveFullfillmentSetting: Subject<any> = new Subject();
   saveProductionSetting: Subject<any> = new Subject();
+  saveProjectSetting: Subject<any> = new Subject();
   constructor() {}
 
   triggerSaveProfileSetting() {
@@ -19,6 +20,9 @@ export class ActionService {
   triggerSaveProductionSetting() {
     this.saveProductionSetting.next();
   }
+  triggerSaveProjectSetting() {
+    this.saveProjectSetting.next();
+  }
 
   saveProfileSettingAction() {
     return this.saveProfileSetting.asObservable();
@@ -28,5 +32,8 @@ export class ActionService {
   }
   saveProductionSettingAction() {
     return this.saveProductionSetting.asObservable();
+  }
+  saveProjectSettingAction() {
+    return this.saveProjectSetting.asObservable();
   }
 }

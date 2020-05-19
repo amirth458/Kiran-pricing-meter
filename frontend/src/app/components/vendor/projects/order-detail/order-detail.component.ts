@@ -56,6 +56,8 @@ export class OrderDetailComponent implements OnInit {
   part: Part;
   canReleaseToNewVendorFlag = true;
   canReleaseToVendorFlag = true;
+
+  numberOfVendors = 1;
   constructor(
     public orderService: OrdersService,
     public metadataService: MetadataService,
@@ -517,13 +519,13 @@ export class OrderDetailComponent implements OnInit {
   }
 
   canReleaseToCustomer() {
-    return this.selectedSuppliers.filter(item => item.status.id === 2).length === 3;
+    return this.selectedSuppliers.filter(item => item.status.id === 2).length === this.numberOfVendors;
   }
 
   canReleaseToVendor() {
     return (
       this.supplierGridOptions[0].api &&
-      this.supplierGridOptions[0].api.getSelectedRows().length === 3 &&
+      this.supplierGridOptions[0].api.getSelectedRows().length === this.numberOfVendors &&
       this.canReleaseToVendorFlag
     );
   }
