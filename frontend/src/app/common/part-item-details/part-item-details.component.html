@@ -14,7 +14,7 @@
           />
         </div>
         <div class="col-4">
-          <p class="label">
+          <p class="label text-truncate" placement="auto" [ngbTooltip]="part?.rfqMedia?.media?.name">
             File:
             <span class="text-theme-green font-weight-bold value-text">{{ part?.rfqMedia?.media?.name }}</span>
           </p>
