@@ -150,7 +150,7 @@ export class ApproveVendorComponent implements OnInit {
     this.columnDefs.push({
       headerName: 'Actions',
       filter: false,
-      width: 170,
+      width: 370,
       cellRenderer: 'actionCellRenderer',
       cellRendererParams: {
         action: {

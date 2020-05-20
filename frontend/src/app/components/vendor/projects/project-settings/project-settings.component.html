@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <form class="table" [formGroup]="formGroup" (submit)="save()">
+    <div class="row header p-3">Production Project Pricing Information</div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Base Cost per Project
+      </div>
+      <div class="setting-control d-flex align-items-center justify-content-center col-6 p-0">
+        <input
+          digitOnly
+          type="number"
+          formControlName="baseCost"
+          class="setting-input"
+          (click)="$event.stopPropagation()"
+        />
+        $
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        3Diligent Fee
+      </div>
+      <div class="setting-control d-flex align-items-center justify-content-center col-6 p-0">
+        <input digitOnly type="number" formControlName="fee" class="setting-input" (click)="$event.stopPropagation()" />
+        %
+      </div>
+    </div>
+  </form>
+</div>

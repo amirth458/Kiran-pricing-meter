@@ -23,6 +23,15 @@ export class ProjectsContainerComponent implements OnInit {
       route: string;
     }>;
   }> = tooltipData.default.projects;
+  /*
+    Add this to tooltip to show settings.
+    {
+      "name": "Settings",
+      "tooltipMessage": "Settings",
+      "route": "settings",
+      "actions": [{ "name": "Save Settings", "route": "save-project-setting" }]
+    },
+    */
   selectedTab = this.actionbarMenu[0].name;
 
   constructor(private router: Router, private route: ActivatedRoute) {
@@ -42,6 +51,9 @@ export class ProjectsContainerComponent implements OnInit {
       const routeArr = this.router.url.slice(this.router.url.indexOf('/projects/') + '/projects/'.length).split('/');
 
       switch (routeArr[0]) {
+        case 'settings':
+          this.selectedTab = 'Settings';
+          break;
         case 'project-release-queue':
           this.selectedTab = 'Project Release Queue';
           break;

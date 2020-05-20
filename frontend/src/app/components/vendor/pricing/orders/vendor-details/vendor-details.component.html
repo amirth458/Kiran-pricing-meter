@@ -282,6 +282,13 @@
         <div class="d-flex flex-row pt-1 pb-1 align-items-center">
           <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
+
+            <ng-container *ngIf="type === 'released' && row?.counterOfferPrice">
+              ({{ row?.counterOfferPrice | currency: '$' }})
+            </ng-container>
+            <ng-container *ngIf="type === 'released' && !row?.counterOfferPrice">
+              ({{ row?.bidOfferPrice | currency: '$' }})
+            </ng-container>
           </strong>
           <button
             *ngIf="type !== 'confirmation'"

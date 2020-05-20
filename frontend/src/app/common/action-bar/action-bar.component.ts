@@ -73,6 +73,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
       this.actionService.triggerSaveFullfillmentSetting();
     } else if (route === 'save-production-setting') {
       this.actionService.triggerSaveProductionSetting();
+    } else if (route === 'save-project-setting') {
+      this.actionService.triggerSaveProjectSetting;
     } else {
       this.route.navigateByUrl(this.route.url + '/' + route);
     }
