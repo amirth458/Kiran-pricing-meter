@@ -529,6 +529,10 @@ app-dropdown-cell-renderer {
   max-width: 600px;
 }
 
+.change-account-modal .modal-dialog {
+  max-width: 450px;
+}
+
 .break-down-modal .modal-dialog .title,
 .order-status-modal .modal-dialog .title {
   color: white;
@@ -536,10 +540,22 @@ app-dropdown-cell-renderer {
 }
 
 .break-down-modal .modal-title,
-.order-status-modal .modal-title {
+.order-status-modal .modal-title,
+.change-account-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
   color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
+}
+
+.change-account-modal .btn {
+  width: 150px;
+  height: 40px;
+}
+
+.change-account-modal .orange,
+.change-account-modal .orange:hover {
+  color: var(--theme-white-color);
+  background-color: var(--theme-orange) !important;
 }
 
 /* breakdown pricing  window */
