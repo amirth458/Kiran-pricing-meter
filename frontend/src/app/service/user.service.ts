@@ -347,4 +347,8 @@ export class UserService {
     const url = `${environment.managementBaseUrl}/users/customer/all/search?page=${page}&size=${size}`;
     return this.http.post<any>(url, filter);
   }
+
+  markVendorProfileAsTest(vendorId: number): Observable<any> {
+    return this.http.put<any>(`${environment.managementBaseUrl}/users/vendor/${vendorId}/mark-account-as-test`, null);
+  }
 }
