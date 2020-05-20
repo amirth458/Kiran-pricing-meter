@@ -2,7 +2,7 @@
   #content
   class="attachment btn btn-white pl-3 pr-3 text-theme-green"
   [class.d-none]="(content?.children?.length || 0) === 0"
-  (click)="openFileManager(attachmentTemplate)"
+  (click)="getAllChatAttachments()"
 >
   <ng-content> </ng-content>
 </button>
@@ -10,7 +10,7 @@
 <button
   *ngIf="(content?.children?.length || 0) === 0"
   class="attachment btn btn-white pl-3 pr-3 text-theme-green"
-  (click)="openFileManager(attachmentTemplate)"
+  (click)="getAllChatAttachments()"
 >
   <i class="fas fa-paperclip"></i>
 </button>

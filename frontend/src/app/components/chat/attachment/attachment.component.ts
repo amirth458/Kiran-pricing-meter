@@ -1,4 +1,4 @@
-import { Component, ContentChild, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { catchError } from 'rxjs/operators';
 import { empty, forkJoin } from 'rxjs';
@@ -20,11 +20,12 @@ import { UserService } from '../../../service/user.service';
 })
 export class AttachmentComponent implements OnInit {
   @ContentChild('content') content: ElementRef;
+  @ViewChild('attachmentTemplate') attachmentTemplate: TemplateRef<any>;
+
   _chatId: number;
   @Input()
   set chatId(value: number) {
     this._chatId = value;
-    this.getAllChatAttachments();
   }
   get chatId(): number {
     return this._chatId;
@@ -33,7 +34,7 @@ export class AttachmentComponent implements OnInit {
   @Input()
   set openAttachment(value: boolean) {
     if (value) {
-      this.getAllChatAttachments(value);
+      this.getAllChatAttachments();
     }
   }
 
@@ -41,6 +42,7 @@ export class AttachmentComponent implements OnInit {
   users: Array<UserSummary>;
   user: any;
   attachments: Array<ChatAttachment>;
+  modalOpened: boolean;
 
   public config: PerfectScrollbarConfigInterface = {};
 
@@ -51,6 +53,7 @@ export class AttachmentComponent implements OnInit {
     public chatService: ChatService,
     public userService: UserService
   ) {
+    this.modalOpened = false;
     this.users = [];
     this.attachments = [];
   }
@@ -59,17 +62,20 @@ export class AttachmentComponent implements OnInit {
     this.user = this.userService.getUserInfo();
   }
 
-  openFileManager(content, size: any = 'lg') {
+  viewFiles(size: any = 'lg') {
     const options: any = {
       size,
       centered: true,
       windowClass: 'attachment-modal',
       scrollable: true
     };
-    this.modalService.open(content, options).result.then(
+    this.modalService.open(this.attachmentTemplate, options).result.then(
       result => {},
-      reason => {}
+      reason => {
+        this.modalOpened = false;
+      }
     );
+    this.modalOpened = true;
   }
 
   fileDropped($event) {
@@ -126,28 +132,31 @@ export class AttachmentComponent implements OnInit {
       }
       forkJoin(arr).subscribe(files => {
         this.files = [];
-        this.getAllChatAttachments();
         this.toaster.success('Attachments uploaded');
         this.spinner.hide();
+        this.getAllChatAttachments();
       });
     }
   }
 
-  getAllChatAttachments(openAttachment: boolean = false) {
+  getAllChatAttachments() {
+    this.spinner.show();
     this.chatService
       .getAllChatAttachments(this.chatId)
       .pipe(
         catchError(err => {
           this.toaster.error(err.error.message);
+          this.spinner.hide();
           return empty();
         })
       )
       .subscribe(v => {
         this.users = v.users;
         this.attachments = v.attachments;
-        if (openAttachment) {
-          this.content.nativeElement.click();
+        if (!this.modalOpened) {
+          this.viewFiles();
         }
+        this.spinner.hide();
       });
   }
 }
