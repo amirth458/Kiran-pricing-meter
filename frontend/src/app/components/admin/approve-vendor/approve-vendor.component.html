@@ -18,7 +18,7 @@
     >
     </app-column-search-filter>
   </div>
-  <div class="table theme-table">
+  <div class="table theme-table user-list">
     <div class="d-flex align-items-center justify-content-end">
       <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
     </div>
@@ -51,6 +51,13 @@
 <!-- Subscription cell -->
 <ng-template #subscriptionCell let-row>
   <span class="subscription-cell" (click)="subscription($event, row)">Subscription</span>
+</ng-template>
+
+<!-- Subscription cell -->
+<ng-template #changeVendorAccountCell let-row let-column="params">
+  <button class="btn bg-transparent nav-link w-auto" (click)="markVendorAccountAsTest(markAsTestAccountTemplate, row)">
+    {{ row?.testAccount || false ? 'Yes' : 'No' }}
+  </button>
 </ng-template>
 
 <!-- Modal -->
@@ -137,4 +144,30 @@
     (cancel)="modal.dismiss()"
     (ok)="setSubscription($event)"
   ></app-subscription-modal>
+</ng-template>
+
+<ng-template #markAsTestAccountTemplate let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title  w-100 text-left pl-3 pr-2">
+        Change to {{ selected?.testAccount ? 'Regular' : 'Test' }} Account
+      </h5>
+      <button type="button" class="close" (click)="closeMarkVendorAccountAsTestModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body p-4" ngbAutofocus>
+      <p class="text-theme text-center">
+        Do you want to change it to be {{ selected?.testAccount ? 'Regular' : 'Test' }} Account ?
+      </p>
+    </div>
+    <div class="modal-footer d-flex flex-row align-items-center justify-content-center">
+      <button type="button" class="btn theme orange" (click)="closeMarkVendorAccountAsTestModal()">
+        No
+      </button>
+      <button type="button" class="btn theme green" (click)="markVendorProfileAsTest()">
+        Yes
+      </button>
+    </div>
+  </div>
 </ng-template>

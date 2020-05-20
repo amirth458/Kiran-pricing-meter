@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions } from 'ag-grid-community';
@@ -28,6 +28,7 @@ export class ApproveVendorComponent implements OnInit {
   @ViewChild('modal') modal;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
+  @ViewChild('changeVendorAccountCell') changeVendorAccountCell;
 
   subscriptions = [];
   addons = [];
@@ -52,6 +53,7 @@ export class ApproveVendorComponent implements OnInit {
   gridOptions: GridOptions;
   allUsers = [];
   rowData = [];
+  selected: any;
   pageSize = 50;
   vendor: Observable<Vendor>;
   sub: Subscription;
@@ -83,6 +85,7 @@ export class ApproveVendorComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService
   ) {
+    this.selected = null;
     this.navigation = this.route.getCurrentNavigation();
     this.getSearchFilterColumns();
   }
@@ -186,6 +189,17 @@ export class ApproveVendorComponent implements OnInit {
             return false;
           }
         }
+      }
+    });
+
+    this.columnDefs.push({
+      headerName: '',
+      field: 'testAccount',
+      filter: false,
+      width: 170,
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {
+        ngTemplate: this.changeVendorAccountCell
       }
     });
 
@@ -419,6 +433,29 @@ export class ApproveVendorComponent implements OnInit {
           size: 'lg'
         });
       });
+  }
+
+  markVendorProfileAsTest() {
+    this.spinner.show();
+    this.userService.markVendorProfileAsTest(this.selected.id).subscribe(v => {
+      this.spinner.hide();
+      this.closeMarkVendorAccountAsTestModal();
+      this.onSearch();
+    });
+  }
+
+  markVendorAccountAsTest(template: TemplateRef<any>, row: any) {
+    this.selected = row;
+    this.modalService.open(template, {
+      windowClass: 'change-account-modal',
+      centered: true,
+      size: 'sm'
+    });
+  }
+
+  closeMarkVendorAccountAsTestModal() {
+    this.selected = null;
+    this.modalService.dismissAll();
   }
 
   setSubscription(v) {

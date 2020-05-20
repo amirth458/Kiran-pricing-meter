@@ -69,6 +69,16 @@
 .dropdown-menu {
   padding: 0 !important;
 }
+
+:host ::ng-deep .user-list .nav-link {
+  background: transparent;
+  color: var(--theme-bright-blue);
+  padding: 0 10px;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
