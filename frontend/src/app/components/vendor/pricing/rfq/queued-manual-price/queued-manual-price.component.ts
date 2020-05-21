@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CurrencyPipe } from '@angular/common';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { BehaviorSubject } from 'rxjs';
@@ -47,7 +47,7 @@ export class QueuedManualPriceComponent implements OnInit {
     fileViewRenderer: FileViewRendererComponent
   };
 
-  columnDefs = [[], []];
+  columnDefs: Array<ColDef[]> = [[], []];
   gridOptions: GridOptions;
   rowData = [[], [], [], []];
   pageSize = 10;
@@ -436,7 +436,8 @@ export class QueuedManualPriceComponent implements OnInit {
             materialPropertyValues: part.materialPropertyValues,
             equipmentPropertyValues: part.equipmentPropertyValues,
             roughness: '',
-            postProcess: ''
+            postProcess: '',
+            price: part.partQuoteList && part.partQuoteList.length ? '$' + part.partQuoteList[0].totalCost : ''
             // manualPrice:
             //   part.partQuoteList && part.partQuoteList.length > 0
             //     ? part.partQuoteList[0].totalCost
@@ -452,16 +453,18 @@ export class QueuedManualPriceComponent implements OnInit {
         page++;
       }
       this.rowData[activeRFQ ? 1 : 3] = rows;
-      this.pricingService.getPartQuotes(rows.map(item => item.id)).subscribe(partQuotes => {
-        partQuotes.forEach(partQuote => {
-          const findIndex = this.rowData[activeRFQ ? 1 : 3].findIndex(row => row.id === partQuote.partId);
-          this.rowData[activeRFQ ? 1 : 3][findIndex] = {
-            ...this.rowData[activeRFQ ? 1 : 3][findIndex],
-            price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
-          };
+      if (activeRFQ) {
+        this.pricingService.getPartQuotes(rows.map(item => item.id)).subscribe(partQuotes => {
+          partQuotes.forEach(partQuote => {
+            const findIndex = this.rowData[activeRFQ ? 1 : 3].findIndex(row => row.id === partQuote.partId);
+            this.rowData[activeRFQ ? 1 : 3][findIndex] = {
+              ...this.rowData[activeRFQ ? 1 : 3][findIndex],
+              price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
+            };
+          });
+          this.rowData[activeRFQ ? 1 : 3] = [...this.rowData[activeRFQ ? 1 : 3]];
         });
-        this.rowData[activeRFQ ? 1 : 3] = [...this.rowData[activeRFQ ? 1 : 3]];
-      });
+      }
     } catch (e) {
       console.log(e);
     } finally {

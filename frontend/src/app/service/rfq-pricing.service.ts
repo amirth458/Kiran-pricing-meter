@@ -77,7 +77,10 @@ export class RfqPricingService {
     isNoBid,
     isOrderPlaced = null
   ): Observable<Pageable<Part>> {
-    const url = `${environment.procurementApiBaseUrl}/part/search`;
+    const url =
+      isOrderPlaced === false
+        ? `${environment.procurementApiBaseUrl}/part/search/quote-expired`
+        : `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
       params = params.append('page', filterOption.page.toString());
