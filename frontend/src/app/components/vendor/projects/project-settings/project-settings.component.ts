@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { throwError } from 'rxjs';
+import { throwError, combineLatest } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { ActionService } from 'src/app/service/action.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-project-settings',
@@ -17,44 +18,81 @@ import { ActionService } from 'src/app/service/action.service';
 export class ProjectSettingsComponent implements OnInit {
   formGroup: FormGroup = this.fb.group({
     baseCost: [null],
-    fee: [null]
+    fee: [null],
+    maxNumberOfSupplierToRelease: [null],
+    minimumNumberOfQualifiedSupplier: [null]
   });
 
   constructor(
     private fb: FormBuilder,
     private pricingService: RfqPricingService,
     private toastrService: ToastrService,
-    private actionService: ActionService
+    private actionService: ActionService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {
     this.initSettings();
-    this.actionService.saveProjectSettingAction().subscribe(() => {
+    this.actionService.saveProductionSettingAction().subscribe(() => {
       this.save();
     });
   }
 
   initSettings() {
-    this.pricingService.getProductionPricingSettings().subscribe(defaultValue => {
-      if (defaultValue) {
-        this.formGroup.setValue({ baseCost: defaultValue.baseCost, fee: defaultValue.fee });
+    this.spinner.show();
+    combineLatest([
+      this.pricingService.getProductionPricingSettings().pipe(catchError(e => this.handleSaveError(e))),
+      this.pricingService.getProductionProjectSetting().pipe(catchError(e => this.handleSaveError(e)))
+    ]).subscribe(([a, b]) => {
+      if (a) {
+        this.formGroup.setValue({ ...this.formGroup.value, baseCost: a.baseCost, fee: a.fee });
       }
+      if (b) {
+        this.formGroup.setValue({
+          ...this.formGroup.value,
+          maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
+          minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
+        });
+      }
+      this.spinner.hide();
     });
   }
 
   async save() {
-    this.pricingService
-      .setProductionPricingSetting(this.formGroup.value)
-      .pipe(catchError(e => this.handleSaveError(e)))
-      .subscribe(v => {
-        this.initSettings();
-        this.toastrService.success(`Pricing Settings Updated Successfully`);
-      });
+    this.spinner.show();
+    combineLatest([
+      this.pricingService
+        .setProductionPricingSetting({
+          baseCost: this.formGroup.value.baseCost,
+          fee: this.formGroup.value.fee
+        })
+        .pipe(catchError(e => this.handleSaveError(e))),
+      this.pricingService
+        .updateProductionProjectSetting(
+          this.formGroup.value.maxNumberOfSupplierToRelease,
+          this.formGroup.value.minimumNumberOfQualifiedSupplier
+        )
+        .pipe(catchError(e => this.handleSaveError(e)))
+    ]).subscribe(([a, b]) => {
+      this.spinner.hide();
+      if (a) {
+        this.formGroup.setValue({ ...this.formGroup.value, baseCost: a.baseCost, fee: a.fee });
+      }
+      if (b) {
+        this.formGroup.setValue({
+          ...this.formGroup.value,
+          maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
+          minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
+        });
+      }
+      this.toastrService.success(`Pricing Settings Updated Successfully`);
+    });
   }
 
   handleSaveError(error: HttpErrorResponse) {
     const message = error.error.message || 'Import Failed.';
     this.toastrService.error(`${message} Please contact your admin`);
+    this.spinner.hide();
     return throwError('Error');
   }
 }

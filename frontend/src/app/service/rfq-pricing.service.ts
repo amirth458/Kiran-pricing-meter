@@ -10,6 +10,7 @@ import { Part, PartDimension, PartQuoteQueryDto, ProcessProfile, PricingProfileD
 import { Pageable } from '../model/pageable.model';
 import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
 import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
+import { ProductionProjectSetting } from '../model/pricing-setting.model';
 
 @Injectable({
   providedIn: 'root'
@@ -228,5 +229,22 @@ export class RfqPricingService {
         id: projectTypeId
       }
     });
+  }
+
+  updateProductionProjectSetting(
+    maxNumberOfSupplierToRelease,
+    minimumNumberOfQualifiedSupplier
+  ): Observable<ProductionProjectSetting> {
+    const url = `${environment.apiBaseUrl}/admin/production-project-release-setting`;
+    return this.http.put<ProductionProjectSetting>(url, {
+      maxNumberOfSupplierToRelease,
+      minimumNumberOfQualifiedSupplier
+    });
+  }
+
+  getProductionProjectSetting(): Observable<ProductionProjectSetting> {
+    return this.http.get<ProductionProjectSetting>(
+      `${environment.apiBaseUrl}/admin/production-project-release-setting`
+    );
   }
 }
