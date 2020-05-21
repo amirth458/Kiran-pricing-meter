@@ -54,7 +54,6 @@ import { InsightPricingProfileComponent } from '../../components/vendor/insight/
 import { ProductionOrdersContainerComponent } from 'src/app/components/vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
 import { ProductionVendorDetailsComponent } from 'src/app/components/vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { ProductionReleasedOrdersComponent } from 'src/app/components/vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
-import { ProductionPricingSettingsComponent } from 'src/app/components/vendor/pricing/production-orders/production-pricing-settings/production-pricing-settings.component';
 import { InsightAdminContainerComponent } from 'src/app/components/vendor/insight/insight-admin/insight-admin-container/insight-admin-container.component';
 import { InsightQuoteComponent } from 'src/app/components/vendor/insight/insight-admin/insight-quote/insight-quote.component';
 import { InsightVendorSuborderComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-suborder/insight-vendor-suborder.component';
@@ -171,7 +170,6 @@ const routes: Routes = [
             path: 'production-orders',
             component: ProductionOrdersContainerComponent,
             children: [
-              { path: 'pricing-settings', component: ProductionPricingSettingsComponent },
               { path: 'released-orders', component: ProductionReleasedOrdersComponent },
               {
                 path: 'released-orders/:customerOrderId',
@@ -294,7 +292,7 @@ const routes: Routes = [
           },
           {
             path: '',
-            redirectTo: 'project-release-queue'
+            redirectTo: 'settings'
           }
         ]
       },

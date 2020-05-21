@@ -247,18 +247,7 @@ export class VendorDetailsComponent implements OnInit {
         minWidth: 200,
         maxWidth: 200,
         width: 200,
-        valueFormatter: dt => {
-          let value = '';
-          switch (dt.data.bidProcessStatus.name) {
-            case BiddingStatus.COUNTER_OFFER:
-              value = `$ ${dt.data.counterOfferPrice || 0}`;
-              break;
-            case BiddingStatus.ACCEPTED:
-              value = `$ ${dt.data.bidOfferPrice || 0}`;
-              break;
-          }
-          return value;
-        }
+        valueFormatter: dt => `$ ${dt.data.bidOfferPrice || 0}`
       },
       {
         headerName: 'Status',

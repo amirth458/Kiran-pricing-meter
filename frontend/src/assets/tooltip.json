@@ -217,6 +217,17 @@
   ],
   "projects": [
     {
+      "name": "Settings",
+      "tooltipMessage": "Settings",
+      "route": "settings",
+      "actions": [
+        {
+          "name": "Save Settings",
+          "route": "save-project-setting"
+        }
+      ]
+    },
+    {
       "name": "Project Release Queue",
       "tooltipMessage": "Project Release Queue",
       "route": "project-release-queue",
@@ -232,6 +243,14 @@
       "name": "Released Projects",
       "tooltipMessage": "Released Projects",
       "route": "released-projects",
+      "actions": []
+    }
+  ],
+  "productionOrders": [
+    {
+      "name": "Released Orders",
+      "tooltipMessage": "Released Orders",
+      "route": "released-orders",
       "actions": []
     }
   ]
