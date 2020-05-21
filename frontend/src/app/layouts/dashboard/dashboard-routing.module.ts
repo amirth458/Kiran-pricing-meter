@@ -67,6 +67,7 @@ import { InsightCustomerSuborderComponent } from 'src/app/components/vendor/insi
 import { InsightCustomerContainerComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-container/insight-customer-container.component';
 import { InsightVendorContainerComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-container/insight-vendor-container.component';
 import { ProjectSettingsComponent } from 'src/app/components/vendor/projects/project-settings/project-settings.component';
+import { ViewAllNotificationComponent } from 'src/app/common/view-all-notification/view-all-notification.component';
 
 const routes: Routes = [
   {
@@ -343,6 +344,10 @@ const routes: Routes = [
             redirectTo: 'customer'
           }
         ]
+      },
+      {
+        path: 'notification',
+        component: ViewAllNotificationComponent
       },
       { path: '', redirectTo: 'pricing', pathMatch: 'full' }
     ]

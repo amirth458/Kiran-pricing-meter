@@ -129,6 +129,10 @@ import { InsightCustomerOrderComponent } from './vendor/insight/insight-customer
 import { TrackingDetailsComponent } from '../common/tracking-details/tracking-details.component';
 import { ProjectSettingsComponent } from './vendor/projects/project-settings/project-settings.component';
 
+import { ViewAllNotificationComponent } from '../common/view-all-notification/view-all-notification.component';
+import { NotificationWidgetComponent } from '../common/notification-widget/notification-widget.component';
+// import { NotificationSettingComponent } from './setting/notification-setting/notification-setting.component';
+import { UiSwitchModule } from 'ngx-toggle-switch';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -245,7 +249,10 @@ import { ProjectSettingsComponent } from './vendor/projects/project-settings/pro
     InsightCustomerSuborderComponent,
     InsightCustomerOrderComponent,
     TrackingDetailsComponent,
-    ProjectSettingsComponent
+    ProjectSettingsComponent,
+    ViewAllNotificationComponent,
+    NotificationWidgetComponent
+    // NotificationSettingComponent,
   ],
   imports: [
     CommonModule,
@@ -271,7 +278,8 @@ import { ProjectSettingsComponent } from './vendor/projects/project-settings/pro
 
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    ChatModule
+    ChatModule,
+    UiSwitchModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [

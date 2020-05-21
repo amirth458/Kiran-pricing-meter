@@ -1,0 +1,105 @@
+<div class="playground" [ngClass]="{ 'tooltip-content': tooltip }">
+  <div class="parent-wrapper">
+    <div *ngIf="!tooltip" class="d-flex align-items-center justify-content-end mb-4 action-bar shadow">
+      <button type="button" class="btn theme white back" (click)="route.navigateByUrl('/pricing/rfq/pricing-settings')">
+        <i class="fas fa-chevron-left"></i>
+        <span class="ml-3">Back</span>
+      </button>
+    </div>
+    <div class="wrapper text-theme" [ngClass]="{ shadow: !tooltip }">
+      <h4 *ngIf="!tooltip" class="mb-4">Notification</h4>
+
+      <div
+        *ngIf="this.unReadCount !== null && notifications && notifications.length > 0"
+        class="notification-item mark-all  pr-3 mb-4 d-flex justify-content-end"
+      >
+        <span (click)="markAll()">
+          {{ this.unReadCount?.count > 0 ? 'Mark All Read' : 'Mark All Unread' }}
+        </span>
+      </div>
+      <div class="my-2 content">
+        <ng-container *ngIf="notifications && notifications.length > 0; else noNotification">
+          <div *ngFor="let notification of notifications; let index = index" class="notification-item">
+            <p
+              [ngClass]="{ 'mb-2': tooltip, 'mb-3': !tooltip, 'font-weight-bold': !notification.isRead }"
+              class="w-100 m-0 row d-flex align-items-start "
+            >
+              <span
+                class="col-11 p-0 message d-inline-block"
+                [placement]="tooltip ? 'left' : 'right'"
+                popoverClass="popOverDetails"
+                [ngbPopover]="notificationDetails"
+                [popoverTitle]="detailsTitle"
+                (click)="setNotificationData(notification, index)"
+              >
+                <span class="date">({{ notification.createdDate | date: 'MM/dd/yyyy, h:mm a' }})</span>
+                {{ notification.messageTypeDescription }}
+              </span>
+              <span class="col-1 p-0 controls">
+                <span class="mr-1 read-status text-light-blue" (click)="toggleStatus([notification?.id], index)">
+                  <span *ngIf="!notification.isRead">
+                    <i class="fas fa-circle"></i>
+                  </span>
+                  <span *ngIf="notification.isRead">
+                    <i class="far fa-circle"></i>
+                  </span>
+                </span>
+                <span (click)="deleteNotification(notification.id, index)" class="ml-1 delete">
+                  <i class="fas fa-times"></i>
+                </span>
+              </span>
+            </p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noNotification>
+  <div *ngIf="notifications !== null" class="d-flex h-100 w-100 align-items-center">
+    <h5 class=" text-theme-green w-100" [ngClass]="[tooltip ? 'text-center' : 'text-left']">No Notification</h5>
+  </div>
+
+  <div
+    *ngIf="notifications === null"
+    class=" d-flex position-relative  justify-content-center align-items-center w-100"
+    style="height:150px"
+  >
+    <ngx-spinner
+      [name]="'spooler'"
+      bdOpacity="0.7"
+      bdColor="#fff"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
+  </div>
+</ng-template>
+
+<ng-template #notificationDetails>
+  <div class="text-theme p-3 details" *ngIf="selectedNotification">
+    <ng-container *ngFor="let attr of selectedNotification | keyvalue">
+      <p *ngIf="nameMapping[attr.key]" class="mb-1 font-weight-bold">
+        {{ nameMapping[attr.key] }} :
+        <span class="text-theme-green font-weight-normal">
+          <ng-container *ngIf="(attr.key || '').toLowerCase().includes('price'); else notPrice">
+            {{ attr.value | currency: '$' }}
+          </ng-container>
+          <ng-template #notPrice>
+            {{ attr.value }}
+          </ng-template>
+        </span>
+      </p>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #detailsTitle>
+  <div *ngIf="selectedNotification" class="text-theme-green text-center p-1">
+    <span>Details</span>
+  </div>
+</ng-template>
