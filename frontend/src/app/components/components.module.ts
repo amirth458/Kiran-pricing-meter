@@ -133,6 +133,9 @@ import { ViewAllNotificationComponent } from '../common/view-all-notification/vi
 import { NotificationWidgetComponent } from '../common/notification-widget/notification-widget.component';
 // import { NotificationSettingComponent } from './setting/notification-setting/notification-setting.component';
 import { UiSwitchModule } from 'ngx-toggle-switch';
+import { SettingsContainerComponent } from './vendor/settings/settings-container/settings-container.component';
+import { UpdatePasswordComponent } from './vendor/settings/update-password/update-password.component';
+import { NotificationSettingComponent } from './vendor/settings/notification-setting/notification-setting.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -251,8 +254,10 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
     TrackingDetailsComponent,
     ProjectSettingsComponent,
     ViewAllNotificationComponent,
-    NotificationWidgetComponent
-    // NotificationSettingComponent,
+    NotificationWidgetComponent,
+    SettingsContainerComponent,
+    UpdatePasswordComponent,
+    NotificationSettingComponent
   ],
   imports: [
     CommonModule,

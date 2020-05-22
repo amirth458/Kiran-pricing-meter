@@ -48,6 +48,13 @@ export const environment = {
       icon: 'fa fa-search',
       visible: true,
       active: true
+    },
+    {
+      name: 'Setting',
+      route: '/setting/basic',
+      icon: 'fas fa-cogs',
+      visible: true,
+      active: true
     }
   ],
   admin_menus: [],

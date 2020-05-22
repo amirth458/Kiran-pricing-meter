@@ -44,6 +44,15 @@ export class UserService {
     });
   }
 
+  changePassword(email: string, newPass: string) {
+    const url = `${environment.managementBaseUrl}/users/change-password`;
+    const body = {
+      username: email,
+      password: newPass
+    };
+    return this.http.put(url, body);
+  }
+
   signup(userData: User) {
     return this.http.post(environment.apiBaseUrl + '/auth/signup', {
       ...userData

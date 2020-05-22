@@ -1,0 +1,19 @@
+:host .wrapper {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+}
+
+:host .options {
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+:host .options .option {
+  font-size: 14px;
+}
+
+:host .btn.save {
+  width: 230px;
+}

@@ -1,0 +1,38 @@
+<div class="wrapper text-theme shadow">
+  <h4>Notification</h4>
+
+  <div class="controls">
+    <div class="d-flex align-items-center mb-4">
+      <ui-switch
+        (change)="checkAll($event)"
+        [checked]="isAllChecked"
+        size="medium"
+        [switchColor]="switchColor.switchColor"
+        [color]="switchColor.color"
+        [defaultBgColor]="switchColor.defaultBgColor"
+        [defaultBoColor]="switchColor.defaultBoColor"
+      ></ui-switch>
+      <span class="ml-3 font-weight-bold text-light-blue">Show All Notification</span>
+    </div>
+
+    <div class="options">
+      <div *ngFor="let type of messageTypeList" class="d-flex align-items-center option mb-2">
+        <ui-switch
+          [(ngModel)]="type.enableNotification"
+          size="small"
+          [switchColor]="switchColor.switchColor"
+          [color]="switchColor.color"
+          [defaultBgColor]="switchColor.defaultBgColor"
+          [defaultBoColor]="switchColor.defaultBoColor"
+        ></ui-switch>
+        <span class="ml-3">{{ type.name }}</span>
+      </div>
+    </div>
+
+    <div class=" p-3 row justify-content-center">
+      <button (click)="save()" type="button" class="btn theme green save">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
