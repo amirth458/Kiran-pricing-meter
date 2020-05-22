@@ -22,7 +22,9 @@
   font-size: 23px;
   margin-right: 10px;
 }
-
+.navbar-nav .nav-item .nav-link:hover {
+  color: var(--theme-light-green);
+}
 .profile {
   display: flex;
   flex-direction: row;

@@ -48,6 +48,13 @@ export const environment = {
       icon: 'fa fa-search',
       visible: true,
       active: true
+    },
+    {
+      name: 'Setting',
+      route: '/setting/basic',
+      icon: 'fas fa-cogs',
+      visible: true,
+      active: true
     }
   ],
   admin_menus: [],
@@ -65,6 +72,7 @@ export const environment = {
   marketApiBaseUrl: 'http://dev-marketplace-api.3diligent.com/api/v1',
   managementBaseUrl: 'http://dev-manage-api.3diligent.com/api/v1',
   procurementApiBaseUrl: 'http://dev-procurement-api.3diligent.com/api/v1',
+  NOTIFICATION_HOST_URL: 'https://dev-notification-api.3diligent.com/api/v1',
   adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
   MARKETPLACE_URL: 'http://dev-marketplace.3diligent.com/',
   PPE_HOST_URL: 'http://dev-ppe-api.3diligent.com/api/v1',

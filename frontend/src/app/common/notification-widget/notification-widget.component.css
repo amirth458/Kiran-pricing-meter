@@ -1,0 +1,43 @@
+:host {
+  display: inline-block;
+  height: 100%;
+  width: auto;
+}
+
+:host .control-button {
+  font-size: 23px;
+  color: white;
+}
+
+:host .control-button:hover {
+  color: var(--theme-light-green) !important;
+}
+
+:host .control-button:active,
+:host .control-button[aria-describedby='ngb-popover-0'],
+:host .control-button:focus {
+  color: var(--theme-light-green) !important;
+  background: var(--theme-overview-title-blue);
+  border-radius: 40px;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.body-start {
+  border-color: transparent !important;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+
+.notification-title {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.19);
+}
+
+.show-all span {
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.show-all span:hover {
+  font-size: 13px;
+}

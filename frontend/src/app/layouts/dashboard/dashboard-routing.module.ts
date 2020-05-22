@@ -66,6 +66,10 @@ import { InsightCustomerSuborderComponent } from 'src/app/components/vendor/insi
 import { InsightCustomerContainerComponent } from 'src/app/components/vendor/insight/insight-customer/insight-customer-container/insight-customer-container.component';
 import { InsightVendorContainerComponent } from 'src/app/components/vendor/insight/insight-vendor/insight-vendor-container/insight-vendor-container.component';
 import { ProjectSettingsComponent } from 'src/app/components/vendor/projects/project-settings/project-settings.component';
+import { ViewAllNotificationComponent } from 'src/app/common/view-all-notification/view-all-notification.component';
+import { SettingsContainerComponent } from 'src/app/components/vendor/settings/settings-container/settings-container.component';
+import { UpdatePasswordComponent } from 'src/app/components/vendor/settings/update-password/update-password.component';
+import { NotificationSettingComponent } from 'src/app/components/vendor/settings/notification-setting/notification-setting.component';
 
 const routes: Routes = [
   {
@@ -341,6 +345,19 @@ const routes: Routes = [
             redirectTo: 'customer'
           }
         ]
+      },
+      {
+        path: 'setting/basic',
+        component: SettingsContainerComponent,
+        children: [
+          { path: 'password', component: UpdatePasswordComponent },
+          { path: 'notification', component: NotificationSettingComponent },
+          { path: '**', pathMatch: 'full', redirectTo: 'password' }
+        ]
+      },
+      {
+        path: 'notification',
+        component: ViewAllNotificationComponent
       },
       { path: '', redirectTo: 'pricing', pathMatch: 'full' }
     ]

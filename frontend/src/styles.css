@@ -741,7 +741,8 @@ app-dropdown-cell-renderer {
 }
 
 .chat-button .unread-badge,
-.info-panel .unread-badge {
+.info-panel .unread-badge,
+.control-button .unread-badge {
   top: 5px;
   right: 2px;
   height: 20px;
@@ -956,3 +957,31 @@ app-dropdown-cell-renderer {
 }
 
 /* Upload Container */
+
+/* Notification */
+
+.tooltip-content .popOverDetails.popover .arrow {
+  display: none !important;
+  color: white;
+}
+
+.popover.widget {
+  max-width: 475px !important;
+  width: 450px;
+  max-height: 375px;
+  background-color: white;
+  border: unset;
+}
+
+.popover.widget .popover-header,
+.popover.widget .popover-body {
+  padding: 0;
+  background: var(--theme-white-color);
+  border: unset;
+}
+
+.control-button .unread-badge {
+  background-color: var(--theme-sky-blue);
+}
+
+/* End of Notification */

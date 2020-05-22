@@ -246,6 +246,19 @@
       "actions": []
     }
   ],
+  "setting": [
+    {
+      "name": "Password",
+      "route": "password",
+      "tooltipMessage": "Password",
+      "actions": []
+    },
+    {
+      "name": "Notification",
+      "route": "notification",
+      "tooltipMessage": "Notification"
+    }
+  ],
   "productionOrders": [
     {
       "name": "Released Orders",

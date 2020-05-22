@@ -48,6 +48,13 @@ export const environment = {
       icon: 'fa fa-search',
       visible: true,
       active: true
+    },
+    {
+      name: 'Setting',
+      route: '/setting/basic',
+      icon: 'fas fa-cogs',
+      visible: true,
+      active: true
     }
   ],
   admin_menus: [],
@@ -66,6 +73,7 @@ export const environment = {
   managementBaseUrl: 'https://stage-manage-api.3diligent.com/api/v1',
   procurementApiBaseUrl: 'https://stage-procurement-api.3diligent.com/api/v1',
   adminAPIToken: '655d67be-af74-48bb-b707-ce5266f7e8fc',
+  NOTIFICATION_HOST_URL: 'https://stage-notification-api.3diligent.com/api/v1',
   MARKETPLACE_URL: 'https://stage-marketplace.3diligent.com/',
   PPE_HOST_URL: 'https://stage-ppe-api.3diligent.com/api/v1',
   CONNECTOR_HOST_URL: 'https://stage-manage.3diligent.com/api/v1',

@@ -1,0 +1,40 @@
+<div class="wrapper">
+  <button
+    placement="auto"
+    popoverClass="widget"
+    [autoClose]="false"
+    [ngbPopover]="popContent"
+    [popoverTitle]="popTitle"
+    container="body"
+    #popOverRef="ngbPopover"
+    [closePopoverOnClickOutside]="popOverRef"
+    class="btn white bg-transparent w-auto control-button position-relative"
+  >
+    <span class="icon">
+      <i class="fas fa-bell"></i>
+    </span>
+    <div *ngIf="unReadCount?.count" class="unread-badge position-absolute ">{{ unReadCount?.count }}</div>
+  </button>
+</div>
+
+<ng-template #popContent>
+  <div class="col-12 border d-flex flex-column shadow body-start">
+    <app-view-all-notification
+      [tooltip]="true"
+      [(unReadCount)]="unReadCount"
+      (unReadCountChanged)="unReadCountChanged($event)"
+    >
+    </app-view-all-notification>
+    <p class="text-light-blue text-center mb-2 font-weight-bold show-all">
+      <span (click)="popOverRef.close(); viewAllNotifications()">
+        Show All Notifications
+      </span>
+    </p>
+  </div>
+</ng-template>
+
+<ng-template #popTitle>
+  <h6 class="text-theme text-left py-2 mt-1 px-3 notification-title">
+    Notifications
+  </h6>
+</ng-template>
