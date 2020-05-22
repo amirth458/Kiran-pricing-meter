@@ -114,7 +114,6 @@ import { ProductionReleasedOrdersComponent } from './vendor/pricing/production-o
 import { ProductionVendorDetailsComponent } from './vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat.component';
 import { ViewInThreeDComponent } from '../common/view-in-three-d/view-in-three-d.component';
-import { ProductionPricingSettingsComponent } from './vendor/pricing/production-orders/production-pricing-settings/production-pricing-settings.component';
 import { InsightVendorContainerComponent } from './vendor/insight/insight-vendor/insight-vendor-container/insight-vendor-container.component';
 import { InsightCustomerContainerComponent } from './vendor/insight/insight-customer/insight-customer-container/insight-customer-container.component';
 import { InsightAdminContainerComponent } from './vendor/insight/insight-admin/insight-admin-container/insight-admin-container.component';
@@ -239,7 +238,6 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
     ProductionReleasedOrdersComponent,
     ProductionVendorDetailsComponent,
     BillingChatComponent,
-    ProductionPricingSettingsComponent,
     InsightVendorContainerComponent,
     InsightCustomerContainerComponent,
     InsightAdminContainerComponent,

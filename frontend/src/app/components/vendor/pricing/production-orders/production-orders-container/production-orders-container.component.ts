@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import * as tooltipData from '../../../../../../assets/tooltip.json';
 
 @Component({
   selector: 'app-production-orders-container',
@@ -15,20 +16,7 @@ export class ProductionOrdersContainerComponent implements OnInit {
       name: string;
       route: string;
     }>;
-  }> = [
-    {
-      name: 'Pricing Settings',
-      tooltipMessage: 'Pricing Settings',
-      route: 'pricing-settings',
-      actions: [{ name: 'Save Settings', route: 'save-production-setting' }]
-    },
-    {
-      name: 'Released Orders',
-      tooltipMessage: 'Released Orders',
-      route: 'released-orders',
-      actions: []
-    }
-  ];
+  }> = tooltipData.default.productionOrders;
   selectedTab = this.actionbarMenu[0].name;
 
   constructor(private route: Router) {}
@@ -37,16 +25,13 @@ export class ProductionOrdersContainerComponent implements OnInit {
     const routeArr = this.route.url
       .slice(this.route.url.indexOf('pricing/production-orders/') + 'pricing/production-orders/'.length)
       .split('/');
-    this.selectedTab = 'Pricing Settings';
+    this.selectedTab = 'Released Orders';
     switch (routeArr[0]) {
-      case 'pricing-settings':
-        this.selectedTab = 'Pricing Settings';
-        break;
       case 'released-orders':
         this.selectedTab = 'Released Orders';
         break;
       default:
-        this.route.navigateByUrl(this.route.url + '/pricing-settings');
+        this.route.navigateByUrl(this.route.url + '/released-orders');
         break;
     }
   }

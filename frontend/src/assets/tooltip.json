@@ -220,7 +220,12 @@
       "name": "Settings",
       "tooltipMessage": "Settings",
       "route": "settings",
-      "actions": [{ "name": "Save Settings", "route": "save-project-setting" }]
+      "actions": [
+        {
+          "name": "Save Settings",
+          "route": "save-project-setting"
+        }
+      ]
     },
     {
       "name": "Project Release Queue",
@@ -251,7 +256,14 @@
     {
       "name": "Notification",
       "route": "notification",
-      "tooltipMessage": "Notification",
+      "tooltipMessage": "Notification"
+    }
+  ],
+  "productionOrders": [
+    {
+      "name": "Released Orders",
+      "tooltipMessage": "Released Orders",
+      "route": "released-orders",
       "actions": []
     }
   ]
