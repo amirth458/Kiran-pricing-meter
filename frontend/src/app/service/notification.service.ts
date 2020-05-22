@@ -38,7 +38,7 @@ export class NotificationService {
   getNotificationSettingByUserId(
     userId: number = this.userService.getUserInfo().id
   ): Observable<NotificationSetting[]> {
-    const params = new HttpParams().append('user-id', userId.toString()).append('notification-user', 'Customer');
+    const params = new HttpParams().append('user-id', userId.toString()).append('notification-user', 'Admin');
     return this.http.get<NotificationSetting[]>(
       environment.NOTIFICATION_HOST_URL + '/notification/notification-settings',
       { params }
