@@ -78,6 +78,7 @@ export class InsightDetailComponent implements OnInit {
       }
     };
     if (this.gridOptions && this.gridOptions.api) {
+      this.totalCount = 0;
       this.gridOptions.api.setDatasource(dataSource);
     }
   }
