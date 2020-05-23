@@ -145,6 +145,25 @@ export class InsightFacilityComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
+      headerName: 'material_count',
+      field: 'material_count',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'material_count',
+      headerTooltip: 'material_count'
+    },
+    {
+      headerName: 'material',
+      field: 'material',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'material',
+      headerTooltip: 'material',
+      valueFormatter: v => v && v.value && v.value.join(',')
+    },
+    {
       headerName: 'equipment_count',
       field: 'equipment_count',
       hide: false,
@@ -189,6 +208,15 @@ export class InsightFacilityComponent implements OnInit {
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'created_date'
+    },
+    {
+      headerName: 'last_login',
+      field: 'last_login',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'last_login',
+      headerTooltip: 'last_login'
     }
   ];
 
