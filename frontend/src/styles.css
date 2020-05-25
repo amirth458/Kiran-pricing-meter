@@ -127,7 +127,8 @@ a.link {
   color: var(--theme-secondary-blue);
 }
 
-.form-group.theme .footnote.red {
+.form-group.theme .footnote.red,
+.footnote.red {
   color: #dc3545;
   font-size: 80%;
 }

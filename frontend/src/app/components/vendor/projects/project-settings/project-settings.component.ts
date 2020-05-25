@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { throwError, combineLatest } from 'rxjs';
@@ -17,10 +17,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ProjectSettingsComponent implements OnInit {
   formGroup: FormGroup = this.fb.group({
-    baseCost: [null],
-    fee: [null],
-    maxNumberOfSupplierToRelease: [null],
-    minimumNumberOfQualifiedSupplier: [null]
+    baseCost: [null, Validators.required],
+    fee: [null, Validators.required],
+    maxNumberOfSupplierToRelease: [null, Validators.required],
+    minimumNumberOfQualifiedSupplier: [null, Validators.required]
   });
 
   constructor(
@@ -32,6 +32,9 @@ export class ProjectSettingsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.formGroup.get('minimumNumberOfQualifiedSupplier').setValidators(val => {
+      return val.value >= this.formGroup.value.maxNumberOfSupplierToRelease ? null : { invalid: true };
+    });
     this.initSettings();
     this.actionService.saveProductionSettingAction().subscribe(() => {
       this.save();
@@ -59,34 +62,46 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   async save() {
-    this.spinner.show();
-    combineLatest([
-      this.pricingService
-        .setProductionPricingSetting({
-          baseCost: this.formGroup.value.baseCost,
-          fee: this.formGroup.value.fee
-        })
-        .pipe(catchError(e => this.handleSaveError(e))),
-      this.pricingService
-        .updateProductionProjectSetting(
-          this.formGroup.value.maxNumberOfSupplierToRelease,
-          this.formGroup.value.minimumNumberOfQualifiedSupplier
-        )
-        .pipe(catchError(e => this.handleSaveError(e)))
-    ]).subscribe(([a, b]) => {
-      this.spinner.hide();
-      if (a) {
-        this.formGroup.setValue({ ...this.formGroup.value, baseCost: a.baseCost, fee: a.fee });
+    this.formGroup.get('minimumNumberOfQualifiedSupplier').updateValueAndValidity();
+
+    if (this.formGroup.valid && !this.formGroup.get('minimumNumberOfQualifiedSupplier').hasError('invalid')) {
+      this.spinner.show();
+      combineLatest([
+        this.pricingService
+          .setProductionPricingSetting({
+            baseCost: this.formGroup.value.baseCost,
+            fee: this.formGroup.value.fee
+          })
+          .pipe(catchError(e => this.handleSaveError(e))),
+        this.pricingService
+          .updateProductionProjectSetting(
+            this.formGroup.value.maxNumberOfSupplierToRelease,
+            this.formGroup.value.minimumNumberOfQualifiedSupplier
+          )
+          .pipe(catchError(e => this.handleSaveError(e)))
+      ]).subscribe(([a, b]) => {
+        this.spinner.hide();
+        if (a) {
+          this.formGroup.setValue({ ...this.formGroup.value, baseCost: a.baseCost, fee: a.fee });
+        }
+        if (b) {
+          this.formGroup.setValue({
+            ...this.formGroup.value,
+            maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
+            minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
+          });
+        }
+        this.toastrService.success(`Pricing Settings Updated Successfully`);
+      });
+    } else {
+      if (this.formGroup.get('minimumNumberOfQualifiedSupplier').hasError('invalid')) {
+        this.toastrService.warning(
+          'Minimum number of qualified suppliers to match >= Minimum number of qualified suppliers to release'
+        );
+      } else {
+        this.toastrService.warning('Invalid form.');
       }
-      if (b) {
-        this.formGroup.setValue({
-          ...this.formGroup.value,
-          maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
-          minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
-        });
-      }
-      this.toastrService.success(`Pricing Settings Updated Successfully`);
-    });
+    }
   }
 
   handleSaveError(error: HttpErrorResponse) {
