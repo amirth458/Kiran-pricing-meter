@@ -5,6 +5,7 @@ import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 
 import { ReportsService } from 'src/app/service/reports.service';
 import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-insight-detail',
@@ -28,7 +29,12 @@ export class InsightDetailComponent implements OnInit {
   createdDateRange;
   lastAttemptDate;
 
-  constructor(public spinner: NgxSpinnerService, public reportsService: ReportsService, public toastr: ToastrService) {}
+  constructor(
+    public spinner: NgxSpinnerService,
+    public reportsService: ReportsService,
+    public toastr: ToastrService,
+    public datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.gridOptions = {
@@ -100,7 +106,7 @@ export class InsightDetailComponent implements OnInit {
       const downloadURL = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }));
       const link = document.createElement('a');
       link.href = downloadURL;
-      link.download = `${this.type}-report.csv`;
+      link.download = `${this.type}_report_${this.datePipe.transform(new Date(), 'yyyyMMdd')}.csv`;
       link.click();
     });
   }
