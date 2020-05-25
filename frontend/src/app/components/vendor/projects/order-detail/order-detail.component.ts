@@ -470,7 +470,6 @@ export class OrderDetailComponent implements OnInit {
       },
       err => {
         this.canReleaseToVendorFlag = true;
-        console.log({ err });
         this.toastr.error('Vendor not subscribed to SHOPSIGHT 360 PLUS selected.');
       }
     );
