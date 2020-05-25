@@ -9,6 +9,7 @@ export class Util {
   static dateFormat = 'MM/dd/yyyy';
   static measurementUnit = 'mm';
   static hoursMinuteConverter = 'HH:mm';
+  static dateFormatWithTime = 'MM/dd/yyyy hh:mm a';
 
   static convertMinutesToDate(minutes: number): string {
     dayjs.extend(utc);
