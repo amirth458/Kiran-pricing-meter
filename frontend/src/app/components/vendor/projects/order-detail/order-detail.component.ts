@@ -13,6 +13,7 @@ import { TemplateRendererComponent } from 'src/app/common/template-renderer/temp
 import { Util } from 'src/app/util/Util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -57,7 +58,9 @@ export class OrderDetailComponent implements OnInit {
   canReleaseToNewVendorFlag = true;
   canReleaseToVendorFlag = true;
 
-  numberOfVendors = 1;
+  numberOfVendors = null;
+  numberOfVendorsToReleaseToCustomer = 1;
+  maxSelectableVendors = null;
   constructor(
     public orderService: OrdersService,
     public metadataService: MetadataService,
@@ -66,7 +69,8 @@ export class OrderDetailComponent implements OnInit {
     public partService: PartService,
     public userService: UserService,
     public toastr: ToastrService,
-    public modal: NgbModal
+    public modal: NgbModal,
+    public pricingService: RfqPricingService
   ) {
     this.type = router.url.split('/')[2];
   }
@@ -81,10 +85,14 @@ export class OrderDetailComponent implements OnInit {
 
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),
-      this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION)
-    ).subscribe(([measurementUnits, postProcessAction]) => {
+      this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION),
+      this.pricingService.getProductionProjectSetting()
+    ).subscribe(([measurementUnits, postProcessAction, prodProjectSetting]) => {
       this.measurementUnits = measurementUnits.metadataList;
       this.postProcessAction = postProcessAction;
+
+      this.numberOfVendors = prodProjectSetting.maxNumberOfSupplierToRelease;
+      this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.maxNumberOfSupplierToRelease;
     });
 
     this.route.params.subscribe(({ id }) => {
@@ -125,6 +133,8 @@ export class OrderDetailComponent implements OnInit {
                 };
               }
             );
+            // Count SHOPSIGHT 360 PLUS SUBSCRIBERS
+            this.maxSelectableVendors = this.shortListedSuppliers.filter(i => i.subscriptionId === 4).length;
             this.supplierGridOptions[0].api.hideOverlay();
 
             if (this.type !== 'project-release-queue') {
@@ -237,11 +247,11 @@ export class OrderDetailComponent implements OnInit {
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
-            if (ev.api.getSelectedRows().length > this.maxNum) {
-              this.toastr.warning(`You can select up to ${this.maxNum} suppliers.`);
-              ev.node.setSelected(false);
-            } else {
-            }
+            // if (ev.api.getSelectedRows().length > this.maxNum) {
+            //   this.toastr.warning(`You can select up to ${this.maxNum} suppliers.`);
+            //   ev.node.setSelected(false);
+            // } else {
+            // }
           }
         }
       },
@@ -406,11 +416,17 @@ export class OrderDetailComponent implements OnInit {
   removeFromList(data) {
     this.removedSuppliers = [...this.removedSuppliers, data];
     this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.id !== data.id);
+    if (data.subscriptionId === 4) {
+      --this.maxSelectableVendors;
+    }
   }
 
   moveToList(data) {
     this.shortListedSuppliers = [...this.shortListedSuppliers, data];
     this.removedSuppliers = this.removedSuppliers.filter(item => item.id !== data.id);
+    if (data.subscriptionId === 4) {
+      ++this.maxSelectableVendors;
+    }
   }
 
   showVendorProfiles(ev, data) {
@@ -519,13 +535,17 @@ export class OrderDetailComponent implements OnInit {
   }
 
   canReleaseToCustomer() {
-    return this.selectedSuppliers.filter(item => item.status.id === 2).length === this.numberOfVendors;
+    return (
+      this.numberOfVendorsToReleaseToCustomer &&
+      this.selectedSuppliers.filter(item => item.status.id === 2).length >= this.numberOfVendorsToReleaseToCustomer
+    );
   }
 
   canReleaseToVendor() {
     return (
       this.supplierGridOptions[0].api &&
-      this.supplierGridOptions[0].api.getSelectedRows().length === this.numberOfVendors &&
+      this.numberOfVendors !== null &&
+      this.supplierGridOptions[0].api.getSelectedRows().length >= this.numberOfVendors &&
       this.canReleaseToVendorFlag
     );
   }

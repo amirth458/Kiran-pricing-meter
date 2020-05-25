@@ -38,7 +38,7 @@ export class NotificationService {
   getNotificationSettingByUserId(
     userId: number = this.userService.getUserInfo().id
   ): Observable<NotificationSetting[]> {
-    const params = new HttpParams().append('user-id', userId.toString()).append('notification-user', 'Customer');
+    const params = new HttpParams().append('user-id', userId.toString()).append('notification-user', 'Admin');
     return this.http.get<NotificationSetting[]>(
       environment.NOTIFICATION_HOST_URL + '/notification/notification-settings',
       { params }
@@ -90,7 +90,6 @@ export class NotificationService {
   }
 
   deleteNotification(notificationId: number, userId = this.userService.getUserInfo().id) {
-    '/notification?notification-id=1&user-id=390';
     const params = new HttpParams()
       .append('user-id', userId.toString())
       .append('notification-id', notificationId.toString());

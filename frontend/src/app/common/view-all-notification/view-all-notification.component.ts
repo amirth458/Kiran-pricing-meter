@@ -101,7 +101,11 @@ export class ViewAllNotificationComponent implements OnInit {
     };
     this.notificationService.getNotification(null, filter).subscribe(
       res => {
-        this.notifications = res ? res.content : [];
+        this.notifications = res
+          ? res.content.map(i => {
+              return { ...i, createdDate: i.createdDate ? new Date(i.createdDate + '+0000') : '' } as any;
+            })
+          : [];
       },
       err => {
         console.log(err);
@@ -163,5 +167,11 @@ export class ViewAllNotificationComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  isValueCorrect = val => typeof val === 'string';
+
+  formatValue(val) {
+    return val.length > 40 ? val.substr(0, 100) + '...' : '';
   }
 }
