@@ -736,7 +736,8 @@ app-dropdown-cell-renderer {
   margin-right: -50%;
 }
 
-.chat-container .attachment-btn {
+.chat-container .attachment-btn,
+.plain-chat-container .attachment-btn {
   right: 10px;
 }
 
