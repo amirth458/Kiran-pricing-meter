@@ -1,4 +1,4 @@
-<div class="col-12 border p-0 shadow d-flex flex-column">
+<div class="col-12 border p-0 shadow d-flex flex-column chat-container">
   <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
     Message to Customer
   </h5>
@@ -28,9 +28,23 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group theme col-12 m-0 d-flex justify-content-center">
+      <div class="form-group theme col-12 m-0 d-flex justify-content-center position-relative">
         <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
           {{ loading ? 'Submitting Note' : 'Add Note' }}
+        </button>
+        <app-attachment
+          *ngIf="value && value.id && (value.participants || []).indexOf(user.id) > -1"
+          [chatId]="value.id"
+          [openAttachment]="trigger$ | async"
+          class="d-block position-absolute attachment-btn"
+        >
+        </app-attachment>
+        <button
+          *ngIf="!(value && value.id && (value.participants || []).indexOf(user.id) > -1)"
+          class="d-block position-absolute attachment-btn btn btn-white pl-3 pr-3 text-theme-green"
+          (click)="sendMessage(true)"
+        >
+          <i class="fas fa-paperclip"></i>
         </button>
       </div>
     </div>

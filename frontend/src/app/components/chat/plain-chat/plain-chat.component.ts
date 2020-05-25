@@ -50,11 +50,15 @@ export class PlainChatComponent extends ChatComponent {
     );
   }
 
-  sendMessage() {
-    this.chatService.addMessage(this.noteFormGroup.get('note').value, this.value.id).subscribe(() => {
+  sendMessage(attachment: boolean = false) {
+    const text = attachment ? 'Hi' : this.noteFormGroup.get('note').value;
+    this.chatService.addMessage(text, this.value.id).subscribe(() => {
       this.noteFormGroup.reset();
       this.loading = false;
       this.getChat();
+      if (attachment) {
+        this.trigger$.next(true);
+      }
     });
   }
 
