@@ -33,7 +33,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.get('minimumNumberOfQualifiedSupplier').setValidators(val => {
-      return val.value >= this.formGroup.value.maxNumberOfSupplierToRelease ? null : { invalid: true };
+      return val.value <= this.formGroup.value.maxNumberOfSupplierToRelease ? null : { invalid: true };
     });
     this.initSettings();
     this.actionService.saveProductionSettingAction().subscribe(() => {
@@ -56,6 +56,7 @@ export class ProjectSettingsComponent implements OnInit {
           maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
           minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
         });
+        this.formGroup.get('minimumNumberOfQualifiedSupplier').updateValueAndValidity();
       }
       this.spinner.hide();
     });
@@ -96,7 +97,7 @@ export class ProjectSettingsComponent implements OnInit {
     } else {
       if (this.formGroup.get('minimumNumberOfQualifiedSupplier').hasError('invalid')) {
         this.toastrService.warning(
-          'Minimum number of qualified suppliers to match >= Minimum number of qualified suppliers to release'
+          'Minimum number of qualified suppliers to match <= Minimum number of qualified suppliers to release'
         );
       } else {
         this.toastrService.warning('Invalid form.');
