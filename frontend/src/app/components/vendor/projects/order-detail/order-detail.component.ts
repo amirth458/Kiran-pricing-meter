@@ -90,7 +90,9 @@ export class OrderDetailComponent implements OnInit {
     ).subscribe(([measurementUnits, postProcessAction, prodProjectSetting]) => {
       this.measurementUnits = measurementUnits.metadataList;
       this.postProcessAction = postProcessAction;
+
       this.numberOfVendors = prodProjectSetting.maxNumberOfSupplierToRelease;
+      this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.maxNumberOfSupplierToRelease;
     });
 
     this.route.params.subscribe(({ id }) => {
@@ -534,6 +536,7 @@ export class OrderDetailComponent implements OnInit {
 
   canReleaseToCustomer() {
     return (
+      this.numberOfVendorsToReleaseToCustomer &&
       this.selectedSuppliers.filter(item => item.status.id === 2).length >= this.numberOfVendorsToReleaseToCustomer
     );
   }
