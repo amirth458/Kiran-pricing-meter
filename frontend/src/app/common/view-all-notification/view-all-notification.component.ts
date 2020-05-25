@@ -172,6 +172,6 @@ export class ViewAllNotificationComponent implements OnInit {
   isValueCorrect = val => typeof val === 'string';
 
   formatValue(val) {
-    return val.length > 40 ? val.substr(0, 100) + '...' : '';
+    return (val || '').length > 40 ? val.substr(0, 100) + '...' : val;
   }
 }

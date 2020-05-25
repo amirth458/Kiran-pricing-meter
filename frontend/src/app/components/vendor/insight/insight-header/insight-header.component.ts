@@ -61,17 +61,24 @@ export class InsightHeaderComponent implements OnInit {
   }
 
   get enableControls() {
-    return this.gridOptions && this.gridOptions.api
-      ? this.gridOptions.api.getDisplayedRowCount() > 0 &&
-          //  TODO:
-          // This can be removed once empty row rendering issue is fixed
-          (this.gridOptions.api.getRowNode('0') ? this.gridOptions.api.getRowNode('0').data != null : false)
-      : false;
+    return this.gridOptions && this.gridOptions.api ? this.gridOptions.api.getDisplayedRowCount() > 0 : false;
   }
 
   onTimeChanged(type) {
     if (type === 'created') {
       if (this.createdDateRange[1] - this.createdDateRange[0] <= 30 * 24 * 3600 * 1000) {
+        const now = new Date();
+        const startDate = new Date(this.createdDateRange[0]);
+        const endDate = new Date(this.createdDateRange[1]);
+
+        startDate.setHours(now.getHours());
+        startDate.setMinutes(now.getMinutes());
+
+        endDate.setHours(now.getHours());
+        endDate.setMinutes(now.getMinutes());
+
+        // this.createdDateRange[1] = endDate;
+        this.createdDateRange = [startDate, endDate];
         this.createdDateChange.emit(this.createdDateRange);
       } else {
         this.toastr.warning('The duration should be less than or equal to 30 days');
