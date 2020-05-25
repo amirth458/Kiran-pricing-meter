@@ -3,6 +3,7 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angu
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from './../../../../../environments/environment';
+import { GridOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-insight-header',
@@ -15,6 +16,7 @@ export class InsightHeaderComponent implements OnInit {
 
   @Input() type;
   @Input() columns;
+  @Input() gridOptions: GridOptions;
   @Output() filterColumnsChange = new EventEmitter();
   @Output() queryChange = new EventEmitter();
   @Output() createdDateChange = new EventEmitter();
@@ -56,6 +58,15 @@ export class InsightHeaderComponent implements OnInit {
 
   onSearchChange(ev) {
     this.queryChange.emit(ev);
+  }
+
+  get enableControls() {
+    return this.gridOptions && this.gridOptions.api
+      ? this.gridOptions.api.getDisplayedRowCount() > 0 &&
+          //  TODO:
+          // This can be removed once empty row rendering issue is fixed
+          (this.gridOptions.api.getRowNode('0') ? this.gridOptions.api.getRowNode('0').data != null : false)
+      : false;
   }
 
   onTimeChanged(type) {

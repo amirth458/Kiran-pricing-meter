@@ -35,16 +35,16 @@
   </div>
 
   <div class="actions d-flex">
-    <button class="theme white btn action-btn" (click)="onFiltercolumns()">
+    <button class="theme white btn action-btn" [disabled]="!enableControls" (click)="onFiltercolumns()">
       <i class="fa fa-list"></i>
     </button>
-    <button *ngIf="env === 'dev'" class="theme white btn action-btn color-sky-blue">
+    <button *ngIf="env === 'dev'" [disabled]="!enableControls" class="theme white btn action-btn color-sky-blue">
       <i class="far fa-chart-bar"></i>
     </button>
-    <button class="theme white btn action-btn" (click)="onExport()">
+    <button class="theme white btn action-btn" [disabled]="!enableControls" (click)="onExport()">
       <i class="fas fa-external-link-alt"></i>
     </button>
-    <button *ngIf="env === 'dev'" class="theme white btn action-btn">
+    <button *ngIf="env === 'dev'" [disabled]="!enableControls" class="theme white btn action-btn">
       <i class="fas fa-print"></i>
     </button>
   </div>

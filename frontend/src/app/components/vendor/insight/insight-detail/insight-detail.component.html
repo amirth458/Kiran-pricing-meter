@@ -3,6 +3,7 @@
     <div class="col-12">
       <app-insight-header
         [type]="type"
+        [gridOptions]="gridOptions"
         [columns]="columnDefs"
         (queryChange)="onQueryChange($event)"
         (createdDateChange)="onCreatedDateChange($event)"
