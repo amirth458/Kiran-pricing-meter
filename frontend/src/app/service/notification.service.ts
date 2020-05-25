@@ -90,7 +90,6 @@ export class NotificationService {
   }
 
   deleteNotification(notificationId: number, userId = this.userService.getUserInfo().id) {
-    '/notification?notification-id=1&user-id=390';
     const params = new HttpParams()
       .append('user-id', userId.toString())
       .append('notification-id', notificationId.toString());

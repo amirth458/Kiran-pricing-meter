@@ -256,7 +256,8 @@
     {
       "name": "Notification",
       "route": "notification",
-      "tooltipMessage": "Notification"
+      "tooltipMessage": "Notification",
+      "actions": []
     }
   ],
   "productionOrders": [
