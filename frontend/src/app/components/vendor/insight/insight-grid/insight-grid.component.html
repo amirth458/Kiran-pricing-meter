@@ -12,5 +12,7 @@
 </div>
 
 <ng-template #date let-row let-column="params">
-  {{ row[column?.colDef?.field] | date: util.dateFormatWithTime }}
+  <ng-container *ngIf="row[column?.colDef?.field]">
+    {{ row[column?.colDef?.field] + 'Z' | date: util.dateFormatWithTime }}
+  </ng-container>
 </ng-template>
