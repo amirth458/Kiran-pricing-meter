@@ -294,8 +294,9 @@ export class QueuedManualPriceComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       onRowClicked: event => {
-        // this.onRowClick(event);
-        this.router.navigateByUrl(this.router.url + '/' + event.data.id);
+        if (!(this.showExpiredRFQ && this.selectedTabId$.value === 1)) {
+          this.router.navigateByUrl(this.router.url + '/' + event.data.id);
+        }
       }
     };
 
