@@ -39,9 +39,9 @@ export class InsightHeaderComponent implements OnInit {
     const date = new Date();
     this.createdDateRange = [
       this.type === 'bid'
-        ? new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7)
-        : new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30),
-      new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        ? new Date(date.getFullYear(), date.getMonth(), date.getDate() - 6)
+        : new Date(date.getFullYear(), date.getMonth(), date.getDate() - 29),
+      new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
     ];
     this.onTimeChanged('created');
 
