@@ -1,67 +1,84 @@
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { PhoneNumberUtil } from 'google-libphonenumber';
 import { ToastrService } from 'ngx-toastr';
+import { PhoneNumberUtil } from 'google-libphonenumber';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import * as internationalCode from '../../../../../assets/static/internationalCode';
 import { CustomerService } from 'src/app/service/customer.service';
+import { Router } from '@angular/router';
 import { Customer } from 'src/app/model/customer.model';
 
 @Component({
-  selector: 'app-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  selector: 'app-password',
+  templateUrl: './password.component.html',
+  styleUrls: ['./password.component.css']
 })
-export class ContactComponent implements OnInit {
+export class PasswordComponent implements OnInit {
   contactForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    password: [''],
-    confirmPassword: [''],
-    phoneNo: ['', [Validators.required]],
+    name: [''],
+    division: [''],
+    industries: [''],
+    phoneNo: [''],
     userLocked: ['', [Validators.required]],
     userActive: ['', [Validators.required]],
     customerActive: ['', [Validators.required]]
   });
-  user;
-  customer;
+  industries: any[] = [];
+  vendorIndustries: { id: number; name: any }[];
   phoneUtil = PhoneNumberUtil.getInstance();
+  internationalCode = internationalCode;
+  customer;
 
   constructor(
     public fb: FormBuilder,
-    public router: Router,
-    public toasterService: ToastrService,
-    public customerService: CustomerService
+    public toastrService: ToastrService,
+    public customerService: CustomerService,
+    public router: Router
   ) {}
 
   ngOnInit() {
     this.contactForm.controls.phoneNo.disable();
+    this.contactForm.controls.industries.disable();
+
     const customer: any = localStorage.getItem('viewCustomerInfo');
     if (!customer) {
       this.router.navigateByUrl('/user-manage/customers');
       return;
     }
     this.customer = JSON.parse(customer);
-    this.customerService.getUserById(this.customer.userId).subscribe(
-      (user: any) => {
-        this.user = user;
+    this.customerService.getCustomerById(this.customer.customerId).subscribe(
+      (contactData: any) => {
+        this.industries = contactData.industries ? contactData.industries.map(item => item.id) : [];
+        this.vendorIndustries = contactData.industries
+          ? contactData.industries.map(x => {
+              const name = this.htmlDecode(x.name).replace(/&/g, ' and ');
+              return {
+                id: x.id,
+                name
+              };
+            })
+          : [];
         this.contactForm.setValue({
-          ...this.contactForm.value,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          phoneNo: user.phoneNo,
+          name: contactData.name,
+          division: contactData.division,
+          phoneNo: contactData.phoneNo,
+          industries: this.industries,
           userLocked: this.customer.userLocked,
           userActive: this.customer.userActive,
           customerActive: this.customer.customerActive
         });
       },
       err => {
-        this.toasterService.error('Something went wrong.');
+        this.toastrService.error('Something went wrong.');
         console.log(err);
         this.router.navigateByUrl('/user-manage/customers');
       }
     );
+  }
+
+  htmlDecode(input) {
+    const str = input;
+    str.replace(/[&amp;]/g, '&#38;');
+    return str;
   }
 
   onUnlock(customer: Customer = this.customer) {
@@ -72,7 +89,7 @@ export class ContactComponent implements OnInit {
         localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
       },
       err => {
-        this.toasterService.error('Unable to perform action');
+        this.toastrService.error('Unable to perform action');
       }
     );
   }
@@ -85,7 +102,7 @@ export class ContactComponent implements OnInit {
         localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
       },
       err => {
-        this.toasterService.error('Unable to perform action');
+        this.toastrService.error('Unable to perform action');
       }
     );
   }
@@ -97,7 +114,7 @@ export class ContactComponent implements OnInit {
         localStorage.setItem('viewCustomerInfo', JSON.stringify(this.customer));
       },
       err => {
-        this.toasterService.error('Unable to perform action');
+        this.toastrService.error('Unable to perform action');
       }
     );
   }

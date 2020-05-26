@@ -18,15 +18,15 @@
   justify-content: space-between;
 }
 .button-approve {
-  padding: 10px 30px;
-  margin-right: 40px;
+  padding: 5px 10px;
+  margin-right: 10px;
   color: white !important;
   background: #89d818;
   border: none;
   font-size: 14px;
 }
 .button-decline {
-  padding: 10px 30px;
+  padding: 5px 10px;
   color: white !important;
   background: #ef773f;
   border: none;
@@ -100,4 +100,8 @@
 
 .font-sm {
   font-size: 13px;
+}
+
+.add-btn {
+  width: 120px;
 }

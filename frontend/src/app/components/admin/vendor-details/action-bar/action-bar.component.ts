@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  SimpleChange
-} from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
 
 declare var $: any;
@@ -27,9 +20,9 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
   constructor(public route: Router) {}
 
   ngOnInit() {
-    $(() => {
-      $('[data-toggle="tooltip"]').tooltip();
-    });
+    // $(() => {
+    //   $('[data-toggle="tooltip"]').tooltip();
+    // });
     const routeArray = this.route.url.split('/');
 
     this.baseURL = `${routeArray[1]}/${routeArray[2]}/${routeArray[3]}`;
@@ -75,6 +68,10 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
   }
 
   backButton() {
-    this.route.navigateByUrl('/user-manage/approve');
+    if (this.route.url.includes('user-manage/add-customer')) {
+      this.route.navigateByUrl('/user-manage/customers');
+    } else {
+      this.route.navigateByUrl('/user-manage/approve-vendor');
+    }
   }
 }

@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-12">
+    <div class="wrapper shadow">
+      <form [formGroup]="contactForm" class="needs-validation" (submit)="save($event)">
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>Company <span class="asterisk">*</span></label>
+            <input required (change)="onChange()" formControlName="name" class="form-control" placeholder="Company" />
+            <span *ngIf="showRequired('name', 1)" class="footnote red">* Required</span>
+          </div>
+          <div class="form-group theme col-md-6">
+            <label>Company Division</label>
+            <input
+              (change)="onChange()"
+              formControlName="division"
+              class="form-control"
+              placeholder="Company Division"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>Industry <span class="asterisk">*</span></label>
+            <ng-select
+              [multiple]="true"
+              dropdownPosition="bottom"
+              [virtualScroll]="true"
+              [hideSelected]="true"
+              placeholder="Industry"
+              [selectOnTab]="true"
+              (change)="onChange()"
+              [(ngModel)]="industries"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <ng-option *ngFor="let item of vendorIndustries" [value]="item.id">{{ item.name }}</ng-option>
+            </ng-select>
+            <span *ngIf="showRequired('industries', 1)" class="footnote red">* Required</span>
+          </div>
+          <div class="form-group theme col-md-6 phone">
+            <label>Company Phone <span class="asterisk">*</span></label>
+            <international-phone-number
+              formControlName="phoneNo"
+              placeholder="Enter phone number"
+              [required]="true"
+              (change)="onChange()"
+              [defaultCountry]="'us'"
+              name="phone_number"
+            ></international-phone-number>
+            <span *ngIf="showRequired('phoneNo', 1)" class="footnote red">* Required</span>
+            <span
+              *ngIf="!showRequired('phoneNo', 1) && contactForm.controls.phoneNo.status === 'INVALID'"
+              class="footnote red"
+              >* Phone number is invalid.</span
+            >
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>Code</label>
+            <input formControlName="promoCode" class="form-control" placeholder="Enter Valid Code" />
+            <span class="footnote red" *ngIf="contactForm.get('promoCode')?.errors?.invalidPromoCode">
+              * Invalid Code
+            </span>
+          </div>
+        </div>
+
+        <div class="terms-agreement">
+          <p class="text-theme">
+            By clicking the SUBMIT button, you agree to be bound by the terms of the
+            <a
+              target="_blank"
+              class="user-agreement"
+              href="https://3diligentdocs.s3-us-west-2.amazonaws.com/TermsAndAgreements/prodExWebAgrmnt.pdf"
+            >
+              ProdEX User Agreement </a
+            >.
+          </p>
+        </div>
+
+        <div class="form-row mt-4 justify-content-center">
+          <div class="form-group col-md-3 container-continue">
+            <button type="submit" class="btn btn-continue theme" [disabled]="!contactForm.valid">
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

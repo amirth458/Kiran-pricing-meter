@@ -301,4 +301,10 @@ export class CustomersComponent implements OnInit {
 
     return throwError('Error');
   }
+
+  addCustomer() {
+    localStorage.removeItem('procurement-RegisterCustomer');
+    localStorage.removeItem('procurement-RegisterContact');
+    this.route.navigateByUrl('/user-manage/add-customer');
+  }
 }

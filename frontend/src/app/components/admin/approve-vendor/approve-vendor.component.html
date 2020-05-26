@@ -1,9 +1,6 @@
 <div class="button-wrapper shadow">
-  <button type="button" (click)="approveUsers($event)" class="button-approve">
-    Approve
-  </button>
-  <button type="button" (click)="onDeclineUsers($event)" class="button-decline">
-    Decline
+  <button class="btn theme add-btn" (click)="addVendor()">
+    Add Vendor
   </button>
 </div>
 <div class="wrapper" *ngIf="gridOptions">
@@ -18,30 +15,40 @@
     >
     </app-column-search-filter>
   </div>
-  <div class="table theme-table user-list">
-    <div class="d-flex align-items-center justify-content-end">
-      <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
+  <div class="table d-flex flex-column">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <span class="text-dark-blue font-sm text-left">total: {{ totalcounts }}</span>
+      <div class="d-flex align-items-center">
+        <button type="button" (click)="approveUsers($event)" class="button-approve">
+          Approve
+        </button>
+        <button type="button" (click)="onDeclineUsers($event)" class="button-decline">
+          Decline
+        </button>
+      </div>
     </div>
-    <ag-grid-angular
-      style="width: 100%; height: 100%;"
-      class="ag-theme-balham"
-      [rowData]="rowData"
-      [gridOptions]="gridOptions"
-      (gridReady)="onGridReady($event)"
-      rowModelType="infinite"
-      [cacheBlockSize]="pageSize"
-    >
-    </ag-grid-angular>
-    <ngx-spinner
-      [name]="'spooler'"
-      bdColor="#ffffff80"
-      size="small"
-      color="#74bf09"
-      type="ball-clip-rotate"
-      [fullScreen]="false"
-    >
-      <p class="m-0">Loading...</p>
-    </ngx-spinner>
+    <div class="theme-table user-list flex-grow-1">
+      <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        class="ag-theme-balham"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+        rowModelType="infinite"
+        [cacheBlockSize]="pageSize"
+      >
+      </ag-grid-angular>
+      <ngx-spinner
+        [name]="'spooler'"
+        bdColor="#ffffff80"
+        size="small"
+        color="#74bf09"
+        type="ball-clip-rotate"
+        [fullScreen]="false"
+      >
+        <p class="m-0">Loading...</p>
+      </ngx-spinner>
+    </div>
   </div>
 </div>
 
