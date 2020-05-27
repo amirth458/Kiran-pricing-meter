@@ -138,6 +138,7 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
 import { ProdexProjectComponent } from './vendor/projects/prodex-project/prodex-project.component';
 import { ProdexConnectComponent } from './vendor/projects/prodex-connect/prodex-connect.component';
 import { ConnectSettingComponent } from './vendor/projects/connect-setting/connect-setting.component';
+import { ChipComponent } from '../common/chip/chip.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -261,7 +262,8 @@ import { ConnectSettingComponent } from './vendor/projects/connect-setting/conne
     NotificationSettingComponent,
     ProdexProjectComponent,
     ProdexConnectComponent,
-    ConnectSettingComponent
+    ConnectSettingComponent,
+    ChipComponent
   ],
   imports: [
     CommonModule,

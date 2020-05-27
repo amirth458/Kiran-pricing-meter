@@ -1,0 +1,17 @@
+.chip-container {
+  display: inline-flex;
+  background-color: var(--theme-light-green);
+  color: white;
+  border-radius: 1px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.chip-container .chip-icon {
+  padding: 1px 5px;
+  border-right: 1px solid #b8dbff;
+}
+
+.chip--text {
+  padding: 1px 5px;
+}

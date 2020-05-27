@@ -12,7 +12,26 @@
     </app-column-search-filter>
   </div>
   <div class="table theme-table">
-    <div class="d-flex align-items-center justify-content-end">
+    <div class="mb-2 d-flex align-items-center justify-content-end">
+      <div class="search-box d-flex align-items-center">
+        <input
+          class="mr-3"
+          placeholder="Customer Name"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="searchDebouncer.next()"
+        />
+        <span class="text-theme" *ngIf="!(searchQuery?.length > 3)">
+          <i class="fa fa-search"></i>
+        </span>
+        <span
+          class=" text-theme clear-query"
+          *ngIf="searchQuery?.length > 3"
+          (click)="searchQuery = ''; searchDebouncer.next()"
+        >
+          <i class="fa fa-times"></i>
+        </span>
+      </div>
+
       <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
     </div>
     <ag-grid-angular
@@ -64,4 +83,17 @@
     (cancel)="modal.dismiss()"
     (ok)="setSubscription($event)"
   ></app-subscription-modal>
+</ng-template>
+
+<!-- Subscription cell -->
+<ng-template #linkVendorCell let-row>
+  <div>
+    <span class="link-cell text-theme-green" *ngIf="row && row.userActive" (click)="link($event, row)">
+      Link Vendor
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #linkVendorModal let-modal>
+  <app-approve-vendor [inModal]="true" [customerId]="customerId"></app-approve-vendor>
 </ng-template>
