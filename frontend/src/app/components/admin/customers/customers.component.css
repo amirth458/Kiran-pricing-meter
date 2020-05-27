@@ -44,6 +44,15 @@
   cursor: pointer;
 }
 
+.selection-view {
+  height: 60px;
+  overflow-y: auto;
+}
+
+.search-box {
+  width: fit-content !important;
+}
+
 ::ng-deep .vendors-modal .modal-dialog {
   max-width: 1353px !important;
   height: 100vh;

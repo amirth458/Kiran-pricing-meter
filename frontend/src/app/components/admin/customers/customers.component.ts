@@ -12,8 +12,8 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { Customer } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
+import { catchError, debounceTime } from 'rxjs/operators';
 import { LinkVendorService } from 'src/app/service/link-vendor.service';
 
 @Component({
@@ -65,6 +65,10 @@ export class CustomersComponent implements OnInit {
   rowData: Customer[] = [];
   pageSize = 20;
   navigation;
+
+  searchQuery: string;
+  searchDebouncer: Subject<any> = new Subject<any>();
+
   constructor(
     public route: Router,
     public customerService: CustomerService,
@@ -85,6 +89,8 @@ export class CustomersComponent implements OnInit {
     this.metadataService.getCustomerAddons().subscribe(v => (this.addons = v));
 
     localStorage.removeItem('viewCustomerInfo');
+
+    this.searchDebouncer.pipe(debounceTime(500)).subscribe(() => this.onSearch(this.searchQuery));
   }
 
   async getSearchFilterColumns() {
@@ -241,12 +247,29 @@ export class CustomersComponent implements OnInit {
     this.onSearch();
   }
 
-  onSearch() {
+  onSearch(customerName = null) {
     const dataSource = {
       rowCount: 0,
       getRows: params => {
         this.spinner.show('spooler');
         this.requests++;
+
+        const isPresent = this.filterColumnsRequest.findIndex(_ => _.displayName === 'Customer Name');
+        if (isPresent !== -1 && customerName !== null) {
+          this.filterColumnsRequest[isPresent] = {
+            ...this.filterColumnsRequest[isPresent],
+            selectedOperator: 'contains',
+            searchedValue: customerName
+          };
+        } else if (customerName !== null) {
+          this.filterColumnsRequest.push({
+            id: 10,
+            displayName: 'Customer Name',
+            selectedOperator: 'contains',
+            searchedValue: customerName
+          });
+        }
+
         this.userService
           .getAllCustomers(params.startRow / this.pageSize, this.pageSize, {
             q: '',
