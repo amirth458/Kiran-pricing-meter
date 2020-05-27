@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild, HostListener, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, TemplateRef, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 
 import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subscription, combineLatest, throwError } from 'rxjs';
+import { Observable, Subscription, combineLatest, throwError, Subject } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +16,8 @@ import { ThrowStmt } from '@angular/compiler';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, debounceTime } from 'rxjs/operators';
+import { LinkVendorService } from 'src/app/service/link-vendor.service';
 
 @Component({
   selector: 'app-approve-vendor',
@@ -24,6 +25,9 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./approve-vendor.component.css']
 })
 export class ApproveVendorComponent implements OnInit {
+  @Input() inModal = false;
+  @Input() customerId = null;
+
   @ViewChild('infoModal') infoModal;
   @ViewChild('modal') modal;
   @ViewChild('subscriptionCell') subscriptionCell;
@@ -40,7 +44,7 @@ export class ApproveVendorComponent implements OnInit {
 
   searchColumns = [];
   filterColumns = [];
-  columnDefs = [];
+  columnDefs: ColDef[] = [];
   filterColumnsRequest = [];
   type = ['search', 'filter'];
 
@@ -76,14 +80,19 @@ export class ApproveVendorComponent implements OnInit {
     'Vendor Status': 'approved'
   };
 
+  searchQuery: string;
+  searchDebouncer: Subject<any> = new Subject<any>();
+  selectedItems = [];
+
   constructor(
-    private route: Router,
-    private userService: UserService,
-    private spineer: NgxSpinnerService,
-    private metadataService: MetadataService,
-    private toastr: ToastrService,
-    private modalService: NgbModal,
-    private spinner: NgxSpinnerService
+    public route: Router,
+    public userService: UserService,
+    public spineer: NgxSpinnerService,
+    public metadataService: MetadataService,
+    public toastr: ToastrService,
+    public modalService: NgbModal,
+    public spinner: NgxSpinnerService,
+    public linkService: LinkVendorService
   ) {
     this.selected = null;
     this.navigation = this.route.getCurrentNavigation();
@@ -93,6 +102,14 @@ export class ApproveVendorComponent implements OnInit {
   ngOnInit() {
     this.metadataService.getVendorSubscriptionTypes().subscribe(v => (this.subscriptions = v));
     this.metadataService.getVendorAddons().subscribe(v => (this.addons = v));
+    this.searchDebouncer.pipe(debounceTime(500)).subscribe(() => this.onSearch(this.searchQuery));
+    if (this.inModal) {
+      this.getCustomerLinks();
+    }
+  }
+
+  get getSelection() {
+    return this.selectedItems;
   }
 
   async getSearchFilterColumns() {
@@ -104,16 +121,18 @@ export class ApproveVendorComponent implements OnInit {
       field: column.displayName
     }));
 
-    this.searchColumns = columns.map(column => {
-      return {
-        id: column.id,
-        name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
-        checked: false,
-        operators: column.operators,
-        field: column.displayName,
-        query: { type: '', filter: null }
-      };
-    });
+    this.searchColumns = columns
+      .map(column => {
+        return {
+          id: column.id,
+          name: column.displayName === 'Vendor Status' ? 'Approval Status' : column.displayName,
+          checked: false,
+          operators: column.operators,
+          field: column.displayName,
+          query: { type: '', filter: null }
+        };
+      })
+      .filter(_ => !(this.inModal && _.name === 'Approval Status'));
 
     this.columnDefs = [
       {
@@ -140,68 +159,70 @@ export class ApproveVendorComponent implements OnInit {
       }))
     );
 
-    this.columnDefs.push({
-      headerName: 'Subscription',
-      filter: false,
-      width: 170,
-      cellRenderer: 'templateRenderer',
-      cellRendererParams: {
-        ngTemplate: this.subscriptionCell
-      }
-    });
+    if (!this.inModal) {
+      this.columnDefs.push({
+        headerName: 'Subscription',
+        filter: false,
+        width: 170,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.subscriptionCell
+        }
+      });
 
-    this.columnDefs.push({
-      headerName: 'Actions',
-      filter: false,
-      width: 370,
-      cellRenderer: 'actionCellRenderer',
-      cellRendererParams: {
-        action: {
-          approve: param => {
-            if (param.data) {
-              this.approveUser(param.data.id);
-            }
-          },
-          decline: async param => {
-            if (param.data) {
-              this.declineUser(param.data.id);
-            }
-          },
-          canEdit: false,
-          canCopy: false,
-          canDelete: false,
-          canApprove: param => {
-            if (param.data) {
-              if (param.data.approvedAt !== null) {
-                return false;
+      this.columnDefs.push({
+        headerName: 'Actions',
+        filter: false,
+        width: 370,
+        cellRenderer: 'actionCellRenderer',
+        cellRendererParams: {
+          action: {
+            approve: param => {
+              if (param.data) {
+                this.approveUser(param.data.id);
               }
-              return true;
-            }
-            return false;
-          },
-          canDecline: param => {
-            if (param.data) {
-              if (param.data.approvedAt !== null) {
-                return false;
+            },
+            decline: async param => {
+              if (param.data) {
+                this.declineUser(param.data.id);
               }
-              return true;
+            },
+            canEdit: false,
+            canCopy: false,
+            canDelete: false,
+            canApprove: param => {
+              if (param.data) {
+                if (param.data.approvedAt !== null) {
+                  return false;
+                }
+                return true;
+              }
+              return false;
+            },
+            canDecline: param => {
+              if (param.data) {
+                if (param.data.approvedAt !== null) {
+                  return false;
+                }
+                return true;
+              }
+              return false;
             }
-            return false;
           }
         }
-      }
-    });
+      });
 
-    this.columnDefs.push({
-      headerName: '',
-      field: 'testAccount',
-      filter: false,
-      width: 170,
-      cellRenderer: 'templateRenderer',
-      cellRendererParams: {
-        ngTemplate: this.changeVendorAccountCell
-      }
-    });
+      this.columnDefs.push({
+        headerName: 'Test Account',
+        field: 'testAccount',
+        filter: false,
+        width: 170,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.changeVendorAccountCell
+        }
+      });
+    }
 
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
@@ -215,13 +236,26 @@ export class ApproveVendorComponent implements OnInit {
       rowHeight: 30,
       headerHeight: 35,
       rowSelection: 'multiple',
-
-      onRowClicked: event => {
-        // this.onRowClick(event);
-      },
       onCellDoubleClicked: param => {
-        const userId = param.data.user.id;
-        this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
+        if (!this.inModal) {
+          const userId = param.data.user.id;
+          this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
+        }
+      },
+
+      onRowSelected: event => {
+        if (this.gridOptions && this.gridOptions.api && event.node.isSelected()) {
+          if (this.selectedItems.filter(_ => _.node.data.id === event.node.data.id).length === 0) {
+            this.selectedItems.push({
+              label: event.node.data.name,
+              node: event.node
+            });
+          }
+        } else {
+          this.selectedItems = this.selectedItems.filter(
+            item => !item.node.data || item.node.data.id !== event.node.data.id
+          );
+        }
       },
       rowClassRules: {
         'non-approved': params => {
@@ -393,22 +427,52 @@ export class ApproveVendorComponent implements OnInit {
     }
   }
 
-  onSearch() {
+  onSearch(vendorName = null) {
     const dataSource = {
       rowCount: 0,
       getRows: params => {
+        const isPresent = this.filterColumnsRequest.findIndex(_ => _.displayName === 'Vendor Name');
+        if (isPresent !== -1 && vendorName !== null) {
+          this.filterColumnsRequest[isPresent] = {
+            ...this.filterColumnsRequest[isPresent],
+            selectedOperator: 'contains',
+            searchedValue: vendorName
+          };
+        } else if (vendorName !== null) {
+          this.filterColumnsRequest.push({
+            id: 2,
+            displayName: 'Vendor Name',
+            selectedOperator: 'contains',
+            searchedValue: vendorName
+          });
+        }
+
         this.spinner.show('spooler');
         this.userService
           .getAllUsers(params.startRow / this.pageSize, this.pageSize, {
-            q: '',
-            filterColumnsRequests: this.filterColumnsRequest
+            q: this.searchQuery,
+            filterColumnsRequests: this.inModal
+              ? [
+                  ...this.filterColumnsRequest,
+                  {
+                    id: 8,
+                    displayName: 'Approval Status',
+                    selectedOperator: '=',
+                    searchedValue: 'true'
+                  }
+                ]
+              : this.filterColumnsRequest
           })
           .subscribe(data => {
             this.spinner.hide('spooler');
-            const rowsThisPage = data.content;
+            const rowsThisPage = data.content || [];
+
             const lastRow = data.total <= params.endRow ? data.total : -1;
             this.totalcounts = data.total;
             params.successCallback(rowsThisPage, lastRow);
+
+            this.refreshSelection();
+
             // this.reconfigColumns();
           });
       }
@@ -418,6 +482,22 @@ export class ApproveVendorComponent implements OnInit {
     }
   }
 
+  refreshSelection() {
+    this.gridOptions.api.forEachNode(i => {
+      const loc = this.selectedItems.findIndex(_ => _.node.data.id === i.data.id);
+      if (loc !== -1) {
+        i.setSelected(true);
+        this.selectedItems[loc] = {
+          label: i.data.name,
+          node: i
+        };
+      } else {
+        i.setSelected(false);
+      }
+      return i;
+    });
+  }
+
   subscription(ev, row) {
     ev.stopPropagation();
     this.vendorId = row.id;
@@ -425,7 +505,6 @@ export class ApproveVendorComponent implements OnInit {
       .getVendorContract(row.id)
       .pipe(catchError(e => this.handleResponseError(e)))
       .subscribe(v => {
-        console.log(v);
         this.contractInfo = v;
 
         this.modalService.open(this.subscriptionModal, {
@@ -460,20 +539,69 @@ export class ApproveVendorComponent implements OnInit {
 
   setSubscription(v) {
     if (this.contractInfo) {
-      this.userService.updateVendorContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(v => {
+      this.userService.updateVendorContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(_ => {
         this.modalService.dismissAll();
       });
     } else {
-      this.userService.setVendorContract(this.vendorId, v.addon, v.subscription).subscribe(v => {
+      this.userService.setVendorContract(this.vendorId, v.addon, v.subscription).subscribe(_ => {
         this.modalService.dismissAll();
       });
     }
   }
 
-  handleResponseError(e) {
+  handleResponseError(e, generic = false) {
     const message = e.error.message || 'Get Vendor Contract occurs an error.';
-    this.toastr.error(`${message} Please contact your admin`);
+    if (!generic) {
+      this.toastr.error(`${message} Please try again.`);
+    } else {
+      this.toastr.error(`Error while perfoming action. Please try again.`);
+    }
 
     return throwError('Error');
+  }
+
+  clearSelection() {
+    this.selectedItems = [];
+    this.gridOptions.api.deselectAll();
+    this.gridOptions.api.refreshHeader();
+  }
+
+  removeItem(ev: any) {
+    console.log({ ev });
+    this.selectedItems = this.selectedItems.filter(item => item.node.data.id !== ev.data.id);
+    this.refreshSelection();
+  }
+
+  linkVendor() {
+    this.spineer.show();
+    this.linkService
+      .linkVendor(this.customerId, [...this.selectedItems.map(_ => _.node.data.id)])
+      .pipe(catchError(e => this.handleResponseError(e, true)))
+      .subscribe(res => {
+        this.modalService.dismissAll();
+        this.toastr.success('Successfully linked with vendors');
+        this.spineer.hide();
+      });
+  }
+
+  closeLinkModal() {
+    this.modalService.dismissAll();
+  }
+
+  getCustomerLinks() {
+    this.linkService
+      .getLink(this.customerId)
+      .pipe(catchError(e => this.handleResponseError(e, true)))
+      .subscribe(res => {
+        this.selectedItems = res.vendorIds.map(i => {
+          return {
+            label: i,
+            node: {
+              data: { id: i }
+            }
+          };
+        });
+        this.refreshSelection();
+      });
   }
 }

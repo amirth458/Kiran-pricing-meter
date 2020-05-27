@@ -14,6 +14,7 @@ import { MetadataService } from 'src/app/service/metadata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { LinkVendorService } from 'src/app/service/link-vendor.service';
 
 @Component({
   selector: 'app-customers',
@@ -24,6 +25,9 @@ export class CustomersComponent implements OnInit {
   @ViewChild('actionControl') actionControl;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
+
+  @ViewChild('linkVendorCell') linkVendorCell;
+  @ViewChild('linkVendorModal') linkVendorModal;
 
   searchColumns = [];
   filterColumns = [];
@@ -62,14 +66,15 @@ export class CustomersComponent implements OnInit {
   pageSize = 20;
   navigation;
   constructor(
-    private route: Router,
-    private customerService: CustomerService,
-    private spineer: NgxSpinnerService,
-    private toastr: ToastrService,
-    private metadataService: MetadataService,
-    private userService: UserService,
-    private modalService: NgbModal,
-    private spinner: NgxSpinnerService
+    public route: Router,
+    public customerService: CustomerService,
+    public spineer: NgxSpinnerService,
+    public toastr: ToastrService,
+    public metadataService: MetadataService,
+    public userService: UserService,
+    public modalService: NgbModal,
+    public spinner: NgxSpinnerService,
+    public linkService: LinkVendorService
   ) {
     this.navigation = this.route.getCurrentNavigation();
     this.getSearchFilterColumns();
@@ -119,7 +124,7 @@ export class CustomersComponent implements OnInit {
         {
           headerName: 'Subscription',
           filter: false,
-          width: 170,
+          width: 190,
           cellRenderer: 'templateRenderer',
           cellRendererParams: {
             ngTemplate: this.subscriptionCell
@@ -130,6 +135,17 @@ export class CustomersComponent implements OnInit {
           cellRenderer: 'templateRenderer',
           cellRendererParams: {
             ngTemplate: this.actionControl
+          },
+          hide: false,
+          sortable: false,
+          filter: false,
+          width: 240
+        },
+        {
+          headerName: '',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.linkVendorCell
           },
           hide: false,
           sortable: false,
@@ -265,6 +281,18 @@ export class CustomersComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
+  link(ev, row) {
+    const size: any = 'xl';
+    ev.stopPropagation();
+    this.customerId = row.customerId;
+
+    this.modalService.open(this.linkVendorModal, {
+      windowClass: 'vendors-modal',
+      centered: true,
+      size
+    });
+  }
+
   subscription(ev, row) {
     console.log(row);
     ev.stopPropagation();
@@ -285,11 +313,11 @@ export class CustomersComponent implements OnInit {
 
   setSubscription(v) {
     if (this.contractInfo) {
-      this.userService.updateCustomerContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(v => {
+      this.userService.updateCustomerContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(_ => {
         this.modalService.dismissAll();
       });
     } else {
-      this.userService.setCustomerContract(this.customerId, v.addon, v.subscription).subscribe(v => {
+      this.userService.setCustomerContract(this.customerId, v.addon, v.subscription).subscribe(_ => {
         this.modalService.dismissAll();
       });
     }
