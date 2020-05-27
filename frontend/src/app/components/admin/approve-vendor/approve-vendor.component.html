@@ -28,11 +28,11 @@
           [(ngModel)]="searchQuery"
           (ngModelChange)="searchDebouncer.next()"
         />
-        <span class="text-theme" *ngIf="!(searchQuery?.length > 3)">
+        <span class="text-theme cursor-pointer" *ngIf="!(searchQuery?.length > 3)">
           <i class="fa fa-search"></i>
         </span>
         <span
-          class=" text-theme clear-query"
+          class=" text-theme clear-query cursor-pointer"
           *ngIf="searchQuery?.length > 3"
           (click)="searchQuery = ''; searchDebouncer.next()"
         >
@@ -43,12 +43,7 @@
       <div *ngIf="inModal" class="controls w-100 row">
         <div class="col-8"></div>
         <div class="col-2">
-          <button
-            type="button"
-            [disabled]="(getSelection || []).length === 0"
-            class="btn w-100 theme"
-            (click)="linkVendor()"
-          >
+          <button type="button" class="btn w-100 theme" (click)="linkVendor()">
             Link Vendor
           </button>
         </div>
@@ -72,7 +67,7 @@
         ></app-chip>
         <a (click)="clearSelection()" class="d-flex align-items-center mx-2">
           <i class="fa fa-times"></i>&nbsp;
-          <span class="text-theme text-decoration-underline text-nowrap">
+          <span class="text-theme cursor-pointer text-decoration-underline text-nowrap">
             Clear all
           </span>
         </a>

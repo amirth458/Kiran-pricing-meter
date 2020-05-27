@@ -492,19 +492,21 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   }
 
   refreshSelection() {
-    this.gridOptions.api.forEachNode(i => {
-      const loc = this.selectedItems.findIndex(_ => _.node.data.id === i.data.id);
-      if (loc !== -1) {
-        i.setSelected(true);
-        this.selectedItems[loc] = {
-          label: i.data.name,
-          node: i
-        };
-      } else {
-        i.setSelected(false);
-      }
-      return i;
-    });
+    if (this.gridOptions && this.gridOptions.api) {
+      this.gridOptions.api.forEachNode(i => {
+        const loc = this.selectedItems.findIndex(_ => _.node.data.id === i.data.id);
+        if (loc !== -1) {
+          i.setSelected(true);
+          this.selectedItems[loc] = {
+            label: i.data.name,
+            node: i
+          };
+        } else {
+          i.setSelected(false);
+        }
+        return i;
+      });
+    }
   }
 
   subscription(ev, row) {
@@ -614,11 +616,11 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
         catchError(e => this.handleResponseError(e, true))
       )
       .subscribe(res => {
-        this.selectedItems = res.vendorIds.map(i => {
+        this.selectedItems = (res.vendorProfiles || []).map(i => {
           return {
-            label: i,
+            label: i.name,
             node: {
-              data: { id: i }
+              data: i
             }
           };
         });
