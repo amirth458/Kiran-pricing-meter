@@ -250,4 +250,12 @@ export class RfqPricingService {
       `${environment.apiBaseUrl}/admin/production-project-release-setting`
     );
   }
+
+  getExpiredPartQuoteDetails(partId): Observable<PartQuote> {
+    return this.http.get<PartQuote>(environment.procurementApiBaseUrl + `/part-quote/admin/parts/expired/${partId}`);
+  }
+
+  getAllQuoteByPart(partId): Observable<PartQuote[]> {
+    return this.http.get<PartQuote[]>(environment.procurementApiBaseUrl + `/part-quote/admin/parts/${partId}/all`);
+  }
 }
