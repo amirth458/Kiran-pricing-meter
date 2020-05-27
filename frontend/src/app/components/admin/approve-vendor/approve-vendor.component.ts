@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, TemplateRef, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions, ColDef } from 'ag-grid-community';
@@ -6,9 +6,8 @@ import { GridOptions, ColDef } from 'ag-grid-community';
 import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subscription, combineLatest, throwError, Subject } from 'rxjs';
+import { Observable, Subscription, throwError, Subject } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
-import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { DropdownHeaderRendererComponent } from 'src/app/common/dropdown-header-renderer/dropdown-header-renderer.component';
@@ -16,7 +15,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { catchError, debounceTime } from 'rxjs/operators';
+import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
 import { LinkVendorService } from 'src/app/service/link-vendor.service';
 
 @Component({
@@ -24,7 +23,7 @@ import { LinkVendorService } from 'src/app/service/link-vendor.service';
   templateUrl: './approve-vendor.component.html',
   styleUrls: ['./approve-vendor.component.css']
 })
-export class ApproveVendorComponent implements OnInit {
+export class ApproveVendorComponent implements OnInit, OnDestroy {
   @Input() inModal = false;
   @Input() customerId = null;
 
@@ -81,6 +80,7 @@ export class ApproveVendorComponent implements OnInit {
   };
 
   searchQuery: string;
+  destroy$: Subject<boolean> = new Subject();
   searchDebouncer: Subject<any> = new Subject<any>();
   selectedItems = [];
 
@@ -100,9 +100,17 @@ export class ApproveVendorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metadataService.getVendorSubscriptionTypes().subscribe(v => (this.subscriptions = v));
-    this.metadataService.getVendorAddons().subscribe(v => (this.addons = v));
-    this.searchDebouncer.pipe(debounceTime(500)).subscribe(() => this.onSearch(this.searchQuery));
+    this.metadataService
+      .getVendorSubscriptionTypes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => (this.subscriptions = v));
+    this.metadataService
+      .getVendorAddons()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => (this.addons = v));
+    this.searchDebouncer
+      .pipe(takeUntil(this.destroy$), debounceTime(500))
+      .subscribe(() => this.onSearch(this.searchQuery));
     if (this.inModal) {
       this.getCustomerLinks();
     }
@@ -463,6 +471,7 @@ export class ApproveVendorComponent implements OnInit {
                 ]
               : this.filterColumnsRequest
           })
+          .pipe(takeUntil(this.destroy$))
           .subscribe(data => {
             this.spinner.hide('spooler');
             const rowsThisPage = data.content || [];
@@ -503,7 +512,10 @@ export class ApproveVendorComponent implements OnInit {
     this.vendorId = row.id;
     this.userService
       .getVendorContract(row.id)
-      .pipe(catchError(e => this.handleResponseError(e)))
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(e => this.handleResponseError(e))
+      )
       .subscribe(v => {
         this.contractInfo = v;
 
@@ -516,11 +528,14 @@ export class ApproveVendorComponent implements OnInit {
 
   markVendorProfileAsTest() {
     this.spinner.show();
-    this.userService.markVendorProfileAsTest(this.selected.id).subscribe(v => {
-      this.spinner.hide();
-      this.closeMarkVendorAccountAsTestModal();
-      this.onSearch();
-    });
+    this.userService
+      .markVendorProfileAsTest(this.selected.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => {
+        this.spinner.hide();
+        this.closeMarkVendorAccountAsTestModal();
+        this.onSearch();
+      });
   }
 
   markVendorAccountAsTest(template: TemplateRef<any>, row: any) {
@@ -576,7 +591,10 @@ export class ApproveVendorComponent implements OnInit {
     this.spineer.show();
     this.linkService
       .linkVendor(this.customerId, [...this.selectedItems.map(_ => _.node.data.id)])
-      .pipe(catchError(e => this.handleResponseError(e, true)))
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(e => this.handleResponseError(e, true))
+      )
       .subscribe(res => {
         this.modalService.dismissAll();
         this.toastr.success('Successfully linked with vendors');
@@ -591,7 +609,10 @@ export class ApproveVendorComponent implements OnInit {
   getCustomerLinks() {
     this.linkService
       .getLink(this.customerId)
-      .pipe(catchError(e => this.handleResponseError(e, true)))
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(e => this.handleResponseError(e, true))
+      )
       .subscribe(res => {
         this.selectedItems = res.vendorIds.map(i => {
           return {
@@ -603,5 +624,9 @@ export class ApproveVendorComponent implements OnInit {
         });
         this.refreshSelection();
       });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }

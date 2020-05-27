@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, TemplateRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions, ColDef } from 'ag-grid-community';
@@ -13,7 +13,7 @@ import { Customer } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { throwError, Subject } from 'rxjs';
-import { catchError, debounceTime } from 'rxjs/operators';
+import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
 import { LinkVendorService } from 'src/app/service/link-vendor.service';
 
 @Component({
@@ -21,7 +21,7 @@ import { LinkVendorService } from 'src/app/service/link-vendor.service';
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css']
 })
-export class CustomersComponent implements OnInit {
+export class CustomersComponent implements OnInit, OnDestroy {
   @ViewChild('actionControl') actionControl;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
@@ -67,6 +67,7 @@ export class CustomersComponent implements OnInit {
   navigation;
 
   searchQuery: string;
+  destroy$: Subject<boolean> = new Subject();
   searchDebouncer: Subject<any> = new Subject<any>();
 
   constructor(
@@ -85,12 +86,20 @@ export class CustomersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metadataService.getCustomerSubscriptionTypes().subscribe(v => (this.subscriptions = v));
-    this.metadataService.getCustomerAddons().subscribe(v => (this.addons = v));
+    this.metadataService
+      .getCustomerSubscriptionTypes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => (this.subscriptions = v));
+    this.metadataService
+      .getCustomerAddons()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => (this.addons = v));
 
     localStorage.removeItem('viewCustomerInfo');
 
-    this.searchDebouncer.pipe(debounceTime(500)).subscribe(() => this.onSearch(this.searchQuery));
+    this.searchDebouncer
+      .pipe(takeUntil(this.destroy$), debounceTime(500))
+      .subscribe(() => this.onSearch(this.searchQuery));
   }
 
   async getSearchFilterColumns() {
@@ -183,35 +192,44 @@ export class CustomersComponent implements OnInit {
 
   onUnlock(customer: Customer) {
     console.log(customer);
-    this.customerService.unlockCustomer(customer.customerId).subscribe(
-      res => {
-        this.onSearch();
-      },
-      err => {
-        this.toastr.error('Unable to perform action');
-      }
-    );
+    this.customerService
+      .unlockCustomer(customer.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
 
   onActivate(customer: Customer) {
-    this.customerService.activateCustomer(customer.customerId).subscribe(
-      res => {
-        this.onSearch();
-      },
-      err => {
-        this.toastr.error('Unable to perform action');
-      }
-    );
+    this.customerService
+      .activateCustomer(customer.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
   onDeactivate(customer: Customer) {
-    this.customerService.deactivateCustomer(customer.customerId).subscribe(
-      res => {
-        this.onSearch();
-      },
-      err => {
-        this.toastr.error('Unable to perform action');
-      }
-    );
+    this.customerService
+      .deactivateCustomer(customer.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
 
   configureColumnDefs() {
@@ -275,6 +293,7 @@ export class CustomersComponent implements OnInit {
             q: '',
             filterColumnsRequests: this.filterColumnsRequest
           })
+          .pipe(takeUntil(this.destroy$))
           .subscribe(data => {
             if (--this.requests === 0) {
               this.spinner.hide('spooler');
@@ -322,7 +341,10 @@ export class CustomersComponent implements OnInit {
     this.customerId = row.customerId;
     this.userService
       .getCustomerContract(this.customerId)
-      .pipe(catchError(e => this.handleResponseError(e)))
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(e => this.handleResponseError(e))
+      )
       .subscribe(v => {
         console.log(v);
         this.contractInfo = v;
@@ -351,5 +373,9 @@ export class CustomersComponent implements OnInit {
     this.toastr.error(`${message} Please contact your admin`);
 
     return throwError('Error');
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }
