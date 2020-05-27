@@ -135,6 +135,7 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
 import { SettingsContainerComponent } from './vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from './vendor/settings/update-password/update-password.component';
 import { NotificationSettingComponent } from './vendor/settings/notification-setting/notification-setting.component';
+import { ChipComponent } from '../common/chip/chip.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -255,7 +256,8 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
     NotificationWidgetComponent,
     SettingsContainerComponent,
     UpdatePasswordComponent,
-    NotificationSettingComponent
+    NotificationSettingComponent,
+    ChipComponent
   ],
   imports: [
     CommonModule,

@@ -89,6 +89,9 @@ a.link {
   text-decoration: underline;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
 .form-control:disabled,
 .form-control[readonly] {
   background-color: #e9ecef !important;
@@ -671,6 +674,17 @@ app-dropdown-cell-renderer {
   text-align: center;
   width: 100% !important;
   margin-top: 20px;
+}
+
+.search-box {
+  width: 100%;
+  border-bottom: 1px solid;
+}
+.search-box input,
+.search-box input:focus,
+.search-box input:active {
+  border: none;
+  outline: none;
 }
 
 /* AG Grid Override */
