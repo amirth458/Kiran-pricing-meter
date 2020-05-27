@@ -476,11 +476,11 @@ export class QueuedManualPriceComponent implements OnInit {
         });
       }
       if (this.selectedTabId === 1 && this.showExpiredRFQ) {
-        this.setSelectedData(this.rowData[1]);
+        this.setSelectedData(this.rowData[3]);
         this.gridOptions.api.hideOverlay();
       }
       if (this.selectedTabId === 1 && !this.showExpiredRFQ) {
-        this.setSelectedData(this.rowData[3]);
+        this.setSelectedData(this.rowData[1]);
         this.gridOptions.api.hideOverlay();
       }
     } catch (e) {
