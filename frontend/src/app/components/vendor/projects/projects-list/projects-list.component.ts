@@ -42,7 +42,7 @@ export class ProjectsListComponent implements OnInit {
       this.projectTypes = v.map(item => ({ ...item, displayName: ProjectType[item.name] }));
     });
 
-    this.type = router.url.split('/')[2];
+    this.type = router.url.split('/')[3];
   }
 
   ngOnInit() {

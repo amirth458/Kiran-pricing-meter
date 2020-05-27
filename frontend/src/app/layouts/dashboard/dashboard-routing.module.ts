@@ -70,6 +70,9 @@ import { ViewAllNotificationComponent } from 'src/app/common/view-all-notificati
 import { SettingsContainerComponent } from 'src/app/components/vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from 'src/app/components/vendor/settings/update-password/update-password.component';
 import { NotificationSettingComponent } from 'src/app/components/vendor/settings/notification-setting/notification-setting.component';
+import { ProdexProjectComponent } from 'src/app/components/vendor/projects/prodex-project/prodex-project.component';
+import { ProdexConnectComponent } from 'src/app/components/vendor/projects/prodex-connect/prodex-connect.component';
+import { ConnectSettingComponent } from 'src/app/components/vendor/projects/connect-setting/connect-setting.component';
 
 const routes: Routes = [
   {
@@ -263,41 +266,73 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'projects',
+        path: 'prodex',
         component: ProjectsContainerComponent,
         children: [
           {
-            path: 'settings',
-            component: ProjectSettingsComponent
+            path: 'projects',
+            component: ProdexProjectComponent,
+            children: [
+              {
+                path: 'settings',
+                component: ProjectSettingsComponent
+              },
+              {
+                path: 'project-release-queue',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'project-release-queue/:id',
+                component: OrderDetailComponent
+              },
+              {
+                path: 'vendor-confirmation-queue',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'vendor-confirmation-queue/:id',
+                component: OrderDetailComponent
+              },
+              {
+                path: 'released-projects',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'released-projects/:id',
+                component: OrderDetailComponent
+              },
+              {
+                path: '',
+                redirectTo: 'settings'
+              }
+            ]
           },
           {
-            path: 'project-release-queue',
-            component: ProjectsListComponent
+            path: 'connect',
+            component: ProdexConnectComponent,
+            children: [
+              {
+                path: 'settings',
+                component: ConnectSettingComponent
+              },
+              {
+                path: 'released-connect-projects',
+                component: ConnectSettingComponent
+              },
+              {
+                path: 'released-connect-projects/:id',
+                component: ConnectSettingComponent
+              },
+              {
+                path: '',
+                redirectTo: 'settings'
+              },
+              { path: '', redirectTo: 'settings', pathMatch: 'full' },
+              { path: '**', redirectTo: 'settings', pathMatch: 'full' }
+            ]
           },
-          {
-            path: 'project-release-queue/:id',
-            component: OrderDetailComponent
-          },
-          {
-            path: 'vendor-confirmation-queue',
-            component: ProjectsListComponent
-          },
-          {
-            path: 'vendor-confirmation-queue/:id',
-            component: OrderDetailComponent
-          },
-          {
-            path: 'released-projects',
-            component: ProjectsListComponent
-          },
-          {
-            path: 'released-projects/:id',
-            component: OrderDetailComponent
-          },
-          {
-            path: '',
-            redirectTo: 'settings'
-          }
+          { path: '', redirectTo: 'projects', pathMatch: 'full' },
+          { path: '**', redirectTo: 'projects', pathMatch: 'full' }
         ]
       },
       {

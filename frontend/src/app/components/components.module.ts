@@ -135,6 +135,9 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
 import { SettingsContainerComponent } from './vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from './vendor/settings/update-password/update-password.component';
 import { NotificationSettingComponent } from './vendor/settings/notification-setting/notification-setting.component';
+import { ProdexProjectComponent } from './vendor/projects/prodex-project/prodex-project.component';
+import { ProdexConnectComponent } from './vendor/projects/prodex-connect/prodex-connect.component';
+import { ConnectSettingComponent } from './vendor/projects/connect-setting/connect-setting.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -255,7 +258,10 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
     NotificationWidgetComponent,
     SettingsContainerComponent,
     UpdatePasswordComponent,
-    NotificationSettingComponent
+    NotificationSettingComponent,
+    ProdexProjectComponent,
+    ProdexConnectComponent,
+    ConnectSettingComponent
   ],
   imports: [
     CommonModule,

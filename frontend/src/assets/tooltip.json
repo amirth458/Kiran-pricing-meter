@@ -246,6 +246,19 @@
       "actions": []
     }
   ],
+  "connect": [
+    {
+      "name": "Settings",
+      "tooltipMessage": "Settings",
+      "route": "settings",
+      "actions": [
+        {
+          "name": "Save Settings",
+          "route": "save-connect-setting"
+        }
+      ]
+    }
+  ],
   "setting": [
     {
       "name": "Password",
