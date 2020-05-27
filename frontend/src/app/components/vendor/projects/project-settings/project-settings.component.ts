@@ -17,10 +17,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ProjectSettingsComponent implements OnInit {
   formGroup: FormGroup = this.fb.group({
-    baseCost: [null, Validators.required],
-    fee: [null, Validators.required],
-    maxNumberOfSupplierToRelease: [null, Validators.required],
-    minimumNumberOfQualifiedSupplier: [null, Validators.required]
+    baseCost: [0, [Validators.min(0), Validators.required]],
+    fee: [0, [Validators.min(0), Validators.required]],
+    maxNumberOfSupplierToRelease: [0, [Validators.min(0), Validators.required]],
+    minimumNumberOfQualifiedSupplier: [0, [Validators.min(0), Validators.required]]
   });
 
   constructor(
@@ -33,7 +33,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.get('minimumNumberOfQualifiedSupplier').setValidators(val => {
-      return val.value <= this.formGroup.value.maxNumberOfSupplierToRelease ? null : { invalid: true };
+      return val.value > 0 && val.value <= this.formGroup.value.maxNumberOfSupplierToRelease ? null : { invalid: true };
     });
     this.initSettings();
     this.actionService.saveProductionSettingAction().subscribe(() => {
@@ -63,8 +63,6 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   async save() {
-    this.formGroup.get('minimumNumberOfQualifiedSupplier').updateValueAndValidity();
-
     if (this.formGroup.valid && !this.formGroup.get('minimumNumberOfQualifiedSupplier').hasError('invalid')) {
       this.spinner.show();
       combineLatest([
