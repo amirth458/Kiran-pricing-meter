@@ -316,22 +316,16 @@ const routes: Routes = [
                 component: ConnectSettingComponent
               },
               {
-                path: 'released-connect-projects',
-                component: ConnectSettingComponent
+                path: 'connect-release-queue',
+                component: ProjectsListComponent
               },
               {
-                path: 'released-connect-projects/:id',
-                component: ConnectSettingComponent
+                path: 'connect-release-queue/:id',
+                component: OrderDetailComponent
               },
-              {
-                path: '',
-                redirectTo: 'settings'
-              },
-              { path: '', redirectTo: 'settings', pathMatch: 'full' },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]
           },
-          { path: '', redirectTo: 'projects', pathMatch: 'full' },
           { path: '**', redirectTo: 'projects', pathMatch: 'full' }
         ]
       },

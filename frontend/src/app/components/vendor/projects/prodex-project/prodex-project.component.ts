@@ -28,25 +28,12 @@ export class ProdexProjectComponent implements OnInit {
 
   ngOnInit() {
     this.route.url.subscribe(v => {
-      console.log(this.router.url);
       const routeArr = this.router.url.slice(this.router.url.indexOf('/projects/') + '/projects/'.length).split('/');
-
-      switch (routeArr[0]) {
-        case 'settings':
-          this.selectedTab = 'Settings';
-          break;
-        case 'project-release-queue':
-          this.selectedTab = 'Project Release Queue';
-          break;
-        case 'vendor-confirmation-queue':
-          this.selectedTab = 'Vendor Confirmation Queue';
-          break;
-        case 'released-projects':
-          this.selectedTab = 'Released Projects';
-          break;
-        default:
-          this.router.navigateByUrl(this.router.url + '/project-release-queue');
-          break;
+      const pos = (this.actionbarMenu || []).findIndex(_ => _.route === routeArr[0]);
+      if (pos !== -1) {
+        this.selectedTab = this.actionbarMenu[pos].name;
+      } else if (this.actionbarMenu.length) {
+        this.router.navigateByUrl(this.router.url + this.actionbarMenu[0].route);
       }
     });
   }

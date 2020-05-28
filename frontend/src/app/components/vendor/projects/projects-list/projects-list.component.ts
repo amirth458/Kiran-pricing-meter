@@ -46,48 +46,7 @@ export class ProjectsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.columnDefs = [
-      {
-        headerName: 'Part ID',
-        field: 'id',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'id'
-      },
-      {
-        headerName: 'Order ID',
-        field: 'orderId',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'order.id'
-      },
-      {
-        headerName: 'Project Type',
-        field: 'projectType',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'projectType'
-      },
-      {
-        headerName: 'Same Vendor',
-        field: 'sameVendor',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'sameVendor'
-      },
-      {
-        headerName: 'Customer',
-        field: 'customerName',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'customerName'
-      }
-    ];
+    this.initColumnDef();
 
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -130,6 +89,9 @@ export class ProjectsListComponent implements OnInit {
           case 'released-projects':
             ob = this.projectService.getReleasedProjects(filterOption, this.projectType);
             break;
+          case 'connect-release-queue':
+            ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
+            break;
           default:
         }
         ob.subscribe(data => {
@@ -157,7 +119,7 @@ export class ProjectsListComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
     this.gridOptions.api.setSortModel([
       {
-        colId: 'id',
+        colId: 'orderId',
         sort: 'desc'
       }
     ]);
@@ -168,5 +130,65 @@ export class ProjectsListComponent implements OnInit {
   onChangeProjectType(ev) {
     this.projectType = ev.target.value === 'null' ? null : ev.target.value;
     this.setDataSource();
+  }
+
+  initColumnDef() {
+    this.columnDefs = [
+      {
+        headerName: 'Order ID',
+        field: 'orderId',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'order.id'
+      },
+      {
+        headerName: 'Part ID',
+        field: 'id',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'id'
+      }
+    ];
+
+    if (this.type === 'connect-release-queue') {
+      this.columnDefs.push({
+        headerName: 'ProdEX Supplier Requested',
+        field: 'supplierCount',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'supplierCount'
+      });
+    } else {
+      this.columnDefs = this.columnDefs.concat([
+        {
+          headerName: 'Project Type',
+          field: 'projectType',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'projectType'
+        },
+        {
+          headerName: 'Same Vendor',
+          field: 'sameVendor',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'sameVendor'
+        }
+      ]);
+    }
+
+    this.columnDefs.push({
+      headerName: 'Customer',
+      field: 'customerName',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'customerName'
+    });
   }
 }

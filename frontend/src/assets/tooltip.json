@@ -257,6 +257,12 @@
           "route": "save-connect-setting"
         }
       ]
+    },
+    {
+      "name": "Release Queue",
+      "tooltipMessage": "Release Queue",
+      "route": "connect-release-queue",
+      "actions": []
     }
   ],
   "setting": [
