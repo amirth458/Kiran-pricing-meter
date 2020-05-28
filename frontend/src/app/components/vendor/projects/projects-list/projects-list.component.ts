@@ -127,11 +127,6 @@ export class ProjectsListComponent implements OnInit {
     this.setDataSource();
   }
 
-  onChangeProjectType(ev) {
-    this.projectType = ev.target.value === 'null' ? null : ev.target.value;
-    this.setDataSource();
-  }
-
   initColumnDef() {
     this.columnDefs = [
       {
