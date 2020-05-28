@@ -475,8 +475,12 @@ export class QueuedManualPriceComponent implements OnInit {
           this.rowData[activeRFQ ? 1 : 3] = [...this.rowData[activeRFQ ? 1 : 3]];
         });
       }
-      if (this.selectedTabId === 1) {
-        this.setSelectedData(this.rowData[activeRFQ ? 1 : 3]);
+      if (this.selectedTabId === 1 && this.showExpiredRFQ) {
+        this.setSelectedData(this.rowData[3]);
+        this.gridOptions.api.hideOverlay();
+      }
+      if (this.selectedTabId === 1 && !this.showExpiredRFQ) {
+        this.setSelectedData(this.rowData[1]);
         this.gridOptions.api.hideOverlay();
       }
     } catch (e) {
