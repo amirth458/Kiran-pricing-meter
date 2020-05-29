@@ -131,36 +131,53 @@ export class ProjectsListComponent implements OnInit {
   }
 
   initColumnDef() {
-    this.columnDefs = [
-      {
-        headerName: 'Order ID',
-        field: 'orderId',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'order.id'
-      },
-      {
-        headerName: 'Part ID',
-        field: 'id',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'id'
+    if (this.type === 'release-queue' || this.type === 'order-complete') {
+      this.columnDefs = [
+        {
+          headerName: 'Order ID',
+          field: 'orderId',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'order.id'
+        },
+        {
+          headerName: 'Part ID',
+          field: 'id',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'id'
+        }
+      ];
+      if (this.type === 'release-queue') {
+        this.columnDefs.push({
+          headerName: 'ProdEX Supplier Requested',
+          field: 'supplierCount',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'supplierCount'
+        });
       }
-    ];
-
-    if (this.type === 'connect-release-queue') {
-      this.columnDefs.push({
-        headerName: 'ProdEX Supplier Requested',
-        field: 'supplierCount',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'supplierCount'
-      });
     } else {
-      this.columnDefs = this.columnDefs.concat([
+      this.columnDefs = [
+        {
+          headerName: 'Part ID',
+          field: 'id',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'id'
+        },
+        {
+          headerName: 'Order ID',
+          field: 'orderId',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'order.id'
+        },
         {
           headerName: 'Project Type',
           field: 'projectType',
@@ -177,7 +194,7 @@ export class ProjectsListComponent implements OnInit {
           filter: false,
           tooltipField: 'sameVendor'
         }
-      ]);
+      ];
     }
 
     this.columnDefs.push({
