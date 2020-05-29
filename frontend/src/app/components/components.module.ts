@@ -139,6 +139,9 @@ import { ProdexProjectComponent } from './vendor/projects/prodex-project/prodex-
 import { ProdexConnectComponent } from './vendor/projects/prodex-connect/prodex-connect.component';
 import { ConnectSettingComponent } from './vendor/projects/connect-setting/connect-setting.component';
 import { ChipComponent } from '../common/chip/chip.component';
+import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
+import { PartListComponent } from '../common/part-list/part-list.component';
+import { RefFileComponent } from '../common/ref-file/ref-file.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -263,7 +266,10 @@ import { ChipComponent } from '../common/chip/chip.component';
     ProdexProjectComponent,
     ProdexConnectComponent,
     ConnectSettingComponent,
-    ChipComponent
+    ChipComponent,
+    ConnectOrderDetailsComponent,
+    PartListComponent,
+    RefFileComponent
   ],
   imports: [
     CommonModule,

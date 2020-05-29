@@ -1,0 +1,62 @@
+<div class="w-100 row pl-2 d-flex flex-row summary text-theme">
+  <div class="col-12 p-0 d-flex flex-wrap part-list">
+    <div *ngFor="let item of parts" class="part-item mt-2 ml-4">
+      <p class="part-name font-weight-bold mb-0">Part {{ item?.rfqMedia?.id }}.{{ item?.id }}</p>
+      <!-- Image -->
+      <img
+        [src]="item?.rfqMedia?.media?.partDimension?.thumbnail200Location || '../../../../assets/image/no-preview.png'"
+        alt=""
+        height="80px"
+        width="80px"
+      />
+      <app-view-in-three-d [connectorServiceId]="item?.connectorServiceId"></app-view-in-three-d>
+
+      <!-- Part Details -->
+      <div class="details">
+        <p class="d-flex mb-1 text-truncate" placement="top" [ngbTooltip]="item?.fileName">
+          <span class="name">File: </span>
+          <a [href]="item?.rfqMedia?.media?.location" target="_blank">
+            <span
+              class="value text-theme-green font-weight-bold underline download-file text-truncate"
+              [ngbTooltip]="item?.rfqMedia?.media?.name"
+            >
+              {{ item?.rfqMedia?.media?.name }}
+            </span>
+          </a>
+        </p>
+        <p class="d-flex mb-1">
+          <span class="name">Quantity: </span>
+          <span class="value text-theme-green font-weight-bold">{{ item?.quantity }}</span>
+        </p>
+        <p class="d-flex mb-1">
+          <span class="name">Material: </span>
+          <span
+            class="value text-theme-green font-weight-bold"
+            [ngbTooltip]="(item?.materialPropertyValues || []).join(' OR ')"
+            >{{ (item?.materialPropertyValues || []).join(' OR ') }}</span
+          >
+        </p>
+        <p class="d-flex mb-1">
+          <span class="name">Technology: </span>
+          <span
+            class="value text-theme-green font-weight-bold"
+            [ngbTooltip]="(item?.equipmentPropertyValues || []).join(' OR ')"
+            >{{ (item?.equipmentPropertyValues || []).join(' OR ') }}</span
+          >
+        </p>
+        <p class="d-flex mb-1">
+          <span class="name">Post-Process: </span>
+          <span class="value text-theme-green font-weight-bold">
+            -
+            <!-- {{ preparePostProcessValues(item?.postProcessTypeIds) }} -->
+          </span>
+        </p>
+        <!-- TODO: -->
+        <!--Find out what status is allowed to view ref file -->
+        <p *ngIf="showRefFile">
+          <app-ref-file [value]="item.id"> </app-ref-file>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

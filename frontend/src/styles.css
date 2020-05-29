@@ -93,8 +93,16 @@ a.link {
   cursor: pointer;
 }
 
+.font-sm {
+  font-size: 12px !important;
+}
+
 .hover-bold:hover {
   font-weight: bold;
+}
+
+.hover-underline:hover {
+  text-decoration: underline;
 }
 
 .form-control:disabled,

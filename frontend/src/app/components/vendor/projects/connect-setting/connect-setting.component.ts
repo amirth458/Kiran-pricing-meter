@@ -17,7 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ConnectSettingComponent implements OnInit {
   formGroup: FormGroup = this.fb.group({
-    maxNumberOfSupplierToRelease: [null, Validators.required],
+    numberOfCustomerSupplierToSelect: [null, Validators.required],
     baseCost: [null, Validators.required],
     fee: [null, Validators.required]
   });

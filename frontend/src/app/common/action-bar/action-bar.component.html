@@ -51,7 +51,9 @@
           route.url.startsWith('/projects/project-release-queue/') ||
           route.url.startsWith('/projects/vendor-confirmation-queue/') ||
           route.url.startsWith('/projects/released-projects/') ||
-          route.url.startsWith('/pricing/production-orders/released-orders/'))
+          route.url.startsWith('/pricing/production-orders/released-orders/') ||
+          route.url.startsWith('/prodex/connect/release-queue/') ||
+          route.url.startsWith('/prodex/connect/order-complete/'))
       "
     >
       <button type="button" class="btn btn-add theme white" (click)="backButton()">
