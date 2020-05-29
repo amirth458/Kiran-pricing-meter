@@ -73,6 +73,7 @@ import { NotificationSettingComponent } from 'src/app/components/vendor/settings
 import { ProdexProjectComponent } from 'src/app/components/vendor/projects/prodex-project/prodex-project.component';
 import { ProdexConnectComponent } from 'src/app/components/vendor/projects/prodex-connect/prodex-connect.component';
 import { ConnectSettingComponent } from 'src/app/components/vendor/projects/connect-setting/connect-setting.component';
+import { ConnectOrderDetailsComponent } from 'src/app/components/vendor/projects/connect-order-details/connect-order-details.component';
 
 const routes: Routes = [
   {
@@ -316,12 +317,20 @@ const routes: Routes = [
                 component: ConnectSettingComponent
               },
               {
-                path: 'connect-release-queue',
+                path: 'release-queue',
                 component: ProjectsListComponent
               },
               {
-                path: 'connect-release-queue/:id',
-                component: OrderDetailComponent
+                path: 'order-complete',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'release-queue/:id',
+                component: ConnectOrderDetailsComponent
+              },
+              {
+                path: 'order-complete/:id',
+                component: ConnectOrderDetailsComponent
               },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]

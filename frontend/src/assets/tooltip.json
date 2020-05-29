@@ -261,7 +261,13 @@
     {
       "name": "Release Queue",
       "tooltipMessage": "Release Queue",
-      "route": "connect-release-queue",
+      "route": "release-queue",
+      "actions": []
+    },
+    {
+      "name": "Order Complete",
+      "tooltipMessage": "Order Complete",
+      "route": "order-complete",
       "actions": []
     }
   ],

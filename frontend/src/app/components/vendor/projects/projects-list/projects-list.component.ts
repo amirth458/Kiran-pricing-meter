@@ -89,7 +89,10 @@ export class ProjectsListComponent implements OnInit {
           case 'released-projects':
             ob = this.projectService.getReleasedProjects(filterOption, this.projectType);
             break;
-          case 'connect-release-queue':
+          case 'release-queue':
+            ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
+            break;
+          case 'order-complete':
             ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
             break;
           default:
