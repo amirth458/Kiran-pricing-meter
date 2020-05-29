@@ -1,9 +1,6 @@
-<div *ngIf="!inModal" class="button-wrapper shadow">
-  <button type="button" (click)="approveUsers($event)" class="button-approve">
-    Approve
-  </button>
-  <button type="button" (click)="onDeclineUsers($event)" class="button-decline">
-    Decline
+<div class="button-wrapper shadow">
+  <button class="btn theme add-btn" (click)="addVendor()">
+    Add Vendor
   </button>
 </div>
 
@@ -54,7 +51,17 @@
         </div>
       </div>
 
-      <span *ngIf="!inModal" class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
+      <div *ngIf="!inModal" class="d-flex align-items-center justify-content-between mb-3">
+        <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
+        <div class="d-flex align-items-center ml-3">
+          <button type="button" (click)="approveUsers($event)" class="button-approve">
+            Approve
+          </button>
+          <button type="button" (click)="onDeclineUsers($event)" class="button-decline">
+            Decline
+          </button>
+        </div>
+      </div>
     </div>
 
     <div *ngIf="inModal && (getSelection || []).length" class="d-flex selection-view font-sm">

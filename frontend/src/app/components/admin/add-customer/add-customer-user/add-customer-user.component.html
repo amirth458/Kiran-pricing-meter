@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-12">
+    <div class="wrapper shadow">
+      <form [formGroup]="contactForm" class="needs-validation" (submit)="save($event)">
+        <div class="form-row">
+          <div class="form-group theme col-md-12">
+            <label>Email Address(username) <span class="asterisk">*</span></label>
+            <input
+              (change)="onChange()"
+              required
+              formControlName="userEmail"
+              class="form-control"
+              placeholder="Email"
+            />
+            <span *ngIf="showRequired('userEmail', 1)" class="footnote red">* Required</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>First Name <span class="asterisk">*</span></label>
+            <input
+              (change)="onChange()"
+              required
+              formControlName="userFirstName"
+              class="form-control"
+              placeholder="First Name"
+            />
+            <span *ngIf="showRequired('userFirstName', 1)" class="footnote red">* Required</span>
+          </div>
+          <div class="form-group theme col-md-6">
+            <label>Last Name <span class="asterisk">*</span></label>
+            <input
+              (change)="onChange()"
+              required
+              formControlName="userLastName"
+              class="form-control"
+              placeholder="Last Name"
+            />
+            <span *ngIf="showRequired('userLastName', 1)" class="footnote red">* Required</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>Password <span class="asterisk">*</span></label>
+            <input
+              (change)="onChange()"
+              required
+              formControlName="userPassword"
+              class="form-control"
+              placeholder="password"
+              type="password"
+            />
+            <span *ngIf="showRequired('userPassword', 1)" class="footnote red">* Required</span>
+          </div>
+          <div class="form-group theme col-md-6">
+            <label>Confirm Password <span class="asterisk">*</span></label>
+            <input
+              (change)="onChange()"
+              required
+              formControlName="confirmPassword"
+              class="form-control"
+              placeholder="password"
+              type="password"
+            />
+            <span *ngIf="contactForm.hasError('notSame')" class="footnote red">Passwords do not match</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-12 phone">
+            <label>Phone <span class="asterisk">*</span></label>
+            <international-phone-number
+              formControlName="userPhoneNo"
+              placeholder="Enter phone number"
+              [required]="true"
+              name="phone_number"
+              (change)="onChange()"
+            ></international-phone-number>
+            <span *ngIf="showRequired('userPhoneNo', 1)" class="footnote red">* Required</span>
+            <span
+              *ngIf="!showRequired('userPhoneNo', 1) && contactForm.controls.userPhoneNo.status === 'INVALID'"
+              class="footnote red"
+              >* Phone number is invalid.</span
+            >
+          </div>
+        </div>
+        <div class="form-row mt-5" style="justify-content: center;">
+          <div class="form-group col-md-3 container-continue">
+            <button type="button" (click)="save($event)" class="btn btn-contniue theme">
+              Continue
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

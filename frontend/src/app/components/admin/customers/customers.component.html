@@ -1,4 +1,8 @@
-<div class="button-wrapper shadow"></div>
+<div class="button-wrapper shadow">
+  <button class="btn theme add-btn" (click)="addCustomer()">
+    Add Customer
+  </button>
+</div>
 <div class="wrapper" *ngIf="gridOptions">
   <div class="table-control">
     <app-column-search-filter

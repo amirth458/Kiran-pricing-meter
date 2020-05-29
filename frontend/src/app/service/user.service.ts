@@ -18,6 +18,16 @@ export class UserService {
   accessToken = null;
   vendorInfo = null;
 
+  public static customerRegistrationFormValidity = {
+    user: false,
+    contact: false
+  };
+  public static vendorRegistrationFormValidity = {
+    user: false,
+    vendor: false,
+    machine: false
+  };
+
   constructor(public http: HttpClient, public route: Router) {}
   getHeader(userId: number = 0, roleId: number = 0): HttpHeaders {
     const headers = new HttpHeaders()
@@ -359,5 +369,79 @@ export class UserService {
 
   markVendorProfileAsTest(vendorId: number): Observable<any> {
     return this.http.put<any>(`${environment.managementBaseUrl}/users/vendor/${vendorId}/mark-account-as-test`, null);
+  }
+
+  getRegisterCustomerInfo() {
+    return JSON.parse(localStorage.getItem('procurement-RegisterCustomer'));
+  }
+
+  setRegisterCustomerInfo(user) {
+    localStorage.setItem('procurement-RegisterCustomer', JSON.stringify(user));
+  }
+
+  getRegisterContactInfo() {
+    return JSON.parse(localStorage.getItem('procurement-RegisterContact'));
+  }
+
+  setRegisterContactInfo(contact) {
+    localStorage.setItem('procurement-RegisterContact', JSON.stringify(contact));
+  }
+
+  setCustomerRegistrationFormValidity(key, value) {
+    if (Object.keys(UserService.customerRegistrationFormValidity).includes(key)) {
+      UserService.customerRegistrationFormValidity[key] = value;
+    }
+  }
+
+  getCustomerRegistrationFormValidity() {
+    return UserService.customerRegistrationFormValidity;
+  }
+
+  validatePromoCode(promoCode: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.procurementApiBaseUrl}/promotion/${promoCode}/validate`);
+  }
+
+  getVendorRegisterUserInfo() {
+    return JSON.parse(localStorage.getItem('admin-VendorRegisterUser'));
+  }
+
+  setVendorRegisterUserInfo(user) {
+    localStorage.setItem('admin-VendorRegisterUser', JSON.stringify(user));
+  }
+
+  getVendorRegisterVendorInfo() {
+    return JSON.parse(localStorage.getItem('admin-VendorRegisterVendor'));
+  }
+
+  setVendorRegisterVendorInfo(vendor) {
+    localStorage.setItem('admin-VendorRegisterVendor', JSON.stringify(vendor));
+  }
+
+  getVendorRegisterMachineInfo() {
+    return JSON.parse(localStorage.getItem('admin-VendorRegisterMachines'));
+  }
+
+  setVendorRegisterMachineInfo(machines) {
+    localStorage.setItem('admin-VendorRegisterMachines', JSON.stringify(machines));
+  }
+
+  getVendorRegistrationFormValidity() {
+    return UserService.vendorRegistrationFormValidity;
+  }
+
+  setVendorRegistrationFormValidity(key, value) {
+    if (Object.keys(UserService.vendorRegistrationFormValidity).includes(key)) {
+      UserService.vendorRegistrationFormValidity[key] = value;
+    }
+  }
+
+  registerVendor(user) {
+    const url = `${environment.managementBaseUrl}/users/signup`;
+    return this.http.post(url, user);
+  }
+
+  registerCustomer(user) {
+    const url = `${environment.procurementApiBaseUrl}/customer/signup`;
+    return this.http.post(url, user);
   }
 }

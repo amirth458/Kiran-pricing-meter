@@ -36,10 +36,10 @@ import { PurchaseOrderItemComponent } from 'src/app/components/vendor/billing/pu
 import { ProjectsContainerComponent } from 'src/app/components/vendor/projects/projects-container/projects-container.component';
 import { OrderDetailComponent } from 'src/app/components/vendor/projects/order-detail/order-detail.component';
 import { CustomersComponent } from 'src/app/components/admin/customers/customers.component';
-import { CustomerViewComponent } from 'src/app/components/admin/customer-view/customer-view.component';
-import { ContactComponent } from 'src/app/components/admin/contact/contact.component';
-import { PasswordComponent } from 'src/app/components/admin/password/password.component';
-import { ShippingComponent } from 'src/app/components/admin/shipping/shipping.component';
+import { CustomerViewComponent } from 'src/app/components/admin/customer-details/customer-view/customer-view.component';
+import { ContactComponent } from 'src/app/components/admin/customer-details/contact/contact.component';
+import { PasswordComponent } from 'src/app/components/admin/customer-details/password/password.component';
+import { ShippingComponent } from 'src/app/components/admin/customer-details/shipping/shipping.component';
 import { ProjectsListComponent } from 'src/app/components/vendor/projects/projects-list/projects-list.component';
 
 import { InsightContainerComponent } from './../../components/vendor/insight/insight-container/insight-container.component';
@@ -74,6 +74,13 @@ import { ProdexProjectComponent } from 'src/app/components/vendor/projects/prode
 import { ProdexConnectComponent } from 'src/app/components/vendor/projects/prodex-connect/prodex-connect.component';
 import { ConnectSettingComponent } from 'src/app/components/vendor/projects/connect-setting/connect-setting.component';
 import { ConnectOrderDetailsComponent } from 'src/app/components/vendor/projects/connect-order-details/connect-order-details.component';
+import { AddCustomerContainerComponent } from 'src/app/components/admin/add-customer/add-customer-container/add-customer-container.component';
+import { AddCustomerUserComponent } from 'src/app/components/admin/add-customer/add-customer-user/add-customer-user.component';
+import { AddCustomerCompanyComponent } from 'src/app/components/admin/add-customer/add-customer-company/add-customer-company.component';
+import { AddVendorContainerComponent } from 'src/app/components/admin/add-vendor/add-vendor-container/add-vendor-container.component';
+import { AddVendorUserComponent } from 'src/app/components/admin/add-vendor/add-vendor-user/add-vendor-user.component';
+import { AddVendorDetailComponent } from 'src/app/components/admin/add-vendor/add-vendor-detail/add-vendor-detail.component';
+import { AddVendorMachineComponent } from 'src/app/components/admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
 
 const routes: Routes = [
   {
@@ -227,6 +234,27 @@ const routes: Routes = [
               { path: 'user', component: ContactComponent },
               { path: 'contact', component: PasswordComponent },
               { path: 'shipping', component: ShippingComponent },
+              { path: '', redirectTo: 'user', pathMatch: 'full' },
+              { path: '**', redirectTo: 'user', pathMatch: 'full' }
+            ]
+          },
+          {
+            path: 'add-customer',
+            component: AddCustomerContainerComponent,
+            children: [
+              { path: 'user', component: AddCustomerUserComponent },
+              { path: 'customer', component: AddCustomerCompanyComponent },
+              { path: '', redirectTo: 'user', pathMatch: 'full' },
+              { path: '**', redirectTo: 'user', pathMatch: 'full' }
+            ]
+          },
+          {
+            path: 'add-vendor',
+            component: AddVendorContainerComponent,
+            children: [
+              { path: 'user', component: AddVendorUserComponent },
+              { path: 'vendor', component: AddVendorDetailComponent },
+              { path: 'machine', component: AddVendorMachineComponent },
               { path: '', redirectTo: 'user', pathMatch: 'full' },
               { path: '**', redirectTo: 'user', pathMatch: 'full' }
             ]

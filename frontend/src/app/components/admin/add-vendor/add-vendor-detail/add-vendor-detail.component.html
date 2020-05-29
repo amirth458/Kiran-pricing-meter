@@ -1,0 +1,293 @@
+<div class="row">
+  <div class="col-12">
+    <div class="wrapper shadow">
+      <form [formGroup]="form" class="needs-validation" (submit)="saveVenorInformation($event)">
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>Vendor Name<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="name"
+              class="form-control"
+              placeholder="Vendor Name"
+              [class.is-invalid]="submitted && controls.name.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.name.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.name.errors">
+              <div *ngIf="controls.name.errors.required" class="footnote red">
+                * Vendor name is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3">
+            <label>Vendor Type<span class="asterix">*</span></label>
+            <select
+              required
+              formControlName="vendorType"
+              (change)="onChangeVendorType($event)"
+              class="form-control"
+              [class.is-invalid]="submitted && controls.vendorType.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.vendorType.errors)"
+            >
+              <option selected value="">Choose...</option>
+              <option *ngFor="let item of vendorTypes" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="submitted && controls.vendorType.errors">
+              <div *ngIf="controls.vendorType.errors.required" class="footnote red">
+                * Vendor Type is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3">
+            <label>Vendor Industry<span class="asterix">*</span></label>
+            <select
+              required
+              formControlName="vendorIndustry"
+              class="form-control"
+              [class.is-invalid]="submitted && controls.vendorIndustry.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.vendorIndustry.errors)"
+            >
+              <option selected value="">Choose...</option>
+              <option *ngFor="let item of vendorIndustries" [value]="item.id" [disabled]="checkDisable(item.id)">
+                {{ item.name }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="submitted && controls.vendorType.errors">
+              <div *ngIf="controls.vendorType.errors.required" class="footnote red">
+                * Vendor Industry is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-3">
+            <label>Primary Contact Name<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="primaryContactFirstName"
+              class="form-control"
+              placeholder="First Name"
+              [class.is-invalid]="submitted && controls.primaryContactFirstName.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.primaryContactFirstName.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.primaryContactFirstName.errors">
+              <div *ngIf="controls.primaryContactFirstName.errors.required" class="footnote red">
+                * Primary Contact Name is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3">
+            <label>&nbsp;</label>
+            <input
+              required
+              formControlName="primaryContactLastName"
+              class="form-control"
+              placeholder="Last Name"
+              [class.is-invalid]="submitted && controls.primaryContactLastName.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.primaryContactLastName.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.primaryContactLastName.errors">
+              <div *ngIf="controls.primaryContactLastName.errors.required" class="footnote red">
+                * Primary Contact Last Name is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3">
+            <label>Email<span class="asterix">*</span></label>
+            <input
+              required
+              type="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Email"
+              [class.is-invalid]="submitted && controls.email.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.email.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.email.errors">
+              <div *ngIf="controls.email.errors.required" class="footnote red">
+                * Email is required
+              </div>
+              <div *ngIf="controls.email.errors.email" class="footnote red">
+                Email must be a valid email address
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3 phone">
+            <label>Phone<span class="asterix">*</span></label>
+            <international-phone-number
+              *ngIf="isNewPhone"
+              formControlName="phone"
+              placeholder="Enter phone number"
+              [defaultCountry]="'us'"
+              [required]="true"
+              name="phone_number"
+              [ngClass]="{ 'is-invalid': submitted && controls.phone.errors }"
+            >
+            </international-phone-number>
+            <international-phone-number
+              *ngIf="!isNewPhone"
+              formControlName="phone"
+              placeholder="Enter phone number"
+              [required]="true"
+              name="phone_number"
+              [ngClass]="{ 'is-invalid': submitted && controls.phone.errors }"
+            >
+            </international-phone-number>
+            <div class="invalid-feedback d-block" *ngIf="submitted && controls.phone.errors">
+              <span *ngIf="controls.phone.errors.required" class="footnote red">
+                * Phone number is required
+              </span>
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="submitted && controls.phone.status === 'INVALID'">
+              <div class="footnote red">* Phone number is invalid.</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-3">
+            <label>Street 1<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="street1"
+              class="form-control"
+              placeholder="1234 Main St"
+              [class.is-invalid]="submitted && controls.street1.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.street1.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.street1.errors">
+              <div *ngIf="controls.street1.errors.required" class="footnote red">
+                * Street 1 is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3">
+            <label>Street 2</label>
+            <input formControlName="street2" class="form-control" placeholder="1234 Main St" />
+          </div>
+          <div class="form-group theme col-md-6">
+            <label>City<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="city"
+              class="form-control"
+              [class.is-invalid]="submitted && controls.city.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.city.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.city.errors">
+              <div *ngIf="controls.city.errors.required" class="footnote red">
+                * City is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-3">
+            <label>State/Territory/Region<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="state"
+              class="form-control"
+              [class.is-invalid]="submitted && controls.state.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.state.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.state.errors">
+              <div *ngIf="controls.state.errors.required" class="footnote red">
+                * State is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-3">
+            <label>Zip<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="zipCode"
+              class="form-control"
+              placeholder="Zip Code"
+              [pattern]="zipPattern"
+              [class.is-invalid]="controls.zipCode.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.zipCode.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.zipCode.errors">
+              <div *ngIf="controls.zipCode.errors.required" class="footnote red">
+                * Zip Code is required
+              </div>
+            </div>
+          </div>
+          <div id="countryComponent" class="form-group theme col-md-6">
+            <label>Country<span class="asterix">*</span></label>
+            <select
+              required
+              formControlName="country"
+              class="form-control"
+              (change)="onCountryChange($event)"
+              [class.is-invalid]="submitted && controls.country.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.country.errors)"
+            >
+              <option selected value="">Choose...</option>
+              <option *ngFor="let item of countries" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="submitted && controls.country.errors">
+              <div *ngIf="controls.country.errors.required" class="footnote red">
+                * Country is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label class="mb-0">
+              Opt Into ProdEX Project Opportunities
+            </label>
+            <div class="footnote">
+              By marking this box YES and clicking the CONTINUE button, I acknowledge that I have read and agreed to be
+              bound by the ProdEX provisions of the
+              <div class="link">
+                <a [href]="agreementUrl" target="_blank">
+                  Shopsight User Agreement
+                </a>
+              </div>
+            </div>
+
+            <select formControlName="confidentiality" (change)="onChangeConfidentiality($event)" class="form-control">
+              <option selected value="0" [disabled]="disableConfidentiality">Choose...</option>
+              <option *ngFor="let item of confidentialities" [disabled]="disableConfidentiality" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group theme col-md-6 align-bottom">
+            <div class="w-100">
+              <label>Certifications</label>
+              <ng-select
+                [multiple]="true"
+                dropdownPosition="top"
+                [virtualScroll]="true"
+                [hideSelected]="true"
+                placeholder="Certifications"
+                [selectOnTab]="true"
+                [(ngModel)]="selectedCertifications"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <ng-option *ngFor="let item of certifications" [value]="item.id">
+                  {{ item.name }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="form-row justify-content-center align-items-center">
+          <div class="form-group col-md-3 container-continue">
+            <button type="submit" (click)="saveVenorInformation($event)" class="btn btn-contniue theme">
+              Continue
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
