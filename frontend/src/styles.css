@@ -92,6 +92,11 @@ a.link {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.hover-bold:hover {
+  font-weight: bold;
+}
+
 .form-control:disabled,
 .form-control[readonly] {
   background-color: #e9ecef !important;
@@ -680,6 +685,7 @@ app-dropdown-cell-renderer {
   width: 100%;
   border-bottom: 1px solid;
 }
+
 .search-box input,
 .search-box input:focus,
 .search-box input:active {
