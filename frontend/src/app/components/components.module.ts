@@ -142,6 +142,7 @@ import { AddCustomerUserComponent } from './admin/add-customer/add-customer-user
 import { AddCustomerCompanyComponent } from './admin/add-customer/add-customer-company/add-customer-company.component';
 import { AddVendorDetailComponent } from './admin/add-vendor/add-vendor-detail/add-vendor-detail.component';
 import { AddVendorMachineComponent } from './admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
+import { ChipComponent } from '../common/chip/chip.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -269,7 +270,8 @@ import { AddVendorMachineComponent } from './admin/add-vendor/add-vendor-machine
     AddCustomerUserComponent,
     AddCustomerCompanyComponent,
     AddVendorDetailComponent,
-    AddVendorMachineComponent
+    AddVendorMachineComponent,
+    ChipComponent
   ],
   imports: [
     CommonModule,

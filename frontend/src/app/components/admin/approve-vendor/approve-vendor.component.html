@@ -3,6 +3,7 @@
     Add Vendor
   </button>
 </div>
+
 <div class="wrapper" *ngIf="gridOptions">
   <div class="table-control">
     <app-column-search-filter
@@ -15,40 +16,91 @@
     >
     </app-column-search-filter>
   </div>
-  <div class="table d-flex flex-column">
+  <div class="table theme-table user-list">
     <div class="d-flex align-items-center justify-content-between mb-3">
-      <span class="text-dark-blue font-sm text-left">total: {{ totalcounts }}</span>
-      <div class="d-flex align-items-center">
-        <button type="button" (click)="approveUsers($event)" class="button-approve">
-          Approve
-        </button>
-        <button type="button" (click)="onDeclineUsers($event)" class="button-decline">
-          Decline
-        </button>
+      <div class="search-box d-flex align-items-center">
+        <input
+          class="mr-3"
+          placeholder="Vendor Name"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="searchDebouncer.next()"
+        />
+        <span class="text-theme cursor-pointer" *ngIf="!(searchQuery?.length > 3)">
+          <i class="fa fa-search"></i>
+        </span>
+        <span
+          class=" text-theme clear-query cursor-pointer"
+          *ngIf="searchQuery?.length > 3"
+          (click)="searchQuery = ''; searchDebouncer.next()"
+        >
+          <i class="fa fa-times"></i>
+        </span>
+      </div>
+
+      <div *ngIf="inModal" class="controls w-100 row">
+        <div class="col-8"></div>
+        <div class="col-2">
+          <button type="button" class="btn w-100 theme" (click)="linkVendor()">
+            Link Vendor
+          </button>
+        </div>
+        <div class="col-2">
+          <button type="button" class="btn w-100 theme white" (click)="closeLinkModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!inModal" class="d-flex align-items-center justify-content-between mb-3">
+        <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
+        <div class="d-flex align-items-center">
+          <button type="button" (click)="approveUsers($event)" class="button-approve">
+            Approve
+          </button>
+          <button type="button" (click)="onDeclineUsers($event)" class="button-decline">
+            Decline
+          </button>
+        </div>
       </div>
     </div>
-    <div class="theme-table user-list flex-grow-1">
-      <ag-grid-angular
-        style="width: 100%; height: 100%;"
-        class="ag-theme-balham"
-        [rowData]="rowData"
-        [gridOptions]="gridOptions"
-        (gridReady)="onGridReady($event)"
-        rowModelType="infinite"
-        [cacheBlockSize]="pageSize"
-      >
-      </ag-grid-angular>
-      <ngx-spinner
-        [name]="'spooler'"
-        bdColor="#ffffff80"
-        size="small"
-        color="#74bf09"
-        type="ball-clip-rotate"
-        [fullScreen]="false"
-      >
-        <p class="m-0">Loading...</p>
-      </ngx-spinner>
+
+    <div *ngIf="inModal && (getSelection || []).length" class="d-flex selection-view font-sm">
+      <div class="d-flex flex-wrap align-items-center mx-3">
+        <app-chip
+          *ngFor="let item of getSelection"
+          [label]="item.label"
+          [index]="item.node"
+          (removeItem)="removeItem($event)"
+        ></app-chip>
+        <a (click)="clearSelection()" class="d-flex align-items-center mx-2">
+          <i class="fa fa-times"></i>&nbsp;
+          <span class="text-theme cursor-pointer text-decoration-underline text-nowrap">
+            Clear all
+          </span>
+        </a>
+      </div>
     </div>
+
+    <ag-grid-angular
+      style="width: 100%; height: 90%;"
+      class="ag-theme-balham"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)"
+      rowModelType="infinite"
+      [cacheBlockSize]="pageSize"
+    >
+    </ag-grid-angular>
+    <ngx-spinner
+      [name]="'spooler'"
+      bdColor="#ffffff80"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
   </div>
 </div>
 
