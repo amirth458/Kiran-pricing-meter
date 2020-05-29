@@ -89,6 +89,8 @@ export interface PartOrder {
   isReleaseToSingleSupplier: boolean;
   partList: Part[];
   createdDate: string;
+
+  preferredVendors?: number[];
 }
 
 export interface PartQuoteInvoiceLineItem {

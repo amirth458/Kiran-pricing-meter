@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { StatusTypes } from '../model/connect.model';
+import { Pageable } from '../model/pageable.model';
+import { PartOrder } from '../model/part.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +56,27 @@ export class ProjectService {
     }
     return this.http.post<any>(url, { statusIds: [3], projectType }, { params });
   }
+
+  getConnectReleasedProjects(filterOption: FilterOption): Observable<Pageable<PartOrder>> {
+    const url = `${environment.apiBaseUrl}/admin/customer/customer-order/search`;
+    let params = new HttpParams();
+
+    if (filterOption) {
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
+      params = params.append('sort', filterOption.sort.toString());
+    }
+    return this.http.post<Pageable<PartOrder>>(
+      url,
+      {
+        orderStatusId: 5,
+        projectTypeId: 4
+      },
+      { params }
+    );
+  }
+
+  getConnectProject(customerOrderId);
 
   getProdExSupplier() {
     return of([

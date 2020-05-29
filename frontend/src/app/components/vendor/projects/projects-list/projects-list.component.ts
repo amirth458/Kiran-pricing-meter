@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { ProjectType } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { Part } from 'src/app/model/part.model';
+import { Part, PartOrder } from 'src/app/model/part.model';
 import { ProjectService } from 'src/app/service/project.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { Observable } from 'rxjs';
+import { Pageable } from 'src/app/model/pageable.model';
 
 @Component({
   selector: 'app-projects-list',
@@ -17,7 +18,9 @@ import { Observable } from 'rxjs';
 })
 export class ProjectsListComponent implements OnInit {
   autoQuotedIds = [];
-  columnDefs = [];
+  columnDefs: ColDef[] = [];
+  connectColumnDefs: ColDef[] = [];
+
   gridOptions: GridOptions;
   projectTypes = [];
   projectType = null;
@@ -40,6 +43,7 @@ export class ProjectsListComponent implements OnInit {
   ) {
     this.metadataService.getMetaData('project_type').subscribe(v => {
       this.projectTypes = v.map(item => ({ ...item, displayName: ProjectType[item.name] }));
+      console.log({ projectTypes: this.projectTypes });
     });
 
     this.type = router.url.split('/')[3];
@@ -50,7 +54,8 @@ export class ProjectsListComponent implements OnInit {
 
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
-      columnDefs: this.columnDefs,
+      columnDefs:
+        this.type === 'release-queue' || this.type === 'order-complete' ? this.connectColumnDefs : this.columnDefs,
       paginationPageSize: this.pageSize,
       maxConcurrentDatasourceRequests: 1,
       rowModelType: 'infinite',
@@ -63,7 +68,11 @@ export class ProjectsListComponent implements OnInit {
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0,
       onRowClicked: event => {
-        this.router.navigateByUrl(`${this.router.url}/${event.data.id}`);
+        this.router.navigateByUrl(
+          this.type === 'release-queue' || this.type === 'order-complete'
+            ? `${this.router.url}/${event.data.orderId}`
+            : `${this.router.url} / ${event.data.id}`
+        );
       }
     };
   }
@@ -90,22 +99,35 @@ export class ProjectsListComponent implements OnInit {
             ob = this.projectService.getReleasedProjects(filterOption, this.projectType);
             break;
           case 'release-queue':
-            ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
+            ob = this.projectService.getConnectReleasedProjects(filterOption);
             break;
           case 'order-complete':
-            ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
+            ob = this.projectService.getConnectReleasedProjects(filterOption);
             break;
           default:
         }
         ob.subscribe(data => {
           this.spinner.hide('spooler');
-          const rowsThisPage = data.content.map((item: Part) => ({
-            id: item.id,
-            orderId: item.order && item.order.id,
-            projectType: item.rfqMedia.projectRfq.projectType.name,
-            sameVendor: item.order && item.order.isReleaseToSingleSupplier ? 'True' : 'False',
-            customerName: item.order && item.order.customerName
-          }));
+          const rowsThisPage =
+            this.type === 'release-queue' || this.type === 'order-complete'
+              ? data.content.map((item: PartOrder) => ({
+                  id: (item.partList || []).map(_ => _.id).join(', '),
+                  orderId: item.id,
+                  sameVendor: item.isReleaseToSingleSupplier ? 'True' : 'False',
+                  customerName: item.customerName,
+                  preferredVendors: (item.preferredVendors || []).length
+                }))
+              : data.content.map((item: Part) => ({
+                  id: item.id,
+                  orderId: item.order && item.order.id,
+                  projectType:
+                    item.rfqMedia &&
+                    item.rfqMedia.projectRfq &&
+                    item.rfqMedia.projectRfq.projectType &&
+                    item.rfqMedia.projectRfq.projectType.name,
+                  sameVendor: item.order && item.order.isReleaseToSingleSupplier ? 'True' : 'False',
+                  customerName: item.order && item.order.customerName
+                }));
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
           params.successCallback(rowsThisPage, lastRow);
           // this.reconfigColumns();
@@ -131,71 +153,79 @@ export class ProjectsListComponent implements OnInit {
   }
 
   initColumnDef() {
-    if (this.type === 'release-queue' || this.type === 'order-complete') {
-      this.columnDefs = [
-        {
-          headerName: 'Order ID',
-          field: 'orderId',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'order.id'
-        },
-        {
-          headerName: 'Part ID',
-          field: 'id',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'id'
-        }
-      ];
-      if (this.type === 'release-queue') {
-        this.columnDefs.push({
-          headerName: 'ProdEX Supplier Requested',
-          field: 'supplierCount',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'supplierCount'
-        });
+    this.columnDefs = [
+      {
+        headerName: 'Part ID',
+        field: 'id',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'id'
+      },
+      {
+        headerName: 'Order ID',
+        field: 'orderId',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'order.id'
+      },
+      {
+        headerName: 'Project Type',
+        field: 'projectType',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'projectType'
+      },
+      {
+        headerName: 'Same Vendor',
+        field: 'sameVendor',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'sameVendor'
       }
-    } else {
-      this.columnDefs = [
-        {
-          headerName: 'Part ID',
-          field: 'id',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'id'
-        },
-        {
-          headerName: 'Order ID',
-          field: 'orderId',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'order.id'
-        },
-        {
-          headerName: 'Project Type',
-          field: 'projectType',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'projectType'
-        },
-        {
-          headerName: 'Same Vendor',
-          field: 'sameVendor',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'sameVendor'
-        }
-      ];
+    ];
+
+    this.connectColumnDefs = [
+      {
+        headerName: 'Order ID',
+        field: 'orderId',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'order.id'
+      },
+      {
+        headerName: 'Part ID',
+        field: 'id',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'id'
+      }
+    ];
+
+    if (this.type === 'release-queue') {
+      this.connectColumnDefs.push({
+        headerName: 'ProdEX Supplier Requested',
+        field: 'preferredVendors',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'preferredVendors'
+      });
     }
+
+    this.connectColumnDefs.push({
+      headerName: 'Customer',
+      field: 'customerName',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'customerName'
+    });
 
     this.columnDefs.push({
       headerName: 'Customer',
