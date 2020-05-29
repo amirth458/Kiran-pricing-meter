@@ -4,6 +4,27 @@
 
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
+        Minimum number of qualified suppliers to release
+      </div>
+      <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
+        <div class="col-5"></div>
+        <div class="col-7 d-flex justify-content-start">
+          <input
+            min="0"
+            required
+            digitOnly
+            type="number"
+            formControlName="maxNumberOfSupplierToRelease"
+            class="setting-input"
+            (click)="$event.stopPropagation()"
+          />
+          Suppliers
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
         Base Cost per Project
       </div>
       <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
