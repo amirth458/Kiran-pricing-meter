@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-12">
+    <div class="wrapper shadow">
+      <form [formGroup]="form" class="needs-validation" (submit)="onSaveUserInformation($event)">
+        <div class="form-row">
+          <div class="form-group theme col-md-12">
+            <label>Email Address (This will be your username)<span class="asterix">*</span></label>
+            <input
+              required
+              type="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Email"
+              [class.is-invalid]="submitted && controls.email.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.email.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.email.errors">
+              <div *ngIf="controls.email.errors.required" class="footnote red">
+                * Email is required
+              </div>
+              <div *ngIf="controls.email.errors.email" class="footnote red">
+                Email must be a valid email address
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>First Name<span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="firstName"
+              class="form-control"
+              placeholder="First Name"
+              [class.is-invalid]="submitted && controls.firstName.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.firstName.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.firstName.errors">
+              <div *ngIf="controls.firstName.errors.required" class="footnote red">
+                * First name is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-6">
+            <label> Last Name <span class="asterix">*</span></label>
+            <input
+              required
+              formControlName="lastName"
+              class="form-control"
+              placeholder="Last Name"
+              [class.is-invalid]="submitted && controls.lastName.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.lastName.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.lastName.errors">
+              <div *ngIf="controls.lastName.errors.required" class="footnote red">
+                * Last name is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-6">
+            <label>Password<span class="asterix">*</span></label>
+            <input
+              type="password"
+              required
+              formControlName="password"
+              class="form-control"
+              placeholder="Password"
+              [class.is-invalid]="submitted && controls.password.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.password.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.password.errors">
+              <div *ngIf="controls.password.errors.required" class="footnote red">
+                * Password is required
+              </div>
+              <div *ngIf="controls.password.errors.minlength">
+                Password must be at least 8 characters
+              </div>
+            </div>
+          </div>
+          <div class="form-group theme col-md-6">
+            <label> Password Confirm <span class="asterix">*</span></label>
+            <input
+              type="password"
+              required
+              formControlName="confirmPassword"
+              class="form-control"
+              placeholder="Password Confirm"
+              [class.is-invalid]="submitted && controls.confirmPassword.errors"
+              [class.is-valid]="form.valid && !(submitted && controls.confirmPassword.errors)"
+            />
+            <div class="invalid-feedback" *ngIf="submitted && controls.confirmPassword.errors">
+              <div *ngIf="controls.confirmPassword.errors.required" class="footnote red">
+                * Confirm password is required
+              </div>
+              <div *ngIf="controls.confirmPassword.errors.match" class="footnote red">
+                Passwords must match
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group theme col-md-12 phone">
+            <label>Phone<span class="asterix">*</span></label>
+            <international-phone-number
+              *ngIf="!isLoadedUser"
+              formControlName="phone"
+              placeholder="Enter phone number"
+              [defaultCountry]="'us'"
+              [required]="true"
+              name="phone_number"
+              [ngClass]="{ 'is-invalid': submitted && controls.phone.errors }"
+            ></international-phone-number>
+            <international-phone-number
+              *ngIf="isLoadedUser"
+              formControlName="phone"
+              placeholder="Enter phone number"
+              [required]="true"
+              name="phone_number"
+              [ngClass]="{ 'is-invalid': submitted && controls.phone.errors }"
+            ></international-phone-number>
+            <div class="invalid-feedback d-block" *ngIf="submitted && controls.phone.errors">
+              <span *ngIf="controls.phone.errors.required" class="footnote red">
+                * Phone number is required
+              </span>
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="submitted && controls.phone.status === 'INVALID'">
+              <div class="footnote red">* Phone number is invalid.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row justify-content-center align-items-center">
+          <div class="form-group col-md-3 container-continue">
+            <button type="button" (click)="onSaveUserInformation($event)" class="btn btn-contniue theme">
+              Continue
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

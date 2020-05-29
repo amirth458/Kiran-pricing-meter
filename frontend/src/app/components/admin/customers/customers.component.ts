@@ -375,6 +375,12 @@ export class CustomersComponent implements OnInit, OnDestroy {
     return throwError('Error');
   }
 
+  addCustomer() {
+    localStorage.removeItem('procurement-RegisterCustomer');
+    localStorage.removeItem('procurement-RegisterContact');
+    this.route.navigateByUrl('/user-manage/add-customer');
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
   }

@@ -66,6 +66,20 @@
       "actions": ["back"]
     }
   ],
+  "adminCustomer": [
+    {
+      "name": "User Details",
+      "tooltipMessage": "User Details.",
+      "route": "user",
+      "actions": ["back"]
+    },
+    {
+      "name": "Company Details",
+      "tooltipMessage": "Company Details.",
+      "route": "customer",
+      "actions": ["back"]
+    }
+  ],
   "unapprovedVendor": [
     {
       "name": "User Details",

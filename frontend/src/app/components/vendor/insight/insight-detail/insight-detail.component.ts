@@ -106,7 +106,7 @@ export class InsightDetailComponent implements OnInit {
       const downloadURL = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }));
       const link = document.createElement('a');
       link.href = downloadURL;
-      link.download = `${this.type}_report_${this.datePipe.transform(new Date(), 'yyyyMMdd')}.csv`;
+      link.download = `${this.type}_report_${this.datePipe.transform(new Date(), 'MMddyyyy')}.csv`;
       link.click();
     });
   }

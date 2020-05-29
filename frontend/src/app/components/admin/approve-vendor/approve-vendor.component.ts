@@ -577,6 +577,13 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
     return throwError('Error');
   }
 
+  addVendor() {
+    this.userService.setVendorRegisterUserInfo(null);
+    this.userService.setVendorRegisterVendorInfo(null);
+    this.userService.setVendorRegisterMachineInfo(null);
+    this.route.navigateByUrl('/user-manage/add-vendor');
+  }
+
   clearSelection() {
     this.selectedItems = [];
     this.gridOptions.api.deselectAll();
