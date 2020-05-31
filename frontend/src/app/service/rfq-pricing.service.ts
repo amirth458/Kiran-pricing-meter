@@ -235,12 +235,12 @@ export class RfqPricingService {
   }
 
   updateProductionProjectSetting(
-    maxNumberOfSupplierToRelease,
+    minNumberOfSupplierToRelease,
     minimumNumberOfQualifiedSupplier
   ): Observable<ProductionProjectSetting> {
     const url = `${environment.apiBaseUrl}/admin/production-project-release-setting`;
     return this.http.put<ProductionProjectSetting>(url, {
-      maxNumberOfSupplierToRelease,
+      minNumberOfSupplierToRelease,
       minimumNumberOfQualifiedSupplier
     });
   }
