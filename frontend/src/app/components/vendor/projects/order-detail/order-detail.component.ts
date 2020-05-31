@@ -91,8 +91,8 @@ export class OrderDetailComponent implements OnInit {
       this.measurementUnits = measurementUnits.metadataList;
       this.postProcessAction = postProcessAction;
 
-      this.numberOfVendors = prodProjectSetting.maxNumberOfSupplierToRelease;
-      this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.maxNumberOfSupplierToRelease;
+      this.numberOfVendors = prodProjectSetting.minNumberOfSupplierToRelease;
+      this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.minNumberOfSupplierToRelease;
     });
 
     this.route.params.subscribe(({ id }) => {
