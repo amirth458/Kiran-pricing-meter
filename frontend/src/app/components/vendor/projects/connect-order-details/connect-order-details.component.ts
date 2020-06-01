@@ -2,11 +2,13 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { ProjectService } from 'src/app/service/project.service';
-import { StatusTypes } from '../../../../model/connect.model';
+import { BidProcessStatusEnum, ConnectProject } from '../../../../model/connect.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap, tap, mergeMap, map } from 'rxjs/operators';
+import { PartService } from 'src/app/service/part.service';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -42,31 +44,65 @@ export class ConnectOrderDetailsComponent implements OnInit {
   matchingProfiles: MatchedProcessProfile[] = [];
   parts: Part[] = [];
 
-  statusTypes = StatusTypes;
-  orderId = null;
+  projectDetails: ConnectProject;
+  statusTypes = BidProcessStatusEnum;
+  customerOrderId = null;
   constructor(
     public projectService: ProjectService,
+    public partService: PartService,
     public orderService: OrdersService,
     public modal: NgbModal,
     public route: ActivatedRoute
   ) {
-    this.orderId = this.route.snapshot.paramMap.get('id');
+    this.customerOrderId = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
     this.initColumnDefs();
     this.initGridOptions();
     this.getData();
-    this.orderService.getPartById(this.orderId).subscribe(r => {
-      this.parts = this.parts.concat([r, r, r]);
-    });
   }
 
   get vendorProfiles() {
     return this.matchingProfiles.filter(item => item.vendorId === this.selectedVendor.vendorId);
   }
 
+  get canReleaseToSelectedProdEXSuppliers() {
+    return (
+      this.supplierGridOptions.length &&
+      this.supplierGridOptions[0].api &&
+      this.projectDetails &&
+      (this.supplierGridOptions[0].api.getSelectedNodes() || []).length >= this.projectDetails.minimumProdexSuppliers
+    );
+  }
+
+  get canReleaseToInvitedEXSuppliers() {
+    return (
+      this.supplierGridOptions.length &&
+      this.supplierGridOptions[2].api &&
+      this.projectDetails &&
+      (this.supplierGridOptions[2].api.getSelectedNodes() || []).length
+    );
+  }
+
   getData() {
+    this.projectService
+      .getConnectProject(this.customerOrderId)
+      .pipe(
+        mergeMap(project =>
+          // TODO:
+          // this.partService.getPartsById(project.partIds)
+          this.partService.getPartsById([993]).pipe(
+            map(parts => {
+              return { ...project, parts };
+            })
+          )
+        )
+      )
+      .subscribe(r => {
+        this.projectDetails = r;
+      });
+
     this.projectService.getProdExSupplier().subscribe(r => {
       this.prodEXSupplier = r;
     });
@@ -267,7 +303,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'State',
-          field: 'vendorName',
+          field: 'state',
           hide: false,
           sortable: false,
           filter: false
@@ -330,7 +366,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'State',
-          field: 'vendorName',
+          field: 'state',
           hide: false,
           sortable: false,
           filter: false

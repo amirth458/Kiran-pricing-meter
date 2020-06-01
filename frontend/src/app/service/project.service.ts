@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import { of, Observable } from 'rxjs';
-import { StatusTypes } from '../model/connect.model';
+import { BidProcessStatusEnum, ConnectProject } from '../model/connect.model';
 import { Pageable } from '../model/pageable.model';
 import { PartOrder } from '../model/part.model';
 
@@ -76,88 +76,10 @@ export class ProjectService {
     );
   }
 
-  getConnectProject(customerOrderId);
-
-  getProdExSupplier() {
-    return of([
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.ACCEPTED
-        }
-      },
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.DECLINED
-        }
-      },
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.ACCEPTED
-        }
-      },
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.AWAITING_FOR_RESPONSE
-        }
-      }
-    ]);
-  }
-
-  getCustomerSelectedSupplier() {
-    return of([
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.ACCEPTED
-        }
-      },
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.ACCEPTED
-        }
-      },
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.ACCEPTED
-        }
-      },
-      {
-        vendor: 'Vendor',
-        vendorName: 'Vendor Name',
-        city: 'City',
-        state: 'State',
-        status: {
-          id: StatusTypes.DECLINED
-        }
-      }
-    ]);
+  getConnectProject(customerOrderId: number): Observable<ConnectProject> {
+    return this.http.get<ConnectProject>(
+      environment.apiBaseUrl + '/admin/bidding/connect-project/release-bid-to-vendor/' + customerOrderId
+    );
   }
 
   getCustomerSupplierToInvite() {
@@ -168,7 +90,7 @@ export class ProjectService {
         email: 'Email',
         phone: 'Phone',
         status: {
-          id: StatusTypes.ACCEPTED
+          id: BidProcessStatusEnum.VENDOR_ACCEPTED
         }
       },
       {
@@ -177,7 +99,7 @@ export class ProjectService {
         email: 'Email',
         phone: 'Phone',
         status: {
-          id: StatusTypes.DECLINED
+          id: BidProcessStatusEnum.VENDOR_REJECTED
         }
       },
       {
@@ -186,7 +108,7 @@ export class ProjectService {
         email: 'Email',
         phone: 'Phone',
         status: {
-          id: StatusTypes.AWAITING_FOR_RESPONSE
+          id: BidProcessStatusEnum.AWAITING_VENDOR_RESPONSE
         }
       },
       {
@@ -195,7 +117,7 @@ export class ProjectService {
         email: 'Email',
         phone: 'Phone',
         status: {
-          id: StatusTypes.ACCEPTED
+          id: BidProcessStatusEnum.VENDOR_ACCEPTED
         }
       }
     ]);
