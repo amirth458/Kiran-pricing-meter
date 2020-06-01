@@ -49,3 +49,7 @@
   cursor: pointer;
   text-decoration: none;
 }
+
+#view-in-three-d {
+  width: 100px;
+}

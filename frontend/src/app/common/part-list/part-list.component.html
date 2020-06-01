@@ -4,23 +4,30 @@
       <p class="part-name font-weight-bold mb-0">Part {{ item?.rfqMedia?.id }}.{{ item?.id }}</p>
       <!-- Image -->
       <img
-        [src]="item?.rfqMedia?.media?.partDimension?.thumbnail200Location || '../../../../assets/image/no-preview.png'"
+        [src]="
+          item?.thumbnail400Location ||
+          item?.rfqMedia?.media?.partDimension?.thumbnail400Location ||
+          '../../../../assets/image/no-preview.png'
+        "
         alt=""
-        height="80px"
-        width="80px"
+        height="100px"
+        width="100px"
       />
-      <app-view-in-three-d [connectorServiceId]="item?.connectorServiceId"></app-view-in-three-d>
+
+      <div id="view-in-three-d" class="mt-2">
+        <app-view-in-three-d [connectorServiceId]="item?.connectorServiceId"></app-view-in-three-d>
+      </div>
 
       <!-- Part Details -->
       <div class="details">
         <p class="d-flex mb-1 text-truncate" placement="top" [ngbTooltip]="item?.fileName">
           <span class="name">File: </span>
-          <a [href]="item?.rfqMedia?.media?.location" target="_blank">
+          <a [href]="item?.filePath || item?.rfqMedia?.media?.location" target="_blank">
             <span
               class="value text-theme-green font-weight-bold underline download-file text-truncate"
-              [ngbTooltip]="item?.rfqMedia?.media?.name"
+              [ngbTooltip]="item?.fileName || item?.rfqMedia?.media?.name"
             >
-              {{ item?.rfqMedia?.media?.name }}
+              {{ item?.fileName || item?.rfqMedia?.media?.name }}
             </span>
           </a>
         </p>

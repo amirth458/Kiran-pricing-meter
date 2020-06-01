@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { StatusTypes } from '../../model/connect.model';
+import { BidProcessStatusEnum } from '../../model/connect.model';
 import { Part } from 'src/app/model/part.model';
 @Component({
   selector: 'app-part-list',
@@ -14,7 +14,7 @@ export class PartListComponent implements OnInit {
   @Input() parts: Part[];
   @Input() showRefFile = false;
 
-  status = StatusTypes;
+  status = BidProcessStatusEnum;
 
   constructor(public spinner: NgxSpinnerService, public modalService: NgbModal) {}
 
