@@ -103,7 +103,7 @@ export class ViewAllNotificationComponent implements OnInit {
       res => {
         this.notifications = res
           ? res.content.map(i => {
-              return { ...i, createdDate: i.createdDate ? new Date(i.createdDate + '+0000') : '' } as any;
+              return { ...i, createdDate: i.createdDate ? new Date(i.createdDate + 'Z') : '' } as any;
             })
           : [];
       },
