@@ -29,16 +29,16 @@ export const environment = {
       active: true
     },
     {
-      name: 'Billing',
-      route: '/billing',
-      icon: 'fas fa-file-invoice-dollar',
+      name: 'Connect',
+      route: '/prodex',
+      icon: 'fas fa-folder',
       visible: true,
       active: true
     },
     {
-      name: 'Projects',
-      route: '/prodex',
-      icon: 'fas fa-folder',
+      name: 'Billing',
+      route: '/billing',
+      icon: 'fas fa-file-invoice-dollar',
       visible: true,
       active: true
     },
