@@ -68,11 +68,11 @@ export class ProjectsListComponent implements OnInit {
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0,
       onRowClicked: event => {
-        this.router.navigateByUrl(
+        const url =
           this.type === 'release-queue' || this.type === 'order-complete'
             ? `${this.router.url}/${event.data.orderId}`
-            : `${this.router.url} / ${event.data.id}`
-        );
+            : `${this.router.url}/${event.data.id}`;
+        this.router.navigateByUrl(url);
       }
     };
   }
