@@ -63,6 +63,8 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   async save() {
+    this.formGroup.get('minimumNumberOfQualifiedSupplier').updateValueAndValidity();
+
     if (this.formGroup.valid && !this.formGroup.get('minimumNumberOfQualifiedSupplier').hasError('invalid')) {
       this.spinner.show();
       combineLatest([
