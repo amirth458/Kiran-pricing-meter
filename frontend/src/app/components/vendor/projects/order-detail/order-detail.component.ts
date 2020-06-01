@@ -104,16 +104,16 @@ export class OrderDetailComponent implements OnInit {
         if (v.partStatusType.id === 18) {
           // PART_AWAITING_RELEASE
           if (this.type !== 'project-release-queue') {
-            this.router.navigateByUrl(`/projects/project-release-queue/${id}`);
+            this.router.navigateByUrl(`/prodex/projects/project-release-queue/${id}`);
           }
         } else if (v.partStatusType.id === 15) {
           // vendor-confirmation-queue
           if (this.type !== 'vendor-confirmation-queue') {
-            this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${id}`);
+            this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${id}`);
           }
         } else {
           if (this.type !== 'released-projects') {
-            this.router.navigateByUrl(`/projects/released-projects/${id}`);
+            this.router.navigateByUrl(`/prodex/projects/released-projects/${id}`);
           }
         }
         this.supplierGridOptions[0].api.showLoadingOverlay();
@@ -465,12 +465,12 @@ export class OrderDetailComponent implements OnInit {
     this.canReleaseToVendorFlag = false;
     this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
       v => {
-        this.router.navigateByUrl(`/projects/vendor-confirmation-queue/${v.partId}`);
+        this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${v.partId}`);
         this.canReleaseToVendorFlag = true;
       },
       err => {
         this.canReleaseToVendorFlag = true;
-        this.toastr.error('Vendor not subscribed to SHOPSIGHT 360 PLUS selected.');
+        this.toastr.error('Error while releasing to Vendor.');
       }
     );
   }
@@ -504,7 +504,7 @@ export class OrderDetailComponent implements OnInit {
         this.selectedSuppliers.filter(item => item.status.id === 2).map(item => item.vendorId)
       )
       .subscribe(v => {
-        this.router.navigateByUrl(`/projects/released-projects/${this.part.id}`);
+        this.router.navigateByUrl(`/prodex/projects/released-projects/${this.part.id}`);
       });
   }
 
