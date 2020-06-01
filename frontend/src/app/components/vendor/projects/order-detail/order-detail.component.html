@@ -25,12 +25,12 @@
             part?.equipmentPropertyValues?.join(', ')
           }}</span>
         </p>
-        <p class="label">
+        <!-- <p class="label">
           Post-process:
           <span class="text-theme-green font-weight-bold value-text">
             {{ preparePostProcessValues(part?.postProcessTypeIds) }}
           </span>
-        </p>
+        </p> -->
         <a *ngIf="referenceFileCount > 0" class="reference" (click)="openReference()">
           Reference Files ({{ referenceFileCount }})
         </a>
