@@ -19,7 +19,7 @@ export class ProjectSettingsComponent implements OnInit {
   formGroup: FormGroup = this.fb.group({
     baseCost: [0, [Validators.min(0), Validators.required]],
     fee: [0, [Validators.min(0), Validators.required]],
-    maxNumberOfSupplierToRelease: [0, [Validators.min(0), Validators.required]],
+    minNumberOfSupplierToRelease: [0, [Validators.min(0), Validators.required]],
     minimumNumberOfQualifiedSupplier: [0, [Validators.min(0), Validators.required]]
   });
 
@@ -33,7 +33,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup.get('minimumNumberOfQualifiedSupplier').setValidators(val => {
-      return val.value > 0 && val.value <= this.formGroup.value.maxNumberOfSupplierToRelease ? null : { invalid: true };
+      return val.value > 0 && val.value <= this.formGroup.value.minNumberOfSupplierToRelease ? null : { invalid: true };
     });
     this.initSettings();
     this.actionService.saveProductionSettingAction().subscribe(() => {
@@ -53,7 +53,7 @@ export class ProjectSettingsComponent implements OnInit {
       if (b) {
         this.formGroup.setValue({
           ...this.formGroup.value,
-          maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
+          minNumberOfSupplierToRelease: b.minNumberOfSupplierToRelease,
           minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
         });
         this.formGroup.get('minimumNumberOfQualifiedSupplier').updateValueAndValidity();
@@ -74,7 +74,7 @@ export class ProjectSettingsComponent implements OnInit {
           .pipe(catchError(e => this.handleSaveError(e))),
         this.pricingService
           .updateProductionProjectSetting(
-            this.formGroup.value.maxNumberOfSupplierToRelease,
+            this.formGroup.value.minNumberOfSupplierToRelease,
             this.formGroup.value.minimumNumberOfQualifiedSupplier
           )
           .pipe(catchError(e => this.handleSaveError(e)))
@@ -86,7 +86,7 @@ export class ProjectSettingsComponent implements OnInit {
         if (b) {
           this.formGroup.setValue({
             ...this.formGroup.value,
-            maxNumberOfSupplierToRelease: b.maxNumberOfSupplierToRelease,
+            minNumberOfSupplierToRelease: b.minNumberOfSupplierToRelease,
             minimumNumberOfQualifiedSupplier: b.minimumNumberOfQualifiedSupplier
           });
         }

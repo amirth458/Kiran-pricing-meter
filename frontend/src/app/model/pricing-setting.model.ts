@@ -1,5 +1,5 @@
 export class ProductionProjectSetting {
   id: number;
-  maxNumberOfSupplierToRelease: number;
+  minNumberOfSupplierToRelease: number;
   minimumNumberOfQualifiedSupplier: number;
 }
