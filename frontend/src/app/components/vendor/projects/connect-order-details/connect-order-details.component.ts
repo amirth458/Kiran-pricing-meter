@@ -90,9 +90,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
       .getConnectProject(this.customerOrderId)
       .pipe(
         mergeMap(project =>
-          // TODO:
-          // this.partService.getPartsById(project.partIds)
-          this.partService.getPartsById([993]).pipe(
+          this.partService.getPartsById(project.partIds).pipe(
             map(parts => {
               return { ...project, parts };
             })
