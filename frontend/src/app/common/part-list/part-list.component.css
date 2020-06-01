@@ -1,0 +1,55 @@
+:host {
+  width: 100%;
+}
+
+:host .summary .order-summary {
+  background: var(--theme-tab-border);
+  height: 100px;
+  border-radius: 5px;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  transition-delay: calc(1 * (1s / 18));
+}
+
+:host .summary .order-summary p {
+  font-size: 14px;
+}
+
+:host .summary .order-summary span.value {
+  font-weight: 500;
+}
+
+:host .summary .order-summary .details-toggle {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+:host .part-list {
+  max-height: 450px;
+  overflow-x: scroll;
+}
+
+:host .part-list.small {
+  max-height: 300px;
+}
+
+:host .part-list .part-item {
+  font-size: 12px;
+  max-width: 300px;
+}
+
+:host .part-list .part-item .value {
+  margin-left: 5px;
+  word-break: break-all;
+}
+
+:host .part-item .download-file:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#view-in-three-d {
+  width: 100px;
+}

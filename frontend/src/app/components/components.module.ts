@@ -135,6 +135,9 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
 import { SettingsContainerComponent } from './vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from './vendor/settings/update-password/update-password.component';
 import { NotificationSettingComponent } from './vendor/settings/notification-setting/notification-setting.component';
+import { ProdexProjectComponent } from './vendor/projects/prodex-project/prodex-project.component';
+import { ProdexConnectComponent } from './vendor/projects/prodex-connect/prodex-connect.component';
+import { ConnectSettingComponent } from './vendor/projects/connect-setting/connect-setting.component';
 import { AddVendorContainerComponent } from './admin/add-vendor/add-vendor-container/add-vendor-container.component';
 import { AddVendorUserComponent } from './admin/add-vendor/add-vendor-user/add-vendor-user.component';
 import { AddCustomerContainerComponent } from './admin/add-customer/add-customer-container/add-customer-container.component';
@@ -143,6 +146,9 @@ import { AddCustomerCompanyComponent } from './admin/add-customer/add-customer-c
 import { AddVendorDetailComponent } from './admin/add-vendor/add-vendor-detail/add-vendor-detail.component';
 import { AddVendorMachineComponent } from './admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
 import { ChipComponent } from '../common/chip/chip.component';
+import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
+import { PartListComponent } from '../common/part-list/part-list.component';
+import { RefFileComponent } from '../common/ref-file/ref-file.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -264,6 +270,13 @@ import { ChipComponent } from '../common/chip/chip.component';
     SettingsContainerComponent,
     UpdatePasswordComponent,
     NotificationSettingComponent,
+    ProdexProjectComponent,
+    ProdexConnectComponent,
+    ConnectSettingComponent,
+    ChipComponent,
+    ConnectOrderDetailsComponent,
+    PartListComponent,
+    RefFileComponent,
     AddVendorContainerComponent,
     AddVendorUserComponent,
     AddCustomerContainerComponent,

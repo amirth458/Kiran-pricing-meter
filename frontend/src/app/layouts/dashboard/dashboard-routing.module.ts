@@ -70,6 +70,10 @@ import { ViewAllNotificationComponent } from 'src/app/common/view-all-notificati
 import { SettingsContainerComponent } from 'src/app/components/vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from 'src/app/components/vendor/settings/update-password/update-password.component';
 import { NotificationSettingComponent } from 'src/app/components/vendor/settings/notification-setting/notification-setting.component';
+import { ProdexProjectComponent } from 'src/app/components/vendor/projects/prodex-project/prodex-project.component';
+import { ProdexConnectComponent } from 'src/app/components/vendor/projects/prodex-connect/prodex-connect.component';
+import { ConnectSettingComponent } from 'src/app/components/vendor/projects/connect-setting/connect-setting.component';
+import { ConnectOrderDetailsComponent } from 'src/app/components/vendor/projects/connect-order-details/connect-order-details.component';
 import { AddCustomerContainerComponent } from 'src/app/components/admin/add-customer/add-customer-container/add-customer-container.component';
 import { AddCustomerUserComponent } from 'src/app/components/admin/add-customer/add-customer-user/add-customer-user.component';
 import { AddCustomerCompanyComponent } from 'src/app/components/admin/add-customer/add-customer-company/add-customer-company.component';
@@ -291,41 +295,75 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'projects',
+        path: 'prodex',
         component: ProjectsContainerComponent,
         children: [
           {
-            path: 'settings',
-            component: ProjectSettingsComponent
+            path: 'projects',
+            component: ProdexProjectComponent,
+            children: [
+              {
+                path: 'settings',
+                component: ProjectSettingsComponent
+              },
+              {
+                path: 'project-release-queue',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'project-release-queue/:id',
+                component: OrderDetailComponent
+              },
+              {
+                path: 'vendor-confirmation-queue',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'vendor-confirmation-queue/:id',
+                component: OrderDetailComponent
+              },
+              {
+                path: 'released-projects',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'released-projects/:id',
+                component: OrderDetailComponent
+              },
+              {
+                path: '',
+                redirectTo: 'settings'
+              }
+            ]
           },
           {
-            path: 'project-release-queue',
-            component: ProjectsListComponent
+            path: 'connect',
+            component: ProdexConnectComponent,
+            children: [
+              {
+                path: 'settings',
+                component: ConnectSettingComponent
+              },
+              {
+                path: 'release-queue',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'order-complete',
+                component: ProjectsListComponent
+              },
+              {
+                path: 'release-queue/:id',
+                component: ConnectOrderDetailsComponent
+              },
+              {
+                path: 'order-complete/:id',
+                component: ConnectOrderDetailsComponent
+              },
+              { path: '**', redirectTo: 'settings', pathMatch: 'full' }
+            ]
           },
-          {
-            path: 'project-release-queue/:id',
-            component: OrderDetailComponent
-          },
-          {
-            path: 'vendor-confirmation-queue',
-            component: ProjectsListComponent
-          },
-          {
-            path: 'vendor-confirmation-queue/:id',
-            component: OrderDetailComponent
-          },
-          {
-            path: 'released-projects',
-            component: ProjectsListComponent
-          },
-          {
-            path: 'released-projects/:id',
-            component: OrderDetailComponent
-          },
-          {
-            path: '',
-            redirectTo: 'settings'
-          }
+          { path: '**', redirectTo: 'projects', pathMatch: 'full' }
         ]
       },
       {

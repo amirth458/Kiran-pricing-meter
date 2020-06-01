@@ -5,7 +5,13 @@ export interface Type {
   id: number;
   name: string;
 }
-
+export interface ReferenceMedia {
+  id: number;
+  name: string;
+  uploadedAt: Date;
+  location: string;
+  mediaId: number;
+}
 export interface ProjectRfq {
   id: number;
   name: string;
@@ -83,6 +89,8 @@ export interface PartOrder {
   isReleaseToSingleSupplier: boolean;
   partList: Part[];
   createdDate: string;
+
+  preferredVendors?: number[];
 }
 
 export interface PartQuoteInvoiceLineItem {

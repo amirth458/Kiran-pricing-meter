@@ -72,7 +72,7 @@ export class OrderDetailComponent implements OnInit {
     public modal: NgbModal,
     public pricingService: RfqPricingService
   ) {
-    this.type = router.url.split('/')[2];
+    this.type = router.url.split('/')[3];
   }
 
   ngOnInit() {

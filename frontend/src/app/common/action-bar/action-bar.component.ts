@@ -43,9 +43,6 @@ export class ActionBarComponent implements OnInit, OnChanges {
             });
           }
         }
-        if (routeArray[1] === 'projects') {
-          this.baseURL = 'projects';
-        }
       }
     });
   }

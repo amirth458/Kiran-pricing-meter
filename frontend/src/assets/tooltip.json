@@ -260,6 +260,31 @@
       "actions": []
     }
   ],
+  "connect": [
+    {
+      "name": "Settings",
+      "tooltipMessage": "Settings",
+      "route": "settings",
+      "actions": [
+        {
+          "name": "Save Settings",
+          "route": "save-connect-setting"
+        }
+      ]
+    },
+    {
+      "name": "Release Queue",
+      "tooltipMessage": "Release Queue",
+      "route": "release-queue",
+      "actions": []
+    },
+    {
+      "name": "Order Complete",
+      "tooltipMessage": "Order Complete",
+      "route": "order-complete",
+      "actions": []
+    }
+  ],
   "setting": [
     {
       "name": "Password",

@@ -37,7 +37,7 @@ export const environment = {
     },
     {
       name: 'Projects',
-      route: '/projects',
+      route: '/prodex',
       icon: 'fas fa-folder',
       visible: true,
       active: true
