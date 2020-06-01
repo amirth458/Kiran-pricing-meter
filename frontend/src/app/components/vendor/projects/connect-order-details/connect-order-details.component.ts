@@ -101,14 +101,6 @@ export class ConnectOrderDetailsComponent implements OnInit {
         this.projectDetails = r;
       });
 
-    this.projectService.getProdExSupplier().subscribe(r => {
-      this.prodEXSupplier = r;
-    });
-
-    this.projectService.getCustomerSelectedSupplier().subscribe(r => {
-      this.customerSelectedSupplier = r;
-    });
-
     this.projectService.getCustomerSupplierToInvite().subscribe(r => {
       this.customerSupplierToInvite = r;
     });
