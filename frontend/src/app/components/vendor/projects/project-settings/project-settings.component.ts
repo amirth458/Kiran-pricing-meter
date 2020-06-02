@@ -35,6 +35,9 @@ export class ProjectSettingsComponent implements OnInit {
     this.formGroup.get('minimumNumberOfQualifiedSupplier').setValidators(val => {
       return val.value > 0 && val.value <= this.formGroup.value.minNumberOfSupplierToRelease ? null : { invalid: true };
     });
+    this.formGroup.get('minNumberOfSupplierToRelease').valueChanges.subscribe(r => {
+      this.formGroup.get('minimumNumberOfQualifiedSupplier').updateValueAndValidity();
+    });
     this.initSettings();
     this.actionService.saveProductionSettingAction().subscribe(() => {
       this.save();
