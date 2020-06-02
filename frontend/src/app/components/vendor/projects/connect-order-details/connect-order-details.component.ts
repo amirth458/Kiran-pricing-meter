@@ -98,12 +98,13 @@ export class ConnectOrderDetailsComponent implements OnInit {
         )
       )
       .subscribe(r => {
-        this.projectDetails = r;
+        this.projectDetails = {
+          ...r,
+          prodexSuppliers: r.prodexSuppliers || [],
+          customerSelectedSuppliers: r.customerSelectedSuppliers || []
+        };
+        this.customerSupplierToInvite = [];
       });
-
-    this.projectService.getCustomerSupplierToInvite().subscribe(r => {
-      this.customerSupplierToInvite = r;
-    });
   }
 
   showVendorProfiles(ev, data) {
@@ -136,6 +137,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.vendorProfileGridOptions[index].api.sizeColumnsToFit();
   }
 
+  releaseProjectToSupplier() {}
+
   initGridOptions() {
     this.vendorProfileGridOptions = [
       {
@@ -166,10 +169,6 @@ export class ConnectOrderDetailsComponent implements OnInit {
         domLayout: 'autoHeight',
         isRowSelectable: rowNode => {
           return true;
-        },
-        onRowSelected: ev => {
-          if (ev.node.isSelected()) {
-          }
         }
       },
       {

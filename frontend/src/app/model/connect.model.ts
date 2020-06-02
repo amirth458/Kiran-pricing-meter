@@ -12,6 +12,7 @@ export enum BidProcessStatusEnum {
 
 export class ConnectProject {
   minimumProdexSuppliers: number;
+  customerOrderId: number;
   partIds: number[];
   parts?: Part[];
   prodexSuppliers: {
