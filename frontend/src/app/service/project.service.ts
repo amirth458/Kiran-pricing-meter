@@ -73,7 +73,7 @@ export class ProjectService {
       // Get all order status and use enum
       {
         orderStatusId: orderComplete ? 6 : 5,
-        projectTypeId: ProjectTypeEnum.CONNECT
+        projectTypeId: ProjectTypeEnum.CONNECT_PROJECT
       },
       { params }
     );
@@ -85,44 +85,11 @@ export class ProjectService {
     );
   }
 
-  getCustomerSupplierToInvite() {
-    return of([
-      {
-        vendorName: 'Vendor Name',
-        contactName: 'Contact Name',
-        email: 'Email',
-        phone: 'Phone',
-        status: {
-          id: BidProcessStatusEnum.VENDOR_ACCEPTED
-        }
-      },
-      {
-        vendorName: 'Vendor Name',
-        contactName: 'Contact Name',
-        email: 'Email',
-        phone: 'Phone',
-        status: {
-          id: BidProcessStatusEnum.VENDOR_REJECTED
-        }
-      },
-      {
-        vendorName: 'Vendor Name',
-        contactName: 'Contact Name',
-        email: 'Email',
-        phone: 'Phone',
-        status: {
-          id: BidProcessStatusEnum.AWAITING_VENDOR_RESPONSE
-        }
-      },
-      {
-        vendorName: 'Vendor Name',
-        contactName: 'Contact Name',
-        email: 'Email',
-        phone: 'Phone',
-        status: {
-          id: BidProcessStatusEnum.VENDOR_ACCEPTED
-        }
-      }
-    ]);
+  releaseConnectProject(customerOrderId: number, vendorIds: number[]): Observable<any> {
+    const body = {
+      customerOrderId,
+      productionProjectProcessProfiles: vendorIds.map(vendorId => new Object({ vendorId }))
+    };
+    return this.http.post<any>(environment.apiBaseUrl + '/admin/bidding/connect-project/release-bid-to-vendor', body);
   }
 }
