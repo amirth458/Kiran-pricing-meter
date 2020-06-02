@@ -51,13 +51,6 @@
             >{{ (item?.equipmentPropertyValues || []).join(' OR ') }}</span
           >
         </p>
-        <p class="d-flex mb-1">
-          <span class="name">Post-Process: </span>
-          <span class="value text-theme-green font-weight-bold">
-            -
-            <!-- {{ preparePostProcessValues(item?.postProcessTypeIds) }} -->
-          </span>
-        </p>
         <!-- TODO: -->
         <!--Find out what status is allowed to view ref file -->
         <p *ngIf="showRefFile">
