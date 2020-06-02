@@ -6,9 +6,12 @@ import { BidProcessStatusEnum, ConnectProject } from '../../../../model/connect.
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { switchMap, tap, mergeMap, map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { mergeMap, map } from 'rxjs/operators';
 import { PartService } from 'src/app/service/part.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -41,18 +44,24 @@ export class ConnectOrderDetailsComponent implements OnInit {
   replacementProfiles = [];
   selectedVendor = null;
 
+  selectedProdEXVendorIds = [];
+
   matchingProfiles: MatchedProcessProfile[] = [];
   parts: Part[] = [];
 
   projectDetails: ConnectProject;
   statusTypes = BidProcessStatusEnum;
   customerOrderId = null;
+  prodEXRequestedCount = 2;
   constructor(
     public projectService: ProjectService,
     public partService: PartService,
     public orderService: OrdersService,
     public modal: NgbModal,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public spineer: NgxSpinnerService,
+    public toaster: ToastrService,
+    public location: Location
   ) {
     this.customerOrderId = this.route.snapshot.paramMap.get('id');
   }
@@ -68,12 +77,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   get canReleaseToSelectedProdEXSuppliers() {
-    return (
-      this.supplierGridOptions.length &&
-      this.supplierGridOptions[0].api &&
-      this.projectDetails &&
-      (this.supplierGridOptions[0].api.getSelectedNodes() || []).length >= this.projectDetails.minimumProdexSuppliers
-    );
+    return this.selectedProdEXVendorIds.length === this.prodEXRequestedCount;
   }
 
   get canReleaseToInvitedEXSuppliers() {
@@ -86,6 +90,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   getData() {
+    this.spineer.show();
     this.projectService
       .getConnectProject(this.customerOrderId)
       .pipe(
@@ -97,14 +102,22 @@ export class ConnectOrderDetailsComponent implements OnInit {
           )
         )
       )
-      .subscribe(r => {
-        this.projectDetails = {
-          ...r,
-          prodexSuppliers: r.prodexSuppliers || [],
-          customerSelectedSuppliers: r.customerSelectedSuppliers || []
-        };
-        this.customerSupplierToInvite = [];
-      });
+      .subscribe(
+        r => {
+          this.projectDetails = {
+            ...r,
+            prodexSuppliers: r.prodexSuppliers || [],
+            customerSelectedSuppliers: r.customerSelectedSuppliers || []
+          };
+          this.customerSupplierToInvite = [];
+          this.spineer.hide();
+        },
+        e => {
+          this.spineer.hide();
+          this.toaster.error('Error while fetching data');
+          this.location.back();
+        }
+      );
   }
 
   showVendorProfiles(ev, data) {
@@ -137,7 +150,35 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.vendorProfileGridOptions[index].api.sizeColumnsToFit();
   }
 
-  releaseProjectToSupplier() {}
+  releaseProjectToSupplier() {
+    this.spineer.show();
+    this.projectService
+      .releaseConnectProject(this.projectDetails.customerOrderId, this.selectedProdEXVendorIds)
+      .subscribe(
+        r => {
+          this.selectedProdEXVendorIds = [];
+          this.supplierGridOptions[0].api.deselectAll();
+          this.spineer.hide();
+          this.toaster.success('Project Released To ProdEX Suppliers');
+          this.getData();
+        },
+        r => {
+          this.spineer.hide();
+          this.selectedProdEXVendorIds = [];
+          this.supplierGridOptions[0].api.deselectAll();
+          if (
+            (r.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+            (r.error.message || '').includes('Contract not found')
+          ) {
+            this.toaster.error("Vendor doesn't have SHOPSIGHT 360 PLUS");
+          } else {
+            this.toaster.error('Error While Releasing Project To ProdEX Suppliers.');
+          }
+          this.getData();
+          console.log(r);
+        }
+      );
+  }
 
   initGridOptions() {
     this.vendorProfileGridOptions = [
@@ -168,7 +209,18 @@ export class ConnectOrderDetailsComponent implements OnInit {
         rowMultiSelectWithClick: true,
         domLayout: 'autoHeight',
         isRowSelectable: rowNode => {
-          return true;
+          // (rowNode.data.status || '').replace(/_/g, ' ') !== BidProcessStatusEnum.VENDOR_RECEIVED;
+          return (rowNode.data.status || '').length === 0;
+        },
+        onRowSelected: ev => {
+          if (ev.node.isSelected()) {
+            this.selectedProdEXVendorIds.push(ev.data.vendorId);
+          } else {
+            const foundIndex = this.selectedProdEXVendorIds.findIndex(_ => _ === ev.data.vendorId);
+            if (foundIndex !== -1) {
+              this.selectedProdEXVendorIds.splice(foundIndex, 1);
+            }
+          }
         }
       },
       {

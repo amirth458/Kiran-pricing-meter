@@ -23,7 +23,7 @@ export enum ProjectType {
   RFQ_PROJECT = 'Rfq Project',
   PRODUCTION_PROJECT = 'Production Project',
   DESIGN_PROJECT = 'Design Project',
-  CONNECT = 'Connect'
+  CONNECT_PROJECT = 'Connect Project'
 }
 
 export enum PaymentType {

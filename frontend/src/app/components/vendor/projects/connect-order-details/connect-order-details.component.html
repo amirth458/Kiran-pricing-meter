@@ -13,9 +13,14 @@
 
   <div class="my-4 prodex-supplier">
     <div class="heading d-flex justify-content-between align-items-end mb-3">
-      <h6>Prodex Supplier</h6>
+      <h6>Prodex Supplier (ProdEX Supplier Requested - {{ prodEXRequestedCount }})</h6>
       <div class="actions">
-        <button [disabled]="!canReleaseToSelectedProdEXSuppliers" type="button" class="btn theme green">
+        <button
+          [disabled]="!canReleaseToSelectedProdEXSuppliers"
+          (click)="releaseProjectToSupplier()"
+          type="button"
+          class="btn theme green"
+        >
           Release Project to Supplier
         </button>
       </div>
