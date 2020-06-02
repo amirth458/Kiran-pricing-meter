@@ -3,13 +3,11 @@ import { GridOptions, ColDef } from 'ag-grid-community';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-import { ProjectType } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Part, PartOrder } from 'src/app/model/part.model';
 import { ProjectService } from 'src/app/service/project.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { Observable } from 'rxjs';
-import { Pageable } from 'src/app/model/pageable.model';
 
 @Component({
   selector: 'app-projects-list',
@@ -22,8 +20,6 @@ export class ProjectsListComponent implements OnInit {
   connectColumnDefs: ColDef[] = [];
 
   gridOptions: GridOptions;
-  projectTypes = [];
-  projectType = null;
   navigation;
 
   pageSize = 10;
@@ -41,11 +37,6 @@ export class ProjectsListComponent implements OnInit {
     public metadataService: MetadataService,
     public projectService: ProjectService
   ) {
-    this.metadataService.getMetaData('project_type').subscribe(v => {
-      this.projectTypes = v.map(item => ({ ...item, displayName: ProjectType[item.name] }));
-      console.log({ projectTypes: this.projectTypes });
-    });
-
     this.type = router.url.split('/')[3];
   }
 
@@ -90,19 +81,19 @@ export class ProjectsListComponent implements OnInit {
         let ob: Observable<any> = null;
         switch (this.type) {
           case 'project-release-queue':
-            ob = this.projectService.getProjectReleaseQueue(filterOption, this.projectType);
+            ob = this.projectService.getProjectReleaseQueue(filterOption, null);
             break;
           case 'vendor-confirmation-queue':
-            ob = this.projectService.getConfirmationQueue(filterOption, this.projectType);
+            ob = this.projectService.getConfirmationQueue(filterOption, null);
             break;
           case 'released-projects':
-            ob = this.projectService.getReleasedProjects(filterOption, this.projectType);
+            ob = this.projectService.getReleasedProjects(filterOption, null);
             break;
           case 'release-queue':
             ob = this.projectService.getConnectReleasedProjects(filterOption);
             break;
           case 'order-complete':
-            ob = this.projectService.getConnectReleasedProjects(filterOption);
+            ob = this.projectService.getConnectReleasedProjects(filterOption, true);
             break;
           default:
         }

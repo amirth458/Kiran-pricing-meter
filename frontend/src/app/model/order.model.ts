@@ -320,3 +320,10 @@ export enum BidStatusEnum {
   ACCEPTED = 'ACCEPTED',
   COUNTER_OFFER = 'COUNTER_OFFER'
 }
+
+export enum ProjectTypeEnum {
+  CONNECT = 4,
+  DESIGN_PROJECT = 2,
+  PRODUCTION_PROJECT = 3,
+  RFQ_PROJECT = 1
+}
