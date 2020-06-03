@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import * as tooltipData from '../../../../../assets/tooltip.json';
 
@@ -15,13 +15,18 @@ export class ProjectsContainerComponent implements OnInit {
   selectedSubmenu = '';
 
   constructor(private route: Router) {
-    this.baseURL = this.route.url.split('/')[1];
+    this.route.events.subscribe(r => {
+      if (r instanceof NavigationEnd) {
+        this.baseURL = this.route.url.split('/')[1];
+        this.selectedSubmenu = this.baseURL + '/' + this.route.url.split('/')[2];
+      }
+    });
   }
 
   ngOnInit() {
     this.subMenus = [
       {
-        name: 'ProdEX Project',
+        name: 'ProdEX Production',
         route: this.baseURL + '/projects'
       },
       {
@@ -29,6 +34,5 @@ export class ProjectsContainerComponent implements OnInit {
         route: this.baseURL + '/connect'
       }
     ];
-    this.selectedSubmenu = this.baseURL + '/' + this.route.url.split('/')[2];
   }
 }

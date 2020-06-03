@@ -85,7 +85,11 @@
     <ng-container *ngFor="let attr of selectedNotification | keyvalue">
       <p *ngIf="nameMapping[attr.key] && isValueCorrect(attr.value)" class="mb-1 font-weight-bold">
         {{ nameMapping[attr.key] }} :
-        <span class="text-theme-green font-weight-normal" placement="auto" [ngbTooltip]="formatValue(attr.value || '')">
+        <span
+          class="text-theme-green font-weight-normal"
+          placement="auto"
+          [ngbTooltip]="tooltip ? formatValue(attr.value || '') : attr.value"
+        >
           <ng-container *ngIf="(attr.key || '').toLowerCase().includes('price'); else notPrice">
             {{ attr.value | currency: '$' }}
           </ng-container>
