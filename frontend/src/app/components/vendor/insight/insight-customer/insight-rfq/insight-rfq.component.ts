@@ -17,13 +17,13 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'rfq_name',
+      headerName: 'rfq_profile_name',
       field: 'rfq_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_name',
-      headerTooltip: 'rfq_name'
+      headerTooltip: 'rfq_profile_name'
     },
     {
       headerName: 'rfq_status',
@@ -134,7 +134,18 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'part_count'
     }
   ];
+  partIds = null;
+
   constructor() {}
 
   ngOnInit() {}
+
+  onRowClick(ev) {
+    // get part Ids from rfq ID
+    // this.partIds = getPartsByRfqId(ev.data.rfq_id);
+  }
+
+  onClose() {
+    this.partIds = null;
+  }
 }

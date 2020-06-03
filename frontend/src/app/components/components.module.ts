@@ -149,6 +149,7 @@ import { ChipComponent } from '../common/chip/chip.component';
 import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
 import { PartListComponent } from '../common/part-list/part-list.component';
 import { RefFileComponent } from '../common/ref-file/ref-file.component';
+import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -284,7 +285,8 @@ import { RefFileComponent } from '../common/ref-file/ref-file.component';
     AddCustomerCompanyComponent,
     AddVendorDetailComponent,
     AddVendorMachineComponent,
-    ChipComponent
+    ChipComponent,
+    InsightPartInformationComponent
   ],
   imports: [
     CommonModule,

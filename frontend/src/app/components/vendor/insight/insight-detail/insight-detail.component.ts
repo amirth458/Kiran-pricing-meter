@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 
 import { ReportsService } from 'src/app/service/reports.service';
@@ -15,6 +15,8 @@ import { DatePipe } from '@angular/common';
 export class InsightDetailComponent implements OnInit {
   @Input() type;
   @Input() columnDefs;
+
+  @Output() rowClick: EventEmitter<any> = new EventEmitter();
 
   gridOptions: GridOptions;
   rowData = [];
@@ -49,7 +51,8 @@ export class InsightDetailComponent implements OnInit {
         // const column = params.columnApi.getColumn(sortModel[0].colId);
         this.totalCount = 0;
         this.sortQuery = `${sortModel[0].colId},${sortModel[0].sort}`;
-      }
+      },
+      onRowClicked: params => this.rowClick.emit(params)
     };
   }
 
@@ -72,7 +75,7 @@ export class InsightDetailComponent implements OnInit {
           filters: {
             beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
             endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-            searchValue: this.searchQuery,
+            searchValue: this.searchQuery === '' ? null : this.searchQuery,
             lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
           }
         };
