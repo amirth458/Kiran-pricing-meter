@@ -1,7 +1,7 @@
 <div class="w-100 row pl-2 d-flex flex-row summary text-theme">
   <div class="col-12 p-0 d-flex flex-wrap part-list">
     <div *ngFor="let item of parts" class="part-item mt-2 ml-4">
-      <p class="part-name font-weight-bold mb-0">Part {{ item?.rfqMedia?.id }}.{{ item?.id }}</p>
+      <p class="part-name font-weight-bold mb-0">Part {{ item?.rfqMediaId }}.{{ item?.partId }}</p>
       <!-- Image -->
       <img
         [src]="
@@ -11,7 +11,7 @@
         "
         alt=""
         height="100px"
-        width="100px"
+        width="150px"
       />
 
       <div id="view-in-three-d" class="mt-2">
@@ -54,7 +54,7 @@
         <!-- TODO: -->
         <!--Find out what status is allowed to view ref file -->
         <p *ngIf="showRefFile">
-          <app-ref-file [value]="item.id"> </app-ref-file>
+          <app-ref-file [value]="item?.partId"> </app-ref-file>
         </p>
       </div>
     </div>

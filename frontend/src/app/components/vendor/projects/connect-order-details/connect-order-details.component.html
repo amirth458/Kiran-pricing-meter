@@ -3,7 +3,9 @@
     <div class="w-100 row">
       <h6 class="col-12 pl-0 text-theme">
         Self-Selection Production Details
-        <span *ngIf="projectDetails?.parts" class="ml-4 cursor-pointer hover-bold font-sm underline"
+        <!-- TODO: -->
+        <!-- Add See More Details Modal -->
+        <span *ngIf="false && projectDetails?.parts" class="ml-4 cursor-pointer hover-bold font-sm underline"
           >See more details</span
         >
       </h6>
@@ -13,7 +15,10 @@
 
   <div class="my-4 prodex-supplier">
     <div class="heading d-flex justify-content-between align-items-end mb-3">
-      <h6>Prodex Supplier (ProdEX Supplier Requested - {{ prodEXRequestedCount }})</h6>
+      <h6>
+        Prodex Supplier
+        <span class="font-weight-normal font-sm">(ProdEX Supplier Requested - {{ prodEXRequestedCount }})</span>
+      </h6>
       <div class="actions">
         <button
           [disabled]="!canReleaseToSelectedProdEXSuppliers"
