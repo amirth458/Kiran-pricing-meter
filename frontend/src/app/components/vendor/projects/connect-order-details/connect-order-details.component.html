@@ -21,7 +21,7 @@
       </h6>
       <div class="actions">
         <button
-          [disabled]="!canReleaseToSelectedProdEXSuppliers"
+          [disabled]="!canReleaseToSelectedProdEXSuppliers || !firstTimeRelease"
           (click)="releaseProjectToSupplier()"
           type="button"
           class="btn theme green"
@@ -72,7 +72,7 @@
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
         class="ag-theme-balham"
-        [rowData]="customerSupplierToInvite"
+        [rowData]="[]"
         [gridOptions]="supplierGridOptions[2]"
         (gridReady)="onSuppliersGridReady(0, $event)"
       >
@@ -90,7 +90,7 @@
 </ng-template>
 
 <ng-template #replaceSupplierCell let-row>
-  <div *ngIf="row?.status === statusTypes?.VENDOR_REJECTED" class="h-100 d-flex flex-row align-items-center">
+  <div *ngIf="!firstTimeRelease && prodEXRequestedCount !== 0" class="h-100 d-flex flex-row align-items-center">
     <button class="btn btn-cell theme white p-0" (click)="showReplacementProfiles($event, row)">
       Replace Supplier
     </button>
@@ -118,8 +118,8 @@
 <ng-template #statusCell let-row>
   <div class="d-flex flex-row align-items-center w-100 h-100">
     <ng-container [ngSwitch]="row?.status">
-      <div *ngSwitchCase="statusTypes.VENDOR_REJECTED" class="text-orange">VENDOR REJECTED</div>
-      <div *ngSwitchCase="statusTypes.CUSTOMER_DECLINED" class="text-orange">CUSTOMER DECLINED</div>
+      <div *ngSwitchCase="'VENDOR_REJECTED'" class="text-orange">{{ statusTypes[row?.status] }}</div>
+      <div *ngSwitchCase="'CUSTOMER_DECLINED'" class="text-orange">{{ statusTypes[row?.status] }}</div>
       <div *ngSwitchDefault>{{ statusTypes[row?.status] }}</div>
     </ng-container>
   </div>
@@ -131,7 +131,7 @@
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
         "{{ selectedVendor.vendorName }}" Profiles
       </h5>
-      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <button type="button" class="close" aria-label="Close" (click)="selectedVendor = null; modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -154,7 +154,7 @@
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
         Choose 1 more vendor
       </h5>
-      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <button type="button" class="close" aria-label="Close" (click)="selectedVendor = null; modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -163,7 +163,7 @@
       <h6 class="text-theme">Matching Supplier Queue</h6>
       <ag-grid-angular
         class="ag-theme-balham w-100 h-75"
-        [rowData]="replacementProfiles"
+        [rowData]="replacementProdexSuppliers"
         [gridOptions]="vendorProfileGridOptions[1]"
         (gridReady)="onVendorProfileReady(1, $event)"
       >
@@ -171,7 +171,14 @@
 
       <div class="w-100 mt-2 d-flex row justify-content-center">
         <div class="col-4">
-          <button ngbAutofocus class="btn theme green">Release Project to Supplier</button>
+          <button
+            ngbAutofocus
+            (click)="replaceSupplier()"
+            [disabled]="selectedReplacementProdEXVendorIds.length !== 1"
+            class="btn theme green"
+          >
+            Release Project to Supplier
+          </button>
         </div>
       </div>
     </div>

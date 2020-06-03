@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { ActivatedRoute } from '@angular/router';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, tap } from 'rxjs/operators';
 import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -38,19 +38,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
 
-  prodEXSupplier = [];
-  customerSelectedSupplier = [];
-  customerSupplierToInvite = [];
-  replacementProfiles = [];
   selectedVendor = null;
-
+  firstTimeRelease = true;
+  replacementProdexSuppliers;
   selectedProdEXVendorIds = [];
+  selectedReplacementProdEXVendorIds = [];
 
   matchingProfiles: MatchedProcessProfile[] = [];
 
   projectDetails: ConnectProject;
   statusTypes = BidProcessStatusEnum;
-  customerOrderId = null;
+  customerOrderId;
   prodEXRequestedCount = 2;
   constructor(
     public projectService: ProjectService,
@@ -93,6 +91,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.projectService
       .getConnectProject(this.customerOrderId)
       .pipe(
+        tap(_ => {
+          this.firstTimeRelease = _.prodexSuppliers.filter(supplier => !!supplier.status).length === 0;
+        }),
         mergeMap(project =>
           this.partService.getPartsById(project.partIds).pipe(
             map(parts => {
@@ -103,12 +104,21 @@ export class ConnectOrderDetailsComponent implements OnInit {
       )
       .subscribe(
         r => {
+          this.replacementProdexSuppliers = r
+            ? this.firstTimeRelease
+              ? []
+              : r.prodexSuppliers.filter(supplier => !supplier.status)
+            : [];
+
           this.projectDetails = {
             ...r,
-            prodexSuppliers: r.prodexSuppliers || [],
+            prodexSuppliers: r
+              ? this.firstTimeRelease
+                ? r.prodexSuppliers
+                : r.prodexSuppliers.filter(supplier => !!supplier.status)
+              : [],
             customerSelectedSuppliers: r.customerSelectedSuppliers || []
           };
-          this.customerSupplierToInvite = [];
           this.spineer.hide();
         },
         e => {
@@ -135,7 +145,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.selectedVendor = data;
     this.modal.open(this.replacementProfileModal, {
       centered: true,
-      size: 'lg'
+      size: 'lg',
+      backdrop: 'static'
     });
   }
 
@@ -166,12 +177,50 @@ export class ConnectOrderDetailsComponent implements OnInit {
           this.selectedProdEXVendorIds = [];
           this.supplierGridOptions[0].api.deselectAll();
           if (
-            (r.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
-            (r.error.message || '').includes('Contract not found')
+            r.error &&
+            ((r.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+              (r.error.message || '').includes('Contract not found'))
           ) {
             this.toaster.error("Vendor doesn't have SHOPSIGHT 360 PLUS");
           } else {
             this.toaster.error('Error While Releasing Project To ProdEX Suppliers.');
+          }
+          this.getData();
+          console.log(r);
+        }
+      );
+  }
+
+  replaceSupplier() {
+    this.spineer.show();
+    this.projectService
+      .replaceConnectProjectSupplier(
+        this.projectDetails.customerOrderId,
+        this.selectedVendor.vendorId,
+        this.selectedReplacementProdEXVendorIds[0]
+      )
+      .subscribe(
+        r => {
+          this.selectedVendor = null;
+          this.selectedReplacementProdEXVendorIds = [];
+          this.vendorProfileGridOptions[1].api.deselectAll();
+          this.modal.dismissAll();
+          this.spineer.hide();
+          this.toaster.success('Suppliers Replaced');
+          this.getData();
+        },
+        r => {
+          this.spineer.hide();
+          this.selectedReplacementProdEXVendorIds = [];
+          this.vendorProfileGridOptions[1].api.deselectAll();
+          if (
+            r.error &&
+            ((r.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+              (r.error.message || '').includes('Contract not found'))
+          ) {
+            this.toaster.error("Vendor doesn't have SHOPSIGHT 360 PLUS");
+          } else {
+            this.toaster.error('Error While Replacing Suppliers.');
           }
           this.getData();
           console.log(r);
@@ -186,14 +235,26 @@ export class ConnectOrderDetailsComponent implements OnInit {
         columnDefs: this.vendorProfileColumnDefs,
         enableColResize: true,
         rowHeight: 45,
-        headerHeight: 35
+        headerHeight: 35,
+        paginationPageSize: 10
       },
       {
         frameworkComponents: this.frameworkComponents,
         columnDefs: this.replacementProfileColumnDefs,
         enableColResize: true,
         rowHeight: 45,
-        headerHeight: 35
+        headerHeight: 35,
+        paginationPageSize: 10,
+        onRowSelected: ev => {
+          if (ev.node.isSelected()) {
+            this.selectedReplacementProdEXVendorIds.push(ev.data.vendorId);
+          } else {
+            const foundIndex = this.selectedReplacementProdEXVendorIds.findIndex(_ => _ === ev.data.vendorId);
+            if (foundIndex !== -1) {
+              this.selectedReplacementProdEXVendorIds.splice(foundIndex, 1);
+            }
+          }
+        }
       }
     ];
 
@@ -208,8 +269,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         rowMultiSelectWithClick: true,
         domLayout: 'autoHeight',
         isRowSelectable: rowNode => {
-          // (rowNode.data.status || '').replace(/_/g, ' ') !== BidProcessStatusEnum.VENDOR_RECEIVED;
-          return (rowNode.data.status || '').length === 0;
+          return !rowNode.data.status && this.firstTimeRelease;
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -273,7 +333,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false,
-        width: 80
+        width: 40
       },
       {
         headerName: 'No',
@@ -350,6 +410,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'Status',
+          field: 'status',
           cellRenderer: 'templateRenderer',
           hide: false,
           sortable: false,
@@ -413,6 +474,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'Status',
+          field: 'status',
           cellRenderer: 'templateRenderer',
           hide: false,
           sortable: false,
