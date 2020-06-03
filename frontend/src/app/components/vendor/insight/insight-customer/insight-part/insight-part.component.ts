@@ -163,7 +163,18 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'created_date'
     }
   ];
+
+  partIds = null;
+
   constructor() {}
 
   ngOnInit() {}
+
+  onRowClick(ev) {
+    this.partIds = [ev.data.part_id];
+  }
+
+  onClose() {
+    this.partIds = null;
+  }
 }
