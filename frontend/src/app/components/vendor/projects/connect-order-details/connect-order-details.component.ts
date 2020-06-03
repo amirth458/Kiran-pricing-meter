@@ -49,6 +49,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   projectDetails: ConnectProject;
   statusTypes = BidProcessStatusEnum;
   customerOrderId;
+  pageType;
   prodEXRequestedCount = 2;
   constructor(
     public projectService: ProjectService,
@@ -61,6 +62,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
     public location: Location
   ) {
     this.customerOrderId = this.route.snapshot.paramMap.get('id');
+    this.route.url.subscribe(r => {
+      this.pageType = r[0].path;
+    });
   }
 
   ngOnInit() {
@@ -74,11 +78,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   get canReleaseToSelectedProdEXSuppliers() {
-    return this.selectedProdEXVendorIds.length === this.prodEXRequestedCount;
+    return this.selectedProdEXVendorIds.length === this.prodEXRequestedCount && this.pageType === 'release-queue';
   }
 
   get canReleaseToInvitedEXSuppliers() {
     return (
+      this.pageType === 'release-queue' &&
       this.supplierGridOptions.length &&
       this.supplierGridOptions[2].api &&
       this.projectDetails &&
@@ -96,6 +101,11 @@ export class ConnectOrderDetailsComponent implements OnInit {
         }),
         mergeMap(project =>
           this.partService.getPartsById(project.partIds).pipe(
+            tap(async partList => {
+              this.orderService
+                .getMatchingProcessProfiles([partList[0].rfqMediaId], false)
+                .subscribe(profiles => (this.matchingProfiles = profiles));
+            }),
             map(parts => {
               return { ...project, parts };
             })
@@ -145,8 +155,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.selectedVendor = data;
     this.modal.open(this.replacementProfileModal, {
       centered: true,
-      size: 'lg',
-      backdrop: 'static'
+      size: 'lg'
     });
   }
 
@@ -234,15 +243,16 @@ export class ConnectOrderDetailsComponent implements OnInit {
         frameworkComponents: this.frameworkComponents,
         columnDefs: this.vendorProfileColumnDefs,
         enableColResize: true,
-        rowHeight: 45,
+        rowHeight: 35,
         headerHeight: 35,
-        paginationPageSize: 10
+        paginationPageSize: 10,
+        domLayout: 'autoHeight'
       },
       {
         frameworkComponents: this.frameworkComponents,
         columnDefs: this.replacementProfileColumnDefs,
         enableColResize: true,
-        rowHeight: 45,
+        rowHeight: 35,
         headerHeight: 35,
         paginationPageSize: 10,
         onRowSelected: ev => {
@@ -269,7 +279,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         rowMultiSelectWithClick: true,
         domLayout: 'autoHeight',
         isRowSelectable: rowNode => {
-          return !rowNode.data.status && this.firstTimeRelease;
+          return !rowNode.data.status && this.firstTimeRelease && this.pageType === 'release-queue';
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -320,6 +330,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
       {
         headerName: 'Process Profile Name',
         field: 'processProfileName',
+        tooltipField: 'processProfileName',
         hide: false,
         sortable: false,
         filter: false
@@ -341,15 +352,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
         width: 30
       },
       {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
+        headerName: 'Vendor',
+        field: 'vendor',
+        tooltipField: 'vendor',
         hide: false,
         sortable: false,
         filter: false
       },
       {
-        headerName: 'Quantity of Process Profiles Name',
-        field: 'quantity',
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltipField: 'vendorName',
         hide: false,
         sortable: false,
         filter: false

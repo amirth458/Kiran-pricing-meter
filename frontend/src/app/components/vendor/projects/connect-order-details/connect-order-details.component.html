@@ -19,9 +19,9 @@
         Prodex Supplier
         <span class="font-weight-normal font-sm">(ProdEX Supplier Requested - {{ prodEXRequestedCount }})</span>
       </h6>
-      <div class="actions">
+      <div *ngIf="firstTimeRelease && this.pageType === 'release-queue'" class="actions">
         <button
-          [disabled]="!canReleaseToSelectedProdEXSuppliers || !firstTimeRelease"
+          [disabled]="!canReleaseToSelectedProdEXSuppliers || prodEXRequestedCount !== 0"
           (click)="releaseProjectToSupplier()"
           type="button"
           class="btn theme green"
@@ -62,7 +62,7 @@
   <div class="my-4 customer-selected-invite">
     <div class="heading d-flex justify-content-between align-items-end mb-3">
       <h6>Customer Supplier To Invite</h6>
-      <div class="actions">
+      <div *ngIf="this.pageType === 'release-queue'" class="actions">
         <button [disabled]="!canReleaseToInvitedEXSuppliers" type="button" class="btn  theme green">
           Release Project to Supplier
         </button>
@@ -90,7 +90,7 @@
 </ng-template>
 
 <ng-template #replaceSupplierCell let-row>
-  <div *ngIf="!firstTimeRelease && prodEXRequestedCount !== 0" class="h-100 d-flex flex-row align-items-center">
+  <div *ngIf="!firstTimeRelease && this.pageType === 'release-queue'" class="h-100 d-flex flex-row align-items-center">
     <button class="btn btn-cell theme white p-0" (click)="showReplacementProfiles($event, row)">
       Replace Supplier
     </button>
@@ -131,12 +131,12 @@
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
         "{{ selectedVendor.vendorName }}" Profiles
       </h5>
-      <button type="button" class="close" aria-label="Close" (click)="selectedVendor = null; modal.close()">
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <div class="modal-body vendor-profile theme-table">
+    <div class="modal-body theme-table">
       <ag-grid-angular
         class="ag-theme-balham w-100 h-100"
         [rowData]="vendorProfiles"
@@ -154,7 +154,7 @@
       <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
         Choose 1 more vendor
       </h5>
-      <button type="button" class="close" aria-label="Close" (click)="selectedVendor = null; modal.close()">
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
