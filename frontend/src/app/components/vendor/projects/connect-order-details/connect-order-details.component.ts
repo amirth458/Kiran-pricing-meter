@@ -47,7 +47,6 @@ export class ConnectOrderDetailsComponent implements OnInit {
   selectedProdEXVendorIds = [];
 
   matchingProfiles: MatchedProcessProfile[] = [];
-  parts: Part[] = [];
 
   projectDetails: ConnectProject;
   statusTypes = BidProcessStatusEnum;
