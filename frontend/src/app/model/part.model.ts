@@ -185,6 +185,8 @@ export interface Part {
   partCustomParameterList: PartCustomParameter[];
   isNoBid: boolean;
   partQuoteList: Array<any>;
+
+  rfqMediaId?: number;
 }
 
 export interface Address {

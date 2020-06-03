@@ -131,7 +131,7 @@ export class VendorDetailsComponent implements OnInit {
         this.ordersService
           .getMatchingProcessProfiles(
             this.orderDetails.map(orderDetail => orderDetail.rfqMediaId),
-            true
+            false
           )
           .subscribe(suppliers => {
             this.matchedProfiles = [];

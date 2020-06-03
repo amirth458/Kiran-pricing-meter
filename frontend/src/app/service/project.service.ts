@@ -92,4 +92,13 @@ export class ProjectService {
     };
     return this.http.post<any>(environment.apiBaseUrl + '/admin/bidding/connect-project/release-bid-to-vendor', body);
   }
+
+  replaceConnectProjectSupplier(customerOrderId: number, oldVendorId: number, newVendorId: number): Observable<any> {
+    const body = {
+      customerOrderId,
+      newVendorId,
+      oldVendorId
+    };
+    return this.http.put<any>(environment.apiBaseUrl + '/admin/bidding/connect-project/replace-bid-vendor ', body);
+  }
 }
