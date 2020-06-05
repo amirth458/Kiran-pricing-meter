@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { ActionService } from 'src/app/service/action.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ProjectTypeEnum } from 'src/app/model/order.model';
 
 @Component({
   selector: 'app-connect-setting',
@@ -32,7 +33,7 @@ export class ConnectSettingComponent implements OnInit {
 
   ngOnInit() {
     this.initSettings();
-    this.actionService.saveProductionSettingAction().subscribe(() => {
+    this.actionService.saveConnectSettingAction().subscribe(() => {
       this.save();
     });
   }
@@ -40,11 +41,18 @@ export class ConnectSettingComponent implements OnInit {
   initSettings() {
     this.spinner.show();
 
-    this.pricingService
-      .getProductionPricingSettings()
+    combineLatest(
+      this.pricingService.getProductionPricingSettings(ProjectTypeEnum.CONNECT_PROJECT),
+      this.pricingService.getConnectSetting()
+    )
       .pipe(catchError(e => this.handleSaveError(e)))
-      .subscribe(a => {
-        this.formGroup.setValue({ ...this.formGroup.value, baseCost: a.baseCost, fee: a.fee });
+      .subscribe(([a, b]) => {
+        this.formGroup.setValue({
+          ...this.formGroup.value,
+          baseCost: a.baseCost,
+          fee: a.fee,
+          numberOfCustomerSupplierToSelect: b.numberOfCustomerSupplierToSelectPerRfq
+        });
         this.spinner.hide();
       });
   }
@@ -52,15 +60,25 @@ export class ConnectSettingComponent implements OnInit {
   async save() {
     if (this.formGroup.valid) {
       this.spinner.show();
-      this.pricingService
-        .setProductionPricingSetting({
-          baseCost: this.formGroup.value.baseCost,
-          fee: this.formGroup.value.fee
-        })
+      combineLatest(
+        this.pricingService.setProductionPricingSetting(
+          {
+            baseCost: this.formGroup.value.baseCost,
+            fee: this.formGroup.value.fee
+          },
+          ProjectTypeEnum.CONNECT_PROJECT
+        ),
+        this.pricingService.updateConnectSetting(this.formGroup.value.numberOfCustomerSupplierToSelect)
+      )
         .pipe(catchError(e => this.handleSaveError(e)))
-        .subscribe(a => {
+        .subscribe(([a, b]) => {
           this.spinner.hide();
-          this.formGroup.setValue({ ...this.formGroup.value, baseCost: a.baseCost, fee: a.fee });
+          this.formGroup.setValue({
+            ...this.formGroup.value,
+            baseCost: a.baseCost,
+            fee: a.fee,
+            numberOfCustomerSupplierToSelect: b.numberOfCustomerSupplierToSelectPerRfq
+          });
           this.toastrService.success(`Pricing Settings Updated Successfully`);
         });
     } else {

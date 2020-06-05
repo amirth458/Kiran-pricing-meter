@@ -11,6 +11,7 @@ import { Pageable } from '../model/pageable.model';
 import { PricingBreakdown, PricingBreakDown } from '../model/pricing.breakdown';
 import { RfqData, PricingProfileDetailedView, PartQuote } from '../model/part.model';
 import { ProductionProjectSetting } from '../model/pricing-setting.model';
+import { ProjectTypeEnum } from '../model/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -186,7 +187,7 @@ export class RfqPricingService {
 
   getPartQuotes(partIds: number[]): Observable<PartQuote[]> {
     const url = `${environment.procurementApiBaseUrl}/part-quote/parts`;
-    return this.http.post<PartQuote[]>(url, { partIds: partIds });
+    return this.http.post<PartQuote[]>(url, { partIds });
   }
 
   getPartDimension(partId: number): Observable<PartDimension> {
@@ -217,14 +218,23 @@ export class RfqPricingService {
     return this.http.patch(`${environment.apiBaseUrl}/admin/part/${partId}/no-bid`, {});
   }
 
-  getProductionPricingSettings(): Observable<any> {
-    const projectTypeId = 3;
+  getConnectSetting(): Observable<ConnectSetting> {
+    const url = `${environment.apiBaseUrl}/admin/connect-project-release-setting`;
+    return this.http.get<ConnectSetting>(url);
+  }
+
+  updateConnectSetting(numberOfCustomerSupplierToSelectPerRfq: number): Observable<ConnectSetting> {
+    return this.http.put<ConnectSetting>(`${environment.apiBaseUrl}/admin/connect-project-release-setting`, {
+      numberOfCustomerSupplierToSelectPerRfq
+    });
+  }
+
+  getProductionPricingSettings(projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT): Observable<any> {
     const url = `${environment.apiBaseUrl}/product-price-setting/${projectTypeId}`;
     return this.http.get(url);
   }
 
-  setProductionPricingSetting(data): Observable<any> {
-    const projectTypeId = 3;
+  setProductionPricingSetting(data, projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT): Observable<any> {
     const url = `${environment.apiBaseUrl}/product-price-setting`;
     return this.http.post(url, {
       ...data,
@@ -258,4 +268,9 @@ export class RfqPricingService {
   getAllQuoteByPart(partId): Observable<PartQuote[]> {
     return this.http.get<PartQuote[]>(environment.procurementApiBaseUrl + `/part-quote/admin/parts/${partId}/all`);
   }
+}
+
+export class ConnectSetting {
+  id: number;
+  numberOfCustomerSupplierToSelectPerRfq: number;
 }
