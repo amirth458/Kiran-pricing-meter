@@ -50,7 +50,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   statusTypes = BidProcessStatusEnum;
   customerOrderId;
   pageType;
-  prodEXRequestedCount = 2;
+
   constructor(
     public projectService: ProjectService,
     public partService: PartService,
@@ -78,7 +78,11 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   get canReleaseToSelectedProdEXSuppliers() {
-    return this.selectedProdEXVendorIds.length === this.prodEXRequestedCount && this.pageType === 'release-queue';
+    return (
+      this.projectDetails &&
+      this.selectedProdEXVendorIds.length === this.projectDetails.minimumProdexSuppliers &&
+      this.pageType === 'release-queue'
+    );
   }
 
   get canReleaseToInvitedEXSuppliers() {

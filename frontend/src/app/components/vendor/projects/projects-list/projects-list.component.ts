@@ -8,6 +8,7 @@ import { Part, PartOrder } from 'src/app/model/part.model';
 import { ProjectService } from 'src/app/service/project.service';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { Observable } from 'rxjs';
+import { ConnectOrder } from 'src/app/model/connect.model';
 
 @Component({
   selector: 'app-projects-list',
@@ -25,7 +26,7 @@ export class ProjectsListComponent implements OnInit {
   pageSize = 10;
   sort = 'id,desc';
 
-  type: string = '';
+  type = '';
 
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
@@ -101,12 +102,12 @@ export class ProjectsListComponent implements OnInit {
           this.spinner.hide('spooler');
           const rowsThisPage =
             this.type === 'release-queue' || this.type === 'order-complete'
-              ? data.content.map((item: PartOrder) => ({
+              ? data.content.map((item: ConnectOrder) => ({
                   id: (item.partList || []).map(_ => _.id).join(', '),
                   orderId: item.id,
                   sameVendor: item.isReleaseToSingleSupplier ? 'True' : 'False',
                   customerName: item.customerName,
-                  preferredVendors: (item.preferredVendors || []).length
+                  preferredVendors: item.minimumProdexSuppliers
                 }))
               : data.content.map((item: Part) => ({
                   id: item.id,
