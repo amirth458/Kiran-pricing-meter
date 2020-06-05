@@ -98,7 +98,7 @@ export class InsightDetailComponent implements OnInit {
       filters: {
         beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
         endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-        searchValue: this.searchQuery,
+        searchValue: this.searchQuery === '' ? null : this.searchQuery,
         lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
       }
     };
@@ -120,7 +120,7 @@ export class InsightDetailComponent implements OnInit {
       filters: {
         beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
         endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-        searchValue: this.searchQuery,
+        searchValue: this.searchQuery === '' ? null : this.searchQuery,
         lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
       }
     };
