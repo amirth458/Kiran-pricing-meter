@@ -6,7 +6,7 @@ import { of, Observable } from 'rxjs';
 import { BidProcessStatusEnum, ConnectProject } from '../model/connect.model';
 import { Pageable } from '../model/pageable.model';
 import { PartOrder } from '../model/part.model';
-import { ProjectTypeEnum } from '../model/order.model';
+import { ProjectTypeEnum, OrderStatusTypeId } from '../model/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -69,10 +69,8 @@ export class ProjectService {
     }
     return this.http.post<Pageable<PartOrder>>(
       url,
-      // TODO:
-      // Get all order status and use enum
       {
-        orderStatusId: orderComplete ? 6 : 5,
+        orderStatusId: orderComplete ? OrderStatusTypeId.ORDER_COMPLETE : OrderStatusTypeId.VENDOR_DOWNSELECTION,
         projectTypeId: ProjectTypeEnum.CONNECT_PROJECT
       },
       { params }

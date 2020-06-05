@@ -1,5 +1,13 @@
 import { Part } from './part.model';
 
+export enum OrderStatusTypeId {
+  ORDER_NOT_STARTED = 1,
+  ORDER_IN_PROGRESS = 2,
+  ORDER_COMPLETE = 3,
+  ORDER_PENDING = 4,
+  VENDOR_DOWNSELECTION = 5
+}
+
 export interface Order {
   id: number;
   totalJobs: number;
