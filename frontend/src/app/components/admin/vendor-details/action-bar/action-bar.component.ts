@@ -25,8 +25,9 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
     // });
     const routeArray = this.route.url.split('/');
 
-    this.baseURL = `${routeArray[1]}/${routeArray[2]}/${routeArray[3]}`;
+    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
     if (routeArray.length > 4) {
+      this.baseURL = `${routeArray[1]}/${routeArray[2]}/${routeArray[3]}`;
       this.menus.map((x, index) => {
         if (x.route === routeArray[4]) {
           this.activeTabIndex = index;
@@ -38,8 +39,9 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     const routeArray = this.route.url.split('/');
-    this.baseURL = `${routeArray[1]}/${routeArray[2]}/${routeArray[3]}`;
+    this.baseURL = `${routeArray[1]}/${routeArray[2]}`;
     if (routeArray.length > 4) {
+      this.baseURL = `${routeArray[1]}/${routeArray[2]}/${routeArray[3]}`;
       this.menus.map((x, index) => {
         if (x.route === routeArray[4]) {
           this.activeTabIndex = index;

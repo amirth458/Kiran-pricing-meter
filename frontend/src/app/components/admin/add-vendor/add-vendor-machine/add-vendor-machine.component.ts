@@ -1,5 +1,5 @@
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { EquipmentService } from 'src/app/service/equipment.service';
 import { FacilityService } from 'src/app/service/facility.service';
 import { MaterialService } from 'src/app/service/material.service';
 import { environment } from 'src/environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-vendor-machine',
@@ -23,7 +24,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-vendor-machine.component.css']
 })
 export class AddVendorMachineComponent implements OnInit {
-  @ViewChild('modal') modal;
+  @ViewChild('machineModal') machineModal: TemplateRef<any>;
 
   selectedMachine = null;
   equipments = [{ id: '', name: 'more than 2 characters to start search' }];
@@ -97,7 +98,9 @@ export class AddVendorMachineComponent implements OnInit {
         action: {
           edit: param => this.editRow(param),
           delete: async param => {
-            this.modal.nativeElement.click();
+            this.modalService.open(this.machineModal, {
+              centered: true
+            });
             this.selectedMachine = param.data;
           },
           canEdit: true,
@@ -135,7 +138,8 @@ export class AddVendorMachineComponent implements OnInit {
     public facilityService: FacilityService,
     public userService: UserService,
     public vendorService: VendorService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private modalService: NgbModal
   ) {}
 
   async ngOnInit() {
@@ -255,7 +259,7 @@ export class AddVendorMachineComponent implements OnInit {
   deleteMachine() {
     const filteredData = this.rowData.filter(x => x.id !== this.selectedMachine.id);
     this.rowData = filteredData;
-    this.modal.nativeElement.click();
+    this.modalService.dismissAll();
     this.userService.setRegisterMachineInfo(this.rowData);
     this.isUpdate = false;
   }
