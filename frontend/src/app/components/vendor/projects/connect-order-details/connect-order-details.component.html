@@ -17,11 +17,13 @@
     <div class="heading d-flex justify-content-between align-items-end mb-3">
       <h6>
         Prodex Supplier
-        <span class="font-weight-normal font-sm">(ProdEX Supplier Requested - {{ prodEXRequestedCount }})</span>
+        <span class="font-weight-normal font-sm"
+          >(ProdEX Supplier Requested - {{ projectDetails?.minimumProdexSuppliers }})</span
+        >
       </h6>
       <div *ngIf="firstTimeRelease && this.pageType === 'release-queue'" class="actions">
         <button
-          [disabled]="!canReleaseToSelectedProdEXSuppliers || prodEXRequestedCount !== 0"
+          [disabled]="!canReleaseToSelectedProdEXSuppliers || projectDetails?.minimumProdexSuppliers === 0"
           (click)="releaseProjectToSupplier()"
           type="button"
           class="btn theme green"

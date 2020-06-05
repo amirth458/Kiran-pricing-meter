@@ -1,4 +1,6 @@
 import { Part } from './part.model';
+import { BidOrderStatusType } from './confirm.sub-order.release';
+import { PaymentStatusType } from './billing.model';
 
 export enum BidProcessStatusEnum {
   AWAITING_VENDOR_RESPONSE = 'AWAITING VENDOR RESPONSE',
@@ -31,4 +33,23 @@ export class ConnectProject {
     vendorId: number;
     state: string;
   }[];
+}
+
+export class ConnectOrder {
+  amount: number;
+  createdDate: string;
+  customerId: number;
+  customerName: string;
+  id: number;
+  isArchived: false;
+  isReleaseToSingleSupplier: true;
+  minimumProdexSuppliers: number;
+  notes: string;
+  orderStatusType: BidOrderStatusType;
+  partList: Part[];
+  paymentStatusType: PaymentStatusType;
+  preferredVendors: number[];
+  requestProdexDirectBid: false;
+  subContractorsAllowed: false;
+  vendorOrderId: null;
 }
