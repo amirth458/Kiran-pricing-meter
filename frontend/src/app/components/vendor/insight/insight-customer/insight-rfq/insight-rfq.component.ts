@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PartService } from 'src/app/service/part.service';
 
 @Component({
   selector: 'app-insight-rfq',
@@ -136,13 +137,19 @@ export class InsightRfqComponent implements OnInit {
   ];
   partIds = null;
 
-  constructor() {}
+  constructor(public partService: PartService) {}
 
   ngOnInit() {}
 
   onRowClick(ev) {
     // get part Ids from rfq ID
     // this.partIds = getPartsByRfqId(ev.data.rfq_id);
+    this.partService.getPartsByRfqId(ev.data.rfq_id).subscribe(res => {
+      this.partIds = res.map(item => item.id);
+      if (this.partIds.length === 0) {
+        this.partIds = null;
+      }
+    });
   }
 
   onClose() {
