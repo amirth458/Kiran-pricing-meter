@@ -97,10 +97,10 @@ export class ConnectOrderDetailsComponent implements OnInit {
       .getConnectProject(this.customerOrderId)
       .pipe(
         tap(_ => {
-          this.firstTimeRelease = _.prodexSuppliers.filter(supplier => !!supplier.status).length === 0;
+          this.firstTimeRelease = (_.prodexSuppliers || []).filter(supplier => !!supplier.status).length === 0;
         }),
         mergeMap(project =>
-          this.partService.getPartsById(project.partIds).pipe(
+          this.partService.getPartsById(project.partIds || []).pipe(
             tap(async partList => {
               this.orderService
                 .getMatchingProcessProfiles([partList[0].rfqMediaId], false)
@@ -117,7 +117,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
           this.replacementProdexSuppliers = r
             ? this.firstTimeRelease
               ? []
-              : r.prodexSuppliers.filter(supplier => !supplier.status)
+              : (r.prodexSuppliers || []).filter(supplier => !supplier.status)
             : [];
 
           this.projectDetails = {
