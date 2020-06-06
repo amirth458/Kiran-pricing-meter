@@ -195,6 +195,11 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
                 this.declineUser(param.data.id);
               }
             },
+            unlock: async param => {
+              if (param.data) {
+                this.unlockUser(param.data.id);
+              }
+            },
             canEdit: false,
             canCopy: false,
             canDelete: false,
@@ -212,6 +217,12 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
                   return true;
                 }
                 return false;
+              }
+              return false;
+            },
+            canUnlock: param => {
+              if (param.data && param.data.user.isLocked === true) {
+                return true;
               }
               return false;
             }
@@ -300,6 +311,10 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  unlockUser(id) {
+    console.log('unlock user', id);
   }
 
   vendorStatusChanged(value) {

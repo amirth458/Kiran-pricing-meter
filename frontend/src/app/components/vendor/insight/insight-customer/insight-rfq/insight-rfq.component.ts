@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PartService } from 'src/app/service/part.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-insight-rfq',
@@ -137,7 +138,7 @@ export class InsightRfqComponent implements OnInit {
   ];
   partIds = null;
 
-  constructor(public partService: PartService) {}
+  constructor(public partService: PartService, public toastr: ToastrService) {}
 
   ngOnInit() {}
 
@@ -148,6 +149,7 @@ export class InsightRfqComponent implements OnInit {
       this.partIds = res.map(item => item.id);
       if (this.partIds.length === 0) {
         this.partIds = null;
+        this.toastr.warning('No Parts are created');
       }
     });
   }
