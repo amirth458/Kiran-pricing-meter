@@ -11,7 +11,10 @@
               <a>Platform View</a>
             </div>
           </div> -->
-          <app-view-in-three-d [connectorServiceId]="part?.rfqMedia?.media?.connectorServiceId"></app-view-in-three-d>
+          <div class="d-flex justify-content-between">
+            <app-view-in-three-d [connectorServiceId]="part?.rfqMedia?.media?.connectorServiceId"></app-view-in-three-d>
+            <span class="text-primary" (click)="download()"><i class="fa fa-download"></i></span>
+          </div>
           <div class="image">
             <img
               [src]="part?.rfqMedia.media.partDimension.thumbnail200Location"
