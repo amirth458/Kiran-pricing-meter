@@ -16,7 +16,13 @@ export class InsightRfqComponent implements OnInit {
       sortable: true,
       filter: false,
       tooltipField: 'rfq_id',
-      headerTooltip: 'rfq_id'
+      headerTooltip: 'rfq_id',
+      cellRenderer: 'linkCellRenderer',
+      cellRendererParams: {
+        action: param => {
+          this.onRowClick(param);
+        }
+      }
     },
     {
       headerName: 'rfq_profile_name',

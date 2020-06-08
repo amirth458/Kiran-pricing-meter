@@ -14,7 +14,13 @@ export class InsightPartComponent implements OnInit {
       sortable: true,
       filter: false,
       tooltipField: 'part_id',
-      headerTooltip: 'part_id'
+      headerTooltip: 'part_id',
+      cellRenderer: 'linkCellRenderer',
+      cellRendererParams: {
+        action: param => {
+          this.onRowClick(param);
+        }
+      }
     },
     {
       headerName: 'rfq_id',
