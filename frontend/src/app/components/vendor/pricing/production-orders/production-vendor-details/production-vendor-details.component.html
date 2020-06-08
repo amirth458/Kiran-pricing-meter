@@ -43,7 +43,7 @@
     <!-- End of Email Communication -->
 
     <app-chat
-      [participants]="row.vendorId ? [row.vendorId] : []"
+      [participants]="row.userId ? [row.userId] : []"
       [id]="vendorOrderId"
       [vendorId]="row?.vendorId"
       [type]="chatTypeEnum.VENDOR_ORDER"
