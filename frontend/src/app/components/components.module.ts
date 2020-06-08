@@ -150,6 +150,7 @@ import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-de
 import { PartListComponent } from '../common/part-list/part-list.component';
 import { RefFileComponent } from '../common/ref-file/ref-file.component';
 import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
+import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cell-renderer.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -161,6 +162,7 @@ import { InsightPartInformationComponent } from './vendor/insight/insight-part-i
     DropdownHeaderRendererComponent,
     MultiSelectCellEditorComponent,
     MultiSelectCellRendererComponent,
+    LinkCellRendererComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
@@ -300,7 +302,8 @@ import { InsightPartInformationComponent } from './vendor/insight/insight-part-i
       MultiSelectCellEditorComponent,
       StatusDropdownFilterComponent,
       TemplateRendererComponent,
-      FileViewRendererComponent
+      FileViewRendererComponent,
+      LinkCellRendererComponent
     ]),
     NgSelectModule,
     FormsModule,
@@ -325,6 +328,7 @@ import { InsightPartInformationComponent } from './vendor/insight/insight-part-i
     ColumnSearchFilterComponent,
     CheckBoxComponent,
     MultiSelectCellRendererComponent,
+    LinkCellRendererComponent,
     ProgressBarComponent,
     SideMenuComponent,
     SubSectionMenuComponent,

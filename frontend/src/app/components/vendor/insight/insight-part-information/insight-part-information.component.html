@@ -5,7 +5,7 @@
         class="tab"
         *ngFor="let partId of partIds"
         [ngClass]="{ active: partId === selectedPartId }"
-        (click)="selectPartId(partId)"
+        (click)="selectPart(partId)"
       >
         {{ partId }}
       </div>

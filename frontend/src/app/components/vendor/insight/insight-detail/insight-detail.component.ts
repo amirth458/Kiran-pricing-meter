@@ -1,11 +1,13 @@
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
+import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { GridOptions, GridReadyEvent } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 
 import { ReportsService } from 'src/app/service/reports.service';
-import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
+import { LinkCellRendererComponent } from 'src/app/common/link-cell-renderer/link-cell-renderer.component';
 
 @Component({
   selector: 'app-insight-detail',
