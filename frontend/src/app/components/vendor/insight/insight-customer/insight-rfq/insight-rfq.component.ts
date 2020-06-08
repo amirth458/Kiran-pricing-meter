@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PartService } from 'src/app/service/part.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-insight-rfq',
@@ -14,16 +16,22 @@ export class InsightRfqComponent implements OnInit {
       sortable: true,
       filter: false,
       tooltipField: 'rfq_id',
-      headerTooltip: 'rfq_id'
+      headerTooltip: 'rfq_id',
+      cellRenderer: 'linkCellRenderer',
+      cellRendererParams: {
+        action: param => {
+          this.onRowClick(param);
+        }
+      }
     },
     {
-      headerName: 'rfq_name',
+      headerName: 'rfq_profile_name',
       field: 'rfq_name',
       hide: false,
       sortable: true,
       filter: false,
       tooltipField: 'rfq_name',
-      headerTooltip: 'rfq_name'
+      headerTooltip: 'rfq_profile_name'
     },
     {
       headerName: 'rfq_status',
@@ -134,7 +142,25 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'part_count'
     }
   ];
-  constructor() {}
+  partIds = null;
+
+  constructor(public partService: PartService, public toastr: ToastrService) {}
 
   ngOnInit() {}
+
+  onRowClick(ev) {
+    // get part Ids from rfq ID
+    // this.partIds = getPartsByRfqId(ev.data.rfq_id);
+    this.partService.getPartsByRfqId(ev.data.rfq_id).subscribe(res => {
+      this.partIds = res.map(item => item.id);
+      if (this.partIds.length === 0) {
+        this.partIds = null;
+        this.toastr.warning('No Parts are created');
+      }
+    });
+  }
+
+  onClose() {
+    this.partIds = null;
+  }
 }

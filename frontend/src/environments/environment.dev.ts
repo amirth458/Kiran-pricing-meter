@@ -29,16 +29,16 @@ export const environment = {
       active: true
     },
     {
-      name: 'Billing',
-      route: '/billing',
-      icon: 'fas fa-file-invoice-dollar',
+      name: 'Connect',
+      route: '/prodex',
+      icon: 'fas fa-folder',
       visible: true,
       active: true
     },
     {
-      name: 'Projects',
-      route: '/projects',
-      icon: 'fas fa-folder',
+      name: 'Billing',
+      route: '/billing',
+      icon: 'fas fa-file-invoice-dollar',
       visible: true,
       active: true
     },
@@ -79,7 +79,9 @@ export const environment = {
   CONNECTOR_HOST_URL: 'https://dev-manage.3diligent.com/api/v1',
   encryptionKey: '1Kf@%4%3ADfEafw',
   isTestDataEnabled: true,
-  reCaptureKey: '6LceotMUAAAAAHLC5TGgsXyh0fHYzsXij0itq2j2'
+  reCaptureKey: '6LceotMUAAAAAHLC5TGgsXyh0fHYzsXij0itq2j2',
+
+  agreementUrl: 'https://3diligentdocs.s3-us-west-2.amazonaws.com/TermsAndAgreements/shopSightWebAgrmnt.pdf'
 };
 
 /*

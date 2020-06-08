@@ -1,0 +1,188 @@
+<div class="wrapper text-theme">
+  <div class="part-list">
+    <div class="w-100 row">
+      <h6 class="col-12 pl-0 text-theme">
+        Self-Selection Production Details
+        <!-- TODO: -->
+        <!-- Add See More Details Modal -->
+        <span *ngIf="false && projectDetails?.parts" class="ml-4 cursor-pointer hover-bold font-sm underline"
+          >See more details</span
+        >
+      </h6>
+      <app-part-list [showRefFile]="false" [parts]="projectDetails?.parts"></app-part-list>
+    </div>
+  </div>
+
+  <div class="my-4 prodex-supplier">
+    <div class="heading d-flex justify-content-between align-items-end mb-3">
+      <h6>
+        Prodex Supplier
+        <span class="font-weight-normal font-sm"
+          >(ProdEX Supplier Requested - {{ projectDetails?.minimumProdexSuppliers }})</span
+        >
+      </h6>
+      <div *ngIf="firstTimeRelease && this.pageType === 'release-queue'" class="actions">
+        <button
+          [disabled]="!canReleaseToSelectedProdEXSuppliers || projectDetails?.minimumProdexSuppliers === 0"
+          (click)="releaseProjectToSupplier()"
+          type="button"
+          class="btn theme green"
+        >
+          Release Project to Supplier
+        </button>
+      </div>
+    </div>
+
+    <div class="w-100 h-100 theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham h-100 w-100"
+        [rowData]="projectDetails?.prodexSuppliers"
+        [gridOptions]="supplierGridOptions[0]"
+        (gridReady)="onSuppliersGridReady(0, $event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+
+  <div class="my-4 customer-selected-supplier">
+    <div class="heading d-flex justify-content-between align-items-end mb-3">
+      <h6>Customer Selected Supplier</h6>
+      <div class="actions"></div>
+    </div>
+
+    <div class="w-100 h-100 theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="projectDetails?.customerSelectedSuppliers"
+        [gridOptions]="supplierGridOptions[1]"
+        (gridReady)="onSuppliersGridReady(0, $event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+
+  <div class="my-4 customer-selected-invite">
+    <div class="heading d-flex justify-content-between align-items-end mb-3">
+      <h6>Customer Supplier To Invite</h6>
+      <div *ngIf="this.pageType === 'release-queue'" class="actions">
+        <button [disabled]="!canReleaseToInvitedEXSuppliers" type="button" class="btn  theme green">
+          Release Project to Supplier
+        </button>
+      </div>
+    </div>
+
+    <div class="w-100 h-100 theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham"
+        [rowData]="[]"
+        [gridOptions]="supplierGridOptions[2]"
+        (gridReady)="onSuppliersGridReady(0, $event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>
+
+<ng-template #vendorCell let-row>
+  <div class="d-flex flex-row w-100 h-100">
+    <span class="text-light-blue hover-bold cursor-pointer underline" (click)="showVendorProfiles($event, row)">{{
+      row.vendor
+    }}</span>
+  </div>
+</ng-template>
+
+<ng-template #replaceSupplierCell let-row>
+  <div *ngIf="!firstTimeRelease && this.pageType === 'release-queue'" class="h-100 d-flex flex-row align-items-center">
+    <button class="btn btn-cell theme white p-0" (click)="showReplacementProfiles($event, row)">
+      Replace Supplier
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #createProfileCell let-row>
+  <div class="h-100 d-flex flex-row justify-content-center align-items-center">
+    <button class="btn btn-cell theme white p-0">Create Profile</button>
+  </div>
+</ng-template>
+
+<ng-template #emailCell>
+  <div class="d-flex flex-row justify-content-center align-items-center w-100">
+    <span class="email-icon hover-bold cursor-pointer text-theme-green text-btn" title="Send mail">
+      <i class="far fa-envelope"></i>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #sendMailModal let-modal>
+  <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
+</ng-template>
+
+<ng-template #statusCell let-row>
+  <div class="d-flex flex-row align-items-center w-100 h-100">
+    <ng-container [ngSwitch]="row?.status">
+      <div *ngSwitchCase="'VENDOR_REJECTED'" class="text-orange">{{ statusTypes[row?.status] }}</div>
+      <div *ngSwitchCase="'CUSTOMER_DECLINED'" class="text-orange">{{ statusTypes[row?.status] }}</div>
+      <div *ngSwitchDefault>{{ statusTypes[row?.status] }}</div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #vendorProfileModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        "{{ selectedVendor.vendorName }}" Profiles
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body theme-table">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [rowData]="vendorProfiles"
+        [gridOptions]="vendorProfileGridOptions[0]"
+        (gridReady)="onVendorProfileReady(0, $event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #replacementProfileModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        Choose 1 more vendor
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body replacement-profile theme-table">
+      <h6 class="text-theme">Matching Supplier Queue</h6>
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-75"
+        [rowData]="replacementProdexSuppliers"
+        [gridOptions]="vendorProfileGridOptions[1]"
+        (gridReady)="onVendorProfileReady(1, $event)"
+      >
+      </ag-grid-angular>
+
+      <div class="w-100 mt-2 d-flex row justify-content-center">
+        <div class="col-4">
+          <button
+            ngbAutofocus
+            (click)="replaceSupplier()"
+            [disabled]="selectedReplacementProdEXVendorIds.length !== 1"
+            class="btn theme green"
+          >
+            Release Project to Supplier
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

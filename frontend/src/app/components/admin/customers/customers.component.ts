@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, TemplateRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { GridOptions, ColDef } from 'ag-grid-community';
@@ -12,18 +12,22 @@ import { FilterOption } from 'src/app/model/vendor.model';
 import { Customer } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
+import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
+import { LinkVendorService } from 'src/app/service/link-vendor.service';
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css']
 })
-export class CustomersComponent implements OnInit {
+export class CustomersComponent implements OnInit, OnDestroy {
   @ViewChild('actionControl') actionControl;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
+
+  @ViewChild('linkVendorCell') linkVendorCell;
+  @ViewChild('linkVendorModal') linkVendorModal;
 
   searchColumns = [];
   filterColumns = [];
@@ -61,25 +65,41 @@ export class CustomersComponent implements OnInit {
   rowData: Customer[] = [];
   pageSize = 20;
   navigation;
+
+  searchQuery: string;
+  destroy$: Subject<boolean> = new Subject();
+  searchDebouncer: Subject<any> = new Subject<any>();
+
   constructor(
-    private route: Router,
-    private customerService: CustomerService,
-    private spineer: NgxSpinnerService,
-    private toastr: ToastrService,
-    private metadataService: MetadataService,
-    private userService: UserService,
-    private modalService: NgbModal,
-    private spinner: NgxSpinnerService
+    public route: Router,
+    public customerService: CustomerService,
+    public spineer: NgxSpinnerService,
+    public toastr: ToastrService,
+    public metadataService: MetadataService,
+    public userService: UserService,
+    public modalService: NgbModal,
+    public spinner: NgxSpinnerService,
+    public linkService: LinkVendorService
   ) {
     this.navigation = this.route.getCurrentNavigation();
     this.getSearchFilterColumns();
   }
 
   ngOnInit() {
-    this.metadataService.getCustomerSubscriptionTypes().subscribe(v => (this.subscriptions = v));
-    this.metadataService.getCustomerAddons().subscribe(v => (this.addons = v));
+    this.metadataService
+      .getCustomerSubscriptionTypes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => (this.subscriptions = v));
+    this.metadataService
+      .getCustomerAddons()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => (this.addons = v));
 
     localStorage.removeItem('viewCustomerInfo');
+
+    this.searchDebouncer
+      .pipe(takeUntil(this.destroy$), debounceTime(500))
+      .subscribe(() => this.onSearch(this.searchQuery));
   }
 
   async getSearchFilterColumns() {
@@ -119,7 +139,7 @@ export class CustomersComponent implements OnInit {
         {
           headerName: 'Subscription',
           filter: false,
-          width: 170,
+          width: 190,
           cellRenderer: 'templateRenderer',
           cellRendererParams: {
             ngTemplate: this.subscriptionCell
@@ -130,6 +150,17 @@ export class CustomersComponent implements OnInit {
           cellRenderer: 'templateRenderer',
           cellRendererParams: {
             ngTemplate: this.actionControl
+          },
+          hide: false,
+          sortable: false,
+          filter: false,
+          width: 240
+        },
+        {
+          headerName: '',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.linkVendorCell
           },
           hide: false,
           sortable: false,
@@ -161,35 +192,44 @@ export class CustomersComponent implements OnInit {
 
   onUnlock(customer: Customer) {
     console.log(customer);
-    this.customerService.unlockCustomer(customer.customerId).subscribe(
-      res => {
-        this.onSearch();
-      },
-      err => {
-        this.toastr.error('Unable to perform action');
-      }
-    );
+    this.customerService
+      .unlockCustomer(customer.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
 
   onActivate(customer: Customer) {
-    this.customerService.activateCustomer(customer.customerId).subscribe(
-      res => {
-        this.onSearch();
-      },
-      err => {
-        this.toastr.error('Unable to perform action');
-      }
-    );
+    this.customerService
+      .activateCustomer(customer.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
   onDeactivate(customer: Customer) {
-    this.customerService.deactivateCustomer(customer.customerId).subscribe(
-      res => {
-        this.onSearch();
-      },
-      err => {
-        this.toastr.error('Unable to perform action');
-      }
-    );
+    this.customerService
+      .deactivateCustomer(customer.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
 
   configureColumnDefs() {
@@ -225,17 +265,35 @@ export class CustomersComponent implements OnInit {
     this.onSearch();
   }
 
-  onSearch() {
+  onSearch(customerName = null) {
     const dataSource = {
       rowCount: 0,
       getRows: params => {
         this.spinner.show('spooler');
         this.requests++;
+
+        const isPresent = this.filterColumnsRequest.findIndex(_ => _.displayName === 'Customer Name');
+        if (isPresent !== -1 && customerName !== null) {
+          this.filterColumnsRequest[isPresent] = {
+            ...this.filterColumnsRequest[isPresent],
+            selectedOperator: 'contains',
+            searchedValue: customerName
+          };
+        } else if (customerName !== null) {
+          this.filterColumnsRequest.push({
+            id: 10,
+            displayName: 'Customer Name',
+            selectedOperator: 'contains',
+            searchedValue: customerName
+          });
+        }
+
         this.userService
           .getAllCustomers(params.startRow / this.pageSize, this.pageSize, {
             q: '',
             filterColumnsRequests: this.filterColumnsRequest
           })
+          .pipe(takeUntil(this.destroy$))
           .subscribe(data => {
             if (--this.requests === 0) {
               this.spinner.hide('spooler');
@@ -265,13 +323,28 @@ export class CustomersComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
+  link(ev, row) {
+    const size: any = 'xl';
+    ev.stopPropagation();
+    this.customerId = row.customerId;
+
+    this.modalService.open(this.linkVendorModal, {
+      windowClass: 'vendors-modal',
+      centered: true,
+      size
+    });
+  }
+
   subscription(ev, row) {
     console.log(row);
     ev.stopPropagation();
     this.customerId = row.customerId;
     this.userService
       .getCustomerContract(this.customerId)
-      .pipe(catchError(e => this.handleResponseError(e)))
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(e => this.handleResponseError(e))
+      )
       .subscribe(v => {
         console.log(v);
         this.contractInfo = v;
@@ -285,11 +358,11 @@ export class CustomersComponent implements OnInit {
 
   setSubscription(v) {
     if (this.contractInfo) {
-      this.userService.updateCustomerContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(v => {
+      this.userService.updateCustomerContract(this.contractInfo.contract.id, v.addon, v.subscription).subscribe(_ => {
         this.modalService.dismissAll();
       });
     } else {
-      this.userService.setCustomerContract(this.customerId, v.addon, v.subscription).subscribe(v => {
+      this.userService.setCustomerContract(this.customerId, v.addon, v.subscription).subscribe(_ => {
         this.modalService.dismissAll();
       });
     }
@@ -300,5 +373,15 @@ export class CustomersComponent implements OnInit {
     this.toastr.error(`${message} Please contact your admin`);
 
     return throwError('Error');
+  }
+
+  addCustomer() {
+    localStorage.removeItem('procurement-RegisterCustomer');
+    localStorage.removeItem('procurement-RegisterContact');
+    this.route.navigateByUrl('/user-manage/add-customer');
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }

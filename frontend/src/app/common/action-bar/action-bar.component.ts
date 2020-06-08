@@ -43,9 +43,6 @@ export class ActionBarComponent implements OnInit, OnChanges {
             });
           }
         }
-        if (routeArray[1] === 'projects') {
-          this.baseURL = 'projects';
-        }
       }
     });
   }
@@ -73,6 +70,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
       this.actionService.triggerSaveFullfillmentSetting();
     } else if (route === 'save-project-setting') {
       this.actionService.triggerSaveProductionSetting();
+    } else if (route === 'save-connect-setting') {
+      this.actionService.triggerSaveConnectSetting();
     } else {
       this.route.navigateByUrl(this.route.url + '/' + route);
     }

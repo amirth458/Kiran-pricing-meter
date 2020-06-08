@@ -1,0 +1,12 @@
+:host .ref-nav-link {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+  color: var(--theme-light-blue);
+  text-decoration: underline !important;
+}
+
+:host .ref-nav-link:hover {
+  font-weight: bold;
+}

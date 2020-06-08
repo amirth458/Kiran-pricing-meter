@@ -84,10 +84,10 @@ import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/hist
 import { ProjectsContainerComponent } from './vendor/projects/projects-container/projects-container.component';
 import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
 import { CustomersComponent } from './admin/customers/customers.component';
-import { CustomerViewComponent } from './admin/customer-view/customer-view.component';
-import { PasswordComponent } from './admin/password/password.component';
-import { ShippingComponent } from './admin/shipping/shipping.component';
-import { ContactComponent } from './admin/contact/contact.component';
+import { CustomerViewComponent } from './admin/customer-details/customer-view/customer-view.component';
+import { PasswordComponent } from './admin/customer-details/password/password.component';
+import { ShippingComponent } from './admin/customer-details/shipping/shipping.component';
+import { ContactComponent } from './admin/customer-details/contact/contact.component';
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
@@ -135,6 +135,22 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
 import { SettingsContainerComponent } from './vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from './vendor/settings/update-password/update-password.component';
 import { NotificationSettingComponent } from './vendor/settings/notification-setting/notification-setting.component';
+import { ProdexProjectComponent } from './vendor/projects/prodex-project/prodex-project.component';
+import { ProdexConnectComponent } from './vendor/projects/prodex-connect/prodex-connect.component';
+import { ConnectSettingComponent } from './vendor/projects/connect-setting/connect-setting.component';
+import { AddVendorContainerComponent } from './admin/add-vendor/add-vendor-container/add-vendor-container.component';
+import { AddVendorUserComponent } from './admin/add-vendor/add-vendor-user/add-vendor-user.component';
+import { AddCustomerContainerComponent } from './admin/add-customer/add-customer-container/add-customer-container.component';
+import { AddCustomerUserComponent } from './admin/add-customer/add-customer-user/add-customer-user.component';
+import { AddCustomerCompanyComponent } from './admin/add-customer/add-customer-company/add-customer-company.component';
+import { AddVendorDetailComponent } from './admin/add-vendor/add-vendor-detail/add-vendor-detail.component';
+import { AddVendorMachineComponent } from './admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
+import { ChipComponent } from '../common/chip/chip.component';
+import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
+import { PartListComponent } from '../common/part-list/part-list.component';
+import { RefFileComponent } from '../common/ref-file/ref-file.component';
+import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
+import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cell-renderer.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -146,6 +162,7 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
     DropdownHeaderRendererComponent,
     MultiSelectCellEditorComponent,
     MultiSelectCellRendererComponent,
+    LinkCellRendererComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
@@ -255,7 +272,23 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
     NotificationWidgetComponent,
     SettingsContainerComponent,
     UpdatePasswordComponent,
-    NotificationSettingComponent
+    NotificationSettingComponent,
+    ProdexProjectComponent,
+    ProdexConnectComponent,
+    ConnectSettingComponent,
+    ChipComponent,
+    ConnectOrderDetailsComponent,
+    PartListComponent,
+    RefFileComponent,
+    AddVendorContainerComponent,
+    AddVendorUserComponent,
+    AddCustomerContainerComponent,
+    AddCustomerUserComponent,
+    AddCustomerCompanyComponent,
+    AddVendorDetailComponent,
+    AddVendorMachineComponent,
+    ChipComponent,
+    InsightPartInformationComponent
   ],
   imports: [
     CommonModule,
@@ -269,7 +302,8 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
       MultiSelectCellEditorComponent,
       StatusDropdownFilterComponent,
       TemplateRendererComponent,
-      FileViewRendererComponent
+      FileViewRendererComponent,
+      LinkCellRendererComponent
     ]),
     NgSelectModule,
     FormsModule,
@@ -294,6 +328,7 @@ import { NotificationSettingComponent } from './vendor/settings/notification-set
     ColumnSearchFilterComponent,
     CheckBoxComponent,
     MultiSelectCellRendererComponent,
+    LinkCellRendererComponent,
     ProgressBarComponent,
     SideMenuComponent,
     SubSectionMenuComponent,

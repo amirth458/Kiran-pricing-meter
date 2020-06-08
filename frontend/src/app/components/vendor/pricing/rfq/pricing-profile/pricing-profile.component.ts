@@ -366,34 +366,36 @@ export class PricingProfileComponent implements OnInit {
   }
 
   showPartQuotePricingInfo() {
-    this.spinner.show('spooler');
-    if (!this.selected$.getValue()) {
-      (this.rowData || []).map(row => (row.selected = true));
-      this.gridOptions.api.setRowData(this.rowData || []);
+    if (this.rowData.length) {
+      this.spinner.show('spooler');
+      if (!this.selected$.getValue()) {
+        (this.rowData || []).map(row => (row.selected = true));
+        this.gridOptions.api.setRowData(this.rowData || []);
+      }
+      this.pricingService
+        .getPartQuoteByPricingIds(
+          this.part.id,
+          (this.rowData || [])
+            .filter(i => i.selected)
+            .map(i => i.id)
+            .join(',')
+        )
+        .subscribe(v => {
+          if (v) {
+            (this.rowData || []).map(row => {
+              if (v[row.id]) {
+                row.totalCost = v[row.id].totalCost;
+              } else {
+                row.totalCost = null;
+              }
+            });
+            this.gridOptions.api.setRowData(this.rowData || []);
+            this.gridOptions.columnApi.setColumnVisible('totalCost', true);
+            this.gridOptions.api.sizeColumnsToFit();
+          }
+          this.spinner.hide('spooler');
+        });
     }
-    this.pricingService
-      .getPartQuoteByPricingIds(
-        this.part.id,
-        (this.rowData || [])
-          .filter(i => i.selected)
-          .map(i => i.id)
-          .join(',')
-      )
-      .subscribe(v => {
-        if (v) {
-          (this.rowData || []).map(row => {
-            if (v[row.id]) {
-              row.totalCost = v[row.id].totalCost;
-            } else {
-              row.totalCost = null;
-            }
-          });
-          this.gridOptions.api.setRowData(this.rowData || []);
-          this.gridOptions.columnApi.setColumnVisible('totalCost', true);
-          this.gridOptions.api.sizeColumnsToFit();
-        }
-        this.spinner.hide('spooler');
-      });
   }
 
   resetPricingFilters() {

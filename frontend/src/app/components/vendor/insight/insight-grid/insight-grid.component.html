@@ -10,3 +10,9 @@
     </ag-grid-angular>
   </div>
 </div>
+
+<ng-template #date let-row let-column="params">
+  <ng-container *ngIf="row[column?.colDef?.field]">
+    {{ row[column?.colDef?.field] + 'Z' | date: util.dateFormatWithTime }}
+  </ng-container>
+</ng-template>

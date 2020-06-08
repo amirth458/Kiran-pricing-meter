@@ -1,0 +1,28 @@
+<div class="wrapper shadow d-flex flex-column">
+  <div class="d-flex align-items-center justify-content-between border">
+    <div class="tabs d-flex">
+      <div
+        class="tab"
+        *ngFor="let partId of partIds"
+        [ngClass]="{ active: partId === selectedPartId }"
+        (click)="selectPart(partId)"
+      >
+        {{ partId }}
+      </div>
+    </div>
+    <div class="action mr-3">
+      <div class="close-btn" (click)="onClose()">
+        <i class="fa fa-times"></i>
+      </div>
+    </div>
+  </div>
+  <div class="content flex-grow-1 border rounded">
+    <app-part-information
+      *ngIf="part"
+      [part]="part"
+      [rfq]="rfq"
+      [customer]="customer"
+      [partDimension]="partDimension"
+    ></app-part-information>
+  </div>
+</div>

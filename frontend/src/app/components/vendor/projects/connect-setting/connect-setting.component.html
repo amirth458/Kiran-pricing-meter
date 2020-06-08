@@ -1,0 +1,65 @@
+<div class="wrapper">
+  <form class="table" [formGroup]="formGroup" (submit)="save()">
+    <div class="row header p-3">ProdEX Connect Pricing Information</div>
+
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Number of customer supplier to select per RFQ
+      </div>
+      <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
+        <div class="col-5"></div>
+        <div class="col-7 d-flex justify-content-start">
+          <input
+            min="0"
+            required
+            digitOnly
+            type="number"
+            formControlName="numberOfCustomerSupplierToSelect"
+            class="setting-input"
+            (click)="$event.stopPropagation()"
+          />
+          Suppliers
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        Base Cost per Project
+      </div>
+      <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
+        <div class="col-5"></div>
+        <div class="col-7 d-flex justify-content-start">
+          <input
+            required
+            digitOnly
+            type="number"
+            formControlName="baseCost"
+            class="setting-input"
+            (click)="$event.stopPropagation()"
+          />
+          $
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="setting-name p-3 col-6">
+        3Diligent Fee
+      </div>
+      <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
+        <div class="col-5"></div>
+        <div class="col-7 d-flex justify-content-start">
+          <input
+            required
+            digitOnly
+            type="number"
+            formControlName="fee"
+            class="setting-input"
+            (click)="$event.stopPropagation()"
+          />
+          %
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

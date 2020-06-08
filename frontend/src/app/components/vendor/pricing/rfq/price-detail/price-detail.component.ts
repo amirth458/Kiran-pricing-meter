@@ -4,8 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { CustomerData } from 'src/app/model/user.model';
-import { Part } from 'src/app/model/part.model';
+import { Part, AppPartStatus } from 'src/app/model/part.model';
 import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { UserService } from 'src/app/service/user.service';
@@ -110,9 +109,16 @@ export class PriceDetailComponent implements OnInit {
       this.customerService.getCustomerDetailsById(this.part.rfqMedia.media.customerId).subscribe(customer => {
         this.customer = customer;
       });
-      this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
-        this.partQuote = partQuote;
-      });
+      if (this.part.partStatusType.name === AppPartStatus.QUOTE_EXPIRED) {
+        this.pricingService.getExpiredPartQuoteDetails(this.part.id).subscribe(partQuote => {
+          this.partQuote = partQuote;
+        });
+      } else {
+        this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
+          this.partQuote = partQuote;
+        });
+      }
+
       this.pricingService.getPartDimension(this.part.id).subscribe(dimension => {
         this.partDimension = dimension;
       });

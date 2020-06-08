@@ -1,0 +1,40 @@
+<button *ngIf="count > 0" class="ref-nav-link transparent" (click)="show(referenceMediaTemplate, 'md')">
+  Reference Files ({{ count }})
+</button>
+
+<ng-template #referenceMediaTemplate let-modal>
+  <div class="container-fluid d-flex h-100 flex-column">
+    <ng-container>
+      <div class="modal-header">
+        <h4 class="text-center text-theme-green w-100 text-left pl-3 pr-2 font-weight-bold">
+          Reference Files
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body container-fluid d-flex flex-column">
+        <div class="col-12 d-flex p-0" ngbAutofocus>
+          <ul class="file-items d-flex flex-wrap w-100" *ngIf="(refMediaFiles?.length || 0) > 0">
+            <li
+              class="d-flex flex-column justify-content-center align-items-center m-2"
+              *ngFor="let file of refMediaFiles"
+            >
+              <a [href]="file.location" [target]="'_blank'" [rel]="'noopener'">
+                <div class="text-theme-green list-item rounded d-flex justify-content-center align-items-center">
+                  <span class="doc-icon">
+                    <i class="far fa-file-alt"></i>
+                  </span>
+                </div>
+                <label class="m-0 file-name">{{ file.name }}</label>
+              </a>
+            </li>
+          </ul>
+          <div class="w-100" *ngIf="!(refMediaFiles?.length || 0) > 0">
+            <h5 class="w-100 text-center text-theme">No reference files found</h5>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

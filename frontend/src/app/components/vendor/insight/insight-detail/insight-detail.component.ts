@@ -1,10 +1,13 @@
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
+import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Component, OnInit, Input } from '@angular/core';
-import { GridOptions, GridReadyEvent } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 
 import { ReportsService } from 'src/app/service/reports.service';
-import { ToastrService } from 'ngx-toastr';
+import { LinkCellRendererComponent } from 'src/app/common/link-cell-renderer/link-cell-renderer.component';
 
 @Component({
   selector: 'app-insight-detail',
@@ -14,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
 export class InsightDetailComponent implements OnInit {
   @Input() type;
   @Input() columnDefs;
+
+  @Output() rowClick: EventEmitter<any> = new EventEmitter();
 
   gridOptions: GridOptions;
   rowData = [];
@@ -28,7 +33,12 @@ export class InsightDetailComponent implements OnInit {
   createdDateRange;
   lastAttemptDate;
 
-  constructor(public spinner: NgxSpinnerService, public reportsService: ReportsService, public toastr: ToastrService) {}
+  constructor(
+    public spinner: NgxSpinnerService,
+    public reportsService: ReportsService,
+    public toastr: ToastrService,
+    public datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.gridOptions = {
@@ -43,7 +53,8 @@ export class InsightDetailComponent implements OnInit {
         // const column = params.columnApi.getColumn(sortModel[0].colId);
         this.totalCount = 0;
         this.sortQuery = `${sortModel[0].colId},${sortModel[0].sort}`;
-      }
+      },
+      onRowClicked: params => this.rowClick.emit(params)
     };
   }
 
@@ -66,7 +77,7 @@ export class InsightDetailComponent implements OnInit {
           filters: {
             beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
             endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-            searchValue: this.searchQuery,
+            searchValue: this.searchQuery === '' ? null : this.searchQuery,
             lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
           }
         };
@@ -89,7 +100,7 @@ export class InsightDetailComponent implements OnInit {
       filters: {
         beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
         endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-        searchValue: this.searchQuery,
+        searchValue: this.searchQuery === '' ? null : this.searchQuery,
         lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
       }
     };
@@ -100,7 +111,7 @@ export class InsightDetailComponent implements OnInit {
       const downloadURL = window.URL.createObjectURL(new Blob([data], { type: 'application/octet-stream' }));
       const link = document.createElement('a');
       link.href = downloadURL;
-      link.download = `${this.type}-report.csv`;
+      link.download = `${this.type}_report_${this.datePipe.transform(new Date(), 'MMddyyyy')}.csv`;
       link.click();
     });
   }
@@ -111,7 +122,7 @@ export class InsightDetailComponent implements OnInit {
       filters: {
         beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
         endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
-        searchValue: this.searchQuery,
+        searchValue: this.searchQuery === '' ? null : this.searchQuery,
         lastAttemptDate: this.lastAttemptDate ? this.lastAttemptDate.toISOString().substr(0, 10) : undefined
       }
     };

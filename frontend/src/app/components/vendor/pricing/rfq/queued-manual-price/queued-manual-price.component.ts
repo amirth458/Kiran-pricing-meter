@@ -49,7 +49,7 @@ export class QueuedManualPriceComponent implements OnInit {
 
   columnDefs: Array<ColDef[]> = [[], []];
   gridOptions: GridOptions;
-  rowData = [[], [], [], []];
+  rowData = [null, null, null, null];
   pageSize = 10;
   showExpiredRFQ = false;
 
@@ -293,10 +293,7 @@ export class QueuedManualPriceComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
-      onRowClicked: event => {
-        // this.onRowClick(event);
-        this.router.navigateByUrl(this.router.url + '/' + event.data.id);
-      }
+      onRowClicked: event => this.router.navigateByUrl(this.router.url + '/' + event.data.id)
     };
 
     this.partServie.getPartStatusType().subscribe(
@@ -328,13 +325,22 @@ export class QueuedManualPriceComponent implements OnInit {
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.columnDefs[value]);
         if (value === 1 && this.showExpiredRFQ === true) {
-          this.gridOptions.api.setRowData(this.rowData[3]);
+          if (this.rowData[3] !== null) {
+            this.gridOptions.api.setRowData(this.rowData[3]);
+            this.gridOptions.api.hideOverlay();
+          } else {
+            this.gridOptions.api.showLoadingOverlay();
+          }
         } else {
           this.showExpiredRFQ = false;
-          this.gridOptions.api.setRowData(this.rowData[value]);
+          if (this.rowData[value] !== null) {
+            this.gridOptions.api.setRowData(this.rowData[value]);
+            this.gridOptions.api.hideOverlay();
+          } else {
+            this.gridOptions.api.showLoadingOverlay();
+          }
         }
 
-        this.gridOptions.api.hideOverlay();
         this.gridOptions.api.sizeColumnsToFit();
         this.setDefaultSort();
       }
@@ -399,6 +405,10 @@ export class QueuedManualPriceComponent implements OnInit {
         page++;
       }
       this.rowData[0] = rows;
+      if (this.selectedTabId === 0) {
+        this.setSelectedData(this.rowData[0]);
+        this.gridOptions.api.hideOverlay();
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -465,6 +475,14 @@ export class QueuedManualPriceComponent implements OnInit {
           this.rowData[activeRFQ ? 1 : 3] = [...this.rowData[activeRFQ ? 1 : 3]];
         });
       }
+      if (this.selectedTabId === 1 && this.showExpiredRFQ) {
+        this.setSelectedData(this.rowData[3]);
+        this.gridOptions.api.hideOverlay();
+      }
+      if (this.selectedTabId === 1 && !this.showExpiredRFQ) {
+        this.setSelectedData(this.rowData[1]);
+        this.gridOptions.api.hideOverlay();
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -522,12 +540,20 @@ export class QueuedManualPriceComponent implements OnInit {
           };
         });
         this.rowData[2] = [...this.rowData[2]];
+        if (this.selectedTabId === 2) {
+          this.setSelectedData(this.rowData[2]);
+          this.gridOptions.api.hideOverlay();
+        }
       });
     } catch (e) {
       console.log(e);
     } finally {
       this.spinner.hide();
     }
+  }
+
+  setSelectedData(data) {
+    this.gridOptions.api.setRowData(data);
   }
 
   onPageSizeChange(ev) {

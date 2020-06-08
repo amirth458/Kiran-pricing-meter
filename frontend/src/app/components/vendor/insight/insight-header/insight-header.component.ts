@@ -3,6 +3,7 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angu
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { environment } from './../../../../../environments/environment';
+import { GridOptions } from 'ag-grid-community';
 
 @Component({
   selector: 'app-insight-header',
@@ -15,6 +16,7 @@ export class InsightHeaderComponent implements OnInit {
 
   @Input() type;
   @Input() columns;
+  @Input() gridOptions: GridOptions;
   @Output() filterColumnsChange = new EventEmitter();
   @Output() queryChange = new EventEmitter();
   @Output() createdDateChange = new EventEmitter();
@@ -58,9 +60,24 @@ export class InsightHeaderComponent implements OnInit {
     this.queryChange.emit(ev);
   }
 
+  get enableControls() {
+    return this.gridOptions && this.gridOptions.api ? this.gridOptions.api.getDisplayedRowCount() > 0 : false;
+  }
+
   onTimeChanged(type) {
     if (type === 'created') {
       if (this.createdDateRange[1] - this.createdDateRange[0] <= 30 * 24 * 3600 * 1000) {
+        const now = new Date();
+        const startDate = new Date(this.createdDateRange[0]);
+        const endDate = new Date(this.createdDateRange[1]);
+
+        startDate.setHours(now.getHours());
+        startDate.setMinutes(now.getMinutes());
+
+        endDate.setHours(now.getHours());
+        endDate.setMinutes(now.getMinutes());
+
+        this.createdDateRange = [startDate, endDate];
         this.createdDateChange.emit(this.createdDateRange);
       } else {
         this.toastr.warning('The duration should be less than or equal to 30 days');

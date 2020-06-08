@@ -32,10 +32,14 @@ export class AdminContainerComponent implements OnInit, OnDestroy {
         route: this.baseURL + '/customers'
       }
     ];
-    if (this.routeArr[2]) {
-      this.selectedSubmenu = this.baseURL + '/' + this.routeArr[2];
-    } else {
-      this.selectedSubmenu = this.baseURL + '/approve-vendor';
+    switch (this.routeArr[2]) {
+      case 'customers':
+      case 'add-customer':
+        this.selectedSubmenu = this.baseURL + '/' + 'customers';
+        break;
+      default:
+        this.selectedSubmenu = this.baseURL + '/' + 'approve-vendor';
+        break;
     }
   }
 

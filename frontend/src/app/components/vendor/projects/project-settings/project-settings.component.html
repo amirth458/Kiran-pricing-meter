@@ -6,32 +6,44 @@
       <div class="setting-name p-3 col-6">
         Minimum number of qualified suppliers to match
       </div>
-      <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
-        <div class="col-5"></div>
-        <div class="col-7 d-flex justify-content-start">
-          <input
-            digitOnly
-            type="number"
-            formControlName="minimumNumberOfQualifiedSupplier"
-            class="setting-input"
-            (click)="$event.stopPropagation()"
-          />
-          Suppliers
+      <div class="setting-control text-theme col-d col-6 p-0 w-100">
+        <div class="w-100 h-50 mt-2 d-flex align-items-center justify-content-center">
+          <div class="col-5"></div>
+          <div class="col-7 d-flex justify-content-start">
+            <input
+              min="0"
+              required
+              digitOnly
+              type="number"
+              formControlName="minimumNumberOfQualifiedSupplier"
+              class="setting-input"
+              (click)="$event.stopPropagation()"
+            />
+            Suppliers
+          </div>
         </div>
+
+        <span
+          *ngIf="formGroup.get('minimumNumberOfQualifiedSupplier').hasError('invalid')"
+          class="footnote red text-center"
+        >
+          has to be <= to Minimum number of qualified suppliers to release
+        </span>
       </div>
     </div>
-
     <div class="row mb-2">
       <div class="setting-name p-3 col-6">
-        Number of qualified suppliers to release to
+        Minimum number of qualified suppliers to release
       </div>
       <div class="setting-control text-theme col-d d-flex align-items-center justify-content-center col-6 p-0 w-100">
         <div class="col-5"></div>
         <div class="col-7 d-flex justify-content-start">
           <input
+            min="0"
+            required
             digitOnly
             type="number"
-            formControlName="maxNumberOfSupplierToRelease"
+            formControlName="minNumberOfSupplierToRelease"
             class="setting-input"
             (click)="$event.stopPropagation()"
           />
@@ -48,6 +60,8 @@
         <div class="col-5"></div>
         <div class="col-7 d-flex justify-content-start">
           <input
+            min="0"
+            required
             digitOnly
             type="number"
             formControlName="baseCost"
@@ -66,6 +80,8 @@
         <div class="col-5"></div>
         <div class="col-7 d-flex justify-content-start">
           <input
+            min="0"
+            required
             digitOnly
             type="number"
             formControlName="fee"

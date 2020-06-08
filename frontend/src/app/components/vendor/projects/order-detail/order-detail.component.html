@@ -25,12 +25,12 @@
             part?.equipmentPropertyValues?.join(', ')
           }}</span>
         </p>
-        <p class="label">
+        <!-- <p class="label">
           Post-process:
           <span class="text-theme-green font-weight-bold value-text">
             {{ preparePostProcessValues(part?.postProcessTypeIds) }}
           </span>
-        </p>
+        </p> -->
         <a *ngIf="referenceFileCount > 0" class="reference" (click)="openReference()">
           Reference Files ({{ referenceFileCount }})
         </a>
@@ -43,6 +43,13 @@
         <div class="col-12">
           <div class="d-flex align-items-center justify-content-between mb-3">
             <span class="table-header">Matching Suppliers Profiles</span>
+            <span
+              class="footnote red cannot-fulfill font-weight-bold"
+              *ngIf="
+                numberOfVendors !== null && maxSelectableVendors !== null && maxSelectableVendors < numberOfVendors
+              "
+              >Can Not Fulfill</span
+            >
             <button class="btn theme btn-primary btn-sm" [disabled]="!canReleaseToVendor()" (click)="releaseToVendor()">
               Release Project to Suppliers
             </button>

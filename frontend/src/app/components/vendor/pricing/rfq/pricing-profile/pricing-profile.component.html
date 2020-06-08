@@ -25,7 +25,11 @@
         <i class="fa fa-times"></i>
         Clear all
       </a>
-      <button class="btn theme w-auto btn-show-price ml-3" (click)="showPartQuotePricingInfo()">
+      <button
+        class="btn theme w-auto btn-show-price ml-3"
+        [disabled]="(rowData || []).length === 0"
+        (click)="showPartQuotePricingInfo()"
+      >
         Show Prices
       </button>
       <button

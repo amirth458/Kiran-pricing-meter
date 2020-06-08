@@ -5,7 +5,13 @@ export interface Type {
   id: number;
   name: string;
 }
-
+export interface ReferenceMedia {
+  id: number;
+  name: string;
+  uploadedAt: Date;
+  location: string;
+  mediaId: number;
+}
 export interface ProjectRfq {
   id: number;
   name: string;
@@ -177,6 +183,8 @@ export interface Part {
   partCustomParameterList: PartCustomParameter[];
   isNoBid: boolean;
   partQuoteList: Array<any>;
+
+  rfqMediaId?: number;
 }
 
 export interface Address {
