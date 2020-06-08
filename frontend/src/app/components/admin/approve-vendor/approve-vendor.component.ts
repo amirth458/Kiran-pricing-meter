@@ -32,6 +32,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
   @ViewChild('changeVendorAccountCell') changeVendorAccountCell;
+  @ViewChild('unlockCell') unlockCell;
 
   subscriptions = [];
   addons = [];
@@ -195,11 +196,6 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
                 this.declineUser(param.data.id);
               }
             },
-            unlock: async param => {
-              if (param.data) {
-                this.unlockUser(param.data.id);
-              }
-            },
             canEdit: false,
             canCopy: false,
             canDelete: false,
@@ -219,14 +215,18 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
                 return false;
               }
               return false;
-            },
-            canUnlock: param => {
-              if (param.data && param.data.user.isLocked === true) {
-                return true;
-              }
-              return false;
             }
           }
+        }
+      });
+
+      this.columnDefs.push({
+        headerName: 'unlock',
+        filter: false,
+        width: 120,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.unlockCell
         }
       });
 
@@ -313,8 +313,18 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
     });
   }
 
-  unlockUser(id) {
-    console.log('unlock user', id);
+  onUnlock(vendor) {
+    this.userService
+      .unlockUser(vendor.user.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
   }
 
   vendorStatusChanged(value) {

@@ -27,9 +27,5 @@ export class ActionCellApproveRendererComponent implements ICellRendererAngularC
   onDecline(): void {
     this.params.action.decline(this.params);
   }
-
-  onUnlock(): void {
-    this.params.action.unlock(this.params);
-  }
 }
 export type CellAction = (params) => void;

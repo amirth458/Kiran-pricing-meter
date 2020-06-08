@@ -444,4 +444,10 @@ export class UserService {
     const url = `${environment.procurementApiBaseUrl}/customer/signup`;
     return this.http.post(url, user);
   }
+
+  unlockUser(userId) {
+    console.log('unlockUser', userId);
+    const url = `${environment.apiBaseUrl}/admin/user/unlock/${userId}`;
+    return this.http.put(url, {});
+  }
 }
