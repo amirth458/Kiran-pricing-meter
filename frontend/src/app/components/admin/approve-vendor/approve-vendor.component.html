@@ -194,6 +194,13 @@
   <!-- </div> -->
 </ng-template>
 
+<ng-template #unlockCell let-row>
+  <div class="d-flex w-100 h-100 justify-content-between controls">
+    <!-- <span class="text-theme-green" (click)="onView(row)">View</span> -->
+    <span class="text-purple" *ngIf="row && row.user && row.user.isLocked" (click)="onUnlock(row)">Unlock</span>
+  </div>
+</ng-template>
+
 <ng-template #subscriptionModal let-modal>
   <app-subscription-modal
     [subscriptions]="subscriptions"
