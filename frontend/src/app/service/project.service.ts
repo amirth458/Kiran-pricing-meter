@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { of, Observable } from 'rxjs';
-import { BidProcessStatusEnum, ConnectProject } from '../model/connect.model';
+import { Observable } from 'rxjs';
+import { ConnectProject } from '../model/connect.model';
 import { Pageable } from '../model/pageable.model';
-import { PartOrder } from '../model/part.model';
+import { PartOrder, ReferenceMedia } from '../model/part.model';
 import { ProjectTypeEnum, OrderStatusTypeId } from '../model/order.model';
 
 @Injectable({
@@ -98,5 +98,18 @@ export class ProjectService {
       oldVendorId
     };
     return this.http.put<any>(environment.apiBaseUrl + '/admin/bidding/connect-project/replace-bid-vendor ', body);
+  }
+
+  getAllReferenceMediaFiles(partId: number): Observable<ReferenceMedia[]> {
+    return this.http.get<ReferenceMedia[]>(
+      `${environment.managementBaseUrl}/bids/part/${partId}/reference-media?generateSignedUrl=true`
+    );
+  }
+
+  // Note: This is to fetch vendor's reference media file
+  getAllProposalReferenceMediaFiles(partId: number, proposalPartId: number): Observable<ReferenceMedia[]> {
+    return this.http.get<ReferenceMedia[]>(
+      `${environment.managementBaseUrl}/reference-media/part/${partId}/proposal-part/${proposalPartId}?generateSignedUrl=true`
+    );
   }
 }

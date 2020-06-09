@@ -1,0 +1,156 @@
+<div *ngIf="!smallView" class="d-flex text-theme align-items-center justify-content-between">
+  <span class="reference-name">
+    {{ fileNames }}
+  </span>
+  <div class="uploader d-flex align-items-center">
+    <button type="file" class="btn btn-add theme white" (click)="viewFiles()">
+      Upload files
+    </button>
+  </div>
+</div>
+
+<span
+  *ngIf="type === 'attachment' && smallView && customerAttachments?.length > 0"
+  class="smallView hover-bold cursor-pointer underline text-theme-blue"
+  (click)="viewFiles()"
+>
+  Governance Documents ({{ customerAttachments.length }})
+</span>
+
+<ng-template #attachmentTemplate let-modal>
+  <div class="container-fluid d-flex h-100 flex-column">
+    <ng-container>
+      <div class="modal-header">
+        <h4 class="text-center text-theme-green w-100 text-left pl-3 pr-2 font-weight-bold">
+          Upload a File
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body container-fluid d-flex flex-column">
+        <div class="col-12 d-flex p-0" ngbAutofocus>
+          <ngb-tabset [destroyOnHide]="false" [justify]="'Fill'" class="w-100 d-block">
+            <ngb-tab *ngIf="canUpload" title="File Manager">
+              <ng-template ngbTabContent>
+                <div
+                  class="upload-container d-flex flex-column position-relative align-items-center {{
+                    (files?.length || 0) > 0 ? 'justify-content-start has-files' : 'justify-content-center'
+                  }}"
+                  appDnd
+                  (fileDropped)="fileDropped($event)"
+                >
+                  <perfect-scrollbar class="scroll-container" fxFlex="auto" [config]="config" [scrollIndicators]="true">
+                    <ng-container *ngIf="files.length === 0">
+                      <input
+                        class="file-picker"
+                        type="file"
+                        #fileDropRef
+                        id="fileDropRef"
+                        multiple
+                        accept=".stl,.step,.obj,.3mf,.stp,.pdf,.jpg,.jpeg,.gif,.png,.ppt,.pptx"
+                        (change)="fileChangeHandler($event)"
+                      />
+                      <span class="text-theme-green plus-icon">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <h6 class="mt-3 mb-3">
+                        Drag and drop stl, step, obj, 3mf, pdf, jpg, jpeg, png, gif, ppt, pptx files
+                      </h6>
+                      <h3 class="mb-3">OR</h3>
+                      <label class="btn btn-primary w-auto pl-5 pr-5 btn-browse" for="fileDropRef">
+                        Browse for file
+                      </label>
+                    </ng-container>
+                    <div
+                      class="files-list d-flex flex-row flex-wrap justify-content-around position-relative"
+                      *ngIf="(files?.length || 0) > 0"
+                    >
+                      <div class="single-file m-2" *ngFor="let file of files; let i = index">
+                        <div class="file-icon text-theme-green">
+                          <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="info">
+                          <h4 class="name">
+                            {{ file?.name }}
+                          </h4>
+                          <p class="size">
+                            {{ formatBytes(file?.size) }}
+                          </p>
+                        </div>
+                        <div class="delete" (click)="deleteFile(i)">
+                          <i class="fas fa-trash"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </perfect-scrollbar>
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center w-100 pt-3 pb-3"
+                    *ngIf="(files?.length || 0) > 0"
+                  >
+                    <label class="btn btn-white w-auto pl-5 pr-5">
+                      <input
+                        type="file"
+                        class="d-none"
+                        accept=".stl,.step,.obj,.3mf,.stp,.pdf,.jpg,.jpeg,.gif,.png,.ppt,.pptx"
+                        (change)="fileChangeHandler($event)"
+                      />
+                      Add Files
+                    </label>
+                    <label
+                      *ngIf="(files?.length || 0) > 0 && needUpload"
+                      class="btn btn-primary w-auto pl-5 pr-5 m-0 ml-3 border-0"
+                      (click)="upload()"
+                    >
+                      Save
+                    </label>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab *ngFor="let attachments of uploadedAttachments">
+              <ng-template ngbTabTitle
+                >Uploaded by {{ attachments.type }}
+                <span *ngIf="attachments?.files?.length > 0"> ({{ attachments?.files?.length }}) </span>
+              </ng-template>
+              <ng-template ngbTabContent>
+                <div class="file-container d-flex flex-column pt-3 pb-3">
+                  <ul class="file-items d-flex flex-wrap w-100" *ngIf="attachments.files">
+                    <li
+                      class="d-flex flex-column justify-content-center align-items-center m-2"
+                      *ngFor="let file of attachments.files"
+                    >
+                      <a [href]="file.location" [target]="'_blank'" [rel]="'noopener'">
+                        <a class="list-item rounded d-flex justify-content-center align-items-center">
+                          <span class="doc-icon text-theme-green">
+                            <i class="far fa-file-alt"></i>
+                          </span>
+                        </a>
+                        <div class="col-12 p-0 m-0 d-flex flex-row">
+                          <a
+                            class="col-10 p-0 file-name"
+                            [href]="file.location"
+                            [target]="'_blank'"
+                            [rel]="'noopener'"
+                            >{{ file.name }}</a
+                          >
+                          <span
+                            class="delete col p-0"
+                            *ngIf="attachments.type === 'You'"
+                            (click)="delete($event, file)"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </span>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

@@ -149,6 +149,9 @@ import { ChipComponent } from '../common/chip/chip.component';
 import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
 import { PartListComponent } from '../common/part-list/part-list.component';
 import { RefFileComponent } from '../common/ref-file/ref-file.component';
+import { PartDetailComponent } from '../common/part-detail/part-detail.component';
+import { ProposalAttachmentComponent } from '../common/proposal-attachment/proposal-attachment.component';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -247,6 +250,7 @@ import { RefFileComponent } from '../common/ref-file/ref-file.component';
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
+
     InsightDetailComponent,
     ProductionOrdersContainerComponent,
     ProductionReleasedOrdersComponent,
@@ -284,7 +288,9 @@ import { RefFileComponent } from '../common/ref-file/ref-file.component';
     AddCustomerCompanyComponent,
     AddVendorDetailComponent,
     AddVendorMachineComponent,
-    ChipComponent
+    ChipComponent,
+    PartDetailComponent,
+    ProposalAttachmentComponent
   ],
   imports: [
     CommonModule,
@@ -311,7 +317,8 @@ import { RefFileComponent } from '../common/ref-file/ref-file.component';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ChatModule,
-    UiSwitchModule
+    UiSwitchModule,
+    PerfectScrollbarModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [

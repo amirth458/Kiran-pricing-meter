@@ -1,0 +1,12 @@
+.reference-name {
+  flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 0;
+  margin-right: 10px;
+}
+
+.text-red {
+  color: var(--theme-error-color);
+}

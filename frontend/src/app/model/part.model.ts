@@ -1,5 +1,6 @@
 import { VendorProfile } from './vendorProfile.model';
 import { UserSummary } from './user.model';
+import { SideMeasurement } from './order.model';
 
 export interface Type {
   id: number;
@@ -185,6 +186,56 @@ export interface Part {
   partQuoteList: Array<any>;
 
   rfqMediaId?: number;
+  subContractorsAllowed?: boolean;
+  requestProdexDirectBid?: boolean;
+  isReleaseToSingleSupplier?: boolean;
+  commets?: string;
+}
+
+export class BidPart {
+  bidOrderItemId: number;
+  bidprojectProcessStatus: string;
+  connectorServiceId: number;
+  customerCity: string;
+  customerCountry: string;
+  customerId: number;
+  customerName: string;
+  customerOrder: number;
+  customerZip: string;
+  deliveryDate: string;
+  equipmentPropertyType: string;
+  equipmentPropertyValues: string[];
+  fileName: string;
+  filePath: string;
+  isReleaseToSingleSupplier: boolean;
+  matchedProcessProfileIds: number[];
+  materialPropertyType: string;
+  materialPropertyValues: string[];
+  meetingTime: string;
+  nda: string | number;
+  partId: number;
+  partQuoteCustomerView: any;
+  partStatusType: string;
+  partStatusTypeId: number;
+  postProcessTypeIds: number[];
+  postProcessTypeNames: string;
+  priceAccepted: number;
+  projectRfqStatus: string;
+  quantity: number;
+  rfqMediaId: number;
+  shippedDate: string;
+  shippingAddress: string;
+  surfaceRoughness: string;
+  thumbnail100Location: string;
+  thumbnail200Location: string;
+  thumbnail400Location: string;
+  tolerance: Array<any>;
+  userId: number;
+  volume: SideMeasurement;
+  surfaceArea: SideMeasurement;
+  x: SideMeasurement;
+  y: SideMeasurement;
+  z: SideMeasurement;
 }
 
 export interface Address {

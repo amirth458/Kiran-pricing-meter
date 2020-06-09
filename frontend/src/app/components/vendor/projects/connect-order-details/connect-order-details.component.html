@@ -3,13 +3,40 @@
     <div class="w-100 row">
       <h6 class="col-12 pl-0 text-theme">
         Self-Selection Production Details
-        <!-- TODO: -->
-        <!-- Add See More Details Modal -->
-        <span *ngIf="false && projectDetails?.parts" class="ml-4 cursor-pointer hover-bold font-sm underline"
-          >See more details</span
+        <span
+          class="font-sm mx-4 font-weight-bold text-light-blue"
+          *ngIf="(projectDetails?.parts)[0]?.subContractorsAllowed"
+          >Sub-Contractors Allowed</span
         >
+        <span
+          class="font-sm mx-4 font-weight-bold text-light-blue"
+          *ngIf="(projectDetails?.parts)[0]?.requestProdexDirectBid"
+          >Request ProdEX Direct Bid</span
+        >
+        <span
+          *ngIf="projectDetails?.parts"
+          class="ml-3 font-sm cursor-pointer font-weight-normal hover-underline"
+          (click)="showPartDetails = !showPartDetails"
+        >
+          See <ng-container *ngIf="showPartDetails">less</ng-container
+          ><ng-container *ngIf="!showPartDetails">more</ng-container> details
+        </span>
       </h6>
-      <app-part-list [showRefFile]="false" [parts]="projectDetails?.parts"></app-part-list>
+
+      <ng-container *ngIf="!showPartDetails">
+        <app-part-list [showRefFile]="false" [parts]="projectDetails?.parts"></app-part-list>
+      </ng-container>
+      <div *ngIf="showPartDetails && unitOptions" class="part-details w-100">
+        <app-part-detail
+          *ngFor="let part of projectDetails?.parts"
+          [connectView]="true"
+          [part]="part"
+          [unitOptions]="unitOptions"
+          [comment]="part?.comments"
+          [proposalPartId]="part?.partQuoteCustomerView?.proposalPartId"
+        >
+        </app-part-detail>
+      </div>
     </div>
   </div>
 
@@ -21,7 +48,10 @@
           >(ProdEX Supplier Requested - {{ projectDetails?.minimumProdexSuppliers }})</span
         >
       </h6>
-      <div *ngIf="firstTimeRelease && this.pageType === 'release-queue'" class="actions">
+      <div
+        *ngIf="firstTimeRelease && this.pageType === 'release-queue' && projectDetails?.minimumProdexSuppliers"
+        class="actions"
+      >
         <button
           [disabled]="!canReleaseToSelectedProdEXSuppliers || projectDetails?.minimumProdexSuppliers === 0"
           (click)="releaseProjectToSupplier()"
@@ -35,12 +65,16 @@
 
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
+        *ngIf="projectDetails?.minimumProdexSuppliers"
         class="ag-theme-balham h-100 w-100"
         [rowData]="projectDetails?.prodexSuppliers"
         [gridOptions]="supplierGridOptions[0]"
         (gridReady)="onSuppliersGridReady(0, $event)"
       >
       </ag-grid-angular>
+      <p *ngIf="!projectDetails?.minimumProdexSuppliers" class="font-md text-center text-orange">
+        No ProdEX Supplier Requested
+      </p>
     </div>
   </div>
 

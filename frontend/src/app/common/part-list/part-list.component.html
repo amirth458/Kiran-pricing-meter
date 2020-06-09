@@ -35,7 +35,7 @@
           <span class="name">Quantity: </span>
           <span class="value text-theme-green font-weight-bold">{{ item?.quantity }}</span>
         </p>
-        <p class="d-flex mb-1">
+        <p class="d-flex mb-1 text-truncate">
           <span class="name">Material: </span>
           <span
             class="value text-theme-green font-weight-bold"
@@ -43,7 +43,7 @@
             >{{ (item?.materialPropertyValues || []).join(' OR ') }}</span
           >
         </p>
-        <p class="d-flex mb-1">
+        <p class="d-flex mb-1 text-truncate">
           <span class="name">Technology: </span>
           <span
             class="value text-theme-green font-weight-bold"
