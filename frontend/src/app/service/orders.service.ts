@@ -195,13 +195,13 @@ export class OrdersService {
         sortable: true,
         filter: false
       },
-      {
-        headerName: 'Vendor Name',
-        field: 'vendorName',
-        tooltip: params => params.value,
-        sortable: true,
-        filter: false
-      },
+      // {
+      //   headerName: 'Vendor Name',
+      //   field: 'vendorName',
+      //   tooltip: params => params.value,
+      //   sortable: true,
+      //   filter: false
+      // },
       {
         headerName: 'Sub Order IDs',
         field: 'partIds',
