@@ -28,10 +28,11 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   @Input() customerId = null;
 
   @ViewChild('infoModal') infoModal;
-  @ViewChild('modal') modal;
+  @ViewChild('declineModal') declineModal;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
   @ViewChild('changeVendorAccountCell') changeVendorAccountCell;
+  @ViewChild('unlockCell') unlockCell;
 
   subscriptions = [];
   addons = [];
@@ -200,23 +201,32 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
             canDelete: false,
             canApprove: param => {
               if (param.data) {
-                if (param.data.approvedAt !== null) {
-                  return false;
+                if (param.data.approved === false || param.data.approvedAt === null) {
+                  return true;
                 }
-                return true;
               }
               return false;
             },
             canDecline: param => {
               if (param.data) {
-                if (param.data.approvedAt !== null) {
-                  return false;
+                if (param.data.approved === true) {
+                  return true;
                 }
-                return true;
+                return false;
               }
               return false;
             }
           }
+        }
+      });
+
+      this.columnDefs.push({
+        headerName: 'unlock',
+        filter: false,
+        width: 120,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.unlockCell
         }
       });
 
@@ -303,6 +313,20 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
     });
   }
 
+  onUnlock(vendor) {
+    this.userService
+      .unlockUser(vendor.user.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        res => {
+          this.onSearch();
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
+  }
+
   vendorStatusChanged(value) {
     this.showTypeDropDown = false;
   }
@@ -346,13 +370,16 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       }
     });
     userIds = userIds.filter(id => id !== null);
+
     if (userIds.length === 0) {
       this.infoText = 'decline';
       this.infoModal.nativeElement.click();
     } else {
       this.selectedUserIds = userIds;
       this.primaryContactName = name.join(', ');
-      this.modal.nativeElement.click();
+      this.modalService.open(this.declineModal, {
+        centered: true
+      });
     }
   }
 
@@ -365,10 +392,10 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       await this.userService.declineUsers(this.selectedUserIds, this.declineComments).toPromise();
       this.toastr.success('Vendors are declined.');
       this.onSearch();
-      this.modal.nativeElement.click();
+      this.modalService.dismissAll();
     } catch (e) {
       this.toastr.error('We are sorry, Vendors are not declined with some error. Please try again later.');
-      this.modal.nativeElement.click();
+      this.modalService.dismissAll();
     } finally {
       this.spineer.hide();
     }

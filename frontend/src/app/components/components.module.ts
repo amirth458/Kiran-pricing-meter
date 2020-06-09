@@ -152,6 +152,8 @@ import { RefFileComponent } from '../common/ref-file/ref-file.component';
 import { PartDetailComponent } from '../common/part-detail/part-detail.component';
 import { ProposalAttachmentComponent } from '../common/proposal-attachment/proposal-attachment.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
+import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cell-renderer.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -163,6 +165,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     DropdownHeaderRendererComponent,
     MultiSelectCellEditorComponent,
     MultiSelectCellRendererComponent,
+    LinkCellRendererComponent,
     SideMenuComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
@@ -290,7 +293,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     AddVendorMachineComponent,
     ChipComponent,
     PartDetailComponent,
-    ProposalAttachmentComponent
+    ProposalAttachmentComponent,
+    InsightPartInformationComponent
   ],
   imports: [
     CommonModule,
@@ -304,7 +308,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
       MultiSelectCellEditorComponent,
       StatusDropdownFilterComponent,
       TemplateRendererComponent,
-      FileViewRendererComponent
+      FileViewRendererComponent,
+      LinkCellRendererComponent
     ]),
     NgSelectModule,
     FormsModule,
@@ -330,6 +335,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     ColumnSearchFilterComponent,
     CheckBoxComponent,
     MultiSelectCellRendererComponent,
+    LinkCellRendererComponent,
     ProgressBarComponent,
     SideMenuComponent,
     SubSectionMenuComponent,

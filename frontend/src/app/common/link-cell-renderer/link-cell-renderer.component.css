@@ -1,0 +1,4 @@
+.link {
+  color: var(--theme-light-blue);
+  text-decoration: underline !important;
+}

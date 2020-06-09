@@ -105,6 +105,19 @@ export class PartInformationComponent implements OnInit {
     );
   }
 
+  download() {
+    let url = this.part.rfqMedia.media.location;
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.setAttribute('target', '_blank');
+    a.href = url;
+    a.download = this.part.rfqMedia.media.name;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
+
   getPostProcesses() {
     return (
       this.part &&

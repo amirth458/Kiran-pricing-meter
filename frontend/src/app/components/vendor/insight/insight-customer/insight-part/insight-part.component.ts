@@ -14,7 +14,13 @@ export class InsightPartComponent implements OnInit {
       sortable: true,
       filter: false,
       tooltipField: 'part_id',
-      headerTooltip: 'part_id'
+      headerTooltip: 'part_id',
+      cellRenderer: 'linkCellRenderer',
+      cellRendererParams: {
+        action: param => {
+          this.onRowClick(param);
+        }
+      }
     },
     {
       headerName: 'rfq_id',
@@ -163,7 +169,18 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'created_date'
     }
   ];
+
+  partIds = null;
+
   constructor() {}
 
   ngOnInit() {}
+
+  onRowClick(ev) {
+    this.partIds = [ev.data.part_id];
+  }
+
+  onClose() {
+    this.partIds = null;
+  }
 }

@@ -89,7 +89,7 @@ export class AddVendorDetailComponent implements OnInit {
   onCountryChange(ev) {
     const country = ev.target.selectedOptions[0].text;
     this.zipPattern = this.zipRegs[country];
-    //this.zipCode.setAttribute('pattern', zipRegs[country]);
+    // this.zipCode.setAttribute('pattern', this.zipPattern);
   }
 
   ngOnDestroy() {
