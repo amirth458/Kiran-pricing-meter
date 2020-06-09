@@ -221,7 +221,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       });
 
       this.columnDefs.push({
-        headerName: 'unlock',
+        headerName: 'Unlock',
         filter: false,
         width: 120,
         cellRenderer: 'templateRenderer',
