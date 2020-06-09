@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BidPart } from 'src/app/model/order.model';
-import { BidProcessStatusEnum } from 'src/app/model/connect.model';
 
 @Component({
   selector: 'app-part-detail',
@@ -16,8 +15,6 @@ export class PartDetailComponent implements OnInit {
   @Input() connectView = false;
   @Input() proposalPartId = null;
   @Input() comment = null;
-
-  bidStatus = BidProcessStatusEnum;
 
   constructor(public modalService: NgbModal) {}
 
