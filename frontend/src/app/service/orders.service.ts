@@ -189,6 +189,20 @@ export class OrdersService {
         filter: false
       },
       {
+        headerName: 'Customer Name',
+        field: 'customerName',
+        tooltip: params => params.value,
+        sortable: true,
+        filter: false
+      },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltip: params => params.value,
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Sub Order IDs',
         field: 'partIds',
         tooltip: params => (params.value || []).join(', '),
