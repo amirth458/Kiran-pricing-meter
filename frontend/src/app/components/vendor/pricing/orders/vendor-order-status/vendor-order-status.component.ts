@@ -103,7 +103,7 @@ export class VendorOrderStatusComponent implements OnInit {
       (v.vendorSubOrders || []).map(part => {
         const arr = [];
         (part.jobs || []).map(job => arr.push({ ...job, ...{ partId: part.id, orderId: v.id } }));
-        this.jobs = arr;
+        this.jobs = this.jobs.concat(arr);
       });
       this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
       this.viewTasks(this.selectedJob || {});
