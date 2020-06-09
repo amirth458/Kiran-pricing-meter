@@ -539,13 +539,12 @@ export class OrdersService {
   }
 
   getReferenceFiles(partId) {
-    const url = `${environment.apiBaseUrl}/admin/part/${partId}/reference-medias?generateSignedUrl=true`;
+    const url = `${environment.apiBaseUrl}/admin/reference-media/part/${partId}?generateSignedUrl=true`;
     return this.http.get<any>(url);
   }
 
-  // TODO:
   getReferenceFileCountByPartId(partId: number): Observable<number> {
-    return this.http.get<number>(`${environment.managementBaseUrl}/bids/part/${partId}/reference-media/count`);
+    return this.http.get<number>(`${environment.apiBaseUrl}/admin/reference-media/part/${partId}/count`);
   }
 
   getProductionOrderDetails(productionOrderInfo) {

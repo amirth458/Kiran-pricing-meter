@@ -24,7 +24,7 @@
       </h6>
 
       <ng-container *ngIf="!showPartDetails">
-        <app-part-list [showRefFile]="false" [parts]="projectDetails?.parts"></app-part-list>
+        <app-part-list [showRefFile]="true" [parts]="projectDetails?.parts"></app-part-list>
       </ng-container>
       <div *ngIf="showPartDetails && unitOptions" class="part-details w-100">
         <app-part-detail
