@@ -49,7 +49,7 @@
                 {{ part?.equipmentPropertyValues?.join(' OR ') }}
               </span>
             </p>
-            <p class="mb-2">
+            <!-- <p class="mb-2">
               Post-Process:
               <span
                 class="text-theme-green font-weight-bold text-truncate"
@@ -58,14 +58,8 @@
               >
                 {{ part?.postProcessTypeNames }}
               </span>
-            </p>
-            <p
-              *ngIf="
-                part.bidprojectProcessStatus === bidStatus.VENDOR_ACCEPTED ||
-                part.bidprojectProcessStatus === bidStatus.AWAITING_CUSTOMER_RESPONSE ||
-                part.bidprojectProcessStatus === bidStatus.CUSTOMER_ACCEPTED
-              "
-            >
+            </p> -->
+            <p>
               <app-ref-file [value]="part.partId"> </app-ref-file>
             </p>
           </div>
