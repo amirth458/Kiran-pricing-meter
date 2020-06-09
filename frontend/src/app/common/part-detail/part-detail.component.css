@@ -1,0 +1,31 @@
+.wrapper {
+}
+
+.info-details {
+  font-size: 11px;
+}
+
+.info-details.bordered {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.shipping {
+  background: #f0f8ff;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+.address,
+.target-date {
+  font-size: 12px;
+}
+
+.file-downloader:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+:host .text-truncate {
+  width: 100px;
+  display: inline-block;
+}

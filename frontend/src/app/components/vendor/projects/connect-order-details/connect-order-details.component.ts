@@ -12,6 +12,8 @@ import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { MetadataConfig } from 'src/app/model/metadata.model';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -50,7 +52,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
   statusTypes = BidProcessStatusEnum;
   customerOrderId;
   pageType;
-
+  seePartDetails = false;
+  unitOptions = [];
   constructor(
     public projectService: ProjectService,
     public partService: PartService,
@@ -59,7 +62,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
     public route: ActivatedRoute,
     public spineer: NgxSpinnerService,
     public toaster: ToastrService,
-    public location: Location
+    public location: Location,
+    public metadataService: MetadataService
   ) {
     this.customerOrderId = this.route.snapshot.paramMap.get('id');
     this.route.url.subscribe(r => {
@@ -68,6 +72,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.metadataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
+      this.unitOptions = res;
+    });
     this.initColumnDefs();
     this.initGridOptions();
     this.getData();

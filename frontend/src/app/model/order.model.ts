@@ -335,3 +335,11 @@ export enum ProjectTypeEnum {
   PRODUCTION_PROJECT = 3,
   RFQ_PROJECT = 1
 }
+
+export enum VendorOrderTypeEnum {
+  DILIGENT = 1,
+  EXTERNAL = 2,
+  ONPREM = 3,
+  DILIGENT_PRODUCTION = 4,
+  DILIGENT_CONNECT = 5
+}

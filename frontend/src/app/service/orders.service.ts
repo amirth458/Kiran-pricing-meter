@@ -128,13 +128,15 @@ export class OrdersService {
     return this.http.get<Array<BiddingOrder>>(`${environment.apiBaseUrl}/admin/bidding/released-bid-orders`);
   }
 
-  getProductionReleasedBiddingOrders(page, size, filter): Observable<any> {
+  getConnectReleasedBiddingOrders(page, size, filter, vendorOrderType): Observable<any> {
     return this.http.post<any>(
-      `${environment.apiBaseUrl}/admin/vendor/production-project/vendor-orders?page=${page}&size=${size}`,
-      filter
+      `${environment.apiBaseUrl}/admin/vendor/connect-project/vendor-orders?page=${page}&size=${size}`,
+      {
+        ...filter,
+        vendorOrderType
+      }
     );
   }
-
   getSubOrderReleaseConfirmation() {
     const url = `${environment.apiBaseUrl}/admin/bidding/sub-order-release-confirmation`;
     return this.http.get<any>(url);
@@ -537,12 +539,12 @@ export class OrdersService {
   }
 
   getReferenceFiles(partId) {
-    const url = `${environment.apiBaseUrl}/admin/part/${partId}/reference-medias?generateSignedUrl=true`;
+    const url = `${environment.apiBaseUrl}/admin/reference-media/part/${partId}?generateSignedUrl=true`;
     return this.http.get<any>(url);
   }
 
   getReferenceFileCountByPartId(partId: number): Observable<number> {
-    return this.http.get<number>(`${environment.apiBaseUrl}/admin/part/${partId}/reference-medias/count`);
+    return this.http.get<number>(`${environment.apiBaseUrl}/admin/reference-media/part/${partId}/count`);
   }
 
   getProductionOrderDetails(productionOrderInfo) {

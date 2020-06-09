@@ -41,15 +41,15 @@ export class ConnectOrder {
   customerId: number;
   customerName: string;
   id: number;
-  isArchived: false;
-  isReleaseToSingleSupplier: true;
+  isArchived: boolean;
+  isReleaseToSingleSupplier: boolean;
   minimumProdexSuppliers: number;
   notes: string;
   orderStatusType: BidOrderStatusType;
   partList: Part[];
   paymentStatusType: PaymentStatusType;
   preferredVendors: number[];
-  requestProdexDirectBid: false;
-  subContractorsAllowed: false;
+  requestProdexDirectBid: boolean;
+  subContractorsAllowed: boolean;
   vendorOrderId: null;
 }
