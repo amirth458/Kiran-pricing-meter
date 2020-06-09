@@ -52,7 +52,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   statusTypes = BidProcessStatusEnum;
   customerOrderId;
   pageType;
-  seePartDetails = false;
+  showPartDetails = false;
   unitOptions = [];
   constructor(
     public projectService: ProjectService,
