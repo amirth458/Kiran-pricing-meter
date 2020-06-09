@@ -67,8 +67,8 @@ export class VendorOrderStatusComponent implements OnInit {
       headerHeight: 35
     };
     this.gridOptions = { ...defaultOptions, ...{ columnDefs: this.orderColDefs, pagination: false } };
-    this.jobGridOptions = { ...{ columnDefs: this.jobColDefs }, ...defaultOptions };
-    this.taskGridOptions = { ...{ columnDefs: this.taskColDefs }, ...defaultOptions };
+    this.jobGridOptions = { ...defaultOptions, ...{ columnDefs: this.jobColDefs } };
+    this.taskGridOptions = { ...defaultOptions, ...{ columnDefs: this.taskColDefs } };
   }
 
   progressIndicatorClass(item: any): string {
@@ -232,19 +232,20 @@ export class VendorOrderStatusComponent implements OnInit {
         headerName: 'Task Description',
         headerTooltip: 'Task Description',
         field: 'description',
+        tooltipField: 'description',
         hide: false,
         sortable: false,
         filter: false,
         width: 250,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
-          ngTemplate: this.textCell,
-          tooltipCell: true
+          ngTemplate: this.textCell
         }
       },
       {
         headerName: 'Notes',
         field: 'notes',
+        tooltipField: 'notes',
         hide: false,
         sortable: false,
         filter: false,
@@ -252,8 +253,7 @@ export class VendorOrderStatusComponent implements OnInit {
         minWidth: 250,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
-          ngTemplate: this.textCell,
-          tooltipCell: true
+          ngTemplate: this.textCell
         }
       },
       {
@@ -326,7 +326,7 @@ export class VendorOrderStatusComponent implements OnInit {
     } else if (type === 'jobs') {
       this.jobGridOptions.api.sizeColumnsToFit();
       this.jobGridOptions.columnApi.getColumn('id').setSort('desc');
-    } else {
+    } else if (type === 'tasks') {
       this.taskGridOptions.api.sizeColumnsToFit();
       this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
     }
