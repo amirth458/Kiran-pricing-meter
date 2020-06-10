@@ -96,7 +96,7 @@ export class ViewAllNotificationComponent implements OnInit {
   getNotifications() {
     const filter: FilterOption = {
       page: 0,
-      size: this.tooltip ? 10 : 100,
+      size: this.tooltip ? 10 : 500,
       sort: 'id,desc'
     };
     this.notificationService.getNotification(null, filter).subscribe(
