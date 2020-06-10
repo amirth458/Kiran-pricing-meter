@@ -67,3 +67,36 @@
 :host ::ng-deep .ag-row-selected {
   background-color: var(--theme-highlighted-row);
 }
+
+::ng-deep .part-detail .modal-dialog {
+  max-width: 1200px;
+}
+
+:host .wrapper {
+  border: 1px solid var(--theme-table-border);
+  border-radius: 10px;
+}
+
+:host .tabs {
+  border-bottom: 1px solid var(--theme-table-border);
+}
+
+:host .tab {
+  padding: 10px 40px;
+  position: relative;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+:host .tab.active {
+  color: var(--theme-light-green);
+}
+
+:host .tab.active:before {
+  content: '';
+  border-top: 4px solid var(--theme-light-green);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

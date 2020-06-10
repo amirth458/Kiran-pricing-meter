@@ -323,6 +323,10 @@ button.theme.theme-reverse:hover {
   font-weight: 300;
 }
 
+.theme-table.light .ag-theme-balham .ag-header-row {
+  background: var(--theme-bright-blue);
+}
+
 .theme-table .ag-theme-balham .ag-header-row .ag-header-cell-label {
   font-weight: 500;
 }

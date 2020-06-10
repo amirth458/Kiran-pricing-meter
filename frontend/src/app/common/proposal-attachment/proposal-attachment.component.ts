@@ -82,6 +82,9 @@ export class ProposalAttachmentComponent implements OnInit {
       ob.subscribe(
         (e: any) => {
           this.uploadedAttachments[1].files = e;
+          if (!this.vendorView) {
+            this.uploadedAttachments = [this.uploadedAttachments[1]];
+          }
         },
         e => {}
       );
@@ -106,7 +109,7 @@ export class ProposalAttachmentComponent implements OnInit {
   }
 
   get customerAttachments() {
-    return this.uploadedAttachments[1].files;
+    return this.uploadedAttachments[!this.vendorView ? 0 : 1].files;
   }
 
   viewFiles(size: any = 'lg') {

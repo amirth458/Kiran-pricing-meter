@@ -15,7 +15,7 @@ export class ProposalService {
   }
 
   getCustomerGovernanceMedia(partId: number) {
-    const url = `${environment.managementBaseUrl}/project-governance-media/parts/${partId}/from-project-profile?generateSignedUrl=true`;
+    const url = `${environment.apiBaseUrl}/admin/project-governance-media/parts/${partId}/from-project-profile?generateSignedUrl=true`;
     return this.http.get(url);
   }
 
@@ -25,7 +25,7 @@ export class ProposalService {
   }
 
   getCustomerGovernanceMediaCount(partId: number) {
-    const url = `${environment.managementBaseUrl}/project-governance-media/parts/${partId}/count/from-project-profile`;
+    const url = `${environment.apiBaseUrl}/admin/project-governance-media/parts/${partId}/count/from-project-profile`;
     return this.http.get(url);
   }
 
