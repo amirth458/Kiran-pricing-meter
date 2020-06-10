@@ -180,13 +180,14 @@ export class OrdersService {
   }
 
   getOrderViewColumns(view = 'order-confirmation-queue', partDetailCell): ColDef[] {
-    const columns = [
+    const columns: ColDef[] = [
       {
         headerName: 'Order ID',
         field: 'bidOrder.id',
         tooltip: params => params.value,
         sortable: true,
-        filter: false
+        filter: false,
+        width: 100
       },
       {
         headerName: 'Customer Name',
@@ -195,13 +196,13 @@ export class OrdersService {
         sortable: true,
         filter: false
       },
-      // {
-      //   headerName: 'Vendor Name',
-      //   field: 'vendorName',
-      //   tooltip: params => params.value,
-      //   sortable: true,
-      //   filter: false
-      // },
+      {
+        headerName: 'Vendor Name',
+        field: 'vendorName',
+        tooltip: params => params.value,
+        sortable: true,
+        filter: false
+      },
       {
         headerName: 'Sub Order IDs',
         field: 'partIds',
@@ -306,6 +307,9 @@ export class OrdersService {
         filter: false
       }
     ];
+    if (view === 'order-confirmation-queue') {
+      columns.splice(2, 1);
+    }
     return columns;
   }
 
