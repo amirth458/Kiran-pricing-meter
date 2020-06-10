@@ -65,7 +65,11 @@
 
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
-        *ngIf="projectDetails?.minimumProdexSuppliers"
+        *ngIf="
+          projectDetails?.minimumProdexSuppliers &&
+          projectDetails?.prodexSuppliers &&
+          projectDetails?.prodexSuppliers?.length > 0
+        "
         class="ag-theme-balham h-100 w-100"
         [rowData]="projectDetails?.prodexSuppliers"
         [gridOptions]="supplierGridOptions[0]"
@@ -74,6 +78,12 @@
       </ag-grid-angular>
       <p *ngIf="!projectDetails?.minimumProdexSuppliers" class="font-md text-center text-orange">
         No ProdEX Supplier Requested
+      </p>
+      <p
+        class="font-md text-center text-orange"
+        *ngIf="!projectDetails?.prodexSuppliers || projectDetails?.prodexSuppliers?.length == 0"
+      >
+        No Matching Supplier Found
       </p>
     </div>
   </div>
@@ -86,12 +96,22 @@
 
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
+        *ngIf="projectDetails?.customerSelectedSuppliers && projectDetails?.customerSelectedSuppliers?.length > 0"
         class="ag-theme-balham w-100 h-100"
+        [class.grid-empty]="
+          !projectDetails?.customerSelectedSuppliers || projectDetails?.customerSelectedSuppliers?.length == 0
+        "
         [rowData]="projectDetails?.customerSelectedSuppliers"
         [gridOptions]="supplierGridOptions[1]"
         (gridReady)="onSuppliersGridReady(0, $event)"
       >
       </ag-grid-angular>
+      <p
+        class="font-md text-center text-orange"
+        *ngIf="!projectDetails?.customerSelectedSuppliers || projectDetails?.customerSelectedSuppliers?.length == 0"
+      >
+        No Customer Supplier Selected
+      </p>
     </div>
   </div>
 
