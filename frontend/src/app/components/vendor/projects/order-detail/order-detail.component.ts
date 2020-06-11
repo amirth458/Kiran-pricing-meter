@@ -14,6 +14,7 @@ import { Util } from 'src/app/util/Util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
+import { SubscriptionTypeEnum } from 'src/app/model/subscription.model';
 
 @Component({
   selector: 'app-order-detail',
@@ -310,7 +311,7 @@ export class OrderDetailComponent implements OnInit {
         {
           headerName: 'No',
           valueGetter: 'node.rowIndex + 1',
-          checkboxSelection: v => v.data.subscription === 'SHOPSIGHT_360_PLUS',
+          checkboxSelection: v => v.data.subscription === SubscriptionTypeEnum.SHOPSIGHT_360_PLUS,
           width: 30
         },
         {
@@ -352,7 +353,7 @@ export class OrderDetailComponent implements OnInit {
         rowMultiSelectWithClick: true,
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
-            if (ev.data.subscription !== 'SHOPSIGHT_360_PLUS') {
+            if (ev.data.subscription !== SubscriptionTypeEnum.SHOPSIGHT_360_PLUS) {
               this.toastr.warning(`This vendor doesn’t have 360 PLUS.`);
               ev.node.setSelected(false);
             } else if (ev.api.getSelectedRows().length > this.selectableCount) {
