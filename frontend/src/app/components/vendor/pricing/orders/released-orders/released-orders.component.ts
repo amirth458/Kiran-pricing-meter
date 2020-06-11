@@ -94,7 +94,7 @@ export class ReleasedOrdersComponent implements OnInit {
     this.configureColumnDefs();
     this.gridOptions.api.setColumnDefs([]);
     this.gridOptions.api.setColumnDefs(this.columnDefs);
-    this.gridOptions.api.sizeColumnsToFit();
+    // this.gridOptions.api.sizeColumnsToFit();
   }
 
   searchColumnsChange(columns) {
@@ -113,7 +113,7 @@ export class ReleasedOrdersComponent implements OnInit {
 
   onGridReady(event) {
     this.gridOptions.api = event.api;
-    this.gridOptions.api.sizeColumnsToFit();
+    // this.gridOptions.api.sizeColumnsToFit();
     this.gridOptions.api.setSortModel([
       {
         colId: 'bidOrder.id',

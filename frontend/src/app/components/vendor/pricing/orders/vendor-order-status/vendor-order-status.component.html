@@ -10,38 +10,53 @@
   </ag-grid-angular>
 </div>
 
-<div class="table theme-table job-grid flex-grow-1 pt-3 pb-3">
-  <h6 class="w-100 text-theme">Job Details</h6>
-  <ag-grid-angular
-    class="ag-theme-balham w-100"
-    [class.grid-empty]="!(jobs?.length > 0)"
-    [rowData]="jobs"
-    [gridOptions]="jobGridOptions"
-    [domLayout]="'autoHeight'"
-    [rowSelection]="'single'"
-    (selectionChanged)="onSelectionChanged()"
-    (firstDataRendered)="onFirstDataRendered()"
-    (gridReady)="onGridReady('jobs')"
-  >
-  </ag-grid-angular>
-</div>
+<p class="text-theme font-weight-bold">Sub Order Details</p>
+<div class="wrapper">
+  <div class="tabs d-flex align-items-center justify-content-start">
+    <div
+      class="tab"
+      *ngFor="let part of partList"
+      [ngClass]="{ active: part.id == activeSubOrderId }"
+      (click)="onTabChange(part)"
+    >
+      {{ part.id }}
+    </div>
+  </div>
+  <div class="body">
+    <div class="table theme-table job-grid flex-grow-1 pt-3 pb-3">
+      <h6 class="w-100 text-theme">Job Details</h6>
+      <ag-grid-angular
+        class="ag-theme-balham w-100"
+        [class.grid-empty]="!(activeTabJob?.length > 0)"
+        [rowData]="activeTabJob"
+        [gridOptions]="jobGridOptions"
+        [domLayout]="'autoHeight'"
+        [rowSelection]="'single'"
+        (selectionChanged)="onSelectionChanged()"
+        (firstDataRendered)="onFirstDataRendered()"
+        (gridReady)="onGridReady('jobs')"
+      >
+      </ag-grid-angular>
+    </div>
 
-<div class="table theme-table task-grid flex-grow-1 pt-3 pb-3">
-  <h6 class="w-100 text-theme">
-    <ng-container *ngIf="selectedJob">
-      Tasks for Job {{ selectedJob?.orderId }}.{{ selectedJob?.partId }}.{{ selectedJob?.id }}
-    </ng-container>
-    <ng-container *ngIf="!selectedJob">Tasks</ng-container>
-  </h6>
-  <ag-grid-angular
-    class="ag-theme-balham w-100"
-    [class.grid-empty]="!(tasks?.length > 0)"
-    [rowData]="tasks"
-    [gridOptions]="taskGridOptions"
-    [domLayout]="'autoHeight'"
-    (gridReady)="onGridReady('tasks')"
-  >
-  </ag-grid-angular>
+    <div class="table theme-table light task-grid flex-grow-1 pt-3 pb-3">
+      <h6 class="w-100 text-theme">
+        <ng-container *ngIf="selectedJob">
+          Tasks for Job {{ selectedJob?.orderId }}.{{ selectedJob?.partId }}.{{ selectedJob?.id }}
+        </ng-container>
+        <ng-container *ngIf="!selectedJob">Tasks</ng-container>
+      </h6>
+      <ag-grid-angular
+        class="ag-theme-balham w-100"
+        [class.grid-empty]="!(tasks?.length > 0)"
+        [rowData]="tasks"
+        [gridOptions]="taskGridOptions"
+        [domLayout]="'autoHeight'"
+        (gridReady)="onGridReady('tasks')"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
 </div>
 
 <ng-template #dateCell let-row let-column="params">

@@ -18,7 +18,7 @@ export class VendorOrderStatusComponent implements OnInit {
   @ViewChild('trackingNumber') trackingNumber: TemplateRef<any>;
   @ViewChild('jobNumberCell') jobNumberCell: TemplateRef<any>;
   @ViewChild('textCell') textCell: TemplateRef<any>;
-
+  activeSubOrderId = null;
   id: number;
   @Input()
   set bidProcessId(value: number) {
@@ -45,11 +45,13 @@ export class VendorOrderStatusComponent implements OnInit {
   jobGridOptions: GridOptions;
   selectedJobId$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   jobs = [];
+  activeTabJob = [];
   selectedJob: any;
 
   taskColDefs = [];
   taskGridOptions: GridOptions;
   tasks = [];
+  parts = [];
 
   constructor(public orderService: OrdersService) {}
 
@@ -67,8 +69,8 @@ export class VendorOrderStatusComponent implements OnInit {
       headerHeight: 35
     };
     this.gridOptions = { ...defaultOptions, ...{ columnDefs: this.orderColDefs, pagination: false } };
-    this.jobGridOptions = { ...{ columnDefs: this.jobColDefs }, ...defaultOptions };
-    this.taskGridOptions = { ...{ columnDefs: this.taskColDefs }, ...defaultOptions };
+    this.jobGridOptions = { ...defaultOptions, ...{ columnDefs: this.jobColDefs } };
+    this.taskGridOptions = { ...defaultOptions, ...{ columnDefs: this.taskColDefs } };
   }
 
   progressIndicatorClass(item: any): string {
@@ -82,17 +84,18 @@ export class VendorOrderStatusComponent implements OnInit {
   getVendorOrderInfo() {
     this.orderService.getVendorOrderInfo(this.id).subscribe(v => {
       this.orders = v ? [v] : [];
-      (v.vendorSubOrders || []).map(part => {
+      if (v.vendorSubOrders && this.activeSubOrderId == null) {
+        this.activeSubOrderId = v.vendorSubOrders[0].id;
+      }
+      (v.vendorSubOrders || []).map((part, index) => {
         const arr = [];
         (part.jobs || []).map(job => arr.push({ ...job, ...{ partId: part.id, orderId: v.id } }));
-        this.jobs = arr;
+        this.jobs = this.jobs.concat(arr);
       });
-      this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
-      this.viewTasks(this.selectedJob || {});
-      if (this.selectedJob && this.selectedJob.orderId) {
-        if (this.selectedJob && this.selectedJob.orderId) {
-          this.orderChange.emit(this.selectedJob.orderId);
-        }
+
+      if (v.vendorSubOrders && this.activeSubOrderId == null) {
+        this.activeSubOrderId = v.vendorSubOrders[0].id;
+        this.updateActiveTabJobs();
       }
     });
   }
@@ -103,14 +106,25 @@ export class VendorOrderStatusComponent implements OnInit {
       (v.vendorSubOrders || []).map(part => {
         const arr = [];
         (part.jobs || []).map(job => arr.push({ ...job, ...{ partId: part.id, orderId: v.id } }));
-        this.jobs = arr;
+        this.jobs = this.jobs.concat(arr);
       });
-      this.selectedJob = this.jobs.length > 0 ? this.jobs[0] : null;
-      this.viewTasks(this.selectedJob || {});
-      if (this.selectedJob && this.selectedJob.orderId) {
-        this.orderChange.emit(this.selectedJob.orderId);
+
+      if (v.vendorSubOrders && this.activeSubOrderId == null) {
+        this.activeSubOrderId = v.vendorSubOrders[0].id;
+        this.updateActiveTabJobs();
       }
     });
+  }
+
+  get partList() {
+    return (this.orders || []).length ? this.orders[0].vendorSubOrders : [];
+  }
+
+  updateActiveTabJobs() {
+    this.activeTabJob = this.jobs.filter(job => job.partId === this.activeSubOrderId);
+    if (this.jobGridOptions.api) {
+      this.jobGridOptions.api.setRowData(this.activeTabJob);
+    }
   }
 
   initColumns() {
@@ -232,19 +246,20 @@ export class VendorOrderStatusComponent implements OnInit {
         headerName: 'Task Description',
         headerTooltip: 'Task Description',
         field: 'description',
+        tooltipField: 'description',
         hide: false,
         sortable: false,
         filter: false,
         width: 250,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
-          ngTemplate: this.textCell,
-          tooltipCell: true
+          ngTemplate: this.textCell
         }
       },
       {
         headerName: 'Notes',
         field: 'notes',
+        tooltipField: 'notes',
         hide: false,
         sortable: false,
         filter: false,
@@ -252,8 +267,7 @@ export class VendorOrderStatusComponent implements OnInit {
         minWidth: 250,
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
-          ngTemplate: this.textCell,
-          tooltipCell: true
+          ngTemplate: this.textCell
         }
       },
       {
@@ -304,7 +318,7 @@ export class VendorOrderStatusComponent implements OnInit {
   onSelectionChanged() {
     const row = this.jobGridOptions.api.getSelectedRows()[0];
     this.selectedJob = row;
-    this.viewTasks(row);
+    this.viewTasks(row || {});
   }
 
   viewTasks(job: any) {
@@ -318,15 +332,26 @@ export class VendorOrderStatusComponent implements OnInit {
     if (this.taskGridOptions && this.taskGridOptions.columnApi && this.taskGridOptions.columnApi.getColumn('taskNo')) {
       this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
     }
+    return job.tasks || [];
+  }
+
+  onTabChange(part) {
+    this.activeSubOrderId = part.id;
+    this.updateActiveTabJobs();
+    if (this.activeTabJob) {
+      this.selectedJob = this.activeTabJob[0];
+      this.viewTasks(this.selectedJob || {});
+    }
   }
 
   onGridReady(type: string) {
     if (type === 'orders') {
       this.gridOptions.api.sizeColumnsToFit();
     } else if (type === 'jobs') {
+      this.updateActiveTabJobs();
       this.jobGridOptions.api.sizeColumnsToFit();
       this.jobGridOptions.columnApi.getColumn('id').setSort('desc');
-    } else {
+    } else if (type === 'tasks') {
       this.taskGridOptions.api.sizeColumnsToFit();
       this.taskGridOptions.columnApi.getColumn('taskNo').setSort('asc');
     }

@@ -149,6 +149,9 @@ import { ChipComponent } from '../common/chip/chip.component';
 import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
 import { PartListComponent } from '../common/part-list/part-list.component';
 import { RefFileComponent } from '../common/ref-file/ref-file.component';
+import { PartDetailComponent } from '../common/part-detail/part-detail.component';
+import { ProposalAttachmentComponent } from '../common/proposal-attachment/proposal-attachment.component';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
 import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cell-renderer.component';
 @NgModule({
@@ -250,6 +253,7 @@ import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cel
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
+
     InsightDetailComponent,
     ProductionOrdersContainerComponent,
     ProductionReleasedOrdersComponent,
@@ -288,6 +292,8 @@ import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cel
     AddVendorDetailComponent,
     AddVendorMachineComponent,
     ChipComponent,
+    PartDetailComponent,
+    ProposalAttachmentComponent,
     InsightPartInformationComponent
   ],
   imports: [
@@ -316,7 +322,8 @@ import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cel
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     ChatModule,
-    UiSwitchModule
+    UiSwitchModule,
+    PerfectScrollbarModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [

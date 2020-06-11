@@ -47,6 +47,15 @@
   color: white;
 }
 
+.transparent {
+  background: transparent;
+  border: none;
+}
+
+.transparent:focus {
+  outline: none;
+}
+
 .text-theme {
   color: var(--theme-light-blue);
 }
@@ -312,6 +321,10 @@ button.theme.theme-reverse:hover {
   color: white;
   font-size: 12px;
   font-weight: 300;
+}
+
+.theme-table.light .ag-theme-balham .ag-header-row {
+  background: var(--theme-bright-blue);
 }
 
 .theme-table .ag-theme-balham .ag-header-row .ag-header-cell-label {
@@ -834,29 +847,40 @@ app-dropdown-cell-renderer {
 } */
 
 /* Reference Files Modal */
+
 .attachment-modal {
   z-index: 1061;
 }
 
+.ref-file-modal .file-items,
+.storage-file-modal .file-items,
 .attachment-modal .file-items {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.ref-file-modal .modal-dialog,
+.storage-file-modal .modal-dialog,
 .attachment-modal .modal-dialog {
   max-width: 900px;
 }
 
+.ref-file-modal .modal-header,
+.storage-file-modal .modal-header,
 .attachment-modal .modal-header {
   border: none;
 }
 
+.ref-file-modal .file-items .list-item,
+.storage-file-modal .file-items .list-item,
 .attachment-modal .file-items .list-item {
   height: 120px;
   border: 1px solid #ccc;
 }
 
+.ref-file-modal .file-items .file-name,
+.storage-file-modal .file-items .file-name,
 .attachment-modal .file-items .file-name {
   font-size: 13px;
   color: var(--theme-light-blue) !important;
@@ -868,10 +892,18 @@ app-dropdown-cell-renderer {
   text-overflow: ellipsis;
 }
 
+.storage-file-modal .file-items .file-name {
+  width: 110px !important;
+}
+
+.ref-file-modal .file-items .doc-icon,
+.storage-file-modal .file-items .doc-icon,
 .attachment-modal .file-items .doc-icon {
   font-size: 64px;
 }
 
+.ref-file-modal .attached-file,
+.storage-file-modal .attached-file,
 .attachment-modal .attached-file {
   height: 250px;
   width: 250px;
@@ -882,6 +914,8 @@ app-dropdown-cell-renderer {
   border: 1px solid #cccccc;
 }
 
+.ref-file-modal .modal-body,
+.storage-file-modal .modal-body,
 .attachment-modal .modal-body {
   max-height: 400px;
 }
@@ -890,6 +924,8 @@ app-dropdown-cell-renderer {
   max-height: 600px !important;
 }
 
+.ref-file-modal .modal-body.attachment-body,
+.storage-file-modal .modal-body.attachment-body,
 .attachment-modal .modal-body.attachment-body {
   max-height: 700px;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as tooltipData from '../../../../../../assets/tooltip.json';
 
 @Component({
@@ -18,12 +18,18 @@ export class ProductionOrdersContainerComponent implements OnInit {
     }>;
   }> = tooltipData.default.productionOrders;
   selectedTab = this.actionbarMenu[0].name;
-
-  constructor(private route: Router) {}
+  pageType = 'production-orders';
+  constructor(public router: Router, public route: ActivatedRoute) {
+    this.route.params.subscribe(r => {
+      if (r.projectType) {
+        this.pageType = r.projectType;
+      }
+    });
+  }
 
   ngOnInit() {
-    const routeArr = this.route.url
-      .slice(this.route.url.indexOf('pricing/production-orders/') + 'pricing/production-orders/'.length)
+    const routeArr = this.router.url
+      .slice(this.router.url.indexOf(`pricing/${this.pageType}/`) + `pricing/${this.pageType}/`.length)
       .split('/');
     this.selectedTab = 'Released Orders';
     switch (routeArr[0]) {
@@ -31,7 +37,7 @@ export class ProductionOrdersContainerComponent implements OnInit {
         this.selectedTab = 'Released Orders';
         break;
       default:
-        this.route.navigateByUrl(this.route.url + '/released-orders');
+        this.router.navigateByUrl(this.router.url + '/released-orders');
         break;
     }
   }

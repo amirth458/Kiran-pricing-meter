@@ -1,0 +1,143 @@
+<div class="wrapper text-theme mt-3 mb-3 container-fluid">
+  <div class="row">
+    <div [ngClass]="connectView ? 'col-md-8' : 'col-md-8'" class="card pr-3 pt-0 pb-0">
+      <div class="row">
+        <div [ngClass]="connectView ? 'col-md-2' : 'col-md-3'" class="pt-3 pb-3">
+          <img
+            [src]="part.thumbnail200Location || '../../../../../../../assets/image/no-preview.png'"
+            alt=""
+            height="150px"
+            width="100px"
+          />
+          <app-view-in-three-d [connectorServiceId]="part?.connectorServiceId"></app-view-in-three-d>
+        </div>
+        <div [ngClass]="connectView ? 'col-md-3' : 'col-md-4'" class=" pt-4 pb-3 px-2 info-details bordered">
+          <div>
+            <p class="mb-2">
+              File:
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="top"
+                [ngbTooltip]="part.fileName"
+              >
+                {{ part.fileName }}
+              </span>
+            </p>
+            <p class="mb-2">
+              Quantity:
+              <span class="text-theme-green font-weight-bold">
+                {{ part?.quantity }}
+              </span>
+            </p>
+            <p class="mb-2">
+              Material:
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="top"
+                [ngbTooltip]="part?.materialPropertyValues?.join(' OR ')"
+              >
+                {{ part?.materialPropertyValues?.join(' OR ') }}
+              </span>
+            </p>
+            <p class="mb-2">
+              Technology:
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="top"
+                [ngbTooltip]="part?.equipmentPropertyValues?.join(' OR ')"
+              >
+                {{ part?.equipmentPropertyValues?.join(' OR ') }}
+              </span>
+            </p>
+            <!-- <p class="mb-2">
+              Post-Process:
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="top"
+                [ngbTooltip]="part?.postProcessTypeNames"
+              >
+                {{ part?.postProcessTypeNames }}
+              </span>
+            </p> -->
+            <p>
+              <app-ref-file [value]="part.partId"> </app-ref-file>
+            </p>
+          </div>
+        </div>
+
+        <div [ngClass]="connectView ? 'bordered col-md-3' : 'col-md-5'" class="pt-4 pb-3 px-2 info-details">
+          <div>
+            <p class="mb-2">
+              Dimensions:
+              <span class="text-theme-green font-weight-bold">
+                {{ part.x.value }} {{ getUnit(part.x.unitId) }} x {{ part.y.value }} {{ getUnit(part.y.unitId) }} x
+                {{ part.z.value }} {{ getUnit(part.z.unitId) }}
+              </span>
+            </p>
+            <p class="mb-2">
+              Volume:
+              <span class="text-theme-green font-weight-bold">
+                {{ part.volume.value }} {{ getUnit(part.volume.unitId) }}
+              </span>
+            </p>
+            <p class="mb-2">
+              Surface Roughness:
+              <span class="text-theme-green font-weight-bold">
+                {{ part.surfaceRoughness }}
+                <!-- {{surfaceRoughness.unit}} -->
+              </span>
+            </p>
+            <p class="mb-2">
+              <ng-container *ngFor="let item of tolerance; let index = index">
+                <!-- Tolerance: -->
+                <ng-container *ngIf="index % 2 == 0; else toleranceValue">
+                  {{ item }}
+                </ng-container>
+                <ng-template #toleranceValue>
+                  <span class="text-theme-green font-weight-bold">
+                    {{ item }}
+                  </span>
+                  <br />
+                </ng-template>
+              </ng-container>
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="connectView" class="col-md-4 pt-4 pb-3 px-2 info-details">
+          <div>
+            <p class="mb-2">
+              <app-proposal-attachment
+                type="governance-document"
+                [smallView]="true"
+                [partId]="part?.partId"
+              ></app-proposal-attachment>
+            </p>
+            <p class="mb-2">
+              Other Requirements:
+              <span class="text-theme" placement="auto" [ngbTooltip]="comment">
+                {{ displayComment }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 shipping p-4">
+      <div class="w-100 justify-content-between title">
+        <p class="text-theme font-weight-normal">Shipping</p>
+        <p class="text-theme font-weight-light font-italic address">
+          {{ part?.shippingAddress }}
+        </p>
+      </div>
+
+      <div class="w-100 d-flex justify-content-between title">
+        <span class="text-theme target-date font-weight-bold">
+          Target Delivery
+        </span>
+        <span class="text-theme-green">{{ part?.deliveryDate | date: 'MM/dd/yyyy':'UTC' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

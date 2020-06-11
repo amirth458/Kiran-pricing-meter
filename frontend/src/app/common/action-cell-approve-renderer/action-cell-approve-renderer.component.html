@@ -1,5 +1,4 @@
 <div class="action-column">
   <span #approve class="approve" (click)="onApprove()" *ngIf="params.action.canApprove(params)">Approve</span>
   <span #decline class="decline" (click)="onDecline()" *ngIf="params.action.canDecline(params)">Decline</span>
-  <span #decline class="text-purple" (click)="onUnlock()" *ngIf="params.action.canUnlock(params)">onUnlock</span>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe, CurrencyPipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -9,6 +9,7 @@ import { GridOptions } from 'ag-grid-community';
 import { OrdersService } from '../../../../../service/orders.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
 import { Util } from 'src/app/util/Util';
+import { VendorOrderTypeEnum } from 'src/app/model/order.model';
 
 @Component({
   selector: 'app-production-released-orders',
@@ -137,6 +138,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
+  pageType = 'production-orders';
 
   constructor(
     public router: Router,
@@ -144,8 +146,16 @@ export class ProductionReleasedOrdersComponent implements OnInit {
     private orderService: OrdersService,
     public modal: NgbModal,
     public datePipe: DatePipe,
-    public currencyPipe: CurrencyPipe
-  ) {}
+    public currencyPipe: CurrencyPipe,
+    public route: ActivatedRoute
+  ) {
+    this.route.parent.params.subscribe(r => {
+      if (r.projectType) {
+        this.pageType = r.projectType;
+        this.searchColumnsChange();
+      }
+    });
+  }
 
   ngOnInit() {
     this.initColumns();
@@ -269,19 +279,26 @@ export class ProductionReleasedOrdersComponent implements OnInit {
       rowCount: 0,
       getRows: params => {
         this.spinner.show('spooler1');
-        this.orderService
-          .getProductionReleasedBiddingOrders(params.startRow / this.pageSize, this.pageSize, {
+        const ob = this.orderService.getConnectReleasedBiddingOrders(
+          params.startRow / this.pageSize,
+          this.pageSize,
+          {
             q: '',
             filterColumnsRequests: this.filterColumnsRequest
-          })
-          .subscribe(data => {
-            this.spinner.hide('spooler1');
-            const rowsThisPage = data.content;
-            const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-            this.totalcounts = data.totalElements;
-            params.successCallback(rowsThisPage, lastRow);
-            // this.reconfigColumns();
-          });
+          },
+          this.pageType === 'production-orders'
+            ? VendorOrderTypeEnum.DILIGENT_PRODUCTION
+            : VendorOrderTypeEnum.DILIGENT_CONNECT
+        );
+
+        ob.subscribe(data => {
+          this.spinner.hide('spooler1');
+          const rowsThisPage = data.content;
+          const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
+          this.totalcounts = data.totalElements;
+          params.successCallback(rowsThisPage, lastRow);
+          // this.reconfigColumns();
+        });
       }
     };
     if (this.gridOptions && this.gridOptions.api) {

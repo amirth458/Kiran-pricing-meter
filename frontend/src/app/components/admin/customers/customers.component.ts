@@ -25,6 +25,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   @ViewChild('actionControl') actionControl;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
+  @ViewChild('unlockCell') unlockCell;
 
   @ViewChild('linkVendorCell') linkVendorCell;
   @ViewChild('linkVendorModal') linkVendorModal;
@@ -146,6 +147,17 @@ export class CustomersComponent implements OnInit, OnDestroy {
           }
         },
         {
+          headerName: 'Unlock',
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.unlockCell
+          },
+          hide: false,
+          sortable: false,
+          filter: false,
+          width: 240
+        },
+        {
           headerName: '',
           cellRenderer: 'templateRenderer',
           cellRendererParams: {
@@ -191,9 +203,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   onUnlock(customer: Customer) {
-    console.log(customer);
-    this.customerService
-      .unlockCustomer(customer.customerId)
+    this.userService
+      .unlockUser(customer.userId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         res => {

@@ -182,10 +182,13 @@ const routes: Routes = [
             ]
           },
           {
-            path: 'production-orders',
+            path: ':projectType',
             component: ProductionOrdersContainerComponent,
             children: [
-              { path: 'released-orders', component: ProductionReleasedOrdersComponent },
+              {
+                path: 'released-orders',
+                component: ProductionReleasedOrdersComponent
+              },
               {
                 path: 'released-orders/:customerOrderId',
                 component: ProductionVendorDetailsComponent
