@@ -95,6 +95,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.getData();
   }
 
+  get selectableProdexSuppliers() {
+    return (this.projectDetails.prodexSuppliers || []).filter(
+      supplier => supplier.subscriptionType === SubscriptionTypeEnum.SHOPSIGHT_360_PLUS
+    ).length;
+  }
+
   get vendorProfiles() {
     return this.matchingProfiles.filter(item => item.vendorId === this.selectedVendor.vendorId);
   }
