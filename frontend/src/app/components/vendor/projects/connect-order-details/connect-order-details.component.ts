@@ -6,7 +6,7 @@ import { BidProcessStatusEnum, ConnectProject } from '../../../../model/connect.
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap, map, tap } from 'rxjs/operators';
 import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
+import { DefaultEmails } from '../../../../../assets/constants';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -44,6 +45,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   firstTimeRelease = true;
   replacementProdexSuppliers;
   selectedProdEXVendorIds = [];
+  selectedInviteVendorIds = [];
   selectedReplacementProdEXVendorIds = [];
 
   matchingProfiles: MatchedProcessProfile[] = [];
@@ -54,21 +56,33 @@ export class ConnectOrderDetailsComponent implements OnInit {
   pageType;
   showPartDetails = false;
   unitOptions = [];
+
+  from = DefaultEmails.from;
+  to = DefaultEmails.to;
+  cc = [];
+  bcc = [];
+
   constructor(
     public projectService: ProjectService,
     public partService: PartService,
     public orderService: OrdersService,
     public modal: NgbModal,
     public route: ActivatedRoute,
+    public router: Router,
     public spineer: NgxSpinnerService,
     public toaster: ToastrService,
     public location: Location,
-    public metadataService: MetadataService
+    public metadataService: MetadataService,
+    public modalService: NgbModal
   ) {
     this.customerOrderId = this.route.snapshot.paramMap.get('id');
     this.route.url.subscribe(r => {
       this.pageType = r[0].path;
     });
+    localStorage.removeItem('admin-RegisterMachines');
+    localStorage.removeItem('admin-RegisterVendor');
+    localStorage.removeItem('admin-RegisterUser');
+    localStorage.removeItem('connect-registration');
   }
 
   ngOnInit() {
@@ -98,8 +112,33 @@ export class ConnectOrderDetailsComponent implements OnInit {
       this.supplierGridOptions.length &&
       this.supplierGridOptions[2].api &&
       this.projectDetails &&
+      this.selectedInviteVendorIds.length &&
       (this.supplierGridOptions[2].api.getSelectedNodes() || []).length
     );
+  }
+
+  sendMail(ev) {
+    this.bcc = ev ? [ev.email] : [];
+    this.modalService.open(this.sendMailModal, {
+      centered: true,
+      size: 'lg'
+    });
+  }
+
+  createVendorProfile(row) {
+    localStorage.setItem('connect-registration', this.router.url);
+    localStorage.setItem(
+      'admin-RegisterUser',
+      JSON.stringify({
+        email: row.email || '',
+        firstName: row.name || '',
+        lastName: '',
+        password: '',
+        confirmPassword: '',
+        phone: row.phoneNo || ''
+      })
+    );
+    this.router.navigateByUrl('/user-manage/add-vendor/user');
   }
 
   getData() {
@@ -211,6 +250,36 @@ export class ConnectOrderDetailsComponent implements OnInit {
       );
   }
 
+  releaseProjectToInvite() {
+    this.spineer.show();
+    this.projectService
+      .releaseConnectProjectToInvite(this.projectDetails.customerOrderId, this.selectedInviteVendorIds)
+      .subscribe(
+        r => {
+          this.selectedInviteVendorIds = [];
+          this.supplierGridOptions[2].api.deselectAll();
+          this.spineer.hide();
+          this.toaster.success('Project Released To Invited Suppliers');
+          this.getData();
+        },
+        err => {
+          this.spineer.hide();
+          this.selectedInviteVendorIds = [];
+          this.supplierGridOptions[2].api.deselectAll();
+          if (
+            err.error &&
+            ((err.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+              (err.error.message || '').includes('Contract not found'))
+          ) {
+            this.toaster.error("User doesn't have SHOPSIGHT 360 PLUS");
+          } else {
+            this.toaster.error('Error While Releasing Project To Invited Suppliers.');
+          }
+          this.getData();
+          console.log(err);
+        }
+      );
+  }
   replaceSupplier() {
     this.spineer.show();
     this.projectService
@@ -321,10 +390,16 @@ export class ConnectOrderDetailsComponent implements OnInit {
         domLayout: 'autoHeight',
         rowMultiSelectWithClick: true,
         isRowSelectable: rowNode => {
-          return true;
+          return rowNode.data.isRegistered && this.pageType === 'release-queue';
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
+            this.selectedInviteVendorIds.push(ev.data.id);
+          } else {
+            const foundIndex = this.selectedInviteVendorIds.findIndex(_ => _ === ev.data.id);
+            if (foundIndex !== -1) {
+              this.selectedInviteVendorIds.splice(foundIndex, 1);
+            }
           }
         }
       }
@@ -529,7 +604,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'Vendor Name',
-          field: 'vendorName',
+          field: 'name',
           hide: false,
           sortable: false,
           filter: false
@@ -550,7 +625,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'Phone',
-          field: 'phone',
+          field: 'phoneNo',
           hide: false,
           sortable: false,
           filter: false

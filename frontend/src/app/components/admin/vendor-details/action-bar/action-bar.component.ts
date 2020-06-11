@@ -70,6 +70,11 @@ export class AdminVendorDetailsActionBarComponent implements OnChanges, OnInit {
   }
 
   backButton() {
+    const s = localStorage.getItem('connect-registration');
+    if (s) {
+      this.route.navigateByUrl(s);
+      return;
+    }
     if (this.route.url.includes('user-manage/add-customer')) {
       this.route.navigateByUrl('/user-manage/customers');
     } else {

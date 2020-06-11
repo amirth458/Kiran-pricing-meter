@@ -91,6 +91,17 @@ export class ProjectService {
     return this.http.post<any>(environment.apiBaseUrl + '/admin/bidding/connect-project/release-bid-to-vendor', body);
   }
 
+  releaseConnectProjectToInvite(customerOrderId: number, potentialVendorId: number[]): Observable<any> {
+    const body = {
+      customerOrderId,
+      ids: potentialVendorId
+    };
+    return this.http.put<any>(
+      environment.apiBaseUrl + '/admin/bidding/connect-project/release-bid-to-invited-vendor',
+      body
+    );
+  }
+
   replaceConnectProjectSupplier(customerOrderId: number, oldVendorId: number, newVendorId: number): Observable<any> {
     const body = {
       customerOrderId,
