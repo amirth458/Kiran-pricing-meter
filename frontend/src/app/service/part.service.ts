@@ -22,6 +22,17 @@ export class PartService {
   }
 
   getPartsByRfqId(rfqId: number): Observable<any> {
+    return this.http
+      .get<any>(`${environment.apiBaseUrl}/admin/part/rfq/${rfqId}`)
+      .pipe(
+        map(_ => [
+          ...(_.parts || []).map(_ => new Object({ ..._, proposalPart: false })),
+          ...(_.proposalPart || []).map(_ => new Object({ ..._, proposalPart: true }))
+        ])
+      );
+  }
+
+  getPartsByRfq(rfqId: number): Observable<any> {
     return this.http.get<any>(`${environment.procurementApiBaseUrl}/part/rfq/${rfqId}`);
   }
 }
