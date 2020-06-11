@@ -7,7 +7,7 @@ import { GridOptions, ColDef } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, empty, forkJoin, Observable } from 'rxjs';
 
 import { BiddingService } from '../../../../../service/bidding.service';
@@ -78,6 +78,9 @@ export class VendorDetailsComponent implements OnInit {
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
   selectedBidProcessId: number;
+
+  vendorIds$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
+  matches$: Observable<Array<MatchedProfile> | any>;
 
   chatTypeEnum = ChatTypeEnum;
   chat: Chat;
@@ -211,7 +214,6 @@ export class VendorDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.getUserInfo();
-
     this.initTable();
     // view bidding status
     this.columnDefs.push([
@@ -348,45 +350,62 @@ export class VendorDetailsComponent implements OnInit {
       rowHeight: 36,
       headerHeight: 35
     });
+    this.matches$ = this.vendorIds$.pipe(
+      filter(value => !!value),
+      tap(() => this.spinner.show('spooler')),
+      switchMap(values => this.ordersService.getMatchedProcessProfiles(this.bidOrderId, values)),
+      map(items => {
+        const arr = [];
+        const vendors = [];
+        let count = 0;
+        (items || []).map((match: any) => {
+          (match.processProfieBidViews || []).map(view => {
+            let counterValue = '';
+            let status = match.bidProcessStatusType || {};
+            if (!(vendors.indexOf(view.vendorName) > -1)) {
+              vendors.push(view.vendorName);
+              counterValue = (++count).toString();
+            } else {
+              status = null;
+            }
+            arr.push({
+              id: counterValue,
+              vendorId: match.vendorId,
+              profileId: view.processProfileId,
+              vendorName: view.vendorName,
+              processProfileName: view.processProfileName,
+              facilityName: (view.facilityNames || []).join(','),
+              pricingProfile: view.pricingProfileCount || 0,
+              bidProcessStatus: status
+            });
+          });
+        });
+        return {
+          items: arr,
+          length: (arr || []).length
+        };
+      }),
+      tap(() => this.spinner.hide('spooler')),
+      share()
+    );
   }
 
   prepareBidOrderInfo() {
     this.ordersService.getBidOrderDetailsById(this.bidOrderId, this.type === 'released').subscribe(v => {
-      // this.orderDetails = v.acceptedOrderDetails || [];
       let count = 0;
       this.timeToExpire = v.bidProcessTimeLeft;
       this.bidding = (v.matchingSuppliersProfilesView || []).map(user => {
         return { ...user };
       });
+      const users = [];
+      (this.bidding || []).map((bidding: any) => {
+        if (users.indexOf(bidding.vendorId) === -1) {
+          users.push(bidding.vendorId);
+        }
+      });
+      this.vendorIds$.next(users);
       this.bidOrderStatus = (v ? v.bidOrderStatus || {} : {}) as MetaData;
       this.bidding.map(match => (match.id = ++count));
-      const vendors = [];
-      this.bidding.map(match => {
-        (match.processProfileViews || []).map(p => {
-          let counterValue = match.id.toString();
-          let status = match.bidProcessStatus;
-          if (!(vendors.indexOf(match.vendorName) > -1)) {
-            vendors.push(match.vendorName);
-          } else {
-            counterValue = '';
-            status = null;
-          }
-          this.matchedProfiles.push({
-            id: counterValue,
-            vendorId: p.vendorId,
-            profileId: p.id,
-            vendorName: match.vendorName,
-            processProfileName: p.name,
-            facilityName: p.processMachineServingMaterialList.length
-              ? p.processMachineServingMaterialList[0].machineServingMaterial.vendorMachinery.vendorFacility.name
-              : '',
-            pricingProfile: (p.processPricingList || []).length,
-            bidProcessStatus: status,
-            counterOfferPrice: match.counterOfferPrice,
-            bidOfferPrice: match.bidOfferPrice
-          });
-        });
-      });
       this.ordersService
         .getPartQuotesByPartIds((v.acceptedOrderDetails || []).map(p => p.partId))
         .pipe(switchMap(parts => this.ordersService.mergePartQuoteInfo(v.acceptedOrderDetails)))
