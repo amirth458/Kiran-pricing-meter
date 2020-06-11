@@ -190,6 +190,7 @@ export interface Part {
   requestProdexDirectBid?: boolean;
   isReleaseToSingleSupplier?: boolean;
   commets?: string;
+  proposalPart?: boolean;
 }
 
 export class BidPart {
