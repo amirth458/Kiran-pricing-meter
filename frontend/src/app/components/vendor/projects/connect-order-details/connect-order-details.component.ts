@@ -15,6 +15,7 @@ import { Location } from '@angular/common';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { DefaultEmails } from '../../../../../assets/constants';
+import { SubscriptionTypeEnum } from '../../../../model/subscription.model';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -237,7 +238,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
           this.supplierGridOptions[0].api.deselectAll();
           if (
             r.error &&
-            ((r.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+            ((r.error.message || '').includes(SubscriptionTypeEnum.SHOPSIGHT_360_PLUS) ||
               (r.error.message || '').includes('Contract not found'))
           ) {
             this.toaster.error("Vendor doesn't have SHOPSIGHT 360 PLUS");
@@ -268,7 +269,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
           this.supplierGridOptions[2].api.deselectAll();
           if (
             err.error &&
-            ((err.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+            ((err.error.message || '').includes(SubscriptionTypeEnum.SHOPSIGHT_360_PLUS) ||
               (err.error.message || '').includes('Contract not found'))
           ) {
             this.toaster.error("User doesn't have SHOPSIGHT 360 PLUS");
@@ -304,7 +305,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
           this.vendorProfileGridOptions[1].api.deselectAll();
           if (
             r.error &&
-            ((r.error.message || '').includes('SHOPSIGHT_360_PLUS') ||
+            ((r.error.message || '').includes(SubscriptionTypeEnum.SHOPSIGHT_360_PLUS) ||
               (r.error.message || '').includes('Contract not found'))
           ) {
             this.toaster.error("Vendor doesn't have SHOPSIGHT 360 PLUS");
@@ -359,7 +360,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
         rowMultiSelectWithClick: true,
         domLayout: 'autoHeight',
         isRowSelectable: rowNode => {
-          return !rowNode.data.status && this.firstTimeRelease && this.pageType === 'release-queue';
+          return (
+            !rowNode.data.status &&
+            this.hasCorrectSub(rowNode.data.subscriptionType) &&
+            this.firstTimeRelease &&
+            this.pageType === 'release-queue'
+          );
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -404,6 +410,10 @@ export class ConnectOrderDetailsComponent implements OnInit {
         }
       }
     ];
+  }
+
+  hasCorrectSub(subscriptionType) {
+    return subscriptionType == SubscriptionTypeEnum.SHOPSIGHT_360_PLUS;
   }
 
   initColumnDefs() {
@@ -452,6 +462,14 @@ export class ConnectOrderDetailsComponent implements OnInit {
         hide: false,
         sortable: false,
         filter: false
+      },
+      {
+        headerName: 'Subscription',
+        field: 'subscriptionType',
+        tooltipField: 'subscriptionType',
+        hide: false,
+        sortable: false,
+        filter: false
       }
     ];
 
@@ -489,6 +507,14 @@ export class ConnectOrderDetailsComponent implements OnInit {
         {
           headerName: 'Vendor Name',
           field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Subscription',
+          field: 'subscriptionType',
+          tooltipField: 'subscriptionType',
           hide: false,
           sortable: false,
           filter: false
@@ -553,6 +579,14 @@ export class ConnectOrderDetailsComponent implements OnInit {
         {
           headerName: 'Vendor Name',
           field: 'vendorName',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Subscription',
+          field: 'subscriptionType',
+          tooltipField: 'subscriptionType',
           hide: false,
           sortable: false,
           filter: false

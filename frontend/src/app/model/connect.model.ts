@@ -24,6 +24,7 @@ export class ConnectProject {
     status: string;
     vendorId: number;
     state: string;
+    subscriptionType: string;
   }[];
   customerSelectedSuppliers: {
     vendor: string;
@@ -32,6 +33,7 @@ export class ConnectProject {
     status: string;
     vendorId: number;
     state: string;
+    subscriptionType: string;
   }[];
   customerInvitedSuppliers: {
     id: number;
