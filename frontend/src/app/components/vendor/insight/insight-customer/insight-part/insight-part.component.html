@@ -1,7 +1,7 @@
 <div class="position-relative">
   <app-insight-detail type="part" [columnDefs]="columnDefs"></app-insight-detail>
 
-  <div *ngIf="partIds" class="part-information">
-    <app-insight-part-information [partIds]="partIds" (close)="onClose()"></app-insight-part-information>
+  <div *ngIf="parts" class="part-information">
+    <app-insight-part-information [parts]="parts" (close)="onClose()"></app-insight-part-information>
   </div>
 </div>

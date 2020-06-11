@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-insight-rfq',
@@ -142,25 +143,31 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'part_count'
     }
   ];
-  partIds = null;
+  parts = null;
 
-  constructor(public partService: PartService, public toastr: ToastrService) {}
+  constructor(protected spinner: NgxSpinnerService, public partService: PartService, public toastr: ToastrService) {}
 
   ngOnInit() {}
 
   onRowClick(ev) {
-    // get part Ids from rfq ID
-    // this.partIds = getPartsByRfqId(ev.data.rfq_id);
-    this.partService.getPartsByRfqId(ev.data.rfq_id).subscribe(res => {
-      this.partIds = res.map(item => item.id);
-      if (this.partIds.length === 0) {
-        this.partIds = null;
-        this.toastr.warning('No Parts are created');
+    this.spinner.show();
+    this.partService.getPartsByRfqId(ev.data.rfq_id).subscribe(
+      res => {
+        this.parts = res;
+        if (this.parts.length === 0) {
+          this.parts = null;
+          this.toastr.warning('No Parts are created');
+        }
+        this.spinner.hide();
+      },
+      err => {
+        this.spinner.hide();
+        console.log(err);
       }
-    });
+    );
   }
 
   onClose() {
-    this.partIds = null;
+    this.parts = null;
   }
 }

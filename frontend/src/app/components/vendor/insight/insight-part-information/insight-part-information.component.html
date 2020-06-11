@@ -3,11 +3,11 @@
     <div class="tabs d-flex">
       <div
         class="tab"
-        *ngFor="let partId of partIds"
-        [ngClass]="{ active: partId === selectedPartId }"
-        (click)="selectPart(partId)"
+        *ngFor="let part of parts"
+        [ngClass]="{ active: part?.id === selectedPartId }"
+        (click)="selectPart(part?.id)"
       >
-        {{ partId }}
+        {{ part?.id }}
       </div>
     </div>
     <div class="action mr-3">

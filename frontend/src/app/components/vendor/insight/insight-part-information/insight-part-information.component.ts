@@ -14,7 +14,7 @@ import { CustomerDetails } from 'src/app/model/customer.model';
   styleUrls: ['./insight-part-information.component.css']
 })
 export class InsightPartInformationComponent implements OnInit {
-  @Input() partIds;
+  @Input() parts;
   @Output() close: EventEmitter<any> = new EventEmitter();
   selectedPartId;
 
@@ -32,7 +32,7 @@ export class InsightPartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectPart(this.partIds[0]);
+    this.selectPart(this.parts[0].id);
   }
 
   selectPart(newId) {
@@ -42,30 +42,29 @@ export class InsightPartInformationComponent implements OnInit {
 
     this.spinner.show();
     this.selectedPartId = newId;
-    this.pricingService.getPartDetail(newId).subscribe(part => {
-      this.part = part;
-      this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfqId).subscribe(rfq => {
-        this.rfq = rfq;
-      });
-      this.customerService.getCustomerDetailsById(this.part.rfqMedia.media.customerId).subscribe(customer => {
-        this.customer = customer;
-      });
-      if (this.part.partStatusType.name === AppPartStatus.QUOTE_EXPIRED) {
-        this.pricingService.getExpiredPartQuoteDetails(this.part.id).subscribe(partQuote => {
-          this.partQuote = partQuote;
-        });
-      } else {
-        this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
-          this.partQuote = partQuote;
-        });
-      }
+    this.part = this.parts.filter(_ => _.id === this.selectedPartId)[0];
 
-      this.pricingService.getPartDimension(this.part.id).subscribe(dimension => {
-        this.partDimension = dimension;
-      });
-
-      this.spinner.hide();
+    this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfq.id).subscribe(rfq => {
+      this.rfq = rfq;
     });
+    this.customerService.getCustomerDetailsById(this.part.rfqMedia.media.customerId).subscribe(customer => {
+      this.customer = customer;
+    });
+    if (this.part.partStatusType.name === AppPartStatus.QUOTE_EXPIRED) {
+      this.pricingService.getExpiredPartQuoteDetails(this.part.id).subscribe(partQuote => {
+        this.partQuote = partQuote;
+      });
+    } else {
+      this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
+        this.partQuote = partQuote;
+      });
+    }
+
+    this.pricingService.getPartDimension(this.part.id).subscribe(dimension => {
+      this.partDimension = dimension;
+    });
+
+    this.spinner.hide();
   }
 
   onClose() {

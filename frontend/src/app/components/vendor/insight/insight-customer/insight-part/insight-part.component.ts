@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { PartService } from 'src/app/service/part.service';
 
 @Component({
   selector: 'app-insight-part',
@@ -170,17 +172,30 @@ export class InsightPartComponent implements OnInit {
     }
   ];
 
-  partIds = null;
+  parts = null;
 
-  constructor() {}
+  constructor(protected spinner: NgxSpinnerService, public partService: PartService) {}
 
   ngOnInit() {}
 
   onRowClick(ev) {
-    this.partIds = [ev.data.part_id];
+    this.spinner.show();
+    this.partService.getPartsByRfqId(ev.data.rfq_id).subscribe(
+      res => {
+        this.parts = res;
+        if (this.parts.length === 0) {
+          this.parts = null;
+        }
+        this.spinner.hide();
+      },
+      err => {
+        this.spinner.hide();
+        console.log(err);
+      }
+    );
   }
 
   onClose() {
-    this.partIds = null;
+    this.parts = null;
   }
 }
