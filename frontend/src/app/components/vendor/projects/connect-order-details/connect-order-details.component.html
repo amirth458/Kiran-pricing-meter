@@ -47,6 +47,17 @@
         <span class="font-weight-normal font-sm"
           >(ProdEX Supplier Requested - {{ projectDetails?.minimumProdexSuppliers }})</span
         >
+
+        <span
+          class="font-sm ml-4 text-center text-orange"
+          *ngIf="
+            projectDetails?.minimumProdexSuppliers &&
+            projectDetails?.prodexSuppliers &&
+            projectDetails?.minimumProdexSuppliers > selectableProdexSuppliers
+          "
+        >
+          No valid ProdEX supplier available. Please check ProdEX supplier has ShopSight 360 Plus subscription
+        </span>
       </h6>
       <div
         *ngIf="firstTimeRelease && this.pageType === 'release-queue' && projectDetails?.minimumProdexSuppliers"
