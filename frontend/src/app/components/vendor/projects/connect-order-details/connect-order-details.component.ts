@@ -342,6 +342,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
         rowHeight: 35,
         headerHeight: 35,
         paginationPageSize: 10,
+        isRowSelectable: rowNode => {
+          return this.hasCorrectSub(rowNode.data.subscriptionType) && this.pageType === 'release-queue';
+        },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
             this.selectedReplacementProdEXVendorIds.push(ev.data.vendorId);
