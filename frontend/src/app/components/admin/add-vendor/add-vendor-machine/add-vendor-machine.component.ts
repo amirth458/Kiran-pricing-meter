@@ -443,6 +443,11 @@ export class AddVendorMachineComponent implements OnInit {
         this.userService.setRegisterMachineInfo(null);
         this.toaster.success('User registered Successfully');
         this.userService.resetRegisterInfo();
+        const s = localStorage.getItem('connect-registration');
+        if (s) {
+          this.route.navigateByUrl(s);
+          return;
+        }
         this.route.navigateByUrl('/user-manage/approve-vendor');
       });
   }

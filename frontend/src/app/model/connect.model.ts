@@ -33,6 +33,15 @@ export class ConnectProject {
     vendorId: number;
     state: string;
   }[];
+  customerInvitedSuppliers: {
+    id: number;
+    name: string;
+    contactName: string;
+    email: string;
+    phoneNo: string;
+    isRegistered: boolean;
+    invitedByUserId: number;
+  }[];
 }
 
 export class ConnectOrder {
