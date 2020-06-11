@@ -52,7 +52,7 @@
           class="font-sm ml-4 text-center text-orange"
           *ngIf="
             projectDetails?.minimumProdexSuppliers &&
-            projectDetails?.prodexSuppliers &&
+            projectDetails?.prodexSuppliers.length &&
             projectDetails?.minimumProdexSuppliers > selectableProdexSuppliers
           "
         >
@@ -76,11 +76,7 @@
 
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
-        *ngIf="
-          projectDetails?.minimumProdexSuppliers &&
-          projectDetails?.prodexSuppliers &&
-          projectDetails?.prodexSuppliers?.length > 0
-        "
+        *ngIf="projectDetails?.minimumProdexSuppliers"
         class="ag-theme-balham h-100 w-100"
         [rowData]="projectDetails?.prodexSuppliers"
         [gridOptions]="supplierGridOptions[0]"
@@ -90,15 +86,12 @@
       <p *ngIf="!projectDetails?.minimumProdexSuppliers" class="font-md text-center text-orange">
         No ProdEX Supplier Requested
       </p>
-      <p
-        class="font-md text-center text-orange"
-        *ngIf="
+      <!-- <p class="font-md text-center text-orange" *ngIf="
           (projectDetails?.minimumProdexSuppliers && !projectDetails?.prodexSuppliers) ||
           projectDetails?.prodexSuppliers?.length == 0
-        "
-      >
+        ">
         No ProdEX supplier found. Please check ProdEX supplier has ShopSight 360 Plus subscription.
-      </p>
+      </p> -->
     </div>
   </div>
 
@@ -110,22 +103,12 @@
 
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
-        *ngIf="projectDetails?.customerSelectedSuppliers && projectDetails?.customerSelectedSuppliers?.length > 0"
         class="ag-theme-balham w-100 h-100"
-        [class.grid-empty]="
-          !projectDetails?.customerSelectedSuppliers || projectDetails?.customerSelectedSuppliers?.length == 0
-        "
         [rowData]="projectDetails?.customerSelectedSuppliers"
         [gridOptions]="supplierGridOptions[1]"
         (gridReady)="onSuppliersGridReady(0, $event)"
       >
       </ag-grid-angular>
-      <p
-        class="font-md text-center text-orange"
-        *ngIf="!projectDetails?.customerSelectedSuppliers || projectDetails?.customerSelectedSuppliers?.length == 0"
-      >
-        No Customer Supplier Selected
-      </p>
     </div>
   </div>
 
@@ -146,22 +129,12 @@
 
     <div class="w-100 h-100 theme-table">
       <ag-grid-angular
-        *ngIf="projectDetails?.customerInvitedSuppliers && projectDetails?.customerInvitedSuppliers?.length > 0"
         class="ag-theme-balham"
-        [class.grid-empty]="
-          !projectDetails?.customerInvitedSuppliers || projectDetails?.customerInvitedSuppliers?.length == 0
-        "
         [rowData]="projectDetails?.customerInvitedSuppliers"
         [gridOptions]="supplierGridOptions[2]"
         (gridReady)="onSuppliersGridReady(0, $event)"
       >
       </ag-grid-angular>
-      <p
-        class="font-md text-center text-theme-green"
-        *ngIf="!projectDetails?.customerInvitedSuppliers || projectDetails?.customerInvitedSuppliers?.length == 0"
-      >
-        Customer Invited No Supplier
-      </p>
     </div>
   </div>
 </div>
