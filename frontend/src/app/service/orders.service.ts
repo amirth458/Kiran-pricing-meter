@@ -10,6 +10,7 @@ import { map, reduce } from 'rxjs/operators';
 
 import { BiddingOrder } from '../model/bidding.order';
 import { BiddingOrderDetail, GetAllCustomerPartView } from '../model/bidding.order.detail';
+import { BidVendorMatchingProfileDetails } from '../model/confirm.sub-order.release';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import {
@@ -567,7 +568,14 @@ export class OrdersService {
 
   getProductionOrderDetails(productionOrderInfo) {
     const url = `${environment.apiBaseUrl}/admin/vendor/production-project/vendor-order-details`;
-
     return this.http.post<any>(url, productionOrderInfo);
+  }
+
+  getMatchedProcessProfiles(
+    bidOrderId: number,
+    vendorIds: Array<number>
+  ): Observable<Array<BidVendorMatchingProfileDetails> | any> {
+    const url = `${environment.apiBaseUrl}/admin/bidding/${bidOrderId}/matching-process-profiles`;
+    return this.http.post<Array<BidVendorMatchingProfileDetails> | any>(url, vendorIds);
   }
 }

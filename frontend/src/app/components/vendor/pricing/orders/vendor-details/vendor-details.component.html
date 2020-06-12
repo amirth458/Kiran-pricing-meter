@@ -144,7 +144,7 @@
     </div>
   </div>
   <div class="row" *ngIf="bidOrderId">
-    <div class="col-12 theme-table bidding-orders">
+    <div class="col-12 theme-table bidding-orders position-relative">
       <ag-grid-angular
         *ngIf="!toggleVendorList"
         class="ag-theme-balham w-100 h-100 pop-over-grid"
@@ -156,15 +156,18 @@
         (gridReady)="onGridReady(4, $event)"
         domLayout="autoHeight"
       ></ag-grid-angular>
-      <ag-grid-angular
-        *ngIf="toggleVendorList"
-        class="ag-theme-balham w-100 h-100 matched-profiles"
-        [class.grid-empty]="(matchedProfiles || []).length === 0"
-        [rowData]="matchedProfiles"
-        [gridOptions]="gridOptions[5]"
-        (gridReady)="onGridReady(5, $event)"
-        domLayout="autoHeight"
-      ></ag-grid-angular>
+      <ng-container *ngIf="toggleVendorList">
+        <ng-container *ngIf="matches$ | async as matchedData; else loading">
+          <ag-grid-angular
+            class="ag-theme-balham w-100 h-100 matched-profiles"
+            [class.grid-empty]="matchedData.length === 0"
+            [rowData]="matchedData.items || []"
+            [gridOptions]="gridOptions[5]"
+            (gridReady)="onGridReady(5, $event)"
+            domLayout="autoHeight"
+          ></ag-grid-angular>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
 </div>
@@ -282,7 +285,6 @@
         <div class="d-flex flex-row pt-1 pb-1 align-items-center">
           <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
-
             <ng-container *ngIf="row?.counterOfferPrice"> ({{ row?.counterOfferPrice | currency: '$' }}) </ng-container>
             <ng-container *ngIf="!row?.counterOfferPrice"> ({{ row?.bidOfferPrice | currency: '$' }}) </ng-container>
           </strong>
@@ -306,7 +308,6 @@
         <div class="d-flex flex-row pt-1 pb-1">
           <strong class="text-coutered">
             {{ row.bidProcessStatus.description | titlecase }}
-
             <ng-container *ngIf="row?.counterOfferPrice"> ({{ row?.counterOfferPrice | currency: '$' }}) </ng-container>
             <ng-container *ngIf="!row?.counterOfferPrice"> ({{ row?.bidOfferPrice | currency: '$' }}) </ng-container>
           </strong>

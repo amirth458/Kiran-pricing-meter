@@ -96,3 +96,17 @@ export class MatchedProfile {
   confidentialityId: number;
   active: boolean;
 }
+
+export interface BidVendorMatchingProfileDetails {
+  vendorId: number;
+  processProfieBidViews: Array<ProcessProfileBidView>;
+  bidProcessStatusType: BidProcessStatusType;
+}
+
+export interface ProcessProfileBidView {
+  processProfileId: number;
+  processProfileName: string;
+  vendorName: string;
+  pricingProfileCount: string;
+  facilityNames: Array<string>;
+}
