@@ -179,9 +179,10 @@ export class ConnectOrderDetailsComponent implements OnInit {
 
           this.projectDetails = {
             ...r,
+            customerInvitedSuppliers: r.customerInvitedSuppliers || [],
             prodexSuppliers: r
               ? this.firstTimeRelease
-                ? r.prodexSuppliers
+                ? r.prodexSuppliers || []
                 : r.prodexSuppliers.filter(supplier => !!supplier.status)
               : [],
             customerSelectedSuppliers: r.customerSelectedSuppliers || []
@@ -367,6 +368,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
         headerHeight: 35,
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
+        localeText: {
+          noRowsToShow: 'No ProdEX supplier found. Please check ProdEX supplier has ShopSight 360 Plus subscription.'
+        },
         domLayout: 'autoHeight',
         isRowSelectable: rowNode => {
           return (
@@ -393,6 +397,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         enableColResize: true,
         rowHeight: 35,
         headerHeight: 35,
+        localeText: { noRowsToShow: 'No Customer Supplier Selected.' },
         domLayout: 'autoHeight'
       },
       {
@@ -404,6 +409,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         rowSelection: 'multiple',
         domLayout: 'autoHeight',
         rowMultiSelectWithClick: true,
+        localeText: { noRowsToShow: 'Customer Invited No Supplier.' },
         isRowSelectable: rowNode => {
           return rowNode.data.isRegistered && this.pageType === 'release-queue';
         },
