@@ -45,11 +45,19 @@
   height: auto;
 }
 
+:host ::ng-deep .pop-over-grid .chat-column .picker-icon {
+  cursor: pointer;
+}
+
 :host ::ng-deep .pop-over-grid .chat-column .dt-control {
+  position: absolute;
+  z-index: 0;
   height: 0;
-  width: 0;
   background: transparent;
   border: none;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 :host ::ng-deep .supplier-table .status-column a.text-green {
