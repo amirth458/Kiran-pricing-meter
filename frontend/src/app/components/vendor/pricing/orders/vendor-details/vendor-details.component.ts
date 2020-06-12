@@ -945,12 +945,10 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   onConfirmBidding() {
-    const processProfileView =
-      (this.selectedBidding.processProfileViews || []).length > 0 ? this.selectedBidding.processProfileViews[0] : null;
-    if (processProfileView) {
+    if (this.selectedBidding && this.selectedBidding.bidProcessId && this.selectedBidding.vendorId) {
       this.spinner.show();
       this.biddingService
-        .confirmBidOrder(this.bidOrderId, this.selectedBidding.bidProcessId, processProfileView.vendorId)
+        .confirmBidOrder(this.bidOrderId, this.selectedBidding.bidProcessId, this.selectedBidding.vendorId)
         .pipe(
           catchError((err: any) => {
             this.toaster.error(err.error.message);
@@ -966,7 +964,7 @@ export class VendorDetailsComponent implements OnInit {
           this.router.navigateByUrl(`/pricing/orders/released-orders/${this.bidOrderId}`);
         });
     } else {
-      this.toaster.error('There is no process profile associated wit this bidding!');
+      this.toaster.error('Invalid bid process!');
     }
   }
 
