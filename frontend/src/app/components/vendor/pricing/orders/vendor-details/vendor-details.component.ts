@@ -49,7 +49,6 @@ export class VendorDetailsComponent implements OnInit {
   @ViewChild('supplierStatusCell') supplierStatusCell: TemplateRef<any>;
 
   @ViewChild('sendMailModal') sendMailModal;
-  @ViewChild('dateTimeSelector') dateTimeSelector;
   @ViewChild('orderStatusTemplate') orderStatusTemplate;
 
   timeToExpire = null;
