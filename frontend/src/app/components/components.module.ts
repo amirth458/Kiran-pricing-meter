@@ -154,6 +154,7 @@ import { ProposalAttachmentComponent } from '../common/proposal-attachment/propo
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
 import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cell-renderer.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -323,11 +324,13 @@ import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cel
     OwlNativeDateTimeModule,
     ChatModule,
     UiSwitchModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    InfiniteScrollModule
   ],
   providers: [DatePipe, CurrencyPipe],
   exports: [
     NgxSpinnerModule,
+    InfiniteScrollModule,
     AgGridModule,
 
     ActionBarComponent,

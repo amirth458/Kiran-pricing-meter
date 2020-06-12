@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { UserService } from '../../service/user.service';
   templateUrl: './notification-widget.component.html',
   styleUrls: ['./notification-widget.component.css']
 })
-export class NotificationWidgetComponent implements OnInit {
+export class NotificationWidgetComponent implements OnInit, OnDestroy {
   unReadCount = { count: 0 };
   interval;
   constructor(
@@ -46,5 +46,8 @@ export class NotificationWidgetComponent implements OnInit {
       // this.toaster.error('Can\'t fetch notification count.');
       clearInterval(this.interval);
     }
+  }
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 }
