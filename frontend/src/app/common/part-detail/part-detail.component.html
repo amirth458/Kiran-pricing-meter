@@ -80,14 +80,14 @@
                 {{ part.volume.value }} {{ getUnit(part.volume.unitId) }}
               </span>
             </p>
-            <p class="mb-2">
+            <p *ngIf="false" class="mb-2">
               Surface Roughness:
               <span class="text-theme-green font-weight-bold">
                 {{ part.surfaceRoughness }}
                 <!-- {{surfaceRoughness.unit}} -->
               </span>
             </p>
-            <p class="mb-2">
+            <p *ngIf="false" class="mb-2">
               <ng-container *ngFor="let item of tolerance; let index = index">
                 <!-- Tolerance: -->
                 <ng-container *ngIf="index % 2 == 0; else toleranceValue">
