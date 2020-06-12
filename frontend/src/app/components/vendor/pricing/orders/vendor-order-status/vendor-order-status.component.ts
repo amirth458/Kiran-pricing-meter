@@ -84,16 +84,13 @@ export class VendorOrderStatusComponent implements OnInit {
   getVendorOrderInfo() {
     this.orderService.getVendorOrderInfo(this.id).subscribe(v => {
       this.orders = v ? [v] : [];
-      if (v.vendorSubOrders && this.activeSubOrderId == null) {
-        this.activeSubOrderId = v.vendorSubOrders[0].id;
-      }
+      this.orderChange.emit(v ? v.id : null);
       (v.vendorSubOrders || []).map((part, index) => {
         const arr = [];
         (part.jobs || []).map(job => arr.push({ ...job, ...{ partId: part.id, orderId: v.id } }));
         this.jobs = this.jobs.concat(arr);
       });
-
-      if (v.vendorSubOrders && this.activeSubOrderId == null) {
+      if (v.vendorSubOrders && this.activeSubOrderId === null) {
         this.activeSubOrderId = v.vendorSubOrders[0].id;
         this.updateActiveTabJobs();
       }
@@ -117,7 +114,7 @@ export class VendorOrderStatusComponent implements OnInit {
   }
 
   get partList() {
-    return (this.orders || []).length ? this.orders[0].vendorSubOrders : [];
+    return (this.orders || []).length > 0 ? this.orders[0].vendorSubOrders : [];
   }
 
   updateActiveTabJobs() {

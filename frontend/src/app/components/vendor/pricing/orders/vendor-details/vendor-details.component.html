@@ -285,7 +285,6 @@
         <div class="d-flex flex-row pt-1 pb-1 align-items-center">
           <strong class="text-theme">
             {{ row.bidProcessStatus.description | titlecase }}
-
             <ng-container *ngIf="row?.counterOfferPrice"> ({{ row?.counterOfferPrice | currency: '$' }}) </ng-container>
             <ng-container *ngIf="!row?.counterOfferPrice"> ({{ row?.bidOfferPrice | currency: '$' }}) </ng-container>
           </strong>
@@ -309,7 +308,6 @@
         <div class="d-flex flex-row pt-1 pb-1">
           <strong class="text-coutered">
             {{ row.bidProcessStatus.description | titlecase }}
-
             <ng-container *ngIf="row?.counterOfferPrice"> ({{ row?.counterOfferPrice | currency: '$' }}) </ng-container>
             <ng-container *ngIf="!row?.counterOfferPrice"> ({{ row?.bidOfferPrice | currency: '$' }}) </ng-container>
           </strong>

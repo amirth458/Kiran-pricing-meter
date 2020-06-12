@@ -362,9 +362,14 @@ export class VendorDetailsComponent implements OnInit {
           (match.processProfieBidViews || []).map(view => {
             let counterValue = '';
             let status = match.bidProcessStatusType || {};
+            let itemInfo: any = null;
             if (!(vendors.indexOf(view.vendorName) > -1)) {
               vendors.push(view.vendorName);
               counterValue = (++count).toString();
+              if (this.type === 'released') {
+                const prices = this.bidding.filter((bidding: any) => bidding.vendorId === match.vendorId);
+                itemInfo = prices.length > 0 ? prices[0] : null;
+              }
             } else {
               status = null;
             }
@@ -376,7 +381,10 @@ export class VendorDetailsComponent implements OnInit {
               processProfileName: view.processProfileName,
               facilityName: (view.facilityNames || []).join(','),
               pricingProfile: view.pricingProfileCount || 0,
-              bidProcessStatus: status
+              bidProcessStatus: status,
+              counterOfferPrice: itemInfo ? itemInfo.counterOfferPrice : null,
+              bidOfferPrice: itemInfo ? itemInfo.bidOfferPrice : null,
+              bidProcessId: itemInfo ? itemInfo.bidProcessId : null
             });
           });
         });
