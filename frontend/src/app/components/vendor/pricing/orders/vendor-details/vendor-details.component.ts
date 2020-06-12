@@ -986,7 +986,6 @@ export class VendorDetailsComponent implements OnInit {
   openDateTimeSelector(row) {
     this.schdulingForUserId = row.userId;
     this.schdulingForVendorOrderId = row.vendorOrderId;
-    this.dateTimeSelector.nativeElement.click();
   }
 
   onTimeChanged(event) {

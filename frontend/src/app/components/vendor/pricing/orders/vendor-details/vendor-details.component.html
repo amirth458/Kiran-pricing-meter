@@ -424,10 +424,25 @@
 
     <!-- Zoom Communication -->
     <ng-container *ngIf="(type == 'released' && row?.vendorOrderId) || type == 'confirmation'">
-      <span class="text-green text-btn p-2" (click)="openDateTimeSelector(row)">
+      <label class="text-green text-btn p-2 picker-icon" (click)="openDateTimeSelector(row)">
         <i class="far fa-calendar-alt"></i>
-      </span>
-      <div class="d-flex meeting-time text-center d-flex align-items-center" (click)="openDateTimeSelector(row)">
+        <input
+          *ngIf="meetingInfo[row.userId]"
+          class="dt-control m-0 p-0"
+          readonly
+          #dateTimeSelector2
+          [owlDateTime]="dt2"
+          [owlDateTimeTrigger]="dt2"
+          [(ngModel)]="meetingInfo[row.userId].startTime"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="onTimeChanged($event)"
+        />
+        <owl-date-time #dt2></owl-date-time>
+      </label>
+      <div
+        class="d-flex meeting-time position-relative text-center d-flex align-items-center"
+        (click)="openDateTimeSelector(row)"
+      >
         <span class="d-flex flex-column justify-content-center align-items-center m-0">
           <span class="m-0 text-center ">
             Meeting Time
@@ -455,7 +470,6 @@
           <input
             *ngIf="meetingInfo[row.userId]"
             class="dt-control m-0 p-0"
-            style="pointer-events: none;"
             readonly
             #dateTimeSelector
             [owlDateTime]="dt1"
