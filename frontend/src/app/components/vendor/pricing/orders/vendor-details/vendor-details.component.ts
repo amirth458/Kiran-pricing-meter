@@ -967,13 +967,11 @@ export class VendorDetailsComponent implements OnInit {
     }
   }
 
-  sendMail(ev = null) {
+  sendMail(row: any) {
     this.from = DefaultEmails.from;
     this.to = DefaultEmails.to;
     this.cc = [];
-    this.bcc = ev
-      ? [ev.processProfileViews[0].vendorEmailAddress]
-      : this.gridOptions[4].api.getSelectedRows().map(item => item.processProfileViews[0].vendorEmailAddress);
+    this.bcc = row.userEmail ? [row.userEmail] : null;
     this.modalService.open(this.sendMailModal, {
       centered: true,
       size: 'lg'
