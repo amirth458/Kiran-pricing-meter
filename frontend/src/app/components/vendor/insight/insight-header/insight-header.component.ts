@@ -119,4 +119,12 @@ export class InsightHeaderComponent implements OnInit {
     this.uploadToZoho.emit();
     this.modal.dismissAll();
   }
+
+  toggleAllColumns(check) {
+    this.columnsClone = this.columnsClone.map(item => ({ ...item, hide: check }));
+  }
+
+  get activeAllColumns() {
+    return this.columnsClone.find(item => item.hide === true);
+  }
 }
