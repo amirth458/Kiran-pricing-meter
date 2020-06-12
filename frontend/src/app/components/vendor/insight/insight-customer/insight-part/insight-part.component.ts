@@ -182,7 +182,7 @@ export class InsightPartComponent implements OnInit {
     this.spinner.show();
     this.partService.getPartsByRfqId(ev.data.rfq_id).subscribe(
       res => {
-        this.parts = res;
+        this.parts = res.filter(part => part.id == ev.data.part_id);
         if (this.parts.length === 0) {
           this.parts = null;
         }
