@@ -1,6 +1,7 @@
 import { Part } from './part.model';
 import { BidOrderStatusType } from './confirm.sub-order.release';
 import { PaymentStatusType } from './billing.model';
+import { Contract } from './subscription.model';
 
 export enum BidProcessStatusEnum {
   AWAITING_VENDOR_RESPONSE = 'AWAITING VENDOR RESPONSE',
@@ -24,7 +25,7 @@ export class ConnectProject {
     status: string;
     vendorId: number;
     state: string;
-    subscriptionType: string;
+    contract: Contract;
   }[];
   customerSelectedSuppliers: {
     vendor: string;
@@ -33,7 +34,7 @@ export class ConnectProject {
     status: string;
     vendorId: number;
     state: string;
-    subscriptionType: string;
+    contract: Contract;
   }[];
   customerInvitedSuppliers: {
     id: number;
