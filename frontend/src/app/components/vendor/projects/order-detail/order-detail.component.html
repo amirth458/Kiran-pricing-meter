@@ -148,7 +148,7 @@
 </ng-template>
 
 <ng-template #statusCell let-row>
-  <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+  <div class="d-flex flex-row align-items-center w-100 h-100">
     <ng-container [ngSwitch]="row.status.id">
       <div *ngSwitchCase="1">RECEIVED</div>
       <div *ngSwitchCase="2">ACCEPTED</div>
