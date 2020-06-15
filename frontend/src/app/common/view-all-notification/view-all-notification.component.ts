@@ -31,7 +31,7 @@ export class ViewAllNotificationComponent implements OnInit {
 
   @Input() tooltip = false;
   @Input() unReadCount: { count: number };
-  notifications: Notification[] = null;
+  notifications: Notification[] = [];
   @Output() unReadCountChanged = new EventEmitter<{ count: number }>();
   selectedNotification = {};
   nameMapping = {
@@ -69,6 +69,15 @@ export class ViewAllNotificationComponent implements OnInit {
     // linkText: 'Link Text',
   };
 
+  totalPage = 0;
+  currentPage = 0;
+
+  filter: FilterOption;
+  throttle = 80;
+  scrollDistance = 1;
+  direction = '';
+
+  loading = false;
   constructor(
     public notificationService: NotificationService,
     public toaster: ToastrService,
@@ -77,8 +86,14 @@ export class ViewAllNotificationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.filter = {
+      page: 0,
+      size: this.tooltip ? 20 : 100,
+      sort: 'id,desc'
+    };
     this.spinner.show('spooler');
     this.getNotifications();
+    this.getCount();
   }
 
   setNotificationData(notification: Notification, index: number) {
@@ -93,26 +108,34 @@ export class ViewAllNotificationComponent implements OnInit {
     }
   }
 
-  getNotifications() {
-    const filter: FilterOption = {
-      page: 0,
-      size: this.tooltip ? 10 : 500,
-      sort: 'id,desc'
-    };
-    this.notificationService.getNotification(null, filter).subscribe(
-      res => {
-        this.notifications = res
-          ? res.content.map(i => {
-              return { ...i, createdDate: i.createdDate ? new Date(i.createdDate + 'Z') : '' } as any;
-            })
-          : [];
-      },
-      err => {
-        console.log(err);
-        this.toaster.error('Error While Fetching Notifications.');
-      }
-    );
-    this.getCount();
+  async onScrollDown(ev) {
+    if (this.currentPage < this.totalPage && !this.loading) {
+      this.filter.page = this.filter.page + 1;
+      await this.getNotifications();
+    }
+  }
+
+  async getNotifications() {
+    this.loading = true;
+    const res: any = await this.notificationService
+      .getNotification(null, this.filter)
+      .toPromise()
+      .catch(() => this.toaster.error('Error While Fetching Notifications.'));
+
+    if (res) {
+      this.notifications = this.notifications.concat(
+        (res.content || []).map(i => {
+          return { ...i, createdDate: i.createdDate ? new Date(i.createdDate + 'Z') : '' } as any;
+        })
+      );
+      this.totalPage = res.totalPages;
+      this.currentPage = res.number;
+    } else {
+      this.currentPage = 0;
+      this.totalPage = 0;
+    }
+
+    this.loading = false;
   }
 
   async getCount() {
@@ -134,6 +157,7 @@ export class ViewAllNotificationComponent implements OnInit {
         } else {
           ++this.unReadCount.count;
         }
+        this.unReadCountChanged.emit(this.unReadCount);
       },
       err => {
         console.log({ err });
@@ -142,11 +166,15 @@ export class ViewAllNotificationComponent implements OnInit {
     );
   }
 
-  deleteNotification(notificationId: number, index: number) {
+  deleteNotification(notificationId: number, isRead: boolean, index: number) {
     this.notificationService.deleteNotification(notificationId).subscribe(
       res => {
         this.notifications.splice(index, 1);
         this.toaster.success('Notification Removed.');
+        if (!isRead) {
+          --this.unReadCount.count;
+          this.unReadCountChanged.emit(this.unReadCount);
+        }
       },
       err => {
         console.log({ err });
@@ -158,7 +186,7 @@ export class ViewAllNotificationComponent implements OnInit {
   markAll() {
     this.notificationService.setAllNotificationMarked((this.unReadCount && this.unReadCount.count) > 0).subscribe(
       res => {
-        this.notifications = null;
+        this.notifications = [];
         this.getNotifications();
         this.toaster.success(this.unReadCount && this.unReadCount.count > 0 ? 'Marked All Read' : 'Marked All Unread');
       },

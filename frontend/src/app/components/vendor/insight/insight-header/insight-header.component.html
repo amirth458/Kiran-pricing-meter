@@ -63,18 +63,37 @@
 
     <div class="modal-body">
       <div class="row search">
-        <div class="shadow mt-3 mx-4 p-3 text-theme options w-100">
-          <div *ngFor="let option of columnsClone" class="d-flex align-items-center">
-            <span class="icon text-theme-green" *ngIf="!option.hide" (click)="setColumnVisibility(option)">
+        <div class="shadow mt-3 mx-4 p-3 text-theme w-100">
+          <div class="d-flex align-items-center">
+            <span class="icon text-theme-green" *ngIf="!activeAllColumns" (click)="toggleAllColumns(true)">
               <i class="fas fa-check-square"></i>
             </span>
 
-            <span class="icon text-theme-green" *ngIf="option.hide" (click)="setColumnVisibility(option)">
+            <span class="icon text-theme-green" *ngIf="activeAllColumns" (click)="toggleAllColumns(false)">
               <i class="far fa-square"></i>
             </span>
 
-            <div (click)="setColumnVisibility(option)" class="option-item active" [ngClass]="{ active: !option.hide }">
-              <p class="m-2">{{ option.name }}</p>
+            <div (click)="toggleAllColumns()" class="option-item active" [ngClass]="{ active: !activeAllColumns }">
+              <p class="m-2 font-weight-bold">Show All</p>
+            </div>
+          </div>
+          <div class="options w-100">
+            <div *ngFor="let option of columnsClone" class="d-flex align-items-center">
+              <span class="icon text-theme-green" *ngIf="!option.hide" (click)="setColumnVisibility(option)">
+                <i class="fas fa-check-square"></i>
+              </span>
+
+              <span class="icon text-theme-green" *ngIf="option.hide" (click)="setColumnVisibility(option)">
+                <i class="far fa-square"></i>
+              </span>
+
+              <div
+                (click)="setColumnVisibility(option)"
+                class="option-item active"
+                [ngClass]="{ active: !option.hide }"
+              >
+                <p class="m-2">{{ option.name }}</p>
+              </div>
             </div>
           </div>
         </div>

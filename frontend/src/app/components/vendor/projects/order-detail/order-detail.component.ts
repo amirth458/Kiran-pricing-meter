@@ -14,7 +14,7 @@ import { Util } from 'src/app/util/Util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
-import { SubscriptionTypeEnum } from 'src/app/model/subscription.model';
+import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 
 @Component({
   selector: 'app-order-detail',
@@ -135,7 +135,10 @@ export class OrderDetailComponent implements OnInit {
               }
             );
             // Count SHOPSIGHT 360 PLUS SUBSCRIBERS
-            this.maxSelectableVendors = this.shortListedSuppliers.filter(i => i.subscriptionId === 4).length;
+            this.maxSelectableVendors = (this.shortListedSuppliers || []).length;
+            // this.maxSelectableVendors = this.shortListedSuppliers.filter(
+            //   i => i.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS
+            // ).length;
             this.supplierGridOptions[0].api.hideOverlay();
 
             if (this.type !== 'project-release-queue') {
@@ -243,8 +246,11 @@ export class OrderDetailComponent implements OnInit {
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
         isRowSelectable: rowNode => {
+          return true;
           // Only allow SHOPSIGHT 360 PLUS SUBSCRIBERS
-          return rowNode.data && rowNode.data.subscriptionId ? rowNode.data.subscriptionId === 4 : false;
+          return rowNode.data && rowNode.data.subscriptionId
+            ? rowNode.data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS
+            : false;
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -311,7 +317,7 @@ export class OrderDetailComponent implements OnInit {
         {
           headerName: 'No',
           valueGetter: 'node.rowIndex + 1',
-          checkboxSelection: v => v.data.subscription === SubscriptionTypeEnum.SHOPSIGHT_360_PLUS,
+          // checkboxSelection: v => v.data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS,
           width: 30
         },
         {
@@ -353,10 +359,11 @@ export class OrderDetailComponent implements OnInit {
         rowMultiSelectWithClick: true,
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
-            if (ev.data.subscription !== SubscriptionTypeEnum.SHOPSIGHT_360_PLUS) {
-              this.toastr.warning(`This vendor doesn’t have 360 PLUS.`);
-              ev.node.setSelected(false);
-            } else if (ev.api.getSelectedRows().length > this.selectableCount) {
+            // if (ev.data.subscriptionId !== SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
+            //   this.toastr.warning(`This vendor doesn’t have 360 PLUS.`);
+            //   ev.node.setSelected(false);
+            // } else
+            if (ev.api.getSelectedRows().length > this.selectableCount) {
               this.toastr.warning(`You can select up to ${this.selectableCount} suppliers.`);
               ev.node.setSelected(false);
             } else {
@@ -417,17 +424,17 @@ export class OrderDetailComponent implements OnInit {
   removeFromList(data) {
     this.removedSuppliers = [...this.removedSuppliers, data];
     this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.id !== data.id);
-    if (data.subscriptionId === 4) {
-      --this.maxSelectableVendors;
-    }
+    // if (data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
+    --this.maxSelectableVendors;
+    // }
   }
 
   moveToList(data) {
     this.shortListedSuppliers = [...this.shortListedSuppliers, data];
     this.removedSuppliers = this.removedSuppliers.filter(item => item.id !== data.id);
-    if (data.subscriptionId === 4) {
-      ++this.maxSelectableVendors;
-    }
+    // if (data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
+    ++this.maxSelectableVendors;
+    // }
   }
 
   showVendorProfiles(ev, data) {

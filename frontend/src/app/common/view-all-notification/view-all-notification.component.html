@@ -17,7 +17,14 @@
           {{ this.unReadCount?.count > 0 ? 'Mark All Read' : 'Mark All Unread' }}
         </span>
       </div>
-      <div class="my-2 content">
+      <div
+        [scrollWindow]="false"
+        infinite-scroll
+        [infiniteScrollThrottle]="throttle"
+        [infiniteScrollDistance]="scrollDistance"
+        (scrolled)="onScrollDown($event)"
+        class="my-2 content"
+      >
         <ng-container *ngIf="notifications && notifications.length > 0; else noNotification">
           <div *ngFor="let notification of notifications; let index = index" class="notification-item">
             <p
@@ -44,7 +51,7 @@
                     <i class="far fa-circle"></i>
                   </span>
                 </span>
-                <span (click)="deleteNotification(notification.id, index)" class="ml-1 delete">
+                <span (click)="deleteNotification(notification.id, notification.isRead, index)" class="ml-1 delete">
                   <i class="fas fa-times"></i>
                 </span>
               </span>
@@ -57,12 +64,12 @@
 </div>
 
 <ng-template #noNotification>
-  <div *ngIf="notifications !== null" class="d-flex h-100 w-100 align-items-center">
+  <div *ngIf="notifications.length === 0 && !loading" class="d-flex h-100 w-100 align-items-center">
     <h5 class=" text-theme-green w-100" [ngClass]="[tooltip ? 'text-center' : 'text-left']">No Notification</h5>
   </div>
 
   <div
-    *ngIf="notifications === null"
+    *ngIf="loading"
     class=" d-flex position-relative  justify-content-center align-items-center w-100"
     style="height:150px"
   >

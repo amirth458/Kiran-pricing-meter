@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrModule } from 'ngx-toastr';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -58,7 +59,8 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
     }),
     ComponentsModule,
     RecaptchaModule.forRoot(),
-    RecaptchaFormsModule
+    RecaptchaFormsModule,
+    InfiniteScrollModule
   ],
   declarations: [AppComponent, LoginComponent, FooterMenuComponent],
   providers: [

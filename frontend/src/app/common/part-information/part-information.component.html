@@ -53,7 +53,7 @@
             <b>Surface area - </b>
             {{ getDimensionValue(part?.rfqMedia.media.partDimension.surfaceArea) }}
           </p>
-          <p
+          <!-- <p
             class="text-truncate"
             *ngFor="let customerParameter of getToleranceList(); index as i"
             placement="auto"
@@ -61,7 +61,7 @@
           >
             <b>Critical Tolerance {{ i + 1 }}: </b>
             {{ showCustomParameter(customerParameter) }}
-          </p>
+          </p> -->
         </div>
       </div>
 
@@ -115,18 +115,18 @@
               <th scope="row">Process/Equipment</th>
               <td>{{ part?.equipmentPropertyValues?.join(' , ') }}</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <th scope="row">Tolerance</th>
               <td>{{ getTolerance() }}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
               <th scope="row">Surface Roughness(Ra)</th>
               <td>{{ getSurfaceRoughness() }}</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
               <th scope="row">Post-Process</th>
               <td>{{ getPostProcesses() }}</td>
-            </tr>
+            </tr> -->
             <tr>
               <th scope="row">Required Shipment</th>
               <td>{{ part?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}</td>
