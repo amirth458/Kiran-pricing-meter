@@ -175,7 +175,7 @@ export class ProjectsListComponent implements OnInit {
       {
         headerName: 'Status',
         field: 'bidOrderStatus',
-        hide: false,
+        hide: !(this.type === 'vendor-confirmation-queue' || this.type === 'released-projects'),
         sortable: true,
         filter: false,
         tooltipField: 'bidOrderStatus'
