@@ -63,4 +63,5 @@ export class ConnectOrder {
   requestProdexDirectBid: boolean;
   subContractorsAllowed: boolean;
   vendorOrderId: null;
+  bidOrderStatus: string;
 }

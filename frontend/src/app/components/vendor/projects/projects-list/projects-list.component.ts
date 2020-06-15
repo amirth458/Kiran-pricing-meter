@@ -107,7 +107,8 @@ export class ProjectsListComponent implements OnInit {
                   orderId: item.id,
                   sameVendor: item.isReleaseToSingleSupplier ? 'True' : 'False',
                   customerName: item.customerName,
-                  preferredVendors: item.minimumProdexSuppliers
+                  preferredVendors: item.minimumProdexSuppliers,
+                  bidOrderStatus: item.bidOrderStatus || ''
                 }))
               : data.content.map((item: Part) => ({
                   id: item.id,
@@ -118,7 +119,8 @@ export class ProjectsListComponent implements OnInit {
                     item.rfqMedia.projectRfq.projectType &&
                     item.rfqMedia.projectRfq.projectType.name,
                   sameVendor: item.order && item.order.isReleaseToSingleSupplier ? 'True' : 'False',
-                  customerName: item.order && item.order.customerName
+                  customerName: item.order && item.order.customerName,
+                  bidOrderStatus: item.bidOrderStatus || ''
                 }));
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
           params.successCallback(rowsThisPage, lastRow);
@@ -169,6 +171,14 @@ export class ProjectsListComponent implements OnInit {
         sortable: true,
         filter: false,
         tooltipField: 'projectType'
+      },
+      {
+        headerName: 'Status',
+        field: 'bidOrderStatus',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'bidOrderStatus'
       },
       {
         headerName: 'Same Vendor',
