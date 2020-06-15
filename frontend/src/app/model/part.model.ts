@@ -184,6 +184,7 @@ export interface Part {
   partCustomParameterList: PartCustomParameter[];
   isNoBid: boolean;
   partQuoteList: Array<any>;
+  bidOrderStatus: string;
 
   rfqMediaId?: number;
   subContractorsAllowed?: boolean;
