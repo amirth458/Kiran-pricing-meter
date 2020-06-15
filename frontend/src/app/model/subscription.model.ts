@@ -25,6 +25,12 @@ export interface Addon {
   productType: ProductType;
 }
 
+export class Contract {
+  id: number;
+  addOnsIds: number[];
+  SubscriptionType: SubscriptionType;
+}
+
 export enum SubscriptionTypeEnum {
   SHOPSIGHT_FREE = 'SHOPSIGHT_FREE',
   SHOPSIGHT_PRE_PRODUCTION = 'SHOPSIGHT_PRE_PRODUCTION',
