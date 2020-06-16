@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PartService } from 'src/app/service/part.service';
+
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+import { PartService } from 'src/app/service/part.service';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-insight-rfq',
@@ -160,9 +163,15 @@ export class InsightRfqComponent implements OnInit {
         }
         this.spinner.hide();
       },
-      err => {
+      (err: any) => {
         this.spinner.hide();
-        console.log(err);
+        let message = 'Unable to read RFQ';
+        const isJson: any = Util.hasJson(err.error.message);
+        if (isJson) {
+          const errObj: any = JSON.parse(err.error.message);
+          message = errObj.message || message;
+        }
+        this.toastr.error(message);
       }
     );
   }
