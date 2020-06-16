@@ -1,4 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-bar',
@@ -6,20 +9,28 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnInit {
-  searchValue = '';
+  filter: FormControl;
 
   @Output() searchChange = new EventEmitter();
   @Input()
   get search() {
-    return this.searchValue;
+    return this.filter.value;
+  }
+  set search(value) {
+    this.filter.setValue(value);
   }
 
-  set search(val) {
-    this.searchValue = val;
-    this.searchChange.emit(this.searchValue);
+  constructor() {
+    this.filter = new FormControl(null);
   }
 
-  constructor() {}
-
-  ngOnInit() {}
+  ngOnInit() {
+    this.filter.valueChanges
+      .pipe(
+        filter(value => value !== null),
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+      .subscribe(value => this.searchChange.emit(value));
+  }
 }
