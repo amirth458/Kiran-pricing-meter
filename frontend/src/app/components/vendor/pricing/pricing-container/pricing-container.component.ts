@@ -27,7 +27,7 @@ export class PricingContainerComponent implements OnInit {
         route: this.baseURL + '/orders'
       },
       {
-        name: 'ProdEX Production Order',
+        name: 'ProdEX PM Order',
         route: this.baseURL + '/production-orders'
       },
       {
