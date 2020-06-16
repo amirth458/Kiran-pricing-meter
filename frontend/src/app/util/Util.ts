@@ -126,4 +126,17 @@ export class Util {
     dayjs.extend(utc);
     return value ? dayjs.utc(value).format('MM/DD/YYYY HH:mm:ss') : '';
   }
+
+  static hasJson(value: any) {
+    if (typeof value !== 'string') {
+      return false;
+    }
+    try {
+      const result = JSON.parse(value);
+      const type = Object.prototype.toString.call(result);
+      return type === '[object Object]' || type === '[object Array]';
+    } catch (err) {
+      return false;
+    }
+  }
 }
