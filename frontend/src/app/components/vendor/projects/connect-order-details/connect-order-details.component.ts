@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { DefaultEmails } from '../../../../../assets/constants';
-import { SubscriptionTypeEnum } from '../../../../model/subscription.model';
+import { SubscriptionTypeEnum, SubscriptionTypeIdEnum } from '../../../../model/subscription.model';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -96,9 +96,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   get selectableProdexSuppliers() {
-    return (this.projectDetails.prodexSuppliers || []).filter(
-      supplier => supplier.subscriptionType === SubscriptionTypeEnum.SHOPSIGHT_360_PLUS
-    ).length;
+    return (this.projectDetails.prodexSuppliers || []).filter(supplier => this.hasCorrectSub(supplier.contract)).length;
   }
 
   get vendorProfiles() {
@@ -344,7 +342,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         headerHeight: 35,
         paginationPageSize: 10,
         isRowSelectable: rowNode => {
-          return this.hasCorrectSub(rowNode.data.subscriptionType) && this.pageType === 'release-queue';
+          return this.hasCorrectSub(rowNode.data.contract) && this.pageType === 'release-queue';
         },
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
@@ -375,7 +373,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
         isRowSelectable: rowNode => {
           return (
             !rowNode.data.status &&
-            this.hasCorrectSub(rowNode.data.subscriptionType) &&
+            this.hasCorrectSub(rowNode.data.contract) &&
             this.firstTimeRelease &&
             this.pageType === 'release-queue'
           );
@@ -427,8 +425,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
     ];
   }
 
-  hasCorrectSub(subscriptionType) {
-    return subscriptionType == SubscriptionTypeEnum.SHOPSIGHT_360_PLUS;
+  hasCorrectSub(contract) {
+    return (
+      contract &&
+      contract.subscriptionType &&
+      contract.subscriptionType.id === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS
+    );
   }
 
   initColumnDefs() {
@@ -480,11 +482,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
       },
       {
         headerName: 'Subscription',
-        field: 'subscriptionType',
-        tooltipField: 'subscriptionType',
+        field: 'contract.subscriptionType.name',
+        tooltipField: 'contract.subscriptionType.name',
         hide: false,
         sortable: false,
-        filter: false
+        filter: false,
+        valueFormatter: v => (v.value ? v.value.toString().replace(/_/g, ' ') : '')
       }
     ];
 
@@ -528,11 +531,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'Subscription',
-          field: 'subscriptionType',
-          tooltipField: 'subscriptionType',
+          field: 'contract.subscriptionType.name',
+          tooltipField: 'contract.subscriptionType.name',
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          valueFormatter: v => (v.value ? v.value.toString().replace(/_/g, ' ') : '')
         },
         {
           headerName: 'City',
@@ -600,11 +604,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: 'Subscription',
-          field: 'subscriptionType',
-          tooltipField: 'subscriptionType',
+          field: 'contract.subscriptionType.name',
+          tooltipField: 'contract.subscriptionType.name',
           hide: false,
           sortable: false,
-          filter: false
+          filter: false,
+          valueFormatter: v => (v.value ? v.value.toString().replace(/_/g, ' ') : '')
         },
         {
           headerName: 'City',

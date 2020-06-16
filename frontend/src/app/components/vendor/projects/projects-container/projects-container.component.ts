@@ -26,7 +26,7 @@ export class ProjectsContainerComponent implements OnInit {
   ngOnInit() {
     this.subMenus = [
       {
-        name: 'ProdEX Production',
+        name: 'ProdEX PM',
         route: this.baseURL + '/projects'
       },
       {
