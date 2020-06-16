@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { DefaultEmails } from '../../../../../assets/constants';
-import { SubscriptionTypeIdEnum } from '../../../../model/subscription.model';
+import { SubscriptionTypeEnum, SubscriptionTypeIdEnum } from '../../../../model/subscription.model';
 
 @Component({
   selector: 'app-connect-order-details',
