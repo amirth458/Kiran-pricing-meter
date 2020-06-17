@@ -22,7 +22,7 @@ ul li {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   padding-left: 10px;
   margin-right: 20px;
@@ -38,7 +38,11 @@ ul li:first-child {
 }
 
 .name {
-  margin-right: 10px;
+  margin-right: 3px;
+}
+
+.name .subtitle {
+  font-size: 13px;
 }
 
 ul li .name.active,
@@ -146,9 +150,18 @@ ul li .name:hover {
   }
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1450px) {
   .orders.name {
     font-size: 16px;
+  }
+
+  .wrapper {
+    padding: 0px 20px;
+  }
+
+  ul li {
+    font-size: 18px;
+    padding-left: 6px;
   }
 }
 

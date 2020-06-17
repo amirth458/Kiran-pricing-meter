@@ -14,9 +14,15 @@ export class InsightHeaderComponent implements OnInit {
   @ViewChild('filterColumns') filterColumns;
   @ViewChild('exportModal') exportModal;
 
+  @Input() placeholder = '';
   @Input() type;
   @Input() columns;
   @Input() gridOptions: GridOptions;
+
+  @Input() extraActions = true;
+  @Input() quickSearch = true;
+  @Input() dateFilter = true;
+
   @Output() filterColumnsChange = new EventEmitter();
   @Output() queryChange = new EventEmitter();
   @Output() createdDateChange = new EventEmitter();

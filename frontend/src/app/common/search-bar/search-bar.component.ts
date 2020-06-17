@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 export class SearchBarComponent implements OnInit {
   filter: FormControl;
 
+  @Input() placeholder = '';
   @Output() searchChange = new EventEmitter();
   @Input()
   get search() {

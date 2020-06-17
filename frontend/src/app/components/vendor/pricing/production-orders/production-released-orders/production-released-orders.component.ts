@@ -138,7 +138,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
-  pageType = 'production-orders';
+  pageType = 'prodex';
 
   constructor(
     public router: Router,
@@ -149,12 +149,10 @@ export class ProductionReleasedOrdersComponent implements OnInit {
     public currencyPipe: CurrencyPipe,
     public route: ActivatedRoute
   ) {
-    this.route.parent.params.subscribe(r => {
-      if (r.projectType) {
-        this.pageType = r.projectType;
-        this.searchColumnsChange();
-      }
-    });
+    if (this.router.url.startsWith('/prodex/connect')) {
+      this.pageType = 'connect';
+      this.searchColumnsChange();
+    }
   }
 
   ngOnInit() {
@@ -286,9 +284,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
             q: '',
             filterColumnsRequests: this.filterColumnsRequest
           },
-          this.pageType === 'production-orders'
-            ? VendorOrderTypeEnum.DILIGENT_PRODUCTION
-            : VendorOrderTypeEnum.DILIGENT_CONNECT
+          this.pageType === 'prodex' ? VendorOrderTypeEnum.DILIGENT_PRODUCTION : VendorOrderTypeEnum.DILIGENT_CONNECT
         );
 
         ob.subscribe(data => {

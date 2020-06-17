@@ -11,6 +11,9 @@ import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/fil
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { PartService } from 'src/app/service/part.service';
+import { ProjectService } from 'src/app/service/project.service';
+import { AppPartTypeId } from 'src/app/model/part.model';
+import { ProjectTypeEnum } from 'src/app/model/order.model';
 
 @Component({
   selector: 'app-other-status',
@@ -18,19 +21,46 @@ import { PartService } from 'src/app/service/part.service';
   styleUrls: ['./other-status.component.css']
 })
 export class OtherStatusComponent implements OnInit, OnDestroy {
-  autoQuotedIds = [];
   columnDefs = [];
   gridOptions: GridOptions;
   rowData: any[] = [];
   navigation;
-  pageSize = 20;
+  pageSize = 10;
 
   totalCount = 0;
   totalRows = 0;
   destroy$ = new Subject();
 
-  filterOptions = {};
-
+  partType = AppPartTypeId.RFQ_PART;
+  projectType = ProjectTypeEnum.RFQ_PROJECT;
+  filterOptions = {
+    partStatusTypeId: null,
+    rfqId: null,
+    partId: null,
+    customerName: null,
+    partTypeId: null,
+    manualPricingAllowed: null,
+    projectTypeId: null,
+    searchValue: null,
+    beginDate: null,
+    endDate: null
+  };
+  partStatusList = [
+    { id: 1, name: 'READY FOR QUOTING' },
+    { id: 2, name: 'AUTO QUOTED' },
+    { id: 5, name: 'AWAITING QUOTE' },
+    { id: 3, name: 'MANUAL QUOTE' },
+    { id: 4, name: 'QUOTE EXPIRED' },
+    { id: 14, name: 'NO QUOTE' },
+    { id: 13, name: 'PAYMENT PENDING' },
+    { id: 6, name: 'PLACING ORDER' },
+    { id: 7, name: 'PRE PRODUCTION' },
+    { id: 8, name: 'PRODUCTION' },
+    { id: 9, name: 'POST PRODUCTION' },
+    { id: 10, name: 'SHIPPED' },
+    { id: 11, name: 'DELIVERED' },
+    { id: 12, name: 'PART COMPLETE' }
+  ];
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
@@ -42,10 +72,42 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     public customerService: CustomerService,
     public currencyPipe: CurrencyPipe,
     public toast: ToastrService,
-    public partService: PartService
+    public partService: PartService,
+    public projectService: ProjectService
   ) {}
 
   ngOnInit() {
+    if (this.router.url.startsWith('/prodex/projects')) {
+      this.partType = AppPartTypeId.PRODUCTION_PART;
+      this.projectType = ProjectTypeEnum.PRODUCTION_PROJECT;
+      this.partStatusList = [
+        { id: 1, name: 'READY FOR QUOTING' },
+        { id: 16, name: 'MATCHED SUPPLIER' },
+        { id: 17, name: 'NO MATCHED SUPPLIER' },
+        { id: 13, name: 'PAYMENT PENDING' },
+        { id: 18, name: 'PART AWAITING RELEASE' },
+        { id: 15, name: 'PART AWAITING VENDORS' },
+        { id: 19, name: 'VENDOR CONFIRMED' },
+        { id: 20, name: 'QUOTE ACCEPTED' },
+        { id: 21, name: 'VENDOR MANUAL QUOTED' }
+      ];
+    } else if (this.router.url.startsWith('/prodex/connect')) {
+      this.partType = AppPartTypeId.CONNECT_PART;
+      this.projectType = ProjectTypeEnum.CONNECT_PROJECT;
+      this.partStatusList = [
+        { id: 1, name: 'READY FOR QUOTING' },
+        { id: 16, name: 'MATCHED SUPPLIER' },
+        { id: 17, name: 'NO MATCHED SUPPLIER' },
+        { id: 13, name: 'PAYMENT PENDING' },
+        { id: 18, name: 'PART AWAITING RELEASE' },
+        { id: 15, name: 'PART AWAITING VENDORS' },
+        { id: 19, name: 'VENDOR CONFIRMED' },
+        { id: 20, name: 'QUOTE ACCEPTED' },
+        { id: 21, name: 'VENDOR MANUAL QUOTED' }
+      ];
+    }
+    this.filterOptions.partTypeId = this.partType;
+    this.filterOptions.projectTypeId = this.projectType;
     this.columnDefs = [
       {
         headerName: 'CustomerName',
@@ -61,7 +123,6 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center',
         tooltipField: 'rfqId'
       },
       {
@@ -70,7 +131,6 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center',
         tooltipField: 'partId'
       },
       {
@@ -93,7 +153,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Material',
-        field: 'materialPropertyValues',
+        field: 'material',
         hide: false,
         sortable: true,
         filter: false,
@@ -102,7 +162,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Technology',
-        field: 'equipmentPropertyValues',
+        field: 'technology',
         hide: false,
         sortable: true,
         filter: false,
@@ -114,7 +174,6 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         field: 'price',
         hide: false,
         sortable: true,
-        cellClass: 'text-center',
         tooltipField: 'price',
         valueFormatter: dt => {
           return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
@@ -125,10 +184,17 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
-      paginationPageSize: 10,
+      paginationPageSize: this.pageSize,
       enableColResize: true,
+      maxConcurrentDatasourceRequests: 1,
       rowHeight: 35,
       headerHeight: 35,
+      rowModelType: 'infinite',
+
+      rowBuffer: 0,
+      cacheBlockSize: this.pageSize,
+      infiniteInitialRowCount: 0,
+      cacheOverflowSize: 0,
       onRowClicked: event => {
         this.router.navigateByUrl(`${this.router.url}/${event.data.partId}`);
       }
@@ -138,7 +204,19 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
   onGridReady(ev) {
     this.gridOptions.api = ev.api;
     this.gridOptions.api.sizeColumnsToFit();
+    this.onSearch();
+  }
 
+  onQueryChange(ev) {
+    this.filterOptions.searchValue = ev;
+    this.onSearch();
+  }
+
+  onCreatedDateChange(ev) {
+    if (ev.length) {
+      this.filterOptions.beginDate = ev[0];
+      this.filterOptions.endDate = ev[1];
+    }
     this.onSearch();
   }
 
@@ -146,7 +224,6 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     this.totalCount = 0;
     this.totalRows = 0;
     const dataSource = {
-      rowCount: 0,
       getRows: params => {
         this.spinner.show('spooler');
         this.pricingService
@@ -184,13 +261,13 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
   }
 
   onChangeFilterOptions(ev) {
-    console.log(ev);
-    this.filterOptions = {
-      ...ev,
-      partTypeId: 2,
-      manualPricingAllowed: null
-    };
-    this.onSearch();
+    if (!ev.target) {
+      this.filterOptions = {
+        ...this.filterOptions,
+        ...ev
+      };
+      this.onSearch();
+    }
   }
 
   ngOnDestroy() {
