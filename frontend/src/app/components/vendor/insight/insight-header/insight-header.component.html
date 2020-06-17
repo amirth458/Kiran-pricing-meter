@@ -1,9 +1,13 @@
 <div class="wrapper d-flex justify-content-between flex-wrap">
   <div class="d-flex align-items-center">
-    <div class="search-bar mr-4">
-      <app-search-bar [(search)]="search" (searchChange)="onSearchChange($event)"></app-search-bar>
+    <div *ngIf="quickSearch" class="search-bar mr-4">
+      <app-search-bar
+        [placeholder]="placeholder"
+        [(search)]="search"
+        (searchChange)="onSearchChange($event)"
+      ></app-search-bar>
     </div>
-    <div class="d-flex mr-3">
+    <div *ngIf="dateFilter" class="d-flex mr-3">
       <label>
         Created Date
         <input
@@ -34,7 +38,7 @@
     </div>
   </div>
 
-  <div class="actions d-flex">
+  <div *ngIf="extraActions" class="actions d-flex">
     <button class="theme white btn action-btn" [disabled]="!enableControls" (click)="onFiltercolumns()">
       <i class="fa fa-list"></i>
     </button>

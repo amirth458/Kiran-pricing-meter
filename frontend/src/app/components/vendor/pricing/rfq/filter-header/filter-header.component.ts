@@ -14,11 +14,14 @@ import { AppPartStatus } from 'src/app/model/part.model';
 })
 export class FilterHeaderComponent implements OnInit {
   @Input() status = 'other';
+  @Input() showRFQ = true;
+  @Input() showPart = true;
+  @Input() showCustomerName = true;
   @Output() change: EventEmitter<any> = new EventEmitter();
 
   filterForm: FormGroup;
 
-  partStatusList;
+  @Input() partStatusList = [];
 
   constructor(public metadataService: MetadataService, public fb: FormBuilder) {
     this.filterForm = this.fb.group({
@@ -28,25 +31,28 @@ export class FilterHeaderComponent implements OnInit {
       customerName: ['']
     });
 
-    if (this.status === 'other') {
-      this.metadataService
-        .getAdminMetaData(MetadataConfig.PART_STATUS)
-        .subscribe(
-          v =>
-            (this.partStatusList = v.filter(
-              v => v.name !== AppPartStatus.AUTO_QUOTED && v.name !== AppPartStatus.MANUAL_QUOTE
-            ))
-        );
-    }
+    // if (this.status === 'other') {
+    //   this.metadataService
+    //     .getAdminMetaData(MetadataConfig.PART_STATUS)
+    //     .subscribe(
+    //       v =>
+    //         (this.partStatusList = v.filter(
+    //           v => v.name !== AppPartStatus.AUTO_QUOTED && v.name !== AppPartStatus.MANUAL_QUOTE
+    //         ))
+    //     );
+    // }
   }
 
   ngOnInit() {
     this.filterForm.valueChanges
       .pipe(
-        filter(value => value !== null && !value.type),
         debounceTime(500),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        filter(value => value !== null && !value.type)
       )
-      .subscribe(value => this.change.emit(value));
+      .subscribe(value => {
+        console.log(value);
+        this.change.emit(value);
+      });
   }
 }

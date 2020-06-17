@@ -1,5 +1,7 @@
 .input {
   width: 180px;
+  height: 29px;
+  font-size: 12px;
 }
 
 input.input {
