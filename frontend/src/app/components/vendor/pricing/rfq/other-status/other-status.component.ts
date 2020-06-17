@@ -18,7 +18,6 @@ import { PartService } from 'src/app/service/part.service';
   styleUrls: ['./other-status.component.css']
 })
 export class OtherStatusComponent implements OnInit, OnDestroy {
-  autoQuotedIds = [];
   columnDefs = [];
   gridOptions: GridOptions;
   rowData: any[] = [];
@@ -93,7 +92,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Material',
-        field: 'materialPropertyValues',
+        field: 'material',
         hide: false,
         sortable: true,
         filter: false,
@@ -102,7 +101,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Technology',
-        field: 'equipmentPropertyValues',
+        field: 'technology',
         hide: false,
         sortable: true,
         filter: false,
@@ -184,7 +183,6 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
   }
 
   onChangeFilterOptions(ev) {
-    console.log(ev);
     this.filterOptions = {
       ...ev,
       partTypeId: 2,
