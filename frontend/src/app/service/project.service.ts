@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+
+import { ConnectProject } from '../model/connect.model';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { Observable } from 'rxjs';
-import { ConnectProject } from '../model/connect.model';
 import { Pageable } from '../model/pageable.model';
 import { PartOrder, ReferenceMedia } from '../model/part.model';
-import { ProjectTypeEnum, OrderStatusTypeId } from '../model/order.model';
+import { ProjectTypeEnum, OrderStatusTypeId, SearchOpt, ProjectSearchResult } from '../model/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -103,5 +105,10 @@ export class ProjectService {
     return this.http.get<ReferenceMedia[]>(
       `${environment.managementBaseUrl}/reference-media/part/${partId}/proposal-part/${proposalPartId}?generateSignedUrl=true`
     );
+  }
+
+  getProdReleaseProject(searchOpt: SearchOpt, filter: FilterOption): Observable<Pageable<ProjectSearchResult[]>> {
+    const url = `${environment.apiBaseUrl}/admin/customer/customer-order/search`;
+    return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
   }
 }
