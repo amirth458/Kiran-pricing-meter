@@ -11,5 +11,6 @@ export enum MetadataConfig {
   BID_ORDER_STATUS_TYPE = 'bid_order_status_type',
   POST_PROCESS_ACTION = 'post_process_action',
   PAYMENT_STATUS_TYPE = 'payment_status_type',
-  MEASUREMENT_UNIT_TYPE = 'measurement_unit_type'
+  MEASUREMENT_UNIT_TYPE = 'measurement_unit_type',
+  PART_STATUS = 'partstatus'
 }

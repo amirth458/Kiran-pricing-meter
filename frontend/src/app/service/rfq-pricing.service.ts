@@ -104,6 +104,21 @@ export class RfqPricingService {
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
+  getPartsByFilter(filterBody: any, filterOption: FilterOption): Observable<any[]> {
+    const url = `${environment.apiBaseUrl}/admin/part/part-details`;
+
+    let params = new HttpParams();
+    if (filterOption) {
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
+      if (filterOption.sort) {
+        params = params.append('sort', filterOption.sort.toString());
+      }
+    }
+
+    return this.http.post<any[]>(url, filterBody, { params });
+  }
+
   getPartDetail(id: number, generateSignedUrl = true): Observable<Part> {
     const url = `${environment.procurementApiBaseUrl}/part/${id}?generateSignedUrl=${generateSignedUrl}`;
 

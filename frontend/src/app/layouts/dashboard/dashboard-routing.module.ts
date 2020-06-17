@@ -81,6 +81,7 @@ import { AddVendorContainerComponent } from 'src/app/components/admin/add-vendor
 import { AddVendorUserComponent } from 'src/app/components/admin/add-vendor/add-vendor-user/add-vendor-user.component';
 import { AddVendorDetailComponent } from 'src/app/components/admin/add-vendor/add-vendor-detail/add-vendor-detail.component';
 import { AddVendorMachineComponent } from 'src/app/components/admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
+import { OtherStatusComponent } from 'src/app/components/vendor/pricing/rfq/other-status/other-status.component';
 
 const routes: Routes = [
   {
@@ -119,6 +120,7 @@ const routes: Routes = [
                 path: 'auto-prices/:partId/process-profile/:profileId',
                 component: ProcessProfileDetailComponent
               },
+
               { path: 'manual-price', component: QueuedManualPriceComponent },
               {
                 path: 'manual-price/:partId',
@@ -132,6 +134,21 @@ const routes: Routes = [
                 path: 'manual-price/:partId/pricing-profile/:profileId',
                 component: PricingProfileDetailComponent
               },
+
+              { path: 'other-status', component: OtherStatusComponent },
+              {
+                path: 'other-status/:partId',
+                component: PriceDetailComponent
+              },
+              {
+                path: 'other-status/:partId/process-profile/:profileId',
+                component: ProcessProfileDetailComponent
+              },
+              {
+                path: 'other-status/:partId/pricing-profile/:profileId',
+                component: PricingProfileDetailComponent
+              },
+
               { path: '', redirectTo: 'pricing-settings', pathMatch: 'full' },
               { path: '**', redirectTo: 'pricing-settings', pathMatch: 'full' }
             ]

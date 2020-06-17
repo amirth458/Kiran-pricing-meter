@@ -1,0 +1,18 @@
+<div class="wrapper d-flex justify-content-between flex-wrap mb-3">
+  <form [formGroup]="filterForm" class="d-flex align-items-center">
+    <!-- Part Status -->
+    <select class="input mr-3" *ngIf="status === 'other'" formControlName="partStatusTypeId">
+      <option value="">Select...</option>
+      <option *ngFor="let option of partStatusList" [value]="option.id">{{ option.name }}</option>
+    </select>
+
+    <!-- RfQ ID -->
+    <input class="input mr-3" placeholder="RFQ ID" formControlName="rfqId" />
+
+    <!-- Part ID -->
+    <input class="input mr-3" placeholder="Part ID" formControlName="partId" />
+
+    <!-- Customer Name-->
+    <input class="input mr-3" placeholder="Customer Name" formControlName="customerName" />
+  </form>
+</div>
