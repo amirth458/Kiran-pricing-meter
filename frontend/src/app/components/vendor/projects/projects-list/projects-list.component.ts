@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { GridOptions, ColDef } from 'ag-grid-community';
-import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-import { MetadataService } from 'src/app/service/metadata.service';
-import { Part, PartOrder } from 'src/app/model/part.model';
-import { ProjectService } from 'src/app/service/project.service';
-import { FilterOption } from 'src/app/model/vendor.model';
+
 import { Observable } from 'rxjs';
+
+import { GridOptions, ColDef } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ConnectOrder } from 'src/app/model/connect.model';
+import { FilterOption } from 'src/app/model/vendor.model';
+import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { Part } from 'src/app/model/part.model';
+import { ProjectService } from 'src/app/service/project.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -43,7 +46,6 @@ export class ProjectsListComponent implements OnInit {
 
   ngOnInit() {
     this.initColumnDef();
-
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs:
@@ -78,7 +80,7 @@ export class ProjectsListComponent implements OnInit {
           size: this.pageSize,
           sort: this.sort
         };
-        this.spinner.show('spooler');
+        this.spinner.show('loadingPanel');
         let ob: Observable<any> = null;
         switch (this.type) {
           case 'project-release-queue':
@@ -99,7 +101,7 @@ export class ProjectsListComponent implements OnInit {
           default:
         }
         ob.subscribe(data => {
-          this.spinner.hide('spooler');
+          this.spinner.hide('loadingPanel');
           const rowsThisPage =
             this.type === 'release-queue' || this.type === 'order-complete'
               ? data.content.map((item: ConnectOrder) => ({
@@ -142,7 +144,6 @@ export class ProjectsListComponent implements OnInit {
         sort: 'desc'
       }
     ]);
-
     this.setDataSource();
   }
 
