@@ -14,66 +14,47 @@ import { ProjectTypeEnum, OrderStatusTypeId } from '../model/order.model';
 export class ProjectService {
   constructor(public http: HttpClient) {}
 
-  getProjectReleaseQueue(filterOption: FilterOption, projectType: string = null) {
-    const url = `${environment.apiBaseUrl}/admin/part/search`;
+  private buildParameters(filter: FilterOption): HttpParams {
     let params = new HttpParams();
-
-    if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
-      params = params.append('sort', filterOption.sort.toString());
+    if (filter) {
+      params = params.append('page', filter.page.toString());
+      params = params.append('size', filter.size.toString());
+      params = params.append('sort', filter.sort.toString());
     }
+    return params;
+  }
 
+  getProjectReleaseQueue(filter: FilterOption, projectType: string = null) {
+    const url = `${environment.apiBaseUrl}/admin/part/search`;
     return this.http.post<any>(
       url,
       {
         statusIds: [18],
         projectType
       },
-      { params }
+      { params: this.buildParameters(filter) }
     );
   }
 
-  getConfirmationQueue(filterOption: FilterOption, projectType: string = null) {
+  getConfirmationQueue(filter: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/bid-project/status`;
-    let params = new HttpParams();
-
-    if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
-      params = params.append('sort', filterOption.sort.toString());
-    }
-    return this.http.post<any>(url, { statusIds: [2], projectType }, { params });
+    return this.http.post<any>(url, { statusIds: [2], projectType }, { params: this.buildParameters(filter) });
   }
 
-  getReleasedProjects(filterOption: FilterOption, projectType: string = null) {
+  getReleasedProjects(filter: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/bid-project/status`;
-    let params = new HttpParams();
-
-    if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
-      params = params.append('sort', filterOption.sort.toString());
-    }
-    return this.http.post<any>(url, { statusIds: [3], projectType }, { params });
+    return this.http.post<any>(url, { statusIds: [3], projectType }, { params: this.buildParameters(filter) });
   }
 
-  getConnectReleasedProjects(filterOption: FilterOption, orderComplete = false): Observable<Pageable<PartOrder>> {
+  getConnectReleasedProjects(filter: FilterOption, orderComplete = false): Observable<Pageable<PartOrder>> {
     const url = `${environment.apiBaseUrl}/admin/customer/customer-order/search`;
-    let params = new HttpParams();
-
-    if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
-      params = params.append('sort', filterOption.sort.toString());
-    }
     return this.http.post<Pageable<PartOrder>>(
       url,
       {
         orderStatusId: orderComplete ? OrderStatusTypeId.ORDER_COMPLETE : OrderStatusTypeId.VENDOR_DOWNSELECTION,
         projectTypeId: ProjectTypeEnum.CONNECT_PROJECT
       },
-      { params }
+      { params: this.buildParameters(filter) }
     );
   }
 
