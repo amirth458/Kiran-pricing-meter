@@ -123,4 +123,16 @@ export class ProjectService {
       `${environment.managementBaseUrl}/reference-media/part/${partId}/proposal-part/${proposalPartId}?generateSignedUrl=true`
     );
   }
+
+  searchCustomerOrder(filterOption: FilterOption, requestBody) {
+    const url = `${environment.apiBaseUrl}/admin/customer/customer-order-search`;
+    let params = new HttpParams();
+
+    if (filterOption) {
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
+      params = params.append('sort', filterOption.sort.toString());
+    }
+    return this.http.post<Pageable<PartOrder>>(url, requestBody, { params });
+  }
 }
