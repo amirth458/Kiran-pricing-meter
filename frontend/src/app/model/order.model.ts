@@ -343,3 +343,19 @@ export enum VendorOrderTypeEnum {
   DILIGENT_PRODUCTION = 4,
   DILIGENT_CONNECT = 5
 }
+
+export interface SearchOpt {
+  projectTypeId: number;
+  startDate: Date;
+  endDate: Date;
+  searchQuery: string;
+}
+
+export interface ProjectSearchResult {
+  partId: number;
+  rfq_id: number;
+  order_id: number;
+  customer_name: string;
+  same_vendor: boolean;
+  totalRowCount: number;
+}
