@@ -107,6 +107,18 @@ export class ProjectService {
     );
   }
 
+  searchCustomerOrder(filterOption: FilterOption, requestBody) {
+    const url = `${environment.apiBaseUrl}/admin/customer/customer-order-search`;
+    let params = new HttpParams();
+
+    if (filterOption) {
+      params = params.append('page', filterOption.page.toString());
+      params = params.append('size', filterOption.size.toString());
+      params = params.append('sort', filterOption.sort.toString());
+    }
+    return this.http.post<Pageable<PartOrder>>(url, requestBody, { params });
+  }
+
   getProdReleaseProject(searchOpt: SearchOpt, filter: FilterOption): Observable<Pageable<ProjectSearchResult[]>> {
     const url = `${environment.apiBaseUrl}/admin/customer/customer-order/search`;
     return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });

@@ -1,10 +1,24 @@
 <div class="wrapper">
   <div class="table theme-table">
-    <div class="mb-3"></div>
+    <div class="d-flex header justify-content-between">
+      <div class="d-flex">
+        <app-insight-header
+          *ngIf="type === 'release-queue' || type === 'order-complete'"
+          [type]="null"
+          [gridOptions]="gridOptions"
+          [placeholder]="'Customer, RFQ, Part, Order'"
+          [columns]="columnDefs"
+          [extraActions]="false"
+          (queryChange)="onQueryChange($event)"
+          (createdDateChange)="onCreatedDateChange($event)"
+        ></app-insight-header>
+      </div>
+
+      <span class="text-theme">Total: {{ totalRows }}</span>
+    </div>
 
     <ag-grid-angular
       class="ag-theme-balham w-100 h-100"
-      [rowData]="[]"
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>

@@ -248,15 +248,14 @@
       "actions": []
     },
     {
-      "name": "Vendor Confirmation Queue",
-      "tooltipMessage": "Vendor Confirmation Queue",
+      "name": "Vendor Released",
+      "tooltipMessage": "Vendor Released",
       "route": "vendor-confirmation-queue",
       "actions": []
     },
     {
-      "name": "Released Projects",
-      "subtitle": "to customer",
-      "tooltipMessage": "Released Projects",
+      "name": "Customer Released",
+      "tooltipMessage": "Customer Released",
       "route": "released-projects",
       "actions": []
     },

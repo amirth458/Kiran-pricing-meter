@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { Observable } from 'rxjs';
-
 import { GridOptions, ColDef } from 'ag-grid-community';
-import { NgxSpinnerService } from 'ngx-spinner';
-
-import { ConnectOrder } from 'src/app/model/connect.model';
-import { FilterOption } from 'src/app/model/vendor.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { Part } from 'src/app/model/part.model';
+import { Part, PartOrder } from 'src/app/model/part.model';
 import { ProjectService } from 'src/app/service/project.service';
+import { FilterOption } from 'src/app/model/vendor.model';
+import { Observable } from 'rxjs';
+import { ConnectOrder } from 'src/app/model/connect.model';
+import { ProjectTypeEnum, OrderStatusTypeId } from 'src/app/model/order.model';
 
 @Component({
   selector: 'app-projects-list',
@@ -34,7 +32,17 @@ export class ProjectsListComponent implements OnInit {
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
-
+  requestBody = {
+    projectTypeId: ProjectTypeEnum.CONNECT_PROJECT,
+    partId: null,
+    orderId: null,
+    customerName: null,
+    orderStatusId: null,
+    searchValue: null,
+    beginDate: null,
+    endDate: null
+  };
+  totalRows = 0;
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
@@ -71,6 +79,19 @@ export class ProjectsListComponent implements OnInit {
     };
   }
 
+  onQueryChange(ev) {
+    this.requestBody.searchValue = ev;
+    this.setDataSource();
+  }
+
+  onCreatedDateChange(ev) {
+    if (ev.length) {
+      this.requestBody.beginDate = ev[0];
+      this.requestBody.endDate = ev[1];
+    }
+    this.setDataSource();
+  }
+
   setDataSource() {
     const dataSource = {
       rowCount: null,
@@ -93,10 +114,12 @@ export class ProjectsListComponent implements OnInit {
             ob = this.projectService.getReleasedProjects(filterOption, null);
             break;
           case 'release-queue':
-            ob = this.projectService.getConnectReleasedProjects(filterOption);
+            this.requestBody.orderStatusId = OrderStatusTypeId.VENDOR_DOWNSELECTION;
+            ob = this.projectService.searchCustomerOrder(filterOption, this.requestBody);
             break;
           case 'order-complete':
-            ob = this.projectService.getConnectReleasedProjects(filterOption, true);
+            this.requestBody.orderStatusId = OrderStatusTypeId.ORDER_COMPLETE;
+            ob = this.projectService.searchCustomerOrder(filterOption, this.requestBody);
             break;
           default:
         }
@@ -104,13 +127,16 @@ export class ProjectsListComponent implements OnInit {
           this.spinner.hide('loadingPanel');
           const rowsThisPage =
             this.type === 'release-queue' || this.type === 'order-complete'
-              ? data.content.map((item: ConnectOrder) => ({
-                  id: (item.partList || []).map(_ => _.id).join(', '),
-                  orderId: item.id,
+              ? data.map((item: ConnectOrder) => ({
+                  id: (item.partIds || []).join(', '),
+                  orderId: item.orderId,
                   sameVendor: item.isReleaseToSingleSupplier ? 'True' : 'False',
                   customerName: item.customerName,
                   preferredVendors: item.minimumProdexSuppliers,
-                  bidOrderStatus: item.bidOrderStatus || ''
+                  orderStatusType: item.orderStatusType,
+                  bidOrderStatus: item.bidOrderStatus || '',
+                  prodexPartIds: item.prodexPartIds || [],
+                  prodexRFQIds: item.prodexRFQIds || []
                 }))
               : data.content.map((item: Part) => ({
                   id: item.id,
@@ -124,8 +150,19 @@ export class ProjectsListComponent implements OnInit {
                   customerName: item.order && item.order.customerName,
                   bidOrderStatus: item.bidOrderStatus || ''
                 }));
-          const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-          params.successCallback(rowsThisPage, lastRow);
+          if (this.type === 'release-queue' || this.type === 'order-complete') {
+            this.totalRows = data && data[0] ? data[0].totalRowCount : 0;
+            const lastRow = data && data.length ? (this.totalRows <= params.endRow ? data.totalRowCount : -1) : -1;
+            if (data && data.length) {
+              params.successCallback(rowsThisPage, lastRow);
+            }
+          } else {
+            this.totalRows = data.totalElements || 0;
+            const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
+            if (data.totalElements) {
+              params.successCallback(rowsThisPage, lastRow);
+            }
+          }
           // this.reconfigColumns();
         });
       }
@@ -193,6 +230,14 @@ export class ProjectsListComponent implements OnInit {
 
     this.connectColumnDefs = [
       {
+        headerName: 'Customer',
+        field: 'customerName',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'customerName'
+      },
+      {
         headerName: 'Order ID',
         field: 'orderId',
         hide: false,
@@ -211,24 +256,55 @@ export class ProjectsListComponent implements OnInit {
     ];
 
     if (this.type === 'release-queue') {
-      this.connectColumnDefs.push({
-        headerName: 'ProdEX Supplier Requested',
-        field: 'preferredVendors',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'preferredVendors'
-      });
+      this.connectColumnDefs = this.connectColumnDefs.concat([
+        {
+          headerName: 'ProdEX Supplier Requested',
+          field: 'preferredVendors',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'preferredVendors'
+        },
+        {
+          headerName: 'Order Status',
+          field: 'orderStatusType',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'orderStatusType',
+          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
+        }
+      ]);
     }
-
-    this.connectColumnDefs.push({
-      headerName: 'Customer',
-      field: 'customerName',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'customerName'
-    });
+    if (this.type === 'order-complete') {
+      this.connectColumnDefs = this.connectColumnDefs.concat([
+        {
+          headerName: 'Related ProdEX Part IDs',
+          field: 'prodexPartIds',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'prodexPartIds'
+        },
+        {
+          headerName: 'Related ProdEX RFQ IDs',
+          field: 'prodexRFQIds',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'prodexRFQIds'
+        },
+        {
+          headerName: 'Order Status',
+          field: 'orderStatusType',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'orderStatusType',
+          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
+        }
+      ]);
+    }
 
     this.columnDefs.push({
       headerName: 'Customer',

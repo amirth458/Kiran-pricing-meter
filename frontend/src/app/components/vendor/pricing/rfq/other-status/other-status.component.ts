@@ -244,12 +244,14 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
             this.spinner.hide('spooler');
             const rowsThisPage = data || [];
 
-            this.totalCount += data.length;
-            if (data.length > 0) {
-              this.totalRows = data[0]['totalRowCount'];
+            this.totalCount += rowsThisPage.length;
+            if (rowsThisPage.length > 0) {
+              this.totalRows = rowsThisPage[0]['totalRowCount'];
             }
-            const lastRow = data.length < this.pageSize ? this.totalCount : -1;
-            params.successCallback(rowsThisPage, lastRow);
+            const lastRow = rowsThisPage.length < this.pageSize ? this.totalCount : -1;
+            if (rowsThisPage.length) {
+              params.successCallback(rowsThisPage, lastRow);
+            }
 
             // this.reconfigColumns();
           });
