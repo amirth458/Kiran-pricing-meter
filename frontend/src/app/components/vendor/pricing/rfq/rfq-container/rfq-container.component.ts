@@ -30,8 +30,14 @@ export class RfqContainerComponent implements OnInit {
     },
     {
       name: 'Queued for Manual Price',
-      tooltipMessage: 'Queueud for Manual Price',
+      tooltipMessage: 'Queued for Manual Price',
       route: 'manual-price',
+      actions: []
+    },
+    {
+      name: 'Other Status',
+      tooltipMessage: 'Other Status',
+      route: 'other-status',
       actions: []
     }
   ];
@@ -40,9 +46,7 @@ export class RfqContainerComponent implements OnInit {
   constructor(private route: Router) {}
 
   ngOnInit() {
-    const routeArr = this.route.url
-      .slice(this.route.url.indexOf('pricing/rfq/') + 'pricing/rfq/'.length)
-      .split('/');
+    const routeArr = this.route.url.slice(this.route.url.indexOf('pricing/rfq/') + 'pricing/rfq/'.length).split('/');
     this.selectedTab = 'Pricing Settings';
     switch (routeArr[0]) {
       case 'pricing-settings':
@@ -53,6 +57,9 @@ export class RfqContainerComponent implements OnInit {
         break;
       case 'manual-price':
         this.selectedTab = 'Queued for Manual Price';
+        break;
+      case 'other-status':
+        this.selectedTab = 'Other Status';
         break;
       default:
         this.route.navigateByUrl(this.route.url + '/pricing-settings');
