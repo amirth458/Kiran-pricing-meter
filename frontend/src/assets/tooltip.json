@@ -255,8 +255,21 @@
     },
     {
       "name": "Released Projects",
+      "subtitle": "to customer",
       "tooltipMessage": "Released Projects",
       "route": "released-projects",
+      "actions": []
+    },
+    {
+      "name": "Vendor Order",
+      "tooltipMessage": "Vendor Order",
+      "route": "released-orders",
+      "actions": []
+    },
+    {
+      "name": "Archive",
+      "tooltipMessage": "Archive",
+      "route": "other-status",
       "actions": []
     }
   ],
@@ -279,9 +292,21 @@
       "actions": []
     },
     {
-      "name": "Order Complete",
-      "tooltipMessage": "Order Complete",
+      "name": "Customer Accepted",
+      "tooltipMessage": "Customer Accepted",
       "route": "order-complete",
+      "actions": []
+    },
+    {
+      "name": "Vendor Order",
+      "tooltipMessage": "Vendor Order",
+      "route": "released-orders",
+      "actions": []
+    },
+    {
+      "name": "Archive",
+      "tooltipMessage": "Archive",
+      "route": "other-status",
       "actions": []
     }
   ],

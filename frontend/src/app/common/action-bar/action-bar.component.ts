@@ -13,6 +13,7 @@ export class ActionBarComponent implements OnInit, OnChanges {
   @Input('menus') menus: Array<{
     name: string;
     tooltipMessage: string;
+    subtitle?: string;
     route: string;
     actions: Array<{ name: string; route: string }>;
   }>;

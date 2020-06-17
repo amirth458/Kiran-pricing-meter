@@ -109,7 +109,6 @@ import { InsightDetailComponent } from './vendor/insight/insight-detail/insight-
 import { SearchBarComponent } from '../common/search-bar/search-bar.component';
 import { DateRangeMonthComponent } from '../common/date-range-month/date-range-month.component';
 import { MultiPartsInformationComponent } from '../common/multi-parts-information/multi-parts-information.component';
-import { ProductionOrdersContainerComponent } from './vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
 import { ProductionReleasedOrdersComponent } from './vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
 import { ProductionVendorDetailsComponent } from './vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { BillingChatComponent } from './vendor/billing/billing-chat/billing-chat.component';
@@ -258,7 +257,6 @@ import { OtherStatusComponent } from './vendor/pricing/rfq/other-status/other-st
     SupplierPipe,
 
     InsightDetailComponent,
-    ProductionOrdersContainerComponent,
     ProductionReleasedOrdersComponent,
     ProductionVendorDetailsComponent,
     BillingChatComponent,

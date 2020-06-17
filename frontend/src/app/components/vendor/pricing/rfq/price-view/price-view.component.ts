@@ -16,7 +16,7 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { GridOptions } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { empty, throwError } from 'rxjs';
+import { empty, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
@@ -238,6 +238,9 @@ export class PriceViewComponent implements OnInit, OnChanges {
   }
 
   startOverrideForm() {
+    if (!this.partQuote) {
+      return;
+    }
     (this.partQuote.partQuoteInvoiceItemDetails || []).forEach((quote: PartQuoteInvoiceItem) => {
       this.prices.push(
         this.fb.group({

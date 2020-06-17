@@ -1,17 +1,36 @@
 <div class="wrapper flex-column">
-  <div class="header">
-    <app-filter-header (change)="onChangeFilterOptions($event)"></app-filter-header>
+  <div class="d-flex header justify-content-between">
+    <div class="d-flex">
+      <!-- *ngIf="!router.url.startsWith('/pricing/')" -->
+      <app-insight-header
+        [type]="null"
+        [gridOptions]="gridOptions"
+        [placeholder]="'Customer, RFQ, Part'"
+        [columns]="columnDefs"
+        [extraActions]="false"
+        (queryChange)="onQueryChange($event)"
+        (createdDateChange)="onCreatedDateChange($event)"
+      ></app-insight-header>
+      <app-filter-header
+        [showPart]="false"
+        [showRFQ]="false"
+        [showCustomerName]="false"
+        [partStatusList]="partStatusList"
+        (change)="onChangeFilterOptions($event)"
+      >
+      </app-filter-header>
+    </div>
+
+    <span class="text-theme">Total: {{ totalRows }}</span>
   </div>
   <div class="d-flex flex-grow-1">
     <div class="table theme-table">
       <ag-grid-angular
         class="ag-theme-balham w-100 h-100"
-        [rowData]="rowData"
         [gridOptions]="gridOptions"
         (gridReady)="onGridReady($event)"
-        rowModelType="infinite"
-        [cacheBlockSize]="pageSize"
-      ></ag-grid-angular>
+      >
+      </ag-grid-angular>
       <ngx-spinner
         [name]="'spooler'"
         bdColor="#ffffff80"
@@ -23,9 +42,6 @@
         <p class="m-0">Loading...</p>
       </ngx-spinner>
     </div>
-  </div>
-  <div class="d-flex justify-content-end">
-    <span>Total: {{ totalRows }}</span>
   </div>
 </div>
 

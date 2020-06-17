@@ -51,7 +51,6 @@ import { InsightRfqComponent } from '../../components/vendor/insight/insight-cus
 import { InsightPartComponent } from '../../components/vendor/insight/insight-customer/insight-part/insight-part.component';
 import { InsightProcessProfileComponent } from '../../components/vendor/insight/insight-vendor/insight-process-profile/insight-process-profile.component';
 import { InsightPricingProfileComponent } from '../../components/vendor/insight/insight-vendor/insight-pricing-profile/insight-pricing-profile.component';
-import { ProductionOrdersContainerComponent } from 'src/app/components/vendor/pricing/production-orders/production-orders-container/production-orders-container.component';
 import { ProductionVendorDetailsComponent } from 'src/app/components/vendor/pricing/production-orders/production-vendor-details/production-vendor-details.component';
 import { ProductionReleasedOrdersComponent } from 'src/app/components/vendor/pricing/production-orders/production-released-orders/production-released-orders.component';
 import { InsightAdminContainerComponent } from 'src/app/components/vendor/insight/insight-admin/insight-admin-container/insight-admin-container.component';
@@ -198,30 +197,6 @@ const routes: Routes = [
               }
             ]
           },
-          {
-            path: ':projectType',
-            component: ProductionOrdersContainerComponent,
-            children: [
-              {
-                path: 'released-orders',
-                component: ProductionReleasedOrdersComponent
-              },
-              {
-                path: 'released-orders/:customerOrderId',
-                component: ProductionVendorDetailsComponent
-              },
-              {
-                path: '',
-                redirectTo: 'released-orders',
-                pathMatch: 'full'
-              },
-              {
-                path: '**',
-                redirectTo: 'released-orders',
-                pathMatch: 'full'
-              }
-            ]
-          },
           { path: '', redirectTo: 'rfq', pathMatch: 'full' },
           { path: '**', redirectTo: 'rfq', pathMatch: 'full' }
         ]
@@ -326,6 +301,19 @@ const routes: Routes = [
                 path: 'settings',
                 component: ProjectSettingsComponent
               },
+              { path: 'other-status', component: OtherStatusComponent },
+              {
+                path: 'other-status/:partId',
+                component: PriceDetailComponent
+              },
+              {
+                path: 'other-status/:partId/process-profile/:profileId',
+                component: ProcessProfileDetailComponent
+              },
+              {
+                path: 'other-status/:partId/pricing-profile/:profileId',
+                component: PricingProfileDetailComponent
+              },
               {
                 path: 'project-release-queue',
                 component: ProjectsListComponent
@@ -351,6 +339,14 @@ const routes: Routes = [
                 component: OrderDetailComponent
               },
               {
+                path: 'released-orders',
+                component: ProductionReleasedOrdersComponent
+              },
+              {
+                path: 'released-orders/:customerOrderId',
+                component: ProductionVendorDetailsComponent
+              },
+              {
                 path: '',
                 redirectTo: 'settings'
               }
@@ -363,6 +359,19 @@ const routes: Routes = [
               {
                 path: 'settings',
                 component: ConnectSettingComponent
+              },
+              { path: 'other-status', component: OtherStatusComponent },
+              {
+                path: 'other-status/:partId',
+                component: PriceDetailComponent
+              },
+              {
+                path: 'other-status/:partId/process-profile/:profileId',
+                component: ProcessProfileDetailComponent
+              },
+              {
+                path: 'other-status/:partId/pricing-profile/:profileId',
+                component: PricingProfileDetailComponent
               },
               {
                 path: 'release-queue',
@@ -379,6 +388,14 @@ const routes: Routes = [
               {
                 path: 'order-complete/:id',
                 component: ConnectOrderDetailsComponent
+              },
+              {
+                path: 'released-orders',
+                component: ProductionReleasedOrdersComponent
+              },
+              {
+                path: 'released-orders/:customerOrderId',
+                component: ProductionVendorDetailsComponent
               },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]

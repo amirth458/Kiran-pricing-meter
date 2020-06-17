@@ -51,7 +51,7 @@
                         <td class="text-theme">
                           <a
                             class="link over-ride p-0 m-0"
-                            *ngIf="!part?.manualPricingAllowed"
+                            *ngIf="!part?.manualPricingAllowed && partQuote"
                             (click)="startOverrideForm()"
                           >
                             Override

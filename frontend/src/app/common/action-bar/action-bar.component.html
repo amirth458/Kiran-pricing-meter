@@ -10,8 +10,10 @@
           class="name"
           [class.orders]="baseURL === 'pricing/orders'"
           [class.active]="selectedTab == menu.name"
-          >{{ menu.name }}</span
         >
+          {{ menu.name }}
+          <span class="subtitle d-block text-center" *ngIf="menu.subtitle">{{ menu.subtitle }}</span>
+        </span>
         <span class="icon" placement="right" [ngbTooltip]="menu.tooltipMessage">
           <i class="fas fa-question-circle"></i>
         </span>

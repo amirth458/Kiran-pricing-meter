@@ -25,14 +25,6 @@ export class PricingContainerComponent implements OnInit {
       {
         name: 'ProdEX Order',
         route: this.baseURL + '/orders'
-      },
-      {
-        name: 'ProdEX PM Order',
-        route: this.baseURL + '/production-orders'
-      },
-      {
-        name: 'ProdEX Connect Order',
-        route: this.baseURL + '/connect-orders'
       }
     ];
     this.selectedSubmenu = this.baseURL + '/' + this.route.url.split('/')[2];
