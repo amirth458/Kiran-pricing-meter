@@ -28,7 +28,7 @@ export interface Vendor {
 export class FilterOption {
   size: number;
   page: number;
-  sort: string;
+  sort?: string;
   q?: string;
 }
 

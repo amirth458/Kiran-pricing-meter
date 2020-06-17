@@ -155,6 +155,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
 import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cell-renderer.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { FilterHeaderComponent } from './vendor/pricing/rfq/filter-header/filter-header.component';
+import { OtherStatusComponent } from './vendor/pricing/rfq/other-status/other-status.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -295,7 +297,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ChipComponent,
     PartDetailComponent,
     ProposalAttachmentComponent,
-    InsightPartInformationComponent
+    InsightPartInformationComponent,
+    FilterHeaderComponent,
+    OtherStatusComponent
   ],
   imports: [
     CommonModule,
