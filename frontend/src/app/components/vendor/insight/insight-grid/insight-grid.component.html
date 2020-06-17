@@ -2,7 +2,7 @@
   <div class="col-12 table theme-table h-100">
     <ag-grid-angular
       class="ag-theme-balham w-100 h-100"
-      [rowData]="rowData"
+      [rowData]="rowData || []"
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)"
       rowModelType="infinite"

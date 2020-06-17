@@ -22,19 +22,19 @@ export class InsightGridComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    (this.gridOptions.frameworkComponents = this.frameworkComponents),
-      (this.gridOptions.columnDefs = this.gridOptions.columnDefs.map(col => {
-        if (col.headerName.includes('date') || col.headerName.includes('last_login_attempt')) {
-          return {
-            ...col,
-            cellRenderer: 'templateRenderer',
-            cellRendererParams: {
-              ngTemplate: this.date
-            }
-          };
-        }
-        return col;
-      }));
+    this.gridOptions.frameworkComponents = this.frameworkComponents;
+    this.gridOptions.columnDefs = this.gridOptions.columnDefs.map(col => {
+      if (col.headerName.includes('date') || col.headerName.includes('last_login_attempt')) {
+        return {
+          ...col,
+          cellRenderer: 'templateRenderer',
+          cellRendererParams: {
+            ngTemplate: this.date
+          }
+        };
+      }
+      return col;
+    });
   }
 
   onGridReady(ev: GridReadyEvent) {
