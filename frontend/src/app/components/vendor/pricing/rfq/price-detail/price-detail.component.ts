@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { Part, AppPartStatus } from 'src/app/model/part.model';
+import { Part, AppPartStatus, AppPartTypeId } from 'src/app/model/part.model';
 import { RfqData, PartQuote, PartDimension } from '../../../../../model/part.model';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { UserService } from 'src/app/service/user.service';
@@ -98,6 +98,10 @@ export class PriceDetailComponent implements OnInit {
     });
   }
 
+  get partType() {
+    return this.part && this.part.partType && this.part.partType.id;
+  }
+
   public getDetails(id: number) {
     this.spinner.show();
     this.pricingService.getPartDetail(id).subscribe(part => {
@@ -128,10 +132,11 @@ export class PriceDetailComponent implements OnInit {
 
   public setTabInfo() {
     this.tabs = [
-      {
-        id: 0,
-        title: this.part && this.part.manualPricingAllowed ? 'Manual-Price View' : 'Auto-Price View'
-      },
+      this.partType !== AppPartTypeId.CONNECT_PART &&
+        this.partType !== AppPartTypeId.PRODUCTION_PART && {
+          id: 0,
+          title: this.part && this.part.manualPricingAllowed ? 'Manual-Price View' : 'Auto-Price View'
+        },
       {
         id: 1,
         title: 'Part Information'
@@ -140,15 +145,19 @@ export class PriceDetailComponent implements OnInit {
         id: 2,
         title: 'Process Profile'
       },
-      {
-        id: 3,
-        title: 'Pricing Profile'
-      },
+      this.partType !== AppPartTypeId.CONNECT_PART &&
+        this.partType !== AppPartTypeId.PRODUCTION_PART && {
+          id: 3,
+          title: 'Pricing Profile'
+        },
       this.part.manualPricingAllowed && {
         id: 4,
         title: 'Historical Bid'
       }
     ];
+    if (this.partType === AppPartTypeId.CONNECT_PART || this.partType === AppPartTypeId.PRODUCTION_PART) {
+      this.selectedTabId$.next(1);
+    }
   }
 
   public manualQuote() {

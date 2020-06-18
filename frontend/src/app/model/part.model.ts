@@ -71,14 +71,14 @@ export interface PartDimension {
   partDimensionStatusType: PartDimensionStatusType;
 }
 
-export interface PartStatusType {
+export class PartStatusType {
   id: number;
   name: string;
   description: string;
   displayName: string;
   display: boolean;
 }
-
+export class PartType extends PartStatusType {}
 export interface PartOrder {
   id: number;
   customerId: number;
@@ -179,6 +179,7 @@ export interface Part {
   manualPricingAllowed: boolean;
   shippingAddress: Address;
   partStatusType: PartStatusType;
+  partType: PartType;
   order: PartOrder;
   postProcessTypeIds: number[];
   partCustomParameterList: PartCustomParameter[];
