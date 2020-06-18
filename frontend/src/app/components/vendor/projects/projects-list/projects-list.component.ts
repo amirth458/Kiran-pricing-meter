@@ -28,8 +28,6 @@ export class ProjectsListComponent implements OnInit {
   navigation;
 
   pageSize = 10;
-  sort = 'id,desc';
-
   type = '';
 
   frameworkComponents = {
@@ -77,7 +75,6 @@ export class ProjectsListComponent implements OnInit {
           this.type === 'release-queue' || this.type === 'order-complete'
             ? `${this.router.url}/${event.data.orderId}`
             : `${this.router.url}/${event.data.partId}`;
-        console.log(url);
         this.router.navigateByUrl(url);
       }
     };
@@ -113,6 +110,16 @@ export class ProjectsListComponent implements OnInit {
     );
   }
 
+  getSorting() {
+    let defaultSorting = 'id,desc';
+    if (this.type === 'project-release-queue') {
+      defaultSorting = 'rfq_id,desc';
+    } else if (this.type === 'vendor-confirmation-queue') {
+      defaultSorting = 'order_id,desc';
+    }
+    return defaultSorting;
+  }
+
   setDataSource() {
     const dataSource = {
       rowCount: null,
@@ -120,7 +127,7 @@ export class ProjectsListComponent implements OnInit {
         const filterOption: FilterOption = {
           page: params.startRow / this.pageSize,
           size: this.pageSize,
-          sort: this.isProdProject() ? 'rfq_id,DESC' : this.sort
+          sort: this.getSorting()
         };
         this.spinner.show('loadingPanel');
         let ob: Observable<any> = null;
@@ -136,7 +143,7 @@ export class ProjectsListComponent implements OnInit {
             ob = this.projectService.getProdReleaseProject(filterOption, this.searchOpt);
             break;
           case 'vendor-confirmation-queue':
-            ob = this.projectService.getConfirmationQueue(filterOption, null);
+            ob = this.projectService.getProdVendorReleaseProject(filterOption, this.searchOpt);
             break;
           case 'released-projects':
             ob = this.projectService.getReleasedProjects(filterOption, null);

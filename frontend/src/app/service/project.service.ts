@@ -116,4 +116,9 @@ export class ProjectService {
     const url = `${environment.apiBaseUrl}/admin/production-project/project-release-queue/search`;
     return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
   }
+
+  getProdVendorReleaseProject(filter: FilterOption, searchOpt: any): Observable<Pageable<ProjectSearchResult[]>> {
+    const url = `${environment.apiBaseUrl}/admin/production-project/vendor-confirmation-released-queue/search`;
+    return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
+  }
 }
