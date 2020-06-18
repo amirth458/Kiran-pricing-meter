@@ -91,16 +91,16 @@ export class SuborderReleaseQueueComponent implements OnInit {
         filter: ''
       }
     },
-    {
-      name: 'Post-Process',
-      field: 'postProcessTypeNames',
-      tooltipField: 'postProcessTypeNames',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
+    // {
+    //   name: 'Post-Process',
+    //   field: 'postProcessTypeNames',
+    //   tooltipField: 'postProcessTypeNames',
+    //   checked: false,
+    //   query: {
+    //     type: '',
+    //     filter: ''
+    //   }
+    // },
     {
       name: 'Delivery Date',
       field: 'deliveryDate',
@@ -155,12 +155,12 @@ export class SuborderReleaseQueueComponent implements OnInit {
       tooltipField: 'process',
       checked: true
     },
-    {
-      name: 'Post-Process',
-      field: 'postProcessTypeNames',
-      tooltipField: 'postProcessTypeNames',
-      checked: true
-    },
+    // {
+    //   name: 'Post-Process',
+    //   field: 'postProcessTypeNames',
+    //   tooltipField: 'postProcessTypeNames',
+    //   checked: true
+    // },
     {
       name: 'Delivery Date',
       field: 'deliveryDate',
@@ -277,14 +277,14 @@ export class SuborderReleaseQueueComponent implements OnInit {
         sortable: true,
         filter: false
       },
-      {
-        headerName: 'Post-Process',
-        field: 'postProcessTypeNames',
-        tooltipField: 'postProcessTypeNames',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
+      // {
+      //   headerName: 'Post-Process',
+      //   field: 'postProcessTypeNames',
+      //   tooltipField: 'postProcessTypeNames',
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
       {
         headerName: 'Delivery Date',
         field: 'deliveryDate',
