@@ -280,17 +280,17 @@ export class ProjectsListComponent implements OnInit {
     }
     if (this.type === 'order-complete') {
       this.connectColumnDefs = this.connectColumnDefs.concat([
+        // {
+        //   headerName: 'Related ProdEX Part IDs',
+        //   field: 'prodexPartIds',
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false,
+        //   tooltipField: 'prodexPartIds',
+        //   valueFormatter: v => (v.value ? v.value.join(', ') : '')
+        // },
         {
-          headerName: 'Related ProdEX Part IDs',
-          field: 'prodexPartIds',
-          hide: false,
-          sortable: true,
-          filter: false,
-          tooltipField: 'prodexPartIds',
-          valueFormatter: v => (v.value ? v.value.join(', ') : '')
-        },
-        {
-          headerName: 'Related ProdEX RFQ IDs',
+          headerName: 'RFQ IDs',
           field: 'rfqIds',
           hide: false,
           sortable: true,
