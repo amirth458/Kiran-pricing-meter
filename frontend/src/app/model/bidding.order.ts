@@ -26,6 +26,14 @@ export enum BiddingStatus {
   REJECTED = 'REJECTED'
 }
 
+export enum BiddingStatusEnum {
+  QUEUED_FOR_LATER = 1,
+  NO_RESPONSE = 2,
+  COUNTER_OFFER = 3,
+  ACCEPTED = 4,
+  REJECTED = 5
+}
+
 export enum BiddingOrderStatus {
   NOT_STARTED = 'NOT_STARTED',
   IN_PROGRESS = 'IN_PROGRESS',

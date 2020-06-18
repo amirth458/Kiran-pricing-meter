@@ -343,3 +343,33 @@ export enum VendorOrderTypeEnum {
   DILIGENT_PRODUCTION = 4,
   DILIGENT_CONNECT = 5
 }
+
+export class SearchOpt {
+  projectTypeId: number;
+  startDate: Date;
+  endDate: Date;
+  searchQuery: string;
+  bidProjectStatusTypeIds: Array<number>;
+  partStatusTypeIds: Array<number>;
+  isArchive: boolean;
+  constructor() {
+    this.projectTypeId = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.searchQuery = null;
+    this.bidProjectStatusTypeIds = [];
+    this.partStatusTypeIds = [];
+    this.isArchive = false;
+  }
+}
+
+export interface ProjectSearchResult {
+  partId: number;
+  rfqId: number;
+  orderId: number;
+  customerName: string;
+  sameVendor: boolean;
+  totalRowCount: number;
+  bidProjectStatus: string;
+  projectType?: string;
+}

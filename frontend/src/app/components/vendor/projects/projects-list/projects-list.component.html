@@ -3,7 +3,13 @@
     <div class="d-flex header justify-content-between">
       <div class="d-flex">
         <app-insight-header
-          *ngIf="type === 'release-queue' || type === 'order-complete'"
+          *ngIf="
+            type === 'release-queue' ||
+            type === 'order-complete' ||
+            type === 'project-release-queue' ||
+            type === 'vendor-confirmation-queue' ||
+            type === 'released-projects'
+          "
           [type]="null"
           [gridOptions]="gridOptions"
           [placeholder]="'Customer, RFQ, Part, Order'"
@@ -23,7 +29,7 @@
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
     <ngx-spinner
-      [name]="'spooler'"
+      [name]="'loadingPanel'"
       bdColor="#ffffff70"
       size="small"
       color="#74bf09"
