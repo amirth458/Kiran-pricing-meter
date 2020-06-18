@@ -97,14 +97,14 @@ export class PastOrdersComponent implements OnInit {
         sortable: true,
         filter: false
       },
-      {
-        headerName: 'Post-Process',
-        field: 'postProcess',
-        tooltipField: 'postProcess',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
+      // {
+      //   headerName: 'Post-Process',
+      //   field: 'postProcess',
+      //   tooltipField: 'postProcess',
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
       {
         headerName: 'Previously Ordered',
         field: 'previouslyOrdered',
@@ -158,9 +158,7 @@ export class PastOrdersComponent implements OnInit {
     const rows = [];
     try {
       while (true) {
-        const res = await this.ordersService
-          .getPastOrders({ page, size: 1000, sort: 'id,ASC', q })
-          .toPromise();
+        const res = await this.ordersService.getPastOrders({ page, size: 1000, sort: 'id,ASC', q }).toPromise();
 
         if (!res.content) {
           break;
