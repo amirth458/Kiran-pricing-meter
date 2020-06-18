@@ -61,6 +61,24 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'part_status'
     },
     {
+      headerName: 'part_type',
+      field: 'part_type',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'part_type',
+      headerTooltip: 'part_type'
+    },
+    {
+      headerName: 'payment_status',
+      field: 'payment_status',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'payment_status',
+      headerTooltip: 'payment_status'
+    },
+    {
       headerName: 'part_quote_price',
       field: 'part_quote_price',
       hide: false,

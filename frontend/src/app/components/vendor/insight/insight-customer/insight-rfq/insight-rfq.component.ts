@@ -38,6 +38,15 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'rfq_profile_name'
     },
     {
+      headerName: 'project_type',
+      field: 'project_type',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'project_type',
+      headerTooltip: 'project_type'
+    },
+    {
       headerName: 'rfq_status',
       field: 'rfq_status',
       hide: false,
