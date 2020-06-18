@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { takeUntil, catchError } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { ProjectTypeEnum } from 'src/app/model/order.model';
   styleUrls: ['./other-status.component.css']
 })
 export class OtherStatusComponent implements OnInit, OnDestroy {
-  columnDefs = [];
+  columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
   rowData: any[] = [];
   navigation;
@@ -64,7 +64,6 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
-
   constructor(
     public spinner: NgxSpinnerService,
     public pricingService: RfqPricingService,
@@ -144,11 +143,11 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Quantity',
+        width: 100,
         field: 'quantity',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center',
         tooltipField: 'quantity'
       },
       {
@@ -169,16 +168,25 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         valueFormatter: dt => (dt.value || []).join(', '),
         tooltipField: 'equipmentPropertyValues'
       },
-      {
-        headerName: 'Price',
-        field: 'price',
-        hide: false,
-        sortable: true,
-        tooltipField: 'price',
-        valueFormatter: dt => {
-          return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
-        }
-      }
+      this.partType !== AppPartTypeId.CONNECT_PART && this.partType !== AppPartTypeId.PRODUCTION_PART
+        ? {
+            headerName: 'Price',
+            field: 'price',
+            hide: false,
+            sortable: true,
+            tooltipField: 'price',
+            valueFormatter: dt => {
+              return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
+            }
+          }
+        : {
+            headerName: 'Part Status',
+            field: 'partStatusType',
+            hide: false,
+            sortable: true,
+            tooltipField: 'partStatusType',
+            valueFormatter: d => (d.value ? d.value.replace(/_/g, ' ') : '')
+          }
     ];
 
     this.gridOptions = {

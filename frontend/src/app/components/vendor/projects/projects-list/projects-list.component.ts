@@ -173,7 +173,7 @@ export class ProjectsListComponent implements OnInit {
                   orderStatusType: item.orderStatusType,
                   bidOrderStatus: item.bidOrderStatus || '',
                   prodexPartIds: item.prodexPartIds || [],
-                  prodexRFQIds: item.prodexRFQIds || []
+                  rfqIds: item.rfqIds || []
                 }))
               : ((data.content || []) as ProjectSearchResult[]).map(row => {
                   row.projectType = ProjectType.PRODUCTION_PROJECT;
@@ -181,14 +181,14 @@ export class ProjectsListComponent implements OnInit {
                 });
           if (this.type === 'release-queue' || this.type === 'order-complete') {
             this.totalRows = data && data[0] ? data[0].totalRowCount : 0;
-            const lastRow = data && data.length ? (this.totalRows <= params.endRow ? data.totalRowCount : -1) : -1;
+            const lastRow = this.totalRows && this.totalRows <= params.endRow ? data[0].totalRowCount : -1;
             if (data && data.length) {
               params.successCallback(rowsThisPage, lastRow);
             }
           } else {
             this.totalRows = data.totalElements || 0;
             const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-            if (data.totalElements) {
+            if (data && data.totalElements) {
               params.successCallback(rowsThisPage, lastRow);
             }
           }
@@ -312,15 +312,17 @@ export class ProjectsListComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          tooltipField: 'prodexPartIds'
+          tooltipField: 'prodexPartIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
         },
         {
           headerName: 'Related ProdEX RFQ IDs',
-          field: 'prodexRFQIds',
+          field: 'rfqIds',
           hide: false,
           sortable: true,
           filter: false,
-          tooltipField: 'prodexRFQIds'
+          tooltipField: 'rfqIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
         },
         {
           headerName: 'Order Status',

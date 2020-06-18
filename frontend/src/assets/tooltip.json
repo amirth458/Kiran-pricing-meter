@@ -266,8 +266,8 @@
       "actions": []
     },
     {
-      "name": "Archive",
-      "tooltipMessage": "Archive",
+      "name": "PM Parts",
+      "tooltipMessage": "PM Parts",
       "route": "other-status",
       "actions": []
     }
@@ -303,8 +303,8 @@
       "actions": []
     },
     {
-      "name": "Archive",
-      "tooltipMessage": "Archive",
+      "name": "Connect Parts",
+      "tooltipMessage": "Connect Parts",
       "route": "other-status",
       "actions": []
     }
