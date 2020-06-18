@@ -17,6 +17,15 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'order_id'
     },
     {
+      headerName: 'rfq_id',
+      field: 'rfq_id',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'rfq_id',
+      headerTooltip: 'rfq_id'
+    },
+    {
       headerName: 'order_status',
       field: 'order_status',
       hide: false,
