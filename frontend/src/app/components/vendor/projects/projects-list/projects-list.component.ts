@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import { Observable } from 'rxjs';
 
+import { AppPartStatusId } from '../../../../model/part.model';
 import { BiddingStatusEnum } from '../../../../model/bidding.order';
 import { ConnectOrder } from 'src/app/model/connect.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
@@ -115,7 +116,7 @@ export class ProjectsListComponent implements OnInit {
     let defaultSorting = 'id,desc';
     if (this.type === 'project-release-queue') {
       defaultSorting = 'rfq_id,desc';
-    } else if (this.type === 'vendor-confirmation-queue') {
+    } else if (this.type === 'vendor-confirmation-queue' || this.type === 'released-projects') {
       defaultSorting = 'order_id,desc';
     }
     return defaultSorting;
@@ -141,14 +142,16 @@ export class ProjectsListComponent implements OnInit {
         }
         switch (this.type) {
           case 'project-release-queue':
+            this.searchOpt.partStatusTypeIds = [AppPartStatusId.PART_AWAITING_RELEASE];
             ob = this.projectService.getProdReleaseProject(filterOption, this.searchOpt);
             break;
           case 'vendor-confirmation-queue':
-            this.searchOpt.bidProjectStatusTypeIds = [BiddingStatusEnum.COUNTER_OFFER];
+            this.searchOpt.bidProjectStatusTypeIds = [BiddingStatusEnum.NO_RESPONSE];
             ob = this.projectService.getProdVendorReleaseProject(filterOption, this.searchOpt);
             break;
           case 'released-projects':
-            ob = this.projectService.getReleasedProjects(filterOption, null);
+            this.searchOpt.bidProjectStatusTypeIds = [BiddingStatusEnum.COUNTER_OFFER];
+            ob = this.projectService.getProdVendorReleaseProject(filterOption, this.searchOpt);
             break;
           case 'release-queue':
             this.requestBody.orderStatusId = OrderStatusTypeId.VENDOR_DOWNSELECTION;
@@ -240,7 +243,7 @@ export class ProjectsListComponent implements OnInit {
       },
       {
         headerName: 'Status',
-        field: 'bidOrderStatus',
+        field: 'bidProjectStatus',
         hide: !(this.type === 'vendor-confirmation-queue' || this.type === 'released-projects'),
         sortable: true,
         filter: false,
