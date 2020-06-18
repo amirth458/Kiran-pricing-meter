@@ -67,6 +67,6 @@ export class ConnectOrder {
   orderId: number;
   partIds: number[];
   prodexPartIds: number[];
-  prodexRFQIds: number[];
+  rfqIds: number[];
   totalRowCount: number;
 }
