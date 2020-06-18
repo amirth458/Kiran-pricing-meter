@@ -35,8 +35,8 @@ export class RfqContainerComponent implements OnInit {
       actions: []
     },
     {
-      name: 'Archive',
-      tooltipMessage: 'Archive',
+      name: 'Program Parts',
+      tooltipMessage: 'Program Parts',
       route: 'other-status',
       actions: []
     }
