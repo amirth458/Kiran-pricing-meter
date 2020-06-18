@@ -137,7 +137,7 @@ export class ProjectsListComponent implements OnInit {
                   orderStatusType: item.orderStatusType,
                   bidOrderStatus: item.bidOrderStatus || '',
                   prodexPartIds: item.prodexPartIds || [],
-                  prodexRFQIds: item.prodexRFQIds || []
+                  rfqIds: item.rfqIds || []
                 }))
               : data.content.map((item: Part) => ({
                   id: item.id,
@@ -286,15 +286,17 @@ export class ProjectsListComponent implements OnInit {
           hide: false,
           sortable: true,
           filter: false,
-          tooltipField: 'prodexPartIds'
+          tooltipField: 'prodexPartIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
         },
         {
           headerName: 'Related ProdEX RFQ IDs',
-          field: 'prodexRFQIds',
+          field: 'rfqIds',
           hide: false,
           sortable: true,
           filter: false,
-          tooltipField: 'prodexRFQIds'
+          tooltipField: 'rfqIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
         },
         {
           headerName: 'Order Status',
