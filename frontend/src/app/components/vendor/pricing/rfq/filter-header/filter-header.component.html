@@ -2,7 +2,7 @@
   <form [formGroup]="filterForm" class="d-flex align-items-center">
     <!-- Part Status -->
     <select class="form-control input mr-3" *ngIf="status === 'other'" formControlName="partStatusTypeId">
-      <option value="">Select...</option>
+      <option value="">Select Part Status</option>
       <option *ngFor="let option of partStatusList" [value]="option.id">{{ option.name }}</option>
     </select>
 
