@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { GridOptions, ColDef } from 'ag-grid-community';
-import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-import { MetadataService } from 'src/app/service/metadata.service';
-import { Part, PartOrder } from 'src/app/model/part.model';
-import { ProjectService } from 'src/app/service/project.service';
-import { FilterOption } from 'src/app/model/vendor.model';
+
+import { ColDef, GridOptions } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Observable } from 'rxjs';
+
 import { ConnectOrder } from 'src/app/model/connect.model';
-import { ProjectTypeEnum, OrderStatusTypeId } from 'src/app/model/order.model';
+import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
+import { FilterOption } from 'src/app/model/vendor.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { ProjectService } from 'src/app/service/project.service';
+import { OrderStatusTypeId, ProjectSearchResult, ProjectTypeEnum, SearchOpt } from 'src/app/model/order.model';
+import { ProjectType } from '../../../../model/billing.model';
 
 @Component({
   selector: 'app-projects-list',
@@ -42,6 +45,7 @@ export class ProjectsListComponent implements OnInit {
     beginDate: null,
     endDate: null
   };
+  searchOpt: SearchOpt = new SearchOpt();
   totalRows = 0;
   constructor(
     public spinner: NgxSpinnerService,
@@ -64,7 +68,6 @@ export class ProjectsListComponent implements OnInit {
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
-
       rowBuffer: 0,
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
@@ -73,23 +76,41 @@ export class ProjectsListComponent implements OnInit {
         const url =
           this.type === 'release-queue' || this.type === 'order-complete'
             ? `${this.router.url}/${event.data.orderId}`
-            : `${this.router.url}/${event.data.id}`;
+            : `${this.router.url}/${event.data.partId}`;
+        console.log(url);
         this.router.navigateByUrl(url);
       }
     };
   }
 
   onQueryChange(ev) {
-    this.requestBody.searchValue = ev;
+    if (this.isProdProject()) {
+      this.searchOpt.searchQuery = ev || '';
+    } else {
+      this.requestBody.searchValue = ev;
+    }
     this.setDataSource();
   }
 
   onCreatedDateChange(ev) {
     if (ev.length) {
-      this.requestBody.beginDate = ev[0];
-      this.requestBody.endDate = ev[1];
+      if (this.isProdProject()) {
+        this.searchOpt.startDate = ev[0];
+        this.searchOpt.endDate = ev[1];
+      } else {
+        this.requestBody.beginDate = ev[0];
+        this.requestBody.endDate = ev[1];
+      }
     }
     this.setDataSource();
+  }
+
+  isProdProject() {
+    return (
+      this.type === 'project-release-queue' ||
+      this.type === 'vendor-confirmation-queue' ||
+      this.type === 'released-projects'
+    );
   }
 
   setDataSource() {
@@ -99,13 +120,20 @@ export class ProjectsListComponent implements OnInit {
         const filterOption: FilterOption = {
           page: params.startRow / this.pageSize,
           size: this.pageSize,
-          sort: this.sort
+          sort: this.isProdProject() ? 'rfq_id,DESC' : this.sort
         };
         this.spinner.show('loadingPanel');
         let ob: Observable<any> = null;
+        if (
+          this.type === 'project-release-queue' ||
+          this.type === 'vendor-confirmation-queue' ||
+          this.type === 'released-projects'
+        ) {
+          this.searchOpt.projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT;
+        }
         switch (this.type) {
           case 'project-release-queue':
-            ob = this.projectService.getProjectReleaseQueue(filterOption, null);
+            ob = this.projectService.getProdReleaseProject(filterOption, this.searchOpt);
             break;
           case 'vendor-confirmation-queue':
             ob = this.projectService.getConfirmationQueue(filterOption, null);
@@ -138,18 +166,10 @@ export class ProjectsListComponent implements OnInit {
                   prodexPartIds: item.prodexPartIds || [],
                   prodexRFQIds: item.prodexRFQIds || []
                 }))
-              : data.content.map((item: Part) => ({
-                  id: item.id,
-                  orderId: item.order && item.order.id,
-                  projectType:
-                    item.rfqMedia &&
-                    item.rfqMedia.projectRfq &&
-                    item.rfqMedia.projectRfq.projectType &&
-                    item.rfqMedia.projectRfq.projectType.name,
-                  sameVendor: item.order && item.order.isReleaseToSingleSupplier ? 'True' : 'False',
-                  customerName: item.order && item.order.customerName,
-                  bidOrderStatus: item.bidOrderStatus || ''
-                }));
+              : ((data.content || []) as ProjectSearchResult[]).map(row => {
+                  row.projectType = ProjectType.PRODUCTION_PROJECT;
+                  return row;
+                });
           if (this.type === 'release-queue' || this.type === 'order-complete') {
             this.totalRows = data && data[0] ? data[0].totalRowCount : 0;
             const lastRow = data && data.length ? (this.totalRows <= params.endRow ? data.totalRowCount : -1) : -1;
@@ -163,7 +183,6 @@ export class ProjectsListComponent implements OnInit {
               params.successCallback(rowsThisPage, lastRow);
             }
           }
-          // this.reconfigColumns();
         });
       }
     };
@@ -188,11 +207,11 @@ export class ProjectsListComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Part ID',
-        field: 'id',
+        field: 'partId',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'id'
+        tooltipField: 'partId'
       },
       {
         headerName: 'Order ID',
@@ -200,7 +219,7 @@ export class ProjectsListComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'order.id'
+        tooltipField: 'orderId'
       },
       {
         headerName: 'Project Type',

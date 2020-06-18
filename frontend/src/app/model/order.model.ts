@@ -344,18 +344,25 @@ export enum VendorOrderTypeEnum {
   DILIGENT_CONNECT = 5
 }
 
-export interface SearchOpt {
+export class SearchOpt {
   projectTypeId: number;
   startDate: Date;
   endDate: Date;
   searchQuery: string;
+  constructor() {
+    this.projectTypeId = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.searchQuery = null;
+  }
 }
 
 export interface ProjectSearchResult {
   partId: number;
-  rfq_id: number;
-  order_id: number;
-  customer_name: string;
-  same_vendor: boolean;
+  rfqId: number;
+  orderId: number;
+  customerName: string;
+  sameVendor: boolean;
   totalRowCount: number;
+  projectType?: string;
 }

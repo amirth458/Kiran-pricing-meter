@@ -10,8 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ProjectFilterComponent implements OnInit {
   value: FormGroup = this.fb.group({
     projectTypeId: [null],
-    startDate: [null],
-    endDate: [null],
+    selectedMoments: [null],
     searchQuery: null
   });
 

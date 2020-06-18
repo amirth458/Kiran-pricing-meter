@@ -107,20 +107,13 @@ export class ProjectService {
     );
   }
 
-  searchCustomerOrder(filterOption: FilterOption, requestBody) {
+  searchCustomerOrder(filter: FilterOption, requestBody) {
     const url = `${environment.apiBaseUrl}/admin/customer/customer-order-search`;
-    let params = new HttpParams();
-
-    if (filterOption) {
-      params = params.append('page', filterOption.page.toString());
-      params = params.append('size', filterOption.size.toString());
-      params = params.append('sort', filterOption.sort.toString());
-    }
-    return this.http.post<Pageable<PartOrder>>(url, requestBody, { params });
+    return this.http.post<Pageable<PartOrder>>(url, requestBody, { params: this.buildParameters(filter) });
   }
 
-  getProdReleaseProject(searchOpt: SearchOpt, filter: FilterOption): Observable<Pageable<ProjectSearchResult[]>> {
-    const url = `${environment.apiBaseUrl}/admin/customer/customer-order/search`;
+  getProdReleaseProject(filter: FilterOption, searchOpt: any): Observable<Pageable<ProjectSearchResult[]>> {
+    const url = `${environment.apiBaseUrl}/admin/production-project/project-release-queue/search`;
     return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
   }
 }
