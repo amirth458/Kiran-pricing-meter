@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import { Observable } from 'rxjs';
 
+import { BiddingStatusEnum } from '../../../../model/bidding.order';
 import { ConnectOrder } from 'src/app/model/connect.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { FilterOption } from 'src/app/model/vendor.model';
@@ -143,6 +144,7 @@ export class ProjectsListComponent implements OnInit {
             ob = this.projectService.getProdReleaseProject(filterOption, this.searchOpt);
             break;
           case 'vendor-confirmation-queue':
+            this.searchOpt.bidProjectStatusTypeIds = [BiddingStatusEnum.COUNTER_OFFER];
             ob = this.projectService.getProdVendorReleaseProject(filterOption, this.searchOpt);
             break;
           case 'released-projects':

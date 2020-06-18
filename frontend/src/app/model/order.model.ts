@@ -349,11 +349,13 @@ export class SearchOpt {
   startDate: Date;
   endDate: Date;
   searchQuery: string;
+  bidProjectStatusTypeIds: Array<number>;
   constructor() {
     this.projectTypeId = null;
     this.startDate = null;
     this.endDate = null;
     this.searchQuery = null;
+    this.bidProjectStatusTypeIds = [];
   }
 }
 
