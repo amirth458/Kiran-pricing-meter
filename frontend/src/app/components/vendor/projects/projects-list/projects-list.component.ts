@@ -153,14 +153,14 @@ export class ProjectsListComponent implements OnInit {
                 }));
           if (this.type === 'release-queue' || this.type === 'order-complete') {
             this.totalRows = data && data[0] ? data[0].totalRowCount : 0;
-            const lastRow = data && data.length ? (this.totalRows <= params.endRow ? data.totalRowCount : -1) : -1;
+            const lastRow = this.totalRows && this.totalRows <= params.endRow ? data[0].totalRowCount : -1;
             if (data && data.length) {
               params.successCallback(rowsThisPage, lastRow);
             }
           } else {
             this.totalRows = data.totalElements || 0;
             const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-            if (data.totalElements) {
+            if (data && data.totalElements) {
               params.successCallback(rowsThisPage, lastRow);
             }
           }
