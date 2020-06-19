@@ -43,7 +43,8 @@ export class ProjectsListComponent implements OnInit {
     orderStatusId: null,
     searchValue: null,
     beginDate: null,
-    endDate: null
+    endDate: null,
+    includeRelatedPartIds: false
   };
   searchOpt: SearchOpt = new SearchOpt();
   totalRows = 0;
@@ -120,6 +121,14 @@ export class ProjectsListComponent implements OnInit {
       defaultSorting = 'order_id,desc';
     }
     return defaultSorting;
+  }
+
+  toggleRelatedPart() {
+    this.requestBody.includeRelatedPartIds = !this.requestBody.includeRelatedPartIds;
+    this.initColumnDef();
+    this.gridOptions.api.setColumnDefs(this.connectColumnDefs);
+    this.gridOptions.api.sizeColumnsToFit();
+    this.setDataSource();
   }
 
   setDataSource() {
@@ -309,15 +318,6 @@ export class ProjectsListComponent implements OnInit {
     }
     if (this.type === 'order-complete') {
       this.connectColumnDefs = this.connectColumnDefs.concat([
-        // {
-        //   headerName: 'Related ProdEX Part IDs',
-        //   field: 'prodexPartIds',
-        //   hide: false,
-        //   sortable: true,
-        //   filter: false,
-        //   tooltipField: 'prodexPartIds',
-        //   valueFormatter: v => (v.value ? v.value.join(', ') : '')
-        // },
         {
           headerName: 'RFQ IDs',
           field: 'rfqIds',
@@ -337,6 +337,17 @@ export class ProjectsListComponent implements OnInit {
           valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
         }
       ]);
+      if (this.requestBody.includeRelatedPartIds) {
+        this.connectColumnDefs.push({
+          headerName: 'Related ProdEX Part IDs',
+          field: 'prodexPartIds',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'prodexPartIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
+        });
+      }
     }
 
     this.columnDefs.push({
