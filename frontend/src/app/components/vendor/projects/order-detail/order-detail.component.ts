@@ -11,7 +11,7 @@ import { MetadataConfig } from 'src/app/model/metadata.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { OrdersService } from 'src/app/service/orders.service';
 import { PartService } from 'src/app/service/part.service';
-import { Part, MatchedProcessProfile, ReferenceFile } from 'src/app/model/part.model';
+import { Part, MatchedProcessProfile, ReferenceFile, AppPartStatusId } from 'src/app/model/part.model';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
@@ -100,20 +100,28 @@ export class OrderDetailComponent implements OnInit {
     this.route.params.subscribe(({ id }) => {
       this.orderService.getPartById(id).subscribe(v => {
         this.part = v;
+
         this.getReferenceFileCount();
-        if (v.partStatusType.id === 18) {
+
+        if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_RELEASE) {
           // PART_AWAITING_RELEASE
           if (this.type !== 'project-release-queue') {
             this.router.navigateByUrl(`/prodex/projects/project-release-queue/${id}`);
+            return;
           }
-        } else if (v.partStatusType.id === 15) {
+        } else if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_VENDORS) {
           // vendor-confirmation-queue
           if (this.type !== 'vendor-confirmation-queue') {
             this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${id}`);
+            return;
           }
+        } else if (this.type === 'released-projects' && v.partStatusType.id !== AppPartStatusId.VENDOR_CONFIRMED) {
+          this.router.navigateByUrl(`/prodex/projects/released-orders/${v.order.id}`);
+          return;
         } else {
           if (this.type !== 'released-projects') {
             this.router.navigateByUrl(`/prodex/projects/released-projects/${id}`);
+            return;
           }
         }
         this.supplierGridOptions[0].api.showLoadingOverlay();

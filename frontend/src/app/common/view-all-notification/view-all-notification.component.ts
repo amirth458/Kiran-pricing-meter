@@ -33,7 +33,7 @@ export class ViewAllNotificationComponent implements OnInit {
   @Input() unReadCount: { count: number };
   notifications: Notification[] = [];
   @Output() unReadCountChanged = new EventEmitter<{ count: number }>();
-  selectedNotification = {};
+  selectedNotification;
   nameMapping = {
     firstName: 'First Name',
     lastName: 'Last Name',
@@ -101,6 +101,20 @@ export class ViewAllNotificationComponent implements OnInit {
     if (notification.message) {
       try {
         this.selectedNotification = JSON.parse(notification.message);
+        if (this.selectedNotification.partDetails && this.selectedNotification.partDetails.length) {
+          this.selectedNotification.deliveryDate = this.selectedNotification.partDetails
+            .map(item => item.deliveryDate)
+            .join(', ');
+          this.selectedNotification.fileName = this.selectedNotification.partDetails
+            .map(item => item.fileName)
+            .join(', ');
+          this.selectedNotification.material = this.selectedNotification.partDetails
+            .map(item => item.material)
+            .join(', ');
+          this.selectedNotification.technology = this.selectedNotification.partDetails
+            .map(item => item.technology)
+            .join(', ');
+        }
         if (!notification.isRead) {
           this.toggleStatus([notification.id], index);
         }
