@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+
 import { Observable } from 'rxjs';
-import { Payment, PaymentDetails } from '../model/billing.model';
+import { map } from 'rxjs/operators';
+
+import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
-import { map } from '../store';
 import { MetaData } from '../model/metadata.model';
+import { Payment, PaymentDetails } from '../model/billing.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +34,14 @@ export class BillingService {
       .set('page', filter.page.toString())
       .set('size', filter.size.toString())
       .set('sort', filter.sort);
-
     return this.http.post<Payment[]>(`${environment.apiBaseUrl}/admin/billing/search`, body, { params });
   }
 
-  approveOrder(orderId: number) {
+  approve(orderId: number) {
     return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${orderId}/approve`, null);
   }
 
-  rejectOrder(body) {
-    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/reject`, body);
+  reject(orderId: number) {
+    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${orderId}/reject`, null);
   }
 }

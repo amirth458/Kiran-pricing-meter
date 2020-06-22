@@ -301,10 +301,10 @@ export class WaitingForApprovalComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-  approvePurchase() {
+  approve() {
     this.disableControls = true;
     this.spineer.show();
-    this.billingService.approveOrder(this.selectedPurchaseOrder.orderId).subscribe(
+    this.billingService.approve(this.selectedPurchaseOrder.orderId).subscribe(
       res => {
         this.onCloseData();
         this.getProfiles();
@@ -328,17 +328,10 @@ export class WaitingForApprovalComponent implements OnInit {
     this.spineer.hide();
   }
 
-  rejectPurchase() {
+  reject() {
     this.disableControls = true;
-    const body = {
-      orderId: this.selectedPurchaseOrder.orderId,
-      paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
-      paymentType: this.selectedPurchaseOrder.paymentType,
-      poNumber: this.selectedPurchaseOrder.poNumber
-    };
-
     this.spineer.show();
-    this.billingService.rejectOrder(body).subscribe(
+    this.billingService.reject(this.selectedPurchaseOrder.orderId).subscribe(
       result => {
         this.onCloseData();
         this.getProfiles();
@@ -486,7 +479,6 @@ export class WaitingForApprovalComponent implements OnInit {
         suppressSizeToFit: true
       }
     ];
-
     if (!waitingForApproval) {
       this.columnDefs.pop();
       this.columnDefs.splice(5, 0, {

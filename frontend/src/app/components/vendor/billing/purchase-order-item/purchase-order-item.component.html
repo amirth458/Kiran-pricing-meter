@@ -189,7 +189,7 @@
       <div class="w-100 row justify-content-center position-relative">
         <ng-container *ngIf="!loadingPanel; else loading">
           <div class="col-md-4">
-            <button (click)="approvePurchase()" type="button" class="col btn theme">
+            <button (click)="approve()" type="button" class="col btn theme">
               Approve
             </button>
           </div>
@@ -220,7 +220,7 @@
       <div class="w-100 row justify-content-center position-relative">
         <ng-container *ngIf="!loadingPanel; else loading">
           <div class="col-md-4">
-            <button (click)="rejectPurchase()" type="button" class="col btn theme orange-btn m-0">
+            <button (click)="reject()" type="button" class="col btn theme orange-btn m-0">
               Reject
             </button>
           </div>
