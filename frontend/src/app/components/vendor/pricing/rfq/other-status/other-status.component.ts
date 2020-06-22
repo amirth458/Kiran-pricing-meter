@@ -168,25 +168,24 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         valueFormatter: dt => (dt.value || []).join(', '),
         tooltipField: 'equipmentPropertyValues'
       },
-      this.partType !== AppPartTypeId.CONNECT_PART && this.partType !== AppPartTypeId.PRODUCTION_PART
-        ? {
-            headerName: 'Price',
-            field: 'price',
-            hide: false,
-            sortable: true,
-            tooltipField: 'price',
-            valueFormatter: dt => {
-              return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
-            }
-          }
-        : {
-            headerName: 'Part Status',
-            field: 'partStatusType',
-            hide: false,
-            sortable: true,
-            tooltipField: 'partStatusType',
-            valueFormatter: d => (d.value ? d.value.replace(/_/g, ' ') : '')
-          }
+      {
+        headerName: 'Price',
+        field: 'price',
+        hide: this.partType === AppPartTypeId.CONNECT_PART || this.partType === AppPartTypeId.PRODUCTION_PART,
+        sortable: true,
+        tooltipField: 'price',
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(dt.value || null, 'USD', 'symbol', '0.0-3');
+        }
+      },
+      {
+        headerName: 'Part Status',
+        field: 'partStatusType',
+        hide: false,
+        sortable: true,
+        tooltipField: 'partStatusType',
+        valueFormatter: d => (d.value ? d.value.replace(/_/g, ' ') : '')
+      }
     ];
 
     this.gridOptions = {

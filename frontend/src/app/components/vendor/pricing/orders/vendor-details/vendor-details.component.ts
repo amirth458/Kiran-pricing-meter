@@ -517,14 +517,14 @@ export class VendorDetailsComponent implements OnInit {
           sortable: true,
           filter: false
         },
-        {
-          headerName: 'Post-Process',
-          field: 'postProcessTypeNames',
-          tooltipField: 'postProcessTypeNames',
-          hide: false,
-          sortable: true,
-          filter: false
-        },
+        // {
+        //   headerName: 'Post-Process',
+        //   field: 'postProcessTypeNames',
+        //   tooltipField: 'postProcessTypeNames',
+        //   hide: false,
+        //   sortable: true,
+        //   filter: false
+        // },
         // {
         //   headerName: 'Previously Ordered',
         //   field: 'previouslyOrdered',

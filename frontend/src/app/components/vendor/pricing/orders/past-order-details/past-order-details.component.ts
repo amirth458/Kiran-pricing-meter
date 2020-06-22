@@ -117,14 +117,14 @@ export class PastOrderDetailsComponent implements OnInit {
         sortable: true,
         filter: false
       },
-      {
-        headerName: 'Post-Process',
-        field: 'postProcess',
-        tooltipField: 'postProcess',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
+      // {
+      //   headerName: 'Post-Process',
+      //   field: 'postProcess',
+      //   tooltipField: 'postProcess',
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false
+      // },
       {
         headerName: 'Previously Ordered',
         field: 'previouslyOrdered',
