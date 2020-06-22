@@ -20,45 +20,27 @@ export class BillingService {
   }
 
   getPaymentInfo(orderId: string): Observable<PaymentDetails> {
-    return this.http.get<PaymentDetails>(
-      environment.apiBaseUrl + '/admin/billing/orders/' + orderId
-    );
+    return this.http.get<PaymentDetails>(environment.apiBaseUrl + '/admin/billing/orders/' + orderId);
   }
 
   addNote(note: string, orderId: number): Observable<any> {
-    return this.http.post<any>(
-      `${environment.apiBaseUrl}/admin/purchase-order/orders/${orderId}/notes`,
-      { note }
-    );
+    return this.http.post<any>(`${environment.apiBaseUrl}/admin/purchase-order/orders/${orderId}/notes`, { note });
   }
 
-  getPaymentList(
-    body: Payment,
-    filter: FilterOption = null
-  ): Observable<Payment[]> {
+  getPaymentList(body: Payment, filter: FilterOption = null): Observable<Payment[]> {
     const params = new HttpParams()
       .set('page', filter.page.toString())
       .set('size', filter.size.toString())
       .set('sort', filter.sort);
 
-    return this.http.post<Payment[]>(
-      `${environment.apiBaseUrl}/admin/billing/search`,
-      body,
-      { params }
-    );
+    return this.http.post<Payment[]>(`${environment.apiBaseUrl}/admin/billing/search`, body, { params });
   }
 
-  approveOrder(body) {
-    return this.http.put<any>(
-      `${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/approve`,
-      body
-    );
+  approveOrder(orderId: number) {
+    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${orderId}/approve`, null);
   }
 
   rejectOrder(body) {
-    return this.http.put<any>(
-      `${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/reject`,
-      body
-    );
+    return this.http.put<any>(`${environment.apiBaseUrl}/admin/billing/orders/${body.orderId}/reject`, body);
   }
 }
