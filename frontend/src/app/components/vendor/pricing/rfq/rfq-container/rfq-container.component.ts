@@ -59,7 +59,7 @@ export class RfqContainerComponent implements OnInit {
         this.selectedTab = 'Queued for Manual Price';
         break;
       case 'other-status':
-        this.selectedTab = 'Other Status';
+        this.selectedTab = 'Program Parts';
         break;
       default:
         this.route.navigateByUrl(this.route.url + '/pricing-settings');
