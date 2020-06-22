@@ -1,7 +1,10 @@
 <div class="wrapper">
   <div class="row mb-3">
     <div class="col-12">
-      <p class="header">Project Details</p>
+      <p class="header d-flex flex-row align-items-center justify-content-start">
+        Project Details
+        <span class="text-theme same-vendor-label" *ngIf="isManufacturerSameVendor()">Manufactured by Same Vendor</span>
+      </p>
       <div class="d-flex flex-column align-items-start">
         <h6>Part {{ part?.id }}</h6>
         <img height="100px" [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location" />
