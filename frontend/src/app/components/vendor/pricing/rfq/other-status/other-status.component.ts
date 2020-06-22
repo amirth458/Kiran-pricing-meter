@@ -175,7 +175,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         sortable: true,
         tooltipField: 'price',
         valueFormatter: dt => {
-          return this.currencyPipe.transform(dt.value || null, 'USD', 'symbol', '0.0-3');
+          return this.currencyPipe.transform(typeof dt.value === 'number' ? dt.value : null, 'USD', 'symbol', '0.0-3');
         }
       },
       {
