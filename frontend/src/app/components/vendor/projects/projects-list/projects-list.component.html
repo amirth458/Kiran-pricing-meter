@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="table theme-table">
-    <div class="d-flex header justify-content-between">
+    <div class="d-flex header justify-content-between align-items-center">
       <div class="d-flex">
         <app-insight-header
           *ngIf="
@@ -20,14 +20,28 @@
         ></app-insight-header>
       </div>
 
-      <span class="text-theme">Total: {{ totalRows }}</span>
+      <div class="d-flex align-items-center justify-content-end controls">
+        <span class="text-theme count text-right">Total: {{ totalRows }}</span>
+        <button
+          *ngIf="type === 'order-complete'"
+          (click)="toggleRelatedPart()"
+          type="button"
+          class="btn ml-2 font-sm theme"
+          [ngClass]="{ white: requestBody.includeRelatedPartIds }"
+        >
+          <ng-container *ngIf="requestBody.includeRelatedPartIds">
+            Hide
+          </ng-container>
+          <ng-container *ngIf="!requestBody.includeRelatedPartIds">
+            Show
+          </ng-container>
+          Related Part
+        </button>
+      </div>
     </div>
 
-    <ag-grid-angular
-      class="ag-theme-balham w-100 h-100"
-      [gridOptions]="gridOptions"
-      (gridReady)="onGridReady($event)"
-    ></ag-grid-angular>
+    <ag-grid-angular class="ag-theme-balham w-100 h-100" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
     <ngx-spinner
       [name]="'loadingPanel'"
       bdColor="#ffffff70"

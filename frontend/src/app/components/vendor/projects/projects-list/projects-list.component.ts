@@ -43,7 +43,8 @@ export class ProjectsListComponent implements OnInit {
     orderStatusId: null,
     searchValue: null,
     beginDate: null,
-    endDate: null
+    endDate: null,
+    includeRelatedPartIds: false
   };
   searchOpt: SearchOpt = new SearchOpt();
   totalRows = 0;
@@ -122,6 +123,14 @@ export class ProjectsListComponent implements OnInit {
     return defaultSorting;
   }
 
+  toggleRelatedPart() {
+    this.requestBody.includeRelatedPartIds = !this.requestBody.includeRelatedPartIds;
+    this.initColumnDef();
+    this.gridOptions.api.setColumnDefs(this.connectColumnDefs);
+    this.gridOptions.api.sizeColumnsToFit();
+    this.setDataSource();
+  }
+
   setDataSource() {
     const dataSource = {
       rowCount: null,
@@ -174,6 +183,7 @@ export class ProjectsListComponent implements OnInit {
                   customerName: item.customerName,
                   preferredVendors: item.minimumProdexSuppliers,
                   orderStatusType: item.orderStatusType,
+                  bidConnectStatusType: item.bidConnectStatusType,
                   bidOrderStatus: item.bidOrderStatus || '',
                   prodexPartIds: item.prodexPartIds || [],
                   rfqIds: item.rfqIds || []
@@ -247,7 +257,8 @@ export class ProjectsListComponent implements OnInit {
         hide: !(this.type === 'vendor-confirmation-queue' || this.type === 'released-projects'),
         sortable: true,
         filter: false,
-        tooltipField: 'bidOrderStatus'
+        tooltipField: 'bidOrderStatus',
+        valueFormatter: v => (v.value || '').replace(/_/g, ' ')
       },
       {
         headerName: 'Same Vendor',
@@ -298,26 +309,17 @@ export class ProjectsListComponent implements OnInit {
         },
         {
           headerName: 'Order Status',
-          field: 'orderStatusType',
+          field: 'bidConnectStatusType',
           hide: false,
           sortable: true,
           filter: false,
-          tooltipField: 'orderStatusType',
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
+          tooltipField: 'bidConnectStatusType',
+          valueFormatter: v => (v.value || '').replace(/_/g, ' ').toUpperCase()
         }
       ]);
     }
     if (this.type === 'order-complete') {
       this.connectColumnDefs = this.connectColumnDefs.concat([
-        // {
-        //   headerName: 'Related ProdEX Part IDs',
-        //   field: 'prodexPartIds',
-        //   hide: false,
-        //   sortable: true,
-        //   filter: false,
-        //   tooltipField: 'prodexPartIds',
-        //   valueFormatter: v => (v.value ? v.value.join(', ') : '')
-        // },
         {
           headerName: 'RFQ IDs',
           field: 'rfqIds',
@@ -337,6 +339,17 @@ export class ProjectsListComponent implements OnInit {
           valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
         }
       ]);
+      if (this.requestBody.includeRelatedPartIds) {
+        this.connectColumnDefs.push({
+          headerName: 'Related ProdEX Part IDs',
+          field: 'prodexPartIds',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'prodexPartIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
+        });
+      }
     }
 
     this.columnDefs.push({
