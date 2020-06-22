@@ -7,7 +7,7 @@ import { OrdersService } from 'src/app/service/orders.service';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { PartService } from 'src/app/service/part.service';
 import { UserService } from 'src/app/service/user.service';
-import { Part, MatchedProcessProfile, ReferenceFile } from 'src/app/model/part.model';
+import { Part, MatchedProcessProfile, ReferenceFile, AppPartStatusId } from 'src/app/model/part.model';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { Util } from 'src/app/util/Util';
@@ -102,12 +102,12 @@ export class OrderDetailComponent implements OnInit {
 
         this.getReferenceFileCount();
 
-        if (v.partStatusType.id === 18) {
+        if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_RELEASE) {
           // PART_AWAITING_RELEASE
           if (this.type !== 'project-release-queue') {
             this.router.navigateByUrl(`/prodex/projects/project-release-queue/${id}`);
           }
-        } else if (v.partStatusType.id === 15) {
+        } else if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_VENDORS) {
           // vendor-confirmation-queue
           if (this.type !== 'vendor-confirmation-queue') {
             this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${id}`);
