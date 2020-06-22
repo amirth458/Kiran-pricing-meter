@@ -183,6 +183,7 @@ export class ProjectsListComponent implements OnInit {
                   customerName: item.customerName,
                   preferredVendors: item.minimumProdexSuppliers,
                   orderStatusType: item.orderStatusType,
+                  bidConnectStatusType: item.bidConnectStatusType,
                   bidOrderStatus: item.bidOrderStatus || '',
                   prodexPartIds: item.prodexPartIds || [],
                   rfqIds: item.rfqIds || []
@@ -256,7 +257,8 @@ export class ProjectsListComponent implements OnInit {
         hide: !(this.type === 'vendor-confirmation-queue' || this.type === 'released-projects'),
         sortable: true,
         filter: false,
-        tooltipField: 'bidOrderStatus'
+        tooltipField: 'bidOrderStatus',
+        valueFormatter: v => (v.value || '').replace(/_/g, ' ')
       },
       {
         headerName: 'Same Vendor',
@@ -307,12 +309,12 @@ export class ProjectsListComponent implements OnInit {
         },
         {
           headerName: 'Order Status',
-          field: 'orderStatusType',
+          field: 'bidConnectStatusType',
           hide: false,
           sortable: true,
           filter: false,
-          tooltipField: 'orderStatusType',
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '')
+          tooltipField: 'bidConnectStatusType',
+          valueFormatter: v => (v.value || '').replace(/_/g, ' ').toUpperCase()
         }
       ]);
     }

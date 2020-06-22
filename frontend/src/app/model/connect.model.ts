@@ -69,4 +69,5 @@ export class ConnectOrder {
   prodexPartIds: number[];
   rfqIds: number[];
   totalRowCount: number;
+  bidConnectStatusType?: string;
 }
