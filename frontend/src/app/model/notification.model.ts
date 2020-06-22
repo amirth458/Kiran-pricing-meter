@@ -33,4 +33,11 @@ export class Notification {
   readTime: string;
   description: string;
   createdDate: string;
+  partDetails: Array<{
+    deliveryDate: string;
+    fileName: string;
+    material: string;
+    partId: number;
+    technology: string;
+  }>;
 }
