@@ -106,15 +106,21 @@ export class OrderDetailComponent implements OnInit {
           // PART_AWAITING_RELEASE
           if (this.type !== 'project-release-queue') {
             this.router.navigateByUrl(`/prodex/projects/project-release-queue/${id}`);
+            return;
           }
         } else if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_VENDORS) {
           // vendor-confirmation-queue
           if (this.type !== 'vendor-confirmation-queue') {
             this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${id}`);
+            return;
           }
+        } else if (this.type === 'released-projects' && v.partStatusType.id !== AppPartStatusId.VENDOR_CONFIRMED) {
+          this.router.navigateByUrl(`/prodex/projects/released-orders/${v.order.id}`);
+          return;
         } else {
           if (this.type !== 'released-projects') {
             this.router.navigateByUrl(`/prodex/projects/released-projects/${id}`);
+            return;
           }
         }
         this.supplierGridOptions[0].api.showLoadingOverlay();
