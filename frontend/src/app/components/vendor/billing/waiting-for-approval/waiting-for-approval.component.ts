@@ -1,16 +1,17 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ColDef, GridOptions } from 'ag-grid-community';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { BillingService } from 'src/app/service/billing.service';
 import { Payment, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
-import { ChatTypeEnum } from 'src/app/model/chat.model';
 import { ProjectType } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 
@@ -25,9 +26,7 @@ export class WaitingForApprovalComponent implements OnInit {
   @ViewChild('chatCell') chatCell: TemplateRef<any>;
 
   disableControls = false;
-
   tableControlReady = false;
-
   searchColumns = [
     {
       name: 'Customer Name',
@@ -102,7 +101,6 @@ export class WaitingForApprovalComponent implements OnInit {
       }
     }
   ];
-
   filterColumns = [
     {
       name: 'Customer Name',
@@ -145,7 +143,6 @@ export class WaitingForApprovalComponent implements OnInit {
       field: 'paymentType'
     }
   ];
-
   paymentStatusType = [
     {
       displayName: 'All Type Of Payment',
@@ -160,9 +157,7 @@ export class WaitingForApprovalComponent implements OnInit {
       id: 'CREDIT_CARD'
     }
   ];
-
   projectType = [];
-
   type = ['search', 'filter'];
 
   columnDefs: ColDef[] = [];
@@ -172,21 +167,16 @@ export class WaitingForApprovalComponent implements OnInit {
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
-
   rowData;
   pageSize = 10;
-
   navigation;
-
   selectedPurchaseOrder = null;
-
   form: FormGroup = this.fb.group({
     orderNo: [null],
     paymentType: [null],
     projectType: [null],
     comment: ['']
   });
-
   pageType: PaymentStatusTypes = PaymentStatusTypes.WAITING_FOR_APPROVAL;
 
   constructor(
@@ -224,18 +214,12 @@ export class WaitingForApprovalComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.spineer.show();
-
     this.setGridColumns(PaymentStatusTypes.WAITING_FOR_APPROVAL === this.pageType);
-
     this.getProfiles();
-
     this.tableControlReady = true;
-
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
     }
-
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -317,30 +301,17 @@ export class WaitingForApprovalComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-  approvePurchase() {
+  approve() {
     this.disableControls = true;
-    const body = {
-      orderId: this.selectedPurchaseOrder.orderId,
-      paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
-      paymentType: this.selectedPurchaseOrder.paymentType,
-      poNumber: this.selectedPurchaseOrder.poNumber
-    };
     this.spineer.show();
-    this.billingService.approveOrder(body).subscribe(
+    this.billingService.approve(this.selectedPurchaseOrder.orderId).subscribe(
       res => {
-        this.selectedPurchaseOrder = null;
-        this.disableControls = false;
+        this.onCloseData();
         this.getProfiles();
-        this.modalService.dismissAll();
-        this.spineer.hide();
         this.toastr.success('Purchase Approved.');
       },
       err => {
-        console.log({ err });
-        this.selectedPurchaseOrder = null;
-        this.disableControls = false;
-        this.modalService.dismissAll();
-        this.spineer.hide();
+        this.onCloseData();
         if (this.selectedPurchaseOrder.paymentType === PaymentType.CREDIT_CARD) {
           this.toastr.error('Credit card transaction failed. Please talk to customer');
         } else {
@@ -350,35 +321,29 @@ export class WaitingForApprovalComponent implements OnInit {
     );
   }
 
-  rejectPurchase() {
-    this.disableControls = true;
-    const body = {
-      orderId: this.selectedPurchaseOrder.orderId,
-      paymentStatusType: this.selectedPurchaseOrder.paymentStatusType,
-      paymentType: this.selectedPurchaseOrder.paymentType,
-      poNumber: this.selectedPurchaseOrder.poNumber
-    };
+  onCloseData() {
+    this.selectedPurchaseOrder = null;
+    this.disableControls = false;
+    this.modalService.dismissAll();
+    this.spineer.hide();
+  }
 
+  reject() {
+    this.disableControls = true;
     this.spineer.show();
-    this.billingService.rejectOrder(body).subscribe(
+    this.billingService.reject(this.selectedPurchaseOrder.orderId).subscribe(
       result => {
-        this.selectedPurchaseOrder = null;
-        this.disableControls = false;
+        this.onCloseData();
         this.getProfiles();
-        this.modalService.dismissAll();
-        this.spineer.hide();
         this.toastr.success('Purchase Rejected.');
       },
       err => {
-        console.log({ err });
-        this.selectedPurchaseOrder = null;
-        this.disableControls = false;
-        this.modalService.dismissAll();
-        this.spineer.hide();
+        this.onCloseData();
         this.toastr.error('Error While Rejecting Purchase.');
       }
     );
   }
+
   getProfiles() {
     const body: Payment = {
       id: null,
@@ -394,7 +359,6 @@ export class WaitingForApprovalComponent implements OnInit {
     if (this.gridOptions) {
       this.gridOptions.api.showLoadingOverlay();
     }
-
     this.billingService.getPaymentList(body, filter).subscribe((res: any) => {
       console.log({ res });
       this.rowData = res.content;
@@ -515,7 +479,6 @@ export class WaitingForApprovalComponent implements OnInit {
         suppressSizeToFit: true
       }
     ];
-
     if (!waitingForApproval) {
       this.columnDefs.pop();
       this.columnDefs.splice(5, 0, {

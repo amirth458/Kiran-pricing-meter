@@ -112,7 +112,7 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button [disabled]="disableControls" (click)="approvePurchase()" type="button" class="col btn theme">
+          <button [disabled]="disableControls" (click)="approve()" type="button" class="col btn theme">
             Approve
           </button>
         </div>
@@ -141,12 +141,7 @@
     <div class="modal-footer border-0" ngbAutofocus>
       <div class="w-100 row justify-content-center">
         <div class="col-md-4">
-          <button
-            [disabled]="disableControls"
-            (click)="rejectPurchase()"
-            type="button"
-            class="col btn theme orange-btn"
-          >
+          <button [disabled]="disableControls" (click)="reject()" type="button" class="col btn theme orange-btn">
             Reject
           </button>
         </div>

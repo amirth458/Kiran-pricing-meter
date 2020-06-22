@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { BillingService } from 'src/app/service/billing.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { UserService } from 'src/app/service/user.service';
+import { FormBuilder } from '@angular/forms';
+
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+import { BillingService } from 'src/app/service/billing.service';
 import { PaymentDetails, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import { MetadataService } from 'src/app/service/metadata.service';
+import { UserService } from 'src/app/service/user.service';
 import { Util } from '../../../../util/Util';
 
 @Component({
@@ -92,29 +94,25 @@ export class PurchaseOrderItemComponent implements OnInit {
     this.showPaymentDetails = !this.showPaymentDetails;
   }
 
-  approvePurchase() {
-    const body = {
-      orderId: this.orderInfo.billingInfoView.orderId,
-      paymentStatusType: this.orderInfo.billingInfoView.paymentStatusType,
-      paymentType: this.orderInfo.billingInfoView.paymentType,
-      poNumber: this.orderInfo.billingInfoView.purchaseAgreement
-        ? this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
-        : null
-    };
+  approve() {
     this.loadingPanel = true;
     this.spinner.show('spooler');
-    this.billingService.approveOrder(body).subscribe(
-      res => {
-        this.closeModalWindow();
-        this.toast.success('Purchase Approved.');
-        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-      },
-      err => {
-        this.closeModalWindow();
-        this.toast.error('Error While Approving Purchase.');
-        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-      }
+    this.billingService.approve(this.orderInfo.billingInfoView.orderId).subscribe(
+      () => this.onSuccess('Purchase Approved.', '/billing/payment/waiting-for-approval'),
+      () => this.onFailed('Error While Approving Purchase.', '/billing/payment/waiting-for-approval')
     );
+  }
+
+  onSuccess(text: string, url: string) {
+    this.closeModalWindow();
+    this.toast.success(text);
+    this.route.navigateByUrl(url);
+  }
+
+  onFailed(errText: string, url: string) {
+    this.closeModalWindow();
+    this.toast.error(errText);
+    this.route.navigateByUrl(url);
   }
 
   closeModalWindow() {
@@ -122,30 +120,12 @@ export class PurchaseOrderItemComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-  rejectPurchase() {
-    const body = {
-      orderId: this.orderInfo.billingInfoView.orderId,
-      paymentStatusType: this.orderInfo.billingInfoView.paymentStatusType,
-      paymentType: this.orderInfo.billingInfoView.paymentType,
-      poNumber: this.orderInfo.billingInfoView.purchaseAgreement
-        ? this.orderInfo.billingInfoView.purchaseAgreement.poaNumber
-        : null
-    };
+  reject() {
     this.loadingPanel = true;
     this.spinner.show('spooler');
-    this.billingService.rejectOrder(body).subscribe(
-      res => {
-        console.log({ res });
-        this.closeModalWindow();
-        this.toast.success('Purchase Rejected.');
-        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-      },
-      err => {
-        console.log({ err });
-        this.closeModalWindow();
-        this.toast.error('Error While Rejecting Purchase.');
-        this.route.navigateByUrl('/billing/payment/waiting-for-approval');
-      }
+    this.billingService.reject(this.orderInfo.billingInfoView.orderId).subscribe(
+      () => this.onSuccess('Purchase Rejected.', '/billing/payment/waiting-for-approval'),
+      () => this.onFailed('Error While Rejecting Purchase.', '/billing/payment/waiting-for-approval')
     );
   }
 

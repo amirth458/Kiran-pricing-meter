@@ -1,20 +1,22 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GridOptions, ColDef } from 'ag-grid-community';
-import { combineLatest } from 'rxjs';
 
-import { OrdersService } from 'src/app/service/orders.service';
-import { MetadataService } from 'src/app/service/metadata.service';
-import { PartService } from 'src/app/service/part.service';
-import { UserService } from 'src/app/service/user.service';
-import { Part, MatchedProcessProfile, ReferenceFile, AppPartStatusId } from 'src/app/model/part.model';
-import { MetadataConfig } from 'src/app/model/metadata.model';
-import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { Util } from 'src/app/util/Util';
+import { GridOptions, ColDef } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { combineLatest } from 'rxjs';
+
+import { MetadataConfig } from 'src/app/model/metadata.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { OrdersService } from 'src/app/service/orders.service';
+import { PartService } from 'src/app/service/part.service';
+import { Part, MatchedProcessProfile, ReferenceFile, AppPartStatusId } from 'src/app/model/part.model';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { UserService } from 'src/app/service/user.service';
+import { Util } from 'src/app/util/Util';
 
 @Component({
   selector: 'app-order-detail',
@@ -91,7 +93,6 @@ export class OrderDetailComponent implements OnInit {
     ).subscribe(([measurementUnits, postProcessAction, prodProjectSetting]) => {
       this.measurementUnits = measurementUnits.metadataList;
       this.postProcessAction = postProcessAction;
-
       this.numberOfVendors = prodProjectSetting.minNumberOfSupplierToRelease;
       this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.minNumberOfSupplierToRelease;
     });
@@ -158,6 +159,10 @@ export class OrderDetailComponent implements OnInit {
         );
       });
     });
+  }
+
+  isManufacturerSameVendor() {
+    return this.part && this.part.order && this.part.order.isReleaseToSingleSupplier;
   }
 
   initSuppliersTable() {
