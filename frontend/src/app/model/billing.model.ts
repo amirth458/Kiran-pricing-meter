@@ -62,6 +62,7 @@ export class CustomerOrder {
   isArchived: boolean;
   partList: Array<Part>;
   createdDate: string;
+  notes: string;
 }
 export class PaymentStatusType {
   id: number;

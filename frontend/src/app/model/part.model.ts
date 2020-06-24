@@ -90,6 +90,7 @@ export interface PartOrder {
   isReleaseToSingleSupplier: boolean;
   partList: Part[];
   createdDate: string;
+  notes: string;
 }
 
 export interface PartQuoteInvoiceLineItem {
