@@ -71,3 +71,13 @@ export class ConnectOrder {
   totalRowCount: number;
   bidConnectStatusType?: string;
 }
+
+export class ClientProgress {
+  numberOfCustomerAndVendorMessages: number;
+  lastCustomerAndVendorMessageTime: string;
+  isProposalIssued: boolean;
+  proposalAmount: number;
+  numberOfZoomDiscussionsCompleted: number;
+  lastZoomDiscussionCompleted: string;
+  nextZoomDiscussionScheduled: string;
+}
