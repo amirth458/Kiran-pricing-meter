@@ -4,7 +4,7 @@ import { CurrencyPipe } from '@angular/common';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { takeUntil, catchError } from 'rxjs/operators';
+import { takeUntil, catchError, map } from 'rxjs/operators';
 import { Subject, empty } from 'rxjs';
 
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
@@ -12,8 +12,9 @@ import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { CustomerService } from 'src/app/service/customer.service';
 import { PartService } from 'src/app/service/part.service';
 import { ProjectService } from 'src/app/service/project.service';
-import { AppPartTypeId } from 'src/app/model/part.model';
+import { AppPartTypeId, PartStatusSequenced } from 'src/app/model/part.model';
 import { ProjectTypeEnum } from 'src/app/model/order.model';
+import { OrdersService } from 'src/app/service/orders.service';
 
 @Component({
   selector: 'app-other-status',
@@ -45,22 +46,9 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     beginDate: null,
     endDate: null
   };
-  partStatusList = [
-    { id: 1, name: 'READY FOR QUOTING' },
-    { id: 2, name: 'AUTO QUOTED' },
-    { id: 5, name: 'AWAITING QUOTE' },
-    { id: 3, name: 'MANUAL QUOTE' },
-    { id: 4, name: 'QUOTE EXPIRED' },
-    { id: 14, name: 'NO QUOTE' },
-    { id: 13, name: 'PAYMENT PENDING' },
-    { id: 6, name: 'PLACING ORDER' },
-    { id: 7, name: 'PRE PRODUCTION' },
-    { id: 8, name: 'PRODUCTION' },
-    { id: 9, name: 'POST PRODUCTION' },
-    { id: 10, name: 'SHIPPED' },
-    { id: 11, name: 'DELIVERED' },
-    { id: 12, name: 'PART COMPLETE' }
-  ];
+
+  partStatusList: PartStatusSequenced[];
+
   frameworkComponents = {
     fileViewRenderer: FileViewRendererComponent
   };
@@ -72,39 +60,37 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     public currencyPipe: CurrencyPipe,
     public toast: ToastrService,
     public partService: PartService,
-    public projectService: ProjectService
+    public projectService: ProjectService,
+    public orderService: OrdersService
   ) {}
 
   ngOnInit() {
     if (this.router.url.startsWith('/prodex/projects')) {
       this.partType = AppPartTypeId.PRODUCTION_PART;
       this.projectType = ProjectTypeEnum.PRODUCTION_PROJECT;
-      this.partStatusList = [
-        { id: 1, name: 'READY FOR QUOTING' },
-        { id: 16, name: 'MATCHED SUPPLIER' },
-        { id: 17, name: 'NO MATCHED SUPPLIER' },
-        { id: 13, name: 'PAYMENT PENDING' },
-        { id: 18, name: 'PART AWAITING RELEASE' },
-        { id: 15, name: 'PART AWAITING VENDORS' },
-        { id: 19, name: 'VENDOR CONFIRMED' },
-        { id: 20, name: 'QUOTE ACCEPTED' },
-        { id: 21, name: 'VENDOR MANUAL QUOTED' }
-      ];
     } else if (this.router.url.startsWith('/prodex/connect')) {
       this.partType = AppPartTypeId.CONNECT_PART;
       this.projectType = ProjectTypeEnum.CONNECT_PROJECT;
-      this.partStatusList = [
-        { id: 1, name: 'READY FOR QUOTING' },
-        { id: 16, name: 'MATCHED SUPPLIER' },
-        { id: 17, name: 'NO MATCHED SUPPLIER' },
-        { id: 13, name: 'PAYMENT PENDING' },
-        { id: 18, name: 'PART AWAITING RELEASE' },
-        { id: 15, name: 'PART AWAITING VENDORS' },
-        { id: 19, name: 'VENDOR CONFIRMED' },
-        { id: 20, name: 'QUOTE ACCEPTED' },
-        { id: 21, name: 'VENDOR MANUAL QUOTED' }
-      ];
     }
+
+    this.orderService
+      .getPartStatusByProjectType(this.projectType)
+      .pipe(
+        map(result => {
+          return result.map(_ => {
+            return { ..._, name: _.displayName, id: _.partStatusTypeId };
+          });
+        })
+      )
+      .subscribe(
+        r => {
+          this.partStatusList = r || [];
+        },
+        e => {
+          this.partStatusList = [];
+          console.log(e);
+        }
+      );
     this.filterOptions.partTypeId = this.partType;
     this.filterOptions.projectTypeId = this.projectType;
     this.columnDefs = [

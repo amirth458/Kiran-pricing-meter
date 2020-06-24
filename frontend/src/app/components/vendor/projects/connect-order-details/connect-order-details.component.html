@@ -38,6 +38,18 @@
         </app-part-detail>
       </div>
     </div>
+    <div *ngIf="orderInfo?.customerOrder?.notes" class="d-flex flex-column">
+      <h6 class="text-theme ins-title">Additional Guidance</h6>
+      <div class="d-flex flex-row p-0 form-group theme w-100">
+        <textarea
+          [value]="orderInfo?.customerOrder?.notes"
+          disabled
+          class="form-control release-notes text-theme"
+          rows="3"
+        >
+        </textarea>
+      </div>
+    </div>
   </div>
 
   <div class="my-4 prodex-supplier">

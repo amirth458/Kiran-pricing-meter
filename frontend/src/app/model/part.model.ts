@@ -612,3 +612,12 @@ export interface ReferenceFile {
   location: string;
   mediaId: number;
 }
+
+export class PartStatusSequenced {
+  displayName: string;
+  partStatusTypeId: number;
+  partStatusTypeName: string;
+  projectTypeId: number;
+  projectTypeName: string;
+  sequence: number;
+}

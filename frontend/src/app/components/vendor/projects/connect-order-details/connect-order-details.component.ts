@@ -16,6 +16,8 @@ import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { DefaultEmails } from '../../../../../assets/constants';
 import { SubscriptionTypeEnum, SubscriptionTypeIdEnum } from '../../../../model/subscription.model';
+import { BillingService } from 'src/app/service/billing.service';
+import { PaymentDetails } from 'src/app/model/billing.model';
 
 @Component({
   selector: 'app-connect-order-details',
@@ -66,6 +68,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
   bcc = [];
 
   progressInfo: ClientProgress;
+  orderInfo: PaymentDetails;
 
   constructor(
     public projectService: ProjectService,
@@ -78,7 +81,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
     public toaster: ToastrService,
     public location: Location,
     public metadataService: MetadataService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public billingService: BillingService
   ) {
     this.customerOrderId = this.route.snapshot.paramMap.get('id');
     this.route.url.subscribe(r => {
@@ -94,6 +98,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.metadataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.unitOptions = res;
     });
+    this.getOrderInfo();
     this.initColumnDefs();
     this.initGridOptions();
     this.getData();
@@ -148,6 +153,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
       })
     );
     this.router.navigateByUrl('/user-manage/add-vendor/user');
+  }
+
+  getOrderInfo() {
+    this.billingService.getPaymentInfo(this.customerOrderId).subscribe(
+      (res: PaymentDetails) => {
+        this.orderInfo = res;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   getData() {
