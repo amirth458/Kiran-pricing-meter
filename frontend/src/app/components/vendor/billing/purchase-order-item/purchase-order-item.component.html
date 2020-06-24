@@ -27,11 +27,21 @@
             </h5>
             <p class="mb-1">
               Customer:
-              <span class="text-theme-green font-weight-bold">{{ orderInfo?.customerOrder?.customerName }}</span>
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="auto"
+                [ngbTooltip]="orderInfo?.customerOrder?.customerName"
+                >{{ orderInfo?.customerOrder?.customerName }}</span
+              >
             </p>
             <p class="">
               Order Id:
-              <span class="text-theme-green font-weight-bold">{{ orderInfo?.billingInfoView?.orderId }}</span>
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="auto"
+                [ngbTooltip]="orderInfo?.billingInfoView?.orderId"
+                >{{ orderInfo?.billingInfoView?.orderId }}</span
+              >
             </p>
           </div>
 
@@ -40,24 +50,38 @@
               Purchase Method:
               <span class="text-theme-green">
                 {{ formatPaymentType(orderInfo?.billingInfoView?.paymentType) | titlecase }}
-                <ng-container *ngIf="orderInfo?.billingInfoView?.purchaseAgreement">
+                <ng-container
+                  *ngIf="orderInfo?.billingInfoView?.purchaseAgreement"
+                  class="text-truncate"
+                  placement="auto"
+                  [ngbTooltip]="orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber"
+                >
                   (No{{ orderInfo?.billingInfoView?.purchaseAgreement?.poaNumber }})
                 </ng-container>
               </span>
             </h5>
             <p class="mb-1">
               Paid:
-              <span class="text-theme-green font-weight-bold">{{
-                orderInfo?.billingInfoView?.amount | currency: ''
-              }}</span>
+              <span
+                class="text-theme-green font-weight-bold text-truncate"
+                placement="auto"
+                [ngbTooltip]="orderInfo?.billingInfoView?.amount | currency: ''"
+                >{{ orderInfo?.billingInfoView?.amount | currency: '' }}</span
+              >
             </p>
             <p
-              class="text-theme-green file-name font-weight-bold"
+              class="text-theme-green file-name font-weight-bold text-truncate"
               *ngIf="orderInfo?.billingInfoView?.purchaseAgreement"
+              placement="auto"
+              [ngbTooltip]="orderInfo?.billingInfoView?.purchaseAgreement?.fileName || 'PO File'"
             >
               <a [href]="orderInfo?.billingInfoView?.purchaseAgreement?.resourceUrl || ''" target="_blank">
                 {{ orderInfo?.billingInfoView?.purchaseAgreement?.fileName || 'PO File' }}</a
               >
+            </p>
+            <p class="mb-1 text-truncate" placement="auto" [ngbTooltip]="orderInfo?.customerOrder?.notes">
+              Additional Guidance:
+              <span class="text-theme">{{ orderInfo?.customerOrder?.notes }}</span>
             </p>
           </div>
         </div>
@@ -145,13 +169,21 @@
             <span class="name">File: </span>
             <span class="value text-theme-green font-weight-bold">{{ item?.rfqMedia?.media?.name }}</span>
           </p>
-          <p class="d-flex mb-1">
+          <p
+            class="d-flex mb-1 text-truncate"
+            placement="auto"
+            [ngbTooltip]="(item?.materialPropertyValues || []).join(', ')"
+          >
             <span class="name">Material: </span>
             <span class="value text-theme-green font-weight-bold">{{
               (item?.materialPropertyValues || []).join(', ')
             }}</span>
           </p>
-          <p class="d-flex mb-1">
+          <p
+            class="d-flex mb-1 text-truncate"
+            placement="auto"
+            [ngbTooltip]="(item?.equipmentPropertyValues || []).join(', ')"
+          >
             <span class="name">Technology: </span>
             <span class="value text-theme-green font-weight-bold">{{
               (item?.equipmentPropertyValues || []).join(', ')
