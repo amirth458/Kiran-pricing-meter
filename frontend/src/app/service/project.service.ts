@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { ConnectProject } from '../model/connect.model';
+import { ConnectProject, ClientProgress } from '../model/connect.model';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import { Pageable } from '../model/pageable.model';
@@ -120,5 +120,13 @@ export class ProjectService {
   getProdVendorReleaseProject(filter: FilterOption, searchOpt: any): Observable<Pageable<ProjectSearchResult[]>> {
     const url = `${environment.apiBaseUrl}/admin/production-project/vendor-confirmation-released-queue/search`;
     return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
+  }
+
+  getVendorCustomerProgress(customerOrderId, vendorId): Observable<ClientProgress> {
+    const url = `${environment.apiBaseUrl}/admin/bidding/connect-project/progress-check`;
+    let params = new HttpParams();
+    params = params.append('customer-order-id', customerOrderId.toString());
+    params = params.append('vendor-id', vendorId.toString());
+    return this.http.get<ClientProgress>(url, { params });
   }
 }

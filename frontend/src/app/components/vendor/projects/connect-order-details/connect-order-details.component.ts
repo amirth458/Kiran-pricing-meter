@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { ProjectService } from 'src/app/service/project.service';
-import { BidProcessStatusEnum, ConnectProject } from '../../../../model/connect.model';
+import { BidProcessStatusEnum, ConnectProject, ClientProgress } from '../../../../model/connect.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
@@ -27,10 +27,12 @@ export class ConnectOrderDetailsComponent implements OnInit {
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('replaceSupplierCell') replaceSupplierCell: TemplateRef<any>;
   @ViewChild('createProfileCell') createProfileCell: TemplateRef<any>;
+  @ViewChild('checkProgressCell') checkProgressCell: TemplateRef<any>;
   @ViewChild('emailCell') emailCell: TemplateRef<any>;
   @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
   @ViewChild('vendorProfileModal') vendorProfileModal: TemplateRef<any>;
   @ViewChild('replacementProfileModal') replacementProfileModal: TemplateRef<any>;
+  @ViewChild('checkProgressModal') checkProgressModal: TemplateRef<any>;
 
   supplierGridOptions: GridOptions[] = [];
   vendorProfileGridOptions: GridOptions[] = [];
@@ -62,6 +64,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
   to = DefaultEmails.to;
   cc = [];
   bcc = [];
+
+  progressInfo: ClientProgress;
 
   constructor(
     public projectService: ProjectService,
@@ -211,6 +215,29 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.selectedVendor = data;
     this.modal.open(this.replacementProfileModal, {
       centered: true,
+      size: 'lg'
+    });
+  }
+
+  checkProgress(ev, data) {
+    ev.stopPropagation();
+
+    this.progressInfo = null;
+    this.selectedVendor = data;
+
+    this.projectService.getVendorCustomerProgress(this.customerOrderId, this.selectedVendor.vendorId).subscribe(
+      res => {
+        this.progressInfo = res;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.modal.open(this.checkProgressModal, {
+      backdrop: true,
+      centered: true,
+      windowClass: 'check-progress-modal',
       size: 'lg'
     });
   }
@@ -565,6 +592,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: '',
+          field: '',
+          cellRenderer: 'templateRenderer',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRendererParams: {
+            ngTemplate: this.checkProgressCell
+          }
+        },
+        {
+          headerName: '',
           cellRenderer: 'templateRenderer',
           hide: false,
           sortable: false,
@@ -634,6 +672,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
           filter: false,
           cellRendererParams: {
             ngTemplate: this.statusCell
+          }
+        },
+        {
+          headerName: '',
+          field: '',
+          cellRenderer: 'templateRenderer',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRendererParams: {
+            ngTemplate: this.checkProgressCell
           }
         }
       ],

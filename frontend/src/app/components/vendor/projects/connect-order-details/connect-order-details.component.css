@@ -21,3 +21,20 @@
 .vendor-profile {
   height: 300px;
 }
+
+::ng-deep .check-progress-modal .modal-dialog {
+  float: right;
+  min-width: 500px;
+  height: 100%;
+  position: absolute !important;
+  margin: unset !important;
+  right: 0;
+}
+
+::ng-deep .check-progress-modal .modal-dialog .modal-content {
+  height: 100%;
+}
+
+::ng-deep .check-progress-modal .item {
+  font-size: 13px;
+}
