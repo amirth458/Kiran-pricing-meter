@@ -283,7 +283,31 @@
 
     <div class="modal-body text-theme">
       <div class="mb-3 section">
-        <h5 class="mt-2">Notes History</h5>
+        <h5 class="mt-2">
+          Notes History
+          <span
+            *ngIf="(progressInfo?.lastZoomDiscussionsCompleted || []).length"
+            class="ml-2 text-theme-green font-sm cursor-pointer"
+            (click)="showNoteHistory = !showNoteHistory"
+          >
+            {{ !showNoteHistory ? 'See' : 'Hide' }} note history
+            <span *ngIf="!showNoteHistory">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+            <span *ngIf="showNoteHistory">
+              <i class="fas fa-chevron-up"></i>
+            </span>
+          </span>
+        </h5>
+
+        <div *ngIf="showNoteHistory" class="note-history p-2">
+          <div *ngFor="let item of progressInfo?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
+            <span class="font-italic">Customer : Tom Hanks </span>
+            <!-- <span class="font-italic">Vendor :  Tom Hanks </span> -->
+            <span class="pl-3">{{ item?.createdTime | date: util.dateFormatWithTime:util.PST }}</span>
+          </div>
+        </div>
+
         <p class="mb-2 item">
           Number of customer and vendor message:
           <span class="value font-weight-bold">{{ progressInfo?.numberOfCustomerAndVendorMessages }}</span>
@@ -291,7 +315,7 @@
         <p class="mb-2 item">
           Last customer and vendor message time:
           <span class="value font-weight-bold">{{
-            progressInfo?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime
+            progressInfo?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime:util.PST
           }}</span>
         </p>
       </div>
@@ -321,7 +345,33 @@
         </p>
       </div>
       <div class="mb-3 section">
-        <h5 class="mt-2">Zoom Meeting History</h5>
+        <h5 class="mt-2">
+          Zoom Meeting History
+          <span
+            *ngIf="(progressInfo?.lastZoomDiscussionsCompleted || []).length"
+            class="ml-2 text-theme-green font-sm cursor-pointer"
+            (click)="showZoomHistory = !showZoomHistory"
+          >
+            {{ !showZoomHistory ? 'See' : 'Hide' }} zoom history
+            <span *ngIf="!showZoomHistory">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+            <span *ngIf="showZoomHistory">
+              <i class="fas fa-chevron-up"></i>
+            </span>
+          </span>
+        </h5>
+
+        <div *ngIf="showZoomHistory" class="zoom-history p-2">
+          <p class="text-theme vendor-name mb-2">
+            Vendor : <span class="text-theme-green">{{ selectedVendor?.vendorName }}</span>
+          </p>
+          <div *ngFor="let item of progressInfo?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
+            <span class="font-italic">Meeting Created Time : </span>
+            <span>{{ item?.createdTime | date: util.dateFormatWithTime:util.PST }}</span>
+          </div>
+        </div>
+
         <p class="mb-2 item">
           Zoom discussions completed:
           <span class="value font-weight-bold">{{ progressInfo?.numberOfZoomDiscussionsCompleted }}</span>
@@ -329,13 +379,13 @@
         <p class="mb-2 item">
           Last Zoom discussions completed:
           <span class="value font-weight-bold">{{
-            progressInfo?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime
+            progressInfo?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime:util.PST
           }}</span>
         </p>
         <p class="mb-2 item">
           Next Zoom discussions:
           <span class="value font-weight-bold">{{
-            progressInfo?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime
+            progressInfo?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime:util.PST
           }}</span>
         </p>
       </div>

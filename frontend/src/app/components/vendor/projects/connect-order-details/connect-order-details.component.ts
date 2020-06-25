@@ -72,6 +72,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
   proposalPartIds = [];
   orderInfo: PaymentDetails;
 
+  showZoomHistory = false;
+  showNoteHistory = false;
+
   constructor(
     public projectService: ProjectService,
     public partService: PartService,
@@ -256,7 +259,20 @@ export class ConnectOrderDetailsComponent implements OnInit {
       .subscribe(
         res => {
           this.progressInfo = res;
-          this.progressInfo.lastCustomerAndVendorMessageTime = new Date().toISOString();
+
+          this.progressInfo.lastCustomerAndVendorMessageTime = this.progressInfo.lastCustomerAndVendorMessageTime
+            ? this.progressInfo.lastCustomerAndVendorMessageTime + 'Z'
+            : '';
+
+          this.progressInfo.lastZoomDiscussionCompleted = this.progressInfo.lastZoomDiscussionCompleted
+            ? this.progressInfo.lastZoomDiscussionCompleted + 'Z'
+            : '';
+
+          this.progressInfo.lastZoomDiscussionsCompleted = (this.progressInfo.lastZoomDiscussionsCompleted || []).map(
+            conference => {
+              return { ...conference, createdTime: conference.createdTime ? conference.createdTime + 'Z' : '' };
+            }
+          );
         },
         err => {
           console.log(err);
