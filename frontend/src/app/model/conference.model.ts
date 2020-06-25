@@ -12,6 +12,7 @@ export class Conference {
   bidOrderId: number;
   customerOrderId: number;
   vendorOrderId: number;
+  createdTime: string;
 }
 
 export class ConferenceRequest {
