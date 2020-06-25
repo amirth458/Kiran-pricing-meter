@@ -80,7 +80,7 @@
                             {{ formatBytes(file?.size) }}
                           </p>
                         </div>
-                        <div class="delete" (click)="deleteFile(i)">
+                        <div *ngIf="canDelete" class="delete" (click)="deleteFile(i)">
                           <i class="fas fa-trash"></i>
                         </div>
                       </div>
@@ -138,7 +138,7 @@
                           >
                           <span
                             class="delete col p-0"
-                            *ngIf="attachments.type === 'You'"
+                            *ngIf="attachments.type === 'Vendor' && canDelete"
                             (click)="delete($event, file)"
                           >
                             <i class="fas fa-trash"></i>

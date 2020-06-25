@@ -38,6 +38,7 @@ export class ProposalAttachmentComponent implements OnInit {
   @Input() vendorView = false;
   @Input() canUpload = false;
   @Input() smallView = false;
+  @Input() canDelete = true;
 
   @Input() vendorId = null;
 
@@ -51,7 +52,7 @@ export class ProposalAttachmentComponent implements OnInit {
 
   uploadedAttachments = [
     {
-      type: 'You',
+      type: 'Vendor',
       files: []
     },
     {
@@ -88,6 +89,8 @@ export class ProposalAttachmentComponent implements OnInit {
         },
         e => {}
       );
+    } else {
+      this.uploadedAttachments.pop();
     }
 
     if (this.vendorView) {
