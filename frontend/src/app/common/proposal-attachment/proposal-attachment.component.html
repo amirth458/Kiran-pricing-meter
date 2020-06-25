@@ -2,7 +2,7 @@
   <span class="reference-name">
     {{ fileNames }}
   </span>
-  <div class="uploader d-flex align-items-center">
+  <div *ngIf="canUpload" class="uploader d-flex align-items-center">
     <button type="file" class="btn btn-add theme white" (click)="viewFiles()">
       Upload files
     </button>

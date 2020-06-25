@@ -162,6 +162,7 @@ export interface RfqMedia {
 
 export interface Part {
   id: number;
+  partId: number;
   name: string;
   rfqMedia: RfqMedia;
   processTypeId: number;
@@ -194,6 +195,7 @@ export interface Part {
   isReleaseToSingleSupplier?: boolean;
   commets?: string;
   proposalPart?: boolean;
+  parentPartId?: number;
 }
 
 export class BidPart {
@@ -621,4 +623,10 @@ export class PartStatusSequenced {
   projectTypeId: number;
   projectTypeName: string;
   sequence: number;
+}
+
+export enum GovernanceMediaEnum {
+  PROJECT_PROFILE,
+  PROPOSAL_PART,
+  PART
 }

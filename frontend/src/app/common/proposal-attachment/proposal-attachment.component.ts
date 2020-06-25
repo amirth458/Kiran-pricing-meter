@@ -14,8 +14,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-import { combineLatest, empty } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from 'src/app/service/project.service';
 import { UserService } from 'src/app/service/user.service';
