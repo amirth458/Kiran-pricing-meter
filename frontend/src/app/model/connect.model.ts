@@ -80,4 +80,30 @@ export class ClientProgress {
   numberOfZoomDiscussionsCompleted: number;
   lastZoomDiscussionCompleted: string;
   nextZoomDiscussionScheduled: string;
+  partQuoteResponseViews: {
+    partId: number;
+    vendorId: number;
+    partQuoteCustomerView: PartQuoteCustomerView;
+  }[];
+}
+
+export class PartQuote {
+  partQuoteId: number;
+  invoiceItemId: number;
+  value: number;
+  unit: number;
+  unitPrice: number;
+}
+
+export class PartQuoteCustomerView {
+  id: number;
+  partId: number;
+  proposalPartId: number;
+  vendorId: number;
+  isExpired: boolean;
+  expiredAt: string;
+  totalCost: number;
+  partQuoteDetails: PartQuote[];
+  winningProcessPricingId: number;
+  matchedProcessPricingIds: number[];
 }
