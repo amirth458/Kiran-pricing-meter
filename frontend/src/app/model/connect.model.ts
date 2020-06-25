@@ -2,6 +2,7 @@ import { Part } from './part.model';
 import { BidOrderStatusType } from './confirm.sub-order.release';
 import { PaymentStatusType } from './billing.model';
 import { Contract } from './subscription.model';
+import { Conference } from './conference.model';
 
 export enum BidProcessStatusEnum {
   AWAITING_VENDOR_RESPONSE = 'AWAITING VENDOR RESPONSE',
@@ -79,5 +80,32 @@ export class ClientProgress {
   proposalAmount: number;
   numberOfZoomDiscussionsCompleted: number;
   lastZoomDiscussionCompleted: string;
+  lastZoomDiscussionsCompleted: Conference[];
   nextZoomDiscussionScheduled: string;
+  partQuoteResponseViews: {
+    partId: number;
+    vendorId: number;
+    partQuoteCustomerView: PartQuoteCustomerView;
+  }[];
+}
+
+export class PartQuote {
+  partQuoteId: number;
+  invoiceItemId: number;
+  value: number;
+  unit: number;
+  unitPrice: number;
+}
+
+export class PartQuoteCustomerView {
+  id: number;
+  partId: number;
+  proposalPartId: number;
+  vendorId: number;
+  isExpired: boolean;
+  expiredAt: string;
+  totalCost: number;
+  partQuoteDetails: PartQuote[];
+  winningProcessPricingId: number;
+  matchedProcessPricingIds: number[];
 }

@@ -17,6 +17,7 @@ import { OrdersService } from 'src/app/service/orders.service';
 })
 export class RefFileComponent implements OnInit {
   @Input() value: number;
+  @Input() showNames = false;
   refMediaFiles: ReferenceMedia[];
   count = 0;
 
@@ -34,6 +35,26 @@ export class RefFileComponent implements OnInit {
       },
       err => {}
     );
+    if (this.showNames) {
+      this.orderService
+        .getReferenceFiles(this.value)
+        .pipe(
+          catchError((err: any) => {
+            const obj = JSON.parse(err.error && err.error.message ? err.error.message || '{}' : '{}');
+            this.toaster.error(`Unable to fulfil your request: ${obj.message || ''}`);
+            this.spinner.hide();
+            return empty();
+          })
+        )
+        .subscribe(files => {
+          this.refMediaFiles = files || [];
+          this.spinner.hide();
+        });
+    }
+  }
+
+  fileNames() {
+    return (this.refMediaFiles || []).map(item => item.name).join(', ');
   }
 
   show(content, size: any = 'lg') {

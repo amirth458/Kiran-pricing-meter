@@ -129,4 +129,8 @@ export class ProjectService {
     params = params.append('vendor-id', vendorId.toString());
     return this.http.get<ClientProgress>(url, { params });
   }
+
+  getProposalFormData(proposalPartId: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiBaseUrl}/admin/part-proposal/${proposalPartId}`);
+  }
 }

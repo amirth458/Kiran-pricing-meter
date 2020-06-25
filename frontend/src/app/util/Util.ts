@@ -10,6 +10,7 @@ export class Util {
   static measurementUnit = 'mm';
   static hoursMinuteConverter = 'HH:mm';
   static dateFormatWithTime = 'MM/dd/yyyy hh:mm a';
+  static PST = '-0800';
 
   static convertMinutesToDate(minutes: number): string {
     dayjs.extend(utc);

@@ -18,7 +18,7 @@ import { DefaultEmails } from '../../../../../assets/constants';
 import { SubscriptionTypeEnum, SubscriptionTypeIdEnum } from '../../../../model/subscription.model';
 import { BillingService } from 'src/app/service/billing.service';
 import { PaymentDetails } from 'src/app/model/billing.model';
-
+import { Util } from '../../../../util/Util';
 @Component({
   selector: 'app-connect-order-details',
   templateUrl: './connect-order-details.component.html',
@@ -46,6 +46,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
 
+  util = Util;
   selectedVendor = null;
   firstTimeRelease = true;
   replacementProdexSuppliers;
@@ -68,7 +69,11 @@ export class ConnectOrderDetailsComponent implements OnInit {
   bcc = [];
 
   progressInfo: ClientProgress;
+  proposalPartIds = [];
   orderInfo: PaymentDetails;
+
+  showZoomHistory = false;
+  showNoteHistory = false;
 
   constructor(
     public projectService: ProjectService,
@@ -239,16 +244,40 @@ export class ConnectOrderDetailsComponent implements OnInit {
     ev.stopPropagation();
 
     this.progressInfo = null;
+    this.proposalPartIds = [];
     this.selectedVendor = data;
 
-    this.projectService.getVendorCustomerProgress(this.customerOrderId, this.selectedVendor.vendorId).subscribe(
-      res => {
-        this.progressInfo = res;
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    this.projectService
+      .getVendorCustomerProgress(this.customerOrderId, this.selectedVendor.vendorId)
+      .pipe(
+        tap(_ => {
+          this.proposalPartIds = (_.partQuoteResponseViews || []).map(
+            view => view.partQuoteCustomerView.proposalPartId
+          );
+        })
+      )
+      .subscribe(
+        res => {
+          this.progressInfo = res;
+
+          this.progressInfo.lastCustomerAndVendorMessageTime = this.progressInfo.lastCustomerAndVendorMessageTime
+            ? this.progressInfo.lastCustomerAndVendorMessageTime + 'Z'
+            : '';
+
+          this.progressInfo.lastZoomDiscussionCompleted = this.progressInfo.lastZoomDiscussionCompleted
+            ? this.progressInfo.lastZoomDiscussionCompleted + 'Z'
+            : '';
+
+          this.progressInfo.lastZoomDiscussionsCompleted = (this.progressInfo.lastZoomDiscussionsCompleted || []).map(
+            conference => {
+              return { ...conference, createdTime: conference.createdTime ? conference.createdTime + 'Z' : '' };
+            }
+          );
+        },
+        err => {
+          console.log(err);
+        }
+      );
 
     this.modal.open(this.checkProgressModal, {
       backdrop: true,

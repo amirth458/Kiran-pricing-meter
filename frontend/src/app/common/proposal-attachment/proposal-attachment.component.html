@@ -2,7 +2,7 @@
   <span class="reference-name">
     {{ fileNames }}
   </span>
-  <div class="uploader d-flex align-items-center">
+  <div *ngIf="canUpload" class="uploader d-flex align-items-center">
     <button type="file" class="btn btn-add theme white" (click)="viewFiles()">
       Upload files
     </button>
@@ -10,11 +10,13 @@
 </div>
 
 <span
-  *ngIf="type === 'governance-document' && smallView && customerAttachments?.length > 0"
+  *ngIf="
+    type === 'governance-document' && smallView && (vendorView ? vendorAttachments : customerAttachments).length > 0
+  "
   class="smallView hover-bold cursor-pointer underline text-theme-blue"
   (click)="viewFiles()"
 >
-  Governance Documents ({{ customerAttachments.length }})
+  Governance Documents ({{ (vendorView ? vendorAttachments : customerAttachments).length }})
 </span>
 
 <ng-template #attachmentTemplate let-modal>

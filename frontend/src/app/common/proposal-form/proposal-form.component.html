@@ -1,0 +1,224 @@
+<button
+  class="btn btn-proposal transparent text-light-blue hover-bold cursor-pointer underline font-sm"
+  [disabled]="disabled"
+  (click)="openForm(proposalFormTemplate)"
+>
+  See all proposal details
+</button>
+
+<ng-template #proposalFormTemplate let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title text-theme-green text-center w-100">
+        Proposal
+      </h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body pl-4 pt-0 pr-4 pb-4" ngbAutofocus>
+      <div class="d-flex flex-column tab-container">
+        <ngb-tabset [destroyOnHide]="true" [justify]="'Fill'" class="w-100 d-block nav-tabs">
+          <ngb-tab *ngFor="let tab of tabs" [title]="tab?.id">
+            <ng-template ngbTabContent>
+              <div class="d-flex flex-column">
+                <div class="col-12 d-flex flex-row p-0">
+                  <div class="col-6 d-flex flex-column">
+                    <h6 class="text-theme m-0 part-title">Project Details:</h6>
+                    <div class="d-flex flex-row">
+                      <div class="col-12 p-0 d-flex flex-row">
+                        <div class="col-4 p-0">
+                          <div
+                            *ngIf="tab?.part?.rfqMedia"
+                            class="media-image"
+                            [ngStyle]="getMediaBackgroundImage(tab.part.rfqMedia)"
+                          ></div>
+                        </div>
+                        <div class="col-8">
+                          <div class="col-form-label form-group text-dark m-0">
+                            <label>
+                              File:
+                              <a
+                                class="link downloadable"
+                                [href]="tab?.part?.rfqMedia?.media?.location"
+                                [rel]="'noopener'"
+                                [target]="'blank'"
+                              >
+                                {{ tab?.part?.rfqMedia?.media?.name || '' }}
+                              </a>
+                            </label>
+                          </div>
+                          <div class="col-form-label form-group theme m-0">
+                            <label>Part Dimensions</label>
+                            <i class="fa fa-minus ml-3 mr-3"></i>
+                            <label *ngIf="tab?.part?.rfqMedia">{{ getDimension(tab.part.rfqMedia) }}</label>
+                          </div>
+                          <div class="col-form-label form-group theme m-0">
+                            <label>volume</label>
+                            <i class="fa fa-minus ml-3 mr-3"></i>
+                            <label *ngIf="tab?.part?.rfqMedia?.media?.partDimension">
+                              {{ getVolume(tab.part.rfqMedia.media.partDimension) }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 d-flex flex-column proposal-part">
+                    <h6 class="text-theme m-0 part-title">Proposal Details:</h6>
+                    <div class="d-flex flex-row">
+                      <div class="col-12 p-0 d-flex flex-row">
+                        <div class="col-4 p-0">
+                          <div
+                            *ngIf="tab?.proposal?.rfqMedia"
+                            class="media-image"
+                            [ngStyle]="getMediaBackgroundImage(tab?.proposal?.rfqMedia)"
+                          ></div>
+                        </div>
+                        <div class="col-8">
+                          <div class="col-form-label form-group text-dark m-0">
+                            <label>
+                              File:
+                              <a
+                                class="link downloadable"
+                                [href]="tab?.part?.rfqMedia?.media?.location"
+                                [rel]="'noopener'"
+                                [target]="'blank'"
+                              >
+                                {{ tab?.proposal?.rfqMedia?.media?.name || '' }}
+                              </a>
+                            </label>
+                          </div>
+                          <div class="col-form-label form-group theme m-0">
+                            <label>Part Dimensions</label>
+                            <i class="fa fa-minus ml-3 mr-3"></i>
+                            <label *ngIf="tab?.proposal?.rfqMedia">{{ getDimension(tab.proposal.rfqMedia) }}</label>
+                          </div>
+                          <div class="col-form-label form-group theme m-0">
+                            <label>volume</label>
+                            <i class="fa fa-minus ml-3 mr-3"></i>
+                            <label *ngIf="tab?.proposal?.rfqMedia?.media?.partDimension">
+                              {{ getVolume(tab.proposal.rfqMedia.media.partDimension) }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex flex-row p-0">
+                  <table class="proposal-table mt-3 mb-2">
+                    <tbody>
+                      <tr>
+                        <td class="original-value">
+                          {{ tab?.part?.quantity || 0 }}
+                        </td>
+                        <td class="high-lighted-cell">Quantity</td>
+                        <td class="proposed-value">
+                          {{ tab?.proposal?.quantity || 0 }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="original-value">
+                          {{ (tab?.part?.materialPropertyValues || []).join(',') }}
+                        </td>
+                        <td class="high-lighted-cell">Material</td>
+                        <td class="proposed-value">
+                          {{ (tab?.proposal?.materialPropertyValues || []).join(',') }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="original-value">
+                          <ng-container
+                            *ngIf="(tab?.part?.equipmentPropertyValues || []).length > 0; else defaultTemplate"
+                          >
+                            {{ tab.part.equipmentPropertyValues.join(',') }}
+                          </ng-container>
+                        </td>
+                        <td class="high-lighted-cell">Technology</td>
+                        <td class="proposed-value">
+                          <ng-container
+                            *ngIf="(tab?.proposal?.equipmentPropertyValues || []).length > 0; else defaultTemplate"
+                          >
+                            {{ tab.proposal.equipmentPropertyValues.join(',') }}
+                          </ng-container>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="original-value">
+                          <ng-container *ngIf="tab?.part?.targetDeliveryDate; else defaultTemplate">
+                            {{ tab?.part?.targetDeliveryDate | date: util.dateFormat:'UTC' }}
+                          </ng-container>
+                        </td>
+                        <td class="high-lighted-cell">Target Delivery</td>
+                        <td class="proposed-value">
+                          <ng-container *ngIf="tab?.proposal?.targetDeliveryDate; else defaultTemplate">
+                            {{ tab?.proposal?.targetDeliveryDate | date: util.dateFormat:'UTC' }}
+                          </ng-container>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="original-value">
+                          <app-ref-file [value]="tab?.part?.id" [showNames]="false">
+                            Reference Files
+                          </app-ref-file>
+                        </td>
+                        <td class="high-lighted-cell">Reference Files</td>
+                        <td class="proposed-value">
+                          <app-ref-file [value]="tab?.proposal?.id" [showNames]="false">
+                            Reference Files
+                          </app-ref-file>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td class="original-value">
+                          <app-proposal-attachment
+                            type="governance-document"
+                            [smallView]="true"
+                            [customerView]="true"
+                            [partId]="tab?.part?.id"
+                          ></app-proposal-attachment>
+                        </td>
+                        <td class="high-lighted-cell">System Requirements</td>
+                        <td class="proposed-value">
+                          <app-proposal-attachment
+                            *ngIf="vendorId"
+                            type="governance-document"
+                            [smallView]="true"
+                            [customerView]="false"
+                            [vendorView]="true"
+                            [vendorId]="vendorId"
+                            [partId]="tab?.part?.id"
+                            [proposalPartId]="tab?.proposal?.id"
+                          ></app-proposal-attachment>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="original-value">
+                          <ng-container *ngIf="tab?.part?.comments; else defaultTemplate">
+                            {{ tab?.part?.comments || '' }}
+                          </ng-container>
+                        </td>
+                        <td class="high-lighted-cell">Other Requirements</td>
+                        <td class="proposed-value">
+                          <ng-container *ngIf="tab?.proposal?.comments; else defaultTemplate">
+                            {{ tab?.proposal?.comments || '' }}
+                          </ng-container>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #defaultTemplate>
+  <i class="fa fa-minus ml-3 mr-3"></i>
+</ng-template>
