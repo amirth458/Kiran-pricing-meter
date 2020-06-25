@@ -286,7 +286,7 @@
         <h5 class="mt-2">
           Notes History
           <span
-            *ngIf="(progressInfo?.lastZoomDiscussionsCompleted || []).length"
+            *ngIf="progressInfo?.chatDetails?.messageNotes?.length"
             class="ml-2 text-theme-green font-sm cursor-pointer"
             (click)="showNoteHistory = !showNoteHistory"
           >
@@ -301,10 +301,22 @@
         </h5>
 
         <div *ngIf="showNoteHistory" class="note-history p-2">
-          <div *ngFor="let item of progressInfo?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
-            <span class="font-italic">Customer : Tom Hanks </span>
-            <!-- <span class="font-italic">Vendor :  Tom Hanks </span> -->
-            <span class="pl-3">{{ item?.createdTime | date: util.dateFormatWithTime:util.PST }}</span>
+          <!-- TODO: -->
+          <!-- Fix this when Dipen fixes from his sides -->
+          <div *ngFor="let item of progressInfo?.chatDetails?.messageNotes" class="ml-2 font-sm row">
+            <span
+              class="font-italic"
+              *ngIf="item?.senderId === (projectDetails?.parts)[0]?.userId"
+              class="col-6 pl-0 text-left"
+              >Customer : {{ (projectDetails?.parts)[0]?.customerName }}
+            </span>
+            <span
+              class="font-italic"
+              *ngIf="item?.senderId !== (projectDetails?.parts)[0]?.userId"
+              class="col-6 pl-0 text-left"
+              >Vendor : {{ selectedVendor?.vendorName }}
+            </span>
+            <span class="pl-3">{{ item?.createdDate | date: util.dateFormatWithTime:util.PST }}</span>
           </div>
         </div>
 

@@ -273,12 +273,18 @@ export class ConnectOrderDetailsComponent implements OnInit {
               return { ...conference, createdTime: conference.createdTime ? conference.createdTime + 'Z' : '' };
             }
           );
+          // TODO:
+          // Fix this when Dipen fixes from his sides
+          this.progressInfo.chatDetails = (this.progressInfo.chatDetails || []).length
+            ? this.progressInfo.chatDetails[0]
+            : [];
         },
         err => {
           console.log(err);
         }
       );
-
+    this.showNoteHistory = false;
+    this.showZoomHistory = false;
     this.modal.open(this.checkProgressModal, {
       backdrop: true,
       centered: true,
