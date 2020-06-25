@@ -1,6 +1,19 @@
-<button *ngIf="count > 0" class="ref-nav-link transparent" (click)="show(referenceMediaTemplate, 'md')">
+<button
+  *ngIf="showNames === false && count > 0"
+  class="ref-nav-link transparent"
+  (click)="show(referenceMediaTemplate, 'md')"
+>
   Reference Files ({{ count }})
 </button>
+
+<div *ngIf="showNames === true" class="w-100 d-flex align-items-center">
+  <span class="flex-grow-1 ref-file-names">
+    {{ fileNames() }}
+  </span>
+  <button *ngIf="count > 0" class="ref-nav-link transparent" (click)="show(referenceMediaTemplate, 'md')">
+    See All ({{ count }})
+  </button>
+</div>
 
 <ng-template #referenceMediaTemplate let-modal>
   <div class="container-fluid d-flex h-100 flex-column">
