@@ -16,6 +16,7 @@ export interface Chat {
   messageNotes: Array<MessageNote>;
   vendorId: number;
   users?: Array<UserSummary>;
+  createdDate?: string;
 }
 
 export interface MessageNote {
@@ -23,8 +24,8 @@ export interface MessageNote {
   chat?: Chat;
   message: string;
   senderId: number;
-  createdDate: Date;
-  lastModifiedDate: Date;
+  createdDate: string;
+  lastModifiedDate: string;
   user?: UserSummary;
   messageNoteHistory: Array<MessageNoteHistory>;
 }
@@ -58,7 +59,7 @@ export interface ChatAttachment {
   name: string;
   userId: number;
   chatId: number;
-  createdDate: Date;
-  lastModifiedDate: Date;
+  createdDate: string;
+  lastModifiedDate: string;
   location: string;
 }

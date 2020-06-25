@@ -3,6 +3,7 @@ import { BidOrderStatusType } from './confirm.sub-order.release';
 import { PaymentStatusType } from './billing.model';
 import { Contract } from './subscription.model';
 import { Conference } from './conference.model';
+import { Chat } from './chat.model';
 
 export enum BidProcessStatusEnum {
   AWAITING_VENDOR_RESPONSE = 'AWAITING VENDOR RESPONSE',
@@ -87,6 +88,9 @@ export class ClientProgress {
     vendorId: number;
     partQuoteCustomerView: PartQuoteCustomerView;
   }[];
+  chatDetails: any;
+  // Fix this when Dipen fixes from his sides
+  // chatDetails: Chat;
 }
 
 export class PartQuote {
