@@ -156,6 +156,7 @@ import { LinkCellRendererComponent } from '../common/link-cell-renderer/link-cel
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FilterHeaderComponent } from './vendor/pricing/rfq/filter-header/filter-header.component';
 import { OtherStatusComponent } from './vendor/pricing/rfq/other-status/other-status.component';
+import { ProposalFormComponent } from '../common/proposal-form/proposal-form.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -297,7 +298,8 @@ import { OtherStatusComponent } from './vendor/pricing/rfq/other-status/other-st
     ProposalAttachmentComponent,
     InsightPartInformationComponent,
     FilterHeaderComponent,
-    OtherStatusComponent
+    OtherStatusComponent,
+    ProposalFormComponent
   ],
   imports: [
     CommonModule,
