@@ -316,7 +316,7 @@
               class="col-6 pl-0 text-left"
               >Vendor : {{ selectedVendor?.vendorName }}
             </span>
-            <span class="pl-3">{{ item?.createdDate | date: util.dateFormatWithTime:util.PST }}</span>
+            <span class="pl-3">{{ item?.createdDate | date: util.dateFormatWithTime }}</span>
           </div>
         </div>
 
@@ -327,7 +327,7 @@
         <p class="mb-2 item">
           Last customer and vendor message time:
           <span class="value font-weight-bold">{{
-            progressInfo?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime:util.PST
+            progressInfo?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime
           }}</span>
         </p>
       </div>
@@ -380,7 +380,7 @@
           </p>
           <div *ngFor="let item of progressInfo?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
             <span class="font-italic">Meeting Created Time : </span>
-            <span>{{ item?.createdTime | date: util.dateFormatWithTime:util.PST }}</span>
+            <span>{{ item?.createdTime | date: util.dateFormatWithTime }}</span>
           </div>
         </div>
 
@@ -391,13 +391,13 @@
         <p class="mb-2 item">
           Last Zoom discussions completed:
           <span class="value font-weight-bold">{{
-            progressInfo?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime:util.PST
+            progressInfo?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime
           }}</span>
         </p>
         <p class="mb-2 item">
           Next Zoom discussions:
           <span class="value font-weight-bold">{{
-            progressInfo?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime:util.PST
+            progressInfo?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime
           }}</span>
         </p>
       </div>
