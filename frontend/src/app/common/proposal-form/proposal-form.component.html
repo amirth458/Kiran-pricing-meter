@@ -183,12 +183,14 @@
                         <td class="high-lighted-cell">System Requirements</td>
                         <td class="proposed-value">
                           <app-proposal-attachment
+                            *ngIf="vendorId"
                             type="governance-document"
                             [smallView]="true"
                             [customerView]="false"
                             [vendorView]="true"
+                            [vendorId]="vendorId"
                             [partId]="tab?.part?.id"
-                            [proposalPartId]="tab?.id"
+                            [proposalPartId]="tab?.proposal?.id"
                           ></app-proposal-attachment>
                         </td>
                       </tr>

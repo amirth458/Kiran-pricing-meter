@@ -10,11 +10,13 @@
 </div>
 
 <span
-  *ngIf="type === 'governance-document' && smallView && (customerAttachments || vendorAttachments || []).length > 0"
+  *ngIf="
+    type === 'governance-document' && smallView && (vendorView ? vendorAttachments : customerAttachments).length > 0
+  "
   class="smallView hover-bold cursor-pointer underline text-theme-blue"
   (click)="viewFiles()"
 >
-  Governance Documents ({{ customerAttachments.length }})
+  Governance Documents ({{ (vendorView ? vendorAttachments : customerAttachments).length }})
 </span>
 
 <ng-template #attachmentTemplate let-modal>

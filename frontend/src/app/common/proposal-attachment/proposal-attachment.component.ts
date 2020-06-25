@@ -39,6 +39,8 @@ export class ProposalAttachmentComponent implements OnInit {
   @Input() canUpload = false;
   @Input() smallView = false;
 
+  @Input() vendorId = null;
+
   @Output() changeFiles = new EventEmitter<any>();
   @Output() deleteFiles = new EventEmitter<any>();
 
@@ -95,7 +97,11 @@ export class ProposalAttachmentComponent implements OnInit {
         const ob =
           this.type === 'attachment'
             ? this.projectService.getAllProposalReferenceMediaFiles(this.partId, this.proposalPartId)
-            : this.proposalService.getProjectGovernanceDediaForPartProposal(this.partId, this.proposalPartId);
+            : this.proposalService.getProjectGovernanceDediaForPartProposal(
+                this.partId,
+                this.proposalPartId,
+                this.vendorId
+              );
         ob.subscribe(
           (e: any) => {
             this.uploadedAttachments[0].files = e;
@@ -111,7 +117,7 @@ export class ProposalAttachmentComponent implements OnInit {
   }
 
   get vendorAttachments() {
-    return this.uploadedAttachments[this.vendorView ? 0 : 1].files;
+    return (this.vendorView ? this.uploadedAttachments[0] : { files: [] }).files;
   }
 
   viewFiles(size: any = 'lg') {
