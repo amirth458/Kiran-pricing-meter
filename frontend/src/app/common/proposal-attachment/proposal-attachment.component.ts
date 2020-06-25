@@ -110,6 +110,10 @@ export class ProposalAttachmentComponent implements OnInit {
     return this.uploadedAttachments[!this.vendorView ? 0 : 1].files;
   }
 
+  get vendorAttachments() {
+    return this.uploadedAttachments[this.vendorView ? 0 : 1].files;
+  }
+
   viewFiles(size: any = 'lg') {
     const options: any = {
       size,

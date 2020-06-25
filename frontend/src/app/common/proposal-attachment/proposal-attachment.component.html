@@ -10,7 +10,7 @@
 </div>
 
 <span
-  *ngIf="type === 'governance-document' && smallView && customerAttachments?.length > 0"
+  *ngIf="type === 'governance-document' && smallView && (customerAttachments || vendorAttachments || []).length > 0"
   class="smallView hover-bold cursor-pointer underline text-theme-blue"
   (click)="viewFiles()"
 >
