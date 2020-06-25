@@ -259,20 +259,6 @@ export class ConnectOrderDetailsComponent implements OnInit {
       .subscribe(
         res => {
           this.progressInfo = res;
-
-          this.progressInfo.lastCustomerAndVendorMessageTime = this.progressInfo.lastCustomerAndVendorMessageTime
-            ? this.progressInfo.lastCustomerAndVendorMessageTime + 'Z'
-            : '';
-
-          this.progressInfo.lastZoomDiscussionCompleted = this.progressInfo.lastZoomDiscussionCompleted
-            ? this.progressInfo.lastZoomDiscussionCompleted + 'Z'
-            : '';
-
-          this.progressInfo.lastZoomDiscussionsCompleted = (this.progressInfo.lastZoomDiscussionsCompleted || []).map(
-            conference => {
-              return { ...conference, createdTime: conference.createdTime ? conference.createdTime + 'Z' : '' };
-            }
-          );
           // TODO:
           // Fix this when Dipen fixes from his sides
           this.progressInfo.chatDetails = (this.progressInfo.chatDetails || []).length
