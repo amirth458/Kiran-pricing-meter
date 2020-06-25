@@ -379,8 +379,10 @@
             Vendor : <span class="text-theme-green">{{ selectedVendor?.vendorName }}</span>
           </p>
           <div *ngFor="let item of progressInfo?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
-            <span class="font-italic">Meeting Created Time : </span>
+            <span class="font-italic">Created Time : </span>
             <span>{{ item?.createdTime | date: util.dateFormatWithTime }}</span>
+            <span class="font-italic ml-2">Scheduled Time : </span>
+            <span>{{ item?.startTime | date: util.dateFormatWithTime }}</span>
           </div>
         </div>
 

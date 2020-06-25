@@ -11,7 +11,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_order_id',
       field: 'bid_order_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_order_id',
       headerTooltip: 'bid_order_id'
@@ -20,7 +20,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_order_item_id',
       field: 'bid_order_item_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_order_item_id',
       headerTooltip: 'bid_order_item_id'
@@ -29,7 +29,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_order_status',
       field: 'bid_order_status',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_order_status',
       headerTooltip: 'bid_order_status'
@@ -38,7 +38,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_process_id',
       field: 'bid_process_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_process_id',
       headerTooltip: 'bid_process_id'
@@ -47,7 +47,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_process_name',
       field: 'bid_process_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_process_name',
       headerTooltip: 'bid_process_name'
@@ -56,7 +56,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_winner',
       field: 'bid_winner',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_winner',
       headerTooltip: 'bid_winner'
@@ -65,7 +65,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'bid_accepted',
       field: 'bid_accepted',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_accepted',
       headerTooltip: 'bid_accepted'
@@ -74,7 +74,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'counter_accepted',
       field: 'counter_accepted',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'counter_accepted',
       headerTooltip: 'counter_accepted'
@@ -83,7 +83,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'counter_price',
       field: 'counter_price',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'counter_price',
       headerTooltip: 'counter_price'
@@ -92,7 +92,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'created_by',
       field: 'created_by',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'created_by',
       headerTooltip: 'created_by'
@@ -101,7 +101,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'created_date',
       field: 'created_date',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'created_date'
@@ -110,7 +110,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'customer_order_id',
       field: 'customer_order_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_order_id',
       headerTooltip: 'customer_order_id'
@@ -119,7 +119,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'customer_price',
       field: 'customer_price',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_price',
       headerTooltip: 'customer_price'
@@ -128,7 +128,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'equipment_id',
       field: 'equipment_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'equipment_id',
       headerTooltip: 'equipment_id'
@@ -137,7 +137,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'equipment_name',
       field: 'equipment_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'equipment_name',
       headerTooltip: 'equipment_name'
@@ -146,7 +146,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'last_modified_by',
       field: 'last_modified_by',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'last_modified_by',
       headerTooltip: 'last_modified_by'
@@ -155,7 +155,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'last_modified_date',
       field: 'last_modified_date',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'last_modified_date',
       headerTooltip: 'last_modified_date'
@@ -164,7 +164,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'materialName',
       field: 'materialName',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'materialName',
       headerTooltip: 'materialName',
@@ -174,7 +174,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'material_id',
       field: 'material_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'material_id',
       headerTooltip: 'material_id',
@@ -184,7 +184,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'part_id',
       field: 'part_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_id',
       headerTooltip: 'part_id'
@@ -193,7 +193,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'quote_price',
       field: 'quote_price',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'quote_price',
       headerTooltip: 'quote_price'
@@ -202,7 +202,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'rfq_id',
       field: 'rfq_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'rfq_id',
       headerTooltip: 'rfq_id'
@@ -211,7 +211,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'vendor_id',
       field: 'vendor_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_id',
       headerTooltip: 'vendor_id'
@@ -220,7 +220,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'vendor_name',
       field: 'vendor_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_name',
       headerTooltip: 'vendor_name'
@@ -229,7 +229,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerName: 'vendor_price',
       field: 'vendor_price',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_price',
       headerTooltip: 'vendor_price'

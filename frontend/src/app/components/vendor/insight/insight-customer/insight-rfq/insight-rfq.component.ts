@@ -17,7 +17,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'rfq_id',
       field: 'rfq_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'rfq_id',
       headerTooltip: 'rfq_id',
@@ -32,7 +32,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'rfq_profile_name',
       field: 'rfq_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'rfq_name',
       headerTooltip: 'rfq_profile_name'
@@ -41,7 +41,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'project_type',
       field: 'project_type',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'project_type',
       headerTooltip: 'project_type'
@@ -50,7 +50,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'rfq_status',
       field: 'rfq_status',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'rfq_status',
       headerTooltip: 'rfq_status'
@@ -59,7 +59,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'account_name',
       field: 'account_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'account_name',
       headerTooltip: 'account_name'
@@ -68,7 +68,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'customer_first',
       field: 'customer_first',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_first',
       headerTooltip: 'customer_first'
@@ -77,7 +77,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'customer_last',
       field: 'customer_last',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_last',
       headerTooltip: 'customer_last'
@@ -86,7 +86,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'customer_phone',
       field: 'customer_phone',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_phone',
       headerTooltip: 'customer_phone'
@@ -95,7 +95,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'email',
       field: 'email',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'email',
       headerTooltip: 'email'
@@ -104,7 +104,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'created_date',
       field: 'created_date',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'created_date'
@@ -113,7 +113,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'nda',
       field: 'nda',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'nda',
       headerTooltip: 'nda'
@@ -122,7 +122,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'regions',
       field: 'regions',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'regions',
       headerTooltip: 'regions'
@@ -131,7 +131,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'part_certs',
       field: 'part_certs',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_certs',
       headerTooltip: 'part_certs'
@@ -140,7 +140,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'cad_file_count',
       field: 'cad_file_count',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'cad_file_count',
       headerTooltip: 'cad_file_count'
@@ -149,7 +149,7 @@ export class InsightRfqComponent implements OnInit {
       headerName: 'part_count',
       field: 'part_count',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_count',
       headerTooltip: 'part_count'

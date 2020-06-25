@@ -13,7 +13,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'part_id',
       field: 'part_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_id',
       headerTooltip: 'part_id',
@@ -28,7 +28,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'rfq_id',
       field: 'rfq_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'rfq_id',
       headerTooltip: 'rfq_id'
@@ -37,7 +37,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'customer_order_id',
       field: 'customer_order_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_order_id',
       headerTooltip: 'customer_order_id'
@@ -46,7 +46,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'file_name',
       field: 'file_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'file_name',
       headerTooltip: 'file_name'
@@ -55,7 +55,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'part_status',
       field: 'part_status',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_status',
       headerTooltip: 'part_status'
@@ -64,7 +64,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'part_type',
       field: 'part_type',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_type',
       headerTooltip: 'part_type'
@@ -73,7 +73,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'payment_status',
       field: 'payment_status',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'payment_status',
       headerTooltip: 'payment_status'
@@ -82,7 +82,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'part_quote_price',
       field: 'part_quote_price',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_quote_price',
       headerTooltip: 'part_quote_price'
@@ -91,7 +91,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'customer_name',
       field: 'customer_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_name',
       headerTooltip: 'customer_name'
@@ -100,7 +100,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'customer_email',
       field: 'customer_email',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'customer_email',
       headerTooltip: 'customer_email'
@@ -109,7 +109,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'quantity',
       field: 'quantity',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'quantity',
       headerTooltip: 'quantity'
@@ -118,7 +118,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'material_count',
       field: 'material_count',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'material_count',
       headerTooltip: 'material_count'
@@ -127,7 +127,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'material',
       field: 'material',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'material',
       headerTooltip: 'material',
@@ -137,7 +137,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'equipment_count',
       field: 'equipment_count',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'equipment_count',
       headerTooltip: 'equipment_count'
@@ -146,7 +146,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'technology',
       field: 'technology',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'technology',
       headerTooltip: 'technology',
@@ -156,7 +156,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'post_process',
       field: 'post_process',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'post_process',
       headerTooltip: 'post_process'
@@ -165,7 +165,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'target_delivery_date',
       field: 'target_delivery_date',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'target_delivery_date',
       headerTooltip: 'target_delivery_date'
@@ -174,7 +174,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'shipping_address',
       field: 'shipping_address',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'shipping_address',
       headerTooltip: 'shipping_address'
@@ -183,7 +183,7 @@ export class InsightPartComponent implements OnInit {
       headerName: 'created_date',
       field: 'created_date',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'created_date'

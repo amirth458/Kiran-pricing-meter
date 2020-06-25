@@ -11,7 +11,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'vendor_order_id',
       field: 'vendor_order_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_order_id',
       headerTooltip: 'vendor_order_id'
@@ -20,7 +20,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'vendor_order_status',
       field: 'vendor_order_status',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_order_status',
       headerTooltip: 'vendor_order_status'
@@ -29,7 +29,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'vendor_sub_order_ids',
       field: 'vendor_sub_order_ids',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_sub_order_ids',
       headerTooltip: 'vendor_sub_order_ids',
@@ -39,7 +39,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'part_ids',
       field: 'part_ids',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'part_ids',
       headerTooltip: 'part_ids'
@@ -48,7 +48,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'bid_order_id',
       field: 'bid_order_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_order_id',
       headerTooltip: 'bid_order_id'
@@ -57,7 +57,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'bid_order_item_ids',
       field: 'bid_order_item_ids',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_order_item_ids',
       headerTooltip: 'bid_order_item_ids',
@@ -67,7 +67,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerName: 'bid_process_id',
       field: 'bid_process_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'bid_process_id',
       headerTooltip: 'bid_process_id'
