@@ -104,6 +104,6 @@ export class ProposalFormComponent implements OnInit {
 
   getVolume(partDimension: PartDimension) {
     const unit = this.measurementUnits.find(item => item.id === partDimension.volume.unitId);
-    return `${partDimension.volume.value} cu${unit.symbol}`;
+    return `${partDimension.volume.value} cu${unit ? unit.symbol : ''}`;
   }
 }
