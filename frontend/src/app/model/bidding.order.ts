@@ -43,3 +43,15 @@ export enum BiddingOrderStatus {
   COMPLETED_WITH_NO_RESPONSE = 'COMPLETED_WITH_NO_RESPONSE',
   WAITING_FOR_RELEASE = 'WAITING_FOR_RELEASE'
 }
+
+// TODO:
+// This is obviously the full list
+export enum BidConnectStatus {
+  RELEASED_TO_CUSTOMER = 'RELEASED_TO_CUSTOMER',
+  COMPLETE = 'COMPLETE'
+}
+
+export enum BidConnectStatusEnum {
+  RELEASED_TO_CUSTOMER = 3,
+  COMPLETE = 4
+}

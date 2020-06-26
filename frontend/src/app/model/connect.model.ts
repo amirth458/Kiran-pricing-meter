@@ -3,7 +3,6 @@ import { BidOrderStatusType } from './confirm.sub-order.release';
 import { PaymentStatusType } from './billing.model';
 import { Contract } from './subscription.model';
 import { Conference } from './conference.model';
-import { Chat } from './chat.model';
 
 export enum BidProcessStatusEnum {
   AWAITING_VENDOR_RESPONSE = 'AWAITING VENDOR RESPONSE',
@@ -47,6 +46,7 @@ export class ConnectProject {
     isRegistered: boolean;
     invitedByUserId: number;
   }[];
+  bidConnectStatusType: BidOrderStatusType;
 }
 
 export class ConnectOrder {
