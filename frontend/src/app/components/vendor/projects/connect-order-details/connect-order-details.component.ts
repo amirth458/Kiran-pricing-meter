@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { ProjectService } from 'src/app/service/project.service';
@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { mergeMap, map, tap } from 'rxjs/operators';
+import { mergeMap, map, tap, takeUntil } from 'rxjs/operators';
 import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,12 +19,14 @@ import { SubscriptionTypeEnum, SubscriptionTypeIdEnum } from '../../../../model/
 import { BillingService } from 'src/app/service/billing.service';
 import { PaymentDetails } from 'src/app/model/billing.model';
 import { Util } from '../../../../util/Util';
+import { BidConnectStatusEnum } from '../../../../model/bidding.order';
+import { empty, Subject } from 'rxjs';
 @Component({
   selector: 'app-connect-order-details',
   templateUrl: './connect-order-details.component.html',
   styleUrls: ['./connect-order-details.component.css']
 })
-export class ConnectOrderDetailsComponent implements OnInit {
+export class ConnectOrderDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('vendorCell') vendorCell: TemplateRef<any>;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('replaceSupplierCell') replaceSupplierCell: TemplateRef<any>;
@@ -74,6 +76,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
 
   showZoomHistory = false;
   showNoteHistory = false;
+
+  clean$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     public projectService: ProjectService,
@@ -161,14 +165,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
   }
 
   getOrderInfo() {
-    this.billingService.getPaymentInfo(this.customerOrderId).subscribe(
-      (res: PaymentDetails) => {
-        this.orderInfo = res;
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    this.billingService
+      .getPaymentInfo(this.customerOrderId)
+      .pipe(takeUntil(this.clean$))
+      .subscribe(
+        (res: PaymentDetails) => {
+          this.orderInfo = res;
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
 
   getData() {
@@ -176,11 +183,23 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.projectService
       .getConnectProject(this.customerOrderId)
       .pipe(
+        takeUntil(this.clean$),
         tap(_ => {
           this.firstTimeRelease = (_.prodexSuppliers || []).filter(supplier => !!supplier.status).length === 0;
         }),
-        mergeMap(project =>
-          this.partService.getPartsById(project.partIds || []).pipe(
+        mergeMap(project => {
+          // TODO:
+          // Use this until we get all bid connect status type
+          if (project.bidConnectStatusType.id === BidConnectStatusEnum.COMPLETE && this.pageType === 'release-queue') {
+            this.router.navigateByUrl('/prodex/connect/order-complete/' + this.customerOrderId);
+            return empty();
+          }
+          if (project.bidConnectStatusType.id !== BidConnectStatusEnum.COMPLETE && this.pageType === 'order-complete') {
+            this.router.navigateByUrl('/prodex/connect/release-queue/' + this.customerOrderId);
+            return empty();
+          }
+          return this.partService.getPartsById(project.partIds || []).pipe(
+            takeUntil(this.clean$),
             tap(async partList => {
               this.orderService
                 .getMatchingProcessProfiles([partList[0].rfqMediaId], false)
@@ -189,8 +208,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
             map(parts => {
               return { ...project, parts };
             })
-          )
-        )
+          );
+        })
       )
       .subscribe(
         r => {
@@ -250,6 +269,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.projectService
       .getVendorCustomerProgress(this.customerOrderId, this.selectedVendor.vendorId)
       .pipe(
+        takeUntil(this.clean$),
         tap(_ => {
           this.proposalPartIds = (_.partQuoteResponseViews || []).map(
             view => view.partQuoteCustomerView.proposalPartId
@@ -788,5 +808,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
         }
       ]
     ];
+  }
+
+  ngOnDestroy() {
+    this.clean$.next();
   }
 }
