@@ -286,7 +286,7 @@
         <h5 class="mt-2">
           Notes History
           <span
-            *ngIf="progressInfo?.chatDetails?.messageNotes?.length"
+            *ngIf="(progressInfo?.messages?.messageNotes || []).length"
             class="ml-2 text-theme-green font-sm cursor-pointer"
             (click)="showNoteHistory = !showNoteHistory"
           >
@@ -301,9 +301,7 @@
         </h5>
 
         <div *ngIf="showNoteHistory" class="note-history p-2">
-          <!-- TODO: -->
-          <!-- Fix this when Dipen fixes from his sides -->
-          <div *ngFor="let item of progressInfo?.chatDetails?.messageNotes" class="ml-2 font-sm row">
+          <div *ngFor="let item of progressInfo?.messages?.messageNotes" class="ml-2 font-sm row">
             <span
               class="font-italic"
               *ngIf="item?.senderId === (projectDetails?.parts)[0]?.userId"
@@ -322,12 +320,12 @@
 
         <p class="mb-2 item">
           Number of customer and vendor message:
-          <span class="value font-weight-bold">{{ progressInfo?.numberOfCustomerAndVendorMessages }}</span>
+          <span class="value font-weight-bold">{{ progressInfo?.messages?.numberOfCustomerAndVendorMessages }}</span>
         </p>
         <p class="mb-2 item">
           Last customer and vendor message time:
           <span class="value font-weight-bold">{{
-            progressInfo?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime
+            progressInfo?.messages?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime
           }}</span>
         </p>
       </div>
@@ -360,7 +358,7 @@
         <h5 class="mt-2">
           Zoom Meeting History
           <span
-            *ngIf="(progressInfo?.lastZoomDiscussionsCompleted || []).length"
+            *ngIf="(progressInfo?.zoomMeeting?.lastZoomDiscussionsCompleted || []).length"
             class="ml-2 text-theme-green font-sm cursor-pointer"
             (click)="showZoomHistory = !showZoomHistory"
           >
@@ -378,7 +376,7 @@
           <p class="text-theme vendor-name mb-2">
             Vendor : <span class="text-theme-green">{{ selectedVendor?.vendorName }}</span>
           </p>
-          <div *ngFor="let item of progressInfo?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
+          <div *ngFor="let item of progressInfo?.zoomMeeting?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
             <span class="font-italic">Created Time : </span>
             <span>{{ item?.createdTime | date: util.dateFormatWithTime }}</span>
             <span class="font-italic ml-2">Scheduled Time : </span>
@@ -388,18 +386,18 @@
 
         <p class="mb-2 item">
           Zoom discussions completed:
-          <span class="value font-weight-bold">{{ progressInfo?.numberOfZoomDiscussionsCompleted }}</span>
+          <span class="value font-weight-bold">{{ progressInfo?.zoomMeeting?.numberOfZoomDiscussionsCompleted }}</span>
         </p>
         <p class="mb-2 item">
           Last Zoom discussions completed:
           <span class="value font-weight-bold">{{
-            progressInfo?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime
+            progressInfo?.zoomMeeting?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime
           }}</span>
         </p>
         <p class="mb-2 item">
           Next Zoom discussions:
           <span class="value font-weight-bold">{{
-            progressInfo?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime
+            progressInfo?.zoomMeeting?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime
           }}</span>
         </p>
       </div>
