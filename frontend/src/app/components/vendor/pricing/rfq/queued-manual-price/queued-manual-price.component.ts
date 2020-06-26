@@ -65,14 +65,14 @@ export class QueuedManualPriceComponent implements OnInit {
   ngOnInit() {
     this.columnDefs = [
       [
-        // {
-        //   headerName: 'Customer',
-        //   field: 'customer',
-        //   tooltipField: 'customer',
-        //   hide: false,
-        //   sortable: true,
-        //   filter: false
-        // },
+        {
+          headerName: 'Customer',
+          field: 'customerName',
+          tooltipField: 'customerName',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
         {
           headerName: 'RFQ',
           field: 'rfq',
@@ -155,14 +155,14 @@ export class QueuedManualPriceComponent implements OnInit {
         // }
       ],
       [
-        // {
-        //   headerName: 'Customer',
-        //   field: 'customer',
-        //   tooltipField: 'customer',
-        //   hide: false,
-        //   sortable: true,
-        //   filter: false
-        // },
+        {
+          headerName: 'Customer',
+          field: 'customerName',
+          tooltipField: 'customerName',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
         {
           headerName: 'RFQ',
           field: 'rfq',
@@ -237,6 +237,14 @@ export class QueuedManualPriceComponent implements OnInit {
         }
       ],
       [
+        {
+          headerName: 'Customer',
+          field: 'customerName',
+          tooltipField: 'customerName',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
         {
           headerName: 'RFQ',
           field: 'rfq',
@@ -386,7 +394,7 @@ export class QueuedManualPriceComponent implements OnInit {
           ...res.content.map((part: Part) => ({
             id: part.id,
             subOrder: part.id,
-            customer: '',
+            customerName: part.customerName,
             rfq: part.rfqMedia.projectRfqId,
             part: `${part.rfqMedia.projectRfqId}.${part.id}`,
             fileName: part.rfqMedia.media.name,
@@ -438,6 +446,7 @@ export class QueuedManualPriceComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
+            customerName: part.customerName,
             subOrder: part.id,
             rfq: part.rfqMedia.projectRfqId,
             part: part.rfqMedia.projectRfqId + '.' + part.id,
@@ -507,6 +516,7 @@ export class QueuedManualPriceComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
+            customerName: part.customerName,
             subOrder: part.id,
             rfq: part.rfqMedia.projectRfqId,
             part: part.rfqMedia.projectRfqId + '.' + part.id,
