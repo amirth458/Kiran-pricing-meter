@@ -259,11 +259,6 @@ export class ConnectOrderDetailsComponent implements OnInit {
       .subscribe(
         res => {
           this.progressInfo = res;
-          // TODO:
-          // Fix this when Dipen fixes from his sides
-          this.progressInfo.chatDetails = (this.progressInfo.chatDetails || []).length
-            ? this.progressInfo.chatDetails[0]
-            : [];
         },
         err => {
           console.log(err);

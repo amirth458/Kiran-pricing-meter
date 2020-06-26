@@ -75,22 +75,33 @@ export class ConnectOrder {
 }
 
 export class ClientProgress {
-  numberOfCustomerAndVendorMessages: number;
-  lastCustomerAndVendorMessageTime: string;
   isProposalIssued: boolean;
   proposalAmount: number;
-  numberOfZoomDiscussionsCompleted: number;
-  lastZoomDiscussionCompleted: string;
-  lastZoomDiscussionsCompleted: Conference[];
-  nextZoomDiscussionScheduled: string;
+  zoomMeeting: {
+    numberOfZoomDiscussionsCompleted: number;
+    lastZoomDiscussionCompleted: string;
+    lastZoomDiscussionsCompleted: Conference[];
+    nextZoomDiscussionScheduled: string;
+  };
   partQuoteResponseViews: {
     partId: number;
     vendorId: number;
+    b;
     partQuoteCustomerView: PartQuoteCustomerView;
   }[];
-  chatDetails: any;
-  // Fix this when Dipen fixes from his sides
-  // chatDetails: Chat;
+  messages: {
+    numberOfCustomerAndVendorMessages: number;
+    lastCustomerAndVendorMessageTime: string;
+    messageNotes: {
+      id: number;
+      chat: string;
+      message: string;
+      senderId: number;
+      createdDate: string;
+      lastModifiedDate: string;
+      messageNoteHistory: any;
+    }[];
+  };
 }
 
 export class PartQuote {
