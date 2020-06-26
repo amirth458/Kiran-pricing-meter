@@ -164,6 +164,7 @@ export interface Part {
   id: number;
   partId: number;
   name: string;
+  customerName: string;
   rfqMedia: RfqMedia;
   processTypeId: number;
   processTypeName: string;
