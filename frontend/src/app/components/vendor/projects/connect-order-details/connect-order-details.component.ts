@@ -188,13 +188,19 @@ export class ConnectOrderDetailsComponent implements OnInit, OnDestroy {
           this.firstTimeRelease = (_.prodexSuppliers || []).filter(supplier => !!supplier.status).length === 0;
         }),
         mergeMap(project => {
-          // TODO:
-          // Use this until we get all bid connect status type
-          if (project.bidConnectStatusType.id === BidConnectStatusEnum.COMPLETE && this.pageType === 'release-queue') {
+          if (
+            project.bidConnectStatusType &&
+            project.bidConnectStatusType.id === BidConnectStatusEnum.COMPLETE &&
+            this.pageType === 'release-queue'
+          ) {
             this.router.navigateByUrl('/prodex/connect/order-complete/' + this.customerOrderId);
             return empty();
           }
-          if (project.bidConnectStatusType.id !== BidConnectStatusEnum.COMPLETE && this.pageType === 'order-complete') {
+          if (
+            project.bidConnectStatusType &&
+            project.bidConnectStatusType.id !== BidConnectStatusEnum.COMPLETE &&
+            this.pageType === 'order-complete'
+          ) {
             this.router.navigateByUrl('/prodex/connect/release-queue/' + this.customerOrderId);
             return empty();
           }
