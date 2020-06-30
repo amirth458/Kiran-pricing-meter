@@ -14,8 +14,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-import { combineLatest, empty } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from 'src/app/service/project.service';
 import { UserService } from 'src/app/service/user.service';
@@ -40,6 +38,9 @@ export class ProposalAttachmentComponent implements OnInit {
   @Input() vendorView = false;
   @Input() canUpload = false;
   @Input() smallView = false;
+  @Input() canDelete = true;
+
+  @Input() vendorId = null;
 
   @Output() changeFiles = new EventEmitter<any>();
   @Output() deleteFiles = new EventEmitter<any>();
@@ -51,7 +52,7 @@ export class ProposalAttachmentComponent implements OnInit {
 
   uploadedAttachments = [
     {
-      type: 'You',
+      type: 'Vendor',
       files: []
     },
     {
@@ -88,6 +89,8 @@ export class ProposalAttachmentComponent implements OnInit {
         },
         e => {}
       );
+    } else {
+      this.uploadedAttachments.pop();
     }
 
     if (this.vendorView) {
@@ -97,7 +100,11 @@ export class ProposalAttachmentComponent implements OnInit {
         const ob =
           this.type === 'attachment'
             ? this.projectService.getAllProposalReferenceMediaFiles(this.partId, this.proposalPartId)
-            : this.proposalService.getProjectGovernanceDediaForPartProposal(this.partId, this.proposalPartId);
+            : this.proposalService.getProjectGovernanceDediaForPartProposal(
+                this.partId,
+                this.proposalPartId,
+                this.vendorId
+              );
         ob.subscribe(
           (e: any) => {
             this.uploadedAttachments[0].files = e;
@@ -110,6 +117,10 @@ export class ProposalAttachmentComponent implements OnInit {
 
   get customerAttachments() {
     return this.uploadedAttachments[!this.vendorView ? 0 : 1].files;
+  }
+
+  get vendorAttachments() {
+    return (this.vendorView ? this.uploadedAttachments[0] : { files: [] }).files;
   }
 
   viewFiles(size: any = 'lg') {

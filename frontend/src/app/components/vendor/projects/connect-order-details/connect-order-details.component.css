@@ -21,3 +21,41 @@
 .vendor-profile {
   height: 300px;
 }
+
+::ng-deep .check-progress-modal .modal-dialog {
+  float: right;
+  min-width: 500px;
+  min-height: 100vh;
+}
+
+::ng-deep .check-progress-modal .modal-dialog .modal-content {
+  min-height: 100vh;
+}
+
+::ng-deep .check-progress-modal .item {
+  font-size: 13px;
+}
+
+.release-notes {
+  background-color: transparent !important;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.ins-title {
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.zoom-history,
+.note-history {
+  background: whitesmoke;
+  border-radius: 6px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.zoom-history .vendor-name {
+  font-size: 14px;
+}

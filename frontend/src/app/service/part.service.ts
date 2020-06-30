@@ -27,7 +27,7 @@ export class PartService {
       .pipe(
         map(_ => [
           ...(_.parts || []).map(_ => new Object({ ..._, proposalPart: false })),
-          ...(_.proposalPart || []).map(_ => new Object({ ..._, proposalPart: true }))
+          ...(_.proposalParts || []).map(_ => new Object({ ..._, proposalPart: true }))
         ])
       );
   }

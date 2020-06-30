@@ -1051,3 +1051,110 @@ app-dropdown-cell-renderer {
 }
 
 /* End of Notification */
+
+/** Proposal form **/
+.proposal-form-modal .modal-dialog {
+  max-width: 70%;
+}
+
+.proposal-form-modal .modal-header {
+  border-bottom: none;
+}
+
+.proposal-form-modal .btn-groups .btn {
+  width: 200px;
+}
+
+.proposal-form-modal .price-title {
+  font-size: 14px;
+}
+
+.proposal-form-modal .agreement-text {
+  font-size: 12px;
+}
+
+.proposal-form-modal .downloadable {
+  word-break: break-all;
+}
+
+.proposal-form-modal .tablist .nav-item {
+  min-width: 150px;
+  text-align: center;
+}
+
+.proposal-form-modal .tablist .nav-tabs .nav-link:not(.active) {
+  background: #fafafa;
+  border-radius: 0;
+}
+
+.proposal-form-modal .tablist .nav-tabs .nav-link:hover {
+  border-bottom: none;
+}
+
+.proposal-form-modal .tab-content .part-title {
+  font-size: 13px;
+  padding: 5px 0px;
+}
+
+.proposal-form-modal .tablist .nav-tabs .nav-link.active {
+  border: none;
+  border-top: 3px solid var(--theme-light-green) !important;
+  border-radius: 0;
+}
+
+.proposal-form-modal .tab-container {
+  border: 1px solid #cccccc;
+  padding: 0;
+}
+
+.proposal-form-modal .tab-content {
+  padding: 1rem;
+}
+
+.proposal-form-modal .proposal-part {
+  border-left: 1px solid #cccccc;
+}
+
+.proposal-form-modal .col-form-label,
+.proposal-form-modal .col-form-label label {
+  font-size: 12px;
+  margin: 0;
+  font-weight: normal;
+}
+
+.proposal-form-modal .tab-content .media-image {
+  height: 200px;
+  width: 100%;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 0 auto;
+}
+
+.proposal-form-modal .tab-content .proposal-table {
+  width: 100%;
+}
+
+.proposal-form-modal .tab-content .proposal-table td.original-value,
+.proposal-form-modal .tab-content .proposal-table td.proposed-value {
+  width: 40%;
+}
+
+.proposal-form-modal .tab-content .proposal-table td.high-lighted-cell {
+  background: var(--theme-light-blue);
+  color: var(--theme-white-color);
+  font-weight: 700;
+  border: none;
+  border-bottom: 1px solid var(--theme-white-color);
+  width: 20%;
+}
+
+.proposal-form-modal .tab-content .proposal-table td {
+  border: 1px solid #cccccc;
+  text-align: center;
+  padding: 10px;
+  color: var(--theme-light-blue);
+  font-size: 13px;
+}
+
+/** Proposal form **/

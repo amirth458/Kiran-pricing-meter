@@ -88,3 +88,15 @@ p.label {
 .cannot-fulfill {
   font-size: 14px;
 }
+
+.release-notes {
+  background-color: transparent !important;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.ins-title {
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 0;
+}

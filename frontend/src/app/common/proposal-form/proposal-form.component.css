@@ -1,0 +1,13 @@
+:host .btn-proposal {
+  font-size: 14px;
+  padding: 0.5rem 0;
+}
+
+:host .btn-proposal:focus,
+:host .btn-proposal:active,
+:host .btn-proposal {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none;
+  color: var(--theme-sky-blue);
+}

@@ -90,6 +90,7 @@ export interface PartOrder {
   isReleaseToSingleSupplier: boolean;
   partList: Part[];
   createdDate: string;
+  notes: string;
 }
 
 export interface PartQuoteInvoiceLineItem {
@@ -161,7 +162,9 @@ export interface RfqMedia {
 
 export interface Part {
   id: number;
+  partId: number;
   name: string;
+  customerName: string;
   rfqMedia: RfqMedia;
   processTypeId: number;
   processTypeName: string;
@@ -193,6 +196,7 @@ export interface Part {
   isReleaseToSingleSupplier?: boolean;
   commets?: string;
   proposalPart?: boolean;
+  parentPartId?: number;
 }
 
 export class BidPart {
@@ -611,4 +615,19 @@ export interface ReferenceFile {
   uploadedAt: string;
   location: string;
   mediaId: number;
+}
+
+export class PartStatusSequenced {
+  displayName: string;
+  partStatusTypeId: number;
+  partStatusTypeName: string;
+  projectTypeId: number;
+  projectTypeName: string;
+  sequence: number;
+}
+
+export enum GovernanceMediaEnum {
+  PROJECT_PROFILE,
+  PROPOSAL_PART,
+  PART
 }

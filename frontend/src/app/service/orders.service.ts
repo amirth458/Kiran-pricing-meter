@@ -18,7 +18,8 @@ import {
   PartQuote,
   ProcessProfileDetailedView,
   MatchedProcessProfile,
-  BidProjectProcess
+  BidProjectProcess,
+  PartStatusSequenced
 } from '../model/part.model';
 import { Util } from '../util/Util';
 
@@ -577,5 +578,11 @@ export class OrdersService {
   ): Observable<Array<BidVendorMatchingProfileDetails> | any> {
     const url = `${environment.apiBaseUrl}/admin/bidding/${bidOrderId}/matching-process-profiles`;
     return this.http.post<Array<BidVendorMatchingProfileDetails> | any>(url, vendorIds);
+  }
+
+  getPartStatusByProjectType(projectTypeId): Observable<PartStatusSequenced[]> {
+    return this.http.get<PartStatusSequenced[]>(
+      `${environment.procurementApiBaseUrl}/metadata/partstatus/${projectTypeId}`
+    );
   }
 }

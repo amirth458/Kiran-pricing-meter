@@ -109,9 +109,8 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   handleSaveError(error: HttpErrorResponse) {
-    const message = error.error.message || 'Import Failed.';
-    this.toastrService.error(`${message} Please contact your admin`);
     this.spinner.hide();
+    console.log(error);
     return throwError('Error');
   }
 }

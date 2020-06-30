@@ -38,6 +38,18 @@
         </app-part-detail>
       </div>
     </div>
+    <div *ngIf="orderInfo?.customerOrder?.notes" class="d-flex flex-column">
+      <h6 class="text-theme ins-title">Additional Guidance</h6>
+      <div class="d-flex flex-row p-0 form-group theme w-100">
+        <textarea
+          [value]="orderInfo?.customerOrder?.notes"
+          disabled
+          class="form-control release-notes text-theme"
+          rows="3"
+        >
+        </textarea>
+      </div>
+    </div>
   </div>
 
   <div class="my-4 prodex-supplier">
@@ -155,6 +167,17 @@
   </div>
 </ng-template>
 
+<ng-template #checkProgressCell let-row>
+  <div
+    *ngIf="row?.status && statusTypes[row?.status] !== statusTypes?.VENDOR_RECEIVED"
+    class="h-100 d-flex flex-row align-items-center"
+  >
+    <button class="btn btn-cell transparent text-theme-green p-0" (click)="checkProgress($event, row)">
+      Check Progress
+    </button>
+  </div>
+</ng-template>
+
 <ng-template #createProfileCell let-row>
   <div *ngIf="!row?.isRegistered" class="h-100 d-flex flex-row justify-content-center align-items-center">
     <button class="btn btn-cell theme white p-0" (click)="createVendorProfile(row)">Create Profile</button>
@@ -242,6 +265,141 @@
             Release Project to Supplier
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #checkProgressModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+        Check Progress
+      </h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body text-theme">
+      <div class="mb-3 section">
+        <h5 class="mt-2">
+          Notes History
+          <span
+            *ngIf="(progressInfo?.messages?.messageNotes || []).length"
+            class="ml-2 text-theme-green font-sm cursor-pointer"
+            (click)="showNoteHistory = !showNoteHistory"
+          >
+            {{ !showNoteHistory ? 'See' : 'Hide' }} note history
+            <span *ngIf="!showNoteHistory">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+            <span *ngIf="showNoteHistory">
+              <i class="fas fa-chevron-up"></i>
+            </span>
+          </span>
+        </h5>
+
+        <div *ngIf="showNoteHistory" class="note-history p-2">
+          <div *ngFor="let item of progressInfo?.messages?.messageNotes" class="ml-2 font-sm row">
+            <span
+              class="font-italic"
+              *ngIf="item?.senderId === (projectDetails?.parts)[0]?.userId"
+              class="col-6 pl-0 text-left"
+              >Customer : {{ (projectDetails?.parts)[0]?.customerName }}
+            </span>
+            <span
+              class="font-italic"
+              *ngIf="item?.senderId !== (projectDetails?.parts)[0]?.userId"
+              class="col-6 pl-0 text-left"
+              >Vendor : {{ selectedVendor?.vendorName }}
+            </span>
+            <span class="pl-3">{{ item?.createdDate | date: util.dateFormatWithTime }}</span>
+          </div>
+        </div>
+
+        <p class="mb-2 item">
+          Number of customer and vendor message:
+          <span class="value font-weight-bold">{{ progressInfo?.messages?.numberOfCustomerAndVendorMessages }}</span>
+        </p>
+        <p class="mb-2 item">
+          Last customer and vendor message time:
+          <span class="value font-weight-bold">{{
+            progressInfo?.messages?.lastCustomerAndVendorMessageTime | date: util.dateFormatWithTime
+          }}</span>
+        </p>
+      </div>
+      <div class="mb-3 section">
+        <h5 class="mt-2">Proposal History</h5>
+        <p class="mb-2 item">
+          Has bid been issued:
+          <span class="value font-weight-bold">{{
+            progressInfo?.isProposalIssued ? 'Yes' : progressInfo?.isProposalIssued === false ? 'No' : ''
+          }}</span>
+        </p>
+        <p class="mb-2 item">
+          How much is bid been issued for:
+          <span class="value font-weight-bold">{{ progressInfo?.proposalAmount | currency: '$' }}</span>
+        </p>
+        <p *ngIf="progressInfo?.isProposalIssued" class="mb-2 item">
+          All bid details:
+          <span class="text-light-blue hover-bold cursor-pointer underline">
+            <!-- See all proposal details -->
+            <app-proposal-form
+              [vendorId]="selectedVendor?.vendorId"
+              [partIds]="projectDetails?.partIds"
+              [values]="proposalPartIds"
+            >
+            </app-proposal-form>
+          </span>
+        </p>
+      </div>
+      <div class="mb-3 section">
+        <h5 class="mt-2">
+          Zoom Meeting History
+          <span
+            *ngIf="(progressInfo?.zoomMeeting?.lastZoomDiscussionsCompleted || []).length"
+            class="ml-2 text-theme-green font-sm cursor-pointer"
+            (click)="showZoomHistory = !showZoomHistory"
+          >
+            {{ !showZoomHistory ? 'See' : 'Hide' }} zoom history
+            <span *ngIf="!showZoomHistory">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+            <span *ngIf="showZoomHistory">
+              <i class="fas fa-chevron-up"></i>
+            </span>
+          </span>
+        </h5>
+
+        <div *ngIf="showZoomHistory" class="zoom-history p-2">
+          <p class="text-theme vendor-name mb-2">
+            Vendor : <span class="text-theme-green">{{ selectedVendor?.vendorName }}</span>
+          </p>
+          <div *ngFor="let item of progressInfo?.zoomMeeting?.lastZoomDiscussionsCompleted" class="ml-2 font-sm">
+            <span class="font-italic">Created Time : </span>
+            <span>{{ item?.createdTime | date: util.dateFormatWithTime }}</span>
+            <span class="font-italic ml-2">Scheduled Time : </span>
+            <span>{{ item?.startTime | date: util.dateFormatWithTime }}</span>
+          </div>
+        </div>
+
+        <p class="mb-2 item">
+          Zoom discussions completed:
+          <span class="value font-weight-bold">{{ progressInfo?.zoomMeeting?.numberOfZoomDiscussionsCompleted }}</span>
+        </p>
+        <p class="mb-2 item">
+          Last Zoom discussions completed:
+          <span class="value font-weight-bold">{{
+            progressInfo?.zoomMeeting?.lastZoomDiscussionCompleted | date: util.dateFormatWithTime
+          }}</span>
+        </p>
+        <p class="mb-2 item">
+          Next Zoom discussions:
+          <span class="value font-weight-bold">{{
+            progressInfo?.zoomMeeting?.nextZoomDiscussionScheduled | date: util.dateFormatWithTime
+          }}</span>
+        </p>
       </div>
     </div>
   </div>

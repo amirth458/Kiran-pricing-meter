@@ -2,6 +2,7 @@ import { Part } from './part.model';
 import { BidOrderStatusType } from './confirm.sub-order.release';
 import { PaymentStatusType } from './billing.model';
 import { Contract } from './subscription.model';
+import { Conference } from './conference.model';
 
 export enum BidProcessStatusEnum {
   AWAITING_VENDOR_RESPONSE = 'AWAITING VENDOR RESPONSE',
@@ -45,6 +46,7 @@ export class ConnectProject {
     isRegistered: boolean;
     invitedByUserId: number;
   }[];
+  bidConnectStatusType: BidOrderStatusType;
 }
 
 export class ConnectOrder {
@@ -70,4 +72,55 @@ export class ConnectOrder {
   rfqIds: number[];
   totalRowCount: number;
   bidConnectStatusType?: string;
+}
+
+export class ClientProgress {
+  isProposalIssued: boolean;
+  proposalAmount: number;
+  zoomMeeting: {
+    numberOfZoomDiscussionsCompleted: number;
+    lastZoomDiscussionCompleted: string;
+    lastZoomDiscussionsCompleted: Conference[];
+    nextZoomDiscussionScheduled: string;
+  };
+  partQuoteResponseViews: {
+    partId: number;
+    vendorId: number;
+    b;
+    partQuoteCustomerView: PartQuoteCustomerView;
+  }[];
+  messages: {
+    numberOfCustomerAndVendorMessages: number;
+    lastCustomerAndVendorMessageTime: string;
+    messageNotes: {
+      id: number;
+      chat: string;
+      message: string;
+      senderId: number;
+      createdDate: string;
+      lastModifiedDate: string;
+      messageNoteHistory: any;
+    }[];
+  };
+}
+
+export class PartQuote {
+  partQuoteId: number;
+  invoiceItemId: number;
+  value: number;
+  unit: number;
+  unitPrice: number;
+}
+
+export class PartQuoteCustomerView {
+  id: number;
+  partId: number;
+  proposalPartId: number;
+  vendorId: number;
+  isExpired: boolean;
+  expiredAt: string;
+  totalCost: number;
+  partQuoteDetails: PartQuote[];
+  winningProcessPricingId: number;
+  matchedProcessPricingIds: number[];
 }

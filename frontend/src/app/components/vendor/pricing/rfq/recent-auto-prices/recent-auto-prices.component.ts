@@ -42,20 +42,20 @@ export class RecentAutoPricesComponent implements OnInit {
 
   ngOnInit() {
     this.columnDefs = [
-      // {
-      //   headerName: 'Customer',
-      //   field: 'customer',
-      //   hide: false,
-      //   sortable: true,
-      //   filter: false
-      // },
+      {
+        headerName: 'Customer',
+        field: 'customerName',
+        tooltipField: 'customerName',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
       {
         headerName: 'RFQ',
         field: 'rfq',
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center',
         tooltipField: 'rfq'
       },
       {
@@ -64,7 +64,6 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center',
         tooltipField: 'part'
       },
       {
@@ -82,7 +81,6 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        cellClass: 'text-center',
         tooltipField: 'quantity'
       },
       {
@@ -109,7 +107,6 @@ export class RecentAutoPricesComponent implements OnInit {
       //   hide: false,
       //   sortable: true,
       //   filter: false,
-      //   cellClass: 'text-center',
       //   tooltipField: 'roughness',
       // },
       // {
@@ -118,7 +115,6 @@ export class RecentAutoPricesComponent implements OnInit {
       //   hide: false,
       //   sortable: true,
       //   filter: true,
-      //   cellClass: 'text-center',
       //   tooltipField: 'postProcess',
       // },
       {
@@ -126,7 +122,6 @@ export class RecentAutoPricesComponent implements OnInit {
         field: 'price',
         hide: false,
         sortable: true,
-        cellClass: 'text-center',
         tooltipField: 'price'
       }
     ];
@@ -185,6 +180,7 @@ export class RecentAutoPricesComponent implements OnInit {
         rows.push(
           ...res.content.map((part: Part) => ({
             id: part.id,
+            customerName: part.customerName,
             subOrder: part.id,
             rfq: part.rfqMedia.projectRfqId,
             part: `${part.rfqMedia.projectRfqId}.${part.id}`,

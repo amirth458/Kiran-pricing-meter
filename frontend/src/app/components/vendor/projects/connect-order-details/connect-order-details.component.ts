@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { ProjectService } from 'src/app/service/project.service';
-import { BidProcessStatusEnum, ConnectProject } from '../../../../model/connect.model';
+import { BidProcessStatusEnum, ConnectProject, ClientProgress } from '../../../../model/connect.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { mergeMap, map, tap } from 'rxjs/operators';
+import { mergeMap, map, tap, takeUntil } from 'rxjs/operators';
 import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -16,21 +16,27 @@ import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { DefaultEmails } from '../../../../../assets/constants';
 import { SubscriptionTypeEnum, SubscriptionTypeIdEnum } from '../../../../model/subscription.model';
-
+import { BillingService } from 'src/app/service/billing.service';
+import { PaymentDetails } from 'src/app/model/billing.model';
+import { Util } from '../../../../util/Util';
+import { BidConnectStatusEnum } from '../../../../model/bidding.order';
+import { empty, Subject } from 'rxjs';
 @Component({
   selector: 'app-connect-order-details',
   templateUrl: './connect-order-details.component.html',
   styleUrls: ['./connect-order-details.component.css']
 })
-export class ConnectOrderDetailsComponent implements OnInit {
+export class ConnectOrderDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('vendorCell') vendorCell: TemplateRef<any>;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
   @ViewChild('replaceSupplierCell') replaceSupplierCell: TemplateRef<any>;
   @ViewChild('createProfileCell') createProfileCell: TemplateRef<any>;
+  @ViewChild('checkProgressCell') checkProgressCell: TemplateRef<any>;
   @ViewChild('emailCell') emailCell: TemplateRef<any>;
   @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
   @ViewChild('vendorProfileModal') vendorProfileModal: TemplateRef<any>;
   @ViewChild('replacementProfileModal') replacementProfileModal: TemplateRef<any>;
+  @ViewChild('checkProgressModal') checkProgressModal: TemplateRef<any>;
 
   supplierGridOptions: GridOptions[] = [];
   vendorProfileGridOptions: GridOptions[] = [];
@@ -42,6 +48,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
 
+  util = Util;
   selectedVendor = null;
   firstTimeRelease = true;
   replacementProdexSuppliers;
@@ -63,6 +70,15 @@ export class ConnectOrderDetailsComponent implements OnInit {
   cc = [];
   bcc = [];
 
+  progressInfo: ClientProgress;
+  proposalPartIds = [];
+  orderInfo: PaymentDetails;
+
+  showZoomHistory = false;
+  showNoteHistory = false;
+
+  clean$: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     public projectService: ProjectService,
     public partService: PartService,
@@ -74,7 +90,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
     public toaster: ToastrService,
     public location: Location,
     public metadataService: MetadataService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public billingService: BillingService
   ) {
     this.customerOrderId = this.route.snapshot.paramMap.get('id');
     this.route.url.subscribe(r => {
@@ -90,6 +107,7 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.metadataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.unitOptions = res;
     });
+    this.getOrderInfo();
     this.initColumnDefs();
     this.initGridOptions();
     this.getData();
@@ -146,16 +164,48 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.router.navigateByUrl('/user-manage/add-vendor/user');
   }
 
+  getOrderInfo() {
+    this.billingService
+      .getPaymentInfo(this.customerOrderId)
+      .pipe(takeUntil(this.clean$))
+      .subscribe(
+        (res: PaymentDetails) => {
+          this.orderInfo = res;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+  }
+
   getData() {
     this.spineer.show();
     this.projectService
       .getConnectProject(this.customerOrderId)
       .pipe(
+        takeUntil(this.clean$),
         tap(_ => {
           this.firstTimeRelease = (_.prodexSuppliers || []).filter(supplier => !!supplier.status).length === 0;
         }),
-        mergeMap(project =>
-          this.partService.getPartsById(project.partIds || []).pipe(
+        mergeMap(project => {
+          if (
+            project.bidConnectStatusType &&
+            project.bidConnectStatusType.id === BidConnectStatusEnum.COMPLETE &&
+            this.pageType === 'release-queue'
+          ) {
+            this.router.navigateByUrl('/prodex/connect/order-complete/' + this.customerOrderId);
+            return empty();
+          }
+          if (
+            project.bidConnectStatusType &&
+            project.bidConnectStatusType.id !== BidConnectStatusEnum.COMPLETE &&
+            this.pageType === 'order-complete'
+          ) {
+            this.router.navigateByUrl('/prodex/connect/release-queue/' + this.customerOrderId);
+            return empty();
+          }
+          return this.partService.getPartsById(project.partIds || []).pipe(
+            takeUntil(this.clean$),
             tap(async partList => {
               this.orderService
                 .getMatchingProcessProfiles([partList[0].rfqMediaId], false)
@@ -164,8 +214,8 @@ export class ConnectOrderDetailsComponent implements OnInit {
             map(parts => {
               return { ...project, parts };
             })
-          )
-        )
+          );
+        })
       )
       .subscribe(
         r => {
@@ -211,6 +261,41 @@ export class ConnectOrderDetailsComponent implements OnInit {
     this.selectedVendor = data;
     this.modal.open(this.replacementProfileModal, {
       centered: true,
+      size: 'lg'
+    });
+  }
+
+  checkProgress(ev, data) {
+    ev.stopPropagation();
+
+    this.progressInfo = null;
+    this.proposalPartIds = [];
+    this.selectedVendor = data;
+
+    this.projectService
+      .getVendorCustomerProgress(this.customerOrderId, this.selectedVendor.vendorId)
+      .pipe(
+        takeUntil(this.clean$),
+        tap(_ => {
+          this.proposalPartIds = (_.partQuoteResponseViews || []).map(
+            view => view.partQuoteCustomerView.proposalPartId
+          );
+        })
+      )
+      .subscribe(
+        res => {
+          this.progressInfo = res;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    this.showNoteHistory = false;
+    this.showZoomHistory = false;
+    this.modal.open(this.checkProgressModal, {
+      backdrop: true,
+      centered: true,
+      windowClass: 'check-progress-modal',
       size: 'lg'
     });
   }
@@ -565,6 +650,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
         },
         {
           headerName: '',
+          field: '',
+          cellRenderer: 'templateRenderer',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRendererParams: {
+            ngTemplate: this.checkProgressCell
+          }
+        },
+        {
+          headerName: '',
           cellRenderer: 'templateRenderer',
           hide: false,
           sortable: false,
@@ -634,6 +730,17 @@ export class ConnectOrderDetailsComponent implements OnInit {
           filter: false,
           cellRendererParams: {
             ngTemplate: this.statusCell
+          }
+        },
+        {
+          headerName: '',
+          field: '',
+          cellRenderer: 'templateRenderer',
+          hide: false,
+          sortable: false,
+          filter: false,
+          cellRendererParams: {
+            ngTemplate: this.checkProgressCell
           }
         }
       ],
@@ -707,5 +814,9 @@ export class ConnectOrderDetailsComponent implements OnInit {
         }
       ]
     ];
+  }
+
+  ngOnDestroy() {
+    this.clean$.next();
   }
 }

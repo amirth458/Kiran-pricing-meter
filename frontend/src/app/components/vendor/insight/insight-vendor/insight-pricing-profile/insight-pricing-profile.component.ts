@@ -11,7 +11,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'process_pricing_id',
       field: 'process_pricing_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'process_pricing_id',
       headerTooltip: 'process_pricing_id'
@@ -20,7 +20,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'pricing_profile_name',
       field: 'pricing_profile_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'pricing_profile_name',
       headerTooltip: 'pricing_profile_name'
@@ -29,7 +29,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'pricing_condition',
       field: 'pricing_condition',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'pricing_condition',
       headerTooltip: 'pricing_condition',
@@ -39,7 +39,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'process_profile_id',
       field: 'process_profile_id',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'process_profile_id',
       headerTooltip: 'process_profile_id'
@@ -48,7 +48,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'process_profile_name',
       field: 'process_profile_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'process_profile_name',
       headerTooltip: 'process_profile_name'
@@ -57,7 +57,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'parameter_name',
       field: 'parameter_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'parameter_name',
       headerTooltip: 'parameter_name'
@@ -66,7 +66,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'active',
       field: 'active',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'active',
       headerTooltip: 'active'
@@ -75,7 +75,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'vendor_name',
       field: 'vendor_name',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'vendor_name',
       headerTooltip: 'vendor_name'
@@ -84,7 +84,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'created_by',
       field: 'created_by',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'created_by',
       headerTooltip: 'created_by'
@@ -93,7 +93,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerName: 'created_date',
       field: 'created_date',
       hide: false,
-      sortable: true,
+      sortable: false,
       filter: false,
       tooltipField: 'created_date',
       headerTooltip: 'created_date'
