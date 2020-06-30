@@ -143,6 +143,7 @@ export class WaitingForApprovalComponent implements OnInit {
       field: 'paymentType'
     }
   ];
+  // TODO - Read payment info from api
   paymentStatusType = [
     {
       displayName: 'All Type Of Payment',
@@ -155,6 +156,10 @@ export class WaitingForApprovalComponent implements OnInit {
     {
       displayName: 'Credit Card',
       id: 'CREDIT_CARD'
+    },
+    {
+      displayName: 'Zero Dollar Payment',
+      id: 'ZERO_DOLLAR_ORDER'
     }
   ];
   projectType = [];
