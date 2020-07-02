@@ -25,6 +25,7 @@ export class ProjectsListComponent implements OnInit {
   autoQuotedIds = [];
   columnDefs: ColDef[] = [];
   connectColumnDefs: ColDef[] = [];
+  testAccount = false;
 
   gridOptions: GridOptions;
   navigation;
@@ -164,11 +165,19 @@ export class ProjectsListComponent implements OnInit {
             break;
           case 'release-queue':
             this.requestBody.orderStatusId = OrderStatusTypeId.VENDOR_DOWNSELECTION;
-            ob = this.projectService.searchCustomerOrder(filterOption, this.requestBody);
+            ob = this.projectService.searchCustomerOrder(
+              filterOption,
+              this.requestBody,
+              this.searchOpt.showTestAccount
+            );
             break;
           case 'order-complete':
             this.requestBody.orderStatusId = OrderStatusTypeId.ORDER_COMPLETE;
-            ob = this.projectService.searchCustomerOrder(filterOption, this.requestBody);
+            ob = this.projectService.searchCustomerOrder(
+              filterOption,
+              this.requestBody,
+              this.searchOpt.showTestAccount
+            );
             break;
           default:
         }
@@ -360,5 +369,10 @@ export class ProjectsListComponent implements OnInit {
       filter: false,
       tooltipField: 'customerName'
     });
+  }
+
+  toggleTestAccount() {
+    this.searchOpt.showTestAccount = !this.searchOpt.showTestAccount;
+    this.setDataSource();
   }
 }

@@ -62,6 +62,15 @@
   height: 100vh;
 }
 
+:host ::ng-deep .user-list .nav-link {
+  background: transparent;
+  color: var(--theme-bright-blue);
+  padding: 0 10px;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
@@ -75,4 +84,21 @@
 
 .add-btn {
   width: 120px;
+}
+
+.font-dark-blue {
+  color: var(--theme-dark-blue);
+}
+
+.font-sm {
+  font-size: 12px;
+}
+
+.selection-view {
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+.search-box {
+  width: fit-content !important;
 }

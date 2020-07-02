@@ -27,6 +27,9 @@
           >
             {{ showExpiredRFQ ? 'Show Active RFQ' : 'Show Expired RFQ' }}
           </button>
+          <button type="button" class="ml-2 btn theme p-2 toggle-test-btn" (click)="toggleTestAccount()">
+            {{ testAccount ? 'Hide Test Account' : 'Show Test Account' }}
+          </button>
         </div>
         <ag-grid-angular
           class="ag-theme-balham w-100 h-100"

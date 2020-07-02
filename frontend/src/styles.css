@@ -539,6 +539,10 @@ app-dropdown-cell-renderer {
   background-color: var(--theme-light-green);
 }
 
+.toggle-test-btn {
+  width: 166px !important;
+}
+
 /* End of Tabbed Cards */
 
 /* Bidding Confirmation Modal */

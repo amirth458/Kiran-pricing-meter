@@ -19,3 +19,7 @@
     padding: 40px 20px;
   }
 }
+
+:host .toggle-test-btn {
+  width: 166px;
+}

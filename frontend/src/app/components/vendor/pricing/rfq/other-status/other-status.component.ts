@@ -30,6 +30,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
 
   totalCount = 0;
   totalRows = 0;
+  testAccount = false;
   destroy$ = new Subject();
 
   partType = AppPartTypeId.RFQ_PART;
@@ -220,10 +221,14 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
       getRows: params => {
         this.spinner.show('spooler');
         this.pricingService
-          .getPartsByFilter(this.filterOptions, {
-            page: params.startRow / this.pageSize,
-            size: this.pageSize
-          })
+          .getPartsByFilter(
+            this.filterOptions,
+            {
+              page: params.startRow / this.pageSize,
+              size: this.pageSize
+            },
+            this.testAccount
+          )
           .pipe(
             takeUntil(this.destroy$),
             catchError((err: any) => {
@@ -267,5 +272,10 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
+  }
+
+  toggleTestAccount() {
+    this.testAccount = !this.testAccount;
+    this.onSearch();
   }
 }
