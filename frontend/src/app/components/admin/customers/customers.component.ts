@@ -29,6 +29,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   @ViewChild('linkVendorCell') linkVendorCell;
   @ViewChild('linkVendorModal') linkVendorModal;
+  @ViewChild('changeCustomerAccountCell') changeCustomerAccountCell;
 
   searchColumns = [];
   filterColumns = [];
@@ -64,6 +65,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   gridOptions: GridOptions;
   allUsers = [];
   rowData: Customer[] = [];
+  selected: any;
   pageSize = 20;
   navigation;
 
@@ -181,6 +183,17 @@ export class CustomersComponent implements OnInit, OnDestroy {
         }
       ]
     );
+
+    this.columnDefs.push({
+      headerName: 'Test Account',
+      field: 'testAccount',
+      filter: false,
+      width: 170,
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {
+        ngTemplate: this.changeCustomerAccountCell
+      }
+    });
 
     if (this.type.includes('filter')) {
       this.configureColumnDefs();
@@ -390,6 +403,32 @@ export class CustomersComponent implements OnInit, OnDestroy {
     localStorage.removeItem('procurement-RegisterCustomer');
     localStorage.removeItem('procurement-RegisterContact');
     this.route.navigateByUrl('/user-manage/add-customer');
+  }
+
+  markCustomerProfileAsTest() {
+    this.spinner.show();
+    this.userService
+      .markCustomerProfileAsTest(this.selected.customerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => {
+        this.spinner.hide();
+        this.closeMarkCustomerAccountAsTestModal();
+        this.onSearch();
+      });
+  }
+
+  markCustomerAccountAsTest(template: TemplateRef<any>, row: any) {
+    this.selected = row;
+    this.modalService.open(template, {
+      windowClass: 'change-account-modal',
+      centered: true,
+      size: 'sm'
+    });
+  }
+
+  closeMarkCustomerAccountAsTestModal() {
+    this.selected = null;
+    this.modalService.dismissAll();
   }
 
   ngOnDestroy() {

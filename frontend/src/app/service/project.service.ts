@@ -107,9 +107,13 @@ export class ProjectService {
     );
   }
 
-  searchCustomerOrder(filter: FilterOption, requestBody) {
+  searchCustomerOrder(filter: FilterOption, requestBody, showTestAccount) {
     const url = `${environment.apiBaseUrl}/admin/customer/customer-order-search`;
-    return this.http.post<Pageable<PartOrder>>(url, requestBody, { params: this.buildParameters(filter) });
+    return this.http.post<Pageable<PartOrder>>(
+      url,
+      { ...requestBody, showTestAccount },
+      { params: this.buildParameters(filter) }
+    );
   }
 
   getProdReleaseProject(filter: FilterOption, searchOpt: any): Observable<Pageable<ProjectSearchResult[]>> {

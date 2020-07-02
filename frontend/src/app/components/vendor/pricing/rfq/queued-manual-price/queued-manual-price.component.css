@@ -25,6 +25,10 @@
   width: 166px;
 }
 
+:host .toggle-test-btn {
+  width: 166px;
+}
+
 @media (max-width: 768px) {
   :host .wrapper {
     padding: 40px 20px;
