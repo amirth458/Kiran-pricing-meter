@@ -68,7 +68,8 @@ export class RfqPricingService {
       statusIds,
       // statusIds: [2, 5], // auto quoted
       isManual: true,
-      partId: null
+      partId: null,
+      showTestAccount
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
