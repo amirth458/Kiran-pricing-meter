@@ -58,6 +58,15 @@ export class ProductionReleasedOrdersComponent implements OnInit {
       }
     },
     {
+      name: 'Vendor Order Status',
+      field: 'vendorOrderStatus',
+      checked: false,
+      query: {
+        type: '',
+        filter: ''
+      }
+    },
+    {
       name: 'Material',
       field: 'material',
       checked: false,
@@ -95,6 +104,11 @@ export class ProductionReleasedOrdersComponent implements OnInit {
     {
       name: 'Vendor Order ID',
       field: 'vendorOrderId',
+      checked: true
+    },
+    {
+      name: 'Vendor Order Status',
+      field: 'vendorOrderStatus',
       checked: true
     },
     {
@@ -202,6 +216,14 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         headerName: 'Vendor Order ID',
         field: 'vendorOrderId',
         tooltipFiled: 'vendorOrderId',
+        sortable: true,
+        filter: false,
+        width: 240
+      },
+      {
+        headerName: 'Vendor Order Status',
+        field: 'vendorOrderStatus',
+        tooltipFiled: 'vendorOrderStatus',
         sortable: true,
         filter: false,
         width: 240
