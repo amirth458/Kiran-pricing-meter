@@ -7,6 +7,15 @@
   justify-content: space-between;
 }
 
+:host .check-out-panel {
+  border: 1px solid #c8ced5;
+  border-radius: 8px;
+}
+
+:host .med-font-size {
+  font-size: 12px;
+}
+
 .btn-cell {
   height: 30px;
   width: 140px !important;

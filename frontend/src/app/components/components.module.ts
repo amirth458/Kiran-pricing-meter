@@ -76,7 +76,8 @@ import { PaymentContainerComponent } from './vendor/billing/payment-container/pa
 import { WaitingForApprovalComponent } from './vendor/billing/waiting-for-approval/waiting-for-approval.component';
 import { PurchaseOrderItemComponent } from './vendor/billing/purchase-order-item/purchase-order-item.component';
 import { PartItemDetailsComponent } from '../common/part-item-details/part-item-details.component';
-
+import { ConnectPartComponent } from '../common/connect-part/connect-part.component';
+import { ProdPartComponent } from '../common/prod-part/prod-part.component';
 // pipes
 import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
 import { SupplierPipe } from '../pipes/supplier.pipe';
@@ -129,7 +130,6 @@ import { ProjectSettingsComponent } from './vendor/projects/project-settings/pro
 
 import { ViewAllNotificationComponent } from '../common/view-all-notification/view-all-notification.component';
 import { NotificationWidgetComponent } from '../common/notification-widget/notification-widget.component';
-// import { NotificationSettingComponent } from './setting/notification-setting/notification-setting.component';
 import { UiSwitchModule } from 'ngx-toggle-switch';
 import { SettingsContainerComponent } from './vendor/settings/settings-container/settings-container.component';
 import { UpdatePasswordComponent } from './vendor/settings/update-password/update-password.component';
@@ -148,7 +148,6 @@ import { ChipComponent } from '../common/chip/chip.component';
 import { ConnectOrderDetailsComponent } from './vendor/projects/connect-order-details/connect-order-details.component';
 import { PartListComponent } from '../common/part-list/part-list.component';
 import { RefFileComponent } from '../common/ref-file/ref-file.component';
-import { PartDetailComponent } from '../common/part-detail/part-detail.component';
 import { ProposalAttachmentComponent } from '../common/proposal-attachment/proposal-attachment.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { InsightPartInformationComponent } from './vendor/insight/insight-part-information/insight-part-information.component';
@@ -294,12 +293,13 @@ import { ProposalFormComponent } from '../common/proposal-form/proposal-form.com
     AddVendorDetailComponent,
     AddVendorMachineComponent,
     ChipComponent,
-    PartDetailComponent,
     ProposalAttachmentComponent,
     InsightPartInformationComponent,
     FilterHeaderComponent,
     OtherStatusComponent,
-    ProposalFormComponent
+    ProposalFormComponent,
+    ConnectPartComponent,
+    ProdPartComponent
   ],
   imports: [
     CommonModule,

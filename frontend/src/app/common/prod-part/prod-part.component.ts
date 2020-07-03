@@ -8,14 +8,13 @@ import { Address, AddressDelimiter, Part, PartDimension, ProjectProfile } from '
 import { Util } from '../../util/Util';
 
 @Component({
-  selector: 'app-part-detail',
-  templateUrl: './part-detail.component.html',
-  styleUrls: ['./part-detail.component.css']
+  selector: 'app-prod-part',
+  templateUrl: './prod-part.component.html',
+  styleUrls: ['./prod-part.component.css']
 })
-export class PartDetailComponent implements OnInit {
+export class ProdPartComponent implements OnInit {
   @Input() partId: number;
   @Input() unitOptions: Array<any> = [];
-  @Input() connectView = false;
 
   value: Part;
   projectProfile: ProjectProfile;
@@ -48,7 +47,7 @@ export class PartDetailComponent implements OnInit {
   }
 
   shippingAddressInfo(address: Address): string {
-    return Util.shippingAddressInfo(address, AddressDelimiter.COMMA_SEPARATOR);
+    return Util.shippingAddressInfo(address, AddressDelimiter.HTML_LINE_BREAK);
   }
 
   getPartDimension(dimension: PartDimension) {

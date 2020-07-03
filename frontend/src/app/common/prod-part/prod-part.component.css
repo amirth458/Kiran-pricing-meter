@@ -1,0 +1,29 @@
+:host .part-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+:host .info-details {
+  font-size: 11px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 8px;
+}
+
+:host .border-left {
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+:host .shipping {
+  background: #f0f8ff;
+  border-radius: 10px;
+}
+
+:host .address,
+:host .target-date {
+  font-size: 12px;
+}
+
+:host .file-downloader:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

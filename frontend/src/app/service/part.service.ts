@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { environment } from 'src/environments/environment';
 import { MetaData } from '../model/metadata.model';
-import { map, Observable } from '../store';
-import { Part } from '../model/part.model';
+import { Part, ProjectProfile } from '../model/part.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +41,9 @@ export class PartService {
 
   getPartByPartId(partId: number): Observable<Part> {
     return this.http.get<any>(`${environment.procurementApiBaseUrl}/part/${partId}`);
+  }
+
+  getProjectProfileByOrderId(orderId: number): Observable<ProjectProfile[]> {
+    return this.http.get<ProjectProfile[]>(`${environment.procurementApiBaseUrl}/project-profile/order/${orderId}`);
   }
 }

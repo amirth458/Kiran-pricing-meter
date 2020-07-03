@@ -43,13 +43,7 @@
         </div>
       </ng-container>
       <ng-container *ngIf="showPartDetails">
-        <app-part-detail
-          *ngFor="let part of parts"
-          [connectView]="true"
-          [partId]="part.id"
-          [unitOptions]="measurementUnits"
-        >
-        </app-part-detail>
+        <app-prod-part *ngFor="let part of parts" [partId]="part.id" [unitOptions]="measurementUnits"> </app-prod-part>
       </ng-container>
     </div>
     <div *ngIf="part?.order?.notes" class="col-12">

@@ -4,7 +4,7 @@ import { TemplateRendererComponent } from 'src/app/common/template-renderer/temp
 import { ProjectService } from 'src/app/service/project.service';
 import { BidProcessStatusEnum, ConnectProject, ClientProgress } from '../../../../model/connect.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MatchedProcessProfile, Part } from 'src/app/model/part.model';
+import { MatchedProcessProfile, ProjectProfile } from 'src/app/model/part.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap, map, tap, takeUntil } from 'rxjs/operators';
@@ -73,6 +73,7 @@ export class ConnectOrderDetailsComponent implements OnInit, OnDestroy {
   progressInfo: ClientProgress;
   proposalPartIds = [];
   orderInfo: PaymentDetails;
+  projectProfile: ProjectProfile;
 
   showZoomHistory = false;
   showNoteHistory = false;
@@ -111,6 +112,13 @@ export class ConnectOrderDetailsComponent implements OnInit, OnDestroy {
     this.initColumnDefs();
     this.initGridOptions();
     this.getData();
+    this.getProjectProfile();
+  }
+
+  getProjectProfile() {
+    this.partService.getProjectProfileByOrderId(this.customerOrderId).subscribe(profile => {
+      this.projectProfile = (profile || []).length > 0 ? profile[0] : null;
+    });
   }
 
   get selectableProdexSuppliers() {
