@@ -13,13 +13,19 @@ export interface ReferenceMedia {
   location: string;
   mediaId: number;
 }
+
+export interface Metadata {
+  id: number;
+  name: string;
+}
+
 export interface ProjectRfq {
   id: number;
   name: string;
-  rfqStatusType: string;
-  projectType: ProjectType;
+  rfqStatusType: string | Metadata;
+  projectProfile?: ProjectProfile;
   isArchived: boolean;
-  rfqMediaList: RfqMedia[];
+  rfqMediaList: Array<RfqMedia>;
 }
 
 export interface PartDimensionValue {
@@ -84,13 +90,18 @@ export interface PartOrder {
   customerId: number;
   customerName: string;
   vendorOrderId: number;
+  amount: number;
   orderStatusType: any;
   paymentStatusType: any;
   isArchived: boolean;
   isReleaseToSingleSupplier: boolean;
+  subContractorsAllowed: boolean;
+  requestProdexDirectBid: boolean;
   partList: Part[];
   createdDate: string;
   notes: string;
+  minimumProdexSuppliers: number;
+  preferredVendors: Array<number>;
 }
 
 export interface PartQuoteInvoiceLineItem {
@@ -258,20 +269,41 @@ export interface Address {
   country: Country;
 }
 
+export enum AddressDelimiter {
+  HTML_LINE_BREAK = '<br/>',
+  COMMA_SEPARATOR = ', '
+}
+
 export interface Country {
   id: number;
   name: string;
 }
 
+export interface GovernanceMedia {
+  id: number;
+  name: string;
+  uploadedAt: Date;
+  location: string;
+  uploadedByUserId: number;
+}
+
 export interface ProjectProfile {
   id: number;
   name: string;
-  ndaId: number;
+  ndaId: boolean;
   customerId: number;
-  countryIds: number[];
-  vendorCertIds: number[];
-  facilityCertIds: number[];
-  antiMatchCertIds: number[];
+  countryIds: Array<number>;
+  partCertIds: Array<number>;
+  facilityCertIds: Array<number>;
+  antiMatchCertIds: Array<number>;
+  projectGovernanceMedias: Array<GovernanceMedia>;
+  eligibleManufacturerTypeIds: Array<number>;
+  eligibleManufacturerTypes: string;
+  isArchive: boolean;
+  countries: string;
+  partCerts: string;
+  facilityCerts: string;
+  antiMatchCerts: string;
 }
 
 export interface RfqData {
