@@ -1,4 +1,4 @@
-import { PartDimensionValue, PartCustomParameter, Address } from '../model/part.model';
+import { PartDimensionValue, PartCustomParameter, Address, AddressDelimiter } from '../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
 
 declare var require: any;
@@ -67,17 +67,18 @@ export class Util {
     return '';
   }
 
-  static shippingAddressInfo(address: Address) {
+  static shippingAddressInfo(address: Address, delimiter: AddressDelimiter = AddressDelimiter.HTML_LINE_BREAK) {
     if (!address) {
       return '-';
     }
     return [
       address.street1 || address.street2 || '',
-      `${address.city || ''} ${address.zipcode || ''}`,
+      `${address.city || ''}`,
+      `${address.zipcode || ''}`,
       address.country.name
     ]
       .filter(i => i.toString().trim() !== '')
-      .join(', ');
+      .join(delimiter);
   }
 
   static showCustomPrameter(customParameter: PartCustomParameter, measurements: any = [], operatorTypes: any = []) {
