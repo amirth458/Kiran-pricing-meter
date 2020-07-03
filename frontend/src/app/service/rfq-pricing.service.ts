@@ -29,7 +29,7 @@ export class RfqPricingService {
     return this.http.put(url, data);
   }
 
-  getRecentAutoPrices(filterOption: FilterOption = null, statusIds): Observable<Pageable<Part>> {
+  getRecentAutoPrices(filterOption: FilterOption = null, statusIds, showTestAccount): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -46,12 +46,13 @@ export class RfqPricingService {
       statusIds,
       // statusIds: [2],
       isManual: false,
-      partId: null
+      partId: null,
+      showTestAccount
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getQueuedManualPricing(filterOption: FilterOption = null, statusIds): Observable<Pageable<Part>> {
+  getQueuedManualPricing(filterOption: FilterOption = null, statusIds, showTestAccount): Observable<Pageable<Part>> {
     const url = `${environment.procurementApiBaseUrl}/part/search`;
     let params = new HttpParams();
     if (filterOption) {
@@ -67,7 +68,8 @@ export class RfqPricingService {
       statusIds,
       // statusIds: [2, 5], // auto quoted
       isManual: true,
-      partId: null
+      partId: null,
+      showTestAccount
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
@@ -76,7 +78,8 @@ export class RfqPricingService {
     filterOption: FilterOption = null,
     statusIds,
     isNoBid,
-    isOrderPlaced = null
+    isOrderPlaced = null,
+    showTestAccount
   ): Observable<Pageable<Part>> {
     const url =
       isOrderPlaced === false
@@ -99,12 +102,13 @@ export class RfqPricingService {
       isManual: true,
       partId: null,
       isNoBid,
-      isOrderPlaced
+      isOrderPlaced,
+      showTestAccount
     };
     return this.http.post<Pageable<Part>>(url, body, { headers, params });
   }
 
-  getPartsByFilter(filterBody: any, filterOption: FilterOption): Observable<any[]> {
+  getPartsByFilter(filterBody: any, filterOption: FilterOption, showTestAccount): Observable<any[]> {
     const url = `${environment.apiBaseUrl}/admin/part/part-details`;
 
     let params = new HttpParams();
@@ -116,7 +120,7 @@ export class RfqPricingService {
       }
     }
 
-    return this.http.post<any[]>(url, filterBody, { params });
+    return this.http.post<any[]>(url, { ...filterBody, showTestAccount }, { params });
   }
 
   getPartDetail(id: number, generateSignedUrl = true): Observable<Part> {

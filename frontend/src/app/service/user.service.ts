@@ -371,6 +371,10 @@ export class UserService {
     return this.http.put<any>(`${environment.managementBaseUrl}/users/vendor/${vendorId}/mark-account-as-test`, null);
   }
 
+  markCustomerProfileAsTest(customerId: number): Observable<any> {
+    return this.http.put<any>(`${environment.procurementApiBaseUrl}/customer/mark-account-as-test/${customerId}`, null);
+  }
+
   getRegisterCustomerInfo() {
     return JSON.parse(localStorage.getItem('procurement-RegisterCustomer'));
   }

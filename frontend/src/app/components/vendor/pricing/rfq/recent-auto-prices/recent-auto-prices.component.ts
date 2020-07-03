@@ -24,6 +24,9 @@ export class RecentAutoPricesComponent implements OnInit {
   gridOptions: GridOptions;
   rowData: any[] = [];
   pageSize = 10;
+
+  testAccount = false;
+
   navigation;
 
   frameworkComponents = {
@@ -169,7 +172,8 @@ export class RecentAutoPricesComponent implements OnInit {
               sort: 'id,ASC',
               q
             },
-            this.autoQuotedIds
+            this.autoQuotedIds,
+            this.testAccount
           )
           .toPromise();
 
@@ -228,5 +232,10 @@ export class RecentAutoPricesComponent implements OnInit {
   onPageSizeChange(ev) {
     this.pageSize = ev.target.value;
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
+  }
+
+  toggleTestAccount() {
+    this.testAccount = !this.testAccount;
+    this.getRows();
   }
 }

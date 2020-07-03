@@ -22,6 +22,9 @@
     </div>
 
     <span class="text-theme">Total: {{ totalRows }}</span>
+    <button type="button" class="ml-2 btn theme p-2 toggle-test-btn" (click)="toggleTestAccount()">
+      {{ testAccount ? 'Hide Test Account' : 'Show Test Account' }}
+    </button>
   </div>
   <div class="d-flex flex-grow-1">
     <div class="table theme-table">

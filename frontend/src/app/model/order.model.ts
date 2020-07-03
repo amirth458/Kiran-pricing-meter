@@ -352,6 +352,7 @@ export class SearchOpt {
   bidProjectStatusTypeIds: Array<number>;
   partStatusTypeIds: Array<number>;
   isArchive: boolean;
+  showTestAccount: boolean;
   constructor() {
     this.projectTypeId = null;
     this.startDate = null;
@@ -360,6 +361,7 @@ export class SearchOpt {
     this.bidProjectStatusTypeIds = [];
     this.partStatusTypeIds = [];
     this.isArchive = false;
+    this.showTestAccount = false;
   }
 }
 

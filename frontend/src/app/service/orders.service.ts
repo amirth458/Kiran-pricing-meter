@@ -241,6 +241,13 @@ export class OrdersService {
         filter: false
       },
       {
+        headerName: 'Vendor Order Status',
+        field: 'vendorOrderStatus',
+        hide: view !== 'released-orders',
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Offer Price',
         field: 'offerPrice',
         tooltip: params => params.value,

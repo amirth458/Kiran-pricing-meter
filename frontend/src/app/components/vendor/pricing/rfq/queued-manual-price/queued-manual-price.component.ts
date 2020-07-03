@@ -52,6 +52,7 @@ export class QueuedManualPriceComponent implements OnInit {
   rowData = [null, null, null, null];
   pageSize = 10;
   showExpiredRFQ = false;
+  testAccount = false;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -383,7 +384,11 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getQueuedManualPricing({ page, size: 1000, sort: 'id,ASC', q }, this.queuedManuallyQuotedId)
+          .getQueuedManualPricing(
+            { page, size: 1000, sort: 'id,ASC', q },
+            this.queuedManuallyQuotedId,
+            this.testAccount
+          )
           .toPromise();
 
         if (!res.content) {
@@ -435,7 +440,8 @@ export class QueuedManualPriceComponent implements OnInit {
             { page, size: 1000, sort: 'id,ASC', q },
             activeRFQ ? this.manuallyQuotedId : this.quoteExpiredId,
             false,
-            activeRFQ ? null : false
+            activeRFQ ? null : false,
+            this.testAccount
           )
           .toPromise();
 
@@ -506,7 +512,7 @@ export class QueuedManualPriceComponent implements OnInit {
     try {
       while (true) {
         const res = await this.pricingService
-          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, this.noQuoteId, true)
+          .getManuallyPriced({ page, size: 1000, sort: 'id,ASC', q }, this.noQuoteId, true, null, this.testAccount)
           .toPromise();
 
         if (!res.content) {
@@ -569,5 +575,13 @@ export class QueuedManualPriceComponent implements OnInit {
   onPageSizeChange(ev) {
     this.pageSize = ev.target.value;
     this.gridOptions.api.paginationSetPageSize(this.pageSize);
+  }
+
+  toggleTestAccount() {
+    this.testAccount = !this.testAccount;
+    this.getQueuedManualPricing();
+    this.getManuallyPriced(null, true);
+    this.getNoBid();
+    this.getManuallyPriced(null, false);
   }
 }
