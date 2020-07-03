@@ -30,10 +30,8 @@
         <app-part-detail
           *ngFor="let part of projectDetails?.parts"
           [connectView]="true"
-          [part]="part"
+          [partId]="part.partId"
           [unitOptions]="unitOptions"
-          [comment]="part?.comments"
-          [proposalPartId]="part?.partQuoteCustomerView?.proposalPartId"
         >
         </app-part-detail>
       </div>

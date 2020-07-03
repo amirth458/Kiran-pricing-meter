@@ -200,6 +200,7 @@ export interface Part {
   isNoBid: boolean;
   partQuoteList: Array<any>;
   bidOrderStatus: string;
+  comments?: string;
 
   rfqMediaId?: number;
   subContractorsAllowed?: boolean;
@@ -292,6 +293,7 @@ export interface ProjectProfile {
   name: string;
   ndaId: boolean;
   customerId: number;
+  vendorCertIds?: Array<number>;
   countryIds: Array<number>;
   partCertIds: Array<number>;
   facilityCertIds: Array<number>;

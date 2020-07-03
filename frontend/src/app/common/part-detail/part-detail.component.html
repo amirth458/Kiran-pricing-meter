@@ -54,16 +54,6 @@
             <p class="mb-2">
               <app-ref-file [value]="value.id"></app-ref-file>
             </p>
-            <!-- <p class="mb-2">
-              Post-Process:
-              <span
-                class="text-theme-green font-weight-bold text-truncate"
-                placement="top"
-                [ngbTooltip]="part?.postProcessTypeNames"
-              >
-                {{ part?.postProcessTypeNames }}
-              </span>
-            </p> -->
           </div>
         </div>
 
@@ -84,30 +74,9 @@
             </p>
             <p class="mb-2">
               Other Requirements:
-              <span class="text-theme-green" placement="auto" [ngbTooltip]="comment">
-                {{ displayComment || '-' }}
+              <span class="text-theme-green" placement="auto" [ngbTooltip]="value.comments">
+                {{ value?.comments || '-' }}
               </span>
-            </p>
-            <p *ngIf="false" class="mb-2">
-              Surface Roughness:
-              <span class="text-theme-green font-weight-bold">
-                {{ value?.rfqMedia?.media?.partDimension?.surfaceArea?.value }}
-                {{ getUnit(value?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId) }}
-              </span>
-            </p>
-            <p *ngIf="false" class="mb-2">
-              <ng-container *ngFor="let item of tolerance; let index = index">
-                <!-- Tolerance: -->
-                <ng-container *ngIf="index % 2 == 0; else toleranceValue">
-                  {{ item }}
-                </ng-container>
-                <ng-template #toleranceValue>
-                  <span class="text-theme-green font-weight-bold">
-                    {{ item }}
-                  </span>
-                  <br />
-                </ng-template>
-              </ng-container>
             </p>
           </div>
         </div>
