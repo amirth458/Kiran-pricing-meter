@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, TitleCasePipe } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
@@ -41,7 +41,8 @@ export class PurchaseOrderItemComponent implements OnInit {
     public metadataService: MetadataService,
     public fb: FormBuilder,
     public userService: UserService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public titleCasePipe: TitleCasePipe
   ) {
     this.selectedPurchaseOrderId = this.route.url.split('/').pop();
   }
@@ -129,8 +130,8 @@ export class PurchaseOrderItemComponent implements OnInit {
     );
   }
 
-  formatPaymentType(paymentType: string) {
-    return paymentType ? paymentType.replace('_', ' ') : '';
+  formatPaymentType(paymentType: string): string {
+    return this.titleCasePipe.transform((paymentType || '').replace(/_/g, ' '));
   }
 
   preparePostProcessValues(ids: Array<number>) {
