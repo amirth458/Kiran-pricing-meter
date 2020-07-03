@@ -35,4 +35,8 @@ export class PartService {
   getPartsByRfq(rfqId: number): Observable<any> {
     return this.http.get<any>(`${environment.procurementApiBaseUrl}/part/rfq/${rfqId}`);
   }
+
+  getPartByPartId(partId: number): Observable<Part> {
+    return this.http.get<any>(`${environment.procurementApiBaseUrl}/part/${partId}`);
+  }
 }
