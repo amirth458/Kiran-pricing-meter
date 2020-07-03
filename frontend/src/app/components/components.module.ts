@@ -2,7 +2,7 @@ import { ModelDetailViewComponent } from '../common/model-detail-view/model-deta
 import { FileViewRendererComponent } from '../common/file-view-renderer/file-view-renderer.component';
 import { StatusDropdownFilterComponent } from '../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
+import { CommonModule, DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -331,7 +331,7 @@ import { ProposalFormComponent } from '../common/proposal-form/proposal-form.com
     PerfectScrollbarModule,
     InfiniteScrollModule
   ],
-  providers: [DatePipe, CurrencyPipe],
+  providers: [DatePipe, CurrencyPipe, TitleCasePipe],
   exports: [
     NgxSpinnerModule,
     InfiniteScrollModule,
