@@ -1,8 +1,10 @@
-<div class="wrapper text-theme mt-3 mb-3 container-fluid" *ngIf="value">
-  <div class="row">
-    <div [ngClass]="connectView ? 'col-md-8' : 'col-md-8'" class="card pr-3 pt-0 pb-0">
-      <div class="row">
-        <div [ngClass]="connectView ? 'col-md-2' : 'col-md-3'" class="pt-3 pb-3">
+<ng-container *ngIf="value">
+  <h6 class="text-theme part-title w-100">{{ value?.rfqMedia?.projectRfqId }}.{{ value.id }}</h6>
+  <div class="d-flex flex-row col-12 p-0">
+    <!-- PART INFORMATION -->
+    <div class="col-9 pr-3 pt-0 pb-0 info-details">
+      <div class="col-12 d-flex flex-row p-0">
+        <div class="col-2 pt-3 pb-3">
           <img
             [src]="
               value?.rfqMedia?.media?.partDimension?.thumbnail400Location ||
@@ -13,132 +15,143 @@
           />
           <app-view-in-three-d [connectorServiceId]="value?.rfqMedia?.media?.connectorServiceId"></app-view-in-three-d>
         </div>
-        <div [ngClass]="connectView ? 'col-md-3' : 'col-md-4'" class=" pt-4 pb-3 px-2 info-details bordered">
-          <div>
-            <p class="mb-2">
-              File:
-              <span
-                class="text-theme-green font-weight-bold text-truncate"
-                placement="top"
-                [ngbTooltip]="value?.rfqMedia?.media?.name"
-              >
-                {{ value?.rfqMedia?.media?.name }}
-              </span>
-            </p>
-            <p class="mb-2">
-              Quantity:
-              <span class="text-theme-green font-weight-bold">
-                {{ value?.quantity }}
-              </span>
-            </p>
-            <p class="mb-2">
-              Material:
-              <span
-                class="text-theme-green font-weight-bold text-truncate"
-                placement="top"
-                [ngbTooltip]="value?.materialPropertyValues?.join(' OR ')"
-              >
-                {{ value?.materialPropertyValues?.join(' OR ') }}
-              </span>
-            </p>
-            <p class="mb-2">
-              Technology:
-              <span
-                class="text-theme-green font-weight-bold text-truncate"
-                placement="top"
-                [ngbTooltip]="value?.equipmentPropertyValues?.join(' OR ')"
-              >
-                {{ value?.equipmentPropertyValues?.join(' OR ') }}
-              </span>
-            </p>
-            <p class="mb-2">
-              <app-ref-file [value]="value.id"></app-ref-file>
-            </p>
-          </div>
+
+        <div class="col-3 pt-3 pb-3">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            File:
+            <span
+              class="text-theme-green font-weight-bold text-truncate"
+              placement="top"
+              [ngbTooltip]="value?.rfqMedia?.media?.name"
+            >
+              {{ value?.rfqMedia?.media?.name }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Quantity:
+            <span class="text-theme-green font-weight-bold">
+              {{ value?.quantity }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Material:
+            <span
+              class="text-theme-green font-weight-bold text-truncate"
+              placement="top"
+              [ngbTooltip]="value?.materialPropertyValues?.join(' OR ')"
+            >
+              {{ value?.materialPropertyValues?.join(' OR ') }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Technology:
+            <span
+              class="text-theme-green font-weight-bold text-truncate"
+              placement="top"
+              [ngbTooltip]="value?.equipmentPropertyValues?.join(' OR ')"
+            >
+              {{ value?.equipmentPropertyValues?.join(' OR ') }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            <app-ref-file [value]="value.id"></app-ref-file>
+          </p>
         </div>
 
-        <div [ngClass]="connectView ? 'bordered col-md-3' : 'col-md-5'" class="pt-4 pb-3 px-2 info-details">
-          <div>
-            <p class="mb-2">
-              Dimensions:
-              <span class="text-theme-green font-weight-bold">
-                {{ getPartDimension(value?.rfqMedia?.media?.partDimension) }}
-              </span>
-            </p>
-            <p class="mb-2" *ngIf="value?.rfqMedia?.media?.partDimension?.volume">
-              Volume:
-              <span class="text-theme-green font-weight-bold">
-                {{ value?.rfqMedia?.media?.partDimension?.volume?.value }}
-                {{ getUnit(value?.rfqMedia?.media?.partDimension?.volume?.unitId) }}
-              </span>
-            </p>
-            <p class="mb-2">
-              Other Requirements:
-              <span class="text-theme-green" placement="auto" [ngbTooltip]="value.comments">
-                {{ value?.comments || '-' }}
-              </span>
-            </p>
-          </div>
+        <div class="col-3 border-left pt-3 pb-3">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Dimensions:
+            <span class="text-theme-green font-weight-bold">
+              {{ getPartDimension(value?.rfqMedia?.media?.partDimension) }}
+            </span>
+          </p>
+          <p
+            class="d-flex flex-row flex-wrap align-items-center mb-2"
+            *ngIf="value?.rfqMedia?.media?.partDimension?.volume"
+          >
+            Volume:
+            <span class="text-theme-green font-weight-bold">
+              {{ value?.rfqMedia?.media?.partDimension?.volume?.value }}
+              {{ getUnit(value?.rfqMedia?.media?.partDimension?.volume?.unitId) }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Other Requirements:
+            <span class="text-theme-green" placement="auto" [ngbTooltip]="value.comments">
+              {{ value?.comments || '-' }}
+            </span>
+          </p>
         </div>
 
-        <div *ngIf="connectView" class="col-md-4 pt-4 pb-3 px-2 info-details">
-          <div>
-            <p class="mb-2">
-              Eligible Manufacturer Type:
-              <span class="text-theme-green">
-                {{ projectProfile.eligibleManufacturerTypes || '-' }}
-              </span>
-            </p>
+        <div class="col-4 border-left pt-3 pb-3">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Eligible Manufacturer Type:
+            <span class="text-theme-green">
+              {{ projectProfile.eligibleManufacturerTypes || '-' }}
+            </span>
+          </p>
 
-            <p class="mb-2">
-              Eligible Regions:
-              <span class="text-theme-green">
-                {{ projectProfile.countries || '-' }}
-              </span>
-            </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Eligible Regions:
+            <span class="text-theme-green">
+              {{ projectProfile.countries || '-' }}
+            </span>
+          </p>
 
-            <p class="mb-2">
-              Facility Quality Certifications:
-              <span class="text-theme-green">
-                {{ projectProfile.facilityCerts || '-' }}
-              </span>
-            </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Facility Quality Certifications:
+            <span class="text-theme-green">
+              {{ projectProfile.facilityCerts || '-' }}
+            </span>
+          </p>
 
-            <p class="mb-2">
-              Part Certifications:
-              <span class="text-theme-green">
-                {{ projectProfile.partCerts || '-' }}
-              </span>
-            </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Part Certifications:
+            <span class="text-theme-green">
+              {{ projectProfile.partCerts || '-' }}
+            </span>
+          </p>
 
-            <p class="mb-2">
-              <app-proposal-attachment
-                type="governance-document"
-                [smallView]="true"
-                [partId]="value?.id"
-              ></app-proposal-attachment>
-            </p>
-          </div>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            <app-proposal-attachment
+              type="governance-document"
+              [smallView]="true"
+              [partId]="value?.id"
+            ></app-proposal-attachment>
+          </p>
         </div>
       </div>
     </div>
-
-    <div class="col-md-3 shipping p-4">
-      <div class="w-100 justify-content-between title">
-        <p class="text-theme font-weight-normal">Shipping</p>
-        <p class="text-theme font-weight-light font-italic address">
-          {{ shippingAddressInfo(value?.shippingAddress) }}
-        </p>
-      </div>
-
-      <div class="w-100 d-flex justify-content-start align-items-center title">
-        <span class="text-theme target-date font-weight-bold">
-          Target Delivery
-        </span>
-        <span class="text-theme-green pl-3 font-weight-light">{{
-          value?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC'
-        }}</span>
+    <!-- /PART INFORMATION -->
+    <!-- SHIPPING ADDRESS & TARGET DELIVERY DATE -->
+    <div class="col-3">
+      <div class="shipping p-3 h-100">
+        <!-- SHIPPING ADDRESS -->
+        <div class="w-100 justify-content-between title">
+          <p class="text-theme font-weight-normal">Shipping</p>
+          <ng-container *ngIf="value?.shippingAddress">
+            <p
+              class="text-theme font-weight-light font-italic address"
+              [innerHTML]="shippingAddressInfo(value?.shippingAddress)"
+            ></p>
+          </ng-container>
+          <ng-container *ngIf="!value?.shippingAddress">
+            <p class="text-theme font-weight-light font-italic address">-</p>
+          </ng-container>
+        </div>
+        <!-- /SHIPPING ADDRESS -->
+        <!-- TARGET DELIVERY DATE -->
+        <div class="w-100 d-flex justify-content-start align-items-center title">
+          <span class="text-theme target-date font-weight-bold">
+            Target Delivery
+          </span>
+          <span class="text-theme-green pl-3 font-weight-light">
+            {{ value?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}
+          </span>
+        </div>
+        <!-- /TARGET DELIVERY DATE -->
       </div>
     </div>
+    <!-- /SHIPPING ADDRESS & TARGET DELIVERY DATE -->
   </div>
-</div>
+</ng-container>
