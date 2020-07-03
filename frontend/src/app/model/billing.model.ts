@@ -28,7 +28,8 @@ export enum ProjectType {
 
 export enum PaymentType {
   PURCHASE_ORDER = 'PURCHASE_ORDER',
-  CREDIT_CARD = 'CREDIT_CARD'
+  CREDIT_CARD = 'CREDIT_CARD',
+  ZERO_DOLLAR_ORDER = 'ZERO_DOLLAR_ORDER'
 }
 
 export class PurchaseOrderAgreement {

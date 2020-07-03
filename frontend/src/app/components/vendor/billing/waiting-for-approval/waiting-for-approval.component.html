@@ -86,9 +86,9 @@
 
 <ng-template #approveRejectAction let-row>
   <div class="d-flex justify-content-between h-100 w-100">
-    <span class="text-theme-green approve-btn" (click)="selectedPurchaseOrder = row; open(approveModal, 'md')"
-      >Approve</span
-    >
+    <span class="text-theme-green approve-btn" (click)="selectedPurchaseOrder = row; open(approveModal, 'md')">
+      Approve
+    </span>
     <span class="reject-btn ml-3" (click)="selectedPurchaseOrder = row; open(rejectModal, 'md')">Reject</span>
   </div>
 </ng-template>
@@ -106,7 +106,7 @@
     </div>
 
     <div class="modal-body text-theme">
-      <p class="text-center">Do you want to approve this Purchase Order ?</p>
+      <p class="text-center">Do you want to approve this {{ getPaymentType(selectedPurchaseOrder) }} ?</p>
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus>
@@ -135,7 +135,7 @@
     </div>
 
     <div class="modal-body text-theme">
-      <p class="text-center">Do you want to reject this Purchase Order ?</p>
+      <p class="text-center">Do you want to reject this {{ getPaymentType(selectedPurchaseOrder) }} ?</p>
     </div>
 
     <div class="modal-footer border-0" ngbAutofocus>

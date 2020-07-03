@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -192,7 +192,8 @@ export class WaitingForApprovalComponent implements OnInit {
     public modalService: NgbModal,
     public billingService: BillingService,
     public metadataService: MetadataService,
-    public currencyPipe: CurrencyPipe
+    public currencyPipe: CurrencyPipe,
+    public titleCasePipe: TitleCasePipe
   ) {
     this.navigation = this.route.getCurrentNavigation();
     const routeArr = this.route.url
@@ -267,6 +268,11 @@ export class WaitingForApprovalComponent implements OnInit {
         }
       });
     });
+  }
+
+  getPaymentType(row: any) {
+    const paymentTypeTitle = this.titleCasePipe.transform(row.paymentType.replace(/_/g, ' '));
+    return `${row.paymentType === this.paymentOrderType.CREDIT_CARD ? `${paymentTypeTitle} Order` : paymentTypeTitle}`;
   }
 
   autoFitColumns() {
