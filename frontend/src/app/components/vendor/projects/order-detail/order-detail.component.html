@@ -4,40 +4,53 @@
       <p class="header d-flex flex-row align-items-center justify-content-start">
         Project Details
         <span class="text-theme same-vendor-label" *ngIf="isManufacturerSameVendor()">Manufactured by Same Vendor</span>
+        <span
+          *ngIf="parts?.length > 0"
+          class="ml-3 font-sm cursor-pointer font-weight-normal hover-underline"
+          (click)="showPartDetails = !showPartDetails"
+        >
+          See <ng-container *ngIf="showPartDetails">less</ng-container>
+          <ng-container *ngIf="!showPartDetails">more</ng-container> details
+        </span>
       </p>
-      <div class="d-flex flex-column align-items-start">
-        <h6>Part {{ part?.id }}</h6>
-        <img height="100px" [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location" />
-        <p class="label text-truncate" placement="auto" [ngbTooltip]="part?.rfqMedia?.media?.name">
-          File:
-          <span class="text-theme-green font-weight-bold value-text">{{ part?.rfqMedia?.media?.name }}</span>
-        </p>
-        <p class="label">
-          Quantity:
-          <span class="text-theme-green font-weight-bold value-text">{{ part?.quantity }}</span>
-        </p>
-        <p class="label">
-          Material:
-          <span class="text-theme-green font-weight-bold value-text">{{
-            part?.materialPropertyValues?.join(', ')
-          }}</span>
-        </p>
-        <p class="label">
-          Technology:
-          <span class="text-theme-green font-weight-bold value-text">{{
-            part?.equipmentPropertyValues?.join(', ')
-          }}</span>
-        </p>
-        <!-- <p class="label">
-          Post-process:
-          <span class="text-theme-green font-weight-bold value-text">
-            {{ preparePostProcessValues(part?.postProcessTypeIds) }}
-          </span>
-        </p> -->
-        <a *ngIf="referenceFileCount > 0" class="reference" (click)="openReference()">
-          Reference Files ({{ referenceFileCount }})
-        </a>
-      </div>
+      <ng-container *ngIf="!showPartDetails">
+        <div class="d-flex flex-column align-items-start">
+          <h6>Part {{ part?.id }}</h6>
+          <img height="100px" [src]="part?.rfqMedia?.media?.partDimension?.thumbnail400Location" />
+          <p class="label text-truncate" placement="auto" [ngbTooltip]="part?.rfqMedia?.media?.name">
+            File:
+            <span class="text-theme-green font-weight-bold value-text">{{ part?.rfqMedia?.media?.name }}</span>
+          </p>
+          <p class="label">
+            Quantity:
+            <span class="text-theme-green font-weight-bold value-text">{{ part?.quantity }}</span>
+          </p>
+          <p class="label">
+            Material:
+            <span class="text-theme-green font-weight-bold value-text">{{
+              part?.materialPropertyValues?.join(', ')
+            }}</span>
+          </p>
+          <p class="label">
+            Technology:
+            <span class="text-theme-green font-weight-bold value-text">{{
+              part?.equipmentPropertyValues?.join(', ')
+            }}</span>
+          </p>
+          <a *ngIf="referenceFileCount > 0" class="reference" (click)="openReference()">
+            Reference Files ({{ referenceFileCount }})
+          </a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showPartDetails">
+        <app-part-detail
+          *ngFor="let part of parts"
+          [connectView]="true"
+          [partId]="part.id"
+          [unitOptions]="measurementUnits"
+        >
+        </app-part-detail>
+      </ng-container>
     </div>
     <div *ngIf="part?.order?.notes" class="col-12">
       <h6 class="text-theme ins-title">Additional Guidance</h6>

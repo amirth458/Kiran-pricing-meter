@@ -35,6 +35,7 @@ export class OrderDetailComponent implements OnInit {
   measurementUnits: any;
   postProcessAction = [];
   selectedVendor;
+  showPartDetails = false;
 
   supplierGridOptions: GridOptions[] = [];
   supplierColumnDefs: Array<ColDef[]> = [];
@@ -58,6 +59,7 @@ export class OrderDetailComponent implements OnInit {
   availableSuppliers = [];
 
   part: Part;
+  parts: Part[];
   canReleaseToNewVendorFlag = true;
   canReleaseToVendorFlag = true;
 
@@ -100,7 +102,8 @@ export class OrderDetailComponent implements OnInit {
     this.route.params.subscribe(({ id }) => {
       this.orderService.getPartById(id).subscribe(v => {
         this.part = v;
-
+        this.parts = [v];
+        console.log(this.parts);
         this.getReferenceFileCount();
 
         if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_RELEASE) {
