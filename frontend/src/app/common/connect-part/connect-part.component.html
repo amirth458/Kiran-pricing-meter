@@ -1,0 +1,120 @@
+<ng-container *ngIf="value">
+  <h6 class="text-theme part-title w-100">{{ value?.rfqMedia?.projectRfqId }}.{{ value.id }}</h6>
+  <div class="d-flex flex-row col-12 p-0">
+    <div class="col-9 pr-3 pt-0 pb-0 info-details">
+      <div class="col-12 d-flex flex-row p-0">
+        <div class="col-2 pt-3 pb-3">
+          <img
+            [src]="
+              value?.rfqMedia?.media?.partDimension?.thumbnail400Location ||
+              '../../../../../../../assets/image/no-preview.png'
+            "
+            height="150px"
+            width="100px"
+          />
+          <app-view-in-three-d [connectorServiceId]="value?.rfqMedia?.media?.connectorServiceId"></app-view-in-three-d>
+        </div>
+
+        <div class="col-3 pt-3 pb-3">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            File:&nbsp;
+            <span
+              class="text-theme-green font-weight-bold text-truncate"
+              placement="top"
+              [ngbTooltip]="value?.rfqMedia?.media?.name"
+            >
+              {{ value?.rfqMedia?.media?.name }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Quantity:&nbsp;
+            <span class="text-theme-green font-weight-bold">
+              {{ value?.quantity }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Material:&nbsp;
+            <span
+              class="text-theme-green font-weight-bold text-truncate"
+              placement="top"
+              [ngbTooltip]="value?.materialPropertyValues?.join(' OR ')"
+            >
+              {{ value?.materialPropertyValues?.join(' OR ') }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Technology:&nbsp;
+            <span
+              class="text-theme-green font-weight-bold text-truncate"
+              placement="top"
+              [ngbTooltip]="value?.equipmentPropertyValues?.join(' OR ')"
+            >
+              {{ value?.equipmentPropertyValues?.join(' OR ') }}
+            </span>
+          </p>
+        </div>
+
+        <div class="col-3 border-left pt-3 pb-3">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Dimensions:&nbsp;
+            <span class="text-theme-green font-weight-bold">
+              {{ getPartDimension(value?.rfqMedia?.media?.partDimension) }}
+            </span>
+          </p>
+          <p
+            class="d-flex flex-row flex-wrap align-items-center mb-2"
+            *ngIf="value?.rfqMedia?.media?.partDimension?.volume"
+          >
+            Volume:&nbsp;
+            <span class="text-theme-green font-weight-bold">
+              {{ value?.rfqMedia?.media?.partDimension?.volume?.value }}
+              {{ getUnit(value?.rfqMedia?.media?.partDimension?.volume?.unitId) }}
+            </span>
+          </p>
+        </div>
+
+        <div class="col-4 border-left pt-3 pb-3">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Other Requirements:&nbsp;
+            <span class="text-theme" placement="auto" [ngbTooltip]="value.comments">
+              {{ value?.comments || '-' }}
+            </span>
+          </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            <app-ref-file [value]="value.id"></app-ref-file>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- SHIPPING ADDRESS & TARGET DELIVERY DATE -->
+    <div class="col-3">
+      <div class="shipping p-3 h-100">
+        <!-- SHIPPING ADDRESS -->
+        <div class="w-100 justify-content-between title">
+          <p class="text-theme font-weight-normal">Shipping</p>
+          <ng-container *ngIf="value?.shippingAddress">
+            <p
+              class="text-theme font-weight-light font-italic address"
+              [innerHTML]="shippingAddressInfo(value?.shippingAddress)"
+            ></p>
+          </ng-container>
+          <ng-container *ngIf="!value?.shippingAddress">
+            <p class="text-theme font-weight-light font-italic address">-</p>
+          </ng-container>
+        </div>
+        <!-- /SHIPPING ADDRESS -->
+        <!-- TARGET DELIVERY DATE -->
+        <div class="w-100 d-flex justify-content-start align-items-center title">
+          <span class="text-theme target-date font-weight-bold">
+            Target Delivery
+          </span>
+          <span class="text-theme-green pl-3 font-weight-light">
+            {{ value?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}
+          </span>
+        </div>
+        <!-- /TARGET DELIVERY DATE -->
+      </div>
+    </div>
+    <!-- /SHIPPING ADDRESS & TARGET DELIVERY DATE -->
+  </div>
+</ng-container>

@@ -6,13 +6,15 @@
         <span
           class="font-sm mx-4 font-weight-bold text-light-blue"
           *ngIf="(projectDetails?.parts)[0]?.subContractorsAllowed"
-          >Sub-Contractors Allowed</span
         >
+          Sub-Contractors Allowed
+        </span>
         <span
           class="font-sm mx-4 font-weight-bold text-light-blue"
           *ngIf="(projectDetails?.parts)[0]?.requestProdexDirectBid"
-          >Request ProdEX Direct Bid</span
         >
+          Request ProdEX Direct Bid
+        </span>
         <span
           *ngIf="projectDetails?.parts"
           class="ml-3 font-sm cursor-pointer font-weight-normal hover-underline"
@@ -22,23 +24,45 @@
           <ng-container *ngIf="!showPartDetails">more</ng-container> details
         </span>
       </h6>
-
       <ng-container *ngIf="!showPartDetails">
         <app-part-list [showRefFile]="true" [parts]="projectDetails?.parts"></app-part-list>
       </ng-container>
       <div *ngIf="showPartDetails && unitOptions" class="part-details w-100">
-        <app-part-detail
+        <!-- PROFILE INFORMATION -->
+        <div class="d-flex flex-column w-75 check-out-panel pt-3 pb-3 pl-4 pr-4 mt-4 mb-4" *ngIf="projectProfile">
+          <h5 class="text-theme m-0 font-weight-bold">{{ projectProfile?.name || '' | titlecase }}</h5>
+          <p class="text-theme m-0 pt-2 med-font-size">
+            Eligible Supplier Type: <strong>{{ projectProfile?.eligibleManufacturerTypes || '-' }}</strong>
+          </p>
+          <p class="text-theme m-0 pt-2 med-font-size">
+            Eligible Countries: <strong>{{ projectProfile?.countries || '-' }}</strong>
+          </p>
+          <p class="text-theme m-0 pt-2 med-font-size">
+            Facility Quality Certifications: <strong>{{ projectProfile?.facilityCerts || '-' }}</strong>
+          </p>
+          <p class="text-theme m-0 pt-2 med-font-size">
+            Part Certifications: <strong>{{ projectProfile?.partCerts || '-' }}</strong>
+          </p>
+          <p class="text-theme m-0 pt-2 med-font-size" *ngIf="(projectDetails?.parts?.length || 0) > 0">
+            <app-proposal-attachment
+              type="governance-document"
+              [smallView]="true"
+              [partId]="(projectDetails?.parts)[0].partId"
+            ></app-proposal-attachment>
+          </p>
+        </div>
+        <!-- /PROFILE INFORMATION -->
+
+        <app-connect-part
+          class="d-block mt-2 mb-2"
           *ngFor="let part of projectDetails?.parts"
-          [connectView]="true"
-          [part]="part"
+          [partId]="part.partId"
           [unitOptions]="unitOptions"
-          [comment]="part?.comments"
-          [proposalPartId]="part?.partQuoteCustomerView?.proposalPartId"
         >
-        </app-part-detail>
+        </app-connect-part>
       </div>
     </div>
-    <div *ngIf="orderInfo?.customerOrder?.notes" class="d-flex flex-column">
+    <div *ngIf="orderInfo?.customerOrder?.notes && !showPartDetails" class="d-flex flex-column">
       <h6 class="text-theme ins-title">Additional Guidance</h6>
       <div class="d-flex flex-row p-0 form-group theme w-100">
         <textarea
@@ -52,7 +76,7 @@
     </div>
   </div>
 
-  <div class="my-4 prodex-supplier">
+  <div class="my-4 prodex-supplier" *ngIf="!showPartDetails">
     <div class="heading d-flex justify-content-between align-items-end mb-3">
       <h6>
         Prodex Supplier
@@ -107,7 +131,7 @@
     </div>
   </div>
 
-  <div class="my-4 customer-selected-supplier">
+  <div class="my-4 customer-selected-supplier" *ngIf="!showPartDetails">
     <div class="heading d-flex justify-content-between align-items-end mb-3">
       <h6>Customer Selected Supplier</h6>
       <div class="actions"></div>
@@ -124,7 +148,7 @@
     </div>
   </div>
 
-  <div class="my-4 customer-selected-invite">
+  <div class="my-4 customer-selected-invite" *ngIf="!showPartDetails">
     <div class="heading d-flex justify-content-between align-items-end mb-3">
       <h6>Customer Supplier To Invite</h6>
       <div *ngIf="this.pageType === 'release-queue'" class="actions">
