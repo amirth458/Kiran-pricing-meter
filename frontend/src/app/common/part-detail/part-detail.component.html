@@ -1,15 +1,17 @@
-<div class="wrapper text-theme mt-3 mb-3 container-fluid">
+<div class="wrapper text-theme mt-3 mb-3 container-fluid" *ngIf="value">
   <div class="row">
     <div [ngClass]="connectView ? 'col-md-8' : 'col-md-8'" class="card pr-3 pt-0 pb-0">
       <div class="row">
         <div [ngClass]="connectView ? 'col-md-2' : 'col-md-3'" class="pt-3 pb-3">
           <img
-            [src]="part.thumbnail200Location || '../../../../../../../assets/image/no-preview.png'"
-            alt=""
+            [src]="
+              value?.rfqMedia?.media?.partDimension?.thumbnail400Location ||
+              '../../../../../../../assets/image/no-preview.png'
+            "
             height="150px"
             width="100px"
           />
-          <app-view-in-three-d [connectorServiceId]="part?.connectorServiceId"></app-view-in-three-d>
+          <app-view-in-three-d [connectorServiceId]="value?.rfqMedia?.media?.connectorServiceId"></app-view-in-three-d>
         </div>
         <div [ngClass]="connectView ? 'col-md-3' : 'col-md-4'" class=" pt-4 pb-3 px-2 info-details bordered">
           <div>
@@ -18,15 +20,15 @@
               <span
                 class="text-theme-green font-weight-bold text-truncate"
                 placement="top"
-                [ngbTooltip]="part.fileName"
+                [ngbTooltip]="value?.rfqMedia?.media?.name"
               >
-                {{ part.fileName }}
+                {{ value?.rfqMedia?.media?.name }}
               </span>
             </p>
             <p class="mb-2">
               Quantity:
               <span class="text-theme-green font-weight-bold">
-                {{ part?.quantity }}
+                {{ value?.quantity }}
               </span>
             </p>
             <p class="mb-2">
@@ -34,9 +36,9 @@
               <span
                 class="text-theme-green font-weight-bold text-truncate"
                 placement="top"
-                [ngbTooltip]="part?.materialPropertyValues?.join(' OR ')"
+                [ngbTooltip]="value?.materialPropertyValues?.join(' OR ')"
               >
-                {{ part?.materialPropertyValues?.join(' OR ') }}
+                {{ value?.materialPropertyValues?.join(' OR ') }}
               </span>
             </p>
             <p class="mb-2">
@@ -44,10 +46,13 @@
               <span
                 class="text-theme-green font-weight-bold text-truncate"
                 placement="top"
-                [ngbTooltip]="part?.equipmentPropertyValues?.join(' OR ')"
+                [ngbTooltip]="value?.equipmentPropertyValues?.join(' OR ')"
               >
-                {{ part?.equipmentPropertyValues?.join(' OR ') }}
+                {{ value?.equipmentPropertyValues?.join(' OR ') }}
               </span>
+            </p>
+            <p class="mb-2">
+              <app-ref-file [value]="value.id"></app-ref-file>
             </p>
             <!-- <p class="mb-2">
               Post-Process:
@@ -59,9 +64,6 @@
                 {{ part?.postProcessTypeNames }}
               </span>
             </p> -->
-            <p>
-              <app-ref-file [value]="part.partId"> </app-ref-file>
-            </p>
           </div>
         </div>
 
@@ -70,21 +72,27 @@
             <p class="mb-2">
               Dimensions:
               <span class="text-theme-green font-weight-bold">
-                {{ part.x.value }} {{ getUnit(part.x.unitId) }} x {{ part.y.value }} {{ getUnit(part.y.unitId) }} x
-                {{ part.z.value }} {{ getUnit(part.z.unitId) }}
+                {{ getPartDimension(value?.rfqMedia?.media?.partDimension) }}
+              </span>
+            </p>
+            <p class="mb-2" *ngIf="value?.rfqMedia?.media?.partDimension?.volume">
+              Volume:
+              <span class="text-theme-green font-weight-bold">
+                {{ value?.rfqMedia?.media?.partDimension?.volume?.value }}
+                {{ getUnit(value?.rfqMedia?.media?.partDimension?.volume?.unitId) }}
               </span>
             </p>
             <p class="mb-2">
-              Volume:
-              <span class="text-theme-green font-weight-bold">
-                {{ part.volume.value }} {{ getUnit(part.volume.unitId) }}
+              Other Requirements:
+              <span class="text-theme-green" placement="auto" [ngbTooltip]="comment">
+                {{ displayComment || '-' }}
               </span>
             </p>
             <p *ngIf="false" class="mb-2">
               Surface Roughness:
               <span class="text-theme-green font-weight-bold">
-                {{ part.surfaceRoughness }}
-                <!-- {{surfaceRoughness.unit}} -->
+                {{ value?.rfqMedia?.media?.partDimension?.surfaceArea?.value }}
+                {{ getUnit(value?.rfqMedia?.media?.partDimension?.surfaceArea?.unitId) }}
               </span>
             </p>
             <p *ngIf="false" class="mb-2">
@@ -107,17 +115,39 @@
         <div *ngIf="connectView" class="col-md-4 pt-4 pb-3 px-2 info-details">
           <div>
             <p class="mb-2">
+              Eligible Manufacturer Type:
+              <span class="text-theme-green">
+                {{ projectProfile.eligibleManufacturerTypes || '-' }}
+              </span>
+            </p>
+
+            <p class="mb-2">
+              Eligible Regions:
+              <span class="text-theme-green">
+                {{ projectProfile.countries || '-' }}
+              </span>
+            </p>
+
+            <p class="mb-2">
+              Facility Quality Certifications:
+              <span class="text-theme-green">
+                {{ projectProfile.facilityCerts || '-' }}
+              </span>
+            </p>
+
+            <p class="mb-2">
+              Part Certifications:
+              <span class="text-theme-green">
+                {{ projectProfile.partCerts || '-' }}
+              </span>
+            </p>
+
+            <p class="mb-2">
               <app-proposal-attachment
                 type="governance-document"
                 [smallView]="true"
-                [partId]="part?.partId"
+                [partId]="value?.id"
               ></app-proposal-attachment>
-            </p>
-            <p class="mb-2">
-              Other Requirements:
-              <span class="text-theme" placement="auto" [ngbTooltip]="comment">
-                {{ displayComment }}
-              </span>
             </p>
           </div>
         </div>
@@ -128,15 +158,17 @@
       <div class="w-100 justify-content-between title">
         <p class="text-theme font-weight-normal">Shipping</p>
         <p class="text-theme font-weight-light font-italic address">
-          {{ part?.shippingAddress }}
+          {{ shippingAddressInfo(value?.shippingAddress) }}
         </p>
       </div>
 
-      <div class="w-100 d-flex justify-content-between title">
+      <div class="w-100 d-flex justify-content-start align-items-center title">
         <span class="text-theme target-date font-weight-bold">
           Target Delivery
         </span>
-        <span class="text-theme-green">{{ part?.deliveryDate | date: 'MM/dd/yyyy':'UTC' }}</span>
+        <span class="text-theme-green pl-3 font-weight-light">{{
+          value?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC'
+        }}</span>
       </div>
     </div>
   </div>

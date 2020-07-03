@@ -1,7 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BidPart } from 'src/app/model/order.model';
+import { PartService } from '../../service/part.service';
+import { Address, AddressDelimiter, Part, PartDimension, ProjectProfile } from '../../model/part.model';
+import { Util } from '../../util/Util';
 
 @Component({
   selector: 'app-part-detail',
@@ -16,9 +19,19 @@ export class PartDetailComponent implements OnInit {
   @Input() proposalPartId = null;
   @Input() comment = null;
 
-  constructor(public modalService: NgbModal) {}
+  value: Part;
+  projectProfile: ProjectProfile;
 
-  ngOnInit() {}
+  constructor(public modalService: NgbModal, public partService: PartService) {}
+
+  ngOnInit() {
+    this.partService.getPartByPartId(this.part.partId).subscribe(v => {
+      this.value = v;
+      if (v.rfqMedia && v.rfqMedia.projectRfq && v.rfqMedia.projectRfq.projectProfile) {
+        this.projectProfile = v.rfqMedia.projectRfq.projectProfile;
+      }
+    });
+  }
 
   open(content, size: any = 'lg') {
     this.modalService
@@ -31,6 +44,14 @@ export class PartDetailComponent implements OnInit {
         result => {},
         reason => {}
       );
+  }
+
+  shippingAddressInfo(address: Address): string {
+    return Util.shippingAddressInfo(address, AddressDelimiter.COMMA_SEPARATOR);
+  }
+
+  getPartDimension(dimension: PartDimension) {
+    return Util.getPartDimension(dimension, this.unitOptions);
   }
 
   get tolerance() {
