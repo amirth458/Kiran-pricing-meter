@@ -104,6 +104,11 @@ export class PurchaseOrderItemComponent implements OnInit {
     );
   }
 
+  getPaymentType(paymentType: PaymentType) {
+    const paymentTypeTitle = this.titleCasePipe.transform((paymentType || '').toString().replace(/_/g, ' '));
+    return `${paymentType === this.paymentOrderType.CREDIT_CARD ? `${paymentTypeTitle} Order` : paymentTypeTitle}`;
+  }
+
   onSuccess(text: string, url: string) {
     this.closeModalWindow();
     this.toast.success(text);
