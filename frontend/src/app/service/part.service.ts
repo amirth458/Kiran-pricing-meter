@@ -40,7 +40,7 @@ export class PartService {
   }
 
   getPartByPartId(partId: number): Observable<Part> {
-    return this.http.get<any>(`${environment.procurementApiBaseUrl}/part/${partId}?generateSignedUrl=false`);
+    return this.http.get<any>(`${environment.procurementApiBaseUrl}/part/${partId}?generateSignedUrl=true`);
   }
 
   getProjectProfileByOrderId(orderId: number): Observable<ProjectProfile[]> {
