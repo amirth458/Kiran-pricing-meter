@@ -45,7 +45,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'part_ids'
     },
     {
-      headerName: 'Bid Order Lookup',
+      headerName: 'Bid Order ID',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -64,7 +64,7 @@ export class InsightVendorOrderComponent implements OnInit {
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {
-      headerName: 'Bid Process Lookup',
+      headerName: 'Bid Process ID',
       field: 'bid_process_id',
       hide: false,
       sortable: false,

@@ -17,7 +17,7 @@ export class InsightCustomerSuborderComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'Order Lookup',
+      headerName: 'Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: true,

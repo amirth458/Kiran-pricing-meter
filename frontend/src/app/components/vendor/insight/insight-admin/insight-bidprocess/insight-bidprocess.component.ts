@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidprocessComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Bid Order Lookup',
+      headerName: 'Bid Order ID',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_order_id'
     },
     {
-      headerName: 'Bid Order Item Lookup',
+      headerName: 'Bid Order Item ID',
       field: 'bid_order_item_id',
       hide: false,
       sortable: false,
@@ -107,7 +107,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'created_date'
     },
     {
-      headerName: 'Order Lookup',
+      headerName: 'Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -181,7 +181,7 @@ export class InsightBidprocessComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'Part Lookup',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -199,7 +199,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'quote_price'
     },
     {
-      headerName: 'RFQ Lookup',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -208,7 +208,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'Vendor Lookup',
+      headerName: 'Vendor ID',
       field: 'vendor_id',
       hide: false,
       sortable: false,

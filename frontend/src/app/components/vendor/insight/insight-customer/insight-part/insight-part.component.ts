@@ -25,7 +25,7 @@ export class InsightPartComponent implements OnInit {
       }
     },
     {
-      headerName: 'RFQ Lookup',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -34,7 +34,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'Order Lookup',
+      headerName: 'Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -88,7 +88,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'part_quote_price'
     },
     {
-      headerName: 'Account Lookup',
+      headerName: 'Account Name',
       field: 'customer_name',
       hide: false,
       sortable: false,
@@ -97,7 +97,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'customer_name'
     },
     {
-      headerName: 'Contact Lookup',
+      headerName: 'Contact Email',
       field: 'customer_email',
       hide: false,
       sortable: false,

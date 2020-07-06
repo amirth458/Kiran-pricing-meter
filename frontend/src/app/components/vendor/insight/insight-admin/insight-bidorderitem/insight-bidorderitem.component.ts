@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidorderitemComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'Bid Order Lookup',
+      headerName: 'Bid Order ID',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'bid_order_status'
     },
     {
-      headerName: 'Customer Order Lookup',
+      headerName: 'Customer Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'customer_price'
     },
     {
-      headerName: 'Part Lookup',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'Part Quote Lookup',
+      headerName: 'Part Quote ID',
       field: 'part_quote_id',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'part_quote_id'
     },
     {
-      headerName: 'RFQ Lookup',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,

@@ -75,7 +75,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'active'
     },
     {
-      headerName: 'Vendor Lookup',
+      headerName: 'Vendor Email',
       field: 'created_by',
       hide: false,
       sortable: false,

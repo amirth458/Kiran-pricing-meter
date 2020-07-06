@@ -26,7 +26,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'part_quote_id'
     },
     {
-      headerName: 'Part Lookup',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'RFQ Lookup',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,

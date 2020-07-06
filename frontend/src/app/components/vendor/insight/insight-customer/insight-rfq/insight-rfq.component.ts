@@ -56,7 +56,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'rfq_status'
     },
     {
-      headerName: 'Account Lookup',
+      headerName: 'Account Name',
       field: 'account_name',
       hide: false,
       sortable: false,

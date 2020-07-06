@@ -53,7 +53,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'last_completed_task_description'
     },
     {
-      headerName: 'Vendor Order Lookup',
+      headerName: 'Vendor Order ID',
       field: 'vendor_order_id',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'bid_order_item'
     },
     {
-      headerName: 'Part Lookup',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -89,7 +89,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'Customer Order Lookup',
+      headerName: 'Customer Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
