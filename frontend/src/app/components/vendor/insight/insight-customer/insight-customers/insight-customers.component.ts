@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightCustomersComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'user_id',
+      headerName: 'Vulcury ID',
       field: 'user_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'user_id'
     },
     {
-      headerName: 'customer_id',
+      headerName: 'PE User ID',
       field: 'customer_id',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'customer_id'
     },
     {
-      headerName: 'first_name',
+      headerName: 'First Name',
       field: 'first_name',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'first_name'
     },
     {
-      headerName: 'last_name',
+      headerName: 'Last Name',
       field: 'last_name',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'last_name'
     },
     {
-      headerName: 'email',
+      headerName: 'Email',
       field: 'email',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'email'
     },
     {
-      headerName: 'phone_no',
+      headerName: 'Phone',
       field: 'phone_no',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'phone_no'
     },
     {
-      headerName: 'company_name',
+      headerName: 'Company Name',
       field: 'company_name',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'company_name'
     },
     {
-      headerName: 'department',
+      headerName: 'Department',
       field: 'department',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'department'
     },
     {
-      headerName: 'division',
+      headerName: 'Division',
       field: 'division',
       hide: false,
       sortable: false,
@@ -89,7 +89,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'division'
     },
     {
-      headerName: 'last_login_attempt',
+      headerName: 'Last Login Time',
       field: 'last_login_attempt',
       hide: false,
       sortable: false,
@@ -98,7 +98,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'last_login_attempt'
     },
     {
-      headerName: 'last_30_active',
+      headerName: 'Last 30 Active',
       field: 'last_30_active',
       hide: false,
       sortable: false,
@@ -107,7 +107,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'last_30_active'
     },
     {
-      headerName: 'last_14_active',
+      headerName: 'Last 14 Active',
       field: 'last_14_active',
       hide: false,
       sortable: false,
@@ -116,7 +116,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'last_14_active'
     },
     {
-      headerName: 'last_7_active',
+      headerName: 'Last 7 Active',
       field: 'last_7_active',
       hide: false,
       sortable: false,
@@ -125,7 +125,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'last_7_active'
     },
     {
-      headerName: 'rfq_count_active',
+      headerName: 'Active RFQs',
       field: 'rfq_count_active',
       hide: false,
       sortable: false,
@@ -134,7 +134,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'rfq_count_active'
     },
     {
-      headerName: 'rfq_count_inactive',
+      headerName: 'Completed RFQs',
       field: 'rfq_count_inactive',
       hide: false,
       sortable: false,
@@ -143,7 +143,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'rfq_count_inactive'
     },
     {
-      headerName: 'total_rfq_count',
+      headerName: 'No of RFQs',
       field: 'total_rfq_count',
       hide: false,
       sortable: false,
@@ -152,7 +152,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'total_rfq_count'
     },
     {
-      headerName: 'order_count_active',
+      headerName: 'Active Orders',
       field: 'order_count_active',
       hide: false,
       sortable: false,
@@ -161,7 +161,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'order_count_active'
     },
     {
-      headerName: 'order_count_inactive',
+      headerName: 'Completed Orders',
       field: 'order_count_inactive',
       hide: false,
       sortable: false,
@@ -170,7 +170,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'order_count_inactive'
     },
     {
-      headerName: 'total_order_count',
+      headerName: 'No of Orders',
       field: 'total_order_count',
       hide: false,
       sortable: false,
@@ -179,7 +179,7 @@ export class InsightCustomersComponent implements OnInit {
       headerTooltip: 'total_order_count'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Created',
       field: 'created_date',
       hide: false,
       sortable: false,

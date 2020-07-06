@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightFacilityComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'vendor_id',
+      headerName: 'SS Vendor ID',
       field: 'vendor_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'vendor_name',
+      headerName: 'Vendor Name',
       field: 'vendor_name',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'facility_id',
+      headerName: 'Facility Number',
       field: 'facility_id',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_id'
     },
     {
-      headerName: 'facility_name',
+      headerName: 'Facility Name',
       field: 'facility_name',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_name'
     },
     {
-      headerName: 'quoter_first_name',
+      headerName: 'Quoter First Name',
       field: 'quoter_first_name',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'quoter_first_name'
     },
     {
-      headerName: 'quoter_last_name',
+      headerName: 'Quoter Last Name',
       field: 'quoter_last_name',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'quoter_last_name'
     },
     {
-      headerName: 'quoting_email',
+      headerName: 'Email',
       field: 'quoting_email',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'quoting_email'
     },
     {
-      headerName: 'facility_address_1',
+      headerName: 'Address 1',
       field: 'facility_address_1',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_address_1'
     },
     {
-      headerName: 'facility_address_2',
+      headerName: 'Address 2',
       field: 'facility_address_2',
       hide: false,
       sortable: false,
@@ -89,7 +89,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_address_2'
     },
     {
-      headerName: 'facility_city',
+      headerName: 'City',
       field: 'facility_city',
       hide: false,
       sortable: false,
@@ -98,7 +98,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_city'
     },
     {
-      headerName: 'facility_state',
+      headerName: 'State',
       field: 'facility_state',
       hide: false,
       sortable: false,
@@ -107,7 +107,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_state'
     },
     {
-      headerName: 'facility_postal',
+      headerName: 'Postal',
       field: 'facility_postal',
       hide: false,
       sortable: false,
@@ -116,7 +116,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_postal'
     },
     {
-      headerName: 'facility_country',
+      headerName: 'Country',
       field: 'facility_country',
       hide: false,
       sortable: false,
@@ -125,7 +125,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'facility_country'
     },
     {
-      headerName: 'facility_certs',
+      headerName: 'Facility Certs',
       field: 'facility_certs',
       hide: false,
       sortable: false,
@@ -135,7 +135,7 @@ export class InsightFacilityComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'part_certs',
+      headerName: 'Part Certs',
       field: 'part_certs',
       hide: false,
       sortable: false,
@@ -145,7 +145,7 @@ export class InsightFacilityComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'material_count',
+      headerName: 'Material Count',
       field: 'material_count',
       hide: false,
       sortable: false,
@@ -154,7 +154,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'material_count'
     },
     {
-      headerName: 'material',
+      headerName: 'List of Materials',
       field: 'material',
       hide: false,
       sortable: false,
@@ -164,7 +164,7 @@ export class InsightFacilityComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'equipment_count',
+      headerName: 'Equipment Count',
       field: 'equipment_count',
       hide: false,
       sortable: false,
@@ -173,7 +173,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'equipment_count'
     },
     {
-      headerName: 'equipments',
+      headerName: 'List of Equipment',
       field: 'equipments',
       hide: false,
       sortable: false,
@@ -183,7 +183,7 @@ export class InsightFacilityComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'process_profile_count',
+      headerName: 'Process Profile Count',
       field: 'process_profile_count',
       hide: false,
       sortable: false,
@@ -192,7 +192,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'process_profile_count'
     },
     {
-      headerName: 'pricing_profile_count',
+      headerName: 'Pricing Profile Count',
       field: 'pricing_profile_count',
       hide: false,
       sortable: false,
@@ -201,7 +201,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'pricing_profile_count'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Created Date/Time',
       field: 'created_date',
       hide: false,
       sortable: false,
@@ -210,7 +210,7 @@ export class InsightFacilityComponent implements OnInit {
       headerTooltip: 'created_date'
     },
     {
-      headerName: 'last_login',
+      headerName: 'Last Login Time',
       field: 'last_login',
       hide: false,
       sortable: false,

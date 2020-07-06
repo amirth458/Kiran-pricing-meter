@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidprocessComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'bid_order_id',
+      headerName: 'Bid Order Lookup',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_order_id'
     },
     {
-      headerName: 'bid_order_item_id',
+      headerName: 'Bid Order Item Lookup',
       field: 'bid_order_item_id',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_order_item_id'
     },
     {
-      headerName: 'bid_order_status',
+      headerName: 'Bid Order Status',
       field: 'bid_order_status',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_order_status'
     },
     {
-      headerName: 'bid_process_id',
+      headerName: 'Bid Process No',
       field: 'bid_process_id',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_process_id'
     },
     {
-      headerName: 'bid_process_name',
+      headerName: 'Bid Process Name',
       field: 'bid_process_name',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_process_name'
     },
     {
-      headerName: 'bid_winner',
+      headerName: 'Bid Winner',
       field: 'bid_winner',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_winner'
     },
     {
-      headerName: 'bid_accepted',
+      headerName: 'Bid Accepted',
       field: 'bid_accepted',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'bid_accepted'
     },
     {
-      headerName: 'counter_accepted',
+      headerName: 'Counter Accepted',
       field: 'counter_accepted',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'counter_accepted'
     },
     {
-      headerName: 'counter_price',
+      headerName: 'Counter Price',
       field: 'counter_price',
       hide: false,
       sortable: false,
@@ -89,7 +89,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'counter_price'
     },
     {
-      headerName: 'created_by',
+      headerName: 'Created By',
       field: 'created_by',
       hide: false,
       sortable: false,
@@ -98,7 +98,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'created_by'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Created Date/Time',
       field: 'created_date',
       hide: false,
       sortable: false,
@@ -107,7 +107,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'created_date'
     },
     {
-      headerName: 'customer_order_id',
+      headerName: 'Order Lookup',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -116,7 +116,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'customer_price',
+      headerName: 'Combined Customer Price',
       field: 'customer_price',
       hide: false,
       sortable: false,
@@ -125,7 +125,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'customer_price'
     },
     {
-      headerName: 'equipment_id',
+      headerName: 'Equipment Numbers',
       field: 'equipment_id',
       hide: false,
       sortable: false,
@@ -134,7 +134,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'equipment_id'
     },
     {
-      headerName: 'equipment_name',
+      headerName: 'Equipment Names',
       field: 'equipment_name',
       hide: false,
       sortable: false,
@@ -143,7 +143,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'equipment_name'
     },
     {
-      headerName: 'last_modified_by',
+      headerName: 'Modified By',
       field: 'last_modified_by',
       hide: false,
       sortable: false,
@@ -152,7 +152,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'last_modified_by'
     },
     {
-      headerName: 'last_modified_date',
+      headerName: 'Last Modified Date/Time',
       field: 'last_modified_date',
       hide: false,
       sortable: false,
@@ -161,7 +161,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'last_modified_date'
     },
     {
-      headerName: 'materialName',
+      headerName: 'Material Names',
       field: 'materialName',
       hide: false,
       sortable: false,
@@ -171,7 +171,7 @@ export class InsightBidprocessComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'material_id',
+      headerName: 'Material Numbers',
       field: 'material_id',
       hide: false,
       sortable: false,
@@ -181,7 +181,7 @@ export class InsightBidprocessComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'part_id',
+      headerName: 'Part Lookup',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -190,7 +190,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'quote_price',
+      headerName: 'Quote Price',
       field: 'quote_price',
       hide: false,
       sortable: false,
@@ -199,7 +199,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'quote_price'
     },
     {
-      headerName: 'rfq_id',
+      headerName: 'RFQ Lookup',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -208,7 +208,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'vendor_id',
+      headerName: 'Vendor Lookup',
       field: 'vendor_id',
       hide: false,
       sortable: false,
@@ -217,7 +217,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'vendor_name',
+      headerName: 'Vendor Name',
       field: 'vendor_name',
       hide: false,
       sortable: false,
@@ -226,7 +226,7 @@ export class InsightBidprocessComponent implements OnInit {
       headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'vendor_price',
+      headerName: 'Vendor Price',
       field: 'vendor_price',
       hide: false,
       sortable: false,

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightVendorOrderComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'vendor_order_id',
+      headerName: 'Vendor Order Number',
       field: 'vendor_order_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'vendor_order_id'
     },
     {
-      headerName: 'vendor_order_status',
+      headerName: 'Vendor Order Status',
       field: 'vendor_order_status',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'vendor_order_status'
     },
     {
-      headerName: 'vendor_sub_order_ids',
+      headerName: 'Vendor Suborder Numbers',
       field: 'vendor_sub_order_ids',
       hide: false,
       sortable: false,
@@ -36,7 +36,7 @@ export class InsightVendorOrderComponent implements OnInit {
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {
-      headerName: 'part_ids',
+      headerName: 'Part Numbers',
       field: 'part_ids',
       hide: false,
       sortable: false,
@@ -45,7 +45,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'part_ids'
     },
     {
-      headerName: 'bid_order_id',
+      headerName: 'Bid Order Lookup',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -54,7 +54,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'bid_order_id'
     },
     {
-      headerName: 'bid_order_item_ids',
+      headerName: 'Bid Order Item Numbers',
       field: 'bid_order_item_ids',
       hide: false,
       sortable: false,
@@ -64,7 +64,7 @@ export class InsightVendorOrderComponent implements OnInit {
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {
-      headerName: 'bid_process_id',
+      headerName: 'Bid Process Lookup',
       field: 'bid_process_id',
       hide: false,
       sortable: false,

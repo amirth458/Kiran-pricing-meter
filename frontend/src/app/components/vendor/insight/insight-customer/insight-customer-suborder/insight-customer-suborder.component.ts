@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightCustomerSuborderComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'part_id',
+      headerName: 'Suborder No',
       field: 'part_id',
       hide: false,
       sortable: true,
@@ -17,7 +17,7 @@ export class InsightCustomerSuborderComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'customer_order_id',
+      headerName: 'Order Lookup',
       field: 'customer_order_id',
       hide: false,
       sortable: true,
@@ -26,7 +26,7 @@ export class InsightCustomerSuborderComponent implements OnInit {
       headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'total_cost',
+      headerName: 'Total Cost',
       field: 'total_cost',
       hide: false,
       sortable: true,
@@ -35,7 +35,7 @@ export class InsightCustomerSuborderComponent implements OnInit {
       headerTooltip: 'total_cost'
     },
     {
-      headerName: 'order_created_date',
+      headerName: 'Order Created Date/Time',
       field: 'order_created_date',
       hide: false,
       sortable: true,
@@ -44,7 +44,7 @@ export class InsightCustomerSuborderComponent implements OnInit {
       headerTooltip: 'order_created_date'
     },
     {
-      headerName: 'target_delivery_date',
+      headerName: 'Target Delivery Date',
       field: 'target_delivery_date',
       hide: false,
       sortable: true,
@@ -53,7 +53,7 @@ export class InsightCustomerSuborderComponent implements OnInit {
       headerTooltip: 'target_delivery_date'
     },
     {
-      headerName: 'implied_delivery_window',
+      headerName: 'Implied Delivery Window',
       field: 'implied_delivery_window',
       hide: false,
       sortable: true,

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightCustomerOrderComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'order_id',
+      headerName: 'Order No.',
       field: 'order_id',
       hide: false,
       sortable: true,
@@ -17,7 +17,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'order_id'
     },
     {
-      headerName: 'rfq_id',
+      headerName: 'RFQ Lookup',
       field: 'rfq_id',
       hide: false,
       sortable: true,
@@ -26,7 +26,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'order_status',
+      headerName: 'Order Status',
       field: 'order_status',
       hide: false,
       sortable: true,
@@ -35,7 +35,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'order_status'
     },
     {
-      headerName: 'order_price',
+      headerName: 'Price',
       field: 'order_price',
       hide: false,
       sortable: true,
@@ -44,7 +44,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'order_price'
     },
     {
-      headerName: 'vendor_price',
+      headerName: 'Vendor Receives Amount',
       field: 'vendor_price',
       hide: false,
       sortable: true,
@@ -53,7 +53,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'vendor_price'
     },
     {
-      headerName: 'part_ids',
+      headerName: 'Part Ids',
       field: 'part_ids',
       hide: false,
       sortable: true,
@@ -63,7 +63,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {
-      headerName: 'margin_percent',
+      headerName: 'Margin %',
       field: 'margin_percent',
       hide: false,
       sortable: true,
@@ -72,7 +72,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'margin_percent'
     },
     {
-      headerName: 'number_of_parts',
+      headerName: 'No. of Parts',
       field: 'number_of_parts',
       hide: false,
       sortable: true,
@@ -81,7 +81,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'number_of_parts'
     },
     {
-      headerName: 'total_no_of_qty',
+      headerName: 'Proposed Quantity',
       field: 'total_no_of_qty',
       hide: false,
       sortable: true,
@@ -90,7 +90,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'total_no_of_qty'
     },
     {
-      headerName: 'customer_name',
+      headerName: 'Customer Name',
       field: 'customer_name',
       hide: false,
       sortable: true,
@@ -99,7 +99,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'customer_name'
     },
     {
-      headerName: 'customer_email',
+      headerName: 'Customer Email',
       field: 'customer_email',
       hide: false,
       sortable: true,
@@ -108,7 +108,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'customer_email'
     },
     {
-      headerName: 'vendor_name',
+      headerName: 'Vendor Contact Name',
       field: 'vendor_name',
       hide: false,
       sortable: true,
@@ -117,7 +117,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'vendor_email',
+      headerName: 'Vendor Email',
       field: 'vendor_email',
       hide: false,
       sortable: true,
@@ -126,7 +126,7 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'vendor_email'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Order Created Date/Time',
       field: 'created_date',
       hide: false,
       sortable: true,

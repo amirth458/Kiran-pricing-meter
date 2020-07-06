@@ -14,7 +14,7 @@ import { Util } from '../../../../../util/Util';
 export class InsightRfqComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'rfq_id',
+      headerName: 'PE RFQ No.',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -29,7 +29,7 @@ export class InsightRfqComponent implements OnInit {
       }
     },
     {
-      headerName: 'rfq_profile_name',
+      headerName: 'RFQ Profile',
       field: 'rfq_name',
       hide: false,
       sortable: false,
@@ -38,7 +38,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'rfq_profile_name'
     },
     {
-      headerName: 'project_type',
+      headerName: 'RFQ Type',
       field: 'project_type',
       hide: false,
       sortable: false,
@@ -47,7 +47,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'project_type'
     },
     {
-      headerName: 'rfq_status',
+      headerName: 'Stage',
       field: 'rfq_status',
       hide: false,
       sortable: false,
@@ -56,7 +56,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'rfq_status'
     },
     {
-      headerName: 'account_name',
+      headerName: 'Account Lookup',
       field: 'account_name',
       hide: false,
       sortable: false,
@@ -65,7 +65,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'account_name'
     },
     {
-      headerName: 'customer_first',
+      headerName: 'Customer First',
       field: 'customer_first',
       hide: false,
       sortable: false,
@@ -74,7 +74,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'customer_first'
     },
     {
-      headerName: 'customer_last',
+      headerName: 'Customer Last',
       field: 'customer_last',
       hide: false,
       sortable: false,
@@ -83,7 +83,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'customer_last'
     },
     {
-      headerName: 'customer_phone',
+      headerName: 'Customer Phone',
       field: 'customer_phone',
       hide: false,
       sortable: false,
@@ -92,7 +92,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'customer_phone'
     },
     {
-      headerName: 'email',
+      headerName: 'Email',
       field: 'email',
       hide: false,
       sortable: false,
@@ -101,7 +101,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'email'
     },
     {
-      headerName: 'created_date',
+      headerName: 'RFQ Created',
       field: 'created_date',
       hide: false,
       sortable: false,
@@ -110,7 +110,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'created_date'
     },
     {
-      headerName: 'nda',
+      headerName: 'NDA',
       field: 'nda',
       hide: false,
       sortable: false,
@@ -119,7 +119,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'nda'
     },
     {
-      headerName: 'regions',
+      headerName: 'Regions',
       field: 'regions',
       hide: false,
       sortable: false,
@@ -128,7 +128,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'regions'
     },
     {
-      headerName: 'part_certs',
+      headerName: 'Part Certs',
       field: 'part_certs',
       hide: false,
       sortable: false,
@@ -137,7 +137,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'part_certs'
     },
     {
-      headerName: 'cad_file_count',
+      headerName: 'CAD File Count',
       field: 'cad_file_count',
       hide: false,
       sortable: false,
@@ -146,7 +146,7 @@ export class InsightRfqComponent implements OnInit {
       headerTooltip: 'cad_file_count'
     },
     {
-      headerName: 'part_count',
+      headerName: 'Part Count',
       field: 'part_count',
       hide: false,
       sortable: false,
