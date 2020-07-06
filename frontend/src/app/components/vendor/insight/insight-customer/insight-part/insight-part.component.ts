@@ -10,7 +10,7 @@ import { PartService } from 'src/app/service/part.service';
 export class InsightPartComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'part_id',
+      headerName: 'Part Number',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -25,7 +25,7 @@ export class InsightPartComponent implements OnInit {
       }
     },
     {
-      headerName: 'rfq_id',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -34,7 +34,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'customer_order_id',
+      headerName: 'Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -43,7 +43,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'file_name',
+      headerName: 'File Name',
       field: 'file_name',
       hide: false,
       sortable: false,
@@ -52,7 +52,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'file_name'
     },
     {
-      headerName: 'part_status',
+      headerName: 'Part Status',
       field: 'part_status',
       hide: false,
       sortable: false,
@@ -61,7 +61,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'part_status'
     },
     {
-      headerName: 'part_type',
+      headerName: 'Part Type',
       field: 'part_type',
       hide: false,
       sortable: false,
@@ -70,7 +70,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'part_type'
     },
     {
-      headerName: 'payment_status',
+      headerName: 'Payment Status',
       field: 'payment_status',
       hide: false,
       sortable: false,
@@ -79,7 +79,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'payment_status'
     },
     {
-      headerName: 'part_quote_price',
+      headerName: 'Part Quote Price',
       field: 'part_quote_price',
       hide: false,
       sortable: false,
@@ -88,7 +88,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'part_quote_price'
     },
     {
-      headerName: 'customer_name',
+      headerName: 'Account Name',
       field: 'customer_name',
       hide: false,
       sortable: false,
@@ -97,7 +97,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'customer_name'
     },
     {
-      headerName: 'customer_email',
+      headerName: 'Contact Email',
       field: 'customer_email',
       hide: false,
       sortable: false,
@@ -106,7 +106,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'customer_email'
     },
     {
-      headerName: 'quantity',
+      headerName: 'Quantity',
       field: 'quantity',
       hide: false,
       sortable: false,
@@ -115,7 +115,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'quantity'
     },
     {
-      headerName: 'material_count',
+      headerName: 'Material Count',
       field: 'material_count',
       hide: false,
       sortable: false,
@@ -124,7 +124,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'material_count'
     },
     {
-      headerName: 'material',
+      headerName: 'Requested Materials',
       field: 'material',
       hide: false,
       sortable: false,
@@ -134,7 +134,7 @@ export class InsightPartComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'equipment_count',
+      headerName: 'Tech Count',
       field: 'equipment_count',
       hide: false,
       sortable: false,
@@ -143,7 +143,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'equipment_count'
     },
     {
-      headerName: 'technology',
+      headerName: 'Requested Tech',
       field: 'technology',
       hide: false,
       sortable: false,
@@ -153,7 +153,7 @@ export class InsightPartComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'post_process',
+      headerName: 'Post Process',
       field: 'post_process',
       hide: false,
       sortable: false,
@@ -162,7 +162,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'post_process'
     },
     {
-      headerName: 'target_delivery_date',
+      headerName: 'Target Delivery Date',
       field: 'target_delivery_date',
       hide: false,
       sortable: false,
@@ -171,7 +171,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'target_delivery_date'
     },
     {
-      headerName: 'shipping_address',
+      headerName: 'Shipping Address',
       field: 'shipping_address',
       hide: false,
       sortable: false,
@@ -180,7 +180,7 @@ export class InsightPartComponent implements OnInit {
       headerTooltip: 'shipping_address'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Created Date/Time',
       field: 'created_date',
       hide: false,
       sortable: false,

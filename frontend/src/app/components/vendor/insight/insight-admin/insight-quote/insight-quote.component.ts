@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightQuoteComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'quote_name',
+      headerName: 'Part Quote Name',
       field: 'quote_name',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'quote_name'
     },
     {
-      headerName: 'part_quote_id',
+      headerName: 'Part Quote No',
       field: 'part_quote_id',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'part_quote_id'
     },
     {
-      headerName: 'part_id',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'rfq_id',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'total_cost',
+      headerName: 'Quoted Price',
       field: 'total_cost',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'total_cost'
     },
     {
-      headerName: 'material_property_values',
+      headerName: 'Material Options',
       field: 'material_property_values',
       hide: false,
       sortable: false,
@@ -63,7 +63,7 @@ export class InsightQuoteComponent implements OnInit {
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {
-      headerName: 'equipment_property_values',
+      headerName: 'Equipment Options',
       field: 'equipment_property_values',
       hide: false,
       sortable: false,
@@ -73,7 +73,7 @@ export class InsightQuoteComponent implements OnInit {
       valueFormatter: v => v.value && v.value.join(', ')
     },
     {
-      headerName: 'rfq_time',
+      headerName: 'RFQ Submit Time',
       field: 'rfq_time',
       hide: false,
       sortable: false,
@@ -82,7 +82,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'rfq_time'
     },
     {
-      headerName: 'quote_time',
+      headerName: 'Quote Issued Time',
       field: 'quote_time',
       hide: false,
       sortable: false,
@@ -91,7 +91,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'quote_time'
     },
     {
-      headerName: 'rfq_quote_time',
+      headerName: 'RFQ-Quote Time',
       field: 'rfq_quote_time',
       hide: false,
       sortable: false,
@@ -100,7 +100,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'rfq_quote_time'
     },
     {
-      headerName: 'part_quote_status',
+      headerName: 'Part Quote Status',
       field: 'part_quote_status',
       hide: false,
       sortable: false,
@@ -109,7 +109,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'part_quote_status'
     },
     {
-      headerName: 'is_manual_pricing',
+      headerName: 'Manually Priced',
       field: 'is_manual_pricing',
       hide: false,
       sortable: false,
@@ -118,7 +118,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'is_manual_pricing'
     },
     {
-      headerName: 'expired_at',
+      headerName: 'Expiration Time',
       field: 'expired_at',
       hide: false,
       sortable: false,
@@ -127,7 +127,7 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'expired_at'
     },
     {
-      headerName: 'active',
+      headerName: 'Active',
       field: 'active',
       hide: false,
       sortable: false,

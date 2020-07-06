@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidorderitemComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'bid_order_id',
+      headerName: 'Bid Order ID',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'bid_order_id'
     },
     {
-      headerName: 'bid_order_item_id',
+      headerName: 'Bid Order Item No',
       field: 'bid_order_item_id',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'bid_order_item_id'
     },
     {
-      headerName: 'bid_order_status',
+      headerName: 'Bid Order Status',
       field: 'bid_order_status',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'bid_order_status'
     },
     {
-      headerName: 'customer_order_id',
+      headerName: 'Customer Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'customer_price',
+      headerName: 'Customer Price',
       field: 'customer_price',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'customer_price'
     },
     {
-      headerName: 'part_id',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'part_quote_id',
+      headerName: 'Part Quote ID',
       field: 'part_quote_id',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'part_quote_id'
     },
     {
-      headerName: 'rfq_id',
+      headerName: 'RFQ ID',
       field: 'rfq_id',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightBidorderitemComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
-      headerName: 'vendor_price',
+      headerName: 'Vendor Price',
       field: 'vendor_price',
       hide: false,
       sortable: false,
