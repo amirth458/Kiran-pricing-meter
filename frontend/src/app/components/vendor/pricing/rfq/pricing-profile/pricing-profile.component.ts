@@ -294,6 +294,16 @@ export class PricingProfileComponent implements OnInit {
         sortable: true,
         filter: false,
         valueFormatter: x => (x.value ? `$ ${(x.value || 0).toFixed(2)}` : '')
+      },
+      {
+        headerName: 'Vendor Minimum Order Amount',
+        field: 'vendorMinimumOrderAmount',
+        tooltipField: 'vendorMinimumOrderAmount',
+        headerTooltip: 'Vendor Minimum Order Amount',
+        hide: true,
+        sortable: true,
+        filter: false,
+        valueFormatter: x => (x.value ? `$ ${(x.value || 0).toFixed(2)}` : '')
       }
       // {
       //   headerName: "Post-Process",
@@ -385,12 +395,14 @@ export class PricingProfileComponent implements OnInit {
             (this.rowData || []).map(row => {
               if (v[row.id]) {
                 row.totalCost = v[row.id].totalCost;
+                row.vendorMinimumOrderAmount = v[row.id].vendorMinimumOrderAmount;
               } else {
                 row.totalCost = null;
+                row.vendorMinimumOrderAmount = null;
               }
             });
             this.gridOptions.api.setRowData(this.rowData || []);
-            this.gridOptions.columnApi.setColumnVisible('totalCost', true);
+            this.gridOptions.columnApi.setColumnsVisible(['totalCost', 'vendorMinimumOrderAmount'], true);
             this.gridOptions.api.sizeColumnsToFit();
           }
           this.spinner.hide('spooler');
@@ -399,9 +411,10 @@ export class PricingProfileComponent implements OnInit {
   }
 
   resetPricingFilters() {
-    this.gridOptions.columnApi.setColumnVisible('totalCost', false);
+    this.gridOptions.columnApi.setColumnsVisible(['totalCost', 'vendorMinimumOrderAmount'], false);
     (this.rowData || []).map(row => {
       row.totalCost = null;
+      row.vendorMinimumOrderAmount = null;
       row.selected = false;
     });
     this.valueChange();
