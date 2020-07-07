@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightBidorderComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'bid_order_id',
+      headerName: 'Bid Order No',
       field: 'bid_order_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightBidorderComponent implements OnInit {
       headerTooltip: 'bid_order_id'
     },
     {
-      headerName: 'bid_offer_price',
+      headerName: 'Bid Offer Price',
       field: 'bid_offer_price',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightBidorderComponent implements OnInit {
       headerTooltip: 'bid_offer_price'
     },
     {
-      headerName: 'bid_order_item_count',
+      headerName: 'Bid Order Item Count',
       field: 'bid_order_item_count',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightBidorderComponent implements OnInit {
       headerTooltip: 'bid_order_item_count'
     },
     {
-      headerName: 'bid_order_item_ids',
+      headerName: 'Bid Order Item(s)',
       field: 'bid_order_item_ids',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightBidorderComponent implements OnInit {
       headerTooltip: 'bid_order_item_ids'
     },
     {
-      headerName: 'bid_order_status',
+      headerName: 'Bid Order Status',
       field: 'bid_order_status',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightBidorderComponent implements OnInit {
       headerTooltip: 'bid_order_status'
     },
     {
-      headerName: 'combined_bid_price',
+      headerName: 'Combined Bid Price',
       field: 'combined_bid_price',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightBidorderComponent implements OnInit {
       headerTooltip: 'combined_bid_price'
     },
     {
-      headerName: 'customer_order_ids',
+      headerName: 'Customer Order IDs',
       field: 'customer_order_ids',
       hide: false,
       sortable: false,
@@ -72,7 +72,7 @@ export class InsightBidorderComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'part_ids',
+      headerName: 'Related Customer Parts',
       field: 'part_ids',
       hide: false,
       sortable: false,
@@ -82,7 +82,7 @@ export class InsightBidorderComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'part_quote_ids',
+      headerName: 'Part Quote IDs',
       field: 'part_quote_ids',
       hide: false,
       sortable: false,

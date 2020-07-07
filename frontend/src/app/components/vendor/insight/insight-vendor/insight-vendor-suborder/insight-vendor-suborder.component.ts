@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightVendorSuborderComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'vendor_sub_order_id',
+      headerName: 'Vendor Suborder No',
       field: 'vendor_sub_order_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'vendor_sub_order_id'
     },
     {
-      headerName: 'vendor_job_id',
+      headerName: 'Vendor Job ID',
       field: 'vendor_job_id',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'vendor_job_id'
     },
     {
-      headerName: 'job_status',
+      headerName: 'Job Status',
       field: 'job_status',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'job_status'
     },
     {
-      headerName: 'last_completed_task',
+      headerName: 'Last Completed Task',
       field: 'last_completed_task',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'last_completed_task'
     },
     {
-      headerName: 'last_completed_task_description',
+      headerName: 'Last Completed Task Description',
       field: 'last_completed_task_description',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'last_completed_task_description'
     },
     {
-      headerName: 'vendor_order_id',
+      headerName: 'Vendor Order ID',
       field: 'vendor_order_id',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'vendor_order_id'
     },
     {
-      headerName: 'vendor_order_status',
+      headerName: 'Vendor Order Status',
       field: 'vendor_order_status',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'vendor_order_status'
     },
     {
-      headerName: 'bid_order_item',
+      headerName: 'Bid Order Item',
       field: 'bid_order_item',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'bid_order_item'
     },
     {
-      headerName: 'part_id',
+      headerName: 'Part ID',
       field: 'part_id',
       hide: false,
       sortable: false,
@@ -89,7 +89,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'part_id'
     },
     {
-      headerName: 'customer_order_id',
+      headerName: 'Customer Order ID',
       field: 'customer_order_id',
       hide: false,
       sortable: false,
@@ -98,7 +98,7 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'customer_order_id'
     },
     {
-      headerName: 'total_row_count',
+      headerName: 'Total Row Count',
       field: 'total_row_count',
       hide: false,
       sortable: false,

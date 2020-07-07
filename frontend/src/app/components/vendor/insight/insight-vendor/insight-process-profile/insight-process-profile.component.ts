@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightProcessProfileComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'process_profile_id',
+      headerName: 'Process Profile No',
       field: 'process_profile_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'process_profile_id'
     },
     {
-      headerName: 'equipment_ids',
+      headerName: 'Equipment Numbers',
       field: 'equipment_ids',
       hide: false,
       sortable: false,
@@ -27,7 +27,7 @@ export class InsightProcessProfileComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'equipment_names',
+      headerName: 'Equipment Names',
       field: 'equipment_names',
       hide: false,
       sortable: false,
@@ -37,7 +37,7 @@ export class InsightProcessProfileComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'material_ids',
+      headerName: 'Material Numbers',
       field: 'material_ids',
       hide: false,
       sortable: false,
@@ -47,7 +47,7 @@ export class InsightProcessProfileComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'material_names',
+      headerName: 'Material Names',
       field: 'material_names',
       hide: false,
       sortable: false,
@@ -57,7 +57,7 @@ export class InsightProcessProfileComponent implements OnInit {
       valueFormatter: v => v && v.value && v.value.join(',')
     },
     {
-      headerName: 'parameter_nick_name',
+      headerName: 'Parameter Set Nickname',
       field: 'parameter_nick_name',
       hide: false,
       sortable: false,
@@ -66,7 +66,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'parameter_nick_name'
     },
     {
-      headerName: 'active',
+      headerName: 'Active',
       field: 'active',
       hide: false,
       sortable: false,
@@ -75,7 +75,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'active'
     },
     {
-      headerName: 'created_by',
+      headerName: 'Vendor Email',
       field: 'created_by',
       hide: false,
       sortable: false,
@@ -84,7 +84,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'created_by'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Created Date/Time',
       field: 'created_date',
       hide: false,
       sortable: false,
@@ -93,7 +93,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'created_date'
     },
     {
-      headerName: 'vendor_id',
+      headerName: 'Vendor Number',
       field: 'vendor_id',
       hide: false,
       sortable: false,
@@ -102,7 +102,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'vendor_name',
+      headerName: 'Vendor Name',
       field: 'vendor_name',
       hide: false,
       sortable: false,
@@ -111,7 +111,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'process_action',
+      headerName: 'Process Action',
       field: 'process_action',
       hide: false,
       sortable: false,
@@ -120,7 +120,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'process_action'
     },
     {
-      headerName: 'process_type',
+      headerName: 'Process Type',
       field: 'process_type',
       hide: false,
       sortable: false,
@@ -129,7 +129,7 @@ export class InsightProcessProfileComponent implements OnInit {
       headerTooltip: 'process_type'
     },
     {
-      headerName: 'process_profile_type',
+      headerName: 'Process Profile Type',
       field: 'process_profile_type',
       hide: false,
       sortable: false,

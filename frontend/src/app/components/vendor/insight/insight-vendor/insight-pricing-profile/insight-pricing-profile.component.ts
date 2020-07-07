@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightPricingProfileComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'process_pricing_id',
+      headerName: 'Pricing Profile No',
       field: 'process_pricing_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'process_pricing_id'
     },
     {
-      headerName: 'pricing_profile_name',
+      headerName: 'Pricing Profile Name',
       field: 'pricing_profile_name',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'pricing_profile_name'
     },
     {
-      headerName: 'pricing_condition',
+      headerName: 'Pricing Condition',
       field: 'pricing_condition',
       hide: false,
       sortable: false,
@@ -36,7 +36,7 @@ export class InsightPricingProfileComponent implements OnInit {
       valueFormatter: v => this.getPricingCondition(v.value)
     },
     {
-      headerName: 'process_profile_id',
+      headerName: 'Process Profile No',
       field: 'process_profile_id',
       hide: false,
       sortable: false,
@@ -45,7 +45,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'process_profile_id'
     },
     {
-      headerName: 'process_profile_name',
+      headerName: 'Process Profile Name',
       field: 'process_profile_name',
       hide: false,
       sortable: false,
@@ -54,7 +54,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'process_profile_name'
     },
     {
-      headerName: 'parameter_name',
+      headerName: 'Parameter Set Name',
       field: 'parameter_name',
       hide: false,
       sortable: false,
@@ -63,7 +63,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'parameter_name'
     },
     {
-      headerName: 'active',
+      headerName: 'Active',
       field: 'active',
       hide: false,
       sortable: false,
@@ -72,7 +72,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'active'
     },
     {
-      headerName: 'vendor_name',
+      headerName: 'Shopsight Company Name',
       field: 'vendor_name',
       hide: false,
       sortable: false,
@@ -81,7 +81,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'vendor_name'
     },
     {
-      headerName: 'created_by',
+      headerName: 'Created By',
       field: 'created_by',
       hide: false,
       sortable: false,
@@ -90,7 +90,7 @@ export class InsightPricingProfileComponent implements OnInit {
       headerTooltip: 'created_by'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Created Date/Time',
       field: 'created_date',
       hide: false,
       sortable: false,

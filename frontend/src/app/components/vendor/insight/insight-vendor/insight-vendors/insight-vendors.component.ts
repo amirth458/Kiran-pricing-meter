@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class InsightVendorsComponent implements OnInit {
   columnDefs = [
     {
-      headerName: 'vendor_id',
+      headerName: 'SS User ID',
       field: 'vendor_id',
       hide: false,
       sortable: false,
@@ -17,7 +17,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'vendor_id'
     },
     {
-      headerName: 'company_name',
+      headerName: 'Contact Full Name',
       field: 'company_name',
       hide: false,
       sortable: false,
@@ -26,7 +26,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'company_name'
     },
     {
-      headerName: 'first_name',
+      headerName: 'First Name',
       field: 'first_name',
       hide: false,
       sortable: false,
@@ -35,7 +35,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'first_name'
     },
     {
-      headerName: 'last_name',
+      headerName: 'Last Name',
       field: 'last_name',
       hide: false,
       sortable: false,
@@ -44,7 +44,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'last_name'
     },
     {
-      headerName: 'email',
+      headerName: 'Email',
       field: 'email',
       hide: false,
       sortable: false,
@@ -53,7 +53,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'email'
     },
     {
-      headerName: 'address_1',
+      headerName: 'Street',
       field: 'address_1',
       hide: false,
       sortable: false,
@@ -62,7 +62,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'address_1'
     },
     {
-      headerName: 'address_2',
+      headerName: 'Street 2',
       field: 'address_2',
       hide: false,
       sortable: false,
@@ -71,7 +71,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'address_2'
     },
     {
-      headerName: 'city',
+      headerName: 'City',
       field: 'city',
       hide: false,
       sortable: false,
@@ -80,7 +80,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'city'
     },
     {
-      headerName: 'state',
+      headerName: 'State',
       field: 'state',
       hide: false,
       sortable: false,
@@ -89,7 +89,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'state'
     },
     {
-      headerName: 'postal',
+      headerName: 'Postal',
       field: 'postal',
       hide: false,
       sortable: false,
@@ -98,7 +98,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'postal'
     },
     {
-      headerName: 'country',
+      headerName: 'Country',
       field: 'country',
       hide: false,
       sortable: false,
@@ -107,7 +107,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'country'
     },
     {
-      headerName: 'facility_count',
+      headerName: 'Facility Count',
       field: 'facility_count',
       hide: false,
       sortable: false,
@@ -116,7 +116,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'facility_count'
     },
     {
-      headerName: 'equipment_count',
+      headerName: 'Machine Count',
       field: 'equipment_count',
       hide: false,
       sortable: false,
@@ -125,7 +125,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'equipment_count'
     },
     {
-      headerName: 'material_count',
+      headerName: 'Material Count',
       field: 'material_count',
       hide: false,
       sortable: false,
@@ -134,7 +134,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'material_count'
     },
     {
-      headerName: 'process_profile_count',
+      headerName: 'Process Profile Count',
       field: 'process_profile_count',
       hide: false,
       sortable: false,
@@ -143,7 +143,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'process_profile_count'
     },
     {
-      headerName: 'pricing_profile_count',
+      headerName: 'Pricing Profile Count',
       field: 'pricing_profile_count',
       hide: false,
       sortable: false,
@@ -152,7 +152,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'pricing_profile_count'
     },
     {
-      headerName: 'prequote_request_count',
+      headerName: 'Pre-Quote Request Count',
       field: 'prequote_request_count',
       hide: false,
       sortable: false,
@@ -161,7 +161,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'prequote_request_count'
     },
     {
-      headerName: 'created_date',
+      headerName: 'Create Date/Time',
       field: 'created_date',
       hide: false,
       sortable: false,
@@ -170,7 +170,7 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'created_date'
     },
     {
-      headerName: 'last_login',
+      headerName: 'Last Login Time',
       field: 'last_login',
       hide: false,
       sortable: false,
