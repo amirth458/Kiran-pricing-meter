@@ -552,6 +552,7 @@ export interface PartQuoteQueryDto {
   totalToolCost: number;
   totalExtendedCost: number;
   totalCost: number;
+  vendorMinimumOrderAmount: number;
 }
 
 export interface MatchedProcessProfile {
