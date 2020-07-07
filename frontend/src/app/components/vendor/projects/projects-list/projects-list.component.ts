@@ -237,6 +237,14 @@ export class ProjectsListComponent implements OnInit {
   initColumnDef() {
     this.columnDefs = [
       {
+        headerName: 'Customer Name',
+        field: 'customerName',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'customerName'
+      },
+      {
         headerName: 'Part ID',
         field: 'partId',
         hide: false,
@@ -281,7 +289,7 @@ export class ProjectsListComponent implements OnInit {
 
     this.connectColumnDefs = [
       {
-        headerName: 'Customer',
+        headerName: 'Customer Name',
         field: 'customerName',
         hide: false,
         sortable: true,
@@ -360,15 +368,6 @@ export class ProjectsListComponent implements OnInit {
         });
       }
     }
-
-    this.columnDefs.push({
-      headerName: 'Customer',
-      field: 'customerName',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'customerName'
-    });
   }
 
   toggleTestAccount() {

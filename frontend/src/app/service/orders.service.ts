@@ -184,19 +184,19 @@ export class OrdersService {
   getOrderViewColumns(view = 'order-confirmation-queue', partDetailCell): ColDef[] {
     const columns: ColDef[] = [
       {
+        headerName: 'Customer Name',
+        field: 'customerName',
+        tooltip: params => params.value,
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Order ID',
         field: 'bidOrder.id',
         tooltip: params => params.value,
         sortable: true,
         filter: false,
         width: 100
-      },
-      {
-        headerName: 'Customer Name',
-        field: 'customerName',
-        tooltip: params => params.value,
-        sortable: true,
-        filter: false
       },
       {
         headerName: 'Vendor Name',

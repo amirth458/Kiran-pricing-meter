@@ -47,6 +47,14 @@ export class OrderInformationComponent implements OnInit {
   ngOnInit() {
     this.columnDefs = [
       {
+        headerName: 'Customer Name',
+        field: 'customer',
+        tooltipField: 'customer',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Customer Order',
         field: 'customerOrder',
         tooltipField: 'customerOrder',
@@ -75,14 +83,6 @@ export class OrderInformationComponent implements OnInit {
         headerName: 'Price Accepted',
         field: 'priceAccepted',
         tooltipField: 'priceAccepted',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Customer',
-        field: 'customer',
-        tooltipField: 'customer',
         hide: false,
         sortable: true,
         filter: false

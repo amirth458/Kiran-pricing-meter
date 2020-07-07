@@ -27,7 +27,7 @@ export class PricingProfileDetailComponent implements OnInit {
   columnDefs = [
     [
       {
-        headerName: 'Customer',
+        headerName: 'Customer Name',
         field: 'customer',
         tooltipField: 'customer',
         hide: false,

@@ -194,6 +194,13 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   initColumns() {
     this.columnDefs = [
       {
+        headerName: 'Customer Name',
+        field: 'customerName',
+        tooltip: params => params.value,
+        sortable: false,
+        filter: false
+      },
+      {
         headerName: 'Customer Order ID',
         field: 'customerOrderId',
         tooltip: params => params.value,
