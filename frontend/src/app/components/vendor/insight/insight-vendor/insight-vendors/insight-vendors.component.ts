@@ -152,6 +152,15 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'pricing_profile_count'
     },
     {
+      headerName: 'Subscription Type',
+      field: 'subscription_type',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'subscription_type',
+      headerTooltip: 'subscription_type'
+    },
+    {
       headerName: 'Pre-Quote Request Count',
       field: 'prequote_request_count',
       hide: false,
