@@ -362,7 +362,7 @@ export class HistoricalBidComponent implements OnInit {
   ngOnInit() {
     this.partInfoColumnDefs = [
       {
-        headerName: 'Customer',
+        headerName: 'Customer Name',
         field: 'customer',
         tooltipField: 'customer',
         hide: false,

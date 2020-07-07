@@ -123,6 +123,14 @@ export class ProductionVendorDetailsComponent implements OnInit {
     this.columnDefs = [
       [
         {
+          headerName: 'Customer Name',
+          field: 'customerName',
+          tooltipField: 'customerName',
+          hide: false,
+          sortable: true,
+          filter: false
+        },
+        {
           headerName: 'Customer Order',
           field: 'customerOrder',
           tooltipField: 'customerOrder',
@@ -160,14 +168,6 @@ export class ProductionVendorDetailsComponent implements OnInit {
           valueFormatter: dt => {
             return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
           }
-        },
-        {
-          headerName: 'Customer',
-          field: 'customerName',
-          tooltipField: 'customerName',
-          hide: false,
-          sortable: true,
-          filter: false
         },
         {
           headerName: 'Quantity',

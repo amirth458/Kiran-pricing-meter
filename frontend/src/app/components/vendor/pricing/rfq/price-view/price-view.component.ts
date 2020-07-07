@@ -111,7 +111,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
         filter: false
       },
       {
-        headerName: 'Customer',
+        headerName: 'Customer Name',
         field: 'customer',
         tooltipField: 'customer',
         hide: false,

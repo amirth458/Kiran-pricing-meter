@@ -8,6 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class InsightCustomerOrderComponent implements OnInit {
   columnDefs = [
     {
+      headerName: 'Customer Name',
+      field: 'customer_name',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'customer_name',
+      headerTooltip: 'customer_name'
+    },
+    {
       headerName: 'Order No.',
       field: 'order_id',
       hide: false,
@@ -88,15 +97,6 @@ export class InsightCustomerOrderComponent implements OnInit {
       filter: false,
       tooltipField: 'total_no_of_qty',
       headerTooltip: 'total_no_of_qty'
-    },
-    {
-      headerName: 'Customer Name',
-      field: 'customer_name',
-      hide: false,
-      sortable: true,
-      filter: false,
-      tooltipField: 'customer_name',
-      headerTooltip: 'customer_name'
     },
     {
       headerName: 'Customer Email',

@@ -67,7 +67,7 @@ export class QueuedManualPriceComponent implements OnInit {
     this.columnDefs = [
       [
         {
-          headerName: 'Customer',
+          headerName: 'Customer Name',
           field: 'customerName',
           tooltipField: 'customerName',
           hide: false,
@@ -157,7 +157,7 @@ export class QueuedManualPriceComponent implements OnInit {
       ],
       [
         {
-          headerName: 'Customer',
+          headerName: 'Customer Name',
           field: 'customerName',
           tooltipField: 'customerName',
           hide: false,
@@ -239,7 +239,7 @@ export class QueuedManualPriceComponent implements OnInit {
       ],
       [
         {
-          headerName: 'Customer',
+          headerName: 'Customer Name',
           field: 'customerName',
           tooltipField: 'customerName',
           hide: false,
