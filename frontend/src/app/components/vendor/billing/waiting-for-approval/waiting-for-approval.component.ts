@@ -436,7 +436,12 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        valueFormatter: v => v && v.value && ProjectType[v.value]
+        valueFormatter: v =>
+          v &&
+          v.value &&
+          (v.data.oldProjectType
+            ? ProjectType[v.value] + ' ' + ProjectType[v.data.oldProjectType]
+            : ProjectType[v.value])
       },
       {
         headerName: 'Payment Type',
