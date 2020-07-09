@@ -41,6 +41,7 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
   selectedEquipment;
   machine;
   vendorId = null;
+  vendorUserId = null;
   isNew = true;
   isMaterialLoading = false;
   isEquipmentLoading = false;
@@ -76,7 +77,9 @@ export class MachineItemComponent implements OnInit, AfterViewChecked {
     this.spinner.show();
     try {
       const routeParams = this.route.url.split('/');
-      this.vendorId = routeParams[3];
+      this.vendorUserId = routeParams[3];
+      const vendorUserDetails = await this.userService.getUserDetails(this.vendorUserId).toPromise();
+      this.vendorId = vendorUserDetails.vendor.id;
 
       await this.getFacilities();
       const response = await this.machineService.getUnits().toPromise();
