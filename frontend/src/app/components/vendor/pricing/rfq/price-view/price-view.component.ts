@@ -429,11 +429,22 @@ export class PriceViewComponent implements OnInit, OnChanges {
           roughness: '',
           postProcess: '',
           price: this.partQuote
-            ? this.currencyPipe.transform(this.partQuote.totalCost, 'USD', 'symbol', '0.0-3')
+            ? this.currencyPipe.transform(this.calcPriceInfo(), 'USD', 'symbol', '0.0-3')
             : this.part.partStatusType.displayName
         }
       ];
     }
+  }
+
+  calcPriceInfo(): number {
+    let totalCost = 0;
+    if (this.partQuote) {
+      totalCost =
+        (this.partQuote.totalCost || 0) < (this.partQuote.minimumOrderAmount || 0)
+          ? this.partQuote.minimumOrderAmount
+          : this.partQuote.totalCost;
+    }
+    return totalCost;
   }
 
   ngOnChanges(changes: SimpleChanges) {
