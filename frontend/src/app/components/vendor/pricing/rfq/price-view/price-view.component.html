@@ -65,6 +65,14 @@
                           {{ partQuote?.marginCost || 0 | currency: 'USD':'symbol':'0.0-3' }}
                         </td>
                       </tr>
+                      <tr *ngIf="(partQuote?.totalCost || 0) < (partQuote?.minimumOrderAmount || 0)">
+                        <td colspan="3" class="text-right">
+                          Minimum Order Amount
+                        </td>
+                        <td class="text-theme text-center">
+                          {{ partQuote?.minimumOrderAmount | currency: 'USD':'symbol':'0.0-3' }}
+                        </td>
+                      </tr>
                       <tr>
                         <td class="text-theme text-center" colspan="2">
                           &nbsp;
@@ -76,7 +84,12 @@
                           No Bid
                         </td>
                         <td class="text-center font-weight-bold text-theme">
-                          {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                          <ng-container *ngIf="(partQuote?.totalCost || 0) < (partQuote?.minimumOrderAmount || 0)">
+                            {{ partQuote?.minimumOrderAmount | currency: 'USD':'symbol':'0.0-3' }}
+                          </ng-container>
+                          <ng-container *ngIf="!((partQuote?.totalCost || 0) < (partQuote?.minimumOrderAmount || 0))">
+                            {{ partQuote?.totalCost | currency: 'USD':'symbol':'0.0-3' }}
+                          </ng-container>
                         </td>
                       </tr>
                     </tbody>

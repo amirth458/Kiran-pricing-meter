@@ -524,7 +524,10 @@ export class OrdersService {
           }, {}),
           map((quotes: any) => {
             (parts || []).map(part => {
-              part.priceAccepted = quotes[part.partId] ? quotes[part.partId].totalCost : null;
+              const quote = quotes[part.partId] as PartQuote;
+              const totalCost =
+                (quote.totalCost || 0) < (quote.minimumOrderAmount || 0) ? quote.minimumOrderAmount : quote.totalCost;
+              part.priceAccepted = quote ? totalCost : null;
             });
             return parts;
           })

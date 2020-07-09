@@ -137,6 +137,7 @@ export interface PartQuote {
   partQuoteInvoiceItemDetails: PartQuoteInvoiceItem[];
   winningProcessPricingId: number;
   matchedProcessPricingIds: Array<number>;
+  minimumOrderAmount: number;
 }
 
 export interface PartParameterType {

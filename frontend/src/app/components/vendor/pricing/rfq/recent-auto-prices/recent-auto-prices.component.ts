@@ -126,9 +126,20 @@ export class RecentAutoPricesComponent implements OnInit {
         hide: false,
         sortable: true,
         tooltipField: 'price'
+      },
+      {
+        headerName: 'Minimum Order Amount',
+        field: 'minimumOrderAmount',
+        tooltipField: 'minimumOrderAmount',
+        headerTooltip: 'Minimum Order Amount',
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: x => {
+          return x.value ? this.currencyPipe.transform(x.value, 'USD', 'symbol', '0.0-3') : '';
+        }
       }
     ];
-
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
@@ -207,7 +218,8 @@ export class RecentAutoPricesComponent implements OnInit {
           const findIndex = this.rowData.findIndex(row => row.id === partQuote.partId);
           this.rowData[findIndex] = {
             ...this.rowData[findIndex],
-            price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3')
+            price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3'),
+            minimumOrderAmount: partQuote.minimumOrderAmount || null
           };
         });
         this.rowData = [...this.rowData];
