@@ -217,8 +217,9 @@ const routes: Routes = [
               { path: 'user', component: AdminVendorDetailsUserComponent },
               { path: 'vendor', component: AdminVendorDetailsVendorComponent },
               { path: 'machine', component: AdminVendorDetailsMachineComponent },
-              { path: 'machine/edit/:machineId', component: MachineItemComponent },
-              { path: 'machine/clone', component: MachineItemComponent }
+              { path: 'machine/add', component: MachineItemComponent },
+              { path: 'machine/clone', component: MachineItemComponent },
+              { path: 'machine/edit/:machineId', component: MachineItemComponent }
             ]
           },
           {

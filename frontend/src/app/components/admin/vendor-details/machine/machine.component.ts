@@ -178,4 +178,8 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.machineService.storeCloneData(this.cloneData);
     this.route.navigateByUrl(this.route.url + '/clone');
   }
+
+  createMachine() {
+    this.route.navigateByUrl(this.route.url + '/add');
+  }
 }
