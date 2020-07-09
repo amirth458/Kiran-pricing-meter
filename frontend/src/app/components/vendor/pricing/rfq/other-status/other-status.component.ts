@@ -96,7 +96,7 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     this.filterOptions.projectTypeId = this.projectType;
     this.columnDefs = [
       {
-        headerName: 'CustomerName',
+        headerName: 'Customer Name',
         field: 'customerName',
         hide: false,
         sortable: true,

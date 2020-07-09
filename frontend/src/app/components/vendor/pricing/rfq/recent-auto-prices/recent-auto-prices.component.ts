@@ -46,7 +46,7 @@ export class RecentAutoPricesComponent implements OnInit {
   ngOnInit() {
     this.columnDefs = [
       {
-        headerName: 'Customer',
+        headerName: 'Customer Name',
         field: 'customerName',
         tooltipField: 'customerName',
         hide: false,

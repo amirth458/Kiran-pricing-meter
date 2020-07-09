@@ -53,6 +53,14 @@ export class PastOrderDetailsComponent implements OnInit {
   columnDefs = [
     [
       {
+        headerName: 'Customer Name',
+        field: 'customer',
+        tooltipField: 'customer',
+        hide: false,
+        sortable: true,
+        filter: false
+      },
+      {
         headerName: 'Customer Order',
         field: 'customerOrder',
         tooltipField: 'customerOrder',
@@ -81,14 +89,6 @@ export class PastOrderDetailsComponent implements OnInit {
         headerName: 'Price Accepted',
         field: 'priceAccepted',
         tooltipField: 'priceAccepted',
-        hide: false,
-        sortable: true,
-        filter: false
-      },
-      {
-        headerName: 'Customer',
-        field: 'customer',
-        tooltipField: 'customer',
         hide: false,
         sortable: true,
         filter: false

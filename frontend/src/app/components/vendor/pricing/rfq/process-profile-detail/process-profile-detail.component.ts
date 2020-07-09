@@ -93,7 +93,7 @@ export class ProcessProfileDetailComponent implements OnInit {
     this.columnDefs = [
       [
         {
-          headerName: 'Customer',
+          headerName: 'Customer Name',
           field: 'customer',
           hide: false,
           sortable: true,

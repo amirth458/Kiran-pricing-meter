@@ -20,10 +20,10 @@ export enum PaymentStatusTypes {
 }
 
 export enum ProjectType {
-  RFQ_PROJECT = 'Rfq Project',
-  PRODUCTION_PROJECT = 'Production Project',
+  RFQ_PROJECT = 'AUTO',
+  PRODUCTION_PROJECT = 'PM',
   DESIGN_PROJECT = 'Design Project',
-  CONNECT_PROJECT = 'Connect Project'
+  CONNECT_PROJECT = 'CONNECT'
 }
 
 export enum PaymentType {
