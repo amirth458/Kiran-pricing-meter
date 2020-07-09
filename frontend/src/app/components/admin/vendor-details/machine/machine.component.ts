@@ -179,7 +179,7 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.route.navigateByUrl(this.route.url + '/clone');
   }
 
-  createMachine() {
+  addMachine() {
     this.route.navigateByUrl(this.route.url + '/add');
   }
 }
