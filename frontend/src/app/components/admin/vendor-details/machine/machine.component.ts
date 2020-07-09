@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { MachineService } from 'src/app/service/machine.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-admin-vendor-details-machine',
@@ -60,6 +62,31 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
       hide: false,
       sortable: true,
       filter: false
+    },
+    {
+      headerName: 'Actions',
+      width: 200,
+      suppressSizeToFit: true,
+      pinned: 'right',
+      cellRenderer: 'actionCellRenderer',
+      cellRendererParams: {
+        action: {
+          edit: param => this.editRow(param),
+          delete: async param => {
+            this.modalService.open(this.modal, {
+              centered: true
+            });
+            this.selectedMachine = param.data;
+          },
+          copy: param => {
+            this.cloneData = JSON.parse(JSON.stringify(param.data));
+            this.copyRow();
+          },
+          canEdit: true,
+          canCopy: true,
+          canDelete: true
+        }
+      }
     }
   ];
 
@@ -74,11 +101,16 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
   declineComments = '';
   primaryContactName = '';
 
+  selectedMachine = null;
+  cloneData = null;
+
   constructor(
     public route: Router,
     public spinner: NgxSpinnerService,
     public userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private machineService: MachineService,
+    private modalService: NgbModal
   ) {}
 
   async ngOnInit() {
@@ -98,10 +130,7 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.rowData = res.machines;
     if (res.vendor) {
       this.vendorId = res.vendor.id;
-      this.primaryContactName =
-        res.vendor.primaryContactFirstName +
-        ' ' +
-        res.vendor.primaryContactLastName;
+      this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
       if (res.vendor.approved) {
         this.status = 1; // approved
       } else {
@@ -125,41 +154,32 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-  async approveUser() {
+  editRow(event) {
+    this.route.navigateByUrl(this.route.url + '/edit/' + event.data.id);
+  }
+
+  async deleteMachine() {
     this.spinner.show();
     try {
-      await this.userService.approveUser(this.vendorId).toPromise();
-      this.route.navigateByUrl('/user-manage/approve');
+      await this.machineService.deleteMachine(this.vendorId, this.selectedMachine.id).toPromise();
+      this.toastr.success(this.selectedMachine.name + ' deleted.');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not approved. Please try again later.'
-      );
+      this.toastr.error('We are sorry, ' + this.selectedMachine.name + ' delete failed. Please try again later.');
+      console.log(e);
     } finally {
       this.spinner.hide();
     }
+    const filteredData = this.rowData.filter(x => x.id !== this.selectedMachine.id);
+    this.rowData = filteredData;
+    this.modalService.dismissAll();
   }
 
-  onDeclineUser(event) {
-    this.modal.nativeElement.click();
+  async copyRow() {
+    this.machineService.storeCloneData(this.cloneData);
+    this.route.navigateByUrl(this.route.url + '/clone');
   }
 
-  async declineUser() {
-    if (this.declineComments === '') {
-      return;
-    }
-    this.modal.nativeElement.click();
-    this.spinner.show();
-    try {
-      await this.userService
-        .declineUser(this.vendorId, this.declineComments)
-        .toPromise();
-      this.route.navigateByUrl('/user-manage/approve');
-    } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not declined. Please try again later.'
-      );
-    } finally {
-      this.spinner.hide();
-    }
+  addMachine() {
+    this.route.navigateByUrl(this.route.url + '/add');
   }
 }

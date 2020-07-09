@@ -156,6 +156,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FilterHeaderComponent } from './vendor/pricing/rfq/filter-header/filter-header.component';
 import { OtherStatusComponent } from './vendor/pricing/rfq/other-status/other-status.component';
 import { ProposalFormComponent } from '../common/proposal-form/proposal-form.component';
+import { MachineItemComponent } from './admin/vendor-details/machine-item/machine-item.component';
+
+import { FeatureLockDirective } from '../directives/feature-lock.directive';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -255,6 +258,7 @@ import { ProposalFormComponent } from '../common/proposal-form/proposal-form.com
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
+    FeatureLockDirective,
 
     InsightDetailComponent,
     ProductionReleasedOrdersComponent,
@@ -299,7 +303,8 @@ import { ProposalFormComponent } from '../common/proposal-form/proposal-form.com
     OtherStatusComponent,
     ProposalFormComponent,
     ConnectPartComponent,
-    ProdPartComponent
+    ProdPartComponent,
+    MachineItemComponent
   ],
   imports: [
     CommonModule,
@@ -349,6 +354,7 @@ import { ProposalFormComponent } from '../common/proposal-form/proposal-form.com
     TopMenuComponent,
     ImgPreloadDirective,
     DigitOnlyDirective,
+    FeatureLockDirective,
 
     // pipes
     ConfirmOrderFilterPipe,

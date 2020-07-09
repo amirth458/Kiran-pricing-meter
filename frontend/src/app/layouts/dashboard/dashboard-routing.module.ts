@@ -81,6 +81,7 @@ import { AddVendorUserComponent } from 'src/app/components/admin/add-vendor/add-
 import { AddVendorDetailComponent } from 'src/app/components/admin/add-vendor/add-vendor-detail/add-vendor-detail.component';
 import { AddVendorMachineComponent } from 'src/app/components/admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
 import { OtherStatusComponent } from 'src/app/components/vendor/pricing/rfq/other-status/other-status.component';
+import { MachineItemComponent } from 'src/app/components/admin/vendor-details/machine-item/machine-item.component';
 
 const routes: Routes = [
   {
@@ -215,7 +216,10 @@ const routes: Routes = [
             children: [
               { path: 'user', component: AdminVendorDetailsUserComponent },
               { path: 'vendor', component: AdminVendorDetailsVendorComponent },
-              { path: 'machine', component: AdminVendorDetailsMachineComponent }
+              { path: 'machine', component: AdminVendorDetailsMachineComponent },
+              { path: 'machine/add', component: MachineItemComponent },
+              { path: 'machine/clone', component: MachineItemComponent },
+              { path: 'machine/edit/:machineId', component: MachineItemComponent }
             ]
           },
           {
