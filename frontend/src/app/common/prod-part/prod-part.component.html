@@ -112,7 +112,7 @@
             </span>
           </p>
 
-          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2" *ngIf="isConnectProject()">
             <app-proposal-attachment
               type="governance-document"
               [smallView]="true"

@@ -4,7 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { PartService } from '../../service/part.service';
-import { Address, AddressDelimiter, Part, PartDimension, ProjectProfile } from '../../model/part.model';
+import { Address, AddressDelimiter, Part, PartDimension, ProjectProfile, ProjectType } from '../../model/part.model';
 import { Util } from '../../util/Util';
 
 @Component({
@@ -16,7 +16,7 @@ export class ProdPartComponent implements OnInit {
   @Input() partId: number;
   @Input() unitOptions: Array<any> = [];
 
-  value: Part;
+  value: Part | Part[];
   projectProfile: ProjectProfile;
 
   constructor(public modalService: NgbModal, public partService: PartService, public spinner: NgxSpinnerService) {}
@@ -31,6 +31,19 @@ export class ProdPartComponent implements OnInit {
       }
       this.spinner.hide();
     });
+  }
+
+  isConnectProject() {
+    let part: Part = null;
+    if (this.value instanceof Array) {
+      part = (this.value || []).length > 0 ? this.value[0] : null;
+    } else {
+      part = this.value;
+    }
+    const pType = (part && part.rfqMedia && part.rfqMedia.projectRfq
+      ? part.rfqMedia.projectRfq.projectType
+      : {}) as ProjectType;
+    return pType.name === 'CONNECT_PROJECT';
   }
 
   open(content, size: any = 'lg') {
