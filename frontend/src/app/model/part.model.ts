@@ -26,6 +26,14 @@ export interface ProjectRfq {
   projectProfile?: ProjectProfile;
   isArchived: boolean;
   rfqMediaList: Array<RfqMedia>;
+  projectType: ProjectType;
+}
+
+export interface ProjectType {
+  description: string;
+  displayName: string;
+  id: number;
+  name: string;
 }
 
 export interface PartDimensionValue {
