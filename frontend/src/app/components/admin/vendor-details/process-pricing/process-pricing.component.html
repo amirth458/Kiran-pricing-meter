@@ -1,0 +1,116 @@
+<div class="wrapper flex-column">
+  <div *ngIf="tableControlReady" class="table theme-table d-flex flex-column flex-grow-1">
+    <div class="page-size">
+      Page Size:
+      <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+        <option selected value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </div>
+
+    <ag-grid-angular
+      class="ag-theme-balham flex-grow-1 w-100 "
+      style="height: 0;"
+      [rowData]="rowData"
+      [gridOptions]="gridOptions"
+      (gridReady)="gridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
+      <button type="button" (click)="addProcessPricing()" class="btn btn-approve theme">
+        Add Process Pricing
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #associatePricingProfiles let-modal>
+  <div class="associate-pricing-profiles">
+    <div class="modal-header">
+      <h6 class="text-theme text-center w-100">
+        Connect <span class="text-theme-green">{{ selectedPricingProfile?.pricingFullName }}</span> Pricing Profile to
+        Process Profiles
+      </h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body text-theme d-flex justify-content-center mt-3">
+      <!-- <p>List of Process Profiles</p> -->
+
+      <div class="profile-options">
+        <div
+          *ngFor="let profile of processProfiles"
+          class="d-flex profile"
+          [ngClass]="{ 'theme-grey': selectedPricingProfile?.processProfile?.id == profile?.id }"
+          (click)="toggleProfileSelection(profile, !isProfileChecked(profile?.id))"
+        >
+          <span *ngIf="isProfileChecked(profile?.id)" class="icon text-theme-green">
+            <i class="fas fa-check-square"></i>
+          </span>
+          <span *ngIf="!isProfileChecked(profile?.id)" class="icon text-theme-green">
+            <i class="far fa-square"></i>
+          </span>
+          <span class="ml-2 text-left name">({{ profile?.id }}) {{ profile?.name }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="w-100 d-flex justify-content-center">
+        <button
+          ngbAutofocus
+          [disabled]="canConfirmAssociation()"
+          type="button"
+          class="w-25 btn theme"
+          (click)="confirmAssociatingProfile()"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Button trigger modal -->
+<button
+  #deleteModal
+  type="button"
+  class="btn btn-primary d-none"
+  data-toggle="modal"
+  data-target="#processPricingModal"
+></button>
+
+<!-- Modal -->
+<div
+  class="modal fade theme"
+  id="processPricingModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="processPricingModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="processPricingModalLabel">Confirm Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete the Process Profile Pricing ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deletePricing()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

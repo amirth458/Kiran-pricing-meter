@@ -1,0 +1,414 @@
+<div class="wrapper shadow">
+  <div *ngIf="error.length > 1" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <div class="title-bar">
+    <!-- Profile Name: Parameter set nick name -->
+    <!-- <h4>{{profileName}}<span *ngIf="name">: {{form.value.pricingProfileName}}</span></h4> -->
+    <h4>{{ form.value.pricingProfileName }}</h4>
+
+    <!-- parameter details -->
+    <!-- <span>{{parameterDetails}}</span> -->
+    <span>{{ profileName }}</span>
+  </div>
+
+  <form [formGroup]="form" novalidate class="needs-validation was-validated" (submit)="save($event)">
+    <div class="form-row">
+      <div class="form-group theme col-md-6">
+        <label for="processProfileId">Process Profile Name</label>
+        <select
+          required
+          id="processProfileId"
+          name="processProfileId"
+          formControlName="processProfileId"
+          (change)="processProfileChanged()"
+          class="form-control"
+        >
+          <option selected value="">Choose...</option>
+          <option *ngFor="let item of processProfiles" [value]="item.id">({{ item.id }}) {{ item.name }} </option>
+        </select>
+        <div class="invalid-feedback">
+          Please choose a process profile.
+        </div>
+        <span class="footnote">* If you don’t see a profile, update your Process profile.</span>
+      </div>
+
+      <div class="form-group theme col-md-6">
+        <label for="pricingProfileName">Pricing Parameter Set Nickname</label>
+        <input
+          required
+          type="text"
+          formControlName="pricingProfileName"
+          class="form-control"
+          id="pricingProfileName"
+          name="pricingProfileName"
+          placeholder="Pricing Profile Name"
+        />
+        <!-- <span class="footnote">* If left blank, we will auto-generate one for you.</span> -->
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group theme col-md-6 conditionLabel">
+        <label for="conditionLabel">Conditions</label>
+      </div>
+    </div>
+
+    <div id="conditionLabel" class="conditions">
+      <div class="info">
+        <span>
+          Define the condition under which this profile should be used.
+        </span>
+        <!-- <span class="add" (click)="addParameterCondition()">
+          <i class="fas fa-plus"></i>
+        </span> -->
+      </div>
+      <div *ngIf="processProfileNeedsModification" class="info">
+        <span class="footnote red font-md">
+          This Pricing Profile references a charge for machine time, but the process speed has not been estimated in
+          your profile.
+          <span
+            (click)="route.navigateByUrl('/profile/processes/profile/edit/' + form.value.processProfileId)"
+            class=" cursor-pointer underline"
+            >Fix?</span
+          >
+        </span>
+      </div>
+      <div class="condition-wrapper">
+        <!-- <span>
+          If
+        </span> -->
+
+        <div class="input-wrapper">
+          <div *ngFor="let item of selectedPricingConditionList; let index = index" class="form-row">
+            <div class="form-group theme col-md-3">
+              <select
+                required
+                id="name"
+                name="name"
+                [(ngModel)]="selectedPricingConditionList[index].processPricingConditionType.id"
+                (ngModelChange)="
+                  onPropertyChange(selectedPricingConditionList[index].processPricingConditionType.id, index)
+                "
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control"
+              >
+                <option selected value="">Choose...</option>
+                <option
+                  *ngFor="let item of conditionTypes"
+                  [disabled]="conditionTypeDisabled(item.id)"
+                  [value]="item.id"
+                  >{{ item.name }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Required.
+              </div>
+            </div>
+
+            <div class="form-group theme col-md-3">
+              <select
+                [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
+                required
+                id="condition"
+                name="condition"
+                [(ngModel)]="selectedPricingConditionList[index].operatorType.id"
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control"
+              >
+                <option selected value="">Choose...</option>
+                <option *ngFor="let item of selectedPricingConditionList[index].operandTypeList" [value]="item.id">
+                  {{ item.symbol }}</option
+                >
+              </select>
+              <div class="invalid-feedback">
+                Required.
+              </div>
+            </div>
+
+            <div class="form-group theme col-md-3">
+              <input
+                [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
+                required
+                type="number"
+                step="0.00001"
+                maxlength="5"
+                min="0"
+                max="99999"
+                [(ngModel)]="selectedPricingConditionList[index].value"
+                [ngModelOptions]="{ standalone: true }"
+                class="form-control"
+                id="value"
+                name="value"
+                placeholder="Value"
+              />
+              <div class="invalid-feedback">
+                Required.
+              </div>
+            </div>
+
+            <div class="form-group theme col-md-3 icon-attached">
+              <div>
+                <select
+                  [disabled]="selectedPricingConditionList[index].processPricingConditionType.id.length == 0"
+                  required
+                  id="condition"
+                  name="condition"
+                  [(ngModel)]="selectedPricingConditionList[index].unitType.id"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-control"
+                >
+                  <option selected value="">Choose...</option>
+                  <option *ngFor="let item of selectedPricingConditionList[index].units" [value]="item.id">
+                    {{ item.displayName }}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  Required.
+                </div>
+              </div>
+
+              <span class="minus" (click)="removeParameterCondition(index)">
+                <i class="fas fa-minus"></i>
+              </span>
+
+              <!-- <span *ngIf="index === 0" class="minus invisible">
+                <i class=""></i>
+              </span> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- <span class="add" (click)="addCondition()">
+              <i class="fas fa-plus"></i>
+            </span> -->
+      </div>
+
+      <div class="info">
+        <span class="add" (click)="addParameterCondition()">
+          <i class="fas fa-plus"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- Pricing Parameters -->
+
+    <div *ngIf="isDataLoaded" class="tab-container card">
+      <div class="card-header">
+        <div class="menu-item active">
+          Pricing Parameters
+        </div>
+      </div>
+
+      <!-- Flat Charges -->
+
+      <div id="conditionLabel" class="tables">
+        <div class="controls d-flex justify-content-between mb-2">
+          <label for="conditionLabel">
+            <b>Flat Charges</b>(These are base expenses associated with every project)
+            <span
+              class="icon"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Examples include Non Recurring Engineering or Setup Expense"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+          </label>
+          <span class="add" (click)="addCondition('flatCharges')">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular
+                style="height: 100%;"
+                class="ag-theme-balham"
+                [rowData]="flatRowData"
+                [editType]="editType"
+                [gridOptions]="flatGridOptions"
+                (gridReady)="autoSizeColumns($event, 'flatCharges')"
+              >
+              </ag-grid-angular>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- End of Flat Charges -->
+
+      <!-- Variable Charges -->
+
+      <div id="conditionLabel" class="tables">
+        <div class="controls d-flex justify-content-between mb-2">
+          <label for="conditionLabel"
+            ><b>Variable Charges</b>(These are charges that increase with the size of a program)
+            <span
+              class="icon"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Examples include material expense per unit column or cost per unit. 50 per cubic meter. $1/cubic inch"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+          </label>
+          <span class="add" (click)="addCondition('variableCharges')">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular
+                style="height: 100%;"
+                class="ag-theme-balham"
+                [rowData]="variableRowData"
+                [editType]="editType"
+                [gridOptions]="variableGridOptions"
+                (gridReady)="autoSizeColumns($event, 'variableCharges')"
+              >
+              </ag-grid-angular>
+            </div>
+          </div>
+        </div>
+        <!-- Insert Table here -->
+      </div>
+      <!-- End of Variable Charges -->
+
+      <!-- Multiplier Charges -->
+
+      <div id="conditionLabel" class="tables">
+        <div class="controls d-flex justify-content-between mb-2">
+          <label for="conditionLabel">
+            <b>Multiplier Charges</b>(These are cost considerations that are applied across one or more cost inputs)
+            <span
+              class="icon"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Examples Include: Margin and Expedite Fees"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+          </label>
+          <span class="add" (click)="addCondition('multiplierCharges')">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <!-- Insert Table here -->
+        <div class="input-wrapper">
+          <div class="form-row">
+            <div class="table theme-table">
+              <ag-grid-angular
+                style="height: 100%;"
+                class="ag-theme-balham"
+                [rowData]="multiplierRowData"
+                [gridOptions]="multiplierGridOptions"
+                (gridReady)="autoSizeColumns($event, 'multiplierCharges')"
+              >
+              </ag-grid-angular>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of Multiplier Charges -->
+    </div>
+
+    <!-- End of Pricing Parameters -->
+
+    <div class="row button-section">
+      <div class="col-md-4 col-sm-4"></div>
+
+      <div *ngIf="!bidOrder && !productionProjectId; else emptySpace" class="form-group col-md-3 col-sm-4">
+        <button (click)="saveToAssociate = true" type="submit" class="w-100 h-100 btn theme white">
+          Apply to other Process Profiles
+        </button>
+      </div>
+
+      <div *ngIf="!bidOrder && !productionProjectId; else emptySpace" class="form-group col-md-3 col-sm-4">
+        <button type="button" (click)="onSaveAndCreateAnother($event)" class="w-100 h-100 btn btn-primary theme">
+          Save And Create Another
+        </button>
+      </div>
+
+      <ng-template #emptySpace>
+        <div class="col-md-3"></div>
+      </ng-template>
+
+      <div class="form-group col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary theme">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #numberInput let-row let-column="params">
+  <div class="ag-input-wrapper w-100">
+    <input
+      *ngIf="column.cellStartedEdit"
+      class="w-100"
+      type="number"
+      min="0"
+      [(ngModel)]="row[column?.colDef?.field]"
+    />
+
+    <p *ngIf="!column.cellStartedEdit" class="mt-1 mb-0">
+      {{ row[column?.colDef?.field] }}
+    </p>
+  </div>
+</ng-template>
+
+<ng-template #associatePricingProfiles let-modal>
+  <div class="associate-pricing-profiles">
+    <div class="modal-header">
+      <h6 class="text-theme text-center w-100">
+        Connect
+        <span class="text-theme-green">{{ getPricingFullName(selectedPricingProfile) }}</span>
+        Pricing Profile to Process Profiles
+      </h6>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body text-theme d-flex justify-content-center mt-3">
+      <!-- <p>List of Process Profiles</p> -->
+
+      <div class="profile-options">
+        <div
+          *ngFor="let profile of processProfiles"
+          class="d-flex profile"
+          [ngClass]="{
+            'theme-grey': selectedPricingProfile?.processProfile?.id == profile?.id
+          }"
+          (click)="toggleProfileSelection(profile, !isProfileChecked(profile?.id))"
+        >
+          <span *ngIf="isProfileChecked(profile?.id)" class="icon text-theme-green">
+            <i class="fas fa-check-square"></i>
+          </span>
+          <span *ngIf="!isProfileChecked(profile?.id)" class="icon text-theme-green">
+            <i class="far fa-square"></i>
+          </span>
+          <span class="ml-2 text-left name"> ({{ profile?.id }}) {{ profile?.name }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="w-100 d-flex justify-content-center">
+        <button
+          ngbAutofocus
+          [disabled]="canConfirmAssociation()"
+          type="button"
+          class="w-25 btn theme"
+          (click)="confirmAssociatingProfile()"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

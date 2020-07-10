@@ -159,6 +159,11 @@ import { ProposalFormComponent } from '../common/proposal-form/proposal-form.com
 import { MachineItemComponent } from './admin/vendor-details/machine-item/machine-item.component';
 
 import { FeatureLockDirective } from '../directives/feature-lock.directive';
+import { ProcessProfileItemComponent } from './admin/vendor-details/process-profile-item/process-profile-item.component';
+import { AdminVendorProcessPricingComponent } from './admin/vendor-details/process-pricing/process-pricing.component';
+import { AdminVendorProcessProfileComponent } from './admin/vendor-details/process-profile/process-profile.component';
+import { ProcessPricingItemComponent } from './admin/vendor-details/process-pricing-item/process-pricing-item.component';
+import { VisiblePipe } from '../pipes/visible.pipe';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -259,6 +264,7 @@ import { FeatureLockDirective } from '../directives/feature-lock.directive';
     ConfirmOrderFilterPipe,
     SupplierPipe,
     FeatureLockDirective,
+    VisiblePipe,
 
     InsightDetailComponent,
     ProductionReleasedOrdersComponent,
@@ -296,6 +302,8 @@ import { FeatureLockDirective } from '../directives/feature-lock.directive';
     AddCustomerCompanyComponent,
     AddVendorDetailComponent,
     AddVendorMachineComponent,
+    AdminVendorProcessPricingComponent,
+    AdminVendorProcessProfileComponent,
     ChipComponent,
     ProposalAttachmentComponent,
     InsightPartInformationComponent,
@@ -304,7 +312,10 @@ import { FeatureLockDirective } from '../directives/feature-lock.directive';
     ProposalFormComponent,
     ConnectPartComponent,
     ProdPartComponent,
-    MachineItemComponent
+    MachineItemComponent,
+    ProcessProfileItemComponent,
+    ProcessProfileComponent,
+    ProcessPricingItemComponent
   ],
   imports: [
     CommonModule,
