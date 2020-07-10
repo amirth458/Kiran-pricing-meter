@@ -9,6 +9,7 @@ import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-admin-vendor-process-profile',
@@ -161,7 +162,8 @@ export class AdminVendorProcessProfileComponent implements OnInit {
     public userService: UserService,
     public processService: ProcessProfileService,
     public processMetaData: ProcessMetadataService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    public modalService: NgbModal
   ) {
     this.navigation = this.route.getCurrentNavigation();
   }
@@ -242,7 +244,8 @@ export class AdminVendorProcessProfileComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != this.selectedProfile.id);
     this.rowData = filteredData;
-    this.deleteModal.nativeElement.click();
+
+    this.modalService.dismissAll();
   }
 
   reconfigColumns() {
@@ -428,7 +431,9 @@ export class AdminVendorProcessProfileComponent implements OnInit {
             this.copyRow();
           },
           delete: async param => {
-            this.deleteModal.nativeElement.click();
+            this.modalService.open(this.deleteModal, {
+              centered: true
+            });
             this.selectedProfile = param.data;
           },
           canEdit: true,

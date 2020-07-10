@@ -1527,7 +1527,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
               return;
             }
             if (this.defaultProcessProfileId) {
-              const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+              const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
               this.route.navigateByUrl(
                 `${gotoURL.substr(0, gotoURL.lastIndexOf('/'))}/profile/edit/${this.defaultProcessProfileId}`
               );
@@ -1535,7 +1535,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
               localStorage.removeItem('pricing-return');
               this.route.navigateByUrl(this.fallbackUrl);
             } else {
-              const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+              const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
               this.route.navigateByUrl(gotoURL, {
                 state: {
                   toast: { type: 'success', body: 'Process Pricing Created!' }
@@ -1565,7 +1565,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
               return;
             }
             if (!this.bidOrder && !this.productionProjectId) {
-              let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+              const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
               this.route.navigateByUrl(gotoURL, {
                 state: {
                   toast: { type: 'success', body: 'Process Pricing Edited!' }
@@ -1605,7 +1605,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
           try {
             const serverData = await this.processPricingService.saveProfile(vendorId, postData).toPromise();
             this.processPricingService.storeCloneData(serverData);
-            this.route.navigateByUrl('/profile/processes/pricing/clone');
+            const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
+            this.route.navigateByUrl(`${gotoURL}/clone`);
           } catch (e) {
             console.log(e);
             if (e.error && e.error.message) {
@@ -1624,7 +1625,8 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
               .updateProfile(vendorId, this.processPricingId, postData)
               .toPromise();
             this.processPricingService.storeCloneData(serverData);
-            this.route.navigateByUrl('/profile/processes/pricing/clone', {
+            const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
+            this.route.navigateByUrl(`${gotoURL}/clone`, {
               state: {
                 toast: { type: 'success', body: 'Process Profile Created!' }
               }
@@ -1714,7 +1716,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         this.selectedPricingProfile = null;
         this.selectedProfilesForAssociating = {};
 
-        const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+        const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
         this.route.navigateByUrl(gotoURL);
       },
       err => {
@@ -1728,7 +1730,7 @@ export class ProcessPricingItemComponent implements OnInit, AfterViewChecked {
         this.selectedPricingProfile = null;
         this.selectedProfilesForAssociating = {};
 
-        const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+        const gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/pricing')) + '/pricing';
         this.route.navigateByUrl(gotoURL);
       }
     );
