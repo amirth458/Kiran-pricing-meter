@@ -213,7 +213,9 @@ export class AdminVendorProcessPricingComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != this.selectedProfileId.id);
     this.rowData = filteredData;
-    this.deleteModal.nativeElement.click();
+    this.modalService.open(this.deleteModal, {
+      centered: true
+    });
   }
 
   reconfigColumns() {
@@ -333,7 +335,9 @@ export class AdminVendorProcessPricingComponent implements OnInit {
             this.copyRow();
           },
           delete: async param => {
-            this.deleteModal.nativeElement.click();
+            this.modalService.open(this.deleteModal, {
+              centered: true
+            });
             this.selectedProfileId = param.data;
           },
           associatePricingProfile: param => {
@@ -373,7 +377,7 @@ export class AdminVendorProcessPricingComponent implements OnInit {
     // tslint:disable-next-line:triple-equals
     const filteredData = this.rowData.filter(x => x.id != this.selectedProfileId.id);
     this.rowData = filteredData;
-    this.deleteModal.nativeElement.click();
+    this.modalService.dismissAll();
   }
 
   getRandomString(length) {

@@ -976,7 +976,7 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
           try {
             const serverData = await this.processProfileService.saveProfile(vendorId, postData).toPromise();
 
-            let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+            let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/profile')) + '/profile';
             if (isCloneProfile) {
               this.processProfileService.storeCloneData(serverData);
               gotoURL = gotoURL + `/clone`;
@@ -1005,14 +1005,14 @@ export class ProcessProfileItemComponent implements OnInit, AfterViewChecked {
               .toPromise();
 
             if (addPricingProfile) {
-              let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+              let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/profile')) + '/profile';
               this.route.navigateByUrl(`${gotoURL}/add`, {
                 state: {
                   selectedProcessProfileId: this.processProfileId
                 }
               });
             } else {
-              let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/'));
+              let gotoURL = this.route.url.substr(0, this.route.url.lastIndexOf('/profile')) + '/profile';
               if (isCloneProfile) {
                 this.processProfileService.storeCloneData(serverData);
                 gotoURL = `${gotoURL}/clone`;
