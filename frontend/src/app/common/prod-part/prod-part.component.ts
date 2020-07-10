@@ -18,6 +18,7 @@ export class ProdPartComponent implements OnInit {
 
   value: Part | Part[];
   projectProfile: ProjectProfile;
+  defProfileText = 'No Requirement Defined';
 
   constructor(public modalService: NgbModal, public partService: PartService, public spinner: NgxSpinnerService) {}
 
@@ -31,19 +32,6 @@ export class ProdPartComponent implements OnInit {
       }
       this.spinner.hide();
     });
-  }
-
-  isConnectProject() {
-    let part: Part = null;
-    if (this.value instanceof Array) {
-      part = (this.value || []).length > 0 ? this.value[0] : null;
-    } else {
-      part = this.value;
-    }
-    const pType = (part && part.rfqMedia && part.rfqMedia.projectRfq
-      ? part.rfqMedia.projectRfq.projectType
-      : {}) as ProjectType;
-    return pType.name === 'CONNECT_PROJECT';
   }
 
   open(content, size: any = 'lg') {

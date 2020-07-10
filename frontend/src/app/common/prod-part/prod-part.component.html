@@ -53,9 +53,6 @@
               {{ value?.equipmentPropertyValues?.join(' OR ') }}
             </span>
           </p>
-          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
-            <app-ref-file [value]="value.id"></app-ref-file>
-          </p>
         </div>
 
         <div class="col-3 border-left pt-3 pb-3">
@@ -75,49 +72,17 @@
               {{ getUnit(value?.rfqMedia?.media?.partDimension?.volume?.unitId) }}
             </span>
           </p>
-          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
-            Other Requirements:
-            <span class="text-theme-green" placement="auto" [ngbTooltip]="value.comments">
-              {{ value?.comments || '-' }}
-            </span>
-          </p>
         </div>
 
         <div class="col-4 border-left pt-3 pb-3">
           <p class="d-flex flex-row flex-wrap align-items-center mb-2">
-            Eligible Manufacturer Type:
-            <span class="text-theme-green">
-              {{ projectProfile.eligibleManufacturerTypes || '-' }}
+            Other Requirements:&nbsp;
+            <span class="text-theme" placement="auto" [ngbTooltip]="value.comments">
+              {{ value?.comments || '-' }}
             </span>
           </p>
-
           <p class="d-flex flex-row flex-wrap align-items-center mb-2">
-            Eligible Regions:
-            <span class="text-theme-green">
-              {{ projectProfile.countries || '-' }}
-            </span>
-          </p>
-
-          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
-            Facility Quality Certifications:
-            <span class="text-theme-green">
-              {{ projectProfile.facilityCerts || '-' }}
-            </span>
-          </p>
-
-          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
-            Part Certifications:
-            <span class="text-theme-green">
-              {{ projectProfile.partCerts || '-' }}
-            </span>
-          </p>
-
-          <p class="d-flex flex-row flex-wrap align-items-center mb-2" *ngIf="isConnectProject()">
-            <app-proposal-attachment
-              type="governance-document"
-              [smallView]="true"
-              [partId]="value?.id"
-            ></app-proposal-attachment>
+            <app-ref-file [value]="value.id"></app-ref-file>
           </p>
         </div>
       </div>
