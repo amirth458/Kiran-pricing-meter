@@ -82,6 +82,10 @@ import { AddVendorDetailComponent } from 'src/app/components/admin/add-vendor/ad
 import { AddVendorMachineComponent } from 'src/app/components/admin/add-vendor/add-vendor-machine/add-vendor-machine.component';
 import { OtherStatusComponent } from 'src/app/components/vendor/pricing/rfq/other-status/other-status.component';
 import { MachineItemComponent } from 'src/app/components/admin/vendor-details/machine-item/machine-item.component';
+import { AdminVendorProcessProfileComponent } from 'src/app/components/admin/vendor-details/process-profile/process-profile.component';
+import { ProcessProfileItemComponent } from 'src/app/components/admin/vendor-details/process-profile-item/process-profile-item.component';
+import { AdminVendorProcessPricingComponent } from 'src/app/components/admin/vendor-details//process-pricing/process-pricing.component';
+import { ProcessPricingItemComponent } from 'src/app/components/admin/vendor-details/process-pricing-item/process-pricing-item.component';
 
 const routes: Routes = [
   {
@@ -219,7 +223,17 @@ const routes: Routes = [
               { path: 'machine', component: AdminVendorDetailsMachineComponent },
               { path: 'machine/add', component: MachineItemComponent },
               { path: 'machine/clone', component: MachineItemComponent },
-              { path: 'machine/edit/:machineId', component: MachineItemComponent }
+              { path: 'machine/edit/:machineId', component: MachineItemComponent },
+
+              { path: 'profile', component: AdminVendorProcessProfileComponent },
+              { path: 'profile/add', component: ProcessProfileItemComponent },
+              { path: 'profile/clone', component: ProcessProfileItemComponent },
+              { path: 'profile/edit/:profileId', component: ProcessProfileItemComponent },
+
+              { path: 'pricing', component: AdminVendorProcessPricingComponent },
+              { path: 'pricing/add', component: ProcessPricingItemComponent },
+              { path: 'pricing/clone', component: ProcessPricingItemComponent },
+              { path: 'pricing/edit/:pricingId', component: ProcessPricingItemComponent }
             ]
           },
           {
