@@ -64,6 +64,18 @@
       "tooltipMessage": "Machine Details.",
       "route": "machine",
       "actions": ["back"]
+    },
+    {
+      "name": "Process Profile",
+      "tooltipMessage": "Process Profile.",
+      "route": "profile",
+      "actions": ["back"]
+    },
+    {
+      "name": "Process Pricing",
+      "tooltipMessage": "Process Pricing.",
+      "route": "pricing",
+      "actions": ["back"]
     }
   ],
   "adminCustomer": [

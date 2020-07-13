@@ -1,0 +1,103 @@
+<div class="wrapper flex-column">
+  <div *ngIf="tableControlReady" class="table theme-table flex-grow-1 d-flex flex-column">
+    <div class="w-100 d-flex justify-content-between page-size">
+      <div class="d-inline legend">
+        <div class="d-inline item text-theme">
+          <span class="color"></span>Profile does not have an associated pricing profile
+        </div>
+      </div>
+      <div class="d-inline">
+        Page Size:
+        <select id="page-size" [(ngModel)]="pageSize" (ngModelChange)="pageSizeChanged($event)">
+          <option selected value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex-grow-1" style="height: 0;">
+      <ag-grid-angular
+        style="height: 100%;"
+        class="ag-theme-balham"
+        [rowData]="rowData"
+        [gridOptions]="gridOptions"
+        (gridReady)="gridReady($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
+      <button type="button" (click)="addProcessProfile()" class="btn btn-approve theme">
+        Add Process Profile
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="processProfileModalLabel">Confirm Action</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to delete the Process Profile ?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-danger" (click)="deleteProfile()">Delete</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Modal -->
+<ng-template #copyModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="processProfileCopyModalLabel">Confirm Action</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Please provide a new name for the cloned Process Profile Name.
+
+      <div class="form-row">
+        <div class="form-group col-md-2"></div>
+
+        <div class="form-group theme col-md-8">
+          <label for="name"></label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="newProfileName"
+            [ngModelOptions]="{ standalone: true }"
+            id="name"
+            name="name"
+            placeholder="New Process Profile Name"
+          />
+        </div>
+
+        <div class="form-group col-md-2"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      <button
+        type="button"
+        class="btn theme theme-reverse btn-primary "
+        [disabled]="newProfileName.length <= 4"
+        (click)="copyRow()"
+      >
+        Clone
+      </button>
+    </div>
+  </div>
+</ng-template>

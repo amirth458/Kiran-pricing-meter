@@ -17,6 +17,25 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'vendor_sub_order_id'
     },
     {
+      headerName: 'Vendor Suborder Name',
+      field: 'vendor_sub_order_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_sub_order_id',
+      headerTooltip: 'vendor_sub_order_id'
+    },
+    {
+      headerName: 'Vendor Suborder Display Name',
+      field: 'vendor_sub_order_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_sub_order_id',
+      headerTooltip: 'vendor_sub_order_id',
+      valueFormatter: v => v.value && v.data.vendor_order_id && v.data.vendor_order_id + '.' + v.value
+    },
+    {
       headerName: 'Vendor Job ID',
       field: 'vendor_job_id',
       hide: false,

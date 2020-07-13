@@ -10,7 +10,12 @@
     </li>
   </ul>
   <div class="action-button" *ngIf="menus[activeTabIndex].actions?.length">
-    <button type="button" class="btn btn-white theme" (click)="backButton()">
+    <button
+      *ngIf="!this.route.url.match('.+vendor-details.+(machine|profile|pricing).+(edit|clone)')"
+      type="button"
+      class="btn btn-white theme"
+      (click)="backButton()"
+    >
       <i class="fas fa-chevron-left"></i>
       <span>
         Back

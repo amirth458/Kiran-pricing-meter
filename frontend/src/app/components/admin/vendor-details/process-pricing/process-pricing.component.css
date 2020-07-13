@@ -1,0 +1,43 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-control {
+  width: 220px;
+  height: auto;
+  margin-right: 10px;
+  margin-bottom: 32px;
+}
+
+.table {
+  width: 100%;
+  height: auto;
+}
+
+.modal-body .profile-options {
+  max-height: 400px;
+  overflow: scroll;
+  width: 80%;
+}
+
+.modal-body .profile-options .profile {
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.modal-body .profile-options .profile .name {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}
