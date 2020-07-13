@@ -24,7 +24,12 @@ export class InsightGridComponent implements OnInit {
   ngOnInit() {
     this.gridOptions.frameworkComponents = this.frameworkComponents;
     this.gridOptions.columnDefs = this.gridOptions.columnDefs.map(col => {
-      if (col.headerName.includes('date') || col.headerName.includes('last_login_attempt')) {
+      if (
+        (col.headerTooltip.includes('date') ||
+          col.headerTooltip.includes('last_login') ||
+          col.headerTooltip.includes('time')) &&
+        col.headerTooltip != 'rfq_quote_time'
+      ) {
         return {
           ...col,
           cellRenderer: 'templateRenderer',
