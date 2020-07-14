@@ -18,6 +18,7 @@ export class MessageViewerComponent implements OnInit, AfterViewInit {
 
   user: any;
   public config: PerfectScrollbarConfigInterface = {};
+  timeFormat = 'yyyy/MM/dd hh:mm a';
 
   constructor(public userService: UserService) {}
 
