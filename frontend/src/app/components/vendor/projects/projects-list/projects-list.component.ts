@@ -49,6 +49,7 @@ export class ProjectsListComponent implements OnInit {
   };
   searchOpt: SearchOpt = new SearchOpt();
   totalRows = 0;
+
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
@@ -286,7 +287,6 @@ export class ProjectsListComponent implements OnInit {
         tooltipField: 'sameVendor'
       }
     ];
-
     this.connectColumnDefs = [
       {
         headerName: 'Customer Name',
@@ -313,7 +313,6 @@ export class ProjectsListComponent implements OnInit {
         tooltipField: 'id'
       }
     ];
-
     if (this.type === 'release-queue') {
       this.connectColumnDefs = this.connectColumnDefs.concat([
         {

@@ -15,6 +15,7 @@ import { CustomerDetails } from 'src/app/model/customer.model';
 })
 export class InsightPartInformationComponent implements OnInit {
   @Input() parts;
+  @Input() hideCloseButton: boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
   selectedPartId;
 
@@ -32,7 +33,9 @@ export class InsightPartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectPart(this.parts[0].id);
+    if ((this.parts || []).length > 0) {
+      this.selectPart(this.parts[0].id);
+    }
   }
 
   selectPart(newId) {

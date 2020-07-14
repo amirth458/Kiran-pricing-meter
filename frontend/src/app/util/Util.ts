@@ -141,4 +141,15 @@ export class Util {
       return false;
     }
   }
+
+  static extendUtcDate(value: any): any {
+    dayjs.extend(utc);
+    return value ? dayjs.utc(value).toDate() : null;
+  }
+
+  static getDateRange() {
+    const today = dayjs();
+    const startDate = today.subtract(30, 'day');
+    return [Util.extendUtcDate(startDate), Util.extendUtcDate(today)];
+  }
 }

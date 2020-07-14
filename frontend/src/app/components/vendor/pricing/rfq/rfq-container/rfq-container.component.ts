@@ -23,6 +23,12 @@ export class RfqContainerComponent implements OnInit {
       actions: [{ name: 'Save Settings', route: 'save-pricing-setting' }]
     },
     {
+      name: 'Auto RFQ',
+      tooltipMessage: 'Auto RFQ',
+      route: 'rfq-list',
+      actions: []
+    },
+    {
       name: 'Recent Auto Prices',
       tooltipMessage: 'Recent Auto Prices',
       route: 'auto-prices',
@@ -60,6 +66,9 @@ export class RfqContainerComponent implements OnInit {
         break;
       case 'other-status':
         this.selectedTab = 'Program Parts';
+        break;
+      case 'rfq-list':
+        this.selectedTab = 'Auto RFQ';
         break;
       default:
         this.route.navigateByUrl(this.route.url + '/pricing-settings');
