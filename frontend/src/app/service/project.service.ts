@@ -7,7 +7,7 @@ import { ConnectProject, ClientProgress } from '../model/connect.model';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import { Pageable } from '../model/pageable.model';
-import { PartOrder, ReferenceMedia } from '../model/part.model';
+import { PartOrder, ReferenceMedia, RfqFilter } from '../model/part.model';
 import { ProjectTypeEnum, OrderStatusTypeId, SearchOpt, ProjectSearchResult } from '../model/order.model';
 
 @Injectable({
@@ -136,5 +136,10 @@ export class ProjectService {
 
   getProposalFormData(proposalPartId: number): Observable<any> {
     return this.http.get<any>(`${environment.apiBaseUrl}/admin/part-proposal/${proposalPartId}`);
+  }
+
+  searchRfq(req: FilterOption, filter: RfqFilter): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/pm-rfq`;
+    return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
   }
 }
