@@ -35,7 +35,7 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'vendor_order_id'
     },
     {
-      headerName: 'Vendor ID',
+      headerName: 'Vendor Number',
       field: 'vendor_id',
       hide: false,
       sortable: false,
