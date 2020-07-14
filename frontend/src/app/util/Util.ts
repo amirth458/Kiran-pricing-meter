@@ -149,7 +149,7 @@ export class Util {
 
   static getDateRange() {
     const today = dayjs();
-    const startDate = today.subtract(180, 'day');
+    const startDate = today.subtract(30, 'day');
     return [Util.extendUtcDate(startDate), Util.extendUtcDate(today)];
   }
 }

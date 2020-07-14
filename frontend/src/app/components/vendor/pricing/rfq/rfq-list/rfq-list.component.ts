@@ -146,14 +146,13 @@ export class RfqListComponent implements OnInit {
     const dataSource = {
       rowCount: null,
       getRows: params => {
-        const filterOption: FilterOption = {
+        const req: FilterOption = {
           page: params.startRow / this.pageSize,
           size: this.pageSize,
           sort: 'rfq_id,asc'
         };
         this.spinner.show('loadingPanel');
-        let ob: Observable<any> = this.projectService.searchRfq(filterOption, form);
-        ob.subscribe(data => {
+        this.filterData(req, form).subscribe(data => {
           this.spinner.hide('loadingPanel');
           this.totalRows = data.totalElements || 0;
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
@@ -166,6 +165,10 @@ export class RfqListComponent implements OnInit {
     if (this.gridOptions.api) {
       this.gridOptions.api.setDatasource(dataSource);
     }
+  }
+
+  filterData(req: FilterOption, form: RfqFilter): Observable<any> {
+    return this.projectService.searchRfq(req, form);
   }
 
   onGridReady(event: any) {
