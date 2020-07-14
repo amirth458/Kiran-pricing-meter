@@ -90,6 +90,24 @@ export class InsightVendorSuborderComponent implements OnInit {
       headerTooltip: 'vendor_order_status'
     },
     {
+      headerName: 'Vendor ID',
+      field: 'vendor_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_id',
+      headerTooltip: 'vendor_id'
+    },
+    {
+      headerName: 'Customer Email',
+      field: 'customer_email',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'customer_email',
+      headerTooltip: 'customer_email'
+    },
+    {
       headerName: 'Bid Order Item',
       field: 'bid_order_item',
       hide: false,
