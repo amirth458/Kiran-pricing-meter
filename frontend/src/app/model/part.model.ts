@@ -46,8 +46,8 @@ export interface RfqFilter {
 }
 
 export interface ProjectType {
-  description: string;
-  displayName: string;
+  description?: string;
+  displayName?: string;
   id: number;
   name: string;
 }
@@ -56,12 +56,6 @@ export interface PartDimensionValue {
   value: number;
   valueInDefaultUnit: number;
   unitId: number;
-}
-
-export interface ProjectType {
-  id: number;
-  name: string;
-  description: string;
 }
 
 export interface PartDimensionStatusType {
