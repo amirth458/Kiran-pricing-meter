@@ -563,19 +563,35 @@ app-dropdown-cell-renderer {
   max-width: 600px;
 }
 
+.rfq-status-modal .modal-dialog {
+  max-width: 75%;
+  width: 75%;
+}
+
+.rfq-status-modal .modal-dialog .modal-body app-insight-part-information .wrapper {
+  padding: 0;
+}
+
+.rfq-status-modal .modal-dialog .modal-body.empty {
+  height: 500px;
+  min-height: 500px;
+}
+
 .change-account-modal .modal-dialog {
   max-width: 450px;
 }
 
 .break-down-modal .modal-dialog .title,
-.order-status-modal .modal-dialog .title {
+.order-status-modal .modal-dialog .title,
+.rfq-status-modal .modal-dialog .title {
   color: white;
   background: var(--theme-grid-header);
 }
 
 .break-down-modal .modal-title,
 .order-status-modal .modal-title,
-.change-account-modal .modal-title {
+.change-account-modal .modal-title,
+.rfq-status-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
   color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
