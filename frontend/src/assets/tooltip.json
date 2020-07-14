@@ -254,6 +254,12 @@
       ]
     },
     {
+      "name": "PM RFQ",
+      "tooltipMessage": "PM RFQ",
+      "route": "pm-rfq-list",
+      "actions": []
+    },
+    {
       "name": "Project Release Queue",
       "tooltipMessage": "Project Release Queue",
       "route": "project-release-queue",
@@ -269,6 +275,12 @@
       "name": "Customer Released",
       "tooltipMessage": "Customer Released",
       "route": "released-projects",
+      "actions": []
+    },
+    {
+      "name": "PM Program RFQ",
+      "tooltipMessage": "PM Program RFQ",
+      "route": "pm-program-rfq-list",
       "actions": []
     },
     {
@@ -297,6 +309,12 @@
       ]
     },
     {
+      "name": "Connect RFQ",
+      "tooltipMessage": "Connect RFQ",
+      "route": "connect-rfq-list",
+      "actions": []
+    },
+    {
       "name": "Release Queue",
       "tooltipMessage": "Release Queue",
       "route": "release-queue",
@@ -306,6 +324,12 @@
       "name": "Customer Accepted",
       "tooltipMessage": "Customer Accepted",
       "route": "order-complete",
+      "actions": []
+    },
+    {
+      "name": "Connect Program RFQ",
+      "tooltipMessage": "Connect RFQ",
+      "route": "connect-program-rfq-list",
       "actions": []
     },
     {
