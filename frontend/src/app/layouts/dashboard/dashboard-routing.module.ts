@@ -118,7 +118,7 @@ const routes: Routes = [
                 component: PriceDetailComponent
               },
               {
-                path: 'auto-rfq',
+                path: 'rfq-list',
                 component: RfqListComponent
               },
               {
