@@ -165,6 +165,7 @@ import { AdminVendorProcessProfileComponent } from './admin/vendor-details/proce
 import { ProcessPricingItemComponent } from './admin/vendor-details/process-pricing-item/process-pricing-item.component';
 import { VisiblePipe } from '../pipes/visible.pipe';
 import { RfqListComponent } from './vendor/pricing/rfq/rfq-list/rfq-list.component';
+import { RfqFilterComponent } from './vendor/pricing/rfq/rfq-filter/rfq-filter.component';
 @NgModule({
   declarations: [
     ActionBarComponent,
@@ -317,7 +318,8 @@ import { RfqListComponent } from './vendor/pricing/rfq/rfq-list/rfq-list.compone
     ProcessProfileItemComponent,
     ProcessProfileComponent,
     ProcessPricingItemComponent,
-    RfqListComponent
+    RfqListComponent,
+    RfqFilterComponent
   ],
   imports: [
     CommonModule,

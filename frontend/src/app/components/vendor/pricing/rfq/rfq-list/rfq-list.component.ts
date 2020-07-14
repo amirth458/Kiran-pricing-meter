@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { BehaviorSubject } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { RfqTypeEnum } from '../../../../../model/part.model';
 
 @Component({
   selector: 'app-rfq-list',
@@ -14,6 +16,11 @@ export class RfqListComponent implements OnInit {
   columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
   pageSize = 10;
+  rfqType = RfqTypeEnum.AUTO_RFQ;
+  placeholderText = 'Customer, RFQ, Part, Order';
+
+  filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor(public spinner: NgxSpinnerService, public router: Router) {}
 
