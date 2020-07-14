@@ -137,6 +137,15 @@ export class InsightVendorOrderComponent implements OnInit {
       filter: false,
       tooltipField: 'bid_process_id',
       headerTooltip: 'bid_process_id'
+    },
+    {
+      headerName: 'Vendor Order Amount',
+      field: 'vendor_order_amount',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_order_amount',
+      headerTooltip: 'vendor_order_amount'
     }
   ];
   constructor() {}
