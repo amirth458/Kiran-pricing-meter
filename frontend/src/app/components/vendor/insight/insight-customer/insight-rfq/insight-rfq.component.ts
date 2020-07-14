@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import { PartService } from 'src/app/service/part.service';
 import { Util } from '../../../../../util/Util';
+import { ProjectType } from '../../../../../model/billing.model';
 
 @Component({
   selector: 'app-insight-rfq',
@@ -44,7 +45,11 @@ export class InsightRfqComponent implements OnInit {
       sortable: false,
       filter: false,
       tooltipField: 'project_type',
-      headerTooltip: 'project_type'
+      headerTooltip: 'project_type',
+      valueFormatter: v =>
+        v &&
+        v.value &&
+        (v.data.old_project_type ? ProjectType[v.value + '_' + v.data.old_project_type] : ProjectType[v.value])
     },
     {
       headerName: 'Stage',
