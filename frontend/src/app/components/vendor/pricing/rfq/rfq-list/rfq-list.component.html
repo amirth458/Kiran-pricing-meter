@@ -1,3 +1,6 @@
-<p>
-  rfq-list works!
-</p>
+<div class="wrapper">
+  <div class="table theme-table">
+    <ag-grid-angular class="ag-theme-balham w-100 h-100" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div>
+</div>
