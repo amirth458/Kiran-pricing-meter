@@ -32,6 +32,7 @@ export class RfqListComponent implements OnInit {
   totalRows: number;
 
   rfqType = RfqTypeEnum.AUTO_RFQ;
+  rfqTypeEnum = RfqTypeEnum;
   projectType = ProjectTypeEnum.RFQ_PROJECT;
   util = Util;
   id: number;
