@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -13,6 +14,8 @@ import { ProjectTypeEnum } from '../../../../../model/order.model';
 import { FilterOption } from '../../../../../model/vendor.model';
 import { ProjectService } from '../../../../../service/project.service';
 import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-rfq-list',
@@ -30,8 +33,12 @@ export class RfqListComponent implements OnInit {
 
   rfqType = RfqTypeEnum.AUTO_RFQ;
   projectType = ProjectTypeEnum.RFQ_PROJECT;
+  util = Util;
   id: number;
   parts: Array<Part>;
+  frameworkComponents = {
+    templateRenderer: TemplateRendererComponent
+  };
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -41,12 +48,14 @@ export class RfqListComponent implements OnInit {
     public router: Router,
     public projectService: ProjectService,
     public rfqPricingService: RfqPricingService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public datePipe: DatePipe
   ) {}
 
   ngOnInit() {
     this.initColumns();
     this.gridOptions = {
+      frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       paginationPageSize: this.pageSize,
       maxConcurrentDatasourceRequests: 1,
@@ -127,7 +136,12 @@ export class RfqListComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'rfqCreatedAt'
+        tooltipField: 'rfqCreatedAt',
+        valueFormatter: dt => {
+          let value = (dt.value || '').toString();
+          value = value.indexOf('+') > -1 ? value.split('+')[0] : value;
+          return this.datePipe.transform(value, Util.dateFormatWithTime);
+        }
       },
       {
         headerName: 'Eligible Manufacturer Type',
