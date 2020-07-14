@@ -86,6 +86,7 @@ import { AdminVendorProcessProfileComponent } from 'src/app/components/admin/ven
 import { ProcessProfileItemComponent } from 'src/app/components/admin/vendor-details/process-profile-item/process-profile-item.component';
 import { AdminVendorProcessPricingComponent } from 'src/app/components/admin/vendor-details//process-pricing/process-pricing.component';
 import { ProcessPricingItemComponent } from 'src/app/components/admin/vendor-details/process-pricing-item/process-pricing-item.component';
+import { RfqListComponent } from '../../components/vendor/pricing/rfq/rfq-list/rfq-list.component';
 
 const routes: Routes = [
   {
@@ -115,6 +116,10 @@ const routes: Routes = [
               {
                 path: 'auto-prices/:partId',
                 component: PriceDetailComponent
+              },
+              {
+                path: 'auto-rfq',
+                component: RfqListComponent
               },
               {
                 path: 'auto-prices/:partId/pricing-profile/:profileId',

@@ -23,6 +23,12 @@ export class RfqContainerComponent implements OnInit {
       actions: [{ name: 'Save Settings', route: 'save-pricing-setting' }]
     },
     {
+      name: 'Auto RFQ',
+      tooltipMessage: 'Auto RFQ',
+      route: 'auto-rfq',
+      actions: []
+    },
+    {
       name: 'Recent Auto Prices',
       tooltipMessage: 'Recent Auto Prices',
       route: 'auto-prices',

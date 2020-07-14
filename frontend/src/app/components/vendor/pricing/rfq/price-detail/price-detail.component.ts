@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { Part, AppPartStatus, AppPartTypeId } from 'src/app/model/part.model';
