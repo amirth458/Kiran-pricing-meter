@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { RfqTypeEnum } from '../../../../../model/part.model';
+import { RfqFilter, RfqTypeEnum } from '../../../../../model/part.model';
+import { ProjectTypeEnum } from '../../../../../model/order.model';
+import { FilterOption } from '../../../../../model/vendor.model';
+import { ProjectService } from '../../../../../service/project.service';
 
 @Component({
   selector: 'app-rfq-list',
@@ -17,12 +21,14 @@ export class RfqListComponent implements OnInit {
   gridOptions: GridOptions;
   pageSize = 10;
   rfqType = RfqTypeEnum.AUTO_RFQ;
+  projectType = ProjectTypeEnum.RFQ_PROJECT;
   placeholderText = 'Customer, RFQ, Part, Order';
+  totalRows: number;
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor(public spinner: NgxSpinnerService, public router: Router) {}
+  constructor(public spinner: NgxSpinnerService, public router: Router, public projectService: ProjectService) {}
 
   ngOnInit() {
     this.initColumns();
@@ -39,6 +45,15 @@ export class RfqListComponent implements OnInit {
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0
     };
+    this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
+      this.apply({
+        projectTypeId: this.projectType,
+        searchQuery: form.query || '',
+        beginDate: form.dateRange[0],
+        endDate: form.dateRange[1],
+        showTestAccount: false
+      });
+    });
   }
 
   initColumns() {
@@ -127,5 +142,34 @@ export class RfqListComponent implements OnInit {
     ];
   }
 
-  onGridReady(event) {}
+  apply(form: RfqFilter) {
+    const dataSource = {
+      rowCount: null,
+      getRows: params => {
+        const filterOption: FilterOption = {
+          page: params.startRow / this.pageSize,
+          size: this.pageSize,
+          sort: 'rfq_id,asc'
+        };
+        this.spinner.show('loadingPanel');
+        let ob: Observable<any> = this.projectService.searchRfq(filterOption, form);
+        ob.subscribe(data => {
+          this.spinner.hide('loadingPanel');
+          this.totalRows = data.totalElements || 0;
+          const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
+          if (data && data.totalElements) {
+            params.successCallback(data.content || [], lastRow);
+          }
+        });
+      }
+    };
+    if (this.gridOptions.api) {
+      this.gridOptions.api.setDatasource(dataSource);
+    }
+  }
+
+  onGridReady(event: any) {
+    this.gridOptions.api = event.api;
+    this.gridOptions.api.sizeColumnsToFit();
+  }
 }
