@@ -198,7 +198,7 @@ export class RfqListComponent implements OnInit {
         });
       }
     };
-    if (this.gridOptions.api) {
+    if (this.gridOptions && this.gridOptions.api) {
       this.gridOptions.api.setDatasource(dataSource);
     }
   }
