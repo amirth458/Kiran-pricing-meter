@@ -29,6 +29,22 @@ export interface ProjectRfq {
   projectType: ProjectType;
 }
 
+export enum RfqTypeEnum {
+  AUTO_RFQ = 'AUTO_RFQ',
+  PM_RFQ = 'PM_RFQ',
+  CONNECT_RFQ = 'CONNECT_RFQ',
+  PM_PROGRAM_RFQ = 'PM_PROGRAM_RFQ',
+  CONNECT_PROGRAM_RFQ = 'CONNECT_PROGRAM_RFQ'
+}
+
+export interface RfqFilter {
+  projectTypeId: number;
+  searchQuery: string;
+  beginDate: Date;
+  endDate: Date;
+  showTestAccount: boolean;
+}
+
 export interface ProjectType {
   description: string;
   displayName: string;
