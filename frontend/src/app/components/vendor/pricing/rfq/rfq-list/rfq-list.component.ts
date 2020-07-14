@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { NgxSpinnerService } from 'ngx-spinner';
 
-import { ColDef, GridOptions } from 'ag-grid-community';
-import { RfqFilter, RfqTypeEnum } from '../../../../../model/part.model';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { ColDef, GridOptions, RowClickedEvent } from 'ag-grid-community';
+import { Part, RfqFilter, RfqTypeEnum } from '../../../../../model/part.model';
 import { ProjectTypeEnum } from '../../../../../model/order.model';
 import { FilterOption } from '../../../../../model/vendor.model';
 import { ProjectService } from '../../../../../service/project.service';
+import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 
 @Component({
   selector: 'app-rfq-list',
@@ -17,18 +20,29 @@ import { ProjectService } from '../../../../../service/project.service';
   styleUrls: ['./rfq-list.component.css']
 })
 export class RfqListComponent implements OnInit {
+  @ViewChild('partsTemplate') partsTemplate: TemplateRef<any>;
+
   columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
   pageSize = 10;
-  rfqType = RfqTypeEnum.AUTO_RFQ;
-  projectType = ProjectTypeEnum.RFQ_PROJECT;
   placeholderText = 'Customer, RFQ, Part, Order';
   totalRows: number;
+
+  rfqType = RfqTypeEnum.AUTO_RFQ;
+  projectType = ProjectTypeEnum.RFQ_PROJECT;
+  id: number;
+  parts: Array<Part>;
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor(public spinner: NgxSpinnerService, public router: Router, public projectService: ProjectService) {}
+  constructor(
+    public spinner: NgxSpinnerService,
+    public router: Router,
+    public projectService: ProjectService,
+    public rfqPricingService: RfqPricingService,
+    public modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.initColumns();
@@ -43,7 +57,15 @@ export class RfqListComponent implements OnInit {
       rowBuffer: 0,
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
-      cacheOverflowSize: 0
+      cacheOverflowSize: 0,
+      onRowClicked: (row: RowClickedEvent): void => {
+        row.event.preventDefault();
+        row.event.stopPropagation();
+        const rowData = row.data || (null as any);
+        if (rowData) {
+          this.viewRfq(rowData.rfqId);
+        }
+      }
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
@@ -174,5 +196,31 @@ export class RfqListComponent implements OnInit {
   onGridReady(event: any) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  closeModalWindow() {
+    this.id = null;
+    this.parts.length = 0;
+    this.modalService.dismissAll();
+  }
+
+  viewRfq(rfqId: number) {
+    this.spinner.show();
+    this.id = rfqId;
+    this.rfqPricingService.getRfqDetail(rfqId).subscribe((v: any) => {
+      this.parts = [];
+      const parts = [];
+      (v.rfqMediaList || []).map(media => {
+        media.partList.map(part => {
+          parts.push(part);
+        });
+      });
+      this.parts = parts;
+      this.modalService.open(this.partsTemplate, {
+        centered: true,
+        windowClass: 'rfq-status-modal'
+      });
+      this.spinner.hide();
+    });
   }
 }
