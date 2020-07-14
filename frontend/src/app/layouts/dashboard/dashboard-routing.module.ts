@@ -87,6 +87,8 @@ import { ProcessProfileItemComponent } from 'src/app/components/admin/vendor-det
 import { AdminVendorProcessPricingComponent } from 'src/app/components/admin/vendor-details//process-pricing/process-pricing.component';
 import { ProcessPricingItemComponent } from 'src/app/components/admin/vendor-details/process-pricing-item/process-pricing-item.component';
 import { RfqListComponent } from '../../components/vendor/pricing/rfq/rfq-list/rfq-list.component';
+import { PmRfqListComponent } from '../../components/vendor/pricing/rfq/pm-rfq-list/pm-rfq-list.component';
+import { ConnectRfqListComponent } from '../../components/vendor/pricing/rfq/connect-rfq-list/connect-rfq-list.component';
 
 const routes: Routes = [
   {
@@ -324,6 +326,10 @@ const routes: Routes = [
                 path: 'settings',
                 component: ProjectSettingsComponent
               },
+              {
+                path: 'pm-rfq-list',
+                component: PmRfqListComponent
+              },
               { path: 'other-status', component: OtherStatusComponent },
               {
                 path: 'other-status/:partId',
@@ -382,6 +388,10 @@ const routes: Routes = [
               {
                 path: 'settings',
                 component: ConnectSettingComponent
+              },
+              {
+                path: 'connect-rfq-list',
+                component: ConnectRfqListComponent
               },
               { path: 'other-status', component: OtherStatusComponent },
               {
