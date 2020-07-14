@@ -6,7 +6,8 @@
       [attr.ready]="last ? false : scrollToBottom()"
     >
       <span class="{{ user.id === m.senderId ? 'text-theme-green' : 'text-theme' }}">
-        {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }} {{ m?.createdDate | date: timeFormat }}
+        {{ m?.user?.firstName || '' }} {{ m?.user?.lastName || '' }}
+        {{ m?.createdDate | date: util.dateFormatWithTime }}
       </span>
       <p>{{ m.message || '' }}</p>
     </div>

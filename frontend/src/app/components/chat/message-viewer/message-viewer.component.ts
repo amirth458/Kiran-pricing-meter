@@ -4,6 +4,7 @@ import { PerfectScrollbarComponent, PerfectScrollbarConfigInterface } from 'ngx-
 
 import { MessageNote } from '../../../model/chat.model';
 import { UserService } from '../../../service/user.service';
+import { Util } from '../../../util/Util';
 
 @Component({
   selector: 'app-message-viewer',
@@ -18,7 +19,7 @@ export class MessageViewerComponent implements OnInit, AfterViewInit {
 
   user: any;
   public config: PerfectScrollbarConfigInterface = {};
-  timeFormat = 'yyyy/MM/dd hh:mm a';
+  util = Util;
 
   constructor(public userService: UserService) {}
 
