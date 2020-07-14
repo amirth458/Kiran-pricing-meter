@@ -142,4 +142,14 @@ export class ProjectService {
     const url = `${environment.apiBaseUrl}/admin/pm-project/pm-rfq`;
     return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
   }
+
+  searchPmProgramRfq(req: FilterOption, filter: RfqFilter): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/pm-program-rfq`;
+    return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
+  }
+
+  searchConnectProgramRfq(req: FilterOption, filter: RfqFilter): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/connect-project/connect-program-rfq`;
+    return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
+  }
 }

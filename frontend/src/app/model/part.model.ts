@@ -6,6 +6,7 @@ export interface Type {
   id: number;
   name: string;
 }
+
 export interface ReferenceMedia {
   id: number;
   name: string;

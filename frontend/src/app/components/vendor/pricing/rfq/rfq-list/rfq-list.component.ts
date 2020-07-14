@@ -32,6 +32,7 @@ export class RfqListComponent implements OnInit {
   totalRows: number;
 
   rfqType = RfqTypeEnum.AUTO_RFQ;
+  rfqTypeEnum = RfqTypeEnum;
   projectType = ProjectTypeEnum.RFQ_PROJECT;
   util = Util;
   id: number;
@@ -78,7 +79,7 @@ export class RfqListComponent implements OnInit {
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
-        projectTypeId: this.projectType,
+        projectTypeId: !this.isProgramRfq() ? this.projectType : null,
         searchQuery: form.query || '',
         beginDate: form.dateRange[0],
         endDate: form.dateRange[1],
@@ -99,7 +100,11 @@ export class RfqListComponent implements OnInit {
         hide: !this.isProgramRfq(),
         sortable: true,
         filter: false,
-        tooltipField: 'rfqId'
+        tooltipField: 'rfqId',
+        valueFormatter: dt => {
+          const row: any = dt.data || {};
+          return row.connectRfqId || row.pmRfqId || '';
+        }
       },
       {
         headerName: 'RFQ ID',
@@ -157,11 +162,11 @@ export class RfqListComponent implements OnInit {
       },
       {
         headerName: 'Assigned Vendor Name',
-        field: 'rfqCreatedAt',
+        field: 'vendors',
         hide: !this.isProgramRfq(),
         sortable: true,
         filter: false,
-        tooltipField: 'rfqCreatedAt'
+        tooltipField: 'vendors'
       },
       {
         headerName: 'Eligible Manufacturer Type',
