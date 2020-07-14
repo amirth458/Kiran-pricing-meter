@@ -35,6 +35,15 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'vendor_order_id'
     },
     {
+      headerName: 'Vendor Number',
+      field: 'vendor_id',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_id',
+      headerTooltip: 'vendor_id'
+    },
+    {
       headerName: 'Vendor Order Status',
       field: 'vendor_order_status',
       hide: false,
@@ -62,6 +71,15 @@ export class InsightVendorOrderComponent implements OnInit {
       tooltipField: 'vendor_sub_order_ids',
       headerTooltip: 'vendor_sub_order_ids',
       valueFormatter: v => v.value && v.value.join(', ')
+    },
+    {
+      headerName: 'Customer Email',
+      field: 'customer_email',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'customer_email',
+      headerTooltip: 'customer_email'
     },
     {
       headerName: 'Part Numbers',
