@@ -87,8 +87,20 @@ export class RfqListComponent implements OnInit {
     });
   }
 
+  isProgramRfq() {
+    return this.rfqType === RfqTypeEnum.CONNECT_PROGRAM_RFQ || this.rfqType === RfqTypeEnum.PM_PROGRAM_RFQ;
+  }
+
   initColumns() {
     this.columnDefs = [
+      {
+        headerName: 'Program RFQ ID',
+        field: 'rfqId',
+        hide: !this.isProgramRfq(),
+        sortable: true,
+        filter: false,
+        tooltipField: 'rfqId'
+      },
       {
         headerName: 'RFQ ID',
         field: 'rfqId',
@@ -142,6 +154,14 @@ export class RfqListComponent implements OnInit {
           value = value.indexOf('+') > -1 ? value.split('+')[0] : value;
           return this.datePipe.transform(value, Util.dateFormatWithTime);
         }
+      },
+      {
+        headerName: 'Assigned Vendor Name',
+        field: 'rfqCreatedAt',
+        hide: !this.isProgramRfq(),
+        sortable: true,
+        filter: false,
+        tooltipField: 'rfqCreatedAt'
       },
       {
         headerName: 'Eligible Manufacturer Type',
@@ -203,7 +223,7 @@ export class RfqListComponent implements OnInit {
     }
   }
 
-  filterData(req: FilterOption, form: RfqFilter): Observable<any> {
+  public filterData(req: FilterOption, form: RfqFilter): Observable<any> {
     return this.projectService.searchRfq(req, form);
   }
 
