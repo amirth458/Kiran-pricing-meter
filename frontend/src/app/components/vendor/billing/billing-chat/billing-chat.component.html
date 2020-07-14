@@ -35,9 +35,13 @@
         <div class="d-block mt-3">
           <div class="user-name font-italic">
             <p class="m-0">
-              <ng-container *ngIf="message?.userId == userInfo.email; else name">Admin</ng-container>
+              <ng-container *ngIf="message?.userId == userInfo.email; else name"
+                >Admin {{ message?.createdDate | date: util.dateFormatWithTime }}</ng-container
+              >
 
-              <ng-template #name>{{ message?.userId }}</ng-template>
+              <ng-template #name
+                >{{ message?.userId }} {{ message?.createdDate | date: util.dateFormatWithTime }}</ng-template
+              >
             </p>
           </div>
           <div class="body">
