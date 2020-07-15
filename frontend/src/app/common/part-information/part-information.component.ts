@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Util } from 'src/app/util/Util';
-import { RfqData, PartCustomParameter, PartDimension, Part } from 'src/app/model/part.model';
+import { RfqData, PartCustomParameter, PartDimension, Part, PartQuote } from 'src/app/model/part.model';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
@@ -20,6 +20,8 @@ export class PartInformationComponent implements OnInit {
   @Input() rfq: RfqData;
   @Input() customer: CustomerDetails;
   @Input() partDimension: PartDimension;
+  @Input() partQuote: PartQuote;
+  @Input() invoiceItems: any;
 
   countries = [];
   certs = [];
@@ -151,6 +153,7 @@ export class PartInformationComponent implements OnInit {
     }
     return '';
   }
+
   getTolerance() {
     return this.part.partCustomParameterList
       .filter(item => item.partParameterType.name !== 'SURFACE_ROUGHNESS')
