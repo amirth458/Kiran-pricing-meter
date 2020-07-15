@@ -81,8 +81,14 @@ table.rfq-table tbody td {
   font-size: 14px;
   color: var(--theme-bright-blue);
 }
+
 a.view-3d {
   text-decoration: underline;
   color: var(--theme-sky-blue);
   cursor: pointer;
+}
+
+:host .part-quote-header {
+  border-bottom: 3px solid var(--theme-light-green);
+  padding: 5px;
 }

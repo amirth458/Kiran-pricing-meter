@@ -135,5 +135,17 @@
         </table>
       </div>
     </div>
+    <div class="row p-3" *ngIf="partQuote">
+      <div class="card w-100">
+        <div class="card-header text-theme">
+          <span class="part-quote-header">
+            Proposal Quote
+          </span>
+        </div>
+        <div class="card-body">
+          <app-part-quote class="w-75" [quote]="partQuote" [invoiceItems]="invoiceItems"> </app-part-quote>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
