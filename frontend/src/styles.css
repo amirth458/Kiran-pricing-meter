@@ -663,11 +663,9 @@ app-dropdown-cell-renderer {
   font-size: 14px;
   background: transparent;
   color: var(--theme-light-green) !important;
-  /*padding-top: 7px;*/
 }
 
 .decline {
-  /*padding-top: 7px;*/
   font-size: 14px;
   background: transparent;
   color: var(--theme-orange) !important;
