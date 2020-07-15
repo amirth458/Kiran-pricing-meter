@@ -14,7 +14,7 @@
         <th class="text-theme">{{ getInvoiceItem(detail.invoiceItemId) }}</th>
         <td>{{ detail.unit }}</td>
         <td>{{ detail.unitPrice | currency: 'USD':'symbol':'1.0-2' }}</td>
-        <td>{{ detail.value | currency: 'USD':'symbol':'1.0-2' }}</td>
+        <td>{{ detail?.finalCost | currency: 'USD':'symbol':'1.0-2' }}</td>
       </tr>
       <tr *ngIf="(quote?.totalCost || 0) < (quote?.minimumOrderAmount || 0)">
         <td colspan="3">
