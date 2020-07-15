@@ -182,7 +182,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       this.columnDefs.push({
         headerName: 'Actions',
         filter: false,
-        width: 370,
+        width: 400,
         cellRenderer: 'actionCellRenderer',
         cellRendererParams: {
           action: {
@@ -196,7 +196,13 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
                 this.declineUser(param.data.id);
               }
             },
-            canEdit: false,
+            view: async param => {
+              if (param.data && param.data.user && param.data.user.id) {
+                const userId = param.data.user.id;
+                this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
+              }
+            },
+            canEdit: true,
             canCopy: false,
             canDelete: false,
             canApprove: param => {
