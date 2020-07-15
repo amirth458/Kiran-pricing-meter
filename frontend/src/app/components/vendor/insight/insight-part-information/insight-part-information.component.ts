@@ -42,7 +42,6 @@ export class InsightPartInformationComponent implements OnInit {
     if (newId === this.selectedPartId) {
       return;
     }
-
     this.spinner.show();
     this.selectedPartId = newId;
     this.part = this.parts.filter(_ => _.id === this.selectedPartId)[0];
@@ -62,7 +61,6 @@ export class InsightPartInformationComponent implements OnInit {
         this.partQuote = partQuote;
       });
     }
-
     this.pricingService.getPartDimension(this.part.id).subscribe(dimension => {
       this.partDimension = dimension;
     });
