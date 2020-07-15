@@ -251,11 +251,12 @@ export class RfqListComponent implements OnInit {
       .pipe(catchError(err => of([])))
       .subscribe((parts: any) => {
         this.parts = parts;
-        console.log(parts);
-        this.modalService.open(this.partsTemplate, {
+        const options = {
           centered: true,
-          windowClass: 'rfq-status-modal'
-        });
+          windowClass: 'rfq-status-modal',
+          scrollable: true
+        };
+        this.modalService.open(this.partsTemplate, options);
         this.spinner.hide();
       });
   }

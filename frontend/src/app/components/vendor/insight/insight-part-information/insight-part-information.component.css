@@ -3,7 +3,11 @@
   background-color: white;
 }
 
-.tab {
+:host .tab-holder {
+  overflow-x: auto;
+}
+
+:host .tab {
   height: 40px;
   width: 120px;
   display: flex;
@@ -13,10 +17,10 @@
   cursor: pointer;
 }
 
-.tab.active:after {
+:host .tab.active:after {
   content: '';
   position: absolute;
   bottom: -3px;
   width: 100%;
-  border-bottom: 4px solid var(--theme-light-green);
+  border-bottom: 6px solid var(--theme-light-green);
 }
