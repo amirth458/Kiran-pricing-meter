@@ -2,11 +2,12 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
-import { UserService } from 'src/app/service/user.service';
-import { CustomerService } from 'src/app/service/customer.service';
-import { Part, RfqData, AppPartStatus, PartQuote, PartDimension } from 'src/app/model/part.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
+import { CustomerService } from 'src/app/service/customer.service';
+import { MetadataService } from '../../../../service/metadata.service';
+import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
+import { Part, RfqData, AppPartStatus, PartQuote, PartDimension } from 'src/app/model/part.model';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-insight-part-information',
@@ -24,15 +25,20 @@ export class InsightPartInformationComponent implements OnInit {
   customer: CustomerDetails;
   partQuote: PartQuote;
   partDimension: PartDimension;
+  invoiceItems;
 
   constructor(
     protected pricingService: RfqPricingService,
     protected userService: UserService,
     protected customerService: CustomerService,
-    protected spinner: NgxSpinnerService
+    protected spinner: NgxSpinnerService,
+    public metadataService: MetadataService
   ) {}
 
   ngOnInit() {
+    this.metadataService
+      .getProcessMetaData('invoice_item')
+      .subscribe(invoiceItems => (this.invoiceItems = invoiceItems));
     if ((this.parts || []).length > 0) {
       this.selectPart(this.parts[0].id);
     }
