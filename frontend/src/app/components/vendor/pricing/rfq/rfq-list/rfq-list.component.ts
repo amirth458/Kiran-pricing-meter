@@ -2,8 +2,8 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, filter } from 'rxjs/operators';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +13,7 @@ import { Part, RfqFilter, RfqTypeEnum } from '../../../../../model/part.model';
 import { ProjectTypeEnum } from '../../../../../model/order.model';
 import { FilterOption } from '../../../../../model/vendor.model';
 import { ProjectService } from '../../../../../service/project.service';
-import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
+import { PartService } from '../../../../../service/part.service';
 import { TemplateRendererComponent } from '../../../../../common/template-renderer/template-renderer.component';
 import { Util } from '../../../../../util/Util';
 
@@ -48,7 +48,7 @@ export class RfqListComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public router: Router,
     public projectService: ProjectService,
-    public rfqPricingService: RfqPricingService,
+    public partService: PartService,
     public modalService: NgbModal,
     public datePipe: DatePipe
   ) {}
@@ -246,20 +246,17 @@ export class RfqListComponent implements OnInit {
   viewRfq(rfqId: number) {
     this.spinner.show();
     this.id = rfqId;
-    this.rfqPricingService.getRfqDetail(rfqId).subscribe((v: any) => {
-      this.parts = [];
-      const parts = [];
-      (v.rfqMediaList || []).map(media => {
-        media.partList.map(part => {
-          parts.push(part);
+    this.partService
+      .getPartsByRfqId(rfqId)
+      .pipe(catchError(err => of([])))
+      .subscribe((parts: any) => {
+        this.parts = parts;
+        console.log(parts);
+        this.modalService.open(this.partsTemplate, {
+          centered: true,
+          windowClass: 'rfq-status-modal'
         });
+        this.spinner.hide();
       });
-      this.parts = parts;
-      this.modalService.open(this.partsTemplate, {
-        centered: true,
-        windowClass: 'rfq-status-modal'
-      });
-      this.spinner.hide();
-    });
   }
 }

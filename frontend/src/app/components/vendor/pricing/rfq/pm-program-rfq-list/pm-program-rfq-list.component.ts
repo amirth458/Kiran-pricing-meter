@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { FilterOption } from '../../../../../model/vendor.model';
 import { ProjectService } from '../../../../../service/project.service';
 import { ProjectTypeEnum } from '../../../../../model/order.model';
+import { PartService } from '../../../../../service/part.service';
 import { RfqListComponent } from '../rfq-list/rfq-list.component';
-import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { RfqFilter, RfqTypeEnum } from '../../../../../model/part.model';
 
 @Component({
@@ -27,11 +27,11 @@ export class PmProgramRfqListComponent extends RfqListComponent implements OnIni
     public spinner: NgxSpinnerService,
     public router: Router,
     public projectService: ProjectService,
-    public rfqPricingService: RfqPricingService,
+    public partService: PartService,
     public modalService: NgbModal,
     public datePipe: DatePipe
   ) {
-    super(spinner, router, projectService, rfqPricingService, modalService, datePipe);
+    super(spinner, router, projectService, partService, modalService, datePipe);
   }
 
   ngOnInit() {
