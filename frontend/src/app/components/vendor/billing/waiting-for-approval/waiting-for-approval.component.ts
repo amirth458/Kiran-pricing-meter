@@ -322,12 +322,16 @@ export class WaitingForApprovalComponent implements OnInit {
         this.toastr.success('Purchase Approved.');
       },
       err => {
-        this.onCloseData();
         if (this.selectedPurchaseOrder.paymentType === PaymentType.CREDIT_CARD) {
-          this.toastr.error('Credit card transaction failed. Please talk to customer');
+          if ((err.error.message || '').toLowerCase().indexOf('your card was declined')) {
+            this.toastr.error('Credit card transaction failed. Please talk to customer');
+          } else {
+            this.toastr.error('Error While Approving Purchase.');
+          }
         } else {
           this.toastr.error('Error While Approving Purchase.');
         }
+        this.onCloseData();
       }
     );
   }
@@ -371,7 +375,6 @@ export class WaitingForApprovalComponent implements OnInit {
       this.gridOptions.api.showLoadingOverlay();
     }
     this.billingService.getPaymentList(body, filter).subscribe((res: any) => {
-      console.log({ res });
       this.rowData = res.content;
       if (this.gridOptions) {
         this.gridOptions.api.hideOverlay();
