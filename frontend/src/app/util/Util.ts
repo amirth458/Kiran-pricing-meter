@@ -124,9 +124,9 @@ export class Util {
     return value;
   }
 
-  static parseUtcDateTime(value: any): any {
+  static parseUtcDateTime(value: any, format: string = 'MM/DD/YYYY HH:mm:ss'): any {
     dayjs.extend(utc);
-    return value ? dayjs.utc(value).format('MM/DD/YYYY HH:mm:ss') : '';
+    return value ? dayjs.utc(value).format(format) : '';
   }
 
   static hasJson(value: any) {
