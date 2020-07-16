@@ -213,8 +213,9 @@
 
 <ng-template #authenticationModal let-modal>
   <app-authentication-modal
+    [userInfo]="userInfo"
     (cancel)="modal.dismiss()"
-    (ok)="setSubscription($event)"
+    (continue)="authenticateUser($event)"
   ></app-authentication-modal>
 </ng-template>
 

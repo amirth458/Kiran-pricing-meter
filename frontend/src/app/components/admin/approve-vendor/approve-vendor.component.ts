@@ -1,22 +1,22 @@
-import { Component, OnInit, ViewChild, HostListener, TemplateRef, Input, OnDestroy } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GridOptions, ColDef } from 'ag-grid-community';
+import { ColDef, GridOptions } from 'ag-grid-community';
 
 import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subscription, throwError, Subject } from 'rxjs';
+import { Observable, Subject, Subscription, throwError } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { DropdownHeaderRendererComponent } from 'src/app/common/dropdown-header-renderer/dropdown-header-renderer.component';
-import { ThrowStmt } from '@angular/compiler';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
 import { LinkVendorService } from 'src/app/service/link-vendor.service';
+import { Util } from '../../../util/Util';
 
 @Component({
   selector: 'app-approve-vendor',
@@ -40,6 +40,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   contractInfo;
   vendorId;
   totalcounts;
+  userInfo;
 
   selectedFacility = null;
 
@@ -139,7 +140,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
           checked: false,
           operators: column.operators,
           field: column.displayName,
-          query: { type: '', filter: null }
+          query: {type: '', filter: null}
         };
       })
       .filter(_ => !(this.inModal && _.name === 'Approval Status'));
@@ -183,7 +184,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       this.columnDefs.push({
         headerName: 'Actions',
         filter: false,
-        width: 400,
+        width: 550,
         cellRenderer: 'actionCellRenderer',
         cellRendererParams: {
           action: {
@@ -204,11 +205,17 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
               }
             },
             edit: param => {
-              this.modalService.open(this.authenticationModal, {
-                windowClass: 'authentication-modal',
-                centered: true,
-                size: 'lg'
-              });
+              this.userInfo = param.data.user;
+              const alreadyAuthenticated = Util.isUserAuthenticated();
+              if (!alreadyAuthenticated) {
+                this.modalService.open(this.authenticationModal, {
+                  windowClass: 'authentication-modal',
+                  centered: true,
+                  size: 'lg'
+                });
+              } else {
+                this.route.navigateByUrl(`/user-manage/vendor-details/${this.userInfo.id}/user`);
+              }
             },
             canEdit: true,
             canCopy: false,
@@ -502,14 +509,14 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
             q: this.searchQuery,
             filterColumnsRequests: this.inModal
               ? [
-                  ...this.filterColumnsRequest,
-                  {
-                    id: 8,
-                    displayName: 'Approval Status',
-                    selectedOperator: '=',
-                    searchedValue: 'true'
-                  }
-                ]
+                ...this.filterColumnsRequest,
+                {
+                  id: 8,
+                  displayName: 'Approval Status',
+                  selectedOperator: '=',
+                  searchedValue: 'true'
+                }
+              ]
               : this.filterColumnsRequest
           })
           .pipe(takeUntil(this.destroy$))
@@ -632,7 +639,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   }
 
   removeItem(ev: any) {
-    console.log({ ev });
+    console.log({ev});
     this.selectedItems = this.selectedItems.filter(item => item.node.data.id !== ev.data.id);
     this.refreshSelection();
   }
@@ -674,6 +681,19 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
         });
         this.refreshSelection();
       });
+  }
+
+  authenticateUser(v) {
+    this.modalService.dismissAll();
+    if (v.authenticated) {
+      const userId = v.userInfo.id;
+      // 1 Hour expiry time
+      const expiryTime = new Date().getTime() + 3600 * 1000;
+      localStorage.setItem('admin-userAuthenticated', JSON.stringify({authenticated: true, expiryTime}));
+      this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
+    } else if (!v.cancelled) {
+      this.toastr.error('Wrong Email OR Key entered.');
+    }
   }
 
   ngOnDestroy() {

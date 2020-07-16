@@ -46,6 +46,7 @@ export class AuthService {
     localStorage.removeItem('admin-email');
     localStorage.removeItem('admin-password');
     localStorage.removeItem('admin-user');
+    localStorage.removeItem('admin-userAuthenticated');
 
     this.store.dispatch({
       type: AppTypes.UpdateState,

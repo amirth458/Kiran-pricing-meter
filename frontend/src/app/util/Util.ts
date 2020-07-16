@@ -152,4 +152,18 @@ export class Util {
     const startDate = today.subtract(30, 'day');
     return [Util.extendUtcDate(startDate), Util.extendUtcDate(today)];
   }
+
+  static isUserAuthenticated() {
+    let alreadyAuthenticated = false;
+    const resultStr = localStorage.getItem('admin-userAuthenticated');
+    if (resultStr) {
+      const result = JSON.parse(resultStr);
+      if (result.authenticated && new Date().getTime() < result.expiryTime) {
+        alreadyAuthenticated = true;
+      } else {
+        localStorage.setItem('admin-userAuthenticated', '');
+      }
+    }
+    return alreadyAuthenticated;
+  }
 }

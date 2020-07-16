@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { GridOptions, ColDef } from 'ag-grid-community';
+import { ColDef, GridOptions } from 'ag-grid-community';
 
 import { Router } from '@angular/router';
 import { ActionCellRendererComponent } from 'src/app/common/action-cell-renderer/action-cell-renderer.component';
@@ -9,9 +9,10 @@ import { UserService } from 'src/app/service/user.service';
 import { ProcessPricingService } from 'src/app/service/process-pricing.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProcessProfile, PricingProfile } from 'src/app/model/part.model';
+import { PricingProfile, ProcessProfile } from 'src/app/model/part.model';
 import { ProcessProfileService } from 'src/app/service/process-profile.service';
 import { forkJoin } from 'rxjs';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-admin-vendor-process-pricing',
@@ -21,6 +22,8 @@ import { forkJoin } from 'rxjs';
 export class AdminVendorProcessPricingComponent implements OnInit {
   @ViewChild('deleteModal') deleteModal;
   @ViewChild('associatePricingProfiles') associatePricingProfiles;
+
+  isAdminAuthenticated = Util.isUserAuthenticated();
 
   tableControlReady = false;
   cloneData = {};
@@ -355,10 +358,10 @@ export class AdminVendorProcessPricingComponent implements OnInit {
               this.getProcessProfile();
             }
           },
-          canEdit: true,
-          canCopy: true,
-          canDelete: true,
-          canAssociatePricingProfile: true
+          canEdit: this.isAdminAuthenticated,
+          canCopy: this.isAdminAuthenticated,
+          canDelete: this.isAdminAuthenticated,
+          canAssociatePricingProfile: this.isAdminAuthenticated
         }
       }
     });
