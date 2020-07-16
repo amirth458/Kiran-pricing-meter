@@ -6,7 +6,7 @@ import { CustomerDetails } from 'src/app/model/customer.model';
 import { CustomerService } from 'src/app/service/customer.service';
 import { MetadataService } from '../../../../service/metadata.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
-import { Part, RfqData, AppPartStatus, PartQuote, PartDimension } from 'src/app/model/part.model';
+import { Part, RfqData, AppPartStatus, PartQuote, PartDimension, AppPartTypeEnum } from 'src/app/model/part.model';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { UserService } from 'src/app/service/user.service';
   styleUrls: ['./insight-part-information.component.css']
 })
 export class InsightPartInformationComponent implements OnInit {
-  @Input() parts;
+  @Input() parts: Part[];
   @Input() hideCloseButton: boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
   selectedPartId;
@@ -26,6 +26,7 @@ export class InsightPartInformationComponent implements OnInit {
   partQuote: PartQuote;
   partDimension: PartDimension;
   invoiceItems;
+  appPartTypeEnum = AppPartTypeEnum;
 
   constructor(
     protected pricingService: RfqPricingService,

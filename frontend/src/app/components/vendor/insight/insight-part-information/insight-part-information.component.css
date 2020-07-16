@@ -7,9 +7,15 @@
   overflow-x: auto;
 }
 
+:host .proposal-indicator {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0 3px;
+}
+
 :host .tab {
   height: 40px;
-  width: 120px;
+  min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,10 +23,14 @@
   cursor: pointer;
 }
 
-:host .tab.active:after {
+:host .tab.active {
+  color: var(--theme-light-green);
+}
+
+:host .tab.active:before {
   content: '';
   position: absolute;
-  bottom: -3px;
+  top: -3px;
   width: 100%;
   border-bottom: 6px solid var(--theme-light-green);
 }
