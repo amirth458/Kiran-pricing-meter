@@ -375,7 +375,6 @@ export class WaitingForApprovalComponent implements OnInit {
       this.gridOptions.api.showLoadingOverlay();
     }
     this.billingService.getPaymentList(body, filter).subscribe((res: any) => {
-      console.log({ res });
       this.rowData = res.content;
       if (this.gridOptions) {
         this.gridOptions.api.hideOverlay();
