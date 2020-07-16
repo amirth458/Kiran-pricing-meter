@@ -16,11 +16,15 @@ a:hover {
 }
 
 #sidebar .sidebar-header {
-  padding: 0px 27px;
+  /*padding: 0px 27px;*/
   text-align: center;
   font-size: 25px;
   transition: 0.5s ease;
   height: 37px;
+}
+
+#sidebar .sidebar-header:hover {
+  cursor: pointer;
 }
 
 #sidebar .sidebar-header.rotate {
