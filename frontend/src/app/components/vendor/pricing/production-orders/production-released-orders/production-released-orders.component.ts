@@ -174,9 +174,16 @@ export class ProductionReleasedOrdersComponent implements OnInit {
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
+      paginationPageSize: this.pageSize,
+      maxConcurrentDatasourceRequests: 1,
+      rowModelType: 'infinite',
       enableColResize: true,
       rowHeight: 35,
       headerHeight: 35,
+      rowBuffer: 0,
+      cacheBlockSize: this.pageSize,
+      infiniteInitialRowCount: 0,
+      cacheOverflowSize: 0,
       onRowClicked: event => {
         localStorage.setItem(
           'selectedProductionOrder',
@@ -297,6 +304,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
       }
     ];
   }
+
   pageSizeChanged(value) {
     this.gridOptions.api.paginationSetPageSize(Number(value));
   }
