@@ -3,7 +3,8 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 @Component({
   selector: 'app-action-cell-approve-renderer',
-  templateUrl: './action-cell-approve-renderer.component.html'
+  templateUrl: './action-cell-approve-renderer.component.html',
+  styleUrls: ['./action-cell-approve-renderer.component.css']
 })
 export class ActionCellApproveRendererComponent implements ICellRendererAngularComp {
   params;
@@ -27,5 +28,10 @@ export class ActionCellApproveRendererComponent implements ICellRendererAngularC
   onDecline(): void {
     this.params.action.decline(this.params);
   }
+
+  onView(): void {
+    this.params.action.view(this.params);
+  }
+
 }
 export type CellAction = (params) => void;

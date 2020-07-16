@@ -1,19 +1,13 @@
 <nav id="sidebar">
-  <div
-    (click)="toggleSideBar()"
-    [className]="sidemenuClosed ? 'sidebar-header rotate' : 'sidebar-header'"
-  >
+  <div (click)="toggleSideBar()" [className]="sidemenuClosed ? 'sidebar-header rotate' : 'sidebar-header'">
     <span>
-      <i class="fas fa-arrow-left"></i>
+      <img src="assets/image/side-bar-logo.png" width="40px" alt="Side Bar Logo" />
     </span>
   </div>
 
   <ul class="list-unstyled components">
     <ng-container *ngFor="let item of menus; let i = index">
-      <li
-        *ngIf="item.visible"
-        [className]="item.route == selectedMenu ? 'active' : ''"
-      >
+      <li *ngIf="item.visible" [className]="item.route == selectedMenu ? 'active' : ''">
         <a (click)="navigateTo(item.route, i)">
           <span class="icon">
             <i [class]="item.icon"></i>

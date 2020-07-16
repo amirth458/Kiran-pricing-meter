@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { BillingService } from 'src/app/service/billing.service';
 import { PaymentDetails, PaymentStatusTypes } from 'src/app/model/billing.model';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-billing-chat',
@@ -20,6 +21,7 @@ export class BillingChatComponent implements OnInit {
   paymentStatusType;
   loading = false;
   PaymentStatusTypes = PaymentStatusTypes;
+  util = Util;
 
   chatForm = this.fb.group({
     note: ['', Validators.required]
