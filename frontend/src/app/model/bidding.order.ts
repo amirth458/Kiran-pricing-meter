@@ -55,3 +55,14 @@ export enum BidConnectStatusEnum {
   RELEASED_TO_CUSTOMER = 3,
   COMPLETE = 4
 }
+
+export interface PmProjectReleaseQueue {
+  bidPmProjectId: number;
+  customerName: Array<string>;
+  userName: Array<string>;
+  orderIds: Array<number>;
+  partIds: Array<number>;
+  rfqIds: Array<number>;
+  bidPmProjectStatus: string;
+  totalRowCount: number;
+}
