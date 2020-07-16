@@ -26,6 +26,11 @@ export class ProjectService {
     return params;
   }
 
+  getAllSuborderReleaseQueue(filter: FilterOption, searchOpt: any): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project`;
+    return this.http.post<any>(url, searchOpt, { params: this.buildParameters(filter) });
+  }
+
   getProjectReleaseQueue(filter: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/part/search`;
     return this.http.post<any>(
