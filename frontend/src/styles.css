@@ -581,6 +581,10 @@ app-dropdown-cell-renderer {
   max-width: 450px;
 }
 
+.authentication-modal .modal-dialog {
+  max-width: 500px;
+}
+
 .break-down-modal .modal-dialog .title,
 .order-status-modal .modal-dialog .title,
 .rfq-status-modal .modal-dialog .title {
@@ -591,6 +595,7 @@ app-dropdown-cell-renderer {
 .break-down-modal .modal-title,
 .order-status-modal .modal-title,
 .change-account-modal .modal-title,
+.authentication-modal .modal-title,
 .rfq-status-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
   color: var(--them-dark-blue-opaque) !important;

@@ -31,6 +31,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   @ViewChild('declineModal') declineModal;
   @ViewChild('subscriptionCell') subscriptionCell;
   @ViewChild('subscriptionModal') subscriptionModal;
+  @ViewChild('authenticationModal') authenticationModal;
   @ViewChild('changeVendorAccountCell') changeVendorAccountCell;
   @ViewChild('unlockCell') unlockCell;
 
@@ -201,6 +202,13 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
                 const userId = param.data.user.id;
                 this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
               }
+            },
+            edit: param => {
+              this.modalService.open(this.authenticationModal, {
+                windowClass: 'authentication-modal',
+                centered: true,
+                size: 'lg'
+              });
             },
             canEdit: true,
             canCopy: false,
