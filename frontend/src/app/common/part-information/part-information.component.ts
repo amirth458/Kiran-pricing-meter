@@ -4,7 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Util } from 'src/app/util/Util';
-import { RfqData, PartCustomParameter, PartDimension, Part, PartQuote } from 'src/app/model/part.model';
+import {
+  RfqData,
+  PartCustomParameter,
+  PartDimension,
+  Part,
+  PartQuote,
+  AppPartTypeEnum
+} from 'src/app/model/part.model';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
@@ -30,6 +37,7 @@ export class PartInformationComponent implements OnInit {
   operatorTypes = [];
 
   measurementUnits;
+  appPartTypeEnum = AppPartTypeEnum;
 
   constructor(
     public modalService: NgbModal,
