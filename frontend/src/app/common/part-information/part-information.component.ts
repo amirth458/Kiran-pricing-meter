@@ -4,14 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Util } from 'src/app/util/Util';
-import {
-  RfqData,
-  PartCustomParameter,
-  PartDimension,
-  Part,
-  PartQuote,
-  AppPartTypeEnum
-} from 'src/app/model/part.model';
+import { RfqData, PartCustomParameter, PartDimension, Part, PartQuote } from 'src/app/model/part.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { ForgeService } from 'src/app/service/forge.service';
