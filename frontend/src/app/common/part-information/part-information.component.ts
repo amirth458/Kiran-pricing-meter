@@ -4,8 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Util } from 'src/app/util/Util';
-import { RfqData, PartCustomParameter, PartDimension, Part, PartQuote } from 'src/app/model/part.model';
-import { MetadataConfig } from 'src/app/model/metadata.model';
+import {
+  RfqData,
+  PartCustomParameter,
+  PartDimension,
+  Part,
+  PartQuote,
+  AppPartTypeEnum
+} from 'src/app/model/part.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { ForgeService } from 'src/app/service/forge.service';
@@ -16,20 +22,26 @@ import { ForgeService } from 'src/app/service/forge.service';
   styleUrls: ['./part-information.component.css']
 })
 export class PartInformationComponent implements OnInit {
-  @Input() part: Part;
+  partInfo: Part;
+  @Input()
+  set part(value: Part) {
+    this.partInfo = value;
+  }
+  get part(): Part {
+    return this.partInfo;
+  }
   @Input() rfq: RfqData;
   @Input() customer: CustomerDetails;
   @Input() partDimension: PartDimension;
   @Input() partQuote: PartQuote;
   @Input() invoiceItems: any;
 
-  countries = [];
-  certs = [];
-  postProcesses = [];
-  antiMatchCerts = [];
-  operatorTypes = [];
-
-  measurementUnits;
+  @Input() countries = [];
+  @Input() certs = [];
+  @Input() postProcesses = [];
+  @Input() antiMatchCerts = [];
+  @Input() operatorTypes = [];
+  @Input() measurementUnits;
 
   constructor(
     public modalService: NgbModal,
@@ -39,15 +51,10 @@ export class PartInformationComponent implements OnInit {
     public forgeService: ForgeService
   ) {}
 
-  ngOnInit() {
-    this.metadataService
-      .getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE)
-      .subscribe(v => (this.measurementUnits = v));
-    this.metadataService.getMetaData('country').subscribe(v => (this.countries = v));
-    this.metadataService.getMetaData('vendor_certificate').subscribe(v => (this.certs = v));
-    this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION).subscribe(v => (this.postProcesses = v));
-    this.metadataService.getMetaData('core_competence').subscribe(v => (this.antiMatchCerts = v));
-    this.metadataService.getMetaData('operator_type').subscribe(v => (this.operatorTypes = v));
+  ngOnInit() {}
+
+  isProposalPart(part: Part): boolean {
+    return Util.isProposalPart(part);
   }
 
   getDimension() {
