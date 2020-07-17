@@ -160,10 +160,10 @@ export class RfqListComponent implements OnInit {
         filter: false,
         tooltipField: 'rfqCreatedAt',
         valueFormatter: dt => {
-          // let value = (dt.value || '').toString();
-          // value = value.indexOf('+') > -1 ? `${value.split('+')[0]}Z` : value;
-          // return this.datePipe.transform(value, Util.dateFormatWithTime);
-          return dt.value ? Util.parseUtcDateTime(dt.value, 'MM/DD/YYYY HH:mm') : '';
+          let value = (dt.value || '').toString();
+          value = value.indexOf('+') > -1 ? `${value.split('+')[0]}Z` : value;
+          return this.datePipe.transform(value, Util.dateFormatWithTime);
+          // return dt.value ? Util.parseUtcDateTime(dt.value, 'MM/DD/YYYY HH:mm') : '';
         }
       },
       {
