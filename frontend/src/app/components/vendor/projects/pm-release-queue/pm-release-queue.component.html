@@ -3,7 +3,7 @@
     <div class="d-flex header justify-content-between align-items-center">
       <app-rfq-filter [placeholder]="placeholderText" (formChange)="filter$.next($event)"></app-rfq-filter>
     </div>
-    <div class="ag-theme-balham w-100 h-100 position-relative">
+    <div class="ag-theme-balham w-100 h-100 position-relative bid-order-grid">
       <ag-grid-angular
         class="ag-theme-balham w-100 h-100"
         [gridOptions]="gridOptions"
@@ -26,7 +26,9 @@
 
 <ng-template #partsCell let-row>
   <div class="d-flex flex-row align-items-center w-100 h-100">
-    <a class="text-blue text-underline" (click)="viewRfq(row, $event)">{{ (row?.partIds || []).join(',') }}</a>
+    <a href="javascript:void(0)" class="parts-link" (click)="viewRfq(row, $event)">{{
+      (row?.partIds || []).join(',')
+    }}</a>
   </div>
 </ng-template>
 

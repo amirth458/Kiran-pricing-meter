@@ -8,6 +8,13 @@
   justify-content: space-between;
 }
 
+:host ::ng-deep .bid-order-grid .parts-link {
+  color: #2780eb !important;
+  font-size: 12px;
+  text-align: center;
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
