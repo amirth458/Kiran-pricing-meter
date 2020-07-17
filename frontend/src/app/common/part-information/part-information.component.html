@@ -82,16 +82,20 @@
               <td>{{ getCustomerIndustries() }}</td>
             </tr>
             <tr>
-              <th scope="row">Anti-Match Eligibility</th>
-              <td>{{ getAntiMatch() }}</td>
+              <th scope="row">Eligible Manufacturer Type</th>
+              <td>{{ rfq?.projectProfile?.eligibleManufacturerTypes || '' }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Part Certification</th>
+              <td>{{ rfq?.projectProfile?.partCerts || '' }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Facility Certification</th>
+              <td>{{ rfq?.projectProfile?.facilityCerts || '' }}</td>
             </tr>
             <tr>
               <th scope="row">Permitted Countries</th>
               <td>{{ getPermittedCountries() }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Required Certs</th>
-              <td>{{ getRequiredCerts() }}</td>
             </tr>
             <tr>
               <th scope="row">NDA</th>
