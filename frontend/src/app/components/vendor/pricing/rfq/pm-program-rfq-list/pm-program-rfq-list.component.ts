@@ -22,6 +22,7 @@ import { RfqFilter, RfqTypeEnum } from '../../../../../model/part.model';
 export class PmProgramRfqListComponent extends RfqListComponent implements OnInit {
   rfqType = RfqTypeEnum.PM_PROGRAM_RFQ;
   projectType = ProjectTypeEnum.PRODUCTION_PROJECT;
+  sorting = 'program_rfq_id,desc';
 
   constructor(
     public spinner: NgxSpinnerService,
