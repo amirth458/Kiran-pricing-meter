@@ -9,7 +9,7 @@ import { PmReleaseQueueComponent } from '../pm-release-queue/pm-release-queue.co
 @Component({
   selector: 'app-issued-proposal',
   templateUrl: './../pm-release-queue/pm-release-queue.component.html',
-  styleUrls: ['../../pm-release-queue/pm-release-queue.component.css', './issued-proposal.component.css']
+  styleUrls: ['./../pm-release-queue/pm-release-queue.component.css', './issued-proposal.component.css']
 })
 export class IssuedProposalComponent extends PmReleaseQueueComponent implements OnInit {
   constructor(public spinner: NgxSpinnerService, public router: Router, public biddingService: BiddingService) {

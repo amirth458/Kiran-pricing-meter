@@ -9,7 +9,7 @@ import { PmReleaseQueueComponent } from '../pm-release-queue/pm-release-queue.co
 @Component({
   selector: 'app-customer-accepted',
   templateUrl: './../pm-release-queue/pm-release-queue.component.html',
-  styleUrls: ['../../pm-release-queue/pm-release-queue.component.css', './customer-accepted.component.css']
+  styleUrls: ['./../pm-release-queue/pm-release-queue.component.css', './customer-accepted.component.css']
 })
 export class CustomerAcceptedComponent extends PmReleaseQueueComponent implements OnInit {
   constructor(public spinner: NgxSpinnerService, public router: Router, public biddingService: BiddingService) {
