@@ -3,7 +3,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GridOptions, ColDef } from 'ag-grid-community';
+import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -971,11 +971,16 @@ export class VendorDetailsComponent implements OnInit {
     this.from = DefaultEmails.from;
     this.to = DefaultEmails.to;
     this.cc = [];
-    this.bcc = row.userEmail ? [row.userEmail] : null;
-    this.modalService.open(this.sendMailModal, {
-      centered: true,
-      size: 'lg'
-    });
+    this.bcc = row && row.userEmail ? [row.userEmail] : null;
+    if (!this.bcc) {
+      this.bcc = this.gridOptions[4].api.getSelectedRows().map(row => row.userEmail);
+    }
+    if (this.bcc && this.bcc.length > 0) {
+      this.modalService.open(this.sendMailModal, {
+        centered: true,
+        size: 'lg'
+      });
+    }
   }
 
   openDateTimeSelector(row) {

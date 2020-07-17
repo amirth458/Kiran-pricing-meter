@@ -30,6 +30,7 @@ export class RfqListComponent implements OnInit {
   pageSize = 10;
   placeholderText = 'Customer, RFQ, Part, Order';
   totalRows: number;
+  public sorting = 'rfq_id,desc';
 
   rfqType = RfqTypeEnum.AUTO_RFQ;
   rfqTypeEnum = RfqTypeEnum;
@@ -215,7 +216,7 @@ export class RfqListComponent implements OnInit {
         const req: FilterOption = {
           page: params.startRow / this.pageSize,
           size: this.pageSize,
-          sort: 'rfq_id,asc'
+          sort: this.sorting
         };
         this.spinner.show('loadingPanel');
         this.filterData(req, form).subscribe(data => {

@@ -133,7 +133,7 @@
       <button
         class="btn theme btn-primary px-4 py-2 mr-4"
         *ngIf="type === 'confirmation'"
-        [disabled]="(bidding || []).length === 0"
+        [disabled]="(bidding || []).length === 0 || gridOptions[4]?.api?.getSelectedRows()?.length === 0"
         (click)="sendMail()"
       >
         <small><i class="far fa-envelope"></i> &nbsp;Send Mail</small>

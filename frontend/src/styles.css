@@ -599,10 +599,15 @@ app-dropdown-cell-renderer {
 .order-status-modal .modal-title,
 .change-account-modal .modal-title,
 .authentication-modal .modal-title,
+.decline-comments-modal .modal-title,
 .rfq-status-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
   color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
+}
+
+button:focus {
+  outline: none;
 }
 
 .change-account-modal .btn {
