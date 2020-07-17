@@ -83,30 +83,6 @@ export class PartInformationComponent implements OnInit {
     );
   }
 
-  getAntiMatch() {
-    return (
-      this.rfq &&
-      (this.rfq.projectProfile.antiMatchCertIds || [])
-        .map(item => {
-          const found = this.antiMatchCerts && this.antiMatchCerts.find(certs => certs.id === item);
-          return found ? found.name : item;
-        })
-        .join(', ')
-    );
-  }
-
-  getRequiredCerts() {
-    return (
-      this.rfq &&
-      (this.rfq.projectProfile.vendorCertIds || [])
-        .map(item => {
-          const found = this.certs && this.certs.find(cert => cert.id === item);
-          return found && found.name;
-        })
-        .join(', ')
-    );
-  }
-
   download() {
     let url = this.part.rfqMedia.media.location;
     let a = document.createElement('a');
