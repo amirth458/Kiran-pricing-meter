@@ -104,14 +104,6 @@ export class PmReleaseQueueComponent implements OnInit {
         sortable: true,
         filter: false,
         tooltipField: 'partIds'
-      },
-      {
-        headerName: 'Status',
-        field: 'bidPmProjectStatus',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'bidPmProjectStatus'
       }
     ];
   }
