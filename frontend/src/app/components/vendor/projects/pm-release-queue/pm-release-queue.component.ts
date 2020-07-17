@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { BehaviorSubject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+import { BiddingService } from '../../../../service/bidding.service';
+import { FilterOption } from '../../../../model/vendor.model';
+import { PmProjectRequest } from '../../../../model/bidding.order';
 
 @Component({
   selector: 'app-pm-release-queue',
@@ -11,7 +19,7 @@ import { BehaviorSubject } from 'rxjs';
 export class PmReleaseQueueComponent implements OnInit {
   gridOptions: GridOptions;
   columnDefs: ColDef[] = [];
-  pageSize = 10;
+  pageSize = 50;
 
   placeholderText = 'Customer, RFQ, Part, Order';
   totalRows: number;
@@ -19,7 +27,7 @@ export class PmReleaseQueueComponent implements OnInit {
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor() {}
+  constructor(public spinner: NgxSpinnerService, public router: Router, public biddingService: BiddingService) {}
 
   ngOnInit() {
     this.initColumnDef();
@@ -37,6 +45,14 @@ export class PmReleaseQueueComponent implements OnInit {
       cacheOverflowSize: 0,
       onRowClicked: event => {}
     };
+    this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
+      this.apply({
+        bidPmProjectStatusIds: '1,2,3',
+        searchValue: form.query || null,
+        beginDate: form.dateRange[0],
+        endDate: form.dateRange[1]
+      });
+    });
   }
 
   initColumnDef() {
@@ -98,6 +114,35 @@ export class PmReleaseQueueComponent implements OnInit {
         tooltipField: 'bidPmProjectStatus'
       }
     ];
+  }
+
+  apply(form: PmProjectRequest) {
+    const dataSource = {
+      rowCount: null,
+      getRows: params => {
+        const req: FilterOption = {
+          page: params.startRow / this.pageSize,
+          size: this.pageSize,
+          sort: ''
+        };
+        this.spinner.show('loadingPanel');
+        this.filterData(req, form).subscribe(data => {
+          this.spinner.hide('loadingPanel');
+          this.totalRows = data.totalElements || 0;
+          const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
+          if (data && data.totalElements) {
+            params.successCallback(data.content || [], lastRow);
+          }
+        });
+      }
+    };
+    if (this.gridOptions && this.gridOptions.api) {
+      this.gridOptions.api.setDatasource(dataSource);
+    }
+  }
+
+  public filterData(req: FilterOption, form: PmProjectRequest): Observable<any> {
+    return this.biddingService.getPmProjectReleaseQueue(req, form);
   }
 
   onGridReady(event) {
