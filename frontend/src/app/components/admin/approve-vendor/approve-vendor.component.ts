@@ -639,7 +639,6 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
   }
 
   removeItem(ev: any) {
-    console.log({ev});
     this.selectedItems = this.selectedItems.filter(item => item.node.data.id !== ev.data.id);
     this.refreshSelection();
   }

@@ -478,6 +478,8 @@ export class AdminVendorProcessPricingComponent implements OnInit {
   }
 
   addProcessPricing() {
-    this.route.navigateByUrl(this.route.url + '/add');
+    if (this.isAdminAuthenticated) {
+      this.route.navigateByUrl(this.route.url + '/add');
+    }
   }
 }

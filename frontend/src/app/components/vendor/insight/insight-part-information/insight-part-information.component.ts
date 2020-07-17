@@ -1,13 +1,19 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { CustomerDetails } from 'src/app/model/customer.model';
 import { CustomerService } from 'src/app/service/customer.service';
 import { MetadataService } from '../../../../service/metadata.service';
+import { MetadataConfig } from '../../../../model/metadata.model';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { Part, RfqData, AppPartStatus, PartQuote, PartDimension } from 'src/app/model/part.model';
 import { UserService } from 'src/app/service/user.service';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-insight-part-information',
@@ -15,17 +21,37 @@ import { UserService } from 'src/app/service/user.service';
   styleUrls: ['./insight-part-information.component.css']
 })
 export class InsightPartInformationComponent implements OnInit {
-  @Input() parts;
+  partList: Part[];
+  @Input()
+  set parts(value: Part[]) {
+    this.partList = value;
+    if ((value || []).length > 0) {
+      const part = value[0];
+      this.id$.next(part.id);
+      this.getRfqData(part.rfqMedia.projectRfqId);
+    }
+  }
+  get parts(): Part[] {
+    return this.partList;
+  }
+
   @Input() hideCloseButton: boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
-  selectedPartId;
 
-  part: Part;
+  id$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  selected$: Observable<Part>;
+  customer$: Observable<CustomerDetails>;
+  dimension$: Observable<PartDimension>;
+  quote$: Observable<PartQuote>;
+
   rfq: RfqData;
-  customer: CustomerDetails;
-  partQuote: PartQuote;
-  partDimension: PartDimension;
   invoiceItems;
+  countries = [];
+  certs = [];
+  postProcesses = [];
+  antiMatchCerts = [];
+  operatorTypes = [];
+  measurementUnits;
 
   constructor(
     protected pricingService: RfqPricingService,
@@ -36,42 +62,62 @@ export class InsightPartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.selected$ = this.id$.pipe(
+      filter(value => value !== null),
+      switchMap((value: number) => Observable.create((observer: any) => observer.next(this.getSelectedPart(value))))
+    );
+    this.dimension$ = this.id$.pipe(
+      filter(value => value !== null),
+      switchMap((value: number) => this.pricingService.getPartDimension(value))
+    );
+    this.customer$ = this.id$.pipe(
+      filter(value => value !== null),
+      map(value => this.getSelectedPart(value)),
+      filter(value => value !== null),
+      switchMap((value: Part) => this.customerService.getCustomerDetailsById(value.rfqMedia.media.customerId))
+    );
+    this.quote$ = this.id$.pipe(
+      filter(value => value !== null),
+      map(value => this.getSelectedPart(value)),
+      filter(value => value !== null),
+      tap(() => this.spinner.show('loadingQuote')),
+      switchMap((value: Part) => {
+        const isExpired = value.partStatusType.name === AppPartStatus.QUOTE_EXPIRED;
+        return isExpired
+          ? this.pricingService.getExpiredPartQuoteDetails(value.id)
+          : this.pricingService.getPartQuote(value.id);
+      }),
+      tap(() => this.spinner.hide('loadingQuote'))
+    );
     this.metadataService
       .getProcessMetaData('invoice_item')
       .subscribe(invoiceItems => (this.invoiceItems = invoiceItems));
-    if ((this.parts || []).length > 0) {
-      this.selectPart(this.parts[0].id);
-    }
+    this.metadataService
+      .getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE)
+      .subscribe(v => (this.measurementUnits = v));
+    this.metadataService.getMetaData('country').subscribe(v => (this.countries = v));
+    this.metadataService.getMetaData('vendor_certificate').subscribe(v => (this.certs = v));
+    this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION).subscribe(v => (this.postProcesses = v));
+    this.metadataService.getMetaData('core_competence').subscribe(v => (this.antiMatchCerts = v));
+    this.metadataService.getMetaData('operator_type').subscribe(v => (this.operatorTypes = v));
   }
 
-  selectPart(newId) {
-    if (newId === this.selectedPartId) {
-      return;
-    }
-    this.spinner.show();
-    this.selectedPartId = newId;
-    this.part = this.parts.filter(_ => _.id === this.selectedPartId)[0];
+  isProposalPart(part: Part): boolean {
+    return Util.isProposalPart(part);
+  }
 
-    this.pricingService.getRfqDetail(this.part.rfqMedia.projectRfq.id).subscribe(rfq => {
-      this.rfq = rfq;
-    });
-    this.customerService.getCustomerDetailsById(this.part.rfqMedia.media.customerId).subscribe(customer => {
-      this.customer = customer;
-    });
-    if (this.part.partStatusType.name === AppPartStatus.QUOTE_EXPIRED) {
-      this.pricingService.getExpiredPartQuoteDetails(this.part.id).subscribe(partQuote => {
-        this.partQuote = partQuote;
-      });
-    } else {
-      this.pricingService.getPartQuote(this.part.id).subscribe(partQuote => {
-        this.partQuote = partQuote;
-      });
-    }
-    this.pricingService.getPartDimension(this.part.id).subscribe(dimension => {
-      this.partDimension = dimension;
-    });
+  getSelectedPart(id: number) {
+    const parts = this.parts.filter(part => part.id === id);
+    return (parts.length > 0 ? parts[0] : null) as Part;
+  }
 
-    this.spinner.hide();
+  getRfqData(rfqId: number) {
+    this.pricingService.getRfqDetail(rfqId).subscribe((rfq: RfqData) => (this.rfq = rfq));
+  }
+
+  beforeChange($event: NgbTabChangeEvent) {
+    const id = Number($event.nextId);
+    this.id$.next(id);
   }
 
   onClose() {

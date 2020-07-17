@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './authentication-modal.component.html',
   styleUrls: ['./authentication-modal.component.css']
 })
-export class AuthenticationModalComponent implements OnInit {
+export class AuthenticationModalComponent implements OnInit, OnDestroy {
   @Input() userInfo;
   @Output() cancel: EventEmitter<any> = new EventEmitter<any>();
   @Output() continue: EventEmitter<any> = new EventEmitter<any>();
@@ -60,5 +60,9 @@ export class AuthenticationModalComponent implements OnInit {
           }
         );
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }

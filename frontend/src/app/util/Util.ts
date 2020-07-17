@@ -1,4 +1,10 @@
-import { PartDimensionValue, PartCustomParameter, Address, AddressDelimiter } from '../model/part.model';
+import {
+  PartDimensionValue,
+  PartCustomParameter,
+  Address,
+  AddressDelimiter,
+  AppPartTypeEnum
+} from '../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
 
 declare var require: any;
@@ -165,5 +171,12 @@ export class Util {
       }
     }
     return alreadyAuthenticated;
+  }
+
+  static isProposalPart(part: Part): boolean {
+    return (
+      part.partType.name === AppPartTypeEnum.PRODUCTION_PROPOSAL_PART ||
+      part.partType.name === AppPartTypeEnum.CONNECT_PROPOSAL_PART
+    );
   }
 }
