@@ -1,4 +1,4 @@
-<div class="wrapper shadow d-flex flex-column">
+<div class="wrapper shadow d-flex flex-column position-relative">
   <ngb-tabset
     [destroyOnHide]="true"
     [justify]="'start'"
@@ -32,4 +32,14 @@
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
+  <ngx-spinner
+    [name]="'loadingQuote'"
+    bdColor="#ffffff70"
+    size="small"
+    color="#74bf09"
+    type="ball-clip-rotate"
+    [fullScreen]="false"
+  >
+    <p class="m-0">Loading...</p>
+  </ngx-spinner>
 </div>

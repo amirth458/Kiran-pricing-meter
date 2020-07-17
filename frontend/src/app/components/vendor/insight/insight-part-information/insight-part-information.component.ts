@@ -80,14 +80,14 @@ export class InsightPartInformationComponent implements OnInit {
       filter(value => value !== null),
       map(value => this.getSelectedPart(value)),
       filter(value => value !== null),
-      tap(() => this.spinner.show()),
+      tap(() => this.spinner.show('loadingQuote')),
       switchMap((value: Part) => {
         const isExpired = value.partStatusType.name === AppPartStatus.QUOTE_EXPIRED;
         return isExpired
           ? this.pricingService.getExpiredPartQuoteDetails(value.id)
           : this.pricingService.getPartQuote(value.id);
       }),
-      tap(() => this.spinner.hide())
+      tap(() => this.spinner.hide('loadingQuote'))
     );
     this.metadataService
       .getProcessMetaData('invoice_item')
@@ -112,11 +112,7 @@ export class InsightPartInformationComponent implements OnInit {
   }
 
   getRfqData(rfqId: number) {
-    this.spinner.show();
-    this.pricingService.getRfqDetail(rfqId).subscribe((rfq: RfqData) => {
-      this.rfq = rfq;
-      this.spinner.hide();
-    });
+    this.pricingService.getRfqDetail(rfqId).subscribe((rfq: RfqData) => (this.rfq = rfq));
   }
 
   beforeChange($event: NgbTabChangeEvent) {
