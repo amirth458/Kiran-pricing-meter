@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, filter } from 'rxjs/operators';
 
 import { BiddingService } from '../../../../service/bidding.service';
 import { FilterOption } from '../../../../model/vendor.model';
+import { PartService } from '../../../../service/part.service';
+import { Part } from '../../../../model/part.model';
 import { PmProjectRequest } from '../../../../model/bidding.order';
+import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-pm-release-queue',
@@ -17,17 +21,30 @@ import { PmProjectRequest } from '../../../../model/bidding.order';
   styleUrls: ['./pm-release-queue.component.css']
 })
 export class PmReleaseQueueComponent implements OnInit {
+  @ViewChild('partsTemplate') partsTemplate: TemplateRef<any>;
+  @ViewChild('partsCell') partsCell: TemplateRef<any>;
+
   gridOptions: GridOptions;
   columnDefs: ColDef[] = [];
   pageSize = 50;
-
+  frameworkComponents = {
+    templateRenderer: TemplateRendererComponent
+  };
   placeholderText = 'Customer, RFQ, Part, Order';
   totalRows: number;
+  id: number;
+  parts: Array<Part>;
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor(public spinner: NgxSpinnerService, public router: Router, public biddingService: BiddingService) {}
+  constructor(
+    public spinner: NgxSpinnerService,
+    public router: Router,
+    public biddingService: BiddingService,
+    public partService: PartService,
+    public modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.initColumnDef();
@@ -103,7 +120,11 @@ export class PmReleaseQueueComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'partIds'
+        tooltipField: 'partIds',
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.partsCell
+        }
       }
     ];
   }
@@ -140,5 +161,29 @@ export class PmReleaseQueueComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  closeModalWindow() {
+    this.id = null;
+    this.parts.length = 0;
+    this.modalService.dismissAll();
+  }
+
+  viewRfq(row: any) {
+    this.spinner.show();
+    this.id = row.bidPmProjectId || '';
+    this.partService
+      .getPartsById(row.partIds || [])
+      .pipe(catchError(err => of([])))
+      .subscribe((parts: any) => {
+        this.parts = parts;
+        const options = {
+          centered: true,
+          windowClass: 'rfq-status-modal',
+          scrollable: true
+        };
+        this.modalService.open(this.partsTemplate, options);
+        this.spinner.hide();
+      });
   }
 }
