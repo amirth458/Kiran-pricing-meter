@@ -162,7 +162,6 @@ export class RfqListComponent implements OnInit {
         valueFormatter: dt => {
           let value = (dt.value || '').toString();
           value = value.indexOf('+') > -1 ? `${value.split('+')[0]}Z` : value;
-          console.log(value);
           return this.datePipe.transform(value, Util.dateFormatWithTime);
           // return dt.value ? Util.parseUtcDateTime(dt.value, 'MM/DD/YYYY HH:mm') : '';
         }
