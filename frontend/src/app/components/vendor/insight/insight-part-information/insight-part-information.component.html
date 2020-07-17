@@ -1,31 +1,50 @@
-<div class="wrapper shadow d-flex flex-column">
-  <div class="d-flex align-items-center justify-content-between border tab-holder">
-    <div class="tabs d-flex">
-      <div
-        class="tab"
-        *ngFor="let part of parts"
-        [ngClass]="{ active: part?.id === selectedPartId }"
-        (click)="selectPart(part?.id)"
-      >
-        {{ part?.id }}
-      </div>
-    </div>
-    <div class="action mr-3" *ngIf="!hideCloseButton">
-      <div class="close-btn" (click)="onClose()">
-        <i class="fa fa-times"></i>
-      </div>
+<div class="wrapper shadow d-flex flex-column position-relative">
+  <div class="action-btn position-absolute" *ngIf="!hideCloseButton">
+    <div class="close-btn" (click)="onClose()">
+      <i class="fa fa-times"></i>
     </div>
   </div>
-  <div class="content flex-grow-1 border rounded">
-    <app-part-information
-      *ngIf="part"
-      [part]="part"
-      [rfq]="rfq"
-      [customer]="customer"
-      [partDimension]="partDimension"
-      [invoiceItems]="invoiceItems"
-      [partQuote]="partQuote"
-    >
-    </app-part-information>
-  </div>
+  <ngb-tabset
+    [destroyOnHide]="true"
+    [justify]="'start'"
+    (tabChange)="beforeChange($event)"
+    *ngIf="(parts?.length || 0) > 0"
+  >
+    <ngb-tab *ngFor="let partInfo of parts" [id]="partInfo.id.toString()">
+      <ng-template ngbTabTitle>
+        {{ partInfo?.id }}
+        <ng-container *ngIf="isProposalPart(partInfo)">
+          <span class="proposal-indicator p-0 m-0">(proposal)</span>
+        </ng-container>
+      </ng-template>
+      <ng-template ngbTabContent>
+        <app-part-information
+          *ngIf="selected$ | async"
+          [part]="selected$ | async"
+          [rfq]="rfq"
+          [customer]="customer$ | async"
+          [partDimension]="dimension$ | async"
+          [partQuote]="quote$ | async"
+          [invoiceItems]="invoiceItems"
+          [countries]="countries"
+          [measurementUnits]="measurementUnits"
+          [certs]="certs"
+          [postProcesses]="postProcesses"
+          [antiMatchCerts]="antiMatchCerts"
+          [operatorTypes]="operatorTypes"
+        >
+        </app-part-information>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+  <ngx-spinner
+    [name]="'loadingQuote'"
+    bdColor="#ffffff70"
+    size="small"
+    color="#74bf09"
+    type="ball-clip-rotate"
+    [fullScreen]="false"
+  >
+    <p class="m-0">Loading...</p>
+  </ngx-spinner>
 </div>

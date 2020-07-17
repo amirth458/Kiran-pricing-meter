@@ -33,5 +33,8 @@ export class ActionCellApproveRendererComponent implements ICellRendererAngularC
     this.params.action.view(this.params);
   }
 
+  onEdit(): void {
+    this.params.action.edit(this.params);
+  }
 }
 export type CellAction = (params) => void;

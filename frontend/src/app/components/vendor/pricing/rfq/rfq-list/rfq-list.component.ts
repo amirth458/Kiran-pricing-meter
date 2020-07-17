@@ -73,7 +73,7 @@ export class RfqListComponent implements OnInit {
         row.event.stopPropagation();
         const rowData = row.data || (null as any);
         if (rowData) {
-          this.viewRfq(rowData.rfqId);
+          this.viewRfq(rowData.programRfqId || rowData.rfqId);
         }
       }
     };
@@ -96,15 +96,11 @@ export class RfqListComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Program RFQ ID',
-        field: 'rfqId',
+        field: 'programRfqId',
         hide: !this.isProgramRfq(),
         sortable: true,
         filter: false,
-        tooltipField: 'rfqId',
-        valueFormatter: dt => {
-          const row: any = dt.data || {};
-          return row.connectRfqId || row.pmRfqId || '';
-        }
+        tooltipField: 'programRfqId'
       },
       {
         headerName: 'RFQ ID',
@@ -113,6 +109,14 @@ export class RfqListComponent implements OnInit {
         sortable: true,
         filter: false,
         tooltipField: 'rfqId'
+      },
+      {
+        headerName: 'Customer Order Id',
+        field: 'customerOrderId',
+        hide: !this.isProgramRfq(),
+        sortable: true,
+        filter: false,
+        tooltipField: 'customerOrderId'
       },
       {
         headerName: 'RFQ Profile',

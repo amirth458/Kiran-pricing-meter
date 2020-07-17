@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { MachineService } from 'src/app/service/machine.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-admin-vendor-details-machine',
@@ -15,6 +16,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AdminVendorDetailsMachineComponent implements OnInit {
   @ViewChild('modal') modal;
+
+  isAdminAuthenticated = Util.isUserAuthenticated();
+
   columnDefs = [
     {
       headerName: 'Machine No',
@@ -82,9 +86,9 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
             this.cloneData = JSON.parse(JSON.stringify(param.data));
             this.copyRow();
           },
-          canEdit: true,
-          canCopy: true,
-          canDelete: true
+          canEdit: this.isAdminAuthenticated,
+          canCopy: this.isAdminAuthenticated,
+          canDelete: this.isAdminAuthenticated
         }
       }
     }
@@ -180,6 +184,8 @@ export class AdminVendorDetailsMachineComponent implements OnInit {
   }
 
   addMachine() {
-    this.route.navigateByUrl(this.route.url + '/add');
+    if (this.isAdminAuthenticated) {
+      this.route.navigateByUrl(this.route.url + '/add');
+    }
   }
 }

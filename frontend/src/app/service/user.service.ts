@@ -454,4 +454,11 @@ export class UserService {
     const url = `${environment.apiBaseUrl}/admin/user/unlock/${userId}`;
     return this.http.put(url, {});
   }
+
+  authenticateUser(email: string, secretKey: string) {
+    return this.http.post(environment.apiBaseUrl + '/admin/user-impersonation/validate', {
+      email,
+      key: secretKey
+    });
+  }
 }
