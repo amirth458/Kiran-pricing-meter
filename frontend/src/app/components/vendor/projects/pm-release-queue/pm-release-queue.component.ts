@@ -5,7 +5,7 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { catchError, filter } from 'rxjs/operators';
 
 import { BiddingService } from '../../../../service/bidding.service';
@@ -49,6 +49,7 @@ export class PmReleaseQueueComponent implements OnInit {
   ngOnInit() {
     this.initColumnDef();
     this.gridOptions = {
+      frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       paginationPageSize: this.pageSize,
       maxConcurrentDatasourceRequests: 1,
@@ -174,8 +175,8 @@ export class PmReleaseQueueComponent implements OnInit {
     $event.stopPropagation();
     this.spinner.show();
     this.id = row.bidPmProjectId || '';
-    this.partService
-      .getPartsById(row.partIds || [])
+
+    combineLatest((row.partIds || []).map(id => this.partService.getPartByPartId(id)))
       .pipe(catchError(err => of([])))
       .subscribe((parts: any) => {
         this.parts = parts;
