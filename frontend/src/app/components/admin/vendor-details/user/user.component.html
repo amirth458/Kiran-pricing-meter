@@ -89,7 +89,7 @@
         </button>
         <button
           type="button"
-          (click)="onDeclineUser($event)"
+          (click)="onDeclineUser()"
           *ngIf="status === 3 || status === 1"
           class="btn btn-decline theme"
         >
@@ -107,67 +107,46 @@
   </form>
 </div>
 
-<!-- Button trigger modal -->
-<button
-  #modal
-  type="button"
-  class="btn btn-primary d-none"
-  data-toggle="modal"
-  data-target="#declineModal"
-></button>
-
 <!-- Modal -->
-<div
-  class="modal fade theme"
-  id="declineModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="declineModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="declineModalLabel">Decline Comment</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-row">
-          <div class="form-group theme col-md-12">
-            <label>Primary Contact Name</label>
-            <input
-              class="form-control"
-              readonly
-              [(ngModel)]="primaryContactName"
-              placeholder="Primary Contact Name"
-            />
-          </div>
-          <div class="form-group theme col-md-12">
-            <label>Comment</label>
-            <textarea
-              required
-              class="form-control"
-              [(ngModel)]="declineComments"
-              placeholder="Please describe here message to decline."
-            ></textarea>
-          </div>
+<ng-template #declineCommentsModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header pl-5 pr-5 pt-3 pb-3">
+      <h5 class="modal-title  w-100 text-left pl-3 pr-2">
+        Decline Comment
+      </h5>
+      <button type="button" class="close" (click)="closeDeclineModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body pl-5 pr-5 pt-4 pb-4">
+      <div class="form-row">
+        <div class="form-group theme col-md-12">
+          <label>Primary Contact Name</label>
+          <input
+            class="form-control"
+            readonly
+            [(ngModel)]="primaryContactName"
+            placeholder="Primary Contact Name"
+          />
+        </div>
+        <div class="form-group theme col-md-12">
+          <label>Comment</label>
+          <textarea
+            required
+            class="form-control"
+            [(ngModel)]="declineComments"
+            placeholder="Please describe here message to decline."
+          ></textarea>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-danger" (click)="declineUser()">
-          Decline
-        </button>
-      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeDeclineModal()">
+        Close
+      </button>
+      <button type="button" class="btn btn-danger" (click)="declineUser()">
+        Decline
+      </button>
     </div>
   </div>
-</div>
+</ng-template>
