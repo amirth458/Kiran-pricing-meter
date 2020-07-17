@@ -73,7 +73,7 @@ export class RfqListComponent implements OnInit {
         row.event.stopPropagation();
         const rowData = row.data || (null as any);
         if (rowData) {
-          this.viewRfq(rowData.rfqId);
+          this.viewRfq(rowData.programRfqId || rowData.rfqId);
         }
       }
     };
