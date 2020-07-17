@@ -1,0 +1,63 @@
+<div class="modal-content">
+  <div class="modal-header header-padding">
+    <h5 class="modal-title  w-100 text-left pl-3 pr-2">
+      Enter Information before editing profile
+    </h5>
+    <button type="button" class="close" (click)="onCancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body body-padding" ngbAutofocus>
+
+    <form [formGroup]="form" class="needs-validation">
+      <div class="form-row">
+        <div class="form-group theme col-md-12">
+          <label>Email<span class="asterix">*</span></label>
+          <input
+            required
+            type="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Email"
+            [class.is-invalid]="submitted && controls.email.errors"
+            [class.is-valid]="form.valid && !(submitted && controls.email.errors)"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && controls.email.errors">
+            <div *ngIf="controls.email.errors.required" class="footnote red">
+              * Email is required
+            </div>
+            <div *ngIf="controls.email.errors.email" class="footnote red">
+              Email must be a valid email address
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group theme col-md-12">
+          <label>Secret Key<span class="asterix">*</span></label>
+          <input
+            required
+            type="text"
+            formControlName="secretKey"
+            class="form-control"
+            placeholder="Secret Key"
+            [class.is-invalid]="submitted && controls.secretKey.errors"
+            [class.is-valid]="form.valid && !(submitted && controls.secretKey.errors)"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && controls.secretKey.errors">
+            <div *ngIf="controls.secretKey.errors.required" class="footnote red">
+              * Secret Key is required
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div class="modal-footer d-flex flex-row align-items-center justify-content-center">
+    <button type="button" class="btn theme green continue-btn" (click)="onContinue($event)">
+      Continue
+    </button>
+  </div>
+</div>

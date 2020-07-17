@@ -159,6 +159,20 @@ export class Util {
     return [Util.extendUtcDate(startDate), Util.extendUtcDate(today)];
   }
 
+  static isUserAuthenticated() {
+    let alreadyAuthenticated = false;
+    const resultStr = localStorage.getItem('admin-userAuthenticated');
+    if (resultStr) {
+      const result = JSON.parse(resultStr);
+      if (result.authenticated && new Date().getTime() < result.expiryTime) {
+        alreadyAuthenticated = true;
+      } else {
+        localStorage.setItem('admin-userAuthenticated', '');
+      }
+    }
+    return alreadyAuthenticated;
+  }
+
   static isProposalPart(part: Part): boolean {
     return (
       part.partType.name === AppPartTypeEnum.PRODUCTION_PROPOSAL_PART ||

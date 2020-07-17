@@ -1,0 +1,16 @@
+.asterix {
+  color: var(--theme-error-color);
+  margin-left: 5px;
+}
+
+.continue-btn {
+  width: 120px;
+}
+
+.body-padding {
+  padding: 24px 37px 24px 37px !important
+}
+
+.header-padding {
+  padding: 16px 37px 16px 37px !important
+}

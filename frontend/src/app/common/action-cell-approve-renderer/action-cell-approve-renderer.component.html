@@ -1,6 +1,6 @@
-<div class="action-column">
-  <span #approve class="approve" (click)="onApprove()" *ngIf="params.action.canApprove(params)">Approve</span>
-  <span #decline class="decline" (click)="onDecline()" *ngIf="params.action.canDecline(params)">Decline</span>
-  <span #view class="view-cell" (click)="onView()">View</span>
-  <span #edit class="edit-cell nav-link" (click)="onView()">Edit</span>
+<div class="action-column col-12 p-0">
+  <span #approve class="approve col-4" (click)="onApprove()" *ngIf="params.action.canApprove(params)">Approve</span>
+  <span #decline class="decline col-4" (click)="onDecline()" *ngIf="params.action.canDecline(params)">Decline</span>
+  <span #view class="view-cell col-4" (click)="onView()">View</span>
+  <span #edit class="edit-cell nav-link col-4" (click)="onEdit()">Edit</span>
 </div>

@@ -10,6 +10,7 @@ import { UserService } from 'src/app/service/user.service';
 import { ProcessMetadataService } from 'src/app/service/process-metadata.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-admin-vendor-process-profile',
@@ -19,6 +20,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class AdminVendorProcessProfileComponent implements OnInit {
   @ViewChild('copyModal') copyModal;
   @ViewChild('deleteModal') deleteModal;
+
+  isAdminAuthenticated = Util.isUserAuthenticated();
 
   newProfileName = '';
   cloneData;
@@ -436,9 +439,9 @@ export class AdminVendorProcessProfileComponent implements OnInit {
             });
             this.selectedProfile = param.data;
           },
-          canEdit: true,
-          canCopy: true,
-          canDelete: true
+          canEdit: this.isAdminAuthenticated,
+          canCopy: this.isAdminAuthenticated,
+          canDelete: this.isAdminAuthenticated
         }
       }
     });
@@ -455,6 +458,8 @@ export class AdminVendorProcessProfileComponent implements OnInit {
   }
 
   addProcessProfile() {
-    this.route.navigateByUrl(this.route.url + '/add');
+    if (this.isAdminAuthenticated) {
+      this.route.navigateByUrl(this.route.url + '/add');
+    }
   }
 }

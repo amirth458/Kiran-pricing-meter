@@ -2,7 +2,7 @@ import { ModelDetailViewComponent } from '../common/model-detail-view/model-deta
 import { FileViewRendererComponent } from '../common/file-view-renderer/file-view-renderer.component';
 import { StatusDropdownFilterComponent } from '../common/status-dropdown-filter/status-dropdown-filter.component';
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -92,7 +92,6 @@ import { ContactComponent } from './admin/customer-details/contact/contact.compo
 import { ProjectsListComponent } from './vendor/projects/projects-list/projects-list.component';
 import { SendMailModalComponent } from '../common/send-mail-modal/send-mail-modal.component';
 import { VendorOrderStatusComponent } from './vendor/pricing/orders/vendor-order-status/vendor-order-status.component';
-
 // chats
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SubscriptionModalComponent } from '../common/subscription-modal/subscription-modal.component';
@@ -171,6 +170,7 @@ import { ConnectRfqListComponent } from './vendor/pricing/rfq/connect-rfq-list/c
 import { PmProgramRfqListComponent } from './vendor/pricing/rfq/pm-program-rfq-list/pm-program-rfq-list.component';
 import { ConnectProgramRfqListComponent } from './vendor/pricing/rfq/connect-program-rfq-list/connect-program-rfq-list.component';
 import { PartQuoteComponent } from './vendor/pricing/rfq/part-quote/part-quote.component';
+import { AuthenticationModalComponent } from '../common/authentication-modal/authentication-modal.component';
 
 @NgModule({
   declarations: [
@@ -256,6 +256,7 @@ import { PartQuoteComponent } from './vendor/pricing/rfq/part-quote/part-quote.c
     SendMailModalComponent,
     VendorOrderStatusComponent,
     SubscriptionModalComponent,
+    AuthenticationModalComponent,
 
     InsightContainerComponent,
     InsightHeaderComponent,

@@ -211,6 +211,14 @@
   ></app-subscription-modal>
 </ng-template>
 
+<ng-template #authenticationModal let-modal>
+  <app-authentication-modal
+    [userInfo]="userInfo"
+    (cancel)="modal.dismiss()"
+    (continue)="authenticateUser($event)"
+  ></app-authentication-modal>
+</ng-template>
+
 <ng-template #markAsTestAccountTemplate let-modal>
   <div class="modal-content">
     <div class="modal-header">
