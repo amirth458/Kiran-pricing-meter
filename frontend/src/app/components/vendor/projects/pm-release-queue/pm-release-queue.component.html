@@ -26,7 +26,7 @@
 
 <ng-template #partsCell let-row>
   <div class="d-flex flex-row align-items-center w-100 h-100">
-    <a class="text-blue text-underline" (click)="viewRfq(row)">{{ (row?.partIds || []).join(',') }}</a>
+    <a class="text-blue text-underline" (click)="viewRfq(row, $event)">{{ (row?.partIds || []).join(',') }}</a>
   </div>
 </ng-template>
 

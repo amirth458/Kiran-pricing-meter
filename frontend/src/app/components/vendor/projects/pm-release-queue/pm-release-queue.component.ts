@@ -169,7 +169,9 @@ export class PmReleaseQueueComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-  viewRfq(row: any) {
+  viewRfq(row: any, $event) {
+    $event.preventDefault();
+    $event.stopPropagation();
     this.spinner.show();
     this.id = row.bidPmProjectId || '';
     this.partService
