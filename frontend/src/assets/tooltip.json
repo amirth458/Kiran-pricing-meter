@@ -294,6 +294,24 @@
       "tooltipMessage": "PM Parts",
       "route": "other-status",
       "actions": []
+    },
+    {
+      "name": "Suborder Release Queue",
+      "tooltipMessage": "Suborder Release Queue",
+      "route": "pm-suborder-relase-queue",
+      "actions": []
+    },
+    {
+      "name": "Release Queue",
+      "tooltipMessage": "Release Queue",
+      "route": "release-queue",
+      "actions": []
+    },
+    {
+      "name": "Proposal Issued",
+      "tooltipMessage": "Proposal Issued",
+      "route": "proposal-issued",
+      "actions": []
     }
   ],
   "connect": [

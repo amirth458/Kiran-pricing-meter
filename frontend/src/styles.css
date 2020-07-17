@@ -1,13 +1,11 @@
 /* Ag-grid style */
+
 @import '~ag-grid-community/dist/styles/ag-grid.css';
 @import '~ag-grid-community/dist/styles/ag-theme-balham.css';
-
 @import '~@ng-select/ng-select/themes/default.theme.css';
 @import '~ng-pick-datetime/assets/style/picker.min.css';
-
 :root {
   --theme-main-blue: #092846;
-
   --theme-dark-blue: #092846;
   --them-dark-blue-opaque: #092846;
   --theme-secondary-blue: rgba(9, 40, 70, 0.74);
@@ -35,7 +33,6 @@
   --theme-text-color: #4a6077;
   --theme-bright-blue: #0e6dcb;
   --theme-purple: #706cd8;
-
   --theme-yellow-progressbar: #ffde55;
   --theme-light-green-progressbar: #74bf09;
   --theme-highlighted-row: #f4f5fa;
@@ -256,7 +253,6 @@ button.theme.theme-reverse:hover {
 
 .btn-white:hover {
   background: #f8fdf0 !important;
-
   color: var(--theme-btn-hover) !important;
   border-radius: 4px;
   box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
@@ -275,6 +271,7 @@ button.theme.theme-reverse:hover {
 }
 
 /* Overriding @ng-select */
+
 .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
   border-color: #8fbe4c !important;
   outline: unset !important;
@@ -316,6 +313,7 @@ button.theme.theme-reverse:hover {
 }
 
 /* Overriding Ag-grid style */
+
 .theme-table .ag-theme-balham .ag-header-row {
   background: var(--theme-grid-header);
   color: white;
@@ -431,6 +429,7 @@ button.theme.theme-reverse:hover {
 }
 
 /* NON Ag-grid table style */
+
 app-dropdown-cell-renderer {
   width: 100%;
   height: 100%;
@@ -480,11 +479,13 @@ app-dropdown-cell-renderer {
 }
 
 /* End of Custom spinner */
+
 .style-bold {
   font-weight: bold !important;
 }
 
 /* Tabbed Cards */
+
 .tab-container.custom {
   margin-bottom: 30px;
 }
@@ -546,6 +547,7 @@ app-dropdown-cell-renderer {
 /* End of Tabbed Cards */
 
 /* Bidding Confirmation Modal */
+
 .bidding-confirm .modal-dialog {
   max-width: 550px;
 }
@@ -558,6 +560,7 @@ app-dropdown-cell-renderer {
 /*Bidding Confirmation Modal*/
 
 /* breakdown pricing  window */
+
 .break-down-modal .modal-dialog,
 .order-status-modal .modal-dialog {
   max-width: 600px;
@@ -616,6 +619,7 @@ app-dropdown-cell-renderer {
 /* breakdown pricing  window */
 
 /* Vendor order info modal */
+
 .order-status-modal .modal-dialog {
   max-width: 75% !important;
   width: 75% !important;
@@ -635,6 +639,7 @@ app-dropdown-cell-renderer {
 /* Vendor order info modal */
 
 /* Refresh modal window */
+
 .refresh-modal .modal-dialog {
   max-width: 500px;
   width: 500px;
@@ -739,6 +744,7 @@ app-dropdown-cell-renderer {
 }
 
 /* AG Grid Override */
+
 .chat-container {
   width: 350px;
   max-width: 350px;
@@ -851,6 +857,7 @@ app-dropdown-cell-renderer {
 /**/
 
 /* date control override styles start */
+
 .cdk-overlay-container,
 .cdk-overlay-container .cdk-overlay-backdrop,
 .cdk-overlay-container .cdk-overlay-connected-position-bounding-box,
@@ -957,6 +964,7 @@ app-dropdown-cell-renderer {
 /* Reference Files Modal */
 
 /* Upload Container */
+
 .upload-container {
   height: 500px;
   width: 100%;
@@ -1077,6 +1085,7 @@ app-dropdown-cell-renderer {
 /* End of Notification */
 
 /** Proposal form **/
+
 .proposal-form-modal .modal-dialog {
   max-width: 70%;
 }
@@ -1182,3 +1191,20 @@ app-dropdown-cell-renderer {
 }
 
 /** Proposal form **/
+
+/* Suborder release page */
+
+.suborder-release-queue .header {
+  margin-bottom: 12px;
+}
+
+.suborder-release-queue .search-box {
+  min-width: 180px;
+}
+
+.suborder-release-queue .header label input {
+  padding: 5px 0px 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  outline: none;
+}

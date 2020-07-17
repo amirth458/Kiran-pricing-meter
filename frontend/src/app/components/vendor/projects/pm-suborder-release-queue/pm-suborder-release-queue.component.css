@@ -1,0 +1,36 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-control {
+  width: 220px;
+  height: 400px;
+  margin-right: 10px;
+}
+
+.count {
+  width: 100px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}
+
+.toolbar {
+  width: 200px;
+  color: var(--theme-light-green);
+}
+
+.button-group-right button {
+  min-width: 200px;
+  font-size: 0.9em;
+  font-weight: 300;
+}

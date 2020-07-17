@@ -172,6 +172,7 @@ import { ConnectProgramRfqListComponent } from './vendor/pricing/rfq/connect-pro
 import { PartQuoteComponent } from './vendor/pricing/rfq/part-quote/part-quote.component';
 import { AuthenticationModalComponent } from '../common/authentication-modal/authentication-modal.component';
 import { PmReleaseQueueComponent } from './vendor/projects/pm-release-queue/pm-release-queue.component';
+import { PmSuborderReleaseQueueComponent } from './vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
 
 @NgModule({
   declarations: [
@@ -333,7 +334,8 @@ import { PmReleaseQueueComponent } from './vendor/projects/pm-release-queue/pm-r
     PmProgramRfqListComponent,
     ConnectProgramRfqListComponent,
     PartQuoteComponent,
-    PmReleaseQueueComponent
+    PmReleaseQueueComponent,
+    PmSuborderReleaseQueueComponent
   ],
   imports: [
     CommonModule,
