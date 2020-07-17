@@ -115,7 +115,7 @@ export class AdminVendorDetailsUserComponent
     }
   }
 
-  onDeclineUser(event) {
+  onDeclineUser() {
     this.modalService.open(this.declineCommentsModal, {
       windowClass: 'decline-comments-modal',
       centered: true,

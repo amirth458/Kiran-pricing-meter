@@ -603,14 +603,6 @@ app-dropdown-cell-renderer {
   opacity: 0.5;
 }
 
-.latest-modal .body-padding {
-  padding: 24px 37px 24px 37px !important
-}
-
-.latest-modal .header-padding {
-  padding: 16px 37px 16px 37px !important
-}
-
 button:focus {
   outline: none;
 }
