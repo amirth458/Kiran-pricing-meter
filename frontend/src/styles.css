@@ -596,10 +596,23 @@ app-dropdown-cell-renderer {
 .order-status-modal .modal-title,
 .change-account-modal .modal-title,
 .authentication-modal .modal-title,
+.decline-comments-modal .modal-title,
 .rfq-status-modal .modal-title {
   border-left: 4px solid var(--them-dark-blue-opaque);
   color: var(--them-dark-blue-opaque) !important;
   opacity: 0.5;
+}
+
+.latest-modal .body-padding {
+  padding: 24px 37px 24px 37px !important
+}
+
+.latest-modal .header-padding {
+  padding: 16px 37px 16px 37px !important
+}
+
+button:focus {
+  outline: none;
 }
 
 .change-account-modal .btn {

@@ -1,9 +1,10 @@
-import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../../service/user.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-admin-vendor-details-user',
@@ -12,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AdminVendorDetailsUserComponent
   implements OnInit, AfterViewChecked {
-  @ViewChild('modal') modal;
+  @ViewChild('declineCommentsModal') declineCommentsModal;
   form: FormGroup = this.fb.group({
     email: [null, Validators.required],
     firstName: [null, Validators.required],
@@ -28,6 +29,7 @@ export class AdminVendorDetailsUserComponent
     private router: Router,
     private userService: UserService,
     private spinner: NgxSpinnerService,
+    public modalService: NgbModal,
     private toastr: ToastrService
   ) {}
 
@@ -114,14 +116,22 @@ export class AdminVendorDetailsUserComponent
   }
 
   onDeclineUser(event) {
-    this.modal.nativeElement.click();
+    this.modalService.open(this.declineCommentsModal, {
+      windowClass: 'decline-comments-modal',
+      centered: true,
+      size: 'lg'
+    });
+  }
+
+  closeDeclineModal() {
+    this.modalService.dismissAll();
   }
 
   async declineUser() {
     if (this.declineComments === '') {
       return;
     }
-    this.modal.nativeElement.click();
+    this.closeDeclineModal();
     this.spinner.show();
     try {
       await this.userService
