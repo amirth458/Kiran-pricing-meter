@@ -66,3 +66,10 @@ export interface PmProjectReleaseQueue {
   bidPmProjectStatus: string;
   totalRowCount: number;
 }
+
+export interface PmProjectRequest {
+  bidPmProjectStatusIds: string;
+  searchValue: string;
+  beginDate: Date;
+  endDate: Date;
+}
