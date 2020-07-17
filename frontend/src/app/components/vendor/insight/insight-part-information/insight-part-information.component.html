@@ -1,4 +1,9 @@
 <div class="wrapper shadow d-flex flex-column position-relative">
+  <div class="action-btn position-absolute" *ngIf="!hideCloseButton">
+    <div class="close-btn" (click)="onClose()">
+      <i class="fa fa-times"></i>
+    </div>
+  </div>
   <ngb-tabset
     [destroyOnHide]="true"
     [justify]="'start'"
