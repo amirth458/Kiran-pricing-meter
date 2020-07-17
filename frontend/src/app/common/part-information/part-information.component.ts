@@ -43,8 +43,6 @@ export class PartInformationComponent implements OnInit {
   @Input() operatorTypes = [];
   @Input() measurementUnits;
 
-  appPartTypeEnum = AppPartTypeEnum;
-
   constructor(
     public modalService: NgbModal,
     public metadataService: MetadataService,
@@ -54,6 +52,10 @@ export class PartInformationComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  isProposalPart(part: Part): boolean {
+    return Util.isProposalPart(part);
+  }
 
   getDimension() {
     const metadataList = this.measurementUnits;

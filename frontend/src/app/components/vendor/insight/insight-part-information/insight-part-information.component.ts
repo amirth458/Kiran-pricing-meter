@@ -11,8 +11,9 @@ import { CustomerService } from 'src/app/service/customer.service';
 import { MetadataService } from '../../../../service/metadata.service';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
-import { Part, RfqData, AppPartStatus, PartQuote, PartDimension, AppPartTypeEnum } from 'src/app/model/part.model';
+import { Part, RfqData, AppPartStatus, PartQuote, PartDimension } from 'src/app/model/part.model';
 import { UserService } from 'src/app/service/user.service';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-insight-part-information',
@@ -45,7 +46,6 @@ export class InsightPartInformationComponent implements OnInit {
 
   rfq: RfqData;
   invoiceItems;
-  appPartTypeEnum = AppPartTypeEnum;
   countries = [];
   certs = [];
   postProcesses = [];
@@ -103,10 +103,7 @@ export class InsightPartInformationComponent implements OnInit {
   }
 
   isProposalPart(part: Part): boolean {
-    return (
-      part.partType.name === AppPartTypeEnum.PRODUCTION_PROPOSAL_PART ||
-      part.partType.name === AppPartTypeEnum.CONNECT_PROPOSAL_PART
-    );
+    return Util.isProposalPart(part);
   }
 
   getSelectedPart(id: number) {

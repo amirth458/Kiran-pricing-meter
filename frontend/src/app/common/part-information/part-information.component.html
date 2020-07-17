@@ -131,7 +131,7 @@
       <div class="card w-100">
         <div class="card-header text-theme">
           <span class="part-quote-header">
-            <ng-container *ngIf="part?.partType?.name === appPartTypeEnum.CONNECT_PROPOSAL_PART">
+            <ng-container *ngIf="isProposalPart(part)">
               Proposal
             </ng-container>
             Quote
