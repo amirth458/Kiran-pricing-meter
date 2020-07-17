@@ -298,13 +298,13 @@
     {
       "name": "Suborder Release Queue",
       "tooltipMessage": "Suborder Release Queue",
-      "route": "pm-suborder-relase-queue",
+      "route": "pm-suborder-release-queue",
       "actions": []
     },
     {
       "name": "Release Queue",
       "tooltipMessage": "Release Queue",
-      "route": "release-queue",
+      "route": "pm-release-queue",
       "actions": []
     },
     {

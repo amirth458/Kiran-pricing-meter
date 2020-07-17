@@ -171,6 +171,7 @@ import { ConnectRfqListComponent } from './vendor/pricing/rfq/connect-rfq-list/c
 import { PmProgramRfqListComponent } from './vendor/pricing/rfq/pm-program-rfq-list/pm-program-rfq-list.component';
 import { ConnectProgramRfqListComponent } from './vendor/pricing/rfq/connect-program-rfq-list/connect-program-rfq-list.component';
 import { PmSuborderReleaseQueueComponent } from './vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
+import { PmReleaseQueueDetailsComponent } from './vendor/projects/pm-release-queue-details/pm-release-queue-details.component';
 
 @NgModule({
   declarations: [
@@ -330,7 +331,8 @@ import { PmSuborderReleaseQueueComponent } from './vendor/projects/pm-suborder-r
     ConnectRfqListComponent,
     PmProgramRfqListComponent,
     ConnectProgramRfqListComponent,
-    PmSuborderReleaseQueueComponent
+    PmSuborderReleaseQueueComponent,
+    PmReleaseQueueDetailsComponent
   ],
   imports: [
     CommonModule,

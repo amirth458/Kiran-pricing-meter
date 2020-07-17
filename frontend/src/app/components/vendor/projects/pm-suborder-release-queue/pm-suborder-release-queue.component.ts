@@ -12,6 +12,7 @@ import { ProjectTypeEnum } from 'src/app/model/order.model';
 import { AppPartStatusId } from 'src/app/model/part.model';
 import { Util } from 'src/app/util/Util';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-pm-suborder-release-queue',
@@ -23,14 +24,18 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
   connectColumnDefs: ColDef[] = [];
   testAccount = false;
   @ViewChild('selectButton') selectButton: TemplateRef<any>;
+  @ViewChild('partIdCell') partIdCell: TemplateRef<any>;
+  @ViewChild('thumbnailCell') thumbnailCell: TemplateRef<any>;
+
   gridOptions: GridOptions;
   navigation;
 
   pageSize = 10;
   type = '';
-
+  selectedVendors = [];
   frameworkComponents = {
-    fileViewRenderer: FileViewRendererComponent
+    fileViewRenderer: FileViewRendererComponent,
+    templateRenderer: TemplateRendererComponent
   };
   requestBody = {
     projectTypeId: null,
@@ -60,33 +65,34 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       maxConcurrentDatasourceRequests: 1,
       rowModelType: 'infinite',
       enableColResize: true,
-      rowHeight: 35,
-      headerHeight: 35,
+      rowHeight: 50,
+      headerHeight: 40,
       rowBuffer: 0,
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0,
-      onRowClicked: event => {
-        const url =
-          this.type === 'pm-suborder-relase-queue' || this.type === 'order-complete'
-            ? `${this.router.url}/${event.data.orderId}`
-            : `${this.router.url}/${event.data.partId}`;
-        this.router.navigateByUrl(url);
-      }
+      onRowClicked: event => {}
     };
   }
 
-  isProdProject() {
-    return (
-      this.type === 'pm-suborder-relase-queue' ||
-      this.type === 'vendor-confirmation-queue' ||
-      this.type === 'released-projects'
-    );
-  }
+  /*onClick row selection*/
+  onRowSelect(selectedRow) {
+    const { customerOrderId, partIds } = selectedRow;
+    let selectedCustomers = { customerOrderId, partIds };
 
-  /* Row select */
-  onRowSelect($event) {
-    console.log($event);
+    if (!this.selectedVendors.length) {
+      this.selectedVendors.push(selectedCustomers);
+      selectedRow.selected = true;
+      return;
+    }
+    const isExisit = this.selectedVendors.find(item => item.customerOrderId == selectedRow.customerOrderId);
+    if (isExisit) {
+      this.selectedVendors = this.selectedVendors.filter(item => item.customerOrderId !== selectedRow.customerOrderId);
+      selectedRow.selected = false;
+    } else {
+      this.selectedVendors.push(selectedCustomers);
+      selectedRow.selected = true;
+    }
   }
 
   onQueryChange(ev) {
@@ -109,15 +115,46 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
     return defaultSorting;
   }
 
+  /* Create Bid method*/
   onClickAdvancedToVendor() {
-    //Todo
-    console.log('onClickAdvancedToVendor');
+    if (!this.selectedVendors.length) {
+      return;
+    }
+
+    this.spinner.show('loadingPanel');
+    const bidPmProjectRequest = [];
+    this.selectedVendors.map(item => {
+      item.partIds.map(partId => {
+        bidPmProjectRequest.push({ customerOrderId: item.customerOrderId, partId });
+      });
+    });
+
+    this.projectService.createBidItems({ bidPmProjectRequest }).subscribe(
+      response => {
+        this.spinner.hide('loadingPanel');
+        if (!response) {
+          return;
+        }
+        this.selectedVendors = [];
+        const partIds = response.map(item => item.partId);
+        const url = `/prodex/projects/pm-release-queue/${partIds}`;
+        this.router.navigateByUrl(url);
+      },
+      error => {
+        console.log('Error', error);
+        this.spinner.hide('loadingPanel');
+      }
+    );
+  }
+
+  /* Onclick Part details popup view */
+  showPartDetails($event, selectedRow) {
+    console.log(selectedRow);
   }
 
   toggleRelatedPart() {
     this.requestBody.includeRelatedPartIds = !this.requestBody.includeRelatedPartIds;
     this.initColumnDef();
-    this.gridOptions.api.setColumnDefs(this.connectColumnDefs);
     this.gridOptions.api.sizeColumnsToFit();
     this.setDataSource();
   }
@@ -133,36 +170,24 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
           sort: this.getSorting()
         };
         let ob: Observable<any> = null;
+        (this.searchOpt.beginDate = this.requestBody.beginDate),
+          (this.searchOpt.endDate = this.requestBody.endDate),
+          (this.searchOpt.partStatusIds = AppPartStatusId.PART_AWAITING_VENDORS);
+        (this.searchOpt.searchValue = this.requestBody.searchValue === '' ? null : this.requestBody.searchValue),
+          (this.searchOpt.projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT);
 
-        if (this.type === 'pm-suborder-relase-queue') {
-          (this.searchOpt.beginDate = this.requestBody.beginDate),
-            (this.searchOpt.endDate = this.requestBody.endDate),
-            (this.searchOpt.partStatusIds = AppPartStatusId.PART_AWAITING_VENDORS);
-          (this.searchOpt.searchValue = this.requestBody.searchValue === '' ? null : this.requestBody.searchValue),
-            (this.searchOpt.projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT);
-        }
-        switch (this.type) {
-          case 'pm-suborder-relase-queue':
-            ob = this.projectService.getAllSuborderReleaseQueue(filterOption, this.searchOpt);
-            break;
-          default:
-        }
+        ob = this.projectService.getAllSuborderReleaseQueue(filterOption, this.searchOpt);
         ob.subscribe(
           data => {
             this.spinner.hide('loadingPanel');
             if (!data || !data.length) {
               return;
             }
-            const rowsThisPage = data.map(item => {
-              return {
-                ...item
-              };
-            });
-            this.totalRows = data[0].totalRowCount || 0;
-            const lastRow = data.totalRowCount <= params.endRow ? data[0].totalRowCount : -1;
 
-            if (data && data[0].totalRowCount) {
-              params.successCallback(rowsThisPage, lastRow);
+            this.totalRows = data[0].totalRowCount || 0;
+            const lastRow = this.totalRows <= params.endRow ? this.totalRows : -1;
+            if (data && this.totalRows) {
+              params.successCallback(data || [], lastRow);
             }
           },
           error => {
@@ -207,20 +232,36 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
         tooltipField: 'userName'
       },
       {
-        headerName: 'Part/Suborder ID',
-        field: 'partIds',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'partIds'
-      },
-      {
         headerName: 'RFQ ID',
         field: 'rfqIds',
         hide: false,
         sortable: true,
         filter: false,
         tooltipField: 'rfqIds'
+      },
+      {
+        headerName: 'Part/Suborder IDs',
+        field: 'partIds',
+        tooltip: params => (params.value || []).join(', '),
+        sortable: true,
+        filter: false,
+        width: 200,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.partIdCell
+        }
+      },
+      {
+        headerName: '',
+        field: 'locations',
+        hide: false,
+        sortable: true,
+        filter: false,
+        width: 100,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.thumbnailCell
+        }
       },
       {
         headerName: 'Material',
@@ -246,9 +287,11 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
         filter: false,
         tooltipField: 'targetDeliveryDate',
         valueFormatter: dt => {
-          let value = (dt.value || '').toString();
-          value = value.indexOf('+') > -1 ? value.split('+')[0] : value;
-          return this.datePipe.transform(value, Util.dateFormatWithTime);
+          const arr = [];
+          (dt.value || []).map(dt => {
+            arr.push(this.datePipe.transform(dt, Util.dateFormat, 'UTC'));
+          });
+          return arr.length !== 0 ? arr.join(', ') : '';
         }
       },
       {
@@ -270,10 +313,10 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       {
         headerName: 'Action',
         field: '',
-        // cellRenderer: 'templateRenderer',
-        // cellRendererParams: {
-        //   ngTemplate: this.selectButton
-        // },
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.selectButton
+        },
         hide: false,
         sortable: false,
         filter: false,

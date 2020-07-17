@@ -91,7 +91,8 @@ import { PmRfqListComponent } from '../../components/vendor/pricing/rfq/pm-rfq-l
 import { ConnectRfqListComponent } from '../../components/vendor/pricing/rfq/connect-rfq-list/connect-rfq-list.component';
 import { PmProgramRfqListComponent } from '../../components/vendor/pricing/rfq/pm-program-rfq-list/pm-program-rfq-list.component';
 import { ConnectProgramRfqListComponent } from '../../components/vendor/pricing/rfq/connect-program-rfq-list/connect-program-rfq-list.component';
-import { PmSuborderReleaseQueueComponent } from 'src/app/components/vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
+import { PmSuborderReleaseQueueComponent } from '../../components/vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
+import { PmReleaseQueueDetailsComponent } from '../../components/vendor/projects/pm-release-queue-details/pm-release-queue-details.component';
 
 const routes: Routes = [
   {
@@ -383,8 +384,16 @@ const routes: Routes = [
                 component: ProductionVendorDetailsComponent
               },
               {
-                path: 'pm-suborder-relase-queue',
+                path: 'pm-suborder-release-queue',
                 component: PmSuborderReleaseQueueComponent
+              },
+              {
+                path: 'pm-release-queue/:id',
+                component: PmReleaseQueueDetailsComponent
+              },
+              {
+                path: 'pm-release-queue',
+                component: PmReleaseQueueDetailsComponent
               },
               {
                 path: '',

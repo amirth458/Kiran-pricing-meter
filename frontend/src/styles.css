@@ -1201,6 +1201,20 @@ app-dropdown-cell-renderer {
 .suborder-release-queue .header label input {
   padding: 5px 0px 5px 10px;
   border-radius: 4px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--theme-table-border);
   outline: none;
+}
+
+.suborder-release-queue .ag-theme-balham .ag-header-cell::after,
+.suborder-release-queue .ag-theme-balham .ag-header-group-cell::after {
+  margin-top: 13px;
+}
+
+.text-blue {
+  color: var(--theme-bright-blue) !important;
+}
+
+.text-underlined {
+  text-decoration: underline !important;
+  cursor: pointer;
 }
