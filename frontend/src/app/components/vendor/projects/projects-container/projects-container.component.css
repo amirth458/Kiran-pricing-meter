@@ -10,7 +10,7 @@
 }
 
 .wrapper {
-  height: 100%;
+  height: calc(100% - 10px);
   margin-top: 10px;
 }
 
@@ -29,7 +29,6 @@
   .wrapper {
     padding: 40px 20px;
   }
-
   .form-row > .col:first-child,
   .form-row > [class*='col-']:first-child,
   .form-row > .col:only-child,

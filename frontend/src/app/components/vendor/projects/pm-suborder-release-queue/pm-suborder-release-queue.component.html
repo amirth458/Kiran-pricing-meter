@@ -17,8 +17,14 @@
         <button type="button" class="ml-2 btn btn-white p-2 toggle-test-btn" (click)="toggleTestAccount()">
           {{ searchOpt.showTestAccount ? 'Remove Test Account' : 'Include Test Account' }}
         </button>
-        <button type="button" class="ml-2 btn theme p-2" (click)="onClickAdvancedToVendor()">
-          Advanced to Vendor Selection
+
+        <button
+          type="button"
+          class="ml-2 btn theme p-2"
+          (click)="onClickAdvancedToVendor()"
+          [disabled]="!selectedVendors.length"
+        >
+          Advance to Vendor Selection
         </button>
       </div>
     </div>
@@ -37,8 +43,25 @@
     </ngx-spinner>
   </div>
 </div>
+<!-- table row select button -->
 <ng-template #selectButton let-row>
-  <div class="d-flex justify-content-between h-100 w-100">
-    <span class="reject-btn ml-3" (click)="onRowSelect(row)">Select</span>
-  </div>
+  <button
+    class="btn select-button"
+    [ngClass]="row?.selected ? 'btn-white' : 'btn-secondary'"
+    (click)="onRowSelect(row)"
+  >
+    Select
+  </button>
+</ng-template>
+
+<!-- partDetails cell -->
+<ng-template #partIdCell let-row>
+  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails(row)">{{
+    row?.partIds.join(', ')
+  }}</a>
+</ng-template>
+
+<!-- partDetails cell -->
+<ng-template #thumbnailCell let-row>
+  <div class="thumbnail-img" style="background-image:{{ (row?.locations)[0] }}"></div>
 </ng-template>

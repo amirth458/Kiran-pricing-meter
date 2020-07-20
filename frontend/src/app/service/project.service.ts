@@ -31,6 +31,15 @@ export class ProjectService {
     return this.http.post<any>(url, searchOpt, { params: this.buildParameters(filter) });
   }
 
+  createBidItems(selectedBidItems): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/group-pm-parts`;
+    return this.http.post<any>(url, selectedBidItems);
+  }
+  getAllSuppliersListByPartIds(partIds): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/suppliers`;
+    return this.http.post<any>(url, partIds);
+  }
+
   getProjectReleaseQueue(filter: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/part/search`;
     return this.http.post<any>(
