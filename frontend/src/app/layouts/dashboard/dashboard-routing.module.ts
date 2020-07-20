@@ -93,6 +93,7 @@ import { PmProgramRfqListComponent } from '../../components/vendor/pricing/rfq/p
 import { ConnectProgramRfqListComponent } from '../../components/vendor/pricing/rfq/connect-program-rfq-list/connect-program-rfq-list.component';
 import { PmSuborderReleaseQueueComponent } from 'src/app/components/vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
 import { PmReleaseQueueComponent } from '../../components/vendor/projects/pm-release-queue/pm-release-queue.component';
+import { IssuedProposalComponent } from '../../components/vendor/projects/issued-proposal/issued-proposal.component';
 
 const routes: Routes = [
   {
@@ -390,6 +391,10 @@ const routes: Routes = [
               {
                 path: 'pm-release-queue',
                 component: PmReleaseQueueComponent
+              },
+              {
+                path: 'proposal-issued',
+                component: IssuedProposalComponent
               },
               {
                 path: '',
