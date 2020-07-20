@@ -184,6 +184,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   }
 
   releaseToVendor() {
+    this.spinner.show('loadingPanel');
     const selectedProfiles = this.supplierGridOptions[0].api
       .getSelectedRows()
       .map(item => ({
@@ -199,10 +200,12 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     };
     this.projectService.saveReleasePMBidToVendor(payload).subscribe(
       response => {
+        this.spinner.hide('loadingPanel');
         this.toastr.success('Successfully released!');
         /* todo Redirect to next view */
       },
       error => {
+        this.spinner.hide('loadingPanel');
         this.toastr.error('Error while releasing to Vendor.');
       }
     );
@@ -567,7 +570,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   }
 
   removeFromList(data) {
-    console.log(data);
     this.removedSuppliers = [...this.removedSuppliers, data];
     this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.vendorId !== data.vendorId);
     // if (data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
