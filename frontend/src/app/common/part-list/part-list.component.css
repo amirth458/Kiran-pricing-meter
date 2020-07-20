@@ -53,3 +53,7 @@
 #view-in-three-d {
   width: 100px;
 }
+
+.part-item {
+  cursor: pointer;
+}

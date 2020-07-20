@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 
 import { ConnectProject, ClientProgress } from '../model/connect.model';
 import { environment } from 'src/environments/environment';
@@ -38,6 +38,18 @@ export class ProjectService {
   getAllSuppliersListByPartIds(partIds): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/suppliers`;
     return this.http.post<any>(url, partIds);
+  }
+  getAllSuppliersAndPartsByPartId(partIds): Observable<any> {
+    const suppliersUrl = `${environment.apiBaseUrl}/admin/pm-project/suppliers`;
+    const partsUrl = `${environment.procurementApiBaseUrl}/part?ids=${partIds.join(',')}`;
+    const suppliersList = this.http.post<any>(suppliersUrl, { partIds });
+    const partsList = this.http.get<any>(partsUrl, partIds);
+    return forkJoin(partsList, suppliersList);
+  }
+
+  saveReleasePMBidToVendor(payload): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/release-bid-to-vendor`;
+    return this.http.post<any>(url, payload);
   }
 
   getProjectReleaseQueue(filter: FilterOption, projectType: string = null) {

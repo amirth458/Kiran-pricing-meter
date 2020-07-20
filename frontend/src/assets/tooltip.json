@@ -259,12 +259,7 @@
       "route": "pm-rfq-list",
       "actions": []
     },
-    {
-      "name": "Project Release Queue",
-      "tooltipMessage": "Project Release Queue",
-      "route": "project-release-queue",
-      "actions": []
-    },
+
     {
       "name": "Vendor Released",
       "tooltipMessage": "Vendor Released",

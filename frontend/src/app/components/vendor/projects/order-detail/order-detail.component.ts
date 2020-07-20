@@ -103,7 +103,6 @@ export class OrderDetailComponent implements OnInit {
       this.orderService.getPartById(id).subscribe(v => {
         this.part = v;
         this.parts = [v];
-
         this.getReferenceFileCount();
 
         if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_RELEASE) {

@@ -391,7 +391,7 @@ const routes: Routes = [
                 component: PmSuborderReleaseQueueComponent
               },
               {
-                path: 'pm-release-queue/:id',
+                path: 'pm-release-queue/:bidId/:id',
                 component: PmReleaseQueueDetailsComponent
               },
               {

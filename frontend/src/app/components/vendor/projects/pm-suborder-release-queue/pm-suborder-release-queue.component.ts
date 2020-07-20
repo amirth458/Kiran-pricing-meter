@@ -102,7 +102,6 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
 
   onQueryChange(ev) {
     this.requestBody.searchValue = ev;
-    console.log(ev, this.requestBody.searchValue);
     this.setDataSource();
   }
 
@@ -137,12 +136,13 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
     this.projectService.createBidItems({ bidPmProjectRequest }).subscribe(
       response => {
         this.spinner.hide('loadingPanel');
-        if (!response) {
+        if (!response || !response.length) {
           return;
         }
         this.selectedVendors = [];
         const partIds = response.map(item => item.partId);
-        const url = `/prodex/projects/pm-release-queue/${partIds}`;
+        const bidPmProjectId = response[0].bidPmProject.id;
+        const url = `/prodex/projects/pm-release-queue/${bidPmProjectId}/${partIds}`;
         this.router.navigateByUrl(url);
       },
       error => {
@@ -205,6 +205,8 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       this.gridOptions.api.setDatasource(dataSource);
     }
   }
+
+  /* Table headers */
 
   onGridReady(ev) {
     this.gridOptions.api = ev.api;

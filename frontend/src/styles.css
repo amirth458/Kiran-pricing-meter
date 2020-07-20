@@ -1231,6 +1231,9 @@ button:focus {
 .pm-release-queue-details .part-item {
   padding: 0.75rem 1.5rem !important;
   margin-left: 0 !important;
+}
+
+.pm-release-queue-details .part-item.active {
   background: var(--theme-grey-bg);
 }
 
