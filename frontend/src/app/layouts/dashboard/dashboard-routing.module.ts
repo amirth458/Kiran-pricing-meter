@@ -403,8 +403,16 @@ const routes: Routes = [
                 component: IssuedProposalComponent
               },
               {
+                path: 'proposal-issued/:id',
+                component: PmReleaseQueueDetailsComponent
+              },
+              {
                 path: 'customer-accepted',
                 component: CustomerAcceptedComponent
+              },
+              {
+                path: 'customer-accepted/:id',
+                component: PmReleaseQueueDetailsComponent
               },
               {
                 path: '',

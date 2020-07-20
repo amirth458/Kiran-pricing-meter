@@ -12,7 +12,12 @@ import { BiddingService } from '../../../../service/bidding.service';
 import { FilterOption } from '../../../../model/vendor.model';
 import { PartService } from '../../../../service/part.service';
 import { Part } from '../../../../model/part.model';
-import { PmProjectRequest, PmProjectStatusEnum, PmProjectStatusType } from '../../../../model/bidding.order';
+import {
+  PmProjectReleaseQueue,
+  PmProjectRequest,
+  PmProjectStatusEnum,
+  PmProjectStatusType
+} from '../../../../model/bidding.order';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 
 @Component({
@@ -69,7 +74,16 @@ export class PmReleaseQueueComponent implements OnInit {
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0,
-      onRowClicked: event => {}
+      onRowClicked: event => {
+        const row: PmProjectReleaseQueue = event.data;
+        if (row && this.pmProjectStatusType === PmProjectStatusType.RELEASE_QUEUE) {
+          this.router.navigateByUrl(`${this.router.url}/${row.bidPmProjectId}`);
+        } else if (row && this.pmProjectStatusType === PmProjectStatusType.PROPOSAL_ISSUED) {
+          this.router.navigateByUrl(`/prodex/projects/proposal-issued/${row.bidPmProjectId}`);
+        } else if (row && this.pmProjectStatusType === PmProjectStatusType.CUSTOMER_ACCEPTED) {
+          this.router.navigateByUrl(`/prodex/projects/customer-accepted/${row.bidPmProjectId}`);
+        }
+      }
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
