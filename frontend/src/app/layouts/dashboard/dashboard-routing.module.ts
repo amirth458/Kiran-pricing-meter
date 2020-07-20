@@ -403,7 +403,7 @@ const routes: Routes = [
                 component: IssuedProposalComponent
               },
               {
-                path: 'proposal-issued/:id',
+                path: 'proposal-issued/:bidId/:id',
                 component: PmReleaseQueueDetailsComponent
               },
               {
@@ -411,7 +411,7 @@ const routes: Routes = [
                 component: CustomerAcceptedComponent
               },
               {
-                path: 'customer-accepted/:id',
+                path: 'customer-accepted/:bidId/:id',
                 component: PmReleaseQueueDetailsComponent
               },
               {
