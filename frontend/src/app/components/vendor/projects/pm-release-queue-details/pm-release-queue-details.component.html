@@ -149,13 +149,13 @@
     </div>
   </div>
   <ng-template #removeCell let-row>
-    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100" *ngIf="row">
+    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
       <a class="text-orange" (click)="removeFromList(row)">Remove from list</a>
     </div>
   </ng-template>
 
   <ng-template #moveCell let-row>
-    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100" *ngIf="row">
+    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
       <a class="text-green" (click)="moveToList(row)">Move to the list</a>
     </div>
   </ng-template>
