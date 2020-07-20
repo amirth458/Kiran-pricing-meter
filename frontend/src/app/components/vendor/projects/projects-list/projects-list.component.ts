@@ -316,6 +316,15 @@ export class ProjectsListComponent implements OnInit {
     if (this.type === 'release-queue') {
       this.connectColumnDefs = this.connectColumnDefs.concat([
         {
+          headerName: 'RFQ Ids',
+          field: 'rfqIds',
+          hide: false,
+          sortable: true,
+          filter: false,
+          tooltipField: 'rfqIds',
+          valueFormatter: v => (v.value ? v.value.join(', ') : '')
+        },
+        {
           headerName: 'ProdEX Supplier Requested',
           field: 'preferredVendors',
           hide: false,
