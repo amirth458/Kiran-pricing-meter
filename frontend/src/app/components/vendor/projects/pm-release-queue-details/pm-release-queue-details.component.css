@@ -7,10 +7,22 @@
   justify-content: space-between;
 }
 
-.header {
-  font-size: 16px;
+.feature-header {
   font-weight: bold;
   color: var(--theme-dark-blue);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex: 0 0 100%;
+  flex-basis: auto;
+}
+
+.feature-header h6 {
+  font-size: 20px;
+}
+
+.feature-header span {
+  margin-top: 3px;
 }
 
 :host .header .same-vendor-label {
@@ -18,7 +30,6 @@
   padding: 0 1rem;
 }
 
-h6,
 p.label {
   font-size: 13px;
   color: var(--theme-dark-blue);

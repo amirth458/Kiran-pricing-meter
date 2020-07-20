@@ -1,9 +1,157 @@
 <section class="page pm-release-queue-details">
-  <h1>
-    Work in Progress
-  </h1>
-  <pre>
-  {{ suppliers | json }}
-</pre
-  >
+  <div class="wrapper text-theme">
+    <div class="part-list">
+      <div class="w-100 row">
+        <header class="col-12 feature-header">
+          <h6 class="title pl-0 text-theme">
+            Project Details
+          </h6>
+          <span
+            *ngIf="parts"
+            class="ml-3 font-sm cursor-pointer font-weight-normal underline"
+            (click)="showPartDetails = !showPartDetails"
+          >
+            See <ng-container *ngIf="showPartDetails">less</ng-container>
+            <ng-container *ngIf="!showPartDetails">more</ng-container> details
+          </span>
+        </header>
+        <ng-container *ngIf="!showPartDetails">
+          <app-part-list [showRefFile]="true" [parts]="parts"></app-part-list>
+        </ng-container>
+        <div *ngIf="showPartDetails && unitOptions" class="part-details col-12 w-100">
+          <!-- PROFILE INFORMATION -->
+          <div class="d-flex flex-column w-75 check-out-panel pt-3 pb-3 pl-4 pr-4 mt-4 mb-4" *ngIf="projectProfile">
+            <h5 class="text-theme m-0 font-weight-bold">{{ projectProfile?.name || '' | titlecase }}</h5>
+            <p class="text-theme m-0 pt-2 med-font-size">
+              Eligible Supplier Type: <strong>{{ projectProfile?.eligibleManufacturerTypes || '-' }}</strong>
+            </p>
+            <p class="text-theme m-0 pt-2 med-font-size">
+              Eligible Countries: <strong>{{ projectProfile?.countries || '-' }}</strong>
+            </p>
+            <p class="text-theme m-0 pt-2 med-font-size">
+              Facility Quality Certifications: <strong>{{ projectProfile?.facilityCerts || '-' }}</strong>
+            </p>
+            <p class="text-theme m-0 pt-2 med-font-size">
+              Part Certifications: <strong>{{ projectProfile?.partCerts || '-' }}</strong>
+            </p>
+            <p class="text-theme m-0 pt-2 med-font-size" *ngIf="(parts?.length || 0) > 0">
+              <app-proposal-attachment
+                type="governance-document"
+                [smallView]="true"
+                [partId]="parts[0].partId"
+              ></app-proposal-attachment>
+            </p>
+          </div>
+          <!-- /PROFILE INFORMATION -->
+          <app-connect-part
+            class="d-block mt-2 mb-2"
+            *ngFor="let part of parts"
+            [partId]="part.partId"
+            [unitOptions]="unitOptions"
+          >
+          </app-connect-part>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="'project-release-queue'">
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Matching Suppliers Profiles</span>
+              <span
+                class="footnote red cannot-fulfill font-weight-bold"
+                *ngIf="
+                  numberOfVendors !== null && maxSelectableVendors !== null && maxSelectableVendors < numberOfVendors
+                "
+                >Can Not Fulfill</span
+              >
+              <button
+                class="btn theme btn-primary btn-sm"
+                [disabled]="!canReleaseToVendor()"
+                (click)="releaseToVendor()"
+              >
+                Release Project to Suppliers
+              </button>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="shortListedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              (rowDragEnd)="onRowDrag($event)"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Removed Matching Suppliers Profiles</span>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="removedSuppliers"
+              [gridOptions]="supplierGridOptions[1]"
+              (gridReady)="onSuppliersGridReady(1, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'vendor-confirmation-queue'">
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Matching Suppliers Queue</span>
+              <div class="d-flex align-items-center">
+                <!-- [disabled]="selectableCount <= 0" -->
+                <button class="btn theme white btn-sm" [disabled]="selectableCount <= 0" (click)="openNewSupplier()">
+                  Add New Supplier
+                </button>
+                <button
+                  class="btn theme btn-primary btn-sm ml-3"
+                  [disabled]="!canReleaseToCustomer()"
+                  (click)="releaseToCustomer()"
+                >
+                  Release Project to Customer
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="selectedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              domLayout="autoHeight"
+            >
+            </ag-grid-angular>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'released-projects'">
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Chosen Suppliers Profiles</span>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="selectedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              domLayout="autoHeight"
+            >
+            </ag-grid-angular>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
 </section>

@@ -1218,3 +1218,13 @@ app-dropdown-cell-renderer {
   text-decoration: underline !important;
   cursor: pointer;
 }
+
+.pm-release-queue-details .part-item {
+  padding: 0.75rem 1.5rem !important;
+  margin-left: 0 !important;
+  background: var(--theme-grey-bg);
+}
+
+.pm-release-queue-details .part-name {
+  margin-bottom: 10px !important;
+}

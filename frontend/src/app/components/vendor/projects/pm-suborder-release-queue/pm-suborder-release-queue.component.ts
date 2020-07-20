@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
@@ -13,6 +13,8 @@ import { AppPartStatusId } from 'src/app/model/part.model';
 import { Util } from 'src/app/util/Util';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-pm-suborder-release-queue',
@@ -48,6 +50,9 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
   searchOpt: SearchOpt = new SearchOpt();
   totalRows = 0;
   constructor(
+    public metadataService: MetadataService,
+    public route: ActivatedRoute,
+    public toastr: ToastrService,
     public spinner: NgxSpinnerService,
     public router: Router,
     public projectService: ProjectService,
@@ -148,7 +153,7 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
   }
 
   /* Onclick Part details popup view */
-  showPartDetails($event, selectedRow) {
+  showPartDetails(selectedRow) {
     console.log(selectedRow);
   }
 

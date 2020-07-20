@@ -28,7 +28,7 @@
 
 :host .part-list {
   max-height: 450px;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 :host .part-list.small {

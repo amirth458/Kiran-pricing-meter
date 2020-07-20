@@ -5,6 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProjectService } from 'src/app/service/project.service';
+import { PartService } from 'src/app/service/part.service';
+import { ConnectProject } from 'src/app/model/connect.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { MetadataConfig } from 'src/app/model/metadata.model';
 
 @Component({
   selector: 'app-pm-release-queue-details',
@@ -21,10 +25,16 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   @ViewChild('reference') reference: TemplateRef<any>;
 
   suppliers = [];
+  showPartDetails = false;
+  projectDetails: ConnectProject;
+  unitOptions = [];
+  parts = [];
   constructor(
     public route: ActivatedRoute,
     public router: Router,
+    public metadataService: MetadataService,
     public projectService: ProjectService,
+    public partService: PartService,
     public toastr: ToastrService,
     public modal: NgbModal
   ) {}
@@ -35,16 +45,38 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
         return;
       }
       const partIds = id.split(',');
-      console.log(partIds);
-      this.getAllSuppliersListByPartIds(partIds);
+      // console.log(partIds);
+
+      // this.parts = this.projectService.partService();
+      this.getPartsAndSuppliersByPartId(partIds);
+    });
+  }
+  getAdminMetaData() {
+    this.metadataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
+      this.unitOptions = res;
     });
   }
 
-  getAllSuppliersListByPartIds(partIds) {
-    this.projectService.getAllSuppliersListByPartIds({ partIds }).subscribe(
+  // getAllSuppliersListByPartIds(partIds) {
+
+  // }
+
+  getPartsAndSuppliersByPartId(partIds) {
+    console.log(partIds);
+    this.partService.getPartsById(partIds).subscribe(
       reponse => {
         console.log(reponse);
-        this.suppliers = reponse;
+        this.parts = reponse;
+      },
+      error => {
+        console.log('Error', error);
+      }
+    );
+
+    this.partService.getPartsById(partIds).subscribe(
+      reponse => {
+        console.log(reponse);
+        this.parts = reponse;
       },
       error => {
         console.log('Error', error);

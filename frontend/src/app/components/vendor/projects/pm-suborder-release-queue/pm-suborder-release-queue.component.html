@@ -56,7 +56,7 @@
 
 <!-- partDetails cell -->
 <ng-template #partIdCell let-row>
-  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails($event, row)">{{
+  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails(row)">{{
     row?.partIds.join(', ')
   }}</a>
 </ng-template>
