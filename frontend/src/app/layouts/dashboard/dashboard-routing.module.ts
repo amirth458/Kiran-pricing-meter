@@ -95,6 +95,7 @@ import { PmSuborderReleaseQueueComponent } from '../../components/vendor/project
 import { PmReleaseQueueDetailsComponent } from '../../components/vendor/projects/pm-release-queue-details/pm-release-queue-details.component';
 import { PmReleaseQueueComponent } from '../../components/vendor/projects/pm-release-queue/pm-release-queue.component';
 import { IssuedProposalComponent } from '../../components/vendor/projects/issued-proposal/issued-proposal.component';
+import { CustomerAcceptedComponent } from '../../components/vendor/projects/customer-accepted/customer-accepted.component';
 
 const routes: Routes = [
   {
@@ -400,6 +401,10 @@ const routes: Routes = [
               {
                 path: 'proposal-issued',
                 component: IssuedProposalComponent
+              },
+              {
+                path: 'customer-accepted',
+                component: CustomerAcceptedComponent
               },
               {
                 path: '',

@@ -312,6 +312,12 @@
       "tooltipMessage": "Proposal Issued",
       "route": "proposal-issued",
       "actions": []
+    },
+    {
+      "name": "Customer Accepted",
+      "tooltipMessage": "Customer Accepted",
+      "route": "customer-accepted",
+      "actions": []
     }
   ],
   "connect": [
