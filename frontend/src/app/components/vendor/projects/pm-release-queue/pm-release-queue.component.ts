@@ -12,7 +12,7 @@ import { BiddingService } from '../../../../service/bidding.service';
 import { FilterOption } from '../../../../model/vendor.model';
 import { PartService } from '../../../../service/part.service';
 import { Part } from '../../../../model/part.model';
-import { PmProjectRequest, PmProjectStatusEnum } from '../../../../model/bidding.order';
+import { PmProjectRequest, PmProjectStatusEnum, PmProjectStatusType } from '../../../../model/bidding.order';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 
 @Component({
@@ -41,6 +41,7 @@ export class PmReleaseQueueComponent implements OnInit {
     PmProjectStatusEnum.RELEASED_TO_VENDOR,
     PmProjectStatusEnum.PARTIALLY_RELEASED_TO_CUSTOMER
   ];
+  protected pmProjectStatusType = PmProjectStatusType.RELEASE_QUEUE;
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -85,7 +86,7 @@ export class PmReleaseQueueComponent implements OnInit {
       {
         headerName: 'Bid Id',
         field: 'bidPmProjectId',
-        hide: false,
+        hide: this.pmProjectStatusType !== PmProjectStatusType.RELEASE_QUEUE,
         sortable: true,
         filter: false,
         tooltipField: 'bidPmProjectId'
