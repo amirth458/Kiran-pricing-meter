@@ -28,7 +28,6 @@ export class InsightPartInformationComponent implements OnInit {
     if ((value || []).length > 0) {
       const part = value[0];
       this.id$.next(part.id);
-      this.getRfqData(part.rfqMedia.projectRfqId);
     }
   }
   get parts(): Part[] {
@@ -43,8 +42,8 @@ export class InsightPartInformationComponent implements OnInit {
   customer$: Observable<CustomerDetails>;
   dimension$: Observable<PartDimension>;
   quote$: Observable<PartQuote>;
+  rfq$: Observable<RfqData>;
 
-  rfq: RfqData;
   invoiceItems;
   countries = [];
   certs = [];
@@ -75,6 +74,12 @@ export class InsightPartInformationComponent implements OnInit {
       map(value => this.getSelectedPart(value)),
       filter(value => value !== null),
       switchMap((value: Part) => this.customerService.getCustomerDetailsById(value.rfqMedia.media.customerId))
+    );
+    this.rfq$ = this.id$.pipe(
+      filter(value => value !== null),
+      map(value => this.getSelectedPart(value)),
+      filter(value => value !== null),
+      switchMap((value: Part) => this.pricingService.getRfqDetail(value.rfqMedia.projectRfqId))
     );
     this.quote$ = this.id$.pipe(
       filter(value => value !== null),
@@ -109,10 +114,6 @@ export class InsightPartInformationComponent implements OnInit {
   getSelectedPart(id: number) {
     const parts = this.parts.filter(part => part.id === id);
     return (parts.length > 0 ? parts[0] : null) as Part;
-  }
-
-  getRfqData(rfqId: number) {
-    this.pricingService.getRfqDetail(rfqId).subscribe((rfq: RfqData) => (this.rfq = rfq));
   }
 
   beforeChange($event: NgbTabChangeEvent) {

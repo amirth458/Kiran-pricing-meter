@@ -21,7 +21,7 @@
         <app-part-information
           *ngIf="selected$ | async"
           [part]="selected$ | async"
-          [rfq]="rfq"
+          [rfq]="rfq$ | async"
           [customer]="customer$ | async"
           [partDimension]="dimension$ | async"
           [partQuote]="quote$ | async"
