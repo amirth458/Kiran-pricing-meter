@@ -1,0 +1,67 @@
+<div class="wrapper suborder-release-queue">
+  <div class="table theme-table">
+    <div class="d-flex header justify-content-between align-items-center">
+      <div class="d-flex">
+        <app-insight-header
+          [type]="null"
+          [gridOptions]="gridOptions"
+          [placeholder]="'Customer, RFQ, Part, Order'"
+          [columns]="columnDefs"
+          [extraActions]="false"
+          (queryChange)="onQueryChange($event)"
+          (createdDateChange)="onCreatedDateChange($event)"
+        ></app-insight-header>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-end controls button-group-right">
+        <button type="button" class="ml-2 btn btn-white p-2 toggle-test-btn" (click)="toggleTestAccount()">
+          {{ searchOpt.showTestAccount ? 'Remove Test Account' : 'Include Test Account' }}
+        </button>
+
+        <button
+          type="button"
+          class="ml-2 btn theme p-2"
+          (click)="onClickAdvancedToVendor()"
+          [disabled]="!selectedVendors.length"
+        >
+          Advance to Vendor Selection
+        </button>
+      </div>
+    </div>
+
+    <ag-grid-angular class="ag-theme-balham w-100 h-100" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+    <ngx-spinner
+      [name]="'loadingPanel'"
+      bdColor="#ffffff70"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
+  </div>
+</div>
+<!-- table row select button -->
+<ng-template #selectButton let-row>
+  <button
+    class="btn select-button"
+    [ngClass]="row?.selected ? 'btn-white' : 'btn-secondary'"
+    (click)="onRowSelect(row)"
+  >
+    Select
+  </button>
+</ng-template>
+
+<!-- partDetails cell -->
+<ng-template #partIdCell let-row>
+  <a class="text-blue text-underlined part-details-cell" (click)="showPartDetails(row)">{{
+    row?.partIds.join(', ')
+  }}</a>
+</ng-template>
+
+<!-- partDetails cell -->
+<ng-template #thumbnailCell let-row>
+  <div class="thumbnail-img" style="background-image:{{ (row?.locations)[0] }}"></div>
+</ng-template>

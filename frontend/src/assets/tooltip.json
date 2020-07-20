@@ -259,12 +259,7 @@
       "route": "pm-rfq-list",
       "actions": []
     },
-    {
-      "name": "Project Release Queue",
-      "tooltipMessage": "Project Release Queue",
-      "route": "project-release-queue",
-      "actions": []
-    },
+
     {
       "name": "Vendor Released",
       "tooltipMessage": "Vendor Released",
@@ -293,6 +288,24 @@
       "name": "PM Parts",
       "tooltipMessage": "PM Parts",
       "route": "other-status",
+      "actions": []
+    },
+    {
+      "name": "Suborder Release Queue",
+      "tooltipMessage": "Suborder Release Queue",
+      "route": "pm-suborder-release-queue",
+      "actions": []
+    },
+    {
+      "name": "Release Queue",
+      "tooltipMessage": "Release Queue",
+      "route": "pm-release-queue",
+      "actions": []
+    },
+    {
+      "name": "Proposal Issued",
+      "tooltipMessage": "Proposal Issued",
+      "route": "proposal-issued",
       "actions": []
     }
   ],

@@ -1,0 +1,262 @@
+<section class="page pm-release-queue-details">
+  <ngx-spinner
+    [name]="'loadingPanel'"
+    bdColor="#ffffff70"
+    size="small"
+    color="#74bf09"
+    type="ball-clip-rotate"
+    [fullScreen]="true"
+  >
+    <p class="m-0">Loading...</p>
+  </ngx-spinner>
+  <div class="wrapper text-theme" *ngIf="parts.length">
+    <div class="part-list">
+      <div class="w-100 row">
+        <header class="col-12 feature-header">
+          <h6 class="title pl-0 text-theme">
+            Project Details
+          </h6>
+          <span
+            *ngIf="parts"
+            class="ml-3 font-sm cursor-pointer font-weight-normal underline"
+            (click)="showPartDetails = !showPartDetails"
+          >
+            See <ng-container *ngIf="showPartDetails">less</ng-container>
+            <ng-container *ngIf="!showPartDetails">more</ng-container> details
+          </span>
+        </header>
+        <ng-container *ngIf="!showPartDetails">
+          <app-part-list [showRefFile]="true" *ngIf="parts.length" [parts]="parts"></app-part-list>
+        </ng-container>
+      </div>
+    </div>
+    <div class="part-details w-100">
+      <ng-container *ngIf="showPartDetails">
+        <app-prod-part
+          class="d-block mt-4 mb-4"
+          *ngFor="let part of parts"
+          [partId]="part.partId"
+          [unitOptions]="measurementUnits"
+        >
+        </app-prod-part>
+      </ng-container>
+    </div>
+    <div class="row" *ngIf="parts.length">
+      <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="'pm-release-queue'">
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Matching Suppliers Profiles</span>
+              <!-- <span class="footnote red cannot-fulfill font-weight-bold" *ngIf="
+                  numberOfVendors !== null && maxSelectableVendors !== null && maxSelectableVendors < numberOfVendors
+                ">Can Not Fulfill</span
+              > -->
+              <div class="d-flex align-items-center justify-content-end controls button-group-right">
+                <button
+                  type="button"
+                  class="ml-2 btn btn-white  btn-sm p-2 remove-btn"
+                  [routerLink]="['/prodex/projects/pm-suborder-release-queue']"
+                >
+                  Remove Project from Release
+                </button>
+                <button
+                  class="ml-2 btn theme btn theme btn-sm  p-2"
+                  [disabled]="!canReleaseToVendor()"
+                  (click)="releaseToVendor()"
+                >
+                  Release Project to Suppliers
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table" *ngIf="shortListedSuppliers.length">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="shortListedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              (rowDragEnd)="onRowDrag($event)"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Removed Matching Suppliers Profiles</span>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="removedSuppliers"
+              [gridOptions]="supplierGridOptions[1]"
+              (gridReady)="onSuppliersGridReady(1, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'vendor-confirmation-queue'">
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Matching Suppliers Queue</span>
+              <div class="d-flex align-items-center">
+                <!-- [disabled]="selectableCount <= 0" -->
+                <button class="btn theme white btn-sm" [disabled]="selectableCount <= 0" (click)="openNewSupplier()">
+                  Add New Supplier
+                </button>
+                <button
+                  class="btn theme btn-primary btn-sm ml-3"
+                  [disabled]="!canReleaseToCustomer()"
+                  (click)="releaseToCustomer()"
+                >
+                  Release Project to Customer
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="selectedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              domLayout="autoHeight"
+            >
+            </ag-grid-angular>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'released-projects'">
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Chosen Suppliers Profiles</span>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="selectedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              domLayout="autoHeight"
+            >
+            </ag-grid-angular>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <ng-template #removeCell let-row>
+    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+      <a class="text-orange" (click)="removeFromList(row)">Remove from list</a>
+    </div>
+  </ng-template>
+
+  <ng-template #moveCell let-row>
+    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+      <a class="text-green" (click)="moveToList(row)">Move to the list</a>
+    </div>
+  </ng-template>
+
+  <ng-template #statusCell let-row>
+    <div class="d-flex flex-row align-items-center w-100 h-100">
+      <ng-container [ngSwitch]="row.status.id">
+        <div *ngSwitchCase="1">RECEIVED</div>
+        <div *ngSwitchCase="2">ACCEPTED</div>
+        <div *ngSwitchCase="3" class="text-orange">REJECTED</div>
+        <div *ngSwitchCase="4">NO RESPONSE</div>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template #vendorCell let-row>
+    <div class="d-flex flex-row align-items-center w-100 h-100">
+      <a class="text-blue text-underline" (click)="showVendorProfiles($event, row)">{{ row.vendorName }}</a>
+    </div>
+  </ng-template>
+
+  <ng-template #vendorProfile let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+          "{{ selectedVendor.vendorName }}" Profiles
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body theme-table">
+        <ag-grid-angular
+          class="ag-theme-balham w-100 h-100"
+          [rowData]="vendorProfiles"
+          [gridOptions]="vendorProfileGridOptions"
+          (gridReady)="onVendorProfileReady($event)"
+          domLayout="autoHeight"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #addSupplier let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
+          Choose more {{ selectableCount }} Vendor
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body theme-table">
+        <ag-grid-angular
+          class="ag-theme-balham w-100 h-100"
+          [rowData]="availableSuppliers"
+          [gridOptions]="supplierGridOptions[1]"
+          (gridReady)="onSuppliersGridReady(1, $event)"
+          domLayout="autoHeight"
+        >
+        </ag-grid-angular>
+      </div>
+
+      <div class="modal-footer d-flex align-items-center justify-content-center">
+        <button
+          class="btn theme btn-primary btn-sm"
+          [disabled]="!canReleaseToNewVendorFlag"
+          (click)="releaseNewToVendor()"
+        >
+          Release Project to Suppliers
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #reference let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-theme-green text-center text-capitalize w-100 pl-3" id="modal-basic-title">
+          Reference Files
+        </h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body py-2 px-4">
+        <div *ngFor="let ref of referenceFiles" class="reference-file">
+          <div class="icon">
+            <i class="far fa-file-alt"></i>
+          </div>
+          <a [href]="ref.location" download class="download-link">{{ ref.name }}</a>
+        </div>
+        <div class="w-100" *ngIf="!(referenceFiles?.length || 0) > 0">
+          <h5 class="w-100 text-center text-theme">No reference files found</h5>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</section>
