@@ -19,27 +19,26 @@ export class AuthenticationModalComponent implements OnInit, OnDestroy {
   submitted = false;
   destroy$: Subject<boolean> = new Subject();
 
-  public form: FormGroup = this.fb.group(
-    {
-      email: [null, [Validators.required, Validators.email]],
-      secretKey: [null, Validators.required]
-    }
-  );
+  public form: FormGroup = this.fb.group({
+    email: [null, [Validators.required, Validators.email]],
+    secretKey: [null, Validators.required]
+  });
 
-  constructor(public fb: FormBuilder,
-              public toastr: ToastrService,
-              public spinner: NgxSpinnerService,
-              public userService: UserService) {}
+  constructor(
+    public fb: FormBuilder,
+    public toastr: ToastrService,
+    public spinner: NgxSpinnerService,
+    public userService: UserService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   get controls() {
     return this.form.controls;
   }
 
   onCancel() {
-    this.cancel.emit({authenticated: false, userInfo: this.userInfo, cancelled: true});
+    this.cancel.emit({ authenticated: false, userInfo: this.userInfo, cancelled: true });
   }
 
   onContinue(event) {
@@ -52,7 +51,7 @@ export class AuthenticationModalComponent implements OnInit, OnDestroy {
         .subscribe(
           res => {
             this.spinner.hide();
-            this.continue.emit({authenticated: res, userInfo: this.userInfo});
+            this.continue.emit({ authenticated: res, userInfo: this.userInfo });
           },
           err => {
             this.spinner.hide();

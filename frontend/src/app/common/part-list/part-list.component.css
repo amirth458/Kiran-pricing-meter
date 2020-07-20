@@ -28,7 +28,7 @@
 
 :host .part-list {
   max-height: 450px;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 :host .part-list.small {
@@ -52,4 +52,8 @@
 
 #view-in-three-d {
   width: 100px;
+}
+
+.part-item {
+  cursor: pointer;
 }

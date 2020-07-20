@@ -1,29 +1,30 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 import { combineLatest } from 'rxjs';
 
-import { MetadataConfig } from 'src/app/model/metadata.model';
-import { MetadataService } from 'src/app/service/metadata.service';
-import { OrdersService } from 'src/app/service/orders.service';
+import { ProjectService } from 'src/app/service/project.service';
 import { PartService } from 'src/app/service/part.service';
-import { Part, MatchedProcessProfile, ReferenceFile, AppPartStatusId } from 'src/app/model/part.model';
-import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
-import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
+import { ConnectProject } from 'src/app/model/connect.model';
+import { MetadataService } from 'src/app/service/metadata.service';
+import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { UserService } from 'src/app/service/user.service';
+import { ReferenceFile, Part, MatchedProcessProfile } from 'src/app/model/part.model';
+import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
+
+import { OrdersService } from 'src/app/service/orders.service';
+import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { Util } from 'src/app/util/Util';
 
 @Component({
-  selector: 'app-order-detail',
-  templateUrl: './order-detail.component.html',
-  styleUrls: ['./order-detail.component.css']
+  selector: 'app-pm-release-queue-details',
+  templateUrl: './pm-release-queue-details.component.html',
+  styleUrls: ['./pm-release-queue-details.component.css']
 })
-export class OrderDetailComponent implements OnInit {
+export class PmReleaseQueueDetailsComponent implements OnInit {
   @ViewChild('removeCell') removeCell: TemplateRef<any>;
   @ViewChild('moveCell') moveCell: TemplateRef<any>;
   @ViewChild('statusCell') statusCell: TemplateRef<any>;
@@ -32,10 +33,12 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild('addSupplier') addSupplier: TemplateRef<any>;
   @ViewChild('reference') reference: TemplateRef<any>;
 
+  suppliers = [];
+  showPartDetails = false;
+  projectDetails: ConnectProject;
   measurementUnits: any;
   postProcessAction = [];
   selectedVendor;
-  showPartDetails = false;
 
   supplierGridOptions: GridOptions[] = [];
   supplierColumnDefs: Array<ColDef[]> = [];
@@ -62,26 +65,36 @@ export class OrderDetailComponent implements OnInit {
   parts: Part[];
   canReleaseToNewVendorFlag = true;
   canReleaseToVendorFlag = true;
-
+  bidPmProjectId = null;
   numberOfVendors = null;
   numberOfVendorsToReleaseToCustomer = 1;
   maxSelectableVendors = null;
+
   constructor(
-    public orderService: OrdersService,
-    public metadataService: MetadataService,
     public route: ActivatedRoute,
-    public router: Router,
-    public partService: PartService,
-    public userService: UserService,
+    public spinner: NgxSpinnerService,
     public toastr: ToastrService,
+    public router: Router,
     public modal: NgbModal,
+    public metadataService: MetadataService,
+    public projectService: ProjectService,
+    public orderService: OrdersService,
+    public partService: PartService,
     public pricingService: RfqPricingService
   ) {
     this.type = router.url.split('/')[3];
   }
 
   ngOnInit() {
-    if (this.type === 'project-release-queue') {
+    this.spinner.show();
+
+    this.route.params.subscribe(params => {
+      this.bidPmProjectId = params.bidId;
+      const partIds = params.id.split(',');
+      this.getPartsAndSuppliersByPartId(partIds);
+    });
+
+    if (this.type === 'pm-release-queue') {
       this.initSuppliersTable();
     } else {
       this.initMatchingSuppliersQueue();
@@ -98,74 +111,165 @@ export class OrderDetailComponent implements OnInit {
       this.numberOfVendors = prodProjectSetting.minNumberOfSupplierToRelease;
       this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.minNumberOfSupplierToRelease;
     });
+  }
 
-    this.route.params.subscribe(({ id }) => {
-      this.orderService.getPartById(id).subscribe(v => {
-        this.part = v;
-        this.parts = [v];
-        this.getReferenceFileCount();
-
-        if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_RELEASE) {
-          // PART_AWAITING_RELEASE
-          if (this.type !== 'project-release-queue') {
-            this.router.navigateByUrl(`/prodex/projects/project-release-queue/${id}`);
-            return;
-          }
-        } else if (v.partStatusType.id === AppPartStatusId.PART_AWAITING_VENDORS) {
-          // vendor-confirmation-queue
-          if (this.type !== 'vendor-confirmation-queue') {
-            this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${id}`);
-            return;
-          }
-        } else if (this.type === 'released-projects' && v.partStatusType.id !== AppPartStatusId.VENDOR_CONFIRMED) {
-          this.router.navigateByUrl(`/prodex/projects/released-orders/${v.order.id}`);
+  getPartsAndSuppliersByPartId(partIds) {
+    this.projectService.getAllSuppliersAndPartsByPartId(partIds).subscribe(
+      reponse => {
+        this.spinner.hide();
+        if (!reponse || !reponse.length) {
           return;
-        } else {
-          if (this.type !== 'released-projects') {
-            this.router.navigateByUrl(`/prodex/projects/released-projects/${id}`);
-            return;
-          }
         }
-        this.supplierGridOptions[0].api.showLoadingOverlay();
-        this.orderService.getMatchingProcessProfiles([this.part.rfqMedia.id]).subscribe(
-          res => {
-            this.matchingProfiles = res;
-            this.shortListedSuppliers = Array.from(new Set(this.matchingProfiles.map(item => item.vendorId))).map(
-              (vendorId, index) => {
-                const group = this.matchingProfiles.filter(item => item.vendorId === vendorId);
-                return {
-                  vendorId,
-                  id: index + 1,
-                  vendorName: group[0].corporateName,
-                  numberOfProfiles: group.length,
-                  subscription: group[0].subscriptionType,
-                  subscriptionId: group[0].subscriptionId
-                };
-              }
-            );
-            // Count SHOPSIGHT 360 PLUS SUBSCRIBERS
-            this.maxSelectableVendors = (this.shortListedSuppliers || []).length;
-            // this.maxSelectableVendors = this.shortListedSuppliers.filter(
-            //   i => i.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS
-            // ).length;
-            this.supplierGridOptions[0].api.hideOverlay();
-
-            if (this.type !== 'project-release-queue') {
-              this.setSuppliers(id);
-            }
-          },
-          err => {
-            console.log({ err });
-            this.supplierGridOptions[0].api.hideOverlay();
-          }
-        );
-      });
-    });
+        this.parts = reponse[0];
+        this.shortListedSuppliers = reponse[1].map((item, index) => {
+          const facilityCertificates = item.facilityCertificates.map(item => item.name);
+          const partCertificates = item.partCertificates.map(item => item.name);
+          return {
+            ...item,
+            vendorName: item.vendorName,
+            vendorType: item.vendorType.name,
+            country: item.country.name,
+            quantityOfProcessProfile: item.quantityOfProcessProfile,
+            facility: item.facility.toString(),
+            facilityCertificates: facilityCertificates.toString(),
+            partCertificates: partCertificates.toString(),
+            releasePriority: index + 1
+          };
+        });
+      },
+      error => {
+        this.spinner.hide();
+        console.log('Error', error);
+      }
+    );
   }
 
   isManufacturerSameVendor() {
     return this.part && this.part.order && this.part.order.isReleaseToSingleSupplier;
   }
+
+  canReleaseToCustomer() {
+    return (
+      this.numberOfVendorsToReleaseToCustomer &&
+      this.selectedSuppliers.filter(item => item.status.id === 2).length >= this.numberOfVendorsToReleaseToCustomer
+    );
+  }
+
+  canReleaseToVendor() {
+    return (
+      this.supplierGridOptions[0].api &&
+      this.numberOfVendors !== null &&
+      this.supplierGridOptions[0].api.getSelectedRows().length >= this.numberOfVendors &&
+      this.canReleaseToVendorFlag
+    );
+  }
+
+  getReferenceFileCount() {
+    this.orderService.getReferenceFileCountByPartId(this.part.id).subscribe(
+      res => {
+        this.referenceFileCount = res;
+      },
+      err => {}
+    );
+  }
+
+  openReference() {
+    this.orderService.getReferenceFiles(this.part.id).subscribe(v => {
+      this.referenceFiles = v;
+      this.modal.open(this.reference, {
+        centered: true,
+        size: 'lg'
+      });
+    });
+  }
+
+  releaseToVendor() {
+    this.spinner.show('loadingPanel');
+    const selectedProfiles = this.supplierGridOptions[0].api
+      .getSelectedRows()
+      .map(item => ({
+        vendorId: item.vendorId,
+        releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
+      }))
+      .sort((a, b) => a.releasePriority - b.releasePriority);
+
+    this.canReleaseToVendorFlag = false;
+    const payload = {
+      bidPmProjectId: this.bidPmProjectId,
+      releaseBidPmProjectToVendors: selectedProfiles
+    };
+    this.projectService.saveReleasePMBidToVendor(payload).subscribe(
+      response => {
+        this.spinner.hide('loadingPanel');
+        this.toastr.success('Successfully released!');
+        /* todo Redirect to next view */
+      },
+      error => {
+        this.spinner.hide('loadingPanel');
+        this.toastr.error('Error while releasing to Vendor.');
+      }
+    );
+  }
+
+  releaseNewToVendor() {
+    const selectedProfiles = this.supplierGridOptions[1].api
+      .getSelectedRows()
+      .map(item => ({
+        selectedProcessProfileId: null,
+        vendorId: item.vendorId,
+        releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
+      }))
+      .sort((a, b) => a.releasePriority - b.releasePriority);
+
+    this.canReleaseToNewVendorFlag = false;
+    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
+      v => {
+        this.setSuppliers(v.partId);
+        this.modal.dismissAll();
+      },
+      err => {
+        this.canReleaseToNewVendorFlag = true;
+      }
+    );
+  }
+
+  releaseToCustomer() {
+    this.orderService
+      .releaseProjectBidToCustomer(
+        this.part.id,
+        this.selectedSuppliers.filter(item => item.status.id === 2).map(item => item.vendorId)
+      )
+      .subscribe(v => {
+        this.router.navigateByUrl(`/prodex/projects/released-projects/${this.part.id}`);
+      });
+  }
+
+  setSuppliers(partId) {
+    this.supplierGridOptions[0].api.showLoadingOverlay();
+    this.orderService.getBidProjectProcesses(partId).subscribe(
+      v => {
+        this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
+        this.selectedSuppliers = v.map(res => {
+          const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
+
+          return {
+            id: res.id,
+            vendorId: res.vendorId,
+            vendorName: res.vendorName,
+            numberOfProfiles: group.length,
+            status: res.bidProjectProcessStatusType
+          };
+        });
+        this.supplierGridOptions[0].api.hideOverlay();
+      },
+      err => {
+        console.log({ err });
+        this.supplierGridOptions[0].api.hideOverlay();
+      }
+    );
+  }
+
+  /* Table configuration */
 
   initSuppliersTable() {
     this.supplierColumnDefs = [
@@ -192,16 +296,52 @@ export class OrderDetailComponent implements OnInit {
           }
         },
         {
-          headerName: 'Subscription Type',
-          field: 'subscription',
+          headerName: 'Vendor Type',
+          field: 'vendorType',
           hide: false,
           sortable: false,
-          filter: false,
-          valueFormatter: v => (v.value ? v.value.replace(/_/g, ' ') : '-')
+          filter: false
+          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
-          headerName: 'Quantity of Process Profiles',
-          field: 'numberOfProfiles',
+          headerName: 'country',
+          field: 'country',
+          hide: false,
+          sortable: false,
+          filter: false
+          // valueFormatter: v => (v.value ? v.value.name : '-')
+        },
+        {
+          headerName: 'Facility',
+          field: 'facility',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Facility Certificates',
+          field: 'facilityCertificates',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Part Certificates',
+          field: 'partCertificates',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'Quanitity of Process Profile',
+          field: 'quantityOfProcessProfile',
+          hide: false,
+          sortable: false,
+          filter: false
+        },
+        {
+          headerName: 'ReleasePriority',
+          field: 'releasePriority',
           hide: false,
           sortable: false,
           filter: false
@@ -372,15 +512,10 @@ export class OrderDetailComponent implements OnInit {
         rowMultiSelectWithClick: true,
         onRowSelected: ev => {
           if (ev.node.isSelected()) {
-            // if (ev.data.subscriptionId !== SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
-            //   this.toastr.warning(`This vendor doesn’t have 360 PLUS.`);
+            // if (ev.api.getSelectedRows().length > this.selectableCount) {
+            //   this.toastr.warning(`You can select up to ${this.selectableCount} suppliers.`);
             //   ev.node.setSelected(false);
-            // } else
-            if (ev.api.getSelectedRows().length > this.selectableCount) {
-              this.toastr.warning(`You can select up to ${this.selectableCount} suppliers.`);
-              ev.node.setSelected(false);
-            } else {
-            }
+            // }
           }
         }
       }
@@ -436,7 +571,7 @@ export class OrderDetailComponent implements OnInit {
 
   removeFromList(data) {
     this.removedSuppliers = [...this.removedSuppliers, data];
-    this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.id !== data.id);
+    this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.vendorId !== data.vendorId);
     // if (data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
     --this.maxSelectableVendors;
     // }
@@ -444,7 +579,7 @@ export class OrderDetailComponent implements OnInit {
 
   moveToList(data) {
     this.shortListedSuppliers = [...this.shortListedSuppliers, data];
-    this.removedSuppliers = this.removedSuppliers.filter(item => item.id !== data.id);
+    this.removedSuppliers = this.removedSuppliers.filter(item => item.vendorId !== data.vendorId);
     // if (data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
     ++this.maxSelectableVendors;
     // }
@@ -472,120 +607,5 @@ export class OrderDetailComponent implements OnInit {
 
   get vendorProfiles() {
     return this.matchingProfiles.filter(item => item.vendorId === this.selectedVendor.vendorId);
-  }
-
-  releaseToVendor() {
-    const selectedProfiles = this.supplierGridOptions[0].api
-      .getSelectedRows()
-      .map(item => ({
-        selectedProcessProfileId: null,
-        vendorId: item.vendorId,
-        releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
-      }))
-      .sort((a, b) => a.releasePriority - b.releasePriority);
-    this.canReleaseToVendorFlag = false;
-    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
-      v => {
-        this.router.navigateByUrl(`/prodex/projects/vendor-confirmation-queue/${v.partId}`);
-        this.canReleaseToVendorFlag = true;
-      },
-      err => {
-        this.canReleaseToVendorFlag = true;
-        this.toastr.error('Error while releasing to Vendor.');
-      }
-    );
-  }
-
-  releaseNewToVendor() {
-    const selectedProfiles = this.supplierGridOptions[1].api
-      .getSelectedRows()
-      .map(item => ({
-        selectedProcessProfileId: null,
-        vendorId: item.vendorId,
-        releasePriority: this.shortListedSuppliers.findIndex(s => s.vendorId === item.vendorId) + 1
-      }))
-      .sort((a, b) => a.releasePriority - b.releasePriority);
-
-    this.canReleaseToNewVendorFlag = false;
-    this.orderService.releaseProjectBidToVendor(this.part.id, selectedProfiles).subscribe(
-      v => {
-        this.setSuppliers(v.partId);
-        this.modal.dismissAll();
-      },
-      err => {
-        this.canReleaseToNewVendorFlag = true;
-      }
-    );
-  }
-
-  releaseToCustomer() {
-    this.orderService
-      .releaseProjectBidToCustomer(
-        this.part.id,
-        this.selectedSuppliers.filter(item => item.status.id === 2).map(item => item.vendorId)
-      )
-      .subscribe(v => {
-        this.router.navigateByUrl(`/prodex/projects/released-projects/${this.part.id}`);
-      });
-  }
-
-  setSuppliers(partId) {
-    this.supplierGridOptions[0].api.showLoadingOverlay();
-    this.orderService.getBidProjectProcesses(partId).subscribe(
-      v => {
-        this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
-        this.selectedSuppliers = v.map(res => {
-          const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
-
-          return {
-            id: res.id,
-            vendorId: res.vendorId,
-            vendorName: res.vendorName,
-            numberOfProfiles: group.length,
-            status: res.bidProjectProcessStatusType
-          };
-        });
-        this.supplierGridOptions[0].api.hideOverlay();
-      },
-      err => {
-        console.log({ err });
-        this.supplierGridOptions[0].api.hideOverlay();
-      }
-    );
-  }
-
-  canReleaseToCustomer() {
-    return (
-      this.numberOfVendorsToReleaseToCustomer &&
-      this.selectedSuppliers.filter(item => item.status.id === 2).length >= this.numberOfVendorsToReleaseToCustomer
-    );
-  }
-
-  canReleaseToVendor() {
-    return (
-      this.supplierGridOptions[0].api &&
-      this.numberOfVendors !== null &&
-      this.supplierGridOptions[0].api.getSelectedRows().length >= this.numberOfVendors &&
-      this.canReleaseToVendorFlag
-    );
-  }
-
-  getReferenceFileCount() {
-    this.orderService.getReferenceFileCountByPartId(this.part.id).subscribe(
-      res => {
-        this.referenceFileCount = res;
-      },
-      err => {}
-    );
-  }
-
-  openReference() {
-    this.orderService.getReferenceFiles(this.part.id).subscribe(v => {
-      this.referenceFiles = v;
-      this.modal.open(this.reference, {
-        centered: true,
-        size: 'lg'
-      });
-    });
   }
 }

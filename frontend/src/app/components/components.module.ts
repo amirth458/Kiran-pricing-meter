@@ -171,6 +171,11 @@ import { PmProgramRfqListComponent } from './vendor/pricing/rfq/pm-program-rfq-l
 import { ConnectProgramRfqListComponent } from './vendor/pricing/rfq/connect-program-rfq-list/connect-program-rfq-list.component';
 import { PartQuoteComponent } from './vendor/pricing/rfq/part-quote/part-quote.component';
 import { AuthenticationModalComponent } from '../common/authentication-modal/authentication-modal.component';
+import { PmReleaseQueueComponent } from './vendor/projects/pm-release-queue/pm-release-queue.component';
+import { PmSuborderReleaseQueueComponent } from './vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
+import { PmReleaseQueueDetailsComponent } from './vendor/projects/pm-release-queue-details/pm-release-queue-details.component';
+import { IssuedProposalComponent } from './vendor/projects/issued-proposal/issued-proposal.component';
+import { CustomerAcceptedComponent } from './vendor/projects/customer-accepted/customer-accepted.component';
 
 @NgModule({
   declarations: [
@@ -331,7 +336,12 @@ import { AuthenticationModalComponent } from '../common/authentication-modal/aut
     ConnectRfqListComponent,
     PmProgramRfqListComponent,
     ConnectProgramRfqListComponent,
-    PartQuoteComponent
+    PartQuoteComponent,
+    PmReleaseQueueComponent,
+    PmSuborderReleaseQueueComponent,
+    IssuedProposalComponent,
+    CustomerAcceptedComponent,
+    PmReleaseQueueDetailsComponent
   ],
   imports: [
     CommonModule,

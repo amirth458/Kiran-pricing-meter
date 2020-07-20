@@ -91,7 +91,7 @@ hr {
 
 .part-list {
   max-height: 450px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .part-list.small {

@@ -31,7 +31,12 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
-      <button type="button" (click)="addProcessProfile()" class="btn btn-approve theme" [disabled]="!isAdminAuthenticated">
+      <button
+        type="button"
+        (click)="addProcessProfile()"
+        class="btn btn-approve theme"
+        [disabled]="!isAdminAuthenticated"
+      >
         Add Process Profile
       </button>
     </div>

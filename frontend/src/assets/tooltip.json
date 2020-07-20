@@ -260,21 +260,27 @@
       "actions": []
     },
     {
-      "name": "Project Release Queue",
-      "tooltipMessage": "Project Release Queue",
-      "route": "project-release-queue",
+      "name": "Suborder Release Queue",
+      "tooltipMessage": "Suborder Release Queue",
+      "route": "pm-suborder-release-queue",
       "actions": []
     },
     {
-      "name": "Vendor Released",
-      "tooltipMessage": "Vendor Released",
-      "route": "vendor-confirmation-queue",
+      "name": "Release Queue",
+      "tooltipMessage": "Release Queue",
+      "route": "pm-release-queue",
       "actions": []
     },
     {
-      "name": "Customer Released",
-      "tooltipMessage": "Customer Released",
-      "route": "released-projects",
+      "name": "Proposal Issued",
+      "tooltipMessage": "Proposal Issued",
+      "route": "proposal-issued",
+      "actions": []
+    },
+    {
+      "name": "Customer Accepted",
+      "tooltipMessage": "Customer Accepted",
+      "route": "customer-accepted",
       "actions": []
     },
     {

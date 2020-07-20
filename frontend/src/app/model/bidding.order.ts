@@ -55,3 +55,38 @@ export enum BidConnectStatusEnum {
   RELEASED_TO_CUSTOMER = 3,
   COMPLETE = 4
 }
+
+export interface PmProjectReleaseQueue {
+  bidPmProjectId: number;
+  customerName: Array<string>;
+  userName: Array<string>;
+  orderIds: Array<number>;
+  partIds: Array<number>;
+  rfqIds: Array<number>;
+  bidPmProjectStatus: string;
+  totalRowCount: number;
+}
+
+export interface PmProjectRequest {
+  bidPmProjectStatusIds: string;
+  searchValue: string;
+  beginDate: Date;
+  endDate: Date;
+  showTestAccount: boolean;
+}
+
+export enum PmProjectStatusType {
+  RELEASE_QUEUE = 'RELEASE_QUEUE',
+  PROPOSAL_ISSUED = 'PROPOSAL_ISSUED',
+  CUSTOMER_ACCEPTED = 'CUSTOMER_ACCEPTED'
+}
+
+export enum PmProjectStatusEnum {
+  IN_PROGRESS = 1,
+  NOT_RELEASED_TO_VENDOR = 2,
+  RELEASED_TO_VENDOR = 3,
+  PARTIALLY_RELEASED_TO_CUSTOMER = 4,
+  RELEASED_TO_CUSTOMER = 5,
+  COMPLETE = 6,
+  NOT_STARTED = 7
+}

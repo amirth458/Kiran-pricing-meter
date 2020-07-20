@@ -5,7 +5,10 @@ import { Observable } from 'rxjs';
 
 import { ConfirmSubOrderRelease, ConfirmSubOrderReleaseResponse } from '../model/confirm.sub-order.release';
 import { environment } from '../../environments/environment';
+import { FilterOption } from '../model/vendor.model';
 import { LegacyBidHistory } from '../model/billing.model';
+import { PmProjectReleaseQueue, PmProjectRequest } from '../model/bidding.order';
+import { Util } from '../util/Util';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +32,10 @@ export class BiddingService {
       `${environment.apiBaseUrl}/admin/bid-part-cost-history?part-id=${partId}`,
       {}
     );
+  }
+
+  getPmProjectReleaseQueue(req: FilterOption, filter: PmProjectRequest): Observable<PmProjectReleaseQueue[]> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/release-queue`;
+    return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
   }
 }

@@ -22,7 +22,12 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
-      <button type="button" (click)="addProcessPricing()" class="btn btn-approve theme" [disabled]="!isAdminAuthenticated">
+      <button
+        type="button"
+        (click)="addProcessPricing()"
+        class="btn btn-approve theme"
+        [disabled]="!isAdminAuthenticated"
+      >
         Add Process Pricing
       </button>
     </div>

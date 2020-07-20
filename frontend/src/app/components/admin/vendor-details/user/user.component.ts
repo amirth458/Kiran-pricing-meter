@@ -11,8 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class AdminVendorDetailsUserComponent
-  implements OnInit, AfterViewChecked {
+export class AdminVendorDetailsUserComponent implements OnInit, AfterViewChecked {
   @ViewChild('declineCommentsModal') declineCommentsModal;
   form: FormGroup = this.fb.group({
     email: [null, Validators.required],
@@ -46,10 +45,7 @@ export class AdminVendorDetailsUserComponent
       this.initUser(user);
       if (res.vendor) {
         this.vendorId = res.vendor.id;
-        this.primaryContactName =
-          res.vendor.primaryContactFirstName +
-          ' ' +
-          res.vendor.primaryContactLastName;
+        this.primaryContactName = res.vendor.primaryContactFirstName + ' ' + res.vendor.primaryContactLastName;
         if (res.vendor.approved) {
           this.status = 1; // approved
         } else {
@@ -87,10 +83,7 @@ export class AdminVendorDetailsUserComponent
   }
 
   samePassword() {
-    if (
-      this.form.value.passwordConfirm !== '' &&
-      this.form.value.passwordConfirm !== null
-    ) {
+    if (this.form.value.passwordConfirm !== '' && this.form.value.passwordConfirm !== null) {
       if (this.form.value.password !== this.form.value.passwordConfirm) {
         return true;
       } else {
@@ -107,9 +100,7 @@ export class AdminVendorDetailsUserComponent
       await this.userService.approveUser(this.vendorId).toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not approved. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not approved. Please try again later.');
     } finally {
       this.spinner.hide();
     }
@@ -134,14 +125,10 @@ export class AdminVendorDetailsUserComponent
     this.closeDeclineModal();
     this.spinner.show();
     try {
-      await this.userService
-        .declineUser(this.vendorId, this.declineComments)
-        .toPromise();
+      await this.userService.declineUser(this.vendorId, this.declineComments).toPromise();
       this.router.navigateByUrl('/user-manage/approve');
     } catch (e) {
-      this.toastr.error(
-        'We are sorry, Vendor is not declined. Please try again later.'
-      );
+      this.toastr.error('We are sorry, Vendor is not declined. Please try again later.');
     } finally {
       this.spinner.hide();
     }

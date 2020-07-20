@@ -91,6 +91,11 @@ import { PmRfqListComponent } from '../../components/vendor/pricing/rfq/pm-rfq-l
 import { ConnectRfqListComponent } from '../../components/vendor/pricing/rfq/connect-rfq-list/connect-rfq-list.component';
 import { PmProgramRfqListComponent } from '../../components/vendor/pricing/rfq/pm-program-rfq-list/pm-program-rfq-list.component';
 import { ConnectProgramRfqListComponent } from '../../components/vendor/pricing/rfq/connect-program-rfq-list/connect-program-rfq-list.component';
+import { PmSuborderReleaseQueueComponent } from '../../components/vendor/projects/pm-suborder-release-queue/pm-suborder-release-queue.component';
+import { PmReleaseQueueDetailsComponent } from '../../components/vendor/projects/pm-release-queue-details/pm-release-queue-details.component';
+import { PmReleaseQueueComponent } from '../../components/vendor/projects/pm-release-queue/pm-release-queue.component';
+import { IssuedProposalComponent } from '../../components/vendor/projects/issued-proposal/issued-proposal.component';
+import { CustomerAcceptedComponent } from '../../components/vendor/projects/customer-accepted/customer-accepted.component';
 
 const routes: Routes = [
   {
@@ -382,6 +387,34 @@ const routes: Routes = [
                 component: ProductionVendorDetailsComponent
               },
               {
+                path: 'pm-suborder-release-queue',
+                component: PmSuborderReleaseQueueComponent
+              },
+              {
+                path: 'pm-release-queue/:bidId/:id',
+                component: PmReleaseQueueDetailsComponent
+              },
+              {
+                path: 'pm-release-queue',
+                component: PmReleaseQueueComponent
+              },
+              {
+                path: 'proposal-issued',
+                component: IssuedProposalComponent
+              },
+              {
+                path: 'proposal-issued/:bidId/:id',
+                component: PmReleaseQueueDetailsComponent
+              },
+              {
+                path: 'customer-accepted',
+                component: CustomerAcceptedComponent
+              },
+              {
+                path: 'customer-accepted/:bidId/:id',
+                component: PmReleaseQueueDetailsComponent
+              },
+              {
                 path: '',
                 redirectTo: 'settings'
               }
@@ -440,6 +473,7 @@ const routes: Routes = [
                 path: 'released-orders/:customerOrderId',
                 component: ProductionVendorDetailsComponent
               },
+
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]
           },

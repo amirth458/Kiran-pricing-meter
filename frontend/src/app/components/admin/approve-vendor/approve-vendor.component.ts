@@ -140,7 +140,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
           checked: false,
           operators: column.operators,
           field: column.displayName,
-          query: {type: '', filter: null}
+          query: { type: '', filter: null }
         };
       })
       .filter(_ => !(this.inModal && _.name === 'Approval Status'));
@@ -509,14 +509,14 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
             q: this.searchQuery,
             filterColumnsRequests: this.inModal
               ? [
-                ...this.filterColumnsRequest,
-                {
-                  id: 8,
-                  displayName: 'Approval Status',
-                  selectedOperator: '=',
-                  searchedValue: 'true'
-                }
-              ]
+                  ...this.filterColumnsRequest,
+                  {
+                    id: 8,
+                    displayName: 'Approval Status',
+                    selectedOperator: '=',
+                    searchedValue: 'true'
+                  }
+                ]
               : this.filterColumnsRequest
           })
           .pipe(takeUntil(this.destroy$))
@@ -688,7 +688,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       const userId = v.userInfo.id;
       // 1 Hour expiry time
       const expiryTime = new Date().getTime() + 3600 * 1000;
-      localStorage.setItem('admin-userAuthenticated', JSON.stringify({authenticated: true, expiryTime}));
+      localStorage.setItem('admin-userAuthenticated', JSON.stringify({ authenticated: true, expiryTime }));
       this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
     } else if (!v.cancelled) {
       this.toastr.error('Wrong Email OR Key entered.');

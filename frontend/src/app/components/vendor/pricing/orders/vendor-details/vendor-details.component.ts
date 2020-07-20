@@ -971,9 +971,9 @@ export class VendorDetailsComponent implements OnInit {
     this.from = DefaultEmails.from;
     this.to = DefaultEmails.to;
     this.cc = [];
-    this.bcc = (row && row.userEmail) ? [row.userEmail] : null;
+    this.bcc = row && row.userEmail ? [row.userEmail] : null;
     if (!this.bcc) {
-      this.bcc =  this.gridOptions[4].api.getSelectedRows().map(row => row.userEmail);
+      this.bcc = this.gridOptions[4].api.getSelectedRows().map(row => row.userEmail);
     }
     if (this.bcc && this.bcc.length > 0) {
       this.modalService.open(this.sendMailModal, {

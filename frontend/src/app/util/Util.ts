@@ -1,3 +1,6 @@
+import { HttpParams } from '@angular/common/http';
+
+import { FilterOption } from '../model/vendor.model';
 import {
   PartDimensionValue,
   PartCustomParameter,
@@ -178,5 +181,17 @@ export class Util {
       part.partType.name === AppPartTypeEnum.PRODUCTION_PROPOSAL_PART ||
       part.partType.name === AppPartTypeEnum.CONNECT_PROPOSAL_PART
     );
+  }
+
+  static buildParameters(filter: FilterOption): HttpParams {
+    let params = new HttpParams();
+    if (filter) {
+      params = params.append('page', filter.page.toString());
+      params = params.append('size', filter.size.toString());
+      if (filter.sort) {
+        params = params.append('sort', filter.sort.toString());
+      }
+    }
+    return params;
   }
 }

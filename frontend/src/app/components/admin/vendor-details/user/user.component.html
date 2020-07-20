@@ -3,45 +3,20 @@
     <div class="form-row">
       <div class="form-group theme col-md-12">
         <label>Email Address (username)</label>
-        <input
-          required
-          readonly
-          type="email"
-          formControlName="email"
-          class="form-control"
-          placeholder="Email"
-        />
-        <span *ngIf="showRequired('email', 1)" class="footnote red"
-          >* Required</span
-        >
+        <input required readonly type="email" formControlName="email" class="form-control" placeholder="Email" />
+        <span *ngIf="showRequired('email', 1)" class="footnote red">* Required</span>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group theme col-md-3">
         <label>First Name</label>
-        <input
-          required
-          readonly
-          formControlName="firstName"
-          class="form-control"
-          placeholder="First Name"
-        />
-        <span *ngIf="showRequired('firstName', 1)" class="footnote red"
-          >* Required</span
-        >
+        <input required readonly formControlName="firstName" class="form-control" placeholder="First Name" />
+        <span *ngIf="showRequired('firstName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-3">
         <label> Last Name </label>
-        <input
-          required
-          readonly
-          formControlName="lastName"
-          class="form-control"
-          placeholder="Last Name"
-        />
-        <span *ngIf="showRequired('lastName', 1)" class="footnote red"
-          >* Required</span
-        >
+        <input required readonly formControlName="lastName" class="form-control" placeholder="Last Name" />
+        <span *ngIf="showRequired('lastName', 1)" class="footnote red">* Required</span>
       </div>
       <div class="form-group theme col-md-6 phone">
         <label>Phone</label>
@@ -53,25 +28,15 @@
           [required]="true"
           name="phone_number"
         ></international-phone-number>
-        <span *ngIf="showRequired('phone', 1)" class="footnote red"
-          >* Required</span
-        >
-        <span
-          *ngIf="
-            !showRequired('phone', 1) &&
-            form.controls.phone.status === 'INVALID'
-          "
-          class="footnote red"
+        <span *ngIf="showRequired('phone', 1)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 1) && form.controls.phone.status === 'INVALID'" class="footnote red"
           >* Phone number is invalid.</span
         >
       </div>
     </div>
 
     <div class="form-row">
-      <div
-        class="form-group col-md-12"
-        style="justify-content: center; align-items: flex-end; display: flex;"
-      >
+      <div class="form-group col-md-12" style="justify-content: center; align-items: flex-end; display: flex;">
         <button
           type="button"
           (click)="approveUser()"
@@ -80,11 +45,7 @@
         >
           Approve
         </button>
-        <button
-          type="button"
-          *ngIf="status === 1"
-          class="btn btn-approved theme"
-        >
+        <button type="button" *ngIf="status === 1" class="btn btn-approved theme">
           Approved
         </button>
         <button
@@ -95,11 +56,7 @@
         >
           Decline
         </button>
-        <button
-          type="button"
-          *ngIf="status === 2"
-          class="btn btn-declined theme"
-        >
+        <button type="button" *ngIf="status === 2" class="btn btn-declined theme">
           Declined
         </button>
       </div>
@@ -122,12 +79,7 @@
       <div class="form-row">
         <div class="form-group theme col-md-12">
           <label>Primary Contact Name</label>
-          <input
-            class="form-control"
-            readonly
-            [(ngModel)]="primaryContactName"
-            placeholder="Primary Contact Name"
-          />
+          <input class="form-control" readonly [(ngModel)]="primaryContactName" placeholder="Primary Contact Name" />
         </div>
         <div class="form-group theme col-md-12">
           <label>Comment</label>
