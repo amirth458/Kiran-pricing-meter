@@ -259,37 +259,6 @@
       "route": "pm-rfq-list",
       "actions": []
     },
-
-    {
-      "name": "Vendor Released",
-      "tooltipMessage": "Vendor Released",
-      "route": "vendor-confirmation-queue",
-      "actions": []
-    },
-    {
-      "name": "Customer Released",
-      "tooltipMessage": "Customer Released",
-      "route": "released-projects",
-      "actions": []
-    },
-    {
-      "name": "PM Program RFQ",
-      "tooltipMessage": "PM Program RFQ",
-      "route": "pm-program-rfq-list",
-      "actions": []
-    },
-    {
-      "name": "Vendor Order",
-      "tooltipMessage": "Vendor Order",
-      "route": "released-orders",
-      "actions": []
-    },
-    {
-      "name": "PM Parts",
-      "tooltipMessage": "PM Parts",
-      "route": "other-status",
-      "actions": []
-    },
     {
       "name": "Suborder Release Queue",
       "tooltipMessage": "Suborder Release Queue",
@@ -312,6 +281,24 @@
       "name": "Customer Accepted",
       "tooltipMessage": "Customer Accepted",
       "route": "customer-accepted",
+      "actions": []
+    },
+    {
+      "name": "PM Program RFQ",
+      "tooltipMessage": "PM Program RFQ",
+      "route": "pm-program-rfq-list",
+      "actions": []
+    },
+    {
+      "name": "Vendor Order",
+      "tooltipMessage": "Vendor Order",
+      "route": "released-orders",
+      "actions": []
+    },
+    {
+      "name": "PM Parts",
+      "tooltipMessage": "PM Parts",
+      "route": "other-status",
       "actions": []
     }
   ],
