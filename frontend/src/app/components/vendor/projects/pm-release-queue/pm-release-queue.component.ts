@@ -12,7 +12,7 @@ import { BiddingService } from '../../../../service/bidding.service';
 import { FilterOption } from '../../../../model/vendor.model';
 import { PartService } from '../../../../service/part.service';
 import { Part } from '../../../../model/part.model';
-import { PmProjectRequest } from '../../../../model/bidding.order';
+import { PmProjectRequest, PmProjectStatusEnum } from '../../../../model/bidding.order';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 
 @Component({
@@ -34,6 +34,13 @@ export class PmReleaseQueueComponent implements OnInit {
   totalRows: number;
   id: number;
   parts: Array<Part>;
+  protected bidPmProjectStatusIds = [
+    PmProjectStatusEnum.NOT_STARTED,
+    PmProjectStatusEnum.IN_PROGRESS,
+    PmProjectStatusEnum.NOT_RELEASED_TO_VENDOR,
+    PmProjectStatusEnum.RELEASED_TO_VENDOR,
+    PmProjectStatusEnum.PARTIALLY_RELEASED_TO_CUSTOMER
+  ];
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -65,7 +72,7 @@ export class PmReleaseQueueComponent implements OnInit {
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
-        bidPmProjectStatusIds: '1,2,3',
+        bidPmProjectStatusIds: this.bidPmProjectStatusIds.join(','),
         searchValue: form.query || null,
         beginDate: form.dateRange[0],
         endDate: form.dateRange[1]

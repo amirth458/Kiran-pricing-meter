@@ -73,3 +73,13 @@ export interface PmProjectRequest {
   beginDate: Date;
   endDate: Date;
 }
+
+export enum PmProjectStatusEnum {
+  IN_PROGRESS = 1,
+  NOT_RELEASED_TO_VENDOR = 2,
+  RELEASED_TO_VENDOR = 3,
+  PARTIALLY_RELEASED_TO_CUSTOMER = 4,
+  RELEASED_TO_CUSTOMER = 5,
+  COMPLETE = 6,
+  NOT_STARTED = 7
+}

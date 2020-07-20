@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BiddingService } from '../../../../service/bidding.service';
 import { PartService } from '../../../../service/part.service';
 import { PmReleaseQueueComponent } from '../pm-release-queue/pm-release-queue.component';
+import { PmProjectStatusEnum } from '../../../../model/bidding.order';
 
 @Component({
   selector: 'app-issued-proposal',
@@ -14,6 +15,7 @@ import { PmReleaseQueueComponent } from '../pm-release-queue/pm-release-queue.co
   styleUrls: ['./../pm-release-queue/pm-release-queue.component.css', './issued-proposal.component.css']
 })
 export class IssuedProposalComponent extends PmReleaseQueueComponent implements OnInit {
+  protected bidPmProjectStatusIds = [PmProjectStatusEnum.RELEASED_TO_CUSTOMER];
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
