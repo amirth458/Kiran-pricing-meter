@@ -9,7 +9,7 @@
   >
     <p class="m-0">Loading...</p>
   </ngx-spinner>
-  <div class="wrapper text-theme" *ngIf="parts.length">
+  <div class="wrapper text-theme">
     <div class="part-list">
       <div class="w-100 row">
         <header class="col-12 feature-header">
@@ -26,7 +26,7 @@
           </span>
         </header>
         <ng-container *ngIf="!showPartDetails">
-          <app-part-list [showRefFile]="true" *ngIf="parts.length" [parts]="parts"></app-part-list>
+          <app-part-list [showRefFile]="true" [parts]="parts"></app-part-list>
         </ng-container>
       </div>
     </div>
@@ -41,7 +41,7 @@
         </app-prod-part>
       </ng-container>
     </div>
-    <div class="row" *ngIf="parts.length">
+    <div class="row">
       <ng-container [ngSwitch]="type">
         <ng-container *ngSwitchCase="'pm-release-queue'">
           <div class="col-12">
@@ -149,20 +149,20 @@
     </div>
   </div>
   <ng-template #removeCell let-row>
-    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100" *ngIf="row">
       <a class="text-orange" (click)="removeFromList(row)">Remove from list</a>
     </div>
   </ng-template>
 
   <ng-template #moveCell let-row>
-    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
+    <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100" *ngIf="row">
       <a class="text-green" (click)="moveToList(row)">Move to the list</a>
     </div>
   </ng-template>
 
   <ng-template #statusCell let-row>
     <div class="d-flex flex-row align-items-center w-100 h-100">
-      <ng-container [ngSwitch]="row.status.id">
+      <ng-container [ngSwitch]="row?.status.id">
         <div *ngSwitchCase="1">RECEIVED</div>
         <div *ngSwitchCase="2">ACCEPTED</div>
         <div *ngSwitchCase="3" class="text-orange">REJECTED</div>
@@ -173,7 +173,7 @@
 
   <ng-template #vendorCell let-row>
     <div class="d-flex flex-row align-items-center w-100 h-100">
-      <a class="text-blue text-underline" (click)="showVendorProfiles($event, row)">{{ row.vendorName }}</a>
+      <a class="text-blue text-underline" (click)="showVendorProfiles($event, row)">{{ row?.vendorName }}</a>
     </div>
   </ng-template>
 
@@ -181,7 +181,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-theme text-capitalize w-100 pl-3" id="modal-basic-title">
-          "{{ selectedVendor.vendorName }}" Profiles
+          "{{ selectedVendor?.vendorName }}" Profiles
         </h5>
         <button type="button" class="close" aria-label="Close" (click)="modal.close()">
           <span aria-hidden="true">&times;</span>
@@ -251,7 +251,7 @@
           <div class="icon">
             <i class="far fa-file-alt"></i>
           </div>
-          <a [href]="ref.location" download class="download-link">{{ ref.name }}</a>
+          <a [href]="ref.location" download class="download-link">{{ ref?.name }}</a>
         </div>
         <div class="w-100" *ngIf="!(referenceFiles?.length || 0) > 0">
           <h5 class="w-100 text-center text-theme">No reference files found</h5>

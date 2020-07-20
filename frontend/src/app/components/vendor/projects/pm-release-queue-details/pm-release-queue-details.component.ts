@@ -567,7 +567,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   }
 
   removeFromList(data) {
-    console.log(data);
     this.removedSuppliers = [...this.removedSuppliers, data];
     this.shortListedSuppliers = this.shortListedSuppliers.filter(item => item.vendorId !== data.vendorId);
     // if (data.subscriptionId === SubscriptionTypeIdEnum.SHOPSIGHT_360_PLUS) {
