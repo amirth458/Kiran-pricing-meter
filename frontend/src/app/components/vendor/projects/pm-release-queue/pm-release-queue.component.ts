@@ -47,6 +47,7 @@ export class PmReleaseQueueComponent implements OnInit {
     PmProjectStatusEnum.PARTIALLY_RELEASED_TO_CUSTOMER
   ];
   protected pmProjectStatusType = PmProjectStatusType.RELEASE_QUEUE;
+  toggleTestAccount = false;
 
   filter$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   refresh$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -90,9 +91,16 @@ export class PmReleaseQueueComponent implements OnInit {
         bidPmProjectStatusIds: this.bidPmProjectStatusIds.join(','),
         searchValue: form.query || null,
         beginDate: form.dateRange[0],
-        endDate: form.dateRange[1]
+        endDate: form.dateRange[1],
+        showTestAccount: false
       });
     });
+  }
+
+  filterTestAccounts() {
+    this.toggleTestAccount = !this.toggleTestAccount;
+    const applied = this.filter$.getValue();
+    this.filter$.next({ ...applied, ...{ showTestAccount: this.toggleTestAccount } } as PmProjectRequest);
   }
 
   initColumnDef() {

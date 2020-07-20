@@ -1,7 +1,14 @@
 <div class="wrapper">
   <div class="d-flex flex-column w-100 table theme-table">
-    <div class="d-flex header justify-content-between align-items-center">
+    <div class="d-flex header justify-content-between align-items-center pb-2">
       <app-rfq-filter [placeholder]="placeholderText" (formChange)="filter$.next($event)"></app-rfq-filter>
+      <button
+        class="btn btn-white w-auto mr-auto btn-test-account"
+        (click)="filterTestAccounts()"
+        [class.active]="toggleTestAccount"
+      >
+        {{ toggleTestAccount ? 'Remove Test Account' : 'Include Test Account' }}
+      </button>
     </div>
     <div class="ag-theme-balham w-100 h-100 position-relative bid-order-grid">
       <ag-grid-angular

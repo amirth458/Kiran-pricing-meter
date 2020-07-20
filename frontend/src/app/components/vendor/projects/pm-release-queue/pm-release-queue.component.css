@@ -15,6 +15,10 @@
   text-decoration: underline;
 }
 
+:host .btn-test-account {
+  width: 250px !important;
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;

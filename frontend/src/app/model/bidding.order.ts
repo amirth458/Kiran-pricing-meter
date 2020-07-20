@@ -72,6 +72,7 @@ export interface PmProjectRequest {
   searchValue: string;
   beginDate: Date;
   endDate: Date;
+  showTestAccount: boolean;
 }
 
 export enum PmProjectStatusType {
