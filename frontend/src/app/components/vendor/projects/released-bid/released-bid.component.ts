@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BiddingService } from '../../../../service/bidding.service';
+import { DefaultEmails } from '../../../../../assets/constants';
 import { VendorConfirmationResponse } from '../../../../model/bidding.order';
 
 @Component({
@@ -12,6 +14,8 @@ import { VendorConfirmationResponse } from '../../../../model/bidding.order';
   styleUrls: ['./released-bid.component.css']
 })
 export class ReleasedBidComponent implements OnInit {
+  @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
+
   bidProjectId: number;
   @Input()
   set value(value: number) {
@@ -26,7 +30,16 @@ export class ReleasedBidComponent implements OnInit {
   gridOptions: GridOptions;
   rowData: VendorConfirmationResponse[];
 
-  constructor(public biddingService: BiddingService, public spinner: NgxSpinnerService) {}
+  from = '';
+  to = '';
+  cc = [];
+  bcc = [];
+
+  constructor(
+    public biddingService: BiddingService,
+    public spinner: NgxSpinnerService,
+    public modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.initGrid();
@@ -34,7 +47,9 @@ export class ReleasedBidComponent implements OnInit {
       columnDefs: this.columnDefs,
       enableColResize: true,
       rowHeight: 35,
-      headerHeight: 35
+      headerHeight: 35,
+      rowSelection: 'multiple',
+      rowMultiSelectWithClick: true
     };
   }
 
@@ -42,11 +57,12 @@ export class ReleasedBidComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'No',
-        field: 'id',
+        valueGetter: 'node.rowIndex + 1',
+        width: 80,
         hide: false,
-        sortable: true,
+        sortable: false,
         filter: false,
-        tooltipField: 'id'
+        checkboxSelection: true
       },
       {
         headerName: 'Vendor Name',
@@ -112,6 +128,22 @@ export class ReleasedBidComponent implements OnInit {
       this.rowData = v || [];
       this.spinner.hide('releaseLoadingPanel');
     });
+  }
+
+  sendMail(row: any = null) {
+    this.from = DefaultEmails.from;
+    this.to = DefaultEmails.to;
+    this.cc = [];
+    this.bcc = row && row.userEmail ? [row.userEmail] : null;
+    if (!this.bcc) {
+      this.bcc = this.gridOptions.api.getSelectedRows().map(dataRow => dataRow.userEmail);
+    }
+    if (this.bcc && this.bcc.length > 0) {
+      this.modalService.open(this.sendMailModal, {
+        centered: true,
+        size: 'lg'
+      });
+    }
   }
 
   onGridReady(event) {
