@@ -21,6 +21,8 @@ export class InsightGridComponent implements OnInit {
   util = Util;
   constructor() {}
 
+  pageSize = 50;
+
   ngOnInit() {
     this.gridOptions.frameworkComponents = this.frameworkComponents;
     this.gridOptions.columnDefs = this.gridOptions.columnDefs.map(col => {
