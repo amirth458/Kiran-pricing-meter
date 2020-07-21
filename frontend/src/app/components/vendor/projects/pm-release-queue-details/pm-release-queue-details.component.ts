@@ -13,7 +13,7 @@ import { ConnectProject } from 'src/app/model/connect.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { ReferenceFile, Part, MatchedProcessProfile } from 'src/app/model/part.model';
+import { ReferenceFile, Part, MatchedProcessProfile, PartStatusTypeEnum } from 'src/app/model/part.model';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
@@ -69,6 +69,8 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   numberOfVendors = null;
   numberOfVendorsToReleaseToCustomer = 1;
   maxSelectableVendors = null;
+  partStatusTypeEnum = PartStatusTypeEnum;
+  partStatusType: string;
 
   constructor(
     public route: ActivatedRoute,
@@ -121,6 +123,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           return;
         }
         this.parts = parts || [];
+        this.partStatusType = (this.parts.length > 0 ? this.parts[0].partStatusType : '') as string;
         this.getAllSuppliersInfo(this.parts.map(part => part.partId));
       },
       error => {
