@@ -7,6 +7,7 @@ import { ConfirmSubOrderRelease, ConfirmSubOrderReleaseResponse } from '../model
 import { environment } from '../../environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import { LegacyBidHistory } from '../model/billing.model';
+import { Part } from '../model/part.model';
 import { PmProjectReleaseQueue, PmProjectRequest, VendorConfirmationResponse } from '../model/bidding.order';
 import { Util } from '../util/Util';
 
@@ -42,6 +43,12 @@ export class BiddingService {
   getReleasedPmProjectBids(biddingId: number): Observable<VendorConfirmationResponse[]> {
     return this.http.get<VendorConfirmationResponse[]>(
       `${environment.apiBaseUrl}/admin/pm-project/vendor-confirmation/${biddingId}`
+    );
+  }
+
+  getPartsByBidPmProjectId(bidPmProjectId: number): Observable<Part[]> {
+    return this.http.get<Part[]>(
+      `${environment.apiBaseUrl}/admin/pm-project/parts?bid-pm-project-id=${bidPmProjectId}`
     );
   }
 }
