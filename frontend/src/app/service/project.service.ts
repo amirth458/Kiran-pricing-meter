@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable, forkJoin } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ConnectProject, ClientProgress } from '../model/connect.model';
 import { environment } from 'src/environments/environment';
@@ -9,6 +9,7 @@ import { FilterOption } from '../model/vendor.model';
 import { Pageable } from '../model/pageable.model';
 import { PartOrder, ReferenceMedia, RfqFilter } from '../model/part.model';
 import { ProjectTypeEnum, OrderStatusTypeId, SearchOpt, ProjectSearchResult } from '../model/order.model';
+import { Util } from '../util/Util';
 
 @Injectable({
   providedIn: 'root'
@@ -16,35 +17,24 @@ import { ProjectTypeEnum, OrderStatusTypeId, SearchOpt, ProjectSearchResult } fr
 export class ProjectService {
   constructor(public http: HttpClient) {}
 
-  private buildParameters(filter: FilterOption): HttpParams {
-    let params = new HttpParams();
-    if (filter) {
-      params = params.append('page', filter.page.toString());
-      params = params.append('size', filter.size.toString());
-      params = params.append('sort', filter.sort.toString());
-    }
-    return params;
-  }
-
   getAllSuborderReleaseQueue(filter: FilterOption, searchOpt: any): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project`;
-    return this.http.post<any>(url, searchOpt, { params: this.buildParameters(filter) });
+    return this.http.post<any>(url, searchOpt, { params: Util.buildParameters(filter) });
   }
 
   createBidItems(selectedBidItems): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/group-pm-parts`;
     return this.http.post<any>(url, selectedBidItems);
   }
+
   getAllSuppliersListByPartIds(partIds): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/suppliers`;
     return this.http.post<any>(url, partIds);
   }
-  getAllSuppliersAndPartsByPartId(partIds): Observable<any> {
+
+  getAllSuppliersAndPartId(partIds): Observable<any> {
     const suppliersUrl = `${environment.apiBaseUrl}/admin/pm-project/suppliers`;
-    const partsUrl = `${environment.procurementApiBaseUrl}/part?ids=${partIds.join(',')}`;
-    const suppliersList = this.http.post<any>(suppliersUrl, { partIds });
-    const partsList = this.http.get<any>(partsUrl, partIds);
-    return forkJoin(partsList, suppliersList);
+    return this.http.post<any>(suppliersUrl, { partIds });
   }
 
   saveReleasePMBidToVendor(payload): Observable<any> {
@@ -60,18 +50,18 @@ export class ProjectService {
         statusIds: [18],
         projectType
       },
-      { params: this.buildParameters(filter) }
+      { params: Util.buildParameters(filter) }
     );
   }
 
   getConfirmationQueue(filter: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/bid-project/status`;
-    return this.http.post<any>(url, { statusIds: [2], projectType }, { params: this.buildParameters(filter) });
+    return this.http.post<any>(url, { statusIds: [2], projectType }, { params: Util.buildParameters(filter) });
   }
 
   getReleasedProjects(filter: FilterOption, projectType: string = null) {
     const url = `${environment.apiBaseUrl}/admin/bidding/production-project/bid-project/status`;
-    return this.http.post<any>(url, { statusIds: [3], projectType }, { params: this.buildParameters(filter) });
+    return this.http.post<any>(url, { statusIds: [3], projectType }, { params: Util.buildParameters(filter) });
   }
 
   getConnectReleasedProjects(filter: FilterOption, orderComplete = false): Observable<Pageable<PartOrder>> {
@@ -82,7 +72,7 @@ export class ProjectService {
         orderStatusId: orderComplete ? OrderStatusTypeId.ORDER_COMPLETE : OrderStatusTypeId.VENDOR_DOWNSELECTION,
         projectTypeId: ProjectTypeEnum.CONNECT_PROJECT
       },
-      { params: this.buildParameters(filter) }
+      { params: Util.buildParameters(filter) }
     );
   }
 
@@ -138,18 +128,18 @@ export class ProjectService {
     return this.http.post<Pageable<PartOrder>>(
       url,
       { ...requestBody, showTestAccount },
-      { params: this.buildParameters(filter) }
+      { params: Util.buildParameters(filter) }
     );
   }
 
   getProdReleaseProject(filter: FilterOption, searchOpt: any): Observable<Pageable<ProjectSearchResult[]>> {
     const url = `${environment.apiBaseUrl}/admin/production-project/project-release-queue/search`;
-    return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
+    return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: Util.buildParameters(filter) });
   }
 
   getProdVendorReleaseProject(filter: FilterOption, searchOpt: any): Observable<Pageable<ProjectSearchResult[]>> {
     const url = `${environment.apiBaseUrl}/admin/production-project/vendor-confirmation-released-queue/search`;
-    return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: this.buildParameters(filter) });
+    return this.http.post<Pageable<ProjectSearchResult[]>>(url, searchOpt, { params: Util.buildParameters(filter) });
   }
 
   getVendorCustomerProgress(customerOrderId, vendorId): Observable<ClientProgress> {
@@ -166,16 +156,16 @@ export class ProjectService {
 
   searchRfq(req: FilterOption, filter: RfqFilter): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/pm-rfq`;
-    return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
+    return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
   }
 
   searchPmProgramRfq(req: FilterOption, filter: RfqFilter): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/pm-program-rfq`;
-    return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
+    return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
   }
 
   searchConnectProgramRfq(req: FilterOption, filter: RfqFilter): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/connect-project/connect-program-rfq`;
-    return this.http.post<any>(url, filter, { params: this.buildParameters(req) });
+    return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
   }
 }
