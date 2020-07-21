@@ -1,0 +1,50 @@
+<div class="d-flex flex-column w-100 table theme-table released-bid-grids">
+  <div class="d-flex header justify-content-between align-items-center pb-2">
+    <h6 class="text-theme">Matching Suppliers Queue</h6>
+    <div>
+      <button class="btn btn-white pl-4 pr-4" (click)="sendMail()">
+        <small> <i class="far fa-envelope"></i>&nbsp; Send Mail </small>
+      </button>
+      <button class="btn btn-white pl-4 pr-4 ml-2">
+        <span class="text-theme">Admin Proposal</span>
+      </button>
+      <button class="btn btn-white pl-4 pr-4 ml-2">
+        Add New Supplier
+      </button>
+    </div>
+  </div>
+  <div class="ag-theme-balham w-100 h-100 position-relative bid-order-grid">
+    <ag-grid-angular
+      class="ag-theme-balham w-100 h-100"
+      [gridOptions]="gridOptions"
+      [rowData]="rowData"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+    <ngx-spinner
+      [name]="'releaseLoadingPanel'"
+      bdColor="#ffffff70"
+      size="small"
+      color="#74bf09"
+      type="ball-clip-rotate"
+      [fullScreen]="false"
+    >
+      <p class="m-0">Loading...</p>
+    </ngx-spinner>
+  </div>
+</div>
+
+<ng-template #sendMailModal let-modal>
+  <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
+</ng-template>
+
+<ng-template #additionalColDefRef>
+  <div class="d-flex flex-row justify-content-start align-items-center">
+    <a class="text-theme-green">
+      View Proposal
+    </a>
+    <span class="delete ml-3 mr-3">
+      <i class="fas fa-copy"></i>
+    </span>
+  </div>
+</ng-template>

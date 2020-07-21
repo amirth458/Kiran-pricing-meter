@@ -147,6 +147,12 @@
         </ng-container>
       </ng-container>
     </div>
+
+    <div class="row">
+      <div class="col-12 mb-4">
+        <app-released-bid *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
+      </div>
+    </div>
   </div>
   <ng-template #removeCell let-row>
     <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">

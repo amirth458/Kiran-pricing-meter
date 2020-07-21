@@ -90,3 +90,19 @@ export enum PmProjectStatusEnum {
   COMPLETE = 6,
   NOT_STARTED = 7
 }
+
+export interface VendorConfirmationResponse {
+  vendorId: number;
+  vendorUserId: number;
+  vendorName: string;
+  bidPmProjectProcessId: number;
+  bidPmProjectProcessStatus: string;
+  meetingTime: Date;
+  numberOfProcessProfile: number;
+  totalProposalAmount: number;
+  proposalDeliveryDate: Date;
+  proposalExpiryDate: Date;
+
+  rowNumber?: number;
+  selected?: boolean;
+}
