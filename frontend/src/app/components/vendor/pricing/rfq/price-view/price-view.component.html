@@ -518,7 +518,10 @@
                 Customer ID: <span class=" font-weight-bold value">{{ customer?.id || '-' }}</span>
               </p>
               <p class="mb-1">
-                Customer Name: <span class=" font-weight-bold value">{{ customer?.name || '-' }}</span>
+                Customer Name:
+                <span class=" font-weight-bold value">{{
+                  customer?.user?.firstName + ' ' + customer?.user?.lastName || '-'
+                }}</span>
               </p>
               <p class="mb-1">
                 Contact Email : <span class=" font-weight-bold value">{{ customer?.user?.email || '-' }}</span>
