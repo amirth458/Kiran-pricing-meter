@@ -397,7 +397,7 @@ export class WaitingForApprovalComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        sort: 'asc',
+        sort: 'desc',
         width: 100
       },
       {
