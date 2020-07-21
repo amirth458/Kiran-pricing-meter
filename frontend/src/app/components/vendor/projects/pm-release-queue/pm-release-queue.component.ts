@@ -78,15 +78,11 @@ export class PmReleaseQueueComponent implements OnInit {
       onRowClicked: event => {
         const row: PmProjectReleaseQueue = event.data;
         if (row && this.pmProjectStatusType === PmProjectStatusType.RELEASE_QUEUE) {
-          this.router.navigateByUrl(`${this.router.url}/${row.bidPmProjectId}/${(row.partIds || []).join(',')}`);
+          this.router.navigateByUrl(`${this.router.url}/${row.bidPmProjectId}`);
         } else if (row && this.pmProjectStatusType === PmProjectStatusType.PROPOSAL_ISSUED) {
-          this.router.navigateByUrl(
-            `/prodex/projects/proposal-issued/${row.bidPmProjectId}/${(row.partIds || []).join(',')}`
-          );
+          this.router.navigateByUrl(`/prodex/projects/proposal-issued/${row.bidPmProjectId}`);
         } else if (row && this.pmProjectStatusType === PmProjectStatusType.CUSTOMER_ACCEPTED) {
-          this.router.navigateByUrl(
-            `/prodex/projects/customer-accepted/${row.bidPmProjectId}/${(row.partIds || []).join(',')}`
-          );
+          this.router.navigateByUrl(`/prodex/projects/customer-accepted/${row.bidPmProjectId}`);
         }
       }
     };
