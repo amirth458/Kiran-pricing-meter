@@ -177,11 +177,11 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
           sort: this.getSorting()
         };
         let ob: Observable<any> = null;
-        (this.searchOpt.beginDate = this.requestBody.beginDate),
-          (this.searchOpt.endDate = this.requestBody.endDate),
-          (this.searchOpt.partStatusIds = AppPartStatusId.PART_AWAITING_VENDORS);
-        (this.searchOpt.searchValue = this.requestBody.searchValue === '' ? null : this.requestBody.searchValue),
-          (this.searchOpt.projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT);
+        this.searchOpt.beginDate = this.requestBody.beginDate;
+        this.searchOpt.endDate = this.requestBody.endDate;
+        this.searchOpt.partStatusIds = AppPartStatusId.PART_AWAITING_RELEASE.toString();
+        this.searchOpt.searchValue = this.requestBody.searchValue === '' ? null : this.requestBody.searchValue;
+        this.searchOpt.projectTypeId = ProjectTypeEnum.PRODUCTION_PROJECT;
 
         ob = this.projectService.getAllSuborderReleaseQueue(filterOption, this.searchOpt);
         ob.subscribe(

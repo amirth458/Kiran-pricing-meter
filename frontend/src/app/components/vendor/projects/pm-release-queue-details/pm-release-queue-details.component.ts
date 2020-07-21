@@ -346,14 +346,14 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
         {
           headerName: 'Facility Certificates',
           field: 'facilityCertificates',
-          hide: false,
+          hide: true,
           sortable: false,
           filter: false
         },
         {
           headerName: 'Part Certificates',
           field: 'partCertificates',
-          hide: false,
+          hide: true,
           sortable: false,
           filter: false
         },
