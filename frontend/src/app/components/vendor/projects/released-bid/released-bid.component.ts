@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BiddingService } from '../../../../service/bidding.service';
 import { DefaultEmails } from '../../../../../assets/constants';
 import { VendorConfirmationResponse } from '../../../../model/bidding.order';
+import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 
 @Component({
   selector: 'app-released-bid',
@@ -15,6 +16,7 @@ import { VendorConfirmationResponse } from '../../../../model/bidding.order';
 })
 export class ReleasedBidComponent implements OnInit {
   @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
+  @ViewChild('additionalColDefRef') additionalColDefRef: TemplateRef<any>;
 
   bidProjectId: number;
   @Input()
@@ -28,6 +30,9 @@ export class ReleasedBidComponent implements OnInit {
 
   columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
+  frameworkComponents = {
+    templateRenderer: TemplateRendererComponent
+  };
   rowData: VendorConfirmationResponse[];
 
   from = '';
@@ -44,6 +49,7 @@ export class ReleasedBidComponent implements OnInit {
   ngOnInit() {
     this.initGrid();
     this.gridOptions = {
+      frameworkComponents: this.frameworkComponents,
       columnDefs: this.columnDefs,
       enableColResize: true,
       rowHeight: 35,
@@ -114,10 +120,13 @@ export class ReleasedBidComponent implements OnInit {
       },
       {
         headerName: 'Communication with Vendor',
-        field: 'vendorId',
         hide: false,
         sortable: true,
-        filter: false
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.additionalColDefRef
+        }
       }
     ];
   }

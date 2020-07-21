@@ -37,3 +37,14 @@
 <ng-template #sendMailModal let-modal>
   <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
 </ng-template>
+
+<ng-template #additionalColDefRef>
+  <div class="d-flex flex-row justify-content-start align-items-center">
+    <a class="text-theme-green">
+      View Proposal
+    </a>
+    <span class="delete ml-3 mr-3">
+      <i class="fas fa-copy"></i>
+    </span>
+  </div>
+</ng-template>
