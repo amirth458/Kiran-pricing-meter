@@ -217,6 +217,22 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     );
   }
 
+  removeProjectFromRelease() {
+    if (!this.bidPmProjectId) {
+      return;
+    }
+    this.projectService.removeProjectFromRelease(this.bidPmProjectId).subscribe(
+      reposnse => {
+        this.toastr.success('Removed Project From Release successfully');
+        const url = `/prodex/projects/pm-suborder-release-queue`;
+        this.router.navigateByUrl(url);
+      },
+      error => {
+        this.toastr.error('Error while Removing Project From Release');
+      }
+    );
+  }
+
   releaseNewToVendor() {
     const selectedProfiles = this.supplierGridOptions[1].api
       .getSelectedRows()

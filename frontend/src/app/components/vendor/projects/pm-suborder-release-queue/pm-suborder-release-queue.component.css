@@ -41,7 +41,6 @@
 }
 
 .thumbnail-img {
-  background-image: url('src/assets/image/no-preview.jpg');
   height: 40px;
   background-size: contain;
   background-repeat: no-repeat;

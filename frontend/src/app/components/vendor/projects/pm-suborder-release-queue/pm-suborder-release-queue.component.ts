@@ -2,19 +2,23 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { DatePipe } from '@angular/common';
 
 import { FilterOption } from 'src/app/model/vendor.model';
 import { ProjectService } from 'src/app/service/project.service';
 import { SearchOpt } from './pm-suborder-release-queue.model';
 import { ProjectTypeEnum } from 'src/app/model/order.model';
-import { AppPartStatusId } from 'src/app/model/part.model';
+import { AppPartStatusId, Part } from 'src/app/model/part.model';
 import { Util } from 'src/app/util/Util';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { ToastrService } from 'ngx-toastr';
+import { PartService } from 'src/app/service/part.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-pm-suborder-release-queue',
@@ -28,10 +32,12 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
   @ViewChild('selectButton') selectButton: TemplateRef<any>;
   @ViewChild('partIdCell') partIdCell: TemplateRef<any>;
   @ViewChild('thumbnailCell') thumbnailCell: TemplateRef<any>;
+  @ViewChild('partsTemplate') partsTemplate: TemplateRef<any>;
 
   gridOptions: GridOptions;
   navigation;
-
+  id: number;
+  parts: Array<Part>;
   pageSize = 10;
   type = '';
   selectedVendors = [];
@@ -50,13 +56,15 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
   searchOpt: SearchOpt = new SearchOpt();
   totalRows = 0;
   constructor(
-    public metadataService: MetadataService,
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public spinner: NgxSpinnerService,
+    public datePipe: DatePipe,
     public router: Router,
+    public modalService: NgbModal,
+    public metadataService: MetadataService,
     public projectService: ProjectService,
-    public datePipe: DatePipe
+    public partService: PartService
   ) {
     this.type = router.url.split('/')[3];
   }
@@ -151,11 +159,6 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
     );
   }
 
-  /* Onclick Part details popup view */
-  showPartDetails(selectedRow) {
-    console.log(selectedRow);
-  }
-
   toggleRelatedPart() {
     this.requestBody.includeRelatedPartIds = !this.requestBody.includeRelatedPartIds;
     this.initColumnDef();
@@ -205,6 +208,31 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
     }
   }
 
+  closeModalWindow() {
+    this.id = null;
+    this.parts.length = 0;
+    this.modalService.dismissAll();
+  }
+
+  showPartDetails(row: any, $event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.spinner.show();
+    this.id = row.bidPmProjectId || '';
+
+    combineLatest((row.partIds || []).map(id => this.partService.getPartByPartId(id)))
+      .pipe(catchError(err => of([])))
+      .subscribe((parts: any) => {
+        this.parts = parts;
+        const options = {
+          centered: true,
+          windowClass: 'rfq-status-modal',
+          scrollable: true
+        };
+        this.modalService.open(this.partsTemplate, options);
+        this.spinner.hide();
+      });
+  }
   /* Table headers */
 
   onGridReady(ev) {
