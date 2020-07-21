@@ -18,7 +18,7 @@ export class SearchOpt {
   beginDate: Date;
   endDate: Date;
   searchValue: string;
-  partStatusIds: number;
+  partStatusIds: any;
   showTestAccount: boolean;
   constructor() {
     this.projectTypeId = null;
