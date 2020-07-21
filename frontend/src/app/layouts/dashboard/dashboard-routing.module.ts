@@ -391,7 +391,7 @@ const routes: Routes = [
                 component: PmSuborderReleaseQueueComponent
               },
               {
-                path: 'pm-release-queue/:bidId/:id',
+                path: 'pm-release-queue/:bidId',
                 component: PmReleaseQueueDetailsComponent
               },
               {
@@ -403,7 +403,7 @@ const routes: Routes = [
                 component: IssuedProposalComponent
               },
               {
-                path: 'proposal-issued/:bidId/:id',
+                path: 'proposal-issued/:bidId',
                 component: PmReleaseQueueDetailsComponent
               },
               {
@@ -411,7 +411,7 @@ const routes: Routes = [
                 component: CustomerAcceptedComponent
               },
               {
-                path: 'customer-accepted/:bidId/:id',
+                path: 'customer-accepted/:bidId',
                 component: PmReleaseQueueDetailsComponent
               },
               {

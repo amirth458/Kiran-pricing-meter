@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { combineLatest } from 'rxjs';
 
+import { BiddingService } from '../../../../service/bidding.service';
 import { ProjectService } from 'src/app/service/project.service';
 import { PartService } from 'src/app/service/part.service';
 import { ConnectProject } from 'src/app/model/connect.model';
@@ -14,7 +15,6 @@ import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { ReferenceFile, Part, MatchedProcessProfile } from 'src/app/model/part.model';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
-
 import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { Util } from 'src/app/util/Util';
@@ -80,7 +80,8 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     public projectService: ProjectService,
     public orderService: OrdersService,
     public partService: PartService,
-    public pricingService: RfqPricingService
+    public pricingService: RfqPricingService,
+    public biddingService: BiddingService
   ) {
     this.type = router.url.split('/')[3];
   }
@@ -90,8 +91,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       this.bidPmProjectId = params.bidId;
-      const partIds = params.id.split(',');
-      this.getPartsAndSuppliersByPartId(partIds);
+      this.getPartsByBidPmProjectId();
     });
 
     if (this.type === 'pm-release-queue') {
@@ -113,35 +113,41 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     });
   }
 
-  getPartsAndSuppliersByPartId(partIds) {
-    this.projectService.getAllSuppliersAndPartsByPartId(partIds).subscribe(
-      reponse => {
+  getPartsByBidPmProjectId() {
+    this.biddingService.getPartsByBidPmProjectId(this.bidPmProjectId).subscribe(
+      parts => {
         this.spinner.hide();
-        if (!reponse || !reponse.length) {
+        if (!(parts || []).length) {
           return;
         }
-        this.parts = reponse[0];
-        this.shortListedSuppliers = reponse[1].map((item, index) => {
-          const facilityCertificates = item.facilityCertificates.map(item => item.name);
-          const partCertificates = item.partCertificates.map(item => item.name);
-          return {
-            ...item,
-            vendorName: item.vendorName,
-            vendorType: item.vendorType.name,
-            country: item.country.name,
-            quantityOfProcessProfile: item.quantityOfProcessProfile,
-            facility: item.facility.toString(),
-            facilityCertificates: facilityCertificates.toString(),
-            partCertificates: partCertificates.toString(),
-            releasePriority: index + 1
-          };
-        });
+        this.parts = parts || [];
+        this.getAllSuppliersInfo(this.parts.map(part => part.partId));
       },
       error => {
         this.spinner.hide();
         console.log('Error', error);
       }
     );
+  }
+
+  getAllSuppliersInfo(partIds: Array<number>) {
+    this.projectService.getAllSuppliersAndPartId(partIds).subscribe(suppliers => {
+      this.shortListedSuppliers = (suppliers || []).map((item, index) => {
+        const facilityCertificates = item.facilityCertificates.map(facility => facility.name);
+        const partCertificates = item.partCertificates.map(partCert => partCert.name);
+        return {
+          ...item,
+          vendorName: item.vendorName,
+          vendorType: item.vendorType.name,
+          country: item.country.name,
+          quantityOfProcessProfile: item.quantityOfProcessProfile,
+          facility: item.facility.toString(),
+          facilityCertificates: facilityCertificates.toString(),
+          partCertificates: partCertificates.toString(),
+          releasePriority: index + 1
+        };
+      });
+    });
   }
 
   isManufacturerSameVendor() {
