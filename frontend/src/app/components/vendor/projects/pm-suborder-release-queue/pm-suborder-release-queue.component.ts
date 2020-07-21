@@ -339,11 +339,14 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: 'Same Vendor',
-        field: 'sameVendor',
+        field: 'isReleaseToSingleSupplier',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'sameVendor'
+        valueFormatter: dt => {
+          return dt.value ? 'Yes' : 'No';
+        },
+        tooltipField: 'isReleaseToSingleSupplier'
       },
       {
         headerName: 'Action',

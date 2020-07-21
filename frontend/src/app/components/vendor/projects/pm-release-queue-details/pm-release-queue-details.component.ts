@@ -324,7 +324,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
-          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
           headerName: 'country',
@@ -332,7 +331,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
-          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
           headerName: 'Facility',
