@@ -1,18 +1,21 @@
 <div class="wrapper d-flex">
-  <div class="table-control">
-    <app-column-search-filter
-      width="200px"
-      [type]="type"
-      [(filterColumns)]="filterColumns"
-      (filterColumnsChange)="filterColumnsChange($event)"
-      [(searchColumns)]="searchColumns"
-      (searchColumnsChange)="searchColumnsChange()"
-    >
-    </app-column-search-filter>
-  </div>
   <div class="table theme-table ml-4 d-flex flex-column">
-    <div class="d-flex align-items-center justify-content-end">
-      <span class="text-dark-blue font-sm text-right w-100">total: {{ totalcounts }}</span>
+    <div class="d-flex header justify-content-between align-items-center">
+      <div class="d-flex">
+        <app-insight-header
+          [type]="null"
+          [gridOptions]="gridOptions"
+          [placeholder]="'Customer, Vendor Order, SubOrder'"
+          [columns]="columnDefs"
+          [extraActions]="false"
+          (queryChange)="onQueryChange($event)"
+          (createdDateChange)="onCreatedDateChange($event)"
+        ></app-insight-header>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-end controls">
+        <span class="text-theme count text-right">Total: {{ totalCounts }}</span>
+      </div>
     </div>
     <ag-grid-angular
       class="ag-theme-balham w-100 h-100 flex-grow-1"
