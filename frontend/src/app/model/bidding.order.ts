@@ -95,6 +95,7 @@ export interface VendorConfirmationResponse {
   vendorId: number;
   vendorUserId: number;
   vendorName: string;
+  vendorEmail: string;
   bidPmProjectProcessId: number;
   bidPmProjectProcessStatus: string;
   meetingTime: Date;
