@@ -176,6 +176,7 @@ import { PmSuborderReleaseQueueComponent } from './vendor/projects/pm-suborder-r
 import { PmReleaseQueueDetailsComponent } from './vendor/projects/pm-release-queue-details/pm-release-queue-details.component';
 import { IssuedProposalComponent } from './vendor/projects/issued-proposal/issued-proposal.component';
 import { CustomerAcceptedComponent } from './vendor/projects/customer-accepted/customer-accepted.component';
+import { ReleasedBidComponent } from './vendor/projects/released-bid/released-bid.component';
 
 @NgModule({
   declarations: [
@@ -341,7 +342,8 @@ import { CustomerAcceptedComponent } from './vendor/projects/customer-accepted/c
     PmSuborderReleaseQueueComponent,
     IssuedProposalComponent,
     CustomerAcceptedComponent,
-    PmReleaseQueueDetailsComponent
+    PmReleaseQueueDetailsComponent,
+    ReleasedBidComponent
   ],
   imports: [
     CommonModule,
