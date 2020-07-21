@@ -143,9 +143,9 @@ export class ReleasedBidComponent implements OnInit {
     this.from = DefaultEmails.from;
     this.to = DefaultEmails.to;
     this.cc = [];
-    this.bcc = row && row.VendorEmail ? [row.VendorEmail] : null;
+    this.bcc = row && row.vendorEmail ? [row.vendorEmail] : null;
     if (!this.bcc) {
-      this.bcc = this.gridOptions.api.getSelectedRows().map(dataRow => dataRow.VendorEmail);
+      this.bcc = this.gridOptions.api.getSelectedRows().map(dataRow => dataRow.vendorEmail);
     }
     if (this.bcc && this.bcc.length > 0) {
       this.modalService.open(this.sendMailModal, {
