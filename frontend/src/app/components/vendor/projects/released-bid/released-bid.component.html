@@ -16,8 +16,10 @@
   <div class="ag-theme-balham w-100 h-100 position-relative bid-order-grid">
     <ag-grid-angular
       class="ag-theme-balham w-100 h-100"
+      [class.empty]="(rowData || []).length === 0"
       [gridOptions]="gridOptions"
       [rowData]="rowData"
+      [domLayout]="'autoHeight'"
       (gridReady)="onGridReady($event)"
     >
     </ag-grid-angular>
