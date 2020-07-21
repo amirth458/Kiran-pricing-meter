@@ -133,8 +133,10 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   getAllSuppliersInfo(partIds: Array<number>) {
     this.projectService.getAllSuppliersAndPartId(partIds).subscribe(suppliers => {
       this.shortListedSuppliers = (suppliers || []).map((item, index) => {
-        const facilityCertificates = item.facilityCertificates.map(facility => facility.name);
-        const partCertificates = item.partCertificates.map(partCert => partCert.name);
+        const facilityCertificates = item.facilityCertificates
+          ? item.facilityCertificates.map(facility => facility.name)
+          : '';
+        const partCertificates = item.partCertificates ? item.partCertificates.map(partCert => partCert.name) : '';
         return {
           ...item,
           vendorName: item.vendorName,
@@ -323,7 +325,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
-          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
           headerName: 'country',
@@ -331,7 +332,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
-          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
           headerName: 'Facility',
@@ -340,20 +340,20 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           sortable: false,
           filter: false
         },
-        {
-          headerName: 'Facility Certificates',
-          field: 'facilityCertificates',
-          hide: false,
-          sortable: false,
-          filter: false
-        },
-        {
-          headerName: 'Part Certificates',
-          field: 'partCertificates',
-          hide: false,
-          sortable: false,
-          filter: false
-        },
+        // {
+        //   headerName: 'Facility Certificates',
+        //   field: 'facilityCertificates',
+        //   hide: false,
+        //   sortable: false,
+        //   filter: false
+        // },
+        // {
+        //   headerName: 'Part Certificates',
+        //   field: 'partCertificates',
+        //   hide: false,
+        //   sortable: false,
+        //   filter: false
+        // },
         {
           headerName: 'Quanitity of Process Profile',
           field: 'quantityOfProcessProfile',
