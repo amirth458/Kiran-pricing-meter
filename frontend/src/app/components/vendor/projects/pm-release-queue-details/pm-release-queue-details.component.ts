@@ -70,7 +70,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   numberOfVendorsToReleaseToCustomer = 1;
   maxSelectableVendors = null;
   partStatusTypeEnum = PartStatusTypeEnum;
-  partStatusType: string;
+  partStatusType: any;
 
   constructor(
     public route: ActivatedRoute,
@@ -123,7 +123,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           return;
         }
         this.parts = parts || [];
-        this.partStatusType = (this.parts.length > 0 ? this.parts[0].partStatusType : '') as string;
+        this.partStatusType = this.parts.length > 0 ? this.parts[0].partStatusType : null;
         this.getAllSuppliersInfo(this.parts.map(part => part.partId));
       },
       error => {

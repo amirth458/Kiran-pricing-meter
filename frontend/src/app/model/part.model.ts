@@ -212,7 +212,7 @@ export interface Part {
   shippedAt: string;
   manualPricingAllowed: boolean;
   shippingAddress: Address;
-  partStatusType: PartStatusType | string;
+  partStatusType: PartStatusType;
   partType: PartType;
   order: PartOrder;
   postProcessTypeIds: number[];
