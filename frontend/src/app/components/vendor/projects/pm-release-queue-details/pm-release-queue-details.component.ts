@@ -13,11 +13,12 @@ import { ConnectProject } from 'src/app/model/connect.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { ReferenceFile, Part, MatchedProcessProfile, PartStatusTypeEnum } from 'src/app/model/part.model';
+import { ReferenceFile, Part, MatchedProcessProfile } from 'src/app/model/part.model';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { Util } from 'src/app/util/Util';
+import { PmProjectBidStatusType } from '../../../../model/bidding.order';
 
 @Component({
   selector: 'app-pm-release-queue-details',
@@ -69,8 +70,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   numberOfVendors = null;
   numberOfVendorsToReleaseToCustomer = 1;
   maxSelectableVendors = null;
-  partStatusTypeEnum = PartStatusTypeEnum;
-  partStatusType: any;
+  pmProjectBidStatusType = PmProjectBidStatusType;
 
   constructor(
     public route: ActivatedRoute,
@@ -84,19 +84,18 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     public partService: PartService,
     public pricingService: RfqPricingService,
     public biddingService: BiddingService
-  ) {
-    this.type = router.url.split('/')[3];
-  }
+  ) {}
 
   ngOnInit() {
     this.spinner.show();
 
     this.route.params.subscribe(params => {
-      this.bidPmProjectId = params.bidId;
+      this.bidPmProjectId = params.bidPmProjectId;
+      this.type = (params.statusType || '').replace(/-/g, '_').toUpperCase();
       this.getPartsByBidPmProjectId();
     });
 
-    if (this.type === 'pm-release-queue') {
+    if (this.type === PmProjectBidStatusType.NOT_STARTED) {
       this.initSuppliersTable();
     } else {
       this.initMatchingSuppliersQueue();
@@ -123,7 +122,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           return;
         }
         this.parts = parts || [];
-        this.partStatusType = this.parts.length > 0 ? this.parts[0].partStatusType : null;
         this.getAllSuppliersInfo(this.parts.map(part => part.partId));
       },
       error => {
@@ -136,8 +134,8 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   getAllSuppliersInfo(partIds: Array<number>) {
     this.projectService.getAllSuppliersAndPartId(partIds).subscribe(suppliers => {
       this.shortListedSuppliers = (suppliers || []).map((item, index) => {
-        const facilityCertificates = item.facilityCertificates.map(facility => facility.name);
-        const partCertificates = item.partCertificates.map(partCert => partCert.name);
+        const facilityCertificates = (item.facilityCertificates || []).map(facility => facility.name);
+        const partCertificates = (item.partCertificates || []).map(partCert => partCert.name);
         return {
           ...item,
           vendorName: item.vendorName,
@@ -145,8 +143,8 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           country: item.country.name,
           quantityOfProcessProfile: item.quantityOfProcessProfile,
           facility: item.facility.toString(),
-          facilityCertificates: facilityCertificates.toString(),
-          partCertificates: partCertificates.toString(),
+          facilityCertificates: facilityCertificates || '',
+          partCertificates: partCertificates || '',
           releasePriority: index + 1
         };
       });
@@ -326,7 +324,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
-          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
           headerName: 'country',
@@ -334,7 +331,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           hide: false,
           sortable: false,
           filter: false
-          // valueFormatter: v => (v.value ? v.value.name : '-')
         },
         {
           headerName: 'Facility',

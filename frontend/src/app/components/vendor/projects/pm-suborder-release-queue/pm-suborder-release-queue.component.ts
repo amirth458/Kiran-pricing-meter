@@ -148,8 +148,9 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
           return;
         }
         this.selectedVendors = [];
-        const bidPmProjectId = response[0].bidPmProject.id;
-        const url = `/prodex/projects/pm-release-queue/${bidPmProjectId}`;
+        const bidPmProject = response[0].bidPmProject;
+        const statusName = (bidPmProject.bidPmProjectstatusType.name || '').replace(/_/g, '-').toLowerCase();
+        const url = `/prodex/projects/pm-release-queue/${bidPmProject.id}/${statusName}`;
         this.router.navigateByUrl(url);
       },
       error => {
@@ -338,11 +339,14 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: 'Same Vendor',
-        field: 'sameVendor',
+        field: 'isReleaseToSingleSupplier',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'sameVendor'
+        valueFormatter: dt => {
+          return dt.value ? 'Yes' : 'No';
+        },
+        tooltipField: 'isReleaseToSingleSupplier'
       },
       {
         headerName: 'Action',

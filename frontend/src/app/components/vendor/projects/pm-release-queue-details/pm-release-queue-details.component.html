@@ -41,9 +41,9 @@
         </app-prod-part>
       </ng-container>
     </div>
-    <div class="row" *ngIf="partStatusType === partStatusTypeEnum.PART_AWAITING_RELEASE">
+    <div class="row">
       <ng-container [ngSwitch]="type">
-        <ng-container *ngSwitchCase="'pm-release-queue'">
+        <ng-container *ngSwitchCase="pmProjectBidStatusType.NOT_STARTED">
           <div class="col-12">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <span class="table-header">Matching Suppliers Profiles</span>
@@ -95,34 +95,9 @@
             ></ag-grid-angular>
           </div>
         </ng-container>
-        <ng-container *ngSwitchCase="'vendor-confirmation-queue'">
-          <div class="col-12">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <span class="table-header">Matching Suppliers Queue</span>
-              <div class="d-flex align-items-center">
-                <!-- [disabled]="selectableCount <= 0" -->
-                <button class="btn theme white btn-sm" [disabled]="selectableCount <= 0" (click)="openNewSupplier()">
-                  Add New Supplier
-                </button>
-                <button
-                  class="btn theme btn-primary btn-sm ml-3"
-                  [disabled]="!canReleaseToCustomer()"
-                  (click)="releaseToCustomer()"
-                >
-                  Release Project to Customer
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 mb-4 theme-table">
-            <ag-grid-angular
-              class="ag-theme-balham w-100 h-100"
-              [rowData]="selectedSuppliers"
-              [gridOptions]="supplierGridOptions[0]"
-              (gridReady)="onSuppliersGridReady(0, $event)"
-              domLayout="autoHeight"
-            >
-            </ag-grid-angular>
+        <ng-container *ngSwitchCase="pmProjectBidStatusType.RELEASED_TO_VENDOR">
+          <div class="col-12 mb-4">
+            <app-released-bid *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
           </div>
         </ng-container>
         <ng-container *ngSwitchCase="'released-projects'">
@@ -144,12 +119,6 @@
         </ng-container>
       </ng-container>
     </div>
-
-    <div class="row" *ngIf="partStatusType === partStatusTypeEnum.PART_AWAITING_VENDORS">
-      <div class="col-12 mb-4">
-        <app-released-bid *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
-      </div>
-    </div>
   </div>
   <ng-template #removeCell let-row>
     <div class="d-flex flex-row justify-content-center align-items-center w-100 h-100">
@@ -165,7 +134,7 @@
 
   <ng-template #statusCell let-row>
     <div class="d-flex flex-row align-items-center w-100 h-100">
-      <ng-container [ngSwitch]="row?.status.id">
+      <ng-container [ngSwitch]="row?.status?.id">
         <div *ngSwitchCase="1">RECEIVED</div>
         <div *ngSwitchCase="2">ACCEPTED</div>
         <div *ngSwitchCase="3" class="text-orange">REJECTED</div>
