@@ -7,7 +7,7 @@ import { ConfirmSubOrderRelease, ConfirmSubOrderReleaseResponse } from '../model
 import { environment } from '../../environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import { LegacyBidHistory } from '../model/billing.model';
-import { PmProjectReleaseQueue, PmProjectRequest } from '../model/bidding.order';
+import { PmProjectReleaseQueue, PmProjectRequest, VendorConfirmationResponse } from '../model/bidding.order';
 import { Util } from '../util/Util';
 
 @Injectable({
@@ -37,5 +37,11 @@ export class BiddingService {
   getPmProjectReleaseQueue(req: FilterOption, filter: PmProjectRequest): Observable<PmProjectReleaseQueue[]> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/release-queue`;
     return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
+  }
+
+  getReleasedPmProjectBids(biddingId: number): Observable<VendorConfirmationResponse[]> {
+    return this.http.get<VendorConfirmationResponse[]>(
+      `${environment.apiBaseUrl}/admin/pm-project/vendor-confirmation/${biddingId}`
+    );
   }
 }
