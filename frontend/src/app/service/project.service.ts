@@ -37,6 +37,11 @@ export class ProjectService {
     return this.http.post<any>(suppliersUrl, { partIds });
   }
 
+  removeProjectFromRelease(pmBidPojectID) {
+    const url = `${environment.apiBaseUrl}/admin/pm-project?bid-pm-project-id=${pmBidPojectID}`;
+    return this.http.delete<any>(url);
+  }
+
   saveReleasePMBidToVendor(payload): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/pm-project/release-bid-to-vendor`;
     return this.http.post<any>(url, payload);

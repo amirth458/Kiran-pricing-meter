@@ -47,15 +47,12 @@
           <div class="col-12">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <span class="table-header">Matching Suppliers Profiles</span>
-              <!-- <span class="footnote red cannot-fulfill font-weight-bold" *ngIf="
-                  numberOfVendors !== null && maxSelectableVendors !== null && maxSelectableVendors < numberOfVendors
-                ">Can Not Fulfill</span
-              > -->
               <div class="d-flex align-items-center justify-content-end controls button-group-right">
                 <button
                   type="button"
                   class="ml-2 btn btn-white  btn-sm p-2 remove-btn"
-                  [routerLink]="['/prodex/projects/pm-suborder-release-queue']"
+                  *ngIf="bidPmProjectId"
+                  (click)="removeProjectFromRelease()"
                 >
                   Remove Project from Release
                 </button>

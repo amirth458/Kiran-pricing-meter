@@ -26,124 +26,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   type = ['search', 'filter'];
 
   pageSize = 50;
-  totalcounts;
-  filterColumnsRequest = [];
-
-  searchColumns = [
-    {
-      name: 'Customer Order ID',
-      field: 'bidOrder.id',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Sub Order IDs',
-      field: 'partIds',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Vendor Order ID',
-      field: 'vendorOrderId',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Vendor Order Status',
-      field: 'vendorOrderStatus',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Material',
-      field: 'material',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    },
-    {
-      name: 'Process',
-      field: 'process',
-      checked: false,
-      query: {
-        type: '',
-        filter: ''
-      }
-    }
-  ];
-  filterColumns = [
-    {
-      name: 'Order ID',
-      field: 'bidOrder.id',
-      checked: true
-    },
-    {
-      name: 'Sub Order IDs',
-      field: 'partIds',
-      checked: true
-    },
-    {
-      name: 'Sub Order Count',
-      field: 'subOrderCount',
-      checked: true
-    },
-    {
-      name: 'Vendor Order ID',
-      field: 'vendorOrderId',
-      checked: true
-    },
-    {
-      name: 'Vendor Order Status',
-      field: 'vendorOrderStatus',
-      checked: true
-    },
-    {
-      name: 'Offer Price',
-      field: 'offerPrice',
-      checked: true
-    },
-    {
-      name: 'Quantity',
-      field: 'quantity',
-      checked: true
-    },
-    {
-      name: 'Material',
-      field: 'material',
-      checked: true
-    },
-    {
-      name: 'Process',
-      field: 'process',
-      checked: true
-    },
-    {
-      name: 'Delivery Date',
-      field: 'deliveryDate',
-      checked: true
-    },
-    {
-      name: 'Status',
-      field: 'bidOrder.bidOrderStatusType.description',
-      checked: true
-    }
-  ];
-
-  selectedIds = [];
+  totalCounts;
 
   columnDefs: Array<any> = [];
   autoGroupColumnDef = null;
@@ -165,7 +48,7 @@ export class ProductionReleasedOrdersComponent implements OnInit {
   ) {
     if (this.router.url.startsWith('/prodex/connect')) {
       this.pageType = 'connect';
-      this.searchColumnsChange();
+      this.onSearch();
     }
   }
 
@@ -309,7 +192,12 @@ export class ProductionReleasedOrdersComponent implements OnInit {
     this.gridOptions.api.paginationSetPageSize(Number(value));
   }
 
-  onSearch() {
+  onSearch(query?: string, beginDate?: Date, endDate?: Date) {
+    if (!beginDate || !endDate) {
+      const date = new Date();
+      beginDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 30);
+      endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
     const dataSource = {
       rowCount: 0,
       getRows: params => {
@@ -318,8 +206,10 @@ export class ProductionReleasedOrdersComponent implements OnInit {
           params.startRow / this.pageSize,
           this.pageSize,
           {
-            q: '',
-            filterColumnsRequests: this.filterColumnsRequest
+            query,
+            vendorOrderType: 4,
+            beginDate,
+            endDate
           },
           this.pageType === 'prodex' ? VendorOrderTypeEnum.DILIGENT_PRODUCTION : VendorOrderTypeEnum.DILIGENT_CONNECT
         );
@@ -328,9 +218,8 @@ export class ProductionReleasedOrdersComponent implements OnInit {
           this.spinner.hide('spooler1');
           const rowsThisPage = data.content;
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-          this.totalcounts = data.totalElements;
+          this.totalCounts = data.totalElements;
           params.successCallback(rowsThisPage, lastRow);
-          // this.reconfigColumns();
         });
       }
     };
@@ -339,42 +228,22 @@ export class ProductionReleasedOrdersComponent implements OnInit {
     }
   }
 
-  configureColumnDefs() {
-    this.filterColumns.map(column => {
-      this.columnDefs.map(col => {
-        if (col.headerName === column.name) {
-          col.hide = !column.checked;
-        }
-      });
-    });
+  onCreatedDateChange(ev) {
+    if (ev.length && ev.length > 1) {
+      this.onSearch(null, ev[0], ev[1]);
+    } else {
+      this.onSearch();
+    }
   }
 
-  filterColumnsChange(event) {
-    this.configureColumnDefs();
-    this.gridOptions.api.setColumnDefs([]);
-    this.gridOptions.api.setColumnDefs(this.columnDefs);
-    this.gridOptions.api.sizeColumnsToFit();
-  }
-
-  searchColumnsChange() {
-    this.filterColumnsRequest = [];
-    this.searchColumns.map((column, index) => {
-      if (column.checked && column.query.type) {
-        this.filterColumnsRequest.push({
-          id: index + 1,
-          displayName: column.name,
-          selectedOperator: column.query.type,
-          searchedValue: column.query.filter
-        });
-      }
-    });
-    this.onSearch();
+  onQueryChange(ev) {
+    this.onSearch(ev);
   }
 
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
-    this.searchColumnsChange();
+    this.onSearch();
   }
 
   showPartDetails(ev, v) {

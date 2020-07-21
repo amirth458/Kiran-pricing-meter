@@ -72,7 +72,7 @@ export class InsightHeaderComponent implements OnInit {
 
   onTimeChanged(type) {
     if (type === 'created') {
-      if (this.createdDateRange[1] - this.createdDateRange[0] <= 30 * 24 * 3600 * 1000) {
+      if (this.createdDateRange[1] - this.createdDateRange[0] <= 90 * 24 * 3600 * 1000) {
         const now = new Date();
         const startDate = new Date(this.createdDateRange[0]);
         const endDate = new Date(this.createdDateRange[1]);
@@ -86,7 +86,7 @@ export class InsightHeaderComponent implements OnInit {
         this.createdDateRange = [startDate, endDate];
         this.createdDateChange.emit(this.createdDateRange);
       } else {
-        this.toastr.warning('The duration should be less than or equal to 30 days');
+        this.toastr.warning('The duration should be less than or equal to 90 days');
       }
     } else {
       this.lastAttemptChange.emit(this.lastAttemptDate);
