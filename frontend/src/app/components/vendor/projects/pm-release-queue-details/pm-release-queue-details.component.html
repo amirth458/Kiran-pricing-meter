@@ -41,7 +41,7 @@
         </app-prod-part>
       </ng-container>
     </div>
-    <div class="row" *ngIf="partStatusType === partStatusTypeEnum.PART_AWAITING_RELEASE">
+    <div class="row" *ngIf="type === pmProjectBidStatusType.NOT_STARTED">
       <ng-container [ngSwitch]="type">
         <ng-container *ngSwitchCase="'pm-release-queue'">
           <div class="col-12">
@@ -145,7 +145,7 @@
       </ng-container>
     </div>
 
-    <div class="row" *ngIf="partStatusType === partStatusTypeEnum.PART_AWAITING_VENDORS">
+    <div class="row" *ngIf="type === pmProjectBidStatusType.RELEASED_TO_VENDOR">
       <div class="col-12 mb-4">
         <app-released-bid *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
       </div>

@@ -18,6 +18,7 @@ import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { Util } from 'src/app/util/Util';
+import { PmProjectBidStatusType } from '../../../../model/bidding.order';
 
 @Component({
   selector: 'app-pm-release-queue-details',
@@ -69,7 +70,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   numberOfVendors = null;
   numberOfVendorsToReleaseToCustomer = 1;
   maxSelectableVendors = null;
-  partStatusTypeEnum = PartStatusTypeEnum;
+  pmProjectBidStatusType = PmProjectBidStatusType;
   partStatusType: any;
 
   constructor(
@@ -93,6 +94,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       this.bidPmProjectId = params.bidId;
+      this.type = (params.statusType || '').replace(/-/g, '_').toUpperCase();
       this.getPartsByBidPmProjectId();
     });
 

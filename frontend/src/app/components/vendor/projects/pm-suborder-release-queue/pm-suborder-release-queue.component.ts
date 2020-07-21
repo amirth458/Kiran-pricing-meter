@@ -148,8 +148,9 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
           return;
         }
         this.selectedVendors = [];
-        const bidPmProjectId = response[0].bidPmProject.id;
-        const url = `/prodex/projects/pm-release-queue/${bidPmProjectId}`;
+        const bidPmProject = response[0].bidPmProject;
+        const statusName = (bidPmProject.bidPmProjectstatusType.name || '').replace(/_/g, '-').toLowerCase();
+        const url = `/prodex/projects/pm-release-queue/${bidPmProject.id}/${statusName}`;
         this.router.navigateByUrl(url);
       },
       error => {
