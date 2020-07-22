@@ -209,7 +209,14 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
       response => {
         this.spinner.hide('loadingPanel');
         this.toastr.success('Successfully released!');
-        /* todo Redirect to next view */
+        const obj: any = (response || []).length > 0 ? response[0] : null;
+        if (obj) {
+          const bidPmProject: any = obj.bidPmProject;
+          const status = (bidPmProject.bidPmProjectstatusType.name || '').replace(/_/g, '-').toLowerCase();
+          this.router.navigateByUrl(`/prodex/projects/pm-release-queue/${bidPmProject.id}/${status}`);
+        } else {
+          this.toastr.error('unable to release to vendor');
+        }
       },
       error => {
         this.spinner.hide('loadingPanel');
