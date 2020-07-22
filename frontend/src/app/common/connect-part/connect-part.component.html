@@ -1,6 +1,7 @@
 <ng-container *ngIf="value">
   <h6 class="text-theme part-title w-100">{{ value?.rfqMedia?.projectRfqId }}.{{ value.id }}</h6>
   <div class="d-flex flex-row col-12 p-0">
+    <!-- PART INFORMATION -->
     <div class="col-9 pr-3 pt-0 pb-0 info-details">
       <div class="col-12 d-flex flex-row p-0">
         <div class="col-2 pt-3 pb-3">
@@ -90,28 +91,24 @@
               {{ projectProfile.eligibleManufacturerTypes || defProfileText }}
             </span>
           </p>
-
           <p class="d-flex flex-row flex-wrap align-items-center mb-2">
             Eligible Regions:&nbsp;
             <span class="text-theme-green">
               {{ projectProfile.countries || defProfileText }}
             </span>
           </p>
-
           <p class="d-flex flex-row flex-wrap align-items-center mb-2">
             Facility Quality Certifications:&nbsp;
             <span class="text-theme-green">
               {{ projectProfile.facilityCerts || defProfileText }}
             </span>
           </p>
-
           <p class="d-flex flex-row flex-wrap align-items-center mb-2">
             Part Certifications:&nbsp;
             <span class="text-theme-green">
               {{ projectProfile.partCerts || defProfileText }}
             </span>
           </p>
-
           <p class="d-flex flex-row flex-wrap align-items-center mb-2">
             <app-proposal-attachment
               type="governance-document"
@@ -122,6 +119,7 @@
         </div>
       </div>
     </div>
+    <!-- / PART INFORMATION -->
     <!-- SHIPPING ADDRESS & TARGET DELIVERY DATE -->
     <div class="col-3">
       <div class="shipping p-3 h-100">
