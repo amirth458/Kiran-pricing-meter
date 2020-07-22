@@ -118,3 +118,9 @@ export interface VendorConfirmationResponse {
   rowNumber?: number;
   selected?: boolean;
 }
+
+export interface MinimumProposalInfo {
+  vendorId: number;
+  offerId: number;
+  proposalPartIds: Array<number>;
+}

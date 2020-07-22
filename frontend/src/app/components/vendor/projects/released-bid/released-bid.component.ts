@@ -4,9 +4,12 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { combineLatest } from 'rxjs';
+
+import { BidPart } from '../../../../model/part.model';
 import { BiddingService } from '../../../../service/bidding.service';
 import { DefaultEmails } from '../../../../../assets/constants';
-import { VendorConfirmationResponse } from '../../../../model/bidding.order';
+import { MinimumProposalInfo, VendorConfirmationResponse } from '../../../../model/bidding.order';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 
 @Component({
@@ -34,17 +37,16 @@ export class ReleasedBidComponent implements OnInit {
     templateRenderer: TemplateRendererComponent
   };
   rowData: VendorConfirmationResponse[];
+  proposalInfo: any;
 
   from = '';
   to = '';
   cc = [];
   bcc = [];
 
-  constructor(
-    public biddingService: BiddingService,
-    public spinner: NgxSpinnerService,
-    public modalService: NgbModal
-  ) {}
+  constructor(public biddingService: BiddingService, public spinner: NgxSpinnerService, public modalService: NgbModal) {
+    this.proposalInfo = {};
+  }
 
   ngOnInit() {
     this.initGrid();
@@ -135,7 +137,39 @@ export class ReleasedBidComponent implements OnInit {
     this.spinner.show('releaseLoadingPanel');
     this.biddingService.getReleasedPmProjectBids(this.bidProjectId).subscribe(v => {
       this.rowData = v || [];
+      if (this.rowData.length > 0) {
+        this.fetchProposalInfo(this.rowData.map(item => item.vendorId));
+      }
       this.spinner.hide('releaseLoadingPanel');
+    });
+  }
+
+  fetchProposalInfo(vendorIds: Array<number>) {
+    const arr = [];
+    vendorIds.map(vendorId => {
+      arr.push(this.biddingService.getDetailedPartInfo(this.bidProjectId, vendorId));
+    });
+    this.spinner.show('releaseLoadingPanel');
+    combineLatest(arr).subscribe(v => {
+      this.spinner.hide('releaseLoadingPanel');
+      const bidParts = (v || []).reduce((acc, value) => {
+        acc = acc.concat(value || []);
+        return acc;
+      }, []);
+      (bidParts || []).map((part: BidPart) => {
+        if (part.partQuoteCustomerView) {
+          const quote = part.partQuoteCustomerView;
+          if (this.proposalInfo[quote.vendorId]) {
+            this.proposalInfo[quote.vendorId].proposalPartIds.push(quote.proposalPartId);
+          } else {
+            this.proposalInfo[quote.vendorId] = {
+              vendorId: quote.vendorId,
+              offerId: this.bidProjectId,
+              proposalPartIds: []
+            } as MinimumProposalInfo;
+          }
+        }
+      });
     });
   }
 
