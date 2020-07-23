@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 
 import { BiddingService } from '../../../../service/bidding.service';
+import { BidPart } from '../../../../model/part.model';
 
 @Component({
   selector: 'app-proposal',
@@ -13,6 +14,15 @@ import { BiddingService } from '../../../../service/bidding.service';
 export class ProposalComponent implements OnInit {
   offerId: number;
   vendorId: number;
+  proposalInfo: BidPart[];
+
+  get totalCost() {
+    return (this.proposalInfo || []).reduce((sum: number, part: BidPart) => {
+      const quote = part.partQuoteCustomerView;
+      sum += quote.totalCost || 0;
+      return sum;
+    }, 0);
+  }
 
   constructor(public route: Router, public router: ActivatedRoute, public biddingService: BiddingService) {
     combineLatest(this.router.params, this.router.parent.params).subscribe(v => {
@@ -28,7 +38,7 @@ export class ProposalComponent implements OnInit {
 
   getVendorProposal() {
     this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(offerInfo => {
-      console.log(offerInfo);
+      this.proposalInfo = offerInfo || [];
     });
   }
 }

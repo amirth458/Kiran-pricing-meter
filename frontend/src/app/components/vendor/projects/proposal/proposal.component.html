@@ -1,3 +1,31 @@
-<p>
-  proposal works!
-</p>
+<div class="wrapper container-fluid p-4">
+  <div class="d-flex flex-row justify-content-start align-items-center">
+    <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
+    <div class="ml-auto">
+      <button class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
+        Delete Proposal
+      </button>
+      <button class="btn theme btn-white pl-4 pr-4 w-auto ml-2">
+        Save the Proposal
+      </button>
+      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">
+        Send All Quotes to Customer
+      </button>
+    </div>
+  </div>
+  <div class="d-flex ">
+    <ngb-tabset [destroyOnHide]="true" [justify]="'start'" *ngIf="(proposalInfo?.length || 0) > 0">
+      <ngb-tab *ngFor="let partInfo of proposalInfo" [id]="partInfo.partId.toString()">
+        <ng-template ngbTabTitle> Part {{ partInfo?.partId }} </ng-template>
+        <ng-template ngbTabContent>
+          <div class="d-flex flex-column pl-2 pr-2">
+            <h6 class="m-0 pt-3 pb-2 text-theme">
+              Customer Requirement:
+            </h6>
+            <app-prod-part [partId]="partInfo.partId" [title]="false"></app-prod-part>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
