@@ -13,7 +13,7 @@
   <div class="table theme-table ml-4 d-flex flex-column">
     <div class="mb-3 row d-flex">
       <div class="form-group theme col-9 d-flex flex-row m-0">
-        <input class="form-control col-md-3" placeholder="Vendor Order ID" [(ngModel)]="vendorOrderID" />
+        <input class="form-control col-md-3" placeholder="Bid Order ID" [(ngModel)]="vendorOrderID" />
         <select class="form-control col-md-3 ml-4" [(ngModel)]="bidOrderStatus">
           <option value="" selected>Choose</option>
           <ng-container *ngIf="status$ | async as items">

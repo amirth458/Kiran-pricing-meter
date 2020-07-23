@@ -32,7 +32,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       }
     },
     {
-      name: 'Sub-Order',
+      name: 'Sub-Order ( Part ID )',
       field: 'partId',
       tooltipField: 'partId',
       checked: false,
@@ -120,7 +120,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
       checked: true
     },
     {
-      name: 'Sub-Order',
+      name: 'Sub-Order ( Part ID )',
       field: 'partId',
       tooltipField: 'partId',
       checked: true
@@ -225,7 +225,7 @@ export class SuborderReleaseQueueComponent implements OnInit {
         filter: false
       },
       {
-        headerName: 'Sub-Order',
+        headerName: 'Sub-Order ( Part ID )',
         field: 'partId',
         tooltipField: 'partId',
         hide: false,
