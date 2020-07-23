@@ -1,0 +1,40 @@
+:host .wrapper {
+  background: var(--theme-white-color);
+}
+
+:host .del-proposal {
+  color: var(--theme-orange) !important;
+}
+
+:host .total-price {
+  font-size: 14px;
+}
+
+:host ::ng-deep .nav {
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+:host ::ng-deep .nav .nav-item .nav-link {
+  min-width: 150px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  position: relative;
+}
+
+:host ::ng-deep .nav .nav-item .nav-link.active:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 3px solid var(--theme-light-green);
+}
+
+:host ::ng-deep .nav .nav-item .nav-link .proposal-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 3px !important;
+}
