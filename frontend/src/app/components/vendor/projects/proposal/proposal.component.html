@@ -19,10 +19,28 @@
         <ng-template ngbTabTitle> Part {{ partInfo?.partId }} </ng-template>
         <ng-template ngbTabContent>
           <div class="d-flex flex-column pl-2 pr-2">
-            <h6 class="m-0 pt-3 pb-2 text-theme">
+            <h5 class="m-0 pt-3 pb-2 text-theme">
               Customer Requirement:
-            </h6>
+            </h5>
             <app-prod-part [partId]="partInfo.partId" [title]="false"></app-prod-part>
+            <h5 class="m-0 pt-3 pb-2 text-theme">
+              PM Proposal to Customer:
+            </h5>
+            <ngb-tabset>
+              <ngb-tab [id]="'requirements'">
+                <ng-template ngbTabTitle> Requirements </ng-template>
+              </ngb-tab>
+              <ngb-tab [id]="'quote'">
+                <ng-template ngbTabTitle> Quote </ng-template>
+                <ng-template ngbTabContent>
+                  <div class="pt-4 pb-4">
+                    <h6 class="text-theme">Enter the price or use your pricing profiles below</h6>
+                    <app-customer-part-quote class="w-50" [quote]="partInfo.partQuoteCustomerView">
+                    </app-customer-part-quote>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
           </div>
         </ng-template>
       </ngb-tab>

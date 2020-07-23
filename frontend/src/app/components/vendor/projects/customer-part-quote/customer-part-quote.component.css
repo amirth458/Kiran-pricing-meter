@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+:host .table thead {
+  background: #bfd9f2;
+  color: var(--them-dark-blue-opaque);
+}
+
+:host .table {
+  font-size: 1em;
+  text-align: center;
+}
+
+:host .table td {
+  padding: 5px 0;
+  vertical-align: middle;
+}
+
+:host .table thead td {
+  padding: 10px 0;
+}
+
+:host .table tbody {
+  border: 1px solid var(--theme-table-border);
+}
+
+:host a.requote {
+  font-size: 13px;
+  color: var(--theme-light-blue);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: normal;
+}
