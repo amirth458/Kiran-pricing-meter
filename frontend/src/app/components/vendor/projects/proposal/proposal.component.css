@@ -38,3 +38,52 @@
   font-weight: 600;
   padding: 0 3px !important;
 }
+
+:host .media-image {
+  height: 200px;
+  width: 100%;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 0 auto;
+}
+
+:host .wrap-text {
+  text-overflow: ellipsis;
+  word-break: break-all;
+  min-width: 100%;
+}
+
+:host .label-value {
+  font-size: 12px;
+  margin: 0;
+  padding: 3px 0;
+  word-break: break-all;
+}
+
+.proposal-table {
+  width: 100%;
+}
+
+.proposal-table td.proposed-value {
+  width: 70%;
+  text-align: left;
+  padding: 0 10px;
+}
+
+.proposal-table td.high-lighted-cell {
+  background: var(--theme-light-blue);
+  color: var(--theme-white-color);
+  font-weight: 700;
+  border: none;
+  border-bottom: 1px solid var(--theme-white-color);
+  width: 30%;
+}
+
+.proposal-table td {
+  border: 1px solid #cccccc;
+  text-align: center;
+  padding: 10px;
+  color: var(--theme-light-blue);
+  font-size: 13px;
+}

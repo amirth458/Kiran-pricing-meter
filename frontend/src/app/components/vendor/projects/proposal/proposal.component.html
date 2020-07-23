@@ -29,6 +29,71 @@
             <ngb-tabset>
               <ngb-tab [id]="'requirements'">
                 <ng-template ngbTabTitle> Requirements </ng-template>
+                <ng-template ngbTabContent>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex flex-wrap col-12">
+                      <div class="col-6">
+                        <div class="col-12 d-flex flex-row">
+                          <div class="col-4">
+                            <div
+                              class="media-image"
+                              [ngStyle]="getMediaBackgroundImage(partInfo.thumbnail400Location)"
+                            ></div>
+                          </div>
+                          <div class="col-8 pt-5">
+                            <p class="text-theme label-value font-weight-bold text-wrap">
+                              {{ partInfo.fileName }}
+                            </p>
+                            <p class="text-theme label-value">Part Dimensions - {{ getDimension(partInfo) }}</p>
+                            <p class="text-theme label-value">Volume - {{ getVolume(partInfo) }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <table class="proposal-table mt-3 mb-2">
+                          <tbody>
+                            <tr>
+                              <td class="high-lighted-cell">Quantity</td>
+                              <td class="proposed-value">
+                                {{ partInfo.quantity || '' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Material</td>
+                              <td class="proposed-value">
+                                {{ (partInfo.materialPropertyValues || []).join(',') }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Technology</td>
+                              <td class="proposed-value">
+                                {{ (partInfo.equipmentPropertyValues || []).join(',') }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Target Delivery</td>
+                              <td class="proposed-value">
+                                {{ partInfo.deliveryDate | date: 'MM/dd/yyyy':'UTC' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Reference Files</td>
+                              <td class="proposed-value">
+                                <app-ref-file [value]="partInfo.partId" [showNames]="true"></app-ref-file>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Additional Assurances</td>
+                              <td class="proposed-value">
+                                {{ partInfo?.comments }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
               </ngb-tab>
               <ngb-tab [id]="'quote'">
                 <ng-template ngbTabTitle> Quote </ng-template>
