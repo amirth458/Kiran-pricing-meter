@@ -1,7 +1,7 @@
 <div class="wrapper container-fluid p-4">
   <div class="d-flex flex-row justify-content-start align-items-center">
     <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
-    <div class="ml-auto">
+    <div class="ml-auto" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
       <button class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
         Delete Proposal
       </button>
@@ -10,6 +10,11 @@
       </button>
       <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">
         Send All Quotes to Customer
+      </button>
+    </div>
+    <div class="ml-auto">
+      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2" (click)="createAdminProposal()">
+        Copy Vendor Quote Details To Appropriate Customer PM RFQ
       </button>
     </div>
   </div>
