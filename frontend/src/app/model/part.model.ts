@@ -1,6 +1,7 @@
-import { VendorProfile } from './vendorProfile.model';
-import { UserSummary } from './user.model';
+import { PartQuoteCustomerView } from './connect.model';
 import { SideMeasurement } from './order.model';
+import { UserSummary } from './user.model';
+import { VendorProfile } from './vendorProfile.model';
 
 export interface Type {
   id: number;
@@ -253,7 +254,7 @@ export class BidPart {
   meetingTime: string;
   nda: string | number;
   partId: number;
-  partQuoteCustomerView: any;
+  partQuoteCustomerView: PartQuoteCustomerView;
   partStatusType: string;
   partStatusTypeId: number;
   postProcessTypeIds: number[];

@@ -204,3 +204,8 @@ export interface ProposalPartQuote {
   adminMargin: number;
   vendorId: number;
 }
+
+export enum ProposalTypeEnum {
+  VENDOR_PROPOSAL_TYPE = 'VENDOR_PROPOSAL_TYPE',
+  ADMIN_PROPOSAL_TYPE = 'ADMIN_PROPOSAL_TYPE'
+}
