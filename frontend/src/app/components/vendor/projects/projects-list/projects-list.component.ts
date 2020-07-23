@@ -187,6 +187,7 @@ export class ProjectsListComponent implements OnInit {
           const rowsThisPage =
             this.type === 'release-queue' || this.type === 'order-complete'
               ? data.map((item: ConnectOrder) => ({
+                  bidConnectId: item.bidConnectId,
                   id: (item.partIds || []).join(', '),
                   orderId: item.orderId,
                   sameVendor: item.isReleaseToSingleSupplier ? 'True' : 'False',
@@ -289,6 +290,14 @@ export class ProjectsListComponent implements OnInit {
     ];
     this.connectColumnDefs = [
       {
+        headerName: 'Bid ID',
+        field: 'bidConnectId',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'bidConnectId'
+      },
+      {
         headerName: 'Customer Name',
         field: 'customerName',
         hide: false,
@@ -297,7 +306,7 @@ export class ProjectsListComponent implements OnInit {
         tooltipField: 'customerName'
       },
       {
-        headerName: 'Order ID',
+        headerName: 'Customer Order ID',
         field: 'orderId',
         hide: false,
         sortable: true,
