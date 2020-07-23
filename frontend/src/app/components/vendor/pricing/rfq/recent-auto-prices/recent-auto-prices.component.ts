@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 import { GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -12,6 +12,7 @@ import { Pageable } from './../../../../../model/pageable.model';
 import { Part, AppPartStatus } from './../../../../../model/part.model';
 import { ToastrService } from 'ngx-toastr';
 import { PartService } from 'src/app/service/part.service';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-recent-auto-prices',
@@ -40,7 +41,8 @@ export class RecentAutoPricesComponent implements OnInit {
     public customerService: CustomerService,
     public currencyPipe: CurrencyPipe,
     public toast: ToastrService,
-    public partService: PartService
+    public partService: PartService,
+    public datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -138,6 +140,14 @@ export class RecentAutoPricesComponent implements OnInit {
         valueFormatter: x => {
           return x.value ? this.currencyPipe.transform(x.value, 'USD', 'symbol', '0.0-3') : '';
         }
+      },
+      {
+        headerName: 'Created Date',
+        field: 'createdDate',
+        hide: false,
+        sortable: true,
+        tooltipField: 'createdDate',
+        valueFormatter: x => (x.value ? this.datePipe.transform(x.value, Util.dateFormatWithTime) : '')
       }
     ];
     this.gridOptions = {
@@ -219,7 +229,8 @@ export class RecentAutoPricesComponent implements OnInit {
           this.rowData[findIndex] = {
             ...this.rowData[findIndex],
             price: this.currencyPipe.transform(partQuote.totalCost, 'USD', 'symbol', '0.0-3'),
-            minimumOrderAmount: partQuote.minimumOrderAmount || null
+            minimumOrderAmount: partQuote.minimumOrderAmount || null,
+            createdDate: partQuote.createdDate || null
           };
         });
         this.rowData = [...this.rowData];
