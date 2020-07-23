@@ -1,4 +1,4 @@
-<section class="page pm-release-queue-details">
+<section *ngIf="!proposalOutletRef.isActivated" class="page pm-release-queue-details">
   <ngx-spinner
     [name]="'loadingPanel'"
     bdColor="#ffffff70"
@@ -232,3 +232,5 @@
     </div>
   </ng-template>
 </section>
+
+<router-outlet #proposalOutletRef="outlet"> </router-outlet>

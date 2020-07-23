@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -44,7 +45,12 @@ export class ReleasedBidComponent implements OnInit {
   cc = [];
   bcc = [];
 
-  constructor(public biddingService: BiddingService, public spinner: NgxSpinnerService, public modalService: NgbModal) {
+  constructor(
+    public biddingService: BiddingService,
+    public spinner: NgxSpinnerService,
+    public modalService: NgbModal,
+    public router: Router
+  ) {
     this.proposalInfo = {};
   }
 
@@ -171,6 +177,10 @@ export class ReleasedBidComponent implements OnInit {
         }
       });
     });
+  }
+
+  viewVendorOffer($event: any, vendorId: number) {
+    this.router.navigateByUrl(`${this.router.url}/vendor-proposal/${vendorId}`);
   }
 
   sendMail(row: any = null) {

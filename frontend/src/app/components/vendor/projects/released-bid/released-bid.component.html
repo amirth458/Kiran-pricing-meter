@@ -47,8 +47,10 @@
 <ng-template #additionalColDefRef let-row>
   <div class="d-flex flex-row justify-content-start align-items-center">
     <a
+      href="javascript:void(0);"
       class="text-theme-green"
       *ngIf="proposalInfo[row?.vendorId] && (proposalInfo[row?.vendorId]?.proposalPartIds || []).length > 0"
+      (click)="viewVendorOffer($event, row?.vendorId)"
     >
       View Proposal
     </a>
