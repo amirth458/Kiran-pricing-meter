@@ -19,6 +19,7 @@ export class ProposalComponent implements OnInit {
   proposalInfo: BidPart[];
 
   measurementUnits: any;
+  invoiceItems: any;
 
   get totalCost() {
     return (this.proposalInfo || []).reduce((sum: number, part: BidPart) => {
@@ -42,6 +43,7 @@ export class ProposalComponent implements OnInit {
     this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.measurementUnits = res;
     });
+    this.metaDataService.getProcessMetaData('invoice_item').subscribe(v => (this.invoiceItems = v));
   }
 
   ngOnInit() {

@@ -100,7 +100,11 @@
                 <ng-template ngbTabContent>
                   <div class="pt-4 pb-4">
                     <h6 class="text-theme">Enter the price or use your pricing profiles below</h6>
-                    <app-customer-part-quote class="w-50" [quote]="partInfo.partQuoteCustomerView">
+                    <app-customer-part-quote
+                      class="w-50"
+                      [invoiceItems]="invoiceItems"
+                      [quote]="partInfo.partQuoteCustomerView"
+                    >
                     </app-customer-part-quote>
                   </div>
                 </ng-template>
