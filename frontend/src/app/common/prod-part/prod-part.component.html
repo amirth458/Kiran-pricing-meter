@@ -1,5 +1,5 @@
 <ng-container *ngIf="value">
-  <h6 class="text-theme part-title w-100">{{ value?.rfqMedia?.projectRfqId }}.{{ value.id }}</h6>
+  <h6 class="text-theme part-title w-100" *ngIf="title">{{ value?.rfqMedia?.projectRfqId }}.{{ value.id }}</h6>
   <div class="d-flex flex-row col-12 p-0">
     <!-- PART INFORMATION -->
     <div class="col-9 pr-3 pt-0 pb-0 info-details">

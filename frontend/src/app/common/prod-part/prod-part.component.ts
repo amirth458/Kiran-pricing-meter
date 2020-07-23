@@ -15,6 +15,7 @@ import { Util } from '../../util/Util';
 export class ProdPartComponent implements OnInit {
   @Input() partId: number;
   @Input() unitOptions: Array<any> = [];
+  @Input() title = true;
 
   value: Part | Part[];
   projectProfile: ProjectProfile;
