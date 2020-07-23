@@ -35,6 +35,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   @ViewChild('reference') reference: TemplateRef<any>;
 
   suppliers = [];
+  partIds = [];
   showPartDetails = false;
   projectDetails: ConnectProject;
   measurementUnits: any;
@@ -94,6 +95,14 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
       this.type = (params.statusType || '').replace(/-/g, '_').toUpperCase();
       this.getPartsByBidPmProjectId();
     });
+
+    if (this.type === PmProjectBidStatusType.NOT_STARTED) {
+      this.initSuppliersTable();
+    } else {
+      this.initMatchingSuppliersQueue();
+    }
+    this.initVendorProfileTable();
+
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),
       this.metadataService.getAdminMetaData(MetadataConfig.POST_PROCESS_ACTION),
@@ -114,13 +123,8 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           return;
         }
         this.parts = parts || [];
-        if (this.type === PmProjectBidStatusType.NOT_STARTED) {
-          this.initSuppliersTable();
-        } else {
-          this.initMatchingSuppliersQueue();
-        }
-        this.initVendorProfileTable();
-        this.getAllSuppliersInfo(this.parts.map(part => part.partId));
+        this.partIds = this.parts.map(part => part.partId);
+        this.getAllSuppliersInfo(this.partIds);
       },
       error => {
         this.spinner.hide();
@@ -130,7 +134,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   }
 
   getAllSuppliersInfo(partIds: Array<number>) {
-    this.spinner.show();
     this.projectService.getAllSuppliersAndPartId(partIds).subscribe(suppliers => {
       this.shortListedSuppliers = (suppliers || []).map((item, index) => {
         const facilityCertificates = (item.facilityCertificates || []).map(facility => facility.name);
@@ -147,7 +150,6 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           releasePriority: index + 1
         };
       });
-      this.spinner.hide();
     });
   }
 
@@ -416,6 +418,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
         }
       ]
     ];
+
     this.supplierGridOptions = [
       {
         frameworkComponents: this.frameworkComponents,
@@ -537,7 +540,14 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
         headerHeight: 35,
         rowSelection: 'multiple',
         rowMultiSelectWithClick: true,
-        onRowSelected: ev => {}
+        onRowSelected: ev => {
+          if (ev.node.isSelected()) {
+            // if (ev.api.getSelectedRows().length > this.selectableCount) {
+            //   this.toastr.warning(`You can select up to ${this.selectableCount} suppliers.`);
+            //   ev.node.setSelected(false);
+            // }
+          }
+        }
       }
     ];
   }

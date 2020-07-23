@@ -1,0 +1,86 @@
+.border-round,
+:host ::ng-deep .sub-tabs app-part-information > div,
+:host ::ng-deep .sub-tabs app-process-profile > div,
+:host ::ng-deep .sub-tabs .part-quote-wrapper,
+:host ::ng-deep .sub-tabs app-pricing-profile > div {
+  border: 1px solid var(--theme-table-border);
+  border-radius: 0.25rem;
+  padding: 12px 24px;
+}
+
+.customer-propsal-details {
+  padding: 0;
+}
+
+:host ::ng-deep .tab-content {
+  padding: 0.5rem 1rem;
+}
+
+.feature-title {
+  font-size: 24px;
+  margin: 14px 0px 18px;
+}
+
+:host ::ng-deep .nav {
+  flex-wrap: nowrap;
+  flex-direction: row;
+  background: #fafafa 0 0 no-repeat padding-box;
+}
+
+:host ::ng-deep .nav .nav-item .nav-link {
+  min-width: 120px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  position: relative;
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--theme-light-blue);
+}
+
+:host ::ng-deep .nav .nav-item .nav-link.active {
+  color: var(--theme-light-green);
+}
+
+:host ::ng-deep .nav .nav-item .nav-link.active:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 3px solid var(--theme-light-green);
+}
+
+:host ::ng-deep .nav .nav-item .nav-link .proposal-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 3px !important;
+}
+
+:host ::ng-deep .nav .nav-item .nav-link {
+  padding: 1rem 1rem;
+  border: none;
+}
+
+:host ::ng-deep .customer-propsal-details .sub-tabs .nav-tabs .nav-item .nav-link.active {
+  border: none !important;
+}
+
+:host ::ng-deep .customer-propsal-details .sub-tabs .nav-tabs .nav-item .nav-link.active {
+  margin-top: 0 !important;
+  height: 100%;
+}
+
+:host ::ng-deep .sub-tabs .nav .nav-item .nav-link.active:before {
+  bottom: 0;
+  top: auto;
+}
+
+:host ::ng-deep .customer-propsal-details app-part-information h5 {
+  display: none;
+}
+
+:host ::ng-deep .sub-tabs .part-quote-wrapper h6 {
+  margin: 8px 0 16px;
+}

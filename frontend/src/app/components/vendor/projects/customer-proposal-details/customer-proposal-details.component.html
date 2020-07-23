@@ -1,0 +1,77 @@
+<section class="pag customer-propsal-details border-round">
+  <ngb-tabset
+    [destroyOnHide]="true"
+    [justify]="'start'"
+    (tabChange)="beforeChange($event)"
+    *ngIf="(parts?.length || 0) > 0"
+  >
+    <ngb-tab *ngFor="let partInfo of parts" [id]="partInfo.id.toString()">
+      <ng-template ngbTabTitle>
+        {{ partInfo?.id }}
+      </ng-template>
+      <ng-template ngbTabContent>
+        <h5 class="feature-title">Proposal to Customer</h5>
+        <app-tab (valueChange)="selectedSubTabId$.next($event.value)" class="sub-tabs">
+          <app-tab-item
+            *ngFor="let tab of subTabs"
+            [value]="tab.id"
+            [tabTitle]="tab.title"
+            [active]="(selectedSubTabId$ | async) === tab.id"
+          ></app-tab-item>
+          <ng-container [ngSwitch]="selectedSubTabId$ | async">
+            <ng-container *ngSwitchCase="0">
+              <app-part-information
+                *ngIf="selected$ | async"
+                [part]="selected$ | async"
+                [rfq]="rfq$ | async"
+                [customer]="customer$ | async"
+                [partDimension]="dimension$ | async"
+                [partQuote]="quote$ | async"
+                [invoiceItems]="invoiceItems"
+                [countries]="countries"
+                [measurementUnits]="measurementUnits"
+                [certs]="certs"
+                [postProcesses]="postProcesses"
+                [antiMatchCerts]="antiMatchCerts"
+                [operatorTypes]="operatorTypes"
+              >
+              </app-part-information>
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              <div class="part-quote-wrapper">
+                <h6>Enter the price or use your Procing profile below</h6>
+                <app-part-quote class="w-75" [quote]="partQuote"> </app-part-quote>
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+              <app-process-profile
+                (toggleProfileView)="isShowingGlobalRuleProfile$.next($event)"
+                [isShowingGlobalRuleProfile]="isShowingGlobalRuleProfile$.value"
+                [part]="part"
+                [rowData]="processProfiles"
+              ></app-process-profile>
+            </ng-container>
+            <ng-container *ngSwitchCase="3">
+              <app-pricing-profile
+                (toggleProfileView)="isShowingGlobalRuleProfile$.next($event)"
+                [isShowingGlobalRuleProfile]="isShowingGlobalRuleProfile$.value"
+                [part]="part"
+                [rowData]="pricingProfiles"
+              ></app-pricing-profile>
+            </ng-container>
+          </ng-container>
+        </app-tab>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+  <ngx-spinner
+    [name]="'loadingQuote'"
+    bdColor="#ffffff70"
+    size="small"
+    color="#74bf09"
+    type="ball-clip-rotate"
+    [fullScreen]="false"
+  >
+    <p class="m-0">Loading...</p>
+  </ngx-spinner>
+</section>
