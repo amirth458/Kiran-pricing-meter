@@ -1,0 +1,45 @@
+<div class="wrapper text-theme">
+  <table class="table table-borderless">
+    <thead>
+      <tr>
+        <td>Line Item</td>
+        <td>Unit Count</td>
+        <td>Unit Price</td>
+        <td>Unit Item Cost</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let detail of quote?.partQuoteDetails">
+        <th class="text-theme">{{ getInvoiceItem(detail.invoiceItemId) }}</th>
+        <td>{{ detail.unit }}</td>
+        <td>{{ detail.unitPrice | currency: 'USD':'symbol':'1.0-2' }}</td>
+        <td>{{ detail?.value | currency: 'USD':'symbol':'1.0-2' }}</td>
+      </tr>
+      <tr *ngIf="(quote?.totalCost || 0) < (quote?.minimumOrderAmount || 0)">
+        <td colspan="3">
+          <span class="text-theme">
+            Minimum Order Amount
+          </span>
+        </td>
+        <td>{{ quote?.minimumOrderAmount | currency: 'USD':'symbol':'1.0-2' }}</td>
+      </tr>
+      <tr>
+        <th colspan="2">
+          <a *ngIf="allowedRequote" class="requote" (click)="onRequote()">
+            Click to Requote
+          </a>
+        </th>
+        <th class="text-theme">Subtotal</th>
+        <th class="text-theme">
+          <ng-container *ngIf="(quote?.totalCost || 0) < (quote?.minimumOrderAmount || 0)">
+            {{ quote?.minimumOrderAmount | currency: 'USD':'symbol':'1.0-2' }}
+          </ng-container>
+          <ng-container *ngIf="!((quote?.totalCost || 0) < (quote?.minimumOrderAmount || 0))">
+            {{ quote?.totalCost | currency: 'USD':'symbol':'1.0-2' }}
+          </ng-container>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+</div>

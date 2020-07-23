@@ -123,4 +123,6 @@ export class PartQuoteCustomerView {
   partQuoteDetails: PartQuote[];
   winningProcessPricingId: number;
   matchedProcessPricingIds: number[];
+  minimumOrderAmount: number;
+  proposalPartQuantity: number;
 }

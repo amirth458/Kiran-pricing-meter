@@ -272,6 +272,7 @@ export class BidPart {
   thumbnail400Location: string;
   tolerance: Array<any>;
   userId: number;
+  comments: string;
   volume: SideMeasurement;
   surfaceArea: SideMeasurement;
   x: SideMeasurement;

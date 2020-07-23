@@ -44,9 +44,14 @@
   <app-send-mail-modal [from]="from" [to]="to" [cc]="cc" [bcc]="bcc" (close)="modal.dismiss()"></app-send-mail-modal>
 </ng-template>
 
-<ng-template #additionalColDefRef>
+<ng-template #additionalColDefRef let-row>
   <div class="d-flex flex-row justify-content-start align-items-center">
-    <a class="text-theme-green">
+    <a
+      href="javascript:void(0);"
+      class="text-theme-green"
+      *ngIf="proposalInfo[row?.vendorId] && (proposalInfo[row?.vendorId]?.proposalPartIds || []).length > 0"
+      (click)="viewVendorOffer($event, row?.vendorId)"
+    >
       View Proposal
     </a>
     <span class="delete ml-3 mr-3">

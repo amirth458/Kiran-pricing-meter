@@ -96,6 +96,7 @@ import { PmReleaseQueueDetailsComponent } from '../../components/vendor/projects
 import { PmReleaseQueueComponent } from '../../components/vendor/projects/pm-release-queue/pm-release-queue.component';
 import { IssuedProposalComponent } from '../../components/vendor/projects/issued-proposal/issued-proposal.component';
 import { CustomerAcceptedComponent } from '../../components/vendor/projects/customer-accepted/customer-accepted.component';
+import { ProposalComponent } from '../../components/vendor/projects/proposal/proposal.component';
 
 const routes: Routes = [
   {
@@ -391,13 +392,18 @@ const routes: Routes = [
                 component: PmSuborderReleaseQueueComponent
               },
               {
-                path: 'pm-release-queue/:bidPmProjectId/:statusType',
-                pathMatch: 'full',
-                component: PmReleaseQueueDetailsComponent
-              },
-              {
                 path: 'pm-release-queue',
                 component: PmReleaseQueueComponent
+              },
+              {
+                path: 'pm-release-queue/:bidPmProjectId/:statusType',
+                component: PmReleaseQueueDetailsComponent,
+                children: [
+                  {
+                    path: 'vendor-proposal/:vendorId',
+                    component: ProposalComponent
+                  }
+                ]
               },
               {
                 path: 'proposal-issued',
@@ -405,7 +411,6 @@ const routes: Routes = [
               },
               {
                 path: 'proposal-issued/:bidPmProjectId/:statusType',
-                pathMatch: 'full',
                 component: PmReleaseQueueDetailsComponent
               },
               {
@@ -414,13 +419,10 @@ const routes: Routes = [
               },
               {
                 path: 'customer-accepted/:bidPmProjectId/:statusType',
-                pathMatch: 'full',
                 component: PmReleaseQueueDetailsComponent
               },
-              {
-                path: '',
-                redirectTo: 'settings'
-              }
+              { path: '', redirectTo: 'settings', pathMatch: 'full' },
+              { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]
           },
           {

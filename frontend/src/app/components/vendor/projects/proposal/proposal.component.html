@@ -1,0 +1,114 @@
+<div class="wrapper container-fluid p-4">
+  <div class="d-flex flex-row justify-content-start align-items-center">
+    <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
+    <div class="ml-auto">
+      <button class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
+        Delete Proposal
+      </button>
+      <button class="btn theme btn-white pl-4 pr-4 w-auto ml-2">
+        Save the Proposal
+      </button>
+      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">
+        Send All Quotes to Customer
+      </button>
+    </div>
+  </div>
+  <div class="d-flex ">
+    <ngb-tabset [destroyOnHide]="true" [justify]="'start'" *ngIf="(proposalInfo?.length || 0) > 0">
+      <ngb-tab *ngFor="let partInfo of proposalInfo" [id]="partInfo.partId.toString()">
+        <ng-template ngbTabTitle> Part {{ partInfo?.partId }} </ng-template>
+        <ng-template ngbTabContent>
+          <div class="d-flex flex-column pl-2 pr-2">
+            <h5 class="m-0 pt-3 pb-2 text-theme">
+              Customer Requirement:
+            </h5>
+            <app-prod-part [partId]="partInfo.partId" [title]="false"></app-prod-part>
+            <h5 class="m-0 pt-3 pb-2 text-theme">
+              PM Proposal to Customer:
+            </h5>
+            <ngb-tabset>
+              <ngb-tab [id]="'requirements'">
+                <ng-template ngbTabTitle> Requirements </ng-template>
+                <ng-template ngbTabContent>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex flex-wrap col-12">
+                      <div class="col-6">
+                        <div class="col-12 d-flex flex-row">
+                          <div class="col-4">
+                            <div
+                              class="media-image"
+                              [ngStyle]="getMediaBackgroundImage(partInfo.thumbnail400Location)"
+                            ></div>
+                          </div>
+                          <div class="col-8 pt-5">
+                            <p class="text-theme label-value font-weight-bold text-wrap">
+                              {{ partInfo.fileName }}
+                            </p>
+                            <p class="text-theme label-value">Part Dimensions - {{ getDimension(partInfo) }}</p>
+                            <p class="text-theme label-value">Volume - {{ getVolume(partInfo) }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <table class="proposal-table mt-3 mb-2">
+                          <tbody>
+                            <tr>
+                              <td class="high-lighted-cell">Quantity</td>
+                              <td class="proposed-value">
+                                {{ partInfo.quantity || '' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Material</td>
+                              <td class="proposed-value">
+                                {{ (partInfo.materialPropertyValues || []).join(',') }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Technology</td>
+                              <td class="proposed-value">
+                                {{ (partInfo.equipmentPropertyValues || []).join(',') }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Target Delivery</td>
+                              <td class="proposed-value">
+                                {{ partInfo.deliveryDate | date: 'MM/dd/yyyy':'UTC' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Reference Files</td>
+                              <td class="proposed-value">
+                                <app-ref-file [value]="partInfo.partId" [showNames]="true"></app-ref-file>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="high-lighted-cell">Additional Assurances</td>
+                              <td class="proposed-value">
+                                {{ partInfo?.comments }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab [id]="'quote'">
+                <ng-template ngbTabTitle> Quote </ng-template>
+                <ng-template ngbTabContent>
+                  <div class="pt-4 pb-4">
+                    <h6 class="text-theme">Enter the price or use your pricing profiles below</h6>
+                    <app-customer-part-quote class="w-50" [quote]="partInfo.partQuoteCustomerView">
+                    </app-customer-part-quote>
+                  </div>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

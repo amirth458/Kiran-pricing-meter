@@ -7,7 +7,7 @@ import { ConfirmSubOrderRelease, ConfirmSubOrderReleaseResponse } from '../model
 import { environment } from '../../environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import { LegacyBidHistory } from '../model/billing.model';
-import { Part } from '../model/part.model';
+import { BidPart, Part } from '../model/part.model';
 import { PmProjectReleaseQueue, PmProjectRequest, VendorConfirmationResponse } from '../model/bidding.order';
 import { Util } from '../util/Util';
 
@@ -50,5 +50,13 @@ export class BiddingService {
     return this.http.get<Part[]>(
       `${environment.apiBaseUrl}/admin/pm-project/parts?bid-pm-project-id=${bidPmProjectId}`
     );
+  }
+
+  // get parts with proposal part info and quote
+  getDetailedPartInfo(offerId: number, vendorId: number): Observable<BidPart[]> {
+    return this.http.post<BidPart[]>(`${environment.apiBaseUrl}/admin/bidding/v2/pm-project/detail-view`, {
+      offerId,
+      vendorId
+    });
   }
 }
