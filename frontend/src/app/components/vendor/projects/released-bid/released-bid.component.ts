@@ -8,10 +8,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { combineLatest } from 'rxjs';
 
-import { BidPart } from '../../../../model/part.model';
+import { BidPart, Part } from '../../../../model/part.model';
 import { BiddingService } from '../../../../service/bidding.service';
 import { DefaultEmails } from '../../../../../assets/constants';
 import { MinimumProposalInfo, VendorConfirmationResponse } from '../../../../model/bidding.order';
+import { ProposalService } from '../../../../service/proposal.service';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 import { Util } from '../../../../util/Util';
 
@@ -34,6 +35,18 @@ export class ReleasedBidComponent implements OnInit {
     return this.bidProjectId;
   }
 
+  partInfo: BidPart[];
+  @Input()
+  set bidParts(value: BidPart[]) {
+    this.partInfo = value;
+    if (value) {
+      this.getAdminProposal(value.map(p => p.partId));
+    }
+  }
+  get bidParts(): BidPart[] {
+    return this.partInfo;
+  }
+
   columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
   frameworkComponents = {
@@ -41,6 +54,7 @@ export class ReleasedBidComponent implements OnInit {
   };
   rowData: VendorConfirmationResponse[];
   proposalInfo: any;
+  adminProposalInfo: Part[];
 
   from = '';
   to = '';
@@ -53,7 +67,8 @@ export class ReleasedBidComponent implements OnInit {
     public modalService: NgbModal,
     public router: Router,
     public currencyPipe: CurrencyPipe,
-    public datePipe: DatePipe
+    public datePipe: DatePipe,
+    public proposalService: ProposalService
   ) {
     this.proposalInfo = {};
   }
@@ -166,6 +181,12 @@ export class ReleasedBidComponent implements OnInit {
         this.fetchProposalInfo(this.rowData.map(item => item.vendorId));
       }
       this.spinner.hide('releaseLoadingPanel');
+    });
+  }
+
+  getAdminProposal(ids: Array<number>) {
+    this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
+      this.adminProposalInfo = v || [];
     });
   }
 

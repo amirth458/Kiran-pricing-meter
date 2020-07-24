@@ -99,7 +99,7 @@
         </ng-container>
         <ng-container *ngSwitchCase="pmProjectBidStatusType.RELEASED_TO_VENDOR">
           <div class="col-12 mb-4">
-            <app-released-bid *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
+            <app-released-bid [bidParts]="parts" *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
           </div>
         </ng-container>
         <ng-container *ngSwitchCase="'released-projects'">
