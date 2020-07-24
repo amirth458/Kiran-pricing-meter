@@ -126,4 +126,6 @@ export class PartQuoteCustomerView {
   matchedProcessPricingIds: number[];
   minimumOrderAmount: number;
   proposalPartQuantity: number;
+  proposalDeliveryDate: Date;
+  quoteCreatedBy: string;
 }
