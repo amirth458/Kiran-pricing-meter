@@ -72,6 +72,7 @@ export class ConnectOrder {
   rfqIds: number[];
   totalRowCount: number;
   bidConnectStatusType?: string;
+  bidConnectId: number;
 }
 
 export class ClientProgress {
@@ -125,4 +126,6 @@ export class PartQuoteCustomerView {
   matchedProcessPricingIds: number[];
   minimumOrderAmount: number;
   proposalPartQuantity: number;
+  proposalDeliveryDate: Date;
+  quoteCreatedBy: string;
 }

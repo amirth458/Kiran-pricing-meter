@@ -1,4 +1,4 @@
-<section *ngIf="!proposalOutletRef.isActivated" class="page pm-release-queue-details">
+<section class="page pm-release-queue-details" *ngIf="!proposalOutletRef.isActivated">
   <ngx-spinner
     [name]="'loadingPanel'"
     bdColor="#ffffff70"
@@ -43,59 +43,64 @@
     </div>
     <div class="row">
       <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="pmProjectBidStatusType.COMPLETE">
+          <app-customer-proposal-details
+            class="col-12"
+            *ngIf="partIds?.length"
+            [partIds]="partIds"
+          ></app-customer-proposal-details>
+        </ng-container>
         <ng-container *ngSwitchCase="pmProjectBidStatusType.NOT_STARTED">
-          <ng-container *ngIf="supplierGridOptions?.length">
-            <div class="col-12">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <span class="table-header">Matching Suppliers Profiles</span>
-                <div class="d-flex align-items-center justify-content-end controls button-group-right">
-                  <button
-                    type="button"
-                    class="ml-2 btn btn-white  btn-sm p-2 remove-btn"
-                    *ngIf="bidPmProjectId"
-                    (click)="removeProjectFromRelease()"
-                  >
-                    Remove Project from Release
-                  </button>
-                  <button
-                    class="ml-2 btn theme btn theme btn-sm  p-2"
-                    [disabled]="!canReleaseToVendor()"
-                    (click)="releaseToVendor()"
-                  >
-                    Release Project to Suppliers
-                  </button>
-                </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Matching Suppliers Profiles</span>
+              <div class="d-flex align-items-center justify-content-end controls button-group-right">
+                <button
+                  type="button"
+                  class="ml-2 btn btn-white  btn-sm p-2 remove-btn"
+                  *ngIf="bidPmProjectId"
+                  (click)="removeProjectFromRelease()"
+                >
+                  Remove Project from Release
+                </button>
+                <button
+                  class="ml-2 btn theme btn theme btn-sm  p-2"
+                  [disabled]="!canReleaseToVendor()"
+                  (click)="releaseToVendor()"
+                >
+                  Release Project to Suppliers
+                </button>
               </div>
             </div>
-            <div class="col-12 mb-4 theme-table" *ngIf="shortListedSuppliers?.length">
-              <ag-grid-angular
-                class="ag-theme-balham w-100 h-100"
-                [rowData]="shortListedSuppliers"
-                [gridOptions]="supplierGridOptions[0]"
-                (gridReady)="onSuppliersGridReady(0, $event)"
-                [rowDragManaged]="true"
-                [animateRows]="true"
-                (rowDragEnd)="onRowDrag($event)"
-                domLayout="autoHeight"
-              ></ag-grid-angular>
+          </div>
+          <div class="col-12 mb-4 theme-table" *ngIf="shortListedSuppliers.length">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="shortListedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              (rowDragEnd)="onRowDrag($event)"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Removed Matching Suppliers Profiles</span>
             </div>
-            <div class="col-12">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <span class="table-header">Removed Matching Suppliers Profiles</span>
-              </div>
-            </div>
-            <div class="col-12 mb-4 theme-table">
-              <ag-grid-angular
-                class="ag-theme-balham w-100 h-100"
-                [rowData]="removedSuppliers"
-                [gridOptions]="supplierGridOptions[1]"
-                (gridReady)="onSuppliersGridReady(1, $event)"
-                [rowDragManaged]="true"
-                [animateRows]="true"
-                domLayout="autoHeight"
-              ></ag-grid-angular>
-            </div>
-          </ng-container>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="removedSuppliers"
+              [gridOptions]="supplierGridOptions[1]"
+              (gridReady)="onSuppliersGridReady(1, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
         </ng-container>
         <ng-container *ngSwitchCase="pmProjectBidStatusType.RELEASED_TO_VENDOR">
           <div class="col-12 mb-4">
@@ -234,5 +239,4 @@
     </div>
   </ng-template>
 </section>
-
 <router-outlet #proposalOutletRef="outlet"> </router-outlet>

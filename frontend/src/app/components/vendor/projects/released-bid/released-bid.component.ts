@@ -205,13 +205,14 @@ export class ReleasedBidComponent implements OnInit {
       (bidParts || []).map((part: BidPart) => {
         if (part.partQuoteCustomerView) {
           const quote = part.partQuoteCustomerView;
+          console.log(quote);
           if (this.proposalInfo[quote.vendorId]) {
             this.proposalInfo[quote.vendorId].proposalPartIds.push(quote.proposalPartId);
           } else {
             this.proposalInfo[quote.vendorId] = {
               vendorId: quote.vendorId,
               offerId: this.bidProjectId,
-              proposalPartIds: []
+              proposalPartIds: [quote.proposalPartId]
             } as MinimumProposalInfo;
           }
         }

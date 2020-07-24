@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -13,6 +13,7 @@ import { RfqPricingService } from '../../../../../service/rfq-pricing.service';
 import { PartService } from 'src/app/service/part.service';
 import { ToastrService } from 'ngx-toastr';
 import { AppPartStatus } from '../../../../../model/part.model';
+import { Util } from '../../../../../util/Util';
 @Component({
   selector: 'app-queued-manual-price',
   templateUrl: './queued-manual-price.component.html',
@@ -60,7 +61,8 @@ export class QueuedManualPriceComponent implements OnInit {
     private router: Router,
     public currencyPipe: CurrencyPipe,
     public partServie: PartService,
-    public toast: ToastrService
+    public toast: ToastrService,
+    public datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -127,6 +129,14 @@ export class QueuedManualPriceComponent implements OnInit {
           sortable: true,
           filter: false,
           valueFormatter: dt => (dt.value || []).join(' , ')
+        },
+        {
+          headerName: 'Created Date',
+          field: 'createdDate',
+          hide: false,
+          sortable: true,
+          tooltipField: 'createdDate',
+          valueFormatter: dt => (dt.value ? this.datePipe.transform(dt.value, Util.dateFormatWithTime) : '')
         }
         // {
         //   headerName: 'Roughness',
@@ -235,6 +245,14 @@ export class QueuedManualPriceComponent implements OnInit {
           hide: false,
           sortable: true,
           cellClass: 'text-center'
+        },
+        {
+          headerName: 'Created Date',
+          field: 'createdDate',
+          hide: false,
+          sortable: true,
+          tooltipField: 'createdDate',
+          valueFormatter: dt => (dt.value ? this.datePipe.transform(dt.value, Util.dateFormatWithTime) : '')
         }
       ],
       [
@@ -291,6 +309,14 @@ export class QueuedManualPriceComponent implements OnInit {
           filter: false,
           cellClass: 'text-center',
           valueFormatter: dt => (dt.value || []).join(' , ')
+        },
+        {
+          headerName: 'Created Date',
+          field: 'createdDate',
+          hide: false,
+          sortable: true,
+          tooltipField: 'createdDate',
+          valueFormatter: dt => (dt.value ? this.datePipe.transform(dt.value, Util.dateFormatWithTime) : '')
         }
       ]
     ];
@@ -408,7 +434,8 @@ export class QueuedManualPriceComponent implements OnInit {
             equipmentPropertyValues: part.equipmentPropertyValues,
             roughness: '',
             postProcess: '',
-            price: part.shippingCost ? `$ ${part.shippingCost}` : ''
+            price: part.shippingCost ? `$ ${part.shippingCost}` : '',
+            createdDate: part.createdDate
           }))
         );
 
@@ -462,7 +489,8 @@ export class QueuedManualPriceComponent implements OnInit {
             equipmentPropertyValues: part.equipmentPropertyValues,
             roughness: '',
             postProcess: '',
-            price: part.partQuoteList && part.partQuoteList.length ? '$' + part.partQuoteList[0].totalCost : ''
+            price: part.partQuoteList && part.partQuoteList.length ? '$' + part.partQuoteList[0].totalCost : '',
+            createdDate: part.createdDate
             // manualPrice:
             //   part.partQuoteList && part.partQuoteList.length > 0
             //     ? part.partQuoteList[0].totalCost
@@ -531,7 +559,8 @@ export class QueuedManualPriceComponent implements OnInit {
             materialPropertyValues: part.materialPropertyValues,
             equipmentPropertyValues: part.equipmentPropertyValues,
             roughness: '',
-            postProcess: ''
+            postProcess: '',
+            createdDate: part.createdDate
             // manualPrice:
             //   part.partQuoteList && part.partQuoteList.length > 0
             //     ? part.partQuoteList[0].totalCost

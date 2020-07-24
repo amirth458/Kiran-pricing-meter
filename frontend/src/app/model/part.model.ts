@@ -158,6 +158,7 @@ export interface PartQuote {
   winningProcessPricingId: number;
   matchedProcessPricingIds: Array<number>;
   minimumOrderAmount: number;
+  createdDate: Date;
 }
 
 export interface PartParameterType {
@@ -230,6 +231,7 @@ export interface Part {
   commets?: string;
   proposalPart?: boolean;
   parentPartId?: number;
+  createdDate: Date;
 }
 
 export class BidPart {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { GridOptions, ColDef } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,6 +15,7 @@ import { ProjectService } from 'src/app/service/project.service';
 import { AppPartTypeId, PartStatusSequenced } from 'src/app/model/part.model';
 import { ProjectTypeEnum } from 'src/app/model/order.model';
 import { OrdersService } from 'src/app/service/orders.service';
+import { Util } from '../../../../../util/Util';
 
 @Component({
   selector: 'app-other-status',
@@ -62,7 +63,8 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
     public toast: ToastrService,
     public partService: PartService,
     public projectService: ProjectService,
-    public orderService: OrdersService
+    public orderService: OrdersService,
+    public datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -172,6 +174,14 @@ export class OtherStatusComponent implements OnInit, OnDestroy {
         sortable: true,
         tooltipField: 'partStatusType',
         valueFormatter: d => (d.value ? d.value.replace(/_/g, ' ') : '')
+      },
+      {
+        headerName: 'Created Date',
+        field: 'createdDate',
+        hide: false,
+        sortable: true,
+        tooltipField: 'createdDate',
+        valueFormatter: dt => (dt.value ? this.datePipe.transform(dt.value, Util.dateFormatWithTime) : '')
       }
     ];
 
