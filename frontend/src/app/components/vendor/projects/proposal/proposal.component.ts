@@ -302,8 +302,9 @@ export class ProposalComponent implements OnInit {
   deleteAdminProposal() {
     const arr = [];
     (this.quoteList || []).map(q => {
-      arr.push(this.proposalService.deleteAdminProposal(q.proposalPartId));
+      arr.push(this.proposalService.deleteAdminProposal(q.partId));
     });
+    this.spinner.show();
     combineLatest(arr)
       .pipe(
         catchError(err => {
@@ -312,6 +313,7 @@ export class ProposalComponent implements OnInit {
         })
       )
       .subscribe(() => {
+        this.spinner.hide();
         this.toasterService.success('proposals successfully deleted!');
         this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
       });
