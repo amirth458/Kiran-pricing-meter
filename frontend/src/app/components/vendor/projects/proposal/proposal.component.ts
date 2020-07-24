@@ -39,7 +39,9 @@ export class ProposalComponent implements OnInit {
   get totalCost() {
     return (this.proposalInfo || []).reduce((sum: number, part: BidPart) => {
       const quote = part.partQuoteCustomerView;
-      sum += quote.totalCost || 0;
+      if (quote) {
+        sum += quote.totalCost || 0;
+      }
       return sum;
     }, 0);
   }
