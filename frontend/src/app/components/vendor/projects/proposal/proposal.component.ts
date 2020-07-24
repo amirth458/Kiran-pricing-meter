@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { combineLatest, empty } from 'rxjs';
@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BiddingService } from '../../../../service/bidding.service';
 import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
@@ -28,8 +29,10 @@ import { PartQuoteCustomerView } from '../../../../model/connect.model';
   styleUrls: ['./proposal.component.css']
 })
 export class ProposalComponent implements OnInit {
+  @ViewChild('overWriteModal') overWriteModal: TemplateRef<any>;
   offerId: number;
   vendorId: number;
+  statusType: string;
   proposalPartIds: Array<number>;
   quoteList: PartQuoteCustomerView[];
   partInfo: any;
@@ -60,7 +63,8 @@ export class ProposalComponent implements OnInit {
     public proposalService: ProposalService,
     public orderService: OrdersService,
     public toasterService: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public modalService: NgbModal
   ) {
     this.partInfo = {};
     this.refMedia = {};
@@ -69,6 +73,7 @@ export class ProposalComponent implements OnInit {
       const params: any = { ...v[0], ...v[1] };
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
+      this.statusType = params.statusType || '';
       if (params.proposalPartIds) {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
@@ -156,6 +161,23 @@ export class ProposalComponent implements OnInit {
   }
 
   createAdminProposal() {
+    if (this.adminProposalInfo) {
+      const options: any = {
+        centered: true,
+        size: 'sm',
+        windowClass: 'over-write-modal',
+        backdrop: 'static'
+      };
+      this.modalService.open(this.overWriteModal, options).result.then(
+        result => {},
+        reason => {}
+      );
+    } else {
+      this.createProposal();
+    }
+  }
+
+  createProposal() {
     const arr: Array<AdminProposalRequest> = Object.keys(this.partInfo || []).map(id => {
       const proposal: Part = this.partInfo[id];
       let partDimension: PartDimension = null;
@@ -235,7 +257,10 @@ export class ProposalComponent implements OnInit {
               partDimension: dimension
             }
           },
-          postProcessTypeIds: proposal.postProcessTypeIds
+          postProcessTypeIds: proposal.postProcessTypeIds,
+          order: {
+            id: proposal.order.id
+          }
         },
         partQuote,
         partDimensionUpdated: false,
@@ -253,11 +278,25 @@ export class ProposalComponent implements OnInit {
       proposalsReq.push(this.proposalService.createAdminProposal(proposalReq));
     });
     this.spinner.show();
-    combineLatest(proposalsReq).subscribe(v => {
-      this.route.navigateByUrl(`${this.route.url}`);
-      this.toasterService.success('Admin proposal successfully added!');
-      this.spinner.hide();
-    });
+    combineLatest(proposalsReq)
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to create admin proposal');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(v => {
+        this.modalService.dismissAll();
+        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
+        this.toasterService.success('Admin proposal successfully added!');
+        this.spinner.hide();
+        let url =
+          '/prodex/projects/pm-release-queue/' +
+          `${this.offerId}/${this.statusType}/admin-proposal/${parentPartIds.join(',')}`;
+        console.log(url);
+        this.route.navigateByUrl(url);
+      });
   }
 
   deleteAdminProposal() {

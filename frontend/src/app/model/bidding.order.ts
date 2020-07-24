@@ -179,6 +179,9 @@ export interface ProposalPart {
   comments: string;
   rfqMedia: ProposalPartRfqMedia;
   postProcessTypeIds: Array<number>;
+  order: {
+    id: number;
+  };
 }
 
 export interface ProposalQuoteDetails {

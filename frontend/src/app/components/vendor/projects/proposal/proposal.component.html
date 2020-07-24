@@ -121,3 +121,28 @@
     </ngb-tabset>
   </div>
 </div>
+
+<ng-template #overWriteModal let-modal>
+  <div class="modal-container">
+    <div class="modal-body d-flex flex-column align-items-center justify-content-center p-5">
+      <div class="row">
+        <div class="modal-header d-flex justify-content-center pt-4 pb-4 w-100 text-theme-green">
+          <h5 class="modal-title">
+            There is already data stored in the admin proposal
+          </h5>
+        </div>
+        <p class="text-theme w-100 text-center mt-4 mb-4">
+          Do you want to overwrite?
+        </p>
+        <div class="d-flex flex-row w-100 justify-content-center align-items-center pt-4 pb-2" ngbAutofocus>
+          <button type="button" class="btn theme btn-orange w-auto pl-5 pr-5" (click)="modal.dismiss()">
+            Cancel
+          </button>
+          <button (click)="createProposal()" type="button" class="btn theme green w-auto pl-5 pr-5 ml-3">
+            Overwrite
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

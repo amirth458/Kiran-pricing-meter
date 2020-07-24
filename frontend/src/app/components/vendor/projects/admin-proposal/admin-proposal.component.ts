@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BiddingService } from '../../../../service/bidding.service';
 import { MetadataService } from '../../../../service/metadata.service';
@@ -27,9 +28,20 @@ export class AdminProposalComponent extends ProposalComponent implements OnInit 
     public proposalService: ProposalService,
     public orderService: OrdersService,
     public toasterService: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public modalService: NgbModal
   ) {
-    super(route, router, biddingService, metaDataService, proposalService, orderService, toasterService, spinner);
+    super(
+      route,
+      router,
+      biddingService,
+      metaDataService,
+      proposalService,
+      orderService,
+      toasterService,
+      spinner,
+      modalService
+    );
   }
 
   ngOnInit() {
