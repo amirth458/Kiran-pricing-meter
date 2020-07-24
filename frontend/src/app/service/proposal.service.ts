@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { UserService } from './user.service';
+import { AdminProposalRequest } from '../model/bidding.order';
+import { Observable } from 'rxjs';
+import { Part } from '../model/part.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +43,32 @@ export class ProposalService {
   getProjectGovernanceDediaForPartProposalCount(partId: number) {
     const url = `${environment.managementBaseUrl}/project-governance-media/parts/${partId}/proposal-part/:proposal-part-id/count`;
     return this.http.get(url);
+  }
+
+  createAdminProposal(proposal: AdminProposalRequest): Observable<AdminProposalRequest> {
+    return this.http.post<AdminProposalRequest>(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal`, proposal);
+  }
+
+  deleteAdminProposal(partId: number): Observable<any> {
+    return this.http.delete(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal?part-id=${partId}`);
+  }
+
+  getAdminProposalPartById(proposalPartId: number): Observable<Part> {
+    return this.http.get<Part>(`${environment.apiBaseUrl}/admin/part-proposal/${proposalPartId}`);
+  }
+
+  getAdminProposalPartByIds(proposalPartIds: Array<number>): Observable<Array<Part>> {
+    return this.http.post<Array<Part>>(`${environment.apiBaseUrl}/admin/part-proposal/list`, proposalPartIds);
+  }
+
+  getAdminProposalPartByParentPartId(parentPartId: number): Observable<Part> {
+    return this.http.get<Part>(`${environment.apiBaseUrl}/admin/part-proposal/parent-part/${parentPartId}`);
+  }
+
+  getProposalPartByParentPartIds(proposalPartIds): Observable<Array<Part>> {
+    return this.http.post<Array<Part>>(
+      `${environment.apiBaseUrl}/admin/part-proposal/parent-part/list`,
+      proposalPartIds
+    );
   }
 }

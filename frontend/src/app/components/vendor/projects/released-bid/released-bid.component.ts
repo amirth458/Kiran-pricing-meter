@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,11 +8,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { combineLatest } from 'rxjs';
 
-import { BidPart } from '../../../../model/part.model';
+import { BidPart, Part } from '../../../../model/part.model';
 import { BiddingService } from '../../../../service/bidding.service';
 import { DefaultEmails } from '../../../../../assets/constants';
 import { MinimumProposalInfo, VendorConfirmationResponse } from '../../../../model/bidding.order';
+import { ProposalService } from '../../../../service/proposal.service';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-released-bid',
@@ -32,6 +35,18 @@ export class ReleasedBidComponent implements OnInit {
     return this.bidProjectId;
   }
 
+  partInfo: BidPart[];
+  @Input()
+  set bidParts(value: BidPart[]) {
+    this.partInfo = value;
+    if (value) {
+      this.getAdminProposal(value.map(p => p.partId));
+    }
+  }
+  get bidParts(): BidPart[] {
+    return this.partInfo;
+  }
+
   columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
   frameworkComponents = {
@@ -39,6 +54,7 @@ export class ReleasedBidComponent implements OnInit {
   };
   rowData: VendorConfirmationResponse[];
   proposalInfo: any;
+  adminProposalInfo: Part[];
 
   from = '';
   to = '';
@@ -49,7 +65,10 @@ export class ReleasedBidComponent implements OnInit {
     public biddingService: BiddingService,
     public spinner: NgxSpinnerService,
     public modalService: NgbModal,
-    public router: Router
+    public router: Router,
+    public currencyPipe: CurrencyPipe,
+    public datePipe: DatePipe,
+    public proposalService: ProposalService
   ) {
     this.proposalInfo = {};
   }
@@ -100,23 +119,38 @@ export class ReleasedBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'totalProposalAmount'
+        tooltipField: 'totalProposalAmount',
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(dt.value || '', 'USD', 'symbol', '0.0-3');
+        }
       },
       {
         headerName: 'Proposal Delivery Date',
-        field: 'proposalDeliveryDate',
+        field: 'proposalDeliveryDates',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'proposalDeliveryDate'
+        tooltipField: 'proposalDeliveryDates',
+        valueFormatter: dt => {
+          const arr = (dt.value || []).map(value => {
+            return this.datePipe.transform(value || '', Util.dateFormat);
+          });
+          return arr.join(', ');
+        }
       },
       {
         headerName: 'Proposal Expiry Date',
-        field: 'proposalExpiryDate',
+        field: 'proposalExpiryDates',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'proposalExpiryDate'
+        tooltipField: 'proposalExpiryDates',
+        valueFormatter: dt => {
+          const arr = (dt.value || []).map(value => {
+            return this.datePipe.transform(value || '', Util.dateFormat);
+          });
+          return arr.join(', ');
+        }
       },
       {
         headerName: 'Status',
@@ -147,6 +181,12 @@ export class ReleasedBidComponent implements OnInit {
         this.fetchProposalInfo(this.rowData.map(item => item.vendorId));
       }
       this.spinner.hide('releaseLoadingPanel');
+    });
+  }
+
+  getAdminProposal(ids: Array<number>) {
+    this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
+      this.adminProposalInfo = v || [];
     });
   }
 

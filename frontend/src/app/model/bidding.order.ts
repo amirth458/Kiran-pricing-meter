@@ -112,8 +112,8 @@ export interface VendorConfirmationResponse {
   meetingTime: Date;
   numberOfProcessProfile: number;
   totalProposalAmount: number;
-  proposalDeliveryDate: Date;
-  proposalExpiryDate: Date;
+  proposalExpiryDates: Array<Date>;
+  proposalDeliveryDates: Array<Date>;
 
   rowNumber?: number;
   selected?: boolean;
@@ -123,4 +123,89 @@ export interface MinimumProposalInfo {
   vendorId: number;
   offerId: number;
   proposalPartIds: Array<number>;
+}
+
+export interface AdminProposalRequest {
+  part: ProposalPart;
+  partQuote: ProposalPartQuote;
+  partDimensionUpdated: boolean;
+  referenceMedias: Array<ProposalReferenceMedia>;
+}
+
+export interface ProposalReferenceMedia {
+  name: string;
+  uploadedAt: Date;
+  location: string;
+}
+
+interface DimensionUnit {
+  value: number;
+  unitId: number;
+}
+
+export interface ProposalPartDimension {
+  x: DimensionUnit;
+  y: DimensionUnit;
+  z: DimensionUnit;
+  volume: DimensionUnit;
+  surfaceArea: DimensionUnit;
+  thumbnail100Location: string;
+  thumbnail200Location: string;
+  thumbnail400Location: string;
+}
+
+export interface ProposalMedia {
+  connectorServiceId: number;
+  uploadedAt: Date;
+  location: string;
+  name: string;
+  partDimension: ProposalPartDimension;
+}
+
+export interface ProposalPartRfqMedia {
+  media: ProposalMedia;
+}
+
+export interface ProposalPart {
+  materialPropertyType: string;
+  materialPropertyValues: Array<string>;
+  equipmentPropertyType: string;
+  equipmentPropertyValues: Array<string>;
+  cuttingBondingAllowed: boolean;
+  quantity: number;
+  targetDeliveryDate: Date;
+  manualPricingAllowed: boolean;
+  parentPartId: number;
+  comments: string;
+  rfqMedia: ProposalPartRfqMedia;
+  postProcessTypeIds: Array<number>;
+}
+
+export interface ProposalQuoteDetails {
+  extendedCost: number;
+  invoiceCost: number;
+  invoiceItemId: number;
+  invoiceLineItemId: number;
+  partQuoteId: number;
+  processPricingConditionTypeId: number;
+  unit: number;
+  unitPrice: number;
+}
+
+export interface ProposalPartQuote {
+  isAdminQuote: boolean;
+  expiredAt: Date;
+  isManualPricing: boolean;
+  isGlobalRule: boolean;
+  isAutoQuoteOverride: boolean;
+  globalRuleReason: Array<number>;
+  partQuoteDetailList: Array<ProposalQuoteDetails>;
+  totalCost: number;
+  adminMargin: number;
+  vendorId: number;
+}
+
+export enum ProposalTypeEnum {
+  VENDOR_PROPOSAL_TYPE = 'VENDOR_PROPOSAL_TYPE',
+  ADMIN_PROPOSAL_TYPE = 'ADMIN_PROPOSAL_TYPE'
 }
