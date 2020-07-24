@@ -205,7 +205,6 @@ export class ReleasedBidComponent implements OnInit {
       (bidParts || []).map((part: BidPart) => {
         if (part.partQuoteCustomerView) {
           const quote = part.partQuoteCustomerView;
-          console.log(quote);
           if (this.proposalInfo[quote.vendorId]) {
             this.proposalInfo[quote.vendorId].proposalPartIds.push(quote.proposalPartId);
           } else {
@@ -225,7 +224,7 @@ export class ReleasedBidComponent implements OnInit {
   }
 
   viewAdminProposal() {
-    const ids = (this.adminProposalInfo || []).map(p => p.parentPartId);
+    const ids = (this.adminProposalInfo || []).map(p => p.id);
     this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
   }
 

@@ -57,11 +57,11 @@ export class ProposalService {
     return this.http.get<Part>(`${environment.apiBaseUrl}/admin/part-proposal/${proposalPartId}`);
   }
 
-  getAdminProposalPartByIds(proposalPartIds: Array<number>): Observable<Array<Part>> {
+  getProposalPartByIds(proposalPartIds: Array<number>): Observable<Array<Part>> {
     return this.http.post<Array<Part>>(`${environment.apiBaseUrl}/admin/part-proposal/list`, proposalPartIds);
   }
 
-  getAdminProposalPartByParentPartId(parentPartId: number): Observable<Part> {
+  getProposalPartByParentPartId(parentPartId: number): Observable<Part> {
     return this.http.get<Part>(`${environment.apiBaseUrl}/admin/part-proposal/parent-part/${parentPartId}`);
   }
 
