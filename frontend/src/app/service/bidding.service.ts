@@ -61,7 +61,7 @@ export class BiddingService {
     });
   }
 
-  restartBidding(bidOrderId: number): Observable<object> {
+  restartBidding(bidOrderId: number): Observable<any> {
     const url = `${environment.apiBaseUrl}/admin/bidding/restart-bidding-process?bid-order-id=${bidOrderId}`;
     return this.http.put<any>(url, null);
   }
