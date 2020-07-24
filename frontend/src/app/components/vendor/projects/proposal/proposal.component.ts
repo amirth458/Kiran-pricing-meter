@@ -190,7 +190,7 @@ export class ProposalComponent implements OnInit {
           equipmentPropertyValues: proposal.equipmentPropertyValues,
           cuttingBondingAllowed: false,
           quantity: proposal.quantity,
-          targetDeliveryDate: proposal.deliveryDate,
+          targetDeliveryDate: Util.extendUtcDate(proposal.deliveryDate),
           manualPricingAllowed: false,
           parentPartId: proposal.partId,
           comments: proposal.comments || null,
@@ -214,7 +214,7 @@ export class ProposalComponent implements OnInit {
             location: file.location
           };
         })
-      };
+      } as AdminProposalRequest;
     });
     const proposalsReq = [];
     (arr || []).map(proposalReq => {
