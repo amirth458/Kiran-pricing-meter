@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -12,6 +13,7 @@ import { BiddingService } from '../../../../service/bidding.service';
 import { DefaultEmails } from '../../../../../assets/constants';
 import { MinimumProposalInfo, VendorConfirmationResponse } from '../../../../model/bidding.order';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-released-bid',
@@ -49,7 +51,9 @@ export class ReleasedBidComponent implements OnInit {
     public biddingService: BiddingService,
     public spinner: NgxSpinnerService,
     public modalService: NgbModal,
-    public router: Router
+    public router: Router,
+    public currencyPipe: CurrencyPipe,
+    public datePipe: DatePipe
   ) {
     this.proposalInfo = {};
   }
@@ -100,23 +104,38 @@ export class ReleasedBidComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'totalProposalAmount'
+        tooltipField: 'totalProposalAmount',
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(dt.value || '', 'USD', 'symbol', '0.0-3');
+        }
       },
       {
         headerName: 'Proposal Delivery Date',
-        field: 'proposalDeliveryDate',
+        field: 'proposalDeliveryDates',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'proposalDeliveryDate'
+        tooltipField: 'proposalDeliveryDates',
+        valueFormatter: dt => {
+          const arr = (dt.value || []).map(value => {
+            return this.datePipe.transform(value || '', Util.dateFormat);
+          });
+          return arr.join(', ');
+        }
       },
       {
         headerName: 'Proposal Expiry Date',
-        field: 'proposalExpiryDate',
+        field: 'proposalExpiryDates',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'proposalExpiryDate'
+        tooltipField: 'proposalExpiryDates',
+        valueFormatter: dt => {
+          const arr = (dt.value || []).map(value => {
+            return this.datePipe.transform(value || '', Util.dateFormat);
+          });
+          return arr.join(', ');
+        }
       },
       {
         headerName: 'Status',
