@@ -41,6 +41,8 @@ export class ProposalComponent implements OnInit {
   protected proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
 
+  adminProposalInfo: Part[];
+
   get totalCost() {
     return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
@@ -97,6 +99,7 @@ export class ProposalComponent implements OnInit {
       (parts || []).map(p => {
         this.quoteList.push(p.partQuoteCustomerView);
       });
+      this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
   }
@@ -106,7 +109,7 @@ export class ProposalComponent implements OnInit {
       (quotes || []).map(p => {
         this.quoteList.push(p);
       });
-      this.getProposalPartByIds(this.proposalPartIds);
+      this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
   }
 
@@ -135,6 +138,13 @@ export class ProposalComponent implements OnInit {
   findUnitById(id: number) {
     const units = (this.measurementUnits || []).filter(unit => unit.id === id);
     return units.length > 0 ? units[0] : null;
+  }
+
+  findAdminProposal(ids: Array<number>) {
+    this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
+      this.adminProposalInfo = v || [];
+      console.log(this.adminProposalInfo);
+    });
   }
 
   async getReferenceFiles(partId: number) {
@@ -200,7 +210,7 @@ export class ProposalComponent implements OnInit {
           };
         }),
         totalCost: customerQuote.totalCost,
-        adminMargin: 0,
+        adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };
       const mediaFiles = this.refMedia[proposal.partId] || [];

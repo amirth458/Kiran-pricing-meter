@@ -157,6 +157,7 @@ export interface PartQuoteInvoiceItem {
 export interface AdminPartQuote {
   id: number;
   partId: number;
+  proposalPartId: number;
   vendorId: number;
   isExpired: boolean;
   expiredAt: Date;

@@ -86,7 +86,7 @@ export class ProposalService {
             const item: PartQuoteCustomerView = {
               id: q.id,
               partId: q.partId,
-              proposalPartId: q.partId,
+              proposalPartId: q.proposalPartId,
               vendorId: q.vendorId,
               isExpired: q.isExpired,
               expiredAt: Util.parseUtcDateTime(q.expiredAt),
