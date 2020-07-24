@@ -4,14 +4,12 @@
     <p *ngIf="bidOrderStatus?.name === 'COMPLETED_WITH_NO_RESPONSE'">
       <button
         class="btn btn-declined d-none"
-        [disabled]="false"
         (click)="onDeleteBidding()"
       >
         Delete Bidding
       </button>
       <button
         class="btn btn-approved ml-3"
-        [disabled]="false"
         (click)="onRestartBidding()"
       >
         Restart Bidding
