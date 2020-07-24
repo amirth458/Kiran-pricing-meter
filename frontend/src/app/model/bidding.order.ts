@@ -112,8 +112,8 @@ export interface VendorConfirmationResponse {
   meetingTime: Date;
   numberOfProcessProfile: number;
   totalProposalAmount: number;
-  proposalDeliveryDate: Date;
-  proposalExpiryDate: Date;
+  proposalExpiryDates: Array<Date>;
+  proposalDeliveryDates: Array<Date>;
 
   rowNumber?: number;
   selected?: boolean;
