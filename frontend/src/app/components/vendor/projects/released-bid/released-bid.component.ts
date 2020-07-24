@@ -224,7 +224,7 @@ export class ReleasedBidComponent implements OnInit {
   }
 
   viewAdminProposal() {
-    const ids = (this.adminProposalInfo || []).map(p => p.id);
+    const ids = (this.adminProposalInfo || []).map(p => p.parentPartId);
     this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
   }
 

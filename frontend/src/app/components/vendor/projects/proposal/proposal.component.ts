@@ -83,7 +83,7 @@ export class ProposalComponent implements OnInit {
     if (this.proposalType === this.proposalTypeEnum.VENDOR_PROPOSAL_TYPE) {
       this.fetchPartsAndQuote();
     } else {
-      this.getProposalPartByIds(this.proposalPartIds);
+      this.getAdminPartQuote();
     }
   }
 
@@ -100,6 +100,15 @@ export class ProposalComponent implements OnInit {
         this.quoteList.push(p.partQuoteCustomerView);
       });
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
+    });
+  }
+
+  getAdminPartQuote() {
+    this.proposalService.getAdminPartQuote(this.proposalPartIds).subscribe(quotes => {
+      (quotes || []).map(p => {
+        this.quoteList.push(p);
+      });
+      this.getProposalPartByIds(this.proposalPartIds);
     });
   }
 
