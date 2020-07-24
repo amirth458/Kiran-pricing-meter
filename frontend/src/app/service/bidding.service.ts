@@ -52,11 +52,17 @@ export class BiddingService {
     );
   }
 
+
   // get parts with proposal part info and quote
   getDetailedPartInfo(offerId: number, vendorId: number): Observable<BidPart[]> {
     return this.http.post<BidPart[]>(`${environment.apiBaseUrl}/admin/bidding/v2/pm-project/detail-view`, {
       offerId,
       vendorId
     });
+  }
+
+  restartBidding(bidOrderId: number): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/bidding/restart-bidding-process?bid-order-id=${bidOrderId}`;
+    return this.http.put<any>(url, null);
   }
 }
