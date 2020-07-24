@@ -127,6 +127,7 @@ export class ProposalComponent implements OnInit {
     if (!this.proposalPartIds) {
       this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(offerInfo => {
         this.proposalInfo = offerInfo || [];
+        this.getAdminProposalPartByIds((this.proposalInfo || []).map(p => p.partId));
         (this.proposalInfo || []).map(proposal => {
           this.getReferenceFiles(proposal.partId);
         });
@@ -149,6 +150,12 @@ export class ProposalComponent implements OnInit {
           });
         });
     }
+  }
+
+  getAdminProposalPartByIds(partIds: Array<number>) {
+    this.proposalService.getAdminProposalPartByIds(partIds).subscribe(parts => {
+      console.log(parts);
+    });
   }
 
   async getReferenceFiles(partId: number) {
