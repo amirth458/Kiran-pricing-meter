@@ -24,6 +24,27 @@
         </td>
         <td>{{ quote?.minimumOrderAmount | currency: 'USD':'symbol':'1.0-2' }}</td>
       </tr>
+      <tr *ngIf="editable">
+        <td colspan="2">
+          &nbsp;
+        </td>
+        <td>
+          <span class="text-theme">
+            Margin Cost
+          </span>
+        </td>
+        <td>
+          <div class="form-group theme pl-3 pr-3">
+            <input
+              digitOnly
+              decimal="true"
+              class="form-control form-control-sm"
+              [(ngModel)]="quote.marginCost"
+              (ngModelChange)="onMarginCostChange()"
+            />
+          </div>
+        </td>
+      </tr>
       <tr>
         <th colspan="2">
           <a *ngIf="allowedRequote" class="requote" (click)="onRequote()">
