@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { BiddingService } from '../../../../service/bidding.service';
-import { BidPart } from '../../../../model/part.model';
+import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
 import { MetadataService } from '../../../../service/metadata.service';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import {
@@ -20,6 +21,7 @@ import {
 import { OrdersService } from '../../../../service/orders.service';
 import { ProposalService } from '../../../../service/proposal.service';
 import { Util } from '../../../../util/Util';
+import { PartQuoteCustomerView } from '../../../../model/connect.model';
 
 @Component({
   selector: 'app-proposal',
@@ -30,18 +32,18 @@ export class ProposalComponent implements OnInit {
   offerId: number;
   vendorId: number;
   proposalPartIds: Array<number>;
-
-  proposalInfo: BidPart[];
+  quoteList: PartQuoteCustomerView[];
+  partInfo: any;
   refMedia: any;
 
   measurementUnits: any;
   invoiceItems: any;
+
   protected proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
 
   get totalCost() {
-    return (this.proposalInfo || []).reduce((sum: number, part: BidPart) => {
-      const quote = part.partQuoteCustomerView;
+    return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
         sum += quote.totalCost || 0;
       }
@@ -57,17 +59,18 @@ export class ProposalComponent implements OnInit {
     public proposalService: ProposalService,
     public orderService: OrdersService,
     public toasterService: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public fb: FormBuilder
   ) {
+    this.partInfo = {};
     this.refMedia = {};
+    this.quoteList = [];
     combineLatest(this.router.params, this.router.parent.params).subscribe(v => {
       const params: any = { ...v[0], ...v[1] };
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
       if (params.proposalPartIds) {
-        this.proposalPartIds = params.proposalPartIds.split(',') as Array<number>;
-      } else {
-        this.proposalPartIds = null;
+        this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
     });
     this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
@@ -77,85 +80,54 @@ export class ProposalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getVendorProposal();
+    if (this.proposalType === this.proposalTypeEnum.VENDOR_PROPOSAL_TYPE) {
+      this.fetchPartsAndQuote();
+    } else {
+      this.getProposalPartByIds(this.proposalPartIds);
+    }
   }
 
-  getMediaBackgroundImage(location: string) {
+  getMediaBackgroundImage(rfqMedia: RfqMedia) {
+    const image = rfqMedia.media && rfqMedia.media.partDimension && rfqMedia.media.partDimension.thumbnail400Location;
     return {
-      'background-image': `url(${location || './assets/image/no-preview.jpg'})`
+      'background-image': `url(${image || './assets/image/no-preview.jpg'})`
     };
   }
 
-  getDimension(part: BidPart) {
-    if (!((this.measurementUnits || []).length > 0 && part)) {
-      return '';
-    }
-    const arr = [];
-    if (part.x && part.x.unitId) {
-      const xUnit = this.findUnitById(part.x.unitId);
-      arr.push(`${part.x.value} ${xUnit.symbol || ''}`);
-    }
-    if (part.y && part.y.unitId) {
-      const yUnit = this.findUnitById(part.y.unitId);
-      arr.push(`${part.y.value} ${yUnit.symbol || ''}`);
-    }
-    if (part.z && part.z.unitId) {
-      const zUnit = this.findUnitById(part.z.unitId);
-      arr.push(`${part.z.value} ${zUnit.symbol || ''}`);
-    }
-    return arr.join(' x ');
+  fetchPartsAndQuote() {
+    this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(parts => {
+      (parts || []).map(p => {
+        this.quoteList.push(p.partQuoteCustomerView);
+      });
+      this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
+    });
   }
 
-  getVolume(part: BidPart) {
-    if (!((this.measurementUnits || []).length > 0 && part)) {
-      return '';
+  getProposalPartByIds(ids: Array<number>) {
+    this.proposalService.getProposalPartByIds(ids).subscribe(parts => {
+      (parts || []).map(p => {
+        this.partInfo[p.id] = p;
+        this.getReferenceFiles(p.id);
+      });
+    });
+  }
+
+  getDimension(rfqMedia: RfqMedia) {
+    return rfqMedia && rfqMedia.media && Util.getPartDimension(rfqMedia.media.partDimension, this.measurementUnits);
+  }
+
+  getVolume(partDimension: PartDimension) {
+    let unitId = partDimension.volume.unitId;
+    if (!unitId) {
+      unitId = partDimension.x.unitId;
     }
-    let volume = '';
-    if (part.volume && part.volume.unitId) {
-      const volumeUnit = this.findUnitById(part.volume.unitId);
-      volume = `${part.volume.value || 0} ${volumeUnit.symbol || ''}`;
-    }
-    return volume;
+    const unit = this.measurementUnits.find(item => item.id === unitId);
+    return `${partDimension.volume.value} ${unit.symbol}`;
   }
 
   findUnitById(id: number) {
     const units = (this.measurementUnits || []).filter(unit => unit.id === id);
     return units.length > 0 ? units[0] : null;
-  }
-
-  getVendorProposal() {
-    if (!this.proposalPartIds) {
-      this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(offerInfo => {
-        this.proposalInfo = offerInfo || [];
-        this.getAdminProposalPartByIds((this.proposalInfo || []).map(p => p.partId));
-        (this.proposalInfo || []).map(proposal => {
-          this.getReferenceFiles(proposal.partId);
-        });
-      });
-    } else {
-      this.proposalService
-        .getAdminProposalPartByIds(this.proposalPartIds)
-        .pipe(
-          map(v => {
-            return (v || []).map(p => {
-              p.partId = p.id;
-              return p;
-            });
-          })
-        )
-        .subscribe(offerInfo => {
-          this.proposalInfo = offerInfo || [];
-          (this.proposalInfo || []).map(proposal => {
-            this.getReferenceFiles(proposal.partId);
-          });
-        });
-    }
-  }
-
-  getAdminProposalPartByIds(partIds: Array<number>) {
-    this.proposalService.getAdminProposalPartByIds(partIds).subscribe(parts => {
-      console.log(parts);
-    });
   }
 
   async getReferenceFiles(partId: number) {
@@ -167,33 +139,40 @@ export class ProposalComponent implements OnInit {
   }
 
   createAdminProposal() {
-    const arr: Array<AdminProposalRequest> = (this.proposalInfo || []).map(proposal => {
+    const arr: Array<AdminProposalRequest> = Object.keys(this.partInfo || []).map(id => {
+      const proposal: Part = this.partInfo[id];
+      let partDimension: PartDimension = null;
+      const media = proposal.rfqMedia.media;
+      if (proposal.rfqMedia && proposal.rfqMedia.media && proposal.rfqMedia.media.partDimension) {
+        partDimension = proposal.rfqMedia.media.partDimension;
+      }
       const dimension: ProposalPartDimension = {
         x: {
-          unitId: proposal.x.unitId,
-          value: proposal.x.value
+          unitId: partDimension ? partDimension.x.unitId : null,
+          value: partDimension ? partDimension.x.value : null
         },
         y: {
-          unitId: proposal.y.unitId,
-          value: proposal.y.value
+          unitId: partDimension ? partDimension.y.unitId : null,
+          value: partDimension ? partDimension.y.value : null
         },
         z: {
-          unitId: proposal.z.unitId,
-          value: proposal.z.value
+          unitId: partDimension ? partDimension.z.unitId : null,
+          value: partDimension ? partDimension.z.value : null
         },
         volume: {
-          unitId: proposal.volume.unitId,
-          value: proposal.volume.value
+          unitId: partDimension ? partDimension.volume.unitId : null,
+          value: partDimension ? partDimension.volume.unitId : null
         },
         surfaceArea: {
-          unitId: proposal.surfaceArea.unitId,
-          value: proposal.surfaceArea.value
+          unitId: partDimension ? partDimension.surfaceArea.unitId : null,
+          value: partDimension ? partDimension.surfaceArea.unitId : null
         },
-        thumbnail100Location: proposal.thumbnail100Location,
-        thumbnail200Location: proposal.thumbnail200Location,
-        thumbnail400Location: proposal.thumbnail400Location
+        thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
+        thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
+        thumbnail400Location: partDimension ? partDimension.thumbnail400Location : null
       };
-      const customerQuote = proposal.partQuoteCustomerView;
+      const quote = (this.quoteList || []).filter(q => q.proposalPartId === proposal.id);
+      const customerQuote = quote.length > 0 ? quote[0] : null;
       const partQuote: ProposalPartQuote = {
         isAdminQuote: true,
         expiredAt: Util.extendUtcDate(customerQuote.expiredAt),
@@ -226,16 +205,16 @@ export class ProposalComponent implements OnInit {
           equipmentPropertyValues: proposal.equipmentPropertyValues,
           cuttingBondingAllowed: false,
           quantity: proposal.quantity,
-          targetDeliveryDate: Util.extendUtcDate(proposal.deliveryDate),
+          targetDeliveryDate: Util.extendUtcDate(proposal.targetDeliveryDate),
           manualPricingAllowed: false,
-          parentPartId: proposal.partId,
+          parentPartId: proposal.parentPartId,
           comments: proposal.comments || null,
           rfqMedia: {
             media: {
-              connectorServiceId: proposal.connectorServiceId,
+              connectorServiceId: media.connectorServiceId,
               uploadedAt: null,
-              location: proposal.filePath,
-              name: proposal.fileName,
+              location: media.location,
+              name: media.name,
               partDimension: dimension
             }
           },
@@ -258,7 +237,7 @@ export class ProposalComponent implements OnInit {
     });
     this.spinner.show();
     combineLatest(proposalsReq).subscribe(v => {
-      console.log(v);
+      this.route.navigateByUrl(`${this.route.url}`);
       this.toasterService.success('Admin proposal successfully added!');
       this.spinner.hide();
     });

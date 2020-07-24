@@ -19,15 +19,15 @@
     </div>
   </div>
   <div class="d-flex ">
-    <ngb-tabset [destroyOnHide]="true" [justify]="'start'" *ngIf="(proposalInfo?.length || 0) > 0">
-      <ngb-tab *ngFor="let partInfo of proposalInfo" [id]="partInfo.partId.toString()">
-        <ng-template ngbTabTitle> Part {{ partInfo?.partId }} </ng-template>
+    <ngb-tabset [destroyOnHide]="true" [justify]="'start'" *ngIf="(quoteList?.length || 0) > 0">
+      <ngb-tab *ngFor="let quote of quoteList" [id]="quote.partId.toString()">
+        <ng-template ngbTabTitle> Part {{ quote?.partId }} </ng-template>
         <ng-template ngbTabContent>
           <div class="d-flex flex-column pl-2 pr-2">
             <h5 class="m-0 pt-3 pb-2 text-theme">
               Customer Requirement:
             </h5>
-            <app-prod-part [partId]="partInfo.partId" [title]="false"></app-prod-part>
+            <app-prod-part [partId]="quote.partId" [title]="false"></app-prod-part>
             <h5 class="m-0 pt-3 pb-2 text-theme">
               PM Proposal to Customer:
             </h5>
@@ -35,22 +35,21 @@
               <ngb-tab [id]="'requirements'">
                 <ng-template ngbTabTitle> Requirements </ng-template>
                 <ng-template ngbTabContent>
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column" *ngIf="partInfo[quote.proposalPartId] as part">
                     <div class="d-flex flex-wrap col-12">
                       <div class="col-6">
                         <div class="col-12 d-flex flex-row">
                           <div class="col-4">
-                            <div
-                              class="media-image"
-                              [ngStyle]="getMediaBackgroundImage(partInfo.thumbnail400Location)"
-                            ></div>
+                            <div class="media-image" [ngStyle]="getMediaBackgroundImage(part?.rfqMedia)"></div>
                           </div>
                           <div class="col-8 pt-5">
                             <p class="text-theme label-value font-weight-bold text-wrap">
-                              {{ partInfo.fileName }}
+                              {{ part?.rfqMedia?.media?.name }}
                             </p>
-                            <p class="text-theme label-value">Part Dimensions - {{ getDimension(partInfo) }}</p>
-                            <p class="text-theme label-value">Volume - {{ getVolume(partInfo) }}</p>
+                            <p class="text-theme label-value">Part Dimensions - {{ getDimension(part?.rfqMedia) }}</p>
+                            <p class="text-theme label-value">
+                              Volume - {{ getVolume(part?.rfqMedia?.media?.partDimension) }}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -60,37 +59,37 @@
                             <tr>
                               <td class="high-lighted-cell">Quantity</td>
                               <td class="proposed-value">
-                                {{ partInfo.quantity || '' }}
+                                {{ part.quantity || '' }}
                               </td>
                             </tr>
                             <tr>
                               <td class="high-lighted-cell">Material</td>
                               <td class="proposed-value">
-                                {{ (partInfo.materialPropertyValues || []).join(',') }}
+                                {{ (part.materialPropertyValues || []).join(',') }}
                               </td>
                             </tr>
                             <tr>
                               <td class="high-lighted-cell">Technology</td>
                               <td class="proposed-value">
-                                {{ (partInfo.equipmentPropertyValues || []).join(',') }}
+                                {{ (part.equipmentPropertyValues || []).join(',') }}
                               </td>
                             </tr>
                             <tr>
                               <td class="high-lighted-cell">Target Delivery</td>
                               <td class="proposed-value">
-                                {{ partInfo.deliveryDate | date: 'MM/dd/yyyy':'UTC' }}
+                                {{ part.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}
                               </td>
                             </tr>
                             <tr>
                               <td class="high-lighted-cell">Reference Files</td>
                               <td class="proposed-value">
-                                <app-ref-file [value]="partInfo.partId" [showNames]="true"></app-ref-file>
+                                <app-ref-file [value]="part.id" [showNames]="true"></app-ref-file>
                               </td>
                             </tr>
                             <tr>
                               <td class="high-lighted-cell">Additional Assurances</td>
                               <td class="proposed-value">
-                                {{ partInfo?.comments }}
+                                {{ part?.comments }}
                               </td>
                             </tr>
                           </tbody>
@@ -105,11 +104,7 @@
                 <ng-template ngbTabContent>
                   <div class="pt-4 pb-4">
                     <h6 class="text-theme">Enter the price or use your pricing profiles below</h6>
-                    <app-customer-part-quote
-                      class="w-50"
-                      [invoiceItems]="invoiceItems"
-                      [quote]="partInfo.partQuoteCustomerView"
-                    >
+                    <app-customer-part-quote class="w-50" [invoiceItems]="invoiceItems" [quote]="quote">
                     </app-customer-part-quote>
                   </div>
                 </ng-template>
