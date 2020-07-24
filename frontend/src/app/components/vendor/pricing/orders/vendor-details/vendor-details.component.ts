@@ -1092,4 +1092,26 @@ export class VendorDetailsComponent implements OnInit {
   clickMeetingTime(ev) {
     ev.stopPropagation();
   }
+
+  onDeleteBidding() {
+  }
+
+  onRestartBidding() {
+    this.spinner.show();
+    this.biddingService
+      .restartBidding(this.bidOrderId)
+      .pipe(
+        catchError((err: any) => {
+          this.toaster.error(err.error.message);
+          this.spinner.hide();
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(v => {
+        this.prepareBidOrderInfo();
+        this.toaster.success('Restarted Bidding Successfully!');
+        this.spinner.hide();
+      });
+  }
 }
