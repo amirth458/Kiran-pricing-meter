@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -28,12 +29,14 @@ import { Util } from '../../../../util/Util';
 export class ProposalComponent implements OnInit {
   offerId: number;
   vendorId: number;
+  proposalPartIds: Array<number>;
+
   proposalInfo: BidPart[];
   refMedia: any;
 
   measurementUnits: any;
   invoiceItems: any;
-  proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
+  protected proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
 
   get totalCost() {
@@ -61,6 +64,11 @@ export class ProposalComponent implements OnInit {
       const params: any = { ...v[0], ...v[1] };
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
+      if (params.proposalPartIds) {
+        this.proposalPartIds = params.proposalPartIds.split(',') as Array<number>;
+      } else {
+        this.proposalPartIds = null;
+      }
     });
     this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.measurementUnits = res;
@@ -116,12 +124,31 @@ export class ProposalComponent implements OnInit {
   }
 
   getVendorProposal() {
-    this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(offerInfo => {
-      this.proposalInfo = offerInfo || [];
-      (this.proposalInfo || []).map(proposal => {
-        this.getReferenceFiles(proposal.partId);
+    if (!this.proposalPartIds) {
+      this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(offerInfo => {
+        this.proposalInfo = offerInfo || [];
+        (this.proposalInfo || []).map(proposal => {
+          this.getReferenceFiles(proposal.partId);
+        });
       });
-    });
+    } else {
+      this.proposalService
+        .getAdminProposalPartByIds(this.proposalPartIds)
+        .pipe(
+          map(v => {
+            return (v || []).map(p => {
+              p.partId = p.id;
+              return p;
+            });
+          })
+        )
+        .subscribe(offerInfo => {
+          this.proposalInfo = offerInfo || [];
+          (this.proposalInfo || []).map(proposal => {
+            this.getReferenceFiles(proposal.partId);
+          });
+        });
+    }
   }
 
   async getReferenceFiles(partId: number) {
