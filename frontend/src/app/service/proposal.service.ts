@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { map } from 'rxjs/operators';
+
 import { environment } from '../../environments/environment';
-import { UserService } from './user.service';
 import { AdminProposalRequest } from '../model/bidding.order';
 import { Observable } from 'rxjs';
 import { Part } from '../model/part.model';
+import { AdminPartQuote, PartQuoteCustomerView } from '../model/connect.model';
+import { Util } from '../util/Util';
 
 @Injectable({
   providedIn: 'root'
@@ -70,5 +73,45 @@ export class ProposalService {
       `${environment.apiBaseUrl}/admin/part-proposal/parent-part/list`,
       proposalPartIds
     );
+  }
+
+  getAdminPartQuote(partIds: Array<number>): Observable<PartQuoteCustomerView[]> {
+    return this.http
+      .post<AdminPartQuote[]>(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal/part-quote`, {
+        partIds
+      })
+      .pipe(
+        map(quote => {
+          const list: PartQuoteCustomerView[] = (quote || []).map((q: AdminPartQuote) => {
+            const item: PartQuoteCustomerView = {
+              id: q.id,
+              partId: q.partId,
+              proposalPartId: q.partId,
+              vendorId: q.vendorId,
+              isExpired: q.isExpired,
+              expiredAt: Util.parseUtcDateTime(q.expiredAt),
+              totalCost: q.totalCost,
+              partQuoteDetails: q.partQuoteInvoiceItemDetails.map(li => {
+                return {
+                  partQuoteId: li.invoiceItemId,
+                  invoiceItemId: li.invoiceItemId,
+                  value: li.invoiceItemCost,
+                  unit: li.unit,
+                  unitPrice: li.unitPrice
+                };
+              }),
+              winningProcessPricingId: q.winningProcessPricingId,
+              matchedProcessPricingIds: q.matchedProcessPricingIds,
+              minimumOrderAmount: q.minimumOrderAmount,
+              proposalPartQuantity: null,
+              proposalDeliveryDate: null,
+              quoteCreatedBy: null,
+              marginCost: q.marginCost
+            };
+            return item;
+          });
+          return list;
+        })
+      );
   }
 }
