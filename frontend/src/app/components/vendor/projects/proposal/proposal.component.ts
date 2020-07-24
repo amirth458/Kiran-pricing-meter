@@ -161,7 +161,7 @@ export class ProposalComponent implements OnInit {
   }
 
   createAdminProposal() {
-    if (this.adminProposalInfo) {
+    if ((this.adminProposalInfo || []).length > 0) {
       const options: any = {
         centered: true,
         size: 'sm',
