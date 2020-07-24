@@ -2,7 +2,7 @@
   <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2">
     <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
     <div class="ml-auto" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
-      <button class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
+      <button (click)="deleteAdminProposal()" class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
         Delete Proposal
       </button>
       <button class="btn theme btn-white pl-4 pr-4 w-auto ml-2">
@@ -104,7 +104,12 @@
                 <ng-template ngbTabContent>
                   <div class="pt-4 pb-4">
                     <h6 class="text-theme">Enter the price or use your pricing profiles below</h6>
-                    <app-customer-part-quote class="w-50" [invoiceItems]="invoiceItems" [quote]="quote">
+                    <app-customer-part-quote
+                      class="w-50"
+                      [editable]="proposalType === proposalTypeEnum.ADMIN_PROPOSAL_TYPE"
+                      [invoiceItems]="invoiceItems"
+                      [(quote)]="quote"
+                    >
                     </app-customer-part-quote>
                   </div>
                 </ng-template>

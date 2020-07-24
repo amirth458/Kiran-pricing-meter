@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
 
-import { combineLatest } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { combineLatest, empty } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -59,8 +58,7 @@ export class ProposalComponent implements OnInit {
     public proposalService: ProposalService,
     public orderService: OrdersService,
     public toasterService: ToastrService,
-    public spinner: NgxSpinnerService,
-    public fb: FormBuilder
+    public spinner: NgxSpinnerService
   ) {
     this.partInfo = {};
     this.refMedia = {};
@@ -250,5 +248,23 @@ export class ProposalComponent implements OnInit {
       this.toasterService.success('Admin proposal successfully added!');
       this.spinner.hide();
     });
+  }
+
+  deleteAdminProposal() {
+    const arr = [];
+    (this.quoteList || []).map(q => {
+      arr.push(this.proposalService.deleteAdminProposal(q.proposalPartId));
+    });
+    combineLatest(arr)
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to delete admin proposal');
+          return empty();
+        })
+      )
+      .subscribe(() => {
+        this.toasterService.success('proposals successfully deleted!');
+        this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
+      });
   }
 }
