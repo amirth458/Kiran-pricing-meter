@@ -69,7 +69,7 @@ export class InsightDetailComponent implements OnInit {
         const filter = {
           page: params.startRow / this.pageSize,
           size: this.completedReports.includes(this.type) ? this.pageSize : 0,
-          sort: this.sortQuery,
+          sort: this.sortQuery ? this.sortQuery : this.getDefaultSortQuery(this.type),
           filters: {
             beginDate: this.createdDateRange ? this.createdDateRange[0].toISOString().substr(0, 10) : null,
             endDate: this.createdDateRange ? this.createdDateRange[1].toISOString().substr(0, 10) : null,
@@ -164,5 +164,22 @@ export class InsightDetailComponent implements OnInit {
     if (this.gridOptions && this.gridOptions.api) {
       this.gridOptions.api.setColumnDefs(this.columnDefs);
     }
+  }
+
+  getDefaultSortQuery(type: string) {
+    if (type) {
+      switch (type) {
+        case 'customer':
+        case 'rfq':
+        case 'part':
+        case 'order':
+          return 'created_date,desc';
+        case 'sub-order':
+          return 'order_created_date,desc';
+        default:
+          return '';
+      }
+    }
+    return '';
   }
 }
