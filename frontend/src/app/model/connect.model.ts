@@ -72,6 +72,7 @@ export class ConnectOrder {
   rfqIds: number[];
   totalRowCount: number;
   bidConnectStatusType?: string;
+  bidConnectId: number;
 }
 
 export class ClientProgress {
