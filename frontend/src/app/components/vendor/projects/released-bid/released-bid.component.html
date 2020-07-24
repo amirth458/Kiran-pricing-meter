@@ -9,7 +9,11 @@
       >
         <small> <i class="far fa-envelope"></i>&nbsp; Send Mail </small>
       </button>
-      <button class="btn btn-white pl-4 pr-4 ml-2" *ngIf="(adminProposalInfo?.length || 0) > 0">
+      <button
+        class="btn btn-white pl-4 pr-4 ml-2"
+        (click)="viewAdminProposal()"
+        *ngIf="(adminProposalInfo?.length || 0) > 0"
+      >
         <span class="text-theme">Admin Proposal</span>
       </button>
       <button class="btn btn-white pl-4 pr-4 ml-2">

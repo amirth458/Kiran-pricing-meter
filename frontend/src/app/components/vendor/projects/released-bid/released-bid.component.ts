@@ -223,6 +223,11 @@ export class ReleasedBidComponent implements OnInit {
     this.router.navigateByUrl(`${this.router.url}/vendor-proposal/${vendorId}`);
   }
 
+  viewAdminProposal() {
+    const ids = (this.adminProposalInfo || []).map(p => p.parentPartId);
+    this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
+  }
+
   sendMail(row: any = null) {
     this.from = DefaultEmails.from;
     this.to = DefaultEmails.to;
