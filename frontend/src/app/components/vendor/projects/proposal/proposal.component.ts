@@ -148,7 +148,6 @@ export class ProposalComponent implements OnInit {
   findAdminProposal(ids: Array<number>) {
     this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
       this.adminProposalInfo = v || [];
-      console.log(this.adminProposalInfo);
     });
   }
 
@@ -294,7 +293,6 @@ export class ProposalComponent implements OnInit {
         let url =
           '/prodex/projects/pm-release-queue/' +
           `${this.offerId}/${this.statusType}/admin-proposal/${parentPartIds.join(',')}`;
-        console.log(url);
         this.route.navigateByUrl(url);
       });
   }
