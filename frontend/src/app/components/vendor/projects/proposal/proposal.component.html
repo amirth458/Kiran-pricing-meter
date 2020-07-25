@@ -8,7 +8,7 @@
       <button (click)="updateAdminProposal()" class="btn theme btn-white pl-4 pr-4 w-auto ml-2">
         Save the Proposal
       </button>
-      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">
+      <button (click)="sendAllQuoteToCustomer()" class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">
         Send All Quotes to Customer
       </button>
     </div>
@@ -24,10 +24,19 @@
         <ng-template ngbTabTitle> Part {{ quote?.partId }} </ng-template>
         <ng-template ngbTabContent>
           <div class="d-flex flex-column pl-2 pr-2">
-            <h5 class="m-0 pt-3 pb-2 text-theme">
-              Customer Requirement:
-              <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">Send Quote to Customer</button>
-            </h5>
+            <div class="d-flex flex-row pt-2 pb-2">
+              <h5 class="m-0 pt-3 pb-2 text-theme">
+                Customer Requirement:
+              </h5>
+              <div class="ml-auto">
+                <button
+                  (click)="sendQuote(quote.vendorId, [quote?.partId])"
+                  class="btn btn-sm theme btn-white pl-4 pr-4 w-auto"
+                >
+                  Send Quote to Customer
+                </button>
+              </div>
+            </div>
             <app-prod-part [partId]="quote.partId" [title]="false"></app-prod-part>
             <h5 class="m-0 pt-3 pb-2 text-theme">
               PM Proposal to Customer:

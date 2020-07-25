@@ -75,6 +75,13 @@ export class ProposalService {
     return this.http.get<Part>(`${environment.apiBaseUrl}/admin/part-proposal/parent-part/${parentPartId}`);
   }
 
+  sendQuoteToCustomer(vendorId: number, partIds: Array<number>): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal/confirm`, {
+      partIds,
+      vendorId
+    });
+  }
+
   getProposalPartByParentPartIds(proposalPartIds): Observable<Array<Part>> {
     return this.http.post<Array<Part>>(
       `${environment.apiBaseUrl}/admin/part-proposal/parent-part/list`,

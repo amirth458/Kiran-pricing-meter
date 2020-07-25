@@ -176,6 +176,30 @@ export class ProposalComponent implements OnInit {
     }
   }
 
+  sendQuote(vendorId: number, ids: Array<number>) {
+    this.spinner.show();
+    this.proposalService
+      .sendQuoteToCustomer(vendorId, ids)
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to send proposal to customer');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(() => {
+        this.toasterService.success('Admin proposal have been updated!');
+        this.spinner.hide();
+        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+      });
+  }
+
+  sendAllQuoteToCustomer() {
+    const arr = (this.quoteList || []).map(q => q.partId);
+    const quote = (this.quoteList || []).length ? (this.quoteList || [])[0] : null;
+    this.sendQuote(quote.vendorId, arr);
+  }
+
   updateAdminProposal() {
     this.spinner.show();
     combineLatest(this.buildAdminProposalData())
