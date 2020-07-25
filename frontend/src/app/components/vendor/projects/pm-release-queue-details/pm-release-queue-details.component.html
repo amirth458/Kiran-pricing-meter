@@ -42,38 +42,39 @@
       </ng-container>
     </div>
     <div class="row">
-      <ng-container [ngSwitch]="type">
-        <ng-container *ngSwitchCase="pmProjectBidStatusType.COMPLETE">
-          <app-customer-proposal-details
-            class="col-12"
-            *ngIf="partIds?.length"
-            [partIds]="partIds"
-          ></app-customer-proposal-details>
-        </ng-container>
-        <ng-container *ngSwitchCase="pmProjectBidStatusType.NOT_STARTED">
-          <div class="col-12">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <span class="table-header">Matching Suppliers Profiles</span>
-              <div class="d-flex align-items-center justify-content-end controls button-group-right">
-                <button
-                  type="button"
-                  class="ml-2 btn btn-white  btn-sm p-2 remove-btn"
-                  *ngIf="bidPmProjectId"
-                  (click)="removeProjectFromRelease()"
-                >
-                  Remove Project from Release
-                </button>
-                <button
-                  class="ml-2 btn theme btn theme btn-sm  p-2"
-                  [disabled]="!canReleaseToVendor()"
-                  (click)="releaseToVendor()"
-                >
-                  Release Project to Suppliers
-                </button>
-              </div>
+      <ng-container *ngIf="type === pmProjectBidStatusType.COMPLETE">
+        <app-customer-proposal-details
+          class="col-12"
+          *ngIf="partIds?.length"
+          [partIds]="partIds"
+        ></app-customer-proposal-details>
+      </ng-container>
+
+      <ng-container *ngIf="type === pmProjectBidStatusType.NOT_STARTED">
+        <div class="col-12">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="table-header">Matching Suppliers Profiles</span>
+            <div class="d-flex align-items-center justify-content-end controls button-group-right">
+              <button
+                type="button"
+                class="ml-2 btn btn-white  btn-sm p-2 remove-btn"
+                *ngIf="bidPmProjectId"
+                (click)="removeProjectFromRelease()"
+              >
+                Remove Project from Release
+              </button>
+              <button
+                class="ml-2 btn theme btn theme btn-sm  p-2"
+                [disabled]="!canReleaseToVendor()"
+                (click)="releaseToVendor()"
+              >
+                Release Project to Suppliers
+              </button>
             </div>
           </div>
-          <div class="col-12 mb-4 theme-table" *ngIf="shortListedSuppliers.length">
+        </div>
+        <ng-container *ngIf="shortListedSuppliers.length">
+          <div class="col-12 mb-4 theme-table">
             <ag-grid-angular
               class="ag-theme-balham w-100 h-100"
               [rowData]="shortListedSuppliers"
@@ -102,33 +103,36 @@
             ></ag-grid-angular>
           </div>
         </ng-container>
-        <ng-container *ngSwitchCase="pmProjectBidStatusType.RELEASED_TO_VENDOR">
-          <div class="col-12 mb-4">
-            <app-released-bid [bidParts]="parts" *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          type === pmProjectBidStatusType.RELEASED_TO_VENDOR ||
+          type === pmProjectBidStatusType.RELEASED_TO_CUSTOMER ||
+          type === pmProjectBidStatusType.PARTIALLY_RELEASED_TO_CUSTOMER
+        "
+      >
+        <div class="col-12 mb-4">
+          <app-released-bid [bidParts]="parts" *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="type === 'released-projects'">
+        <div class="col-12">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="table-header">Chosen Suppliers Profiles</span>
           </div>
-        </ng-container>
-        <ng-container *ngSwitchCase="pmProjectBidStatusType.RELEASED_TO_CUSTOMER">
-          <div class="col-12 mb-4">
-            <app-released-bid [bidParts]="parts" *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
-          </div>
-        </ng-container>
-        <ng-container *ngSwitchCase="'released-projects'">
-          <div class="col-12">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <span class="table-header">Chosen Suppliers Profiles</span>
-            </div>
-          </div>
-          <div class="col-12 mb-4 theme-table">
-            <ag-grid-angular
-              class="ag-theme-balham w-100 h-100"
-              [rowData]="selectedSuppliers"
-              [gridOptions]="supplierGridOptions[0]"
-              (gridReady)="onSuppliersGridReady(0, $event)"
-              domLayout="autoHeight"
-            >
-            </ag-grid-angular>
-          </div>
-        </ng-container>
+        </div>
+        <div class="col-12 mb-4 theme-table">
+          <ag-grid-angular
+            class="ag-theme-balham w-100 h-100"
+            [rowData]="selectedSuppliers"
+            [gridOptions]="supplierGridOptions[0]"
+            (gridReady)="onSuppliersGridReady(0, $event)"
+            domLayout="autoHeight"
+          >
+          </ag-grid-angular>
+        </div>
       </ng-container>
     </div>
   </div>

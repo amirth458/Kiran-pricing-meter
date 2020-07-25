@@ -93,15 +93,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.bidPmProjectId = params.bidPmProjectId;
       this.type = (params.statusType || '').replace(/-/g, '_').toUpperCase();
-      this.getPartsByBidPmProjectId();
     });
-
-    if (this.type === PmProjectBidStatusType.NOT_STARTED) {
-      this.initSuppliersTable();
-    } else {
-      this.initMatchingSuppliersQueue();
-    }
-    this.initVendorProfileTable();
 
     combineLatest(
       this.orderService.getAllMeasurementUnitType(),
@@ -113,6 +105,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
       this.numberOfVendors = prodProjectSetting.minNumberOfSupplierToRelease;
       this.numberOfVendorsToReleaseToCustomer = prodProjectSetting.minNumberOfSupplierToRelease;
     });
+    this.getPartsByBidPmProjectId();
   }
 
   getPartsByBidPmProjectId() {
@@ -123,6 +116,12 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           return;
         }
         this.parts = parts || [];
+        if (this.type === PmProjectBidStatusType.NOT_STARTED) {
+          this.initSuppliersTable();
+        } else {
+          this.initMatchingSuppliersQueue();
+        }
+        this.initVendorProfileTable();
         this.partIds = this.parts.map(part => part.partId);
         this.getAllSuppliersInfo(this.partIds);
       },
@@ -166,6 +165,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
 
   canReleaseToVendor() {
     return (
+      this.supplierGridOptions[0] &&
       this.supplierGridOptions[0].api &&
       this.numberOfVendors !== null &&
       this.supplierGridOptions[0].api.getSelectedRows().length >= this.numberOfVendors &&
