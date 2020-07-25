@@ -16,7 +16,7 @@ import { PmProjectStatusEnum, PmProjectStatusType } from '../../../../model/bidd
 })
 export class CustomerAcceptedComponent extends PmReleaseQueueComponent implements OnInit {
   protected bidPmProjectStatusIds = [PmProjectStatusEnum.COMPLETE];
-  protected pmProjectStatusType = PmProjectStatusType.PROPOSAL_ISSUED;
+  protected pmProjectStatusType = PmProjectStatusType.CUSTOMER_ACCEPTED;
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
