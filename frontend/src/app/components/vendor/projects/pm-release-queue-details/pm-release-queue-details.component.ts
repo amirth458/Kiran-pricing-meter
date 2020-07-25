@@ -335,7 +335,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           filter: false
         },
         {
-          headerName: 'country',
+          headerName: 'Country',
           field: 'country',
           hide: false,
           sortable: false,
