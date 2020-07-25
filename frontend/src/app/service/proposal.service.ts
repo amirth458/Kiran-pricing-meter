@@ -52,6 +52,13 @@ export class ProposalService {
     return this.http.post<AdminProposalRequest>(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal`, proposal);
   }
 
+  updateAdminProposal(proposal: AdminProposalRequest): Observable<AdminProposalRequest> {
+    return this.http.put<AdminProposalRequest>(
+      `${environment.procurementApiBaseUrl}/part-proposal/admin-proposal`,
+      proposal
+    );
+  }
+
   deleteAdminProposal(partId: number): Observable<any> {
     return this.http.delete(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal?part-id=${partId}`);
   }

@@ -201,7 +201,7 @@ export interface ProposalPartQuote {
   isManualPricing: boolean;
   isGlobalRule: boolean;
   isAutoQuoteOverride: boolean;
-  globalRuleReason: Array<number>;
+  globalRuleReason: any;
   partQuoteDetailList: Array<ProposalQuoteDetails>;
   totalCost: number;
   adminMargin: number;
