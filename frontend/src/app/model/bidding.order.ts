@@ -179,6 +179,9 @@ export interface ProposalPart {
   comments: string;
   rfqMedia: ProposalPartRfqMedia;
   postProcessTypeIds: Array<number>;
+  order: {
+    id: number;
+  };
 }
 
 export interface ProposalQuoteDetails {
@@ -198,7 +201,7 @@ export interface ProposalPartQuote {
   isManualPricing: boolean;
   isGlobalRule: boolean;
   isAutoQuoteOverride: boolean;
-  globalRuleReason: Array<number>;
+  globalRuleReason: any;
   partQuoteDetailList: Array<ProposalQuoteDetails>;
   totalCost: number;
   adminMargin: number;

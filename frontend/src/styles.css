@@ -896,12 +896,22 @@ button:focus {
   padding: 0;
 }
 
+.over-write-modal .modal-dialog {
+  max-width: 600px;
+}
+
+.over-write-modal .btn-orange {
+  background: var(--theme-orange) !important;
+  color: var(--theme-white-color) !important;
+}
+
 .ref-file-modal .modal-dialog,
 .storage-file-modal .modal-dialog,
 .attachment-modal .modal-dialog {
   max-width: 900px;
 }
 
+.over-write-modal .modal-header,
 .ref-file-modal .modal-header,
 .storage-file-modal .modal-header,
 .attachment-modal .modal-header {
@@ -950,6 +960,7 @@ button:focus {
   border: 1px solid #cccccc;
 }
 
+.over-write-modal .modal-body,
 .ref-file-modal .modal-body,
 .storage-file-modal .modal-body,
 .attachment-modal .modal-body {

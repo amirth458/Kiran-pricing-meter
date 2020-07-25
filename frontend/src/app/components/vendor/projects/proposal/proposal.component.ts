@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, empty } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BiddingService } from '../../../../service/bidding.service';
-import { BidPart } from '../../../../model/part.model';
+import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
 import { MetadataService } from '../../../../service/metadata.service';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import {
@@ -19,6 +21,7 @@ import {
 import { OrdersService } from '../../../../service/orders.service';
 import { ProposalService } from '../../../../service/proposal.service';
 import { Util } from '../../../../util/Util';
+import { PartQuoteCustomerView } from '../../../../model/connect.model';
 
 @Component({
   selector: 'app-proposal',
@@ -26,19 +29,25 @@ import { Util } from '../../../../util/Util';
   styleUrls: ['./proposal.component.css']
 })
 export class ProposalComponent implements OnInit {
+  @ViewChild('overWriteModal') overWriteModal: TemplateRef<any>;
   offerId: number;
   vendorId: number;
-  proposalInfo: BidPart[];
+  statusType: string;
+  proposalPartIds: Array<number>;
+  quoteList: PartQuoteCustomerView[];
+  partInfo: any;
   refMedia: any;
 
   measurementUnits: any;
   invoiceItems: any;
-  proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
+
+  public proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
 
+  adminProposalInfo: Part[];
+
   get totalCost() {
-    return (this.proposalInfo || []).reduce((sum: number, part: BidPart) => {
-      const quote = part.partQuoteCustomerView;
+    return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
         sum += quote.totalCost || 0;
       }
@@ -54,13 +63,20 @@ export class ProposalComponent implements OnInit {
     public proposalService: ProposalService,
     public orderService: OrdersService,
     public toasterService: ToastrService,
-    public spinner: NgxSpinnerService
+    public spinner: NgxSpinnerService,
+    public modalService: NgbModal
   ) {
+    this.partInfo = {};
     this.refMedia = {};
+    this.quoteList = [];
     combineLatest(this.router.params, this.router.parent.params).subscribe(v => {
       const params: any = { ...v[0], ...v[1] };
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
+      this.statusType = params.statusType || '';
+      if (params.proposalPartIds) {
+        this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
+      }
     });
     this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.measurementUnits = res;
@@ -69,45 +85,59 @@ export class ProposalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getVendorProposal();
+    if (this.proposalType === this.proposalTypeEnum.VENDOR_PROPOSAL_TYPE) {
+      this.fetchPartsAndQuote();
+    } else {
+      this.getAdminPartQuote();
+    }
   }
 
-  getMediaBackgroundImage(location: string) {
+  getMediaBackgroundImage(rfqMedia: RfqMedia) {
+    const image = rfqMedia.media && rfqMedia.media.partDimension && rfqMedia.media.partDimension.thumbnail400Location;
     return {
-      'background-image': `url(${location || './assets/image/no-preview.jpg'})`
+      'background-image': `url(${image || './assets/image/no-preview.jpg'})`
     };
   }
 
-  getDimension(part: BidPart) {
-    if (!((this.measurementUnits || []).length > 0 && part)) {
-      return '';
-    }
-    const arr = [];
-    if (part.x && part.x.unitId) {
-      const xUnit = this.findUnitById(part.x.unitId);
-      arr.push(`${part.x.value} ${xUnit.symbol || ''}`);
-    }
-    if (part.y && part.y.unitId) {
-      const yUnit = this.findUnitById(part.y.unitId);
-      arr.push(`${part.y.value} ${yUnit.symbol || ''}`);
-    }
-    if (part.z && part.z.unitId) {
-      const zUnit = this.findUnitById(part.z.unitId);
-      arr.push(`${part.z.value} ${zUnit.symbol || ''}`);
-    }
-    return arr.join(' x ');
+  fetchPartsAndQuote() {
+    this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(parts => {
+      (parts || []).map(p => {
+        this.quoteList.push(p.partQuoteCustomerView);
+      });
+      this.findAdminProposal((parts || []).map(p => p.partId));
+      this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
+    });
   }
 
-  getVolume(part: BidPart) {
-    if (!((this.measurementUnits || []).length > 0 && part)) {
-      return '';
+  getAdminPartQuote() {
+    this.proposalService.getAdminPartQuote(this.proposalPartIds).subscribe(quotes => {
+      (quotes || []).map(p => {
+        this.quoteList.push(p);
+      });
+      this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
+    });
+  }
+
+  getProposalPartByIds(ids: Array<number>) {
+    this.proposalService.getProposalPartByIds(ids).subscribe(parts => {
+      (parts || []).map(p => {
+        this.partInfo[p.id] = p;
+        this.getReferenceFiles(p.id);
+      });
+    });
+  }
+
+  getDimension(rfqMedia: RfqMedia) {
+    return rfqMedia && rfqMedia.media && Util.getPartDimension(rfqMedia.media.partDimension, this.measurementUnits);
+  }
+
+  getVolume(partDimension: PartDimension) {
+    let unitId = partDimension.volume.unitId;
+    if (!unitId) {
+      unitId = partDimension.x.unitId;
     }
-    let volume = '';
-    if (part.volume && part.volume.unitId) {
-      const volumeUnit = this.findUnitById(part.volume.unitId);
-      volume = `${part.volume.value || 0} ${volumeUnit.symbol || ''}`;
-    }
-    return volume;
+    const unit = this.measurementUnits.find(item => item.id === unitId);
+    return `${partDimension.volume.value} ${unit.symbol}`;
   }
 
   findUnitById(id: number) {
@@ -115,12 +145,9 @@ export class ProposalComponent implements OnInit {
     return units.length > 0 ? units[0] : null;
   }
 
-  getVendorProposal() {
-    this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(offerInfo => {
-      this.proposalInfo = offerInfo || [];
-      (this.proposalInfo || []).map(proposal => {
-        this.getReferenceFiles(proposal.partId);
-      });
+  findAdminProposal(ids: Array<number>) {
+    this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
+      this.adminProposalInfo = v || [];
     });
   }
 
@@ -133,40 +160,109 @@ export class ProposalComponent implements OnInit {
   }
 
   createAdminProposal() {
-    const arr: Array<AdminProposalRequest> = (this.proposalInfo || []).map(proposal => {
+    if ((this.adminProposalInfo || []).length > 0) {
+      const options: any = {
+        centered: true,
+        size: 'sm',
+        windowClass: 'over-write-modal',
+        backdrop: 'static'
+      };
+      this.modalService.open(this.overWriteModal, options).result.then(
+        result => {},
+        reason => {}
+      );
+    } else {
+      this.createProposal();
+    }
+  }
+
+  sendQuote(vendorId: number, ids: Array<number>) {
+    this.spinner.show();
+    this.proposalService
+      .sendQuoteToCustomer(vendorId, ids)
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to send proposal to customer');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(() => {
+        this.toasterService.success('Admin proposal have been updated!');
+        this.spinner.hide();
+        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+      });
+  }
+
+  sendAllQuoteToCustomer() {
+    const arr = (this.quoteList || []).map(q => q.partId);
+    const quote = (this.quoteList || []).length ? (this.quoteList || [])[0] : null;
+    this.sendQuote(quote.vendorId, arr);
+  }
+
+  updateAdminProposal() {
+    this.spinner.show();
+    combineLatest(this.buildAdminProposalData())
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to update admin proposal');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(v => {
+        this.modalService.dismissAll();
+        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
+        this.toasterService.success('Admin proposal have been updated!');
+        this.spinner.hide();
+        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+      });
+  }
+
+  buildAdminProposalData(isCreate: boolean = false): Array<AdminProposalRequest> {
+    const arr: Array<AdminProposalRequest> = Object.keys(this.partInfo || []).map(id => {
+      const proposal: Part = this.partInfo[id];
+      let partDimension: PartDimension = null;
+      const media = proposal.rfqMedia.media;
+      if (proposal.rfqMedia && proposal.rfqMedia.media && proposal.rfqMedia.media.partDimension) {
+        partDimension = proposal.rfqMedia.media.partDimension;
+      }
       const dimension: ProposalPartDimension = {
         x: {
-          unitId: proposal.x.unitId,
-          value: proposal.x.value
+          unitId: partDimension ? partDimension.x.unitId : null,
+          value: partDimension ? partDimension.x.value : null
         },
         y: {
-          unitId: proposal.y.unitId,
-          value: proposal.y.value
+          unitId: partDimension ? partDimension.y.unitId : null,
+          value: partDimension ? partDimension.y.value : null
         },
         z: {
-          unitId: proposal.z.unitId,
-          value: proposal.z.value
+          unitId: partDimension ? partDimension.z.unitId : null,
+          value: partDimension ? partDimension.z.value : null
         },
         volume: {
-          unitId: proposal.volume.unitId,
-          value: proposal.volume.value
+          unitId: partDimension ? partDimension.volume.unitId : null,
+          value: partDimension ? partDimension.volume.unitId : null
         },
         surfaceArea: {
-          unitId: proposal.surfaceArea.unitId,
-          value: proposal.surfaceArea.value
+          unitId: partDimension ? partDimension.surfaceArea.unitId : null,
+          value: partDimension ? partDimension.surfaceArea.unitId : null
         },
-        thumbnail100Location: proposal.thumbnail100Location,
-        thumbnail200Location: proposal.thumbnail200Location,
-        thumbnail400Location: proposal.thumbnail400Location
+        thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
+        thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
+        thumbnail400Location: partDimension ? partDimension.thumbnail400Location : null
       };
-      const customerQuote = proposal.partQuoteCustomerView;
+      const quote = (this.quoteList || []).filter(q => q.proposalPartId === proposal.id);
+      const customerQuote = quote.length > 0 ? quote[0] : null;
       const partQuote: ProposalPartQuote = {
         isAdminQuote: true,
         expiredAt: Util.extendUtcDate(customerQuote.expiredAt),
-        isManualPricing: false,
+        isManualPricing: true,
         isGlobalRule: false,
-        isAutoQuoteOverride: false,
-        globalRuleReason: [],
+        isAutoQuoteOverride: true,
+        globalRuleReason: {
+          id: 1
+        },
         partQuoteDetailList: (customerQuote.partQuoteDetails || []).map(q => {
           return {
             extendedCost: 0,
@@ -180,7 +276,7 @@ export class ProposalComponent implements OnInit {
           };
         }),
         totalCost: customerQuote.totalCost,
-        adminMargin: 0,
+        adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };
       const mediaFiles = this.refMedia[proposal.partId] || [];
@@ -192,20 +288,23 @@ export class ProposalComponent implements OnInit {
           equipmentPropertyValues: proposal.equipmentPropertyValues,
           cuttingBondingAllowed: false,
           quantity: proposal.quantity,
-          targetDeliveryDate: Util.extendUtcDate(proposal.deliveryDate),
+          targetDeliveryDate: Util.extendUtcDate(proposal.targetDeliveryDate),
           manualPricingAllowed: false,
-          parentPartId: proposal.partId,
+          parentPartId: proposal.parentPartId,
           comments: proposal.comments || null,
           rfqMedia: {
             media: {
-              connectorServiceId: proposal.connectorServiceId,
+              connectorServiceId: media.connectorServiceId,
               uploadedAt: null,
-              location: proposal.filePath,
-              name: proposal.fileName,
+              location: media.location,
+              name: media.name,
               partDimension: dimension
             }
           },
-          postProcessTypeIds: proposal.postProcessTypeIds
+          postProcessTypeIds: proposal.postProcessTypeIds,
+          order: {
+            id: proposal.order.id
+          }
         },
         partQuote,
         partDimensionUpdated: false,
@@ -220,13 +319,54 @@ export class ProposalComponent implements OnInit {
     });
     const proposalsReq = [];
     (arr || []).map(proposalReq => {
-      proposalsReq.push(this.proposalService.createAdminProposal(proposalReq));
+      proposalsReq.push(
+        isCreate
+          ? this.proposalService.createAdminProposal(proposalReq)
+          : this.proposalService.updateAdminProposal(proposalReq)
+      );
+    });
+    return proposalsReq;
+  }
+
+  createProposal() {
+    this.spinner.show();
+    combineLatest(this.buildAdminProposalData(true))
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to create admin proposal');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(v => {
+        this.modalService.dismissAll();
+        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
+        this.toasterService.success('Admin proposal successfully added!');
+        this.spinner.hide();
+        let url =
+          '/prodex/projects/pm-release-queue/' +
+          `${this.offerId}/${this.statusType}/admin-proposal/${parentPartIds.join(',')}`;
+        this.route.navigateByUrl(url);
+      });
+  }
+
+  deleteAdminProposal() {
+    const arr = [];
+    (this.quoteList || []).map(q => {
+      arr.push(this.proposalService.deleteAdminProposal(q.partId));
     });
     this.spinner.show();
-    combineLatest(proposalsReq).subscribe(v => {
-      console.log(v);
-      this.toasterService.success('Admin proposal successfully added!');
-      this.spinner.hide();
-    });
+    combineLatest(arr)
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to delete admin proposal');
+          return empty();
+        })
+      )
+      .subscribe(() => {
+        this.spinner.hide();
+        this.toasterService.success('proposals successfully deleted!');
+        this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
+      });
   }
 }

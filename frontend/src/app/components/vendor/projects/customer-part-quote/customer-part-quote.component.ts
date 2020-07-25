@@ -13,6 +13,11 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
   @Input() allowedRequote = false;
   @Output() requote: EventEmitter<any> = new EventEmitter<any>();
   @Input() invoiceItems: any;
+  @Input()
+  editable: boolean;
+
+  @Output()
+  quoteChange: EventEmitter<PartQuoteCustomerView> = new EventEmitter<PartQuoteCustomerView>();
 
   onRequote() {
     this.requote.emit();
@@ -30,6 +35,10 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
     if (changes.quotes && changes.quotes.currentValue) {
       this.quote = changes.quotes.currentValue;
     }
+  }
+
+  onMarginCostChange() {
+    this.quoteChange.emit(this.quote);
   }
 
   getInvoiceItem(id: number) {

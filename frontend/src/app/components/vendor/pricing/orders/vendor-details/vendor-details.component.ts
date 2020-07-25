@@ -1093,8 +1093,7 @@ export class VendorDetailsComponent implements OnInit {
     ev.stopPropagation();
   }
 
-  onDeleteBidding() {
-  }
+  onDeleteBidding() {}
 
   onRestartBidding() {
     this.spinner.show();

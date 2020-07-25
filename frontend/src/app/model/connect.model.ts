@@ -128,4 +128,43 @@ export class PartQuoteCustomerView {
   proposalPartQuantity: number;
   proposalDeliveryDate: Date;
   quoteCreatedBy: string;
+
+  // For UI purpose
+  marginCost?: number;
+}
+
+export interface PartQuoteInvoiceLineItem {
+  partQuoteDetailId: number;
+  partQuoteId: number;
+  invoiceLineItemId: number;
+  invoiceLineItemCost: number;
+  extendedCost: number;
+  totalInvoiceLineItemCost: number;
+  unit: number;
+  unitPrice: number;
+  processPricingConditionTypeId: number;
+}
+
+export interface PartQuoteInvoiceItem {
+  invoiceItemId: number;
+  invoiceItemCost: number;
+  partQuoteInvoiceLineItemDetails: Array<PartQuoteInvoiceLineItem>;
+  finalCost: number;
+  unit: number;
+  unitPrice: number;
+}
+
+export interface AdminPartQuote {
+  id: number;
+  partId: number;
+  proposalPartId: number;
+  vendorId: number;
+  isExpired: boolean;
+  expiredAt: Date;
+  totalCost: number;
+  minimumOrderAmount: number;
+  marginCost: number;
+  partQuoteInvoiceItemDetails: Array<PartQuoteInvoiceItem>;
+  winningProcessPricingId: number;
+  matchedProcessPricingIds: Array<number>;
 }

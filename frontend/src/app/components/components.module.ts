@@ -180,6 +180,7 @@ import { ReleasedBidComponent } from './vendor/projects/released-bid/released-bi
 import { ProposalComponent } from './vendor/projects/proposal/proposal.component';
 import { CustomerPartQuoteComponent } from './vendor/projects/customer-part-quote/customer-part-quote.component';
 import { CustomerProposalDetailsComponent } from './vendor/projects/customer-proposal-details/customer-proposal-details.component';
+import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-proposal.component';
 
 @NgModule({
   declarations: [
@@ -349,7 +350,8 @@ import { CustomerProposalDetailsComponent } from './vendor/projects/customer-pro
     ReleasedBidComponent,
     ProposalComponent,
     CustomerPartQuoteComponent,
-    CustomerProposalDetailsComponent
+    CustomerProposalDetailsComponent,
+    AdminProposalComponent
   ],
   imports: [
     CommonModule,

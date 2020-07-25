@@ -2,16 +2,10 @@
   <div class="d-flex justify-content-between mt-4 align-items-center mb-2">
     <p class="part-header font-weight-bold mr-auto">Accepted Order Details</p>
     <p *ngIf="bidOrderStatus?.name === 'COMPLETED_WITH_NO_RESPONSE'">
-      <button
-        class="btn btn-declined d-none"
-        (click)="onDeleteBidding()"
-      >
+      <button class="btn btn-declined d-none" (click)="onDeleteBidding()">
         Delete Bidding
       </button>
-      <button
-        class="btn btn-approved ml-3"
-        (click)="onRestartBidding()"
-      >
+      <button class="btn btn-approved ml-3" (click)="onRestartBidding()">
         Restart Bidding
       </button>
     </p>

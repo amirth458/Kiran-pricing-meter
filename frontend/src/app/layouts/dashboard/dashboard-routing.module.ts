@@ -97,6 +97,7 @@ import { PmReleaseQueueComponent } from '../../components/vendor/projects/pm-rel
 import { IssuedProposalComponent } from '../../components/vendor/projects/issued-proposal/issued-proposal.component';
 import { CustomerAcceptedComponent } from '../../components/vendor/projects/customer-accepted/customer-accepted.component';
 import { ProposalComponent } from '../../components/vendor/projects/proposal/proposal.component';
+import { AdminProposalComponent } from '../../components/vendor/projects/admin-proposal/admin-proposal.component';
 
 const routes: Routes = [
   {
@@ -402,6 +403,10 @@ const routes: Routes = [
                   {
                     path: 'vendor-proposal/:vendorId',
                     component: ProposalComponent
+                  },
+                  {
+                    path: 'admin-proposal/:proposalPartIds',
+                    component: AdminProposalComponent
                   }
                 ]
               },
@@ -411,7 +416,17 @@ const routes: Routes = [
               },
               {
                 path: 'proposal-issued/:bidPmProjectId/:statusType',
-                component: PmReleaseQueueDetailsComponent
+                component: PmReleaseQueueDetailsComponent,
+                children: [
+                  {
+                    path: 'vendor-proposal/:vendorId',
+                    component: ProposalComponent
+                  },
+                  {
+                    path: 'admin-proposal/:proposalPartIds',
+                    component: AdminProposalComponent
+                  }
+                ]
               },
               {
                 path: 'customer-accepted',
