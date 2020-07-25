@@ -191,7 +191,15 @@ export class OrdersService {
         filter: false
       },
       {
-        headerName: 'Order ID',
+        headerName: 'Customer Order ID',
+        field: 'customerOrderIds',
+        tooltip: params => (params.value || []).join(', '),
+        sortable: true,
+        filter: false,
+        valueFormatter: v => (v && v.value && v.value.join(',')) || ''
+      },
+      {
+        headerName: 'Bid Order ID',
         field: 'bidOrder.id',
         tooltip: params => params.value,
         sortable: true,
@@ -206,7 +214,7 @@ export class OrdersService {
         filter: false
       },
       {
-        headerName: 'Sub Order IDs',
+        headerName: 'Sub Order ID ( Part ID )',
         field: 'partIds',
         tooltip: params => (params.value || []).join(', '),
         sortable: true,
@@ -226,7 +234,7 @@ export class OrdersService {
         filter: false
       },
       {
-        headerName: 'Offer IDs',
+        headerName: 'Offer ID ( Bid Process ID )',
         field: 'bidProcessIds',
         hide: false,
         sortable: true,
@@ -317,7 +325,7 @@ export class OrdersService {
       }
     ];
     if (view === 'order-confirmation-queue') {
-      columns.splice(2, 1);
+      columns.splice(3, 1);
     }
     return columns;
   }
@@ -325,7 +333,7 @@ export class OrdersService {
   getGridSearchColumns(released: boolean = false): any {
     return [
       {
-        name: 'Order ID',
+        name: 'Bid Order ID',
         field: 'bidOrder.id',
         checked: false,
         query: {
@@ -334,7 +342,7 @@ export class OrdersService {
         }
       },
       {
-        name: 'Sub Order IDs',
+        name: 'Sub Order ID ( Part ID )',
         field: 'partIds',
         checked: false,
         query: {
@@ -352,7 +360,7 @@ export class OrdersService {
         }
       },
       {
-        name: 'Offer IDs',
+        name: 'Offer ID ( Bid Process ID )',
         field: 'bidProcessIds',
         checked: false,
         query: {
@@ -438,12 +446,12 @@ export class OrdersService {
   getGridFilterColumns(released: boolean = false): any {
     return [
       {
-        name: 'Order ID',
+        name: 'Bid Order ID',
         field: 'bidOrder.id',
         checked: true
       },
       {
-        name: 'Sub Order IDs',
+        name: 'Sub Order ID ( Part ID )',
         field: 'partIds',
         checked: true
       },
@@ -453,7 +461,7 @@ export class OrdersService {
         checked: true
       },
       {
-        name: 'Offer IDs',
+        name: 'Offer ID ( Bid Process ID )',
         field: 'bidProcessIds',
         checked: true
       },
