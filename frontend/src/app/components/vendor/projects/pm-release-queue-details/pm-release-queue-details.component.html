@@ -107,6 +107,11 @@
             <app-released-bid [bidParts]="parts" *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
           </div>
         </ng-container>
+        <ng-container *ngSwitchCase="pmProjectBidStatusType.RELEASED_TO_CUSTOMER">
+          <div class="col-12 mb-4">
+            <app-released-bid [bidParts]="parts" *ngIf="bidPmProjectId" [value]="bidPmProjectId"> </app-released-bid>
+          </div>
+        </ng-container>
         <ng-container *ngSwitchCase="'released-projects'">
           <div class="col-12">
             <div class="d-flex align-items-center justify-content-between mb-3">
