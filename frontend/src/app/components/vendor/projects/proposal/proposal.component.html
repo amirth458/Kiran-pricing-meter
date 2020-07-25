@@ -5,7 +5,7 @@
       <button (click)="deleteAdminProposal()" class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
         Delete Proposal
       </button>
-      <button class="btn theme btn-white pl-4 pr-4 w-auto ml-2">
+      <button (click)="updateAdminProposal()" class="btn theme btn-white pl-4 pr-4 w-auto ml-2">
         Save the Proposal
       </button>
       <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">
@@ -26,6 +26,7 @@
           <div class="d-flex flex-column pl-2 pr-2">
             <h5 class="m-0 pt-3 pb-2 text-theme">
               Customer Requirement:
+              <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2">Send Quote to Customer</button>
             </h5>
             <app-prod-part [partId]="quote.partId" [title]="false"></app-prod-part>
             <h5 class="m-0 pt-3 pb-2 text-theme">

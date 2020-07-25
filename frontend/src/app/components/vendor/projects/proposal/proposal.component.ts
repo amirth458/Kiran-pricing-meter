@@ -176,7 +176,26 @@ export class ProposalComponent implements OnInit {
     }
   }
 
-  createProposal() {
+  updateAdminProposal() {
+    this.spinner.show();
+    combineLatest(this.buildAdminProposalData())
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to update admin proposal');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe(v => {
+        this.modalService.dismissAll();
+        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
+        this.toasterService.success('Admin proposal have been updated!');
+        this.spinner.hide();
+        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+      });
+  }
+
+  buildAdminProposalData(isCreate: boolean = false): Array<AdminProposalRequest> {
     const arr: Array<AdminProposalRequest> = Object.keys(this.partInfo || []).map(id => {
       const proposal: Part = this.partInfo[id];
       let partDimension: PartDimension = null;
@@ -214,10 +233,12 @@ export class ProposalComponent implements OnInit {
       const partQuote: ProposalPartQuote = {
         isAdminQuote: true,
         expiredAt: Util.extendUtcDate(customerQuote.expiredAt),
-        isManualPricing: false,
+        isManualPricing: true,
         isGlobalRule: false,
-        isAutoQuoteOverride: false,
-        globalRuleReason: [],
+        isAutoQuoteOverride: true,
+        globalRuleReason: {
+          id: 1
+        },
         partQuoteDetailList: (customerQuote.partQuoteDetails || []).map(q => {
           return {
             extendedCost: 0,
@@ -274,10 +295,18 @@ export class ProposalComponent implements OnInit {
     });
     const proposalsReq = [];
     (arr || []).map(proposalReq => {
-      proposalsReq.push(this.proposalService.createAdminProposal(proposalReq));
+      proposalsReq.push(
+        isCreate
+          ? this.proposalService.createAdminProposal(proposalReq)
+          : this.proposalService.updateAdminProposal(proposalReq)
+      );
     });
+    return proposalsReq;
+  }
+
+  createProposal() {
     this.spinner.show();
-    combineLatest(proposalsReq)
+    combineLatest(this.buildAdminProposalData(true))
       .pipe(
         catchError(err => {
           this.toasterService.error('unable to create admin proposal');
