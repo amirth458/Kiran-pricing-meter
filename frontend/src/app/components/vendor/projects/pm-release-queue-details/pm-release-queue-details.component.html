@@ -73,34 +73,36 @@
             </div>
           </div>
         </div>
-        <div class="col-12 mb-4 theme-table" *ngIf="shortListedSuppliers.length">
-          <ag-grid-angular
-            class="ag-theme-balham w-100 h-100"
-            [rowData]="shortListedSuppliers"
-            [gridOptions]="supplierGridOptions[0]"
-            (gridReady)="onSuppliersGridReady(0, $event)"
-            [rowDragManaged]="true"
-            [animateRows]="true"
-            (rowDragEnd)="onRowDrag($event)"
-            domLayout="autoHeight"
-          ></ag-grid-angular>
-        </div>
-        <div class="col-12">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <span class="table-header">Removed Matching Suppliers Profiles</span>
+        <ng-container *ngIf="shortListedSuppliers.length">
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="shortListedSuppliers"
+              [gridOptions]="supplierGridOptions[0]"
+              (gridReady)="onSuppliersGridReady(0, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              (rowDragEnd)="onRowDrag($event)"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
           </div>
-        </div>
-        <div class="col-12 mb-4 theme-table">
-          <ag-grid-angular
-            class="ag-theme-balham w-100 h-100"
-            [rowData]="removedSuppliers"
-            [gridOptions]="supplierGridOptions[1]"
-            (gridReady)="onSuppliersGridReady(1, $event)"
-            [rowDragManaged]="true"
-            [animateRows]="true"
-            domLayout="autoHeight"
-          ></ag-grid-angular>
-        </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="table-header">Removed Matching Suppliers Profiles</span>
+            </div>
+          </div>
+          <div class="col-12 mb-4 theme-table">
+            <ag-grid-angular
+              class="ag-theme-balham w-100 h-100"
+              [rowData]="removedSuppliers"
+              [gridOptions]="supplierGridOptions[1]"
+              (gridReady)="onSuppliersGridReady(1, $event)"
+              [rowDragManaged]="true"
+              [animateRows]="true"
+              domLayout="autoHeight"
+            ></ag-grid-angular>
+          </div>
+        </ng-container>
       </ng-container>
 
       <ng-container
