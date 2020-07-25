@@ -416,7 +416,17 @@ const routes: Routes = [
               },
               {
                 path: 'proposal-issued/:bidPmProjectId/:statusType',
-                component: PmReleaseQueueDetailsComponent
+                component: PmReleaseQueueDetailsComponent,
+                children: [
+                  {
+                    path: 'vendor-proposal/:vendorId',
+                    component: ProposalComponent
+                  },
+                  {
+                    path: 'admin-proposal/:proposalPartIds',
+                    component: AdminProposalComponent
+                  }
+                ]
               },
               {
                 path: 'customer-accepted',
