@@ -41,7 +41,7 @@ export class ProposalComponent implements OnInit {
   measurementUnits: any;
   invoiceItems: any;
 
-  protected proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
+  public proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
 
   adminProposalInfo: Part[];
