@@ -263,7 +263,7 @@ export class ProposalComponent implements OnInit {
         this.modalService.dismissAll();
         this.toasterService.success('Admin proposal have been updated!');
         this.spinner.hide();
-        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+        this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
   }
 
@@ -391,9 +391,12 @@ export class ProposalComponent implements OnInit {
         const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
         this.toasterService.success('Admin proposal successfully added!');
         this.spinner.hide();
-        const url =
-          '/prodex/projects/pm-release-queue/' +
-          `${this.offerId}/${this.statusType}/admin-proposal/${parentPartIds.join(',')}`;
+        const statusName = (this.statusType || '').replace(/-/g, '_').toUpperCase();
+        let url = '/prodex/projects/pm-release-queue/';
+        if ((this.route.url || '').includes('/prodex/projects/proposal-issued/')) {
+          url = '/prodex/projects/proposal-issued/';
+        }
+        url += `${this.offerId}/${statusName}/admin-proposal/${parentPartIds.join(',')}`;
         this.route.navigateByUrl(url);
       });
   }
@@ -414,7 +417,7 @@ export class ProposalComponent implements OnInit {
       .subscribe(() => {
         this.spinner.hide();
         this.toasterService.success('proposals successfully deleted!');
-        this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
+        this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
   }
 
