@@ -159,7 +159,7 @@
                     <h6 class="text-theme">Enter the price or use your pricing profiles below</h6>
                     <app-customer-part-quote
                       class="w-50"
-                      [editable]="proposalType === proposalTypeEnum.ADMIN_PROPOSAL_TYPE"
+                      [editable]="isQuoteEditable()"
                       [invoiceItems]="invoiceItems"
                       [(quote)]="quote"
                     >

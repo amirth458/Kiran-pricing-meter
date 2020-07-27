@@ -113,6 +113,12 @@ export class ProposalComponent implements OnInit {
     );
   }
 
+  isQuoteEditable() {
+    return (
+      this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE && this.statusType !== PmProjectStatusType.COMPLETE
+    );
+  }
+
   showProfilesTab() {
     return (
       this.statusType === PmProjectStatusType.CUSTOMER_ACCEPTED ||
@@ -127,6 +133,7 @@ export class ProposalComponent implements OnInit {
           this.quoteList.push(p.partQuoteCustomerView);
         }
       });
+      console.log(this.quoteList);
       this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });

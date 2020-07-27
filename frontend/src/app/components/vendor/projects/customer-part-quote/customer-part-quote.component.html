@@ -24,7 +24,7 @@
         </td>
         <td>{{ quote?.minimumOrderAmount | currency: 'USD':'symbol':'1.0-2' }}</td>
       </tr>
-      <tr *ngIf="editable">
+      <tr>
         <td colspan="2">
           &nbsp;
         </td>
@@ -34,15 +34,20 @@
           </span>
         </td>
         <td>
-          <div class="form-group theme pl-3 pr-3">
-            <input
-              digitOnly
-              decimal="true"
-              class="form-control form-control-sm"
-              [(ngModel)]="quote.marginCost"
-              (ngModelChange)="onMarginCostChange()"
-            />
-          </div>
+          <ng-container *ngIf="editable">
+            <div class="form-group theme pl-3 pr-3">
+              <input
+                digitOnly
+                decimal="true"
+                class="form-control form-control-sm"
+                [(ngModel)]="quote.marginCost"
+                (ngModelChange)="onMarginCostChange()"
+              />
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!editable">
+            {{ quote?.marginCost || 0 | currency: 'USD':'symbol':'1.0-2' }}
+          </ng-container>
         </td>
       </tr>
       <tr>
@@ -57,7 +62,7 @@
             {{ quote?.minimumOrderAmount | currency: 'USD':'symbol':'1.0-2' }}
           </ng-container>
           <ng-container *ngIf="!((quote?.totalCost || 0) < (quote?.minimumOrderAmount || 0))">
-            {{ quote?.totalCost | currency: 'USD':'symbol':'1.0-2' }}
+            {{ totalCost | currency: 'USD':'symbol':'1.0-2' }}
           </ng-container>
         </th>
       </tr>
