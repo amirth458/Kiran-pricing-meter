@@ -102,7 +102,9 @@ export class ProposalComponent implements OnInit {
   fetchPartsAndQuote() {
     this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(parts => {
       (parts || []).map(p => {
-        this.quoteList.push(p.partQuoteCustomerView);
+        if (p.partQuoteCustomerView) {
+          this.quoteList.push(p.partQuoteCustomerView);
+        }
       });
       this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
