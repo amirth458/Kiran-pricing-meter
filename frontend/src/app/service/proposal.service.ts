@@ -53,10 +53,7 @@ export class ProposalService {
   }
 
   updateAdminProposal(proposal: AdminProposalRequest): Observable<AdminProposalRequest> {
-    return this.http.put<AdminProposalRequest>(
-      `${environment.procurementApiBaseUrl}/part-proposal/admin-proposal`,
-      proposal
-    );
+    return this.http.put<AdminProposalRequest>(`${environment.apiBaseUrl}/admin/pm-project/admin-proposal`, proposal);
   }
 
   deleteAdminProposal(partId: number): Observable<any> {
@@ -120,7 +117,7 @@ export class ProposalService {
               proposalPartQuantity: null,
               proposalDeliveryDate: null,
               quoteCreatedBy: null,
-              marginCost: q.marginCost
+              marginCost: q.adminMargin
             };
             return item;
           });

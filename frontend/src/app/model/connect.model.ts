@@ -164,6 +164,7 @@ export interface AdminPartQuote {
   totalCost: number;
   minimumOrderAmount: number;
   marginCost: number;
+  adminMargin: number;
   partQuoteInvoiceItemDetails: Array<PartQuoteInvoiceItem>;
   winningProcessPricingId: number;
   matchedProcessPricingIds: Array<number>;
