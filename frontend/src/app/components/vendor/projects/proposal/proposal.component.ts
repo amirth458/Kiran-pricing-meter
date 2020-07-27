@@ -80,7 +80,6 @@ export class ProposalComponent implements OnInit {
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
       this.statusType = (params.statusType || '').replace(/-/g, '_').toUpperCase();
-      console.log(this.statusType);
       if (params.proposalPartIds) {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
@@ -272,11 +271,11 @@ export class ProposalComponent implements OnInit {
         },
         volume: {
           unitId: partDimension ? partDimension.volume.unitId : null,
-          value: partDimension ? partDimension.volume.unitId : null
+          value: partDimension ? partDimension.volume.value : null
         },
         surfaceArea: {
           unitId: partDimension ? partDimension.surfaceArea.unitId : null,
-          value: partDimension ? partDimension.surfaceArea.unitId : null
+          value: partDimension ? partDimension.surfaceArea.value : null
         },
         thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
         thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
