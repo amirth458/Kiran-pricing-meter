@@ -109,7 +109,7 @@ export class PmReleaseQueueComponent implements OnInit {
       {
         headerName: 'Bid Id',
         field: 'bidPmProjectId',
-        hide: this.pmProjectStatusType !== PmProjectStatusType.RELEASE_QUEUE,
+        hide: false,
         sortable: true,
         filter: false,
         tooltipField: 'bidPmProjectId'
@@ -131,7 +131,7 @@ export class PmReleaseQueueComponent implements OnInit {
         tooltipField: 'userName'
       },
       {
-        headerName: 'Order ID',
+        headerName: 'Customer Order IDs',
         field: 'orderIds',
         hide: false,
         sortable: true,
