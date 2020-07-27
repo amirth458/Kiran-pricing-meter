@@ -125,6 +125,7 @@ export class CustomerProposalDetailsComponent extends InsightPartInformationComp
     }));
     this.spinner.hide();
   }
+
   async getPricingProfiles(q = null) {
     this.spinner.show();
     try {

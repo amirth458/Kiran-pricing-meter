@@ -18,8 +18,14 @@
       </button>
     </div>
   </div>
-  <div class="d-flex ">
-    <ngb-tabset [destroyOnHide]="true" [justify]="'start'" *ngIf="(quoteList?.length || 0) > 0">
+  <div class="d-flex">
+    <ngb-tabset
+      class="w-100"
+      [destroyOnHide]="true"
+      [justify]="'start'"
+      (tabChange)="beforeChange($event)"
+      *ngIf="(quoteList?.length || 0) > 0"
+    >
       <ngb-tab *ngFor="let quote of quoteList" [id]="quote.partId.toString()">
         <ng-template ngbTabTitle> Part {{ quote?.partId }} </ng-template>
         <ng-template ngbTabContent>
@@ -122,6 +128,26 @@
                     >
                     </app-customer-part-quote>
                   </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab [id]="'relatedProcessProfiles'">
+                <ng-template ngbTabTitle> Related Process Profiles </ng-template>
+                <ng-template ngbTabContent>
+                  <ng-container *ngIf="partInfo[quote.proposalPartId] as part">
+                    <div class="d-flex flex-column pt-4 pb-4">
+                      <app-process-profile [part]="part" [rowData]="processProfiles"> </app-process-profile>
+                    </div>
+                  </ng-container>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab [id]="'relatedPricingProfiles'">
+                <ng-template ngbTabTitle> Related Pricing Profiles </ng-template>
+                <ng-template ngbTabContent>
+                  <ng-container *ngIf="partInfo[quote.proposalPartId] as part">
+                    <div class="d-flex flex-column pt-4 pb-4">
+                      <app-pricing-profile [part]="part" [rowData]="pricingProfiles"> </app-pricing-profile>
+                    </div>
+                  </ng-container>
                 </ng-template>
               </ngb-tab>
             </ngb-tabset>
