@@ -44,6 +44,8 @@ export class ProposalComponent implements OnInit {
   processProfiles: any[] = null;
   pricingProfiles: any[] = null;
   selectedTab: number = null;
+  pmProjectStatusType = PmProjectStatusType;
+  showPartDetails = false;
 
   measurementUnits: any;
   invoiceItems: any;
@@ -105,6 +107,12 @@ export class ProposalComponent implements OnInit {
     };
   }
 
+  isComplete() {
+    return (
+      this.statusType === PmProjectStatusType.COMPLETE && this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE
+    );
+  }
+
   showProfilesTab() {
     return (
       this.statusType === PmProjectStatusType.CUSTOMER_ACCEPTED ||
@@ -129,6 +137,9 @@ export class ProposalComponent implements OnInit {
       (quotes || []).map(p => {
         this.quoteList.push(p);
       });
+      if (this.isComplete()) {
+        this.findAdminProposal((quotes || []).map(p => p.partId));
+      }
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
   }
@@ -176,7 +187,10 @@ export class ProposalComponent implements OnInit {
 
   findAdminProposal(ids: Array<number>) {
     this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
-      this.adminProposalInfo = v || [];
+      this.adminProposalInfo = (v || []).map(p => {
+        p.partId = p.id;
+        return p;
+      });
     });
   }
 

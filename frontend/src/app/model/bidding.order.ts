@@ -78,7 +78,8 @@ export interface PmProjectRequest {
 export enum PmProjectStatusType {
   RELEASE_QUEUE = 'RELEASE_QUEUE',
   PROPOSAL_ISSUED = 'PROPOSAL_ISSUED',
-  CUSTOMER_ACCEPTED = 'CUSTOMER_ACCEPTED'
+  CUSTOMER_ACCEPTED = 'CUSTOMER_ACCEPTED',
+  COMPLETE = 'COMPLETE'
 }
 
 export enum PmProjectBidStatusType {
