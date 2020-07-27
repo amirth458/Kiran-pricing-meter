@@ -14,6 +14,7 @@ import { MetadataService } from '../../../../service/metadata.service';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import {
   AdminProposalRequest,
+  PmProjectStatusType,
   ProposalPartDimension,
   ProposalPartQuote,
   ProposalTypeEnum
@@ -78,7 +79,8 @@ export class ProposalComponent implements OnInit {
       const params: any = { ...v[0], ...v[1] };
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
-      this.statusType = params.statusType || '';
+      this.statusType = (params.statusType || '').replace(/-/g, '_').toUpperCase();
+      console.log(this.statusType);
       if (params.proposalPartIds) {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
@@ -102,6 +104,13 @@ export class ProposalComponent implements OnInit {
     return {
       'background-image': `url(${image || './assets/image/no-preview.jpg'})`
     };
+  }
+
+  showProfilesTab() {
+    return (
+      this.statusType === PmProjectStatusType.CUSTOMER_ACCEPTED ||
+      this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE
+    );
   }
 
   fetchPartsAndQuote() {
@@ -138,7 +147,9 @@ export class ProposalComponent implements OnInit {
 
   beforeChange($event: NgbTabChangeEvent) {
     this.selectedTab = Number($event.nextId);
-    this.fetchProfilesTabInfo();
+    if (this.showProfilesTab()) {
+      this.fetchProfilesTabInfo();
+    }
   }
 
   fetchProfilesTabInfo() {
