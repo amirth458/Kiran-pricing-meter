@@ -117,7 +117,7 @@ export class ProposalService {
               proposalPartQuantity: null,
               proposalDeliveryDate: null,
               quoteCreatedBy: null,
-              marginCost: q.marginCost
+              marginCost: q.adminMargin
             };
             return item;
           });
