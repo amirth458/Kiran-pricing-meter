@@ -42,14 +42,6 @@
       </ng-container>
     </div>
     <div class="row">
-      <ng-container *ngIf="type === pmProjectBidStatusType.COMPLETE">
-        <app-customer-proposal-details
-          class="col-12"
-          *ngIf="partIds?.length"
-          [partIds]="partIds"
-        ></app-customer-proposal-details>
-      </ng-container>
-
       <ng-container *ngIf="type === pmProjectBidStatusType.NOT_STARTED">
         <div class="col-12">
           <div class="d-flex align-items-center justify-content-between mb-3">
@@ -109,7 +101,8 @@
         *ngIf="
           type === pmProjectBidStatusType.RELEASED_TO_VENDOR ||
           type === pmProjectBidStatusType.RELEASED_TO_CUSTOMER ||
-          type === pmProjectBidStatusType.PARTIALLY_RELEASED_TO_CUSTOMER
+          type === pmProjectBidStatusType.PARTIALLY_RELEASED_TO_CUSTOMER ||
+          type === pmProjectBidStatusType.COMPLETE
         "
       >
         <div class="col-12 mb-4">
@@ -117,6 +110,7 @@
         </div>
       </ng-container>
 
+      <!-- TODO NOT BEING USED I THINK -->
       <ng-container *ngIf="type === 'released-projects'">
         <div class="col-12">
           <div class="d-flex align-items-center justify-content-between mb-3">
