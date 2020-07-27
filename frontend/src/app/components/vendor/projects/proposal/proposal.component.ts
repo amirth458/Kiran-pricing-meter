@@ -133,7 +133,6 @@ export class ProposalComponent implements OnInit {
           this.quoteList.push(p.partQuoteCustomerView);
         }
       });
-      console.log(this.quoteList);
       this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
@@ -262,7 +261,6 @@ export class ProposalComponent implements OnInit {
       )
       .subscribe(v => {
         this.modalService.dismissAll();
-        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
         this.toasterService.success('Admin proposal have been updated!');
         this.spinner.hide();
         this.route.navigateByUrl('/prodex/projects/pm-release-queue');
@@ -325,7 +323,7 @@ export class ProposalComponent implements OnInit {
             unitPrice: q.unitPrice
           };
         }),
-        totalCost: customerQuote.totalCost,
+        totalCost: (customerQuote.totalCost || 0) + (customerQuote.marginCost || 0),
         adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };
