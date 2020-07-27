@@ -47,8 +47,8 @@ export class ProposalComponent implements OnInit {
   pmProjectStatusType = PmProjectStatusType;
   showPartDetails = false;
 
-  measurementUnits: any;
-  invoiceItems: any;
+  measurementUnits: any = [];
+  invoiceItems: any = [];
 
   public proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
@@ -86,8 +86,8 @@ export class ProposalComponent implements OnInit {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
     });
-    this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
-      this.measurementUnits = res;
+    this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe((res: any) => {
+      this.measurementUnits = res || [];
     });
     this.metaDataService.getProcessMetaData('invoice_item').subscribe(v => (this.invoiceItems = v));
   }
