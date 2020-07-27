@@ -275,6 +275,14 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
         tooltipField: 'rfqIds'
       },
       {
+        headerName: 'Customer Order ID',
+        field: 'customerOrderId',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'customerOrderId'
+      },
+      {
         headerName: 'Part/Suborder IDs',
         field: 'partIds',
         tooltip: params => (params.value || []).join(', '),
