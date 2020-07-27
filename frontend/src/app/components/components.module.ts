@@ -179,7 +179,6 @@ import { CustomerAcceptedComponent } from './vendor/projects/customer-accepted/c
 import { ReleasedBidComponent } from './vendor/projects/released-bid/released-bid.component';
 import { ProposalComponent } from './vendor/projects/proposal/proposal.component';
 import { CustomerPartQuoteComponent } from './vendor/projects/customer-part-quote/customer-part-quote.component';
-import { CustomerProposalDetailsComponent } from './vendor/projects/customer-proposal-details/customer-proposal-details.component';
 import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-proposal.component';
 
 @NgModule({
@@ -350,7 +349,6 @@ import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-p
     ReleasedBidComponent,
     ProposalComponent,
     CustomerPartQuoteComponent,
-    CustomerProposalDetailsComponent,
     AdminProposalComponent
   ],
   imports: [

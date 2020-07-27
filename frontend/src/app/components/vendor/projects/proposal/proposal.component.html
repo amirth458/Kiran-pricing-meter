@@ -1,5 +1,39 @@
 <div class="wrapper container-fluid p-4">
-  <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2">
+  <ng-container *ngIf="isComplete()">
+    <div class="part-list pt-2 pb-3">
+      <div class="w-100 row">
+        <header class="col-12 feature-header d-flex flex-row">
+          <h6 class="title pl-0 text-theme">
+            Project Details
+          </h6>
+          <span
+            *ngIf="adminProposalInfo"
+            class="ml-3 font-sm cursor-pointer font-weight-normal underline"
+            (click)="showPartDetails = !showPartDetails"
+          >
+            See <ng-container *ngIf="showPartDetails">less</ng-container>
+            <ng-container *ngIf="!showPartDetails">more</ng-container> details
+          </span>
+        </header>
+        <ng-container *ngIf="!showPartDetails">
+          <app-part-list [showRefFile]="true" [parts]="adminProposalInfo"></app-part-list>
+        </ng-container>
+      </div>
+    </div>
+    <div class="part-details w-100">
+      <ng-container *ngIf="showPartDetails">
+        <app-prod-part
+          class="d-block mt-4 mb-4"
+          *ngFor="let part of adminProposalInfo"
+          [partId]="part.partId"
+          [unitOptions]="measurementUnits"
+        >
+        </app-prod-part>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2" *ngIf="!isComplete()">
     <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
     <div class="ml-auto" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
       <button (click)="deleteAdminProposal()" class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
@@ -18,6 +52,7 @@
       </button>
     </div>
   </div>
+
   <div class="d-flex">
     <ngb-tabset
       class="w-100"
@@ -30,20 +65,22 @@
         <ng-template ngbTabTitle> Part {{ quote?.partId }} </ng-template>
         <ng-template ngbTabContent>
           <div class="d-flex flex-column pl-2 pr-2">
-            <div class="d-flex flex-row pt-2 pb-2">
-              <h5 class="m-0 pt-3 pb-2 text-theme">
-                Customer Requirement:
-              </h5>
-              <div class="ml-auto">
-                <button
-                  (click)="sendQuote(quote.vendorId, [quote?.partId])"
-                  class="btn btn-sm theme btn-white pl-4 pr-4 w-auto"
-                >
-                  Send Quote to Customer
-                </button>
+            <ng-container *ngIf="!isComplete()">
+              <div class="d-flex flex-row pt-2 pb-2">
+                <h5 class="m-0 pt-3 pb-2 text-theme">
+                  Customer Requirement:
+                </h5>
+                <div class="ml-auto">
+                  <button
+                    (click)="sendQuote(quote.vendorId, [quote?.partId])"
+                    class="btn btn-sm theme btn-white pl-4 pr-4 w-auto"
+                  >
+                    Send Quote to Customer
+                  </button>
+                </div>
               </div>
-            </div>
-            <app-prod-part [partId]="quote.partId" [title]="false"></app-prod-part>
+              <app-prod-part [partId]="quote.partId" [title]="false"></app-prod-part>
+            </ng-container>
             <h5 class="m-0 pt-3 pb-2 text-theme">
               PM Proposal to Customer:
             </h5>
