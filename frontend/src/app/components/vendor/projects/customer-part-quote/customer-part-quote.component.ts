@@ -20,7 +20,7 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
   quoteChange: EventEmitter<PartQuoteCustomerView> = new EventEmitter<PartQuoteCustomerView>();
 
   get totalCost(): number {
-    return this.quote ? Number(this.quote.totalCost) + Number(this.quote.marginCost) : 0;
+    return this.quote ? Number(this.quote.totalCost || 0) + Number(this.quote.marginCost || 0) : 0;
   }
 
   constructor(public metadataService: MetadataService) {}
