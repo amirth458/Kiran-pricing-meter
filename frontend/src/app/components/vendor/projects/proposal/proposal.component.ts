@@ -113,6 +113,12 @@ export class ProposalComponent implements OnInit {
     );
   }
 
+  isQuoteEditable() {
+    return (
+      this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE && this.statusType !== PmProjectStatusType.COMPLETE
+    );
+  }
+
   showProfilesTab() {
     return (
       this.statusType === PmProjectStatusType.CUSTOMER_ACCEPTED ||
@@ -255,10 +261,9 @@ export class ProposalComponent implements OnInit {
       )
       .subscribe(v => {
         this.modalService.dismissAll();
-        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
         this.toasterService.success('Admin proposal have been updated!');
         this.spinner.hide();
-        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+        this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
   }
 
@@ -318,7 +323,7 @@ export class ProposalComponent implements OnInit {
             unitPrice: q.unitPrice
           };
         }),
-        totalCost: customerQuote.totalCost,
+        totalCost: (customerQuote.totalCost || 0) + (customerQuote.marginCost || 0),
         adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };
@@ -386,9 +391,12 @@ export class ProposalComponent implements OnInit {
         const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
         this.toasterService.success('Admin proposal successfully added!');
         this.spinner.hide();
-        const url =
-          '/prodex/projects/pm-release-queue/' +
-          `${this.offerId}/${this.statusType}/admin-proposal/${parentPartIds.join(',')}`;
+        const statusName = (this.statusType || '').replace(/-/g, '_').toUpperCase();
+        let url = '/prodex/projects/pm-release-queue/';
+        if ((this.route.url || '').includes('/prodex/projects/proposal-issued/')) {
+          url = '/prodex/projects/proposal-issued/';
+        }
+        url += `${this.offerId}/${statusName}/admin-proposal/${parentPartIds.join(',')}`;
         this.route.navigateByUrl(url);
       });
   }
@@ -409,7 +417,7 @@ export class ProposalComponent implements OnInit {
       .subscribe(() => {
         this.spinner.hide();
         this.toasterService.success('proposals successfully deleted!');
-        this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
+        this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
   }
 

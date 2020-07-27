@@ -19,8 +19,8 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
   @Output()
   quoteChange: EventEmitter<PartQuoteCustomerView> = new EventEmitter<PartQuoteCustomerView>();
 
-  onRequote() {
-    this.requote.emit();
+  get totalCost(): number {
+    return this.quote ? Number(this.quote.totalCost) + Number(this.quote.marginCost) : 0;
   }
 
   constructor(public metadataService: MetadataService) {}
@@ -35,6 +35,10 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
     if (changes.quotes && changes.quotes.currentValue) {
       this.quote = changes.quotes.currentValue;
     }
+  }
+
+  onRequote() {
+    this.requote.emit();
   }
 
   onMarginCostChange() {
