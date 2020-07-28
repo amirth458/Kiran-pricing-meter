@@ -1,3 +1,32 @@
 :host .released-bid-grids .empty {
   min-height: 100px;
 }
+
+:host .meeting-time {
+  width: 100px !important;
+}
+
+:host .meeting-time span {
+  height: 20px;
+}
+
+:host .meeting-time span.time {
+  color: var(--theme-bright-blue);
+  cursor: pointer;
+}
+:host .picker-icon {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+:host .dt-control {
+  position: absolute;
+  z-index: 0;
+  height: 0;
+  width: 0;
+  background: transparent;
+  border: none;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}

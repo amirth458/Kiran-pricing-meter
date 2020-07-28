@@ -12,8 +12,23 @@
         Send All Quotes to Customer
       </button>
     </div>
-    <div class="ml-auto" *ngIf="proposalTypeEnum.VENDOR_PROPOSAL_TYPE === proposalType">
-      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2" (click)="createAdminProposal()">
+    <div class="ml-auto d-flex align-items-center" *ngIf="proposalTypeEnum.VENDOR_PROPOSAL_TYPE === proposalType">
+      <div class="communication">
+        <app-admin-communication
+          *ngIf="bidPmProjectProcessId"
+          [allowScheduling]="true"
+          [zoomType]="zoomTypeEnum?.BID_PM_PROJECT_PROCESS"
+          [zoomAttachingUserId]="vendorId"
+          [zoomAttachingId]="bidPmProjectProcessId"
+          [chatAttachingId]="bidPmProjectProcessId"
+          [zoomParticipant]="zoomParticipantEnum?.VENDOR"
+          [chatType]="chatTypeEnum?.BID_PM_PROJECT_PROCESS"
+          [allowNotes]="true"
+        >
+        </app-admin-communication>
+      </div>
+
+      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2 h-25" (click)="createAdminProposal()">
         Copy Vendor Quote Details To Appropriate Customer PM RFQ
       </button>
     </div>

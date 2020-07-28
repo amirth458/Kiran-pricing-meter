@@ -16,13 +16,15 @@ import {
   AdminProposalRequest,
   ProposalPartDimension,
   ProposalPartQuote,
-  ProposalTypeEnum
+  ProposalTypeEnum,
+  VendorConfirmationResponse
 } from '../../../../model/bidding.order';
 import { OrdersService } from '../../../../service/orders.service';
 import { ProposalService } from '../../../../service/proposal.service';
 import { Util } from '../../../../util/Util';
 import { PartQuoteCustomerView } from '../../../../model/connect.model';
-
+import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
+import { ChatTypeEnum } from '../../../../model/chat.model';
 @Component({
   selector: 'app-proposal',
   templateUrl: './proposal.component.html',
@@ -45,6 +47,13 @@ export class ProposalComponent implements OnInit {
   proposalTypeEnum = ProposalTypeEnum;
 
   adminProposalInfo: Part[];
+
+  bidPmProjectProcessId: number;
+  PMProjectBids: VendorConfirmationResponse[] = [];
+
+  zoomParticipantEnum = ZoomParticipantEnum;
+  zoomTypeEnum = ZoomTypeEnum;
+  chatTypeEnum = ChatTypeEnum;
 
   get totalCost() {
     return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
@@ -78,6 +87,7 @@ export class ProposalComponent implements OnInit {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
     });
+    this.getReleasedPmProjectBids();
     this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.measurementUnits = res;
     });
@@ -370,5 +380,14 @@ export class ProposalComponent implements OnInit {
         this.toasterService.success('proposals successfully deleted!');
         this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
       });
+  }
+
+  getReleasedPmProjectBids() {
+    this.biddingService.getReleasedPmProjectBids(this.offerId).subscribe(v => {
+      this.PMProjectBids = v || [];
+      this.bidPmProjectProcessId = this.PMProjectBids.filter(
+        bid => bid.vendorUserId == this.vendorId
+      )[0].bidPmProjectProcessId;
+    });
   }
 }

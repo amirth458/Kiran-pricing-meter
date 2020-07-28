@@ -15,7 +15,11 @@ import { MinimumProposalInfo, VendorConfirmationResponse } from '../../../../mod
 import { ProposalService } from '../../../../service/proposal.service';
 import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
 import { Util } from '../../../../util/Util';
-
+import { Chat, ChatTypeEnum } from 'src/app/model/chat.model';
+import { ZoomService } from 'src/app/service/zoom.service';
+import { UserService } from 'src/app/service/user.service';
+import { ConferenceRequest, Conference } from 'src/app/model/conference.model';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-released-bid',
   templateUrl: './released-bid.component.html',
@@ -24,6 +28,7 @@ import { Util } from '../../../../util/Util';
 export class ReleasedBidComponent implements OnInit {
   @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
   @ViewChild('additionalColDefRef') additionalColDefRef: TemplateRef<any>;
+  @ViewChild('communicationCell') communicationCell: TemplateRef<any>;
 
   bidProjectId: number;
   @Input()
@@ -56,6 +61,14 @@ export class ReleasedBidComponent implements OnInit {
   proposalInfo: any;
   adminProposalInfo: Part[];
 
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
+
+  user = {};
+  meetingInfo = {};
+  schdulingForUserId;
+  schdulingForBidPmProjectProcessId;
+
   from = '';
   to = '';
   cc = [];
@@ -68,12 +81,16 @@ export class ReleasedBidComponent implements OnInit {
     public router: Router,
     public currencyPipe: CurrencyPipe,
     public datePipe: DatePipe,
-    public proposalService: ProposalService
+    public proposalService: ProposalService,
+    public zoomService: ZoomService,
+    public userService: UserService,
+    public toaster: ToastrService
   ) {
     this.proposalInfo = {};
   }
 
   ngOnInit() {
+    this.user = this.userService.getUserInfo();
     this.initGrid();
     this.gridOptions = {
       frameworkComponents: this.frameworkComponents,
@@ -82,7 +99,17 @@ export class ReleasedBidComponent implements OnInit {
       rowHeight: 35,
       headerHeight: 35,
       rowSelection: 'multiple',
-      rowMultiSelectWithClick: true
+      rowMultiSelectWithClick: true,
+      onCellFocused: event => {
+        if (
+          event.column &&
+          (event.column.getColId() == 'additionalColDefRef' || event.column.getColId() == 'communication')
+        ) {
+          this.gridOptions.suppressRowClickSelection = true;
+        } else {
+          this.gridOptions.suppressRowClickSelection = false;
+        }
+      }
     };
   }
 
@@ -161,13 +188,27 @@ export class ReleasedBidComponent implements OnInit {
         tooltipField: 'bidPmProjectProcessStatus'
       },
       {
+        headerName: '',
+        hide: false,
+        sortable: true,
+        filter: false,
+        cellRenderer: 'templateRenderer',
+        field: 'additionalColDefRef',
+        cellRendererParams: {
+          ngTemplate: this.additionalColDefRef
+        }
+      },
+      {
         headerName: 'Communication with Vendor',
         hide: false,
         sortable: true,
         filter: false,
         cellRenderer: 'templateRenderer',
+        field: 'communication',
+        width: 260,
+        suppressSizeToFit: true,
         cellRendererParams: {
-          ngTemplate: this.additionalColDefRef
+          ngTemplate: this.communicationCell
         }
       }
     ];
@@ -177,6 +218,7 @@ export class ReleasedBidComponent implements OnInit {
     this.spinner.show('releaseLoadingPanel');
     this.biddingService.getReleasedPmProjectBids(this.bidProjectId).subscribe(v => {
       this.rowData = v || [];
+      this.rowData.map(user => this.getScheduledMeetings(user));
       if (this.rowData.length > 0) {
         this.fetchProposalInfo(this.rowData.map(item => item.vendorId));
       }
@@ -247,5 +289,74 @@ export class ReleasedBidComponent implements OnInit {
   onGridReady(event) {
     this.gridOptions.api = event.api;
     this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  openDateTimeSelector(row) {
+    this.schdulingForUserId = row.vendorUserId;
+    this.schdulingForBidPmProjectProcessId = row.bidPmProjectProcessId;
+  }
+
+  onTimeChanged(event) {
+    this.spinner.show();
+    const meetingTime = new Date(event).toISOString();
+
+    const conference: ConferenceRequest = {
+      hostUserId: this.userService.getUserInfo().id,
+      participantUserId: this.schdulingForUserId,
+      partId: 0,
+      bidOrderId: 0,
+      bidPmProjectProcessId: this.schdulingForBidPmProjectProcessId,
+      customerOrderId: 0,
+      vendorOrderId: 0,
+
+      conferenceTopic: 'Meeting for Bid PM Project Process Id ' + this.schdulingForBidPmProjectProcessId.toString(),
+      conferencePassword: this.schdulingForBidPmProjectProcessId.toString(),
+      startTimeInUTC: meetingTime.substr(0, meetingTime.length - 5) + 'Z',
+      duration: 1
+    };
+    this.zoomService.createConference(conference).subscribe(
+      (res: Conference) => {
+        if (res) {
+          this.getAllScheduledMeetings();
+        }
+        this.spinner.hide();
+        this.toaster.success('Meeting time set.');
+        this.schdulingForUserId = null;
+      },
+      err => {
+        console.log({ err });
+        this.schdulingForUserId = null;
+        this.spinner.hide();
+        this.toaster.error('Error while setting meeting time.');
+      }
+    );
+  }
+
+  getAllScheduledMeetings() {
+    if (this.rowData.length) {
+      this.rowData.map(user => this.getScheduledMeetings(user));
+    }
+  }
+
+  getScheduledMeetings(user: VendorConfirmationResponse) {
+    this.zoomService
+      .getConferenceByBidPmProjectProcessId(
+        user.bidPmProjectProcessId.toString(),
+        user.vendorUserId,
+        this.userService.getUserInfo().id
+      )
+      .subscribe(
+        res => {
+          if (res) {
+            this.meetingInfo[(user.vendorUserId || '').toString()] = res;
+          } else {
+            this.meetingInfo[(user.vendorUserId || '').toString()] = { startTime: '' };
+          }
+        },
+        err => {
+          console.log('Error while fetching meeting information');
+          console.log({ err });
+        }
+      );
   }
 }
