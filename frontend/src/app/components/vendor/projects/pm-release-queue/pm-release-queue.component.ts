@@ -84,9 +84,7 @@ export class PmReleaseQueueComponent implements OnInit {
           this.router.navigateByUrl(`/prodex/projects/proposal-issued/${row.bidPmProjectId}/${statusName}`);
         } else if (row && this.pmProjectStatusType === PmProjectStatusType.CUSTOMER_ACCEPTED) {
           const baseUrl = '/prodex/projects/customer-accepted/';
-          this.router.navigateByUrl(
-            `${baseUrl}${row.bidPmProjectId}/${statusName}/view-proposal/${(row.partIds || []).join(',')}`
-          );
+          this.router.navigateByUrl(`${baseUrl}${row.bidPmProjectId}/${statusName}/${(row.partIds || []).join(',')}`);
         }
       }
     };

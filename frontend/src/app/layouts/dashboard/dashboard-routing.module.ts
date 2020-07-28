@@ -433,14 +433,8 @@ const routes: Routes = [
                 component: CustomerAcceptedComponent
               },
               {
-                path: 'customer-accepted/:bidPmProjectId/:statusType',
-                component: PmReleaseQueueDetailsComponent,
-                children: [
-                  {
-                    path: 'view-proposal/:proposalPartIds',
-                    component: AdminProposalComponent
-                  }
-                ]
+                path: 'customer-accepted/:bidPmProjectId/:statusType/:proposalPartIds',
+                component: AdminProposalComponent
               },
               { path: '', redirectTo: 'settings', pathMatch: 'full' },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }

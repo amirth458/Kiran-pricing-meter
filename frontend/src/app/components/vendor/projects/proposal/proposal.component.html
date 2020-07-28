@@ -1,5 +1,13 @@
 <div class="wrapper container-fluid p-4">
   <ng-container *ngIf="isComplete()">
+    <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2">
+      <h5 class="m-0 text-theme w-100 d-flex flex-row">
+        Submitted Proposal
+        <span class="ml-auto btn-close" (click)="hideDetailView(true)">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+      </h5>
+    </div>
     <div class="part-list pt-2 pb-3">
       <div class="w-100 row">
         <header class="col-12 feature-header d-flex flex-row">
@@ -30,6 +38,17 @@
         >
         </app-prod-part>
       </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isComplete()">
+    <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2">
+      <h5 class="m-0 text-theme w-100 d-flex flex-row">
+        {{ proposalType === proposalTypeEnum.ADMIN_PROPOSAL_TYPE ? 'Admin Proposal' : 'Vendor Proposal' }}
+        <span class="ml-auto btn-close" (click)="hideDetailView()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+      </h5>
     </div>
   </ng-container>
 
@@ -70,7 +89,7 @@
                 <h5 class="m-0 pt-3 pb-2 text-theme">
                   Customer Requirement:
                 </h5>
-                <div class="ml-auto">
+                <div class="ml-auto" *ngIf="proposalType === proposalTypeEnum.ADMIN_PROPOSAL_TYPE">
                   <button
                     (click)="sendQuote(quote.vendorId, [quote?.partId])"
                     class="btn btn-sm theme btn-white pl-4 pr-4 w-auto"

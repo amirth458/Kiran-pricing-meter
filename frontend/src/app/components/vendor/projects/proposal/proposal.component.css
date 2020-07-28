@@ -87,3 +87,8 @@
   color: var(--theme-light-blue);
   font-size: 13px;
 }
+
+:host .btn-close {
+  cursor: pointer;
+  font-size: 14px;
+}
