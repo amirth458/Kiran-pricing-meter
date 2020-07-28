@@ -52,6 +52,10 @@ export class ReleasedBidComponent implements OnInit {
     return this.partInfo;
   }
 
+  get bidPartIds(): Array<number> {
+    return (this.partInfo || []).map(item => item.partId) || [];
+  }
+
   columnDefs: ColDef[] = [];
   gridOptions: GridOptions;
   frameworkComponents = {

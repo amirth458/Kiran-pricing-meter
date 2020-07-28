@@ -133,6 +133,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   }
 
   getAllSuppliersInfo(partIds: Array<number>) {
+    this.spinner.show();
     this.projectService.getAllSuppliersAndPartId(partIds).subscribe(suppliers => {
       this.shortListedSuppliers = (suppliers || []).map((item, index) => {
         const facilityCertificates = (item.facilityCertificates || []).map(facility => facility.name);
@@ -149,6 +150,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
           releasePriority: index + 1
         };
       });
+      this.spinner.hide();
     });
   }
 

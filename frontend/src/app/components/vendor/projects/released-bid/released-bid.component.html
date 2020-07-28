@@ -16,9 +16,13 @@
       >
         <span class="text-theme">Admin Proposal</span>
       </button>
-      <button class="btn btn-white pl-4 pr-4 ml-2">
-        Add New Supplier
-      </button>
+      <app-add-supplier
+        [value]="value"
+        (refresh)="getReleasedPmProjectBids()"
+        [partIds]="bidPartIds"
+        [exclude]="rowData || []"
+      >
+      </app-add-supplier>
     </div>
   </div>
   <div class="ag-theme-balham w-100 h-100 position-relative bid-order-grid">
