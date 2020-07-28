@@ -20,8 +20,8 @@ export class ZoomService {
 
   getConferenceByPartId(
     partId: string,
-    hostUserId: number = this.userId,
-    participantUserId: number = null
+    participantUserId: number = null,
+    hostUserId: number = this.userId
   ): Observable<Conference> {
     let url = environment.procurementApiBaseUrl + `/conference/part/${partId}?hostUserId=${hostUserId}`;
     if (participantUserId) {
@@ -32,8 +32,8 @@ export class ZoomService {
 
   getConferenceByVendorOrderId(
     vendorOrderId: string,
-    hostUserId: number = this.userId,
-    participantUserId: number = null
+    participantUserId: number = null,
+    hostUserId: number = this.userId
   ): Observable<Conference> {
     let url = environment.procurementApiBaseUrl + `/conference/vendor-order/${vendorOrderId}?hostUserId=${hostUserId}`;
     if (participantUserId) {
@@ -44,8 +44,8 @@ export class ZoomService {
 
   getConferenceByCustomerOrderId(
     customerOrderId: string,
-    hostUserId: number = this.userId,
-    participantUserId: number = null
+    participantUserId: number = null,
+    hostUserId: number = this.userId
   ): Observable<Conference> {
     let url =
       environment.procurementApiBaseUrl + `/conference/customer-order/${customerOrderId}?hostUserId=${hostUserId}`;
@@ -57,10 +57,23 @@ export class ZoomService {
 
   getConferenceByBidOrderId(
     bidOrderId: string,
-    hostUserId: number = this.userId,
-    participantUserId: number = null
+    participantUserId: number = null,
+    hostUserId: number = this.userId
   ): Observable<Conference> {
     let url = environment.procurementApiBaseUrl + `/conference/bid-order/${bidOrderId}?hostUserId=${hostUserId}`;
+    if (participantUserId) {
+      url += `&participantUserId=${participantUserId}`;
+    }
+    return this.http.get<Conference>(url);
+  }
+
+  getConferenceByBidPmProjectProcessId(
+    bidPM: string,
+    participantUserId: number = null,
+    hostUserId: number = this.userId
+  ): Observable<Conference> {
+    let url =
+      environment.procurementApiBaseUrl + `/conference/bid-pm-project-process/${bidPM}?hostUserId=${hostUserId}`;
     if (participantUserId) {
       url += `&participantUserId=${participantUserId}`;
     }
