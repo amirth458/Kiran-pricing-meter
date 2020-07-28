@@ -69,9 +69,13 @@
               <th scope="row">Parent Part Id</th>
               <td>{{ part?.parentPartId }}</td>
             </tr>
-            <tr *ngIf="(partQuote && partQuote?.vendorId) || idCollection?.vendorIds?.length > 0">
+            <tr>
               <th scope="row">Vendor Id</th>
-              <td>{{ partQuote?.vendorId ? partQuote.vendorId : idCollection.vendorIds[0] }}</td>
+              <td>
+                <span *ngIf="idCollection.vendorIds[0]">
+                  {{idCollection.vendorNames[0]}} ({{ idCollection.vendorIds[0] }})
+                </span>
+              </td>
             </tr>
             <tr>
               <th scope="row">Customer Order Id</th>
