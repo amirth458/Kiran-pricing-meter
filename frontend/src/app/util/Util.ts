@@ -9,6 +9,7 @@ import {
   AppPartTypeEnum
 } from '../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
+import { PartQuote, PartQuoteCustomerView } from '../model/connect.model';
 
 declare var require: any;
 const dayjs = require('dayjs');
@@ -193,5 +194,14 @@ export class Util {
       }
     }
     return params;
+  }
+
+  static calcPartQuoteCost(quote: PartQuoteCustomerView): number {
+    const itemCost = (quote.partQuoteDetails || []).reduce((sum: number, item: PartQuote) => {
+      sum += Number(item.unit) * Number(item.unitPrice || 0);
+      return sum;
+    }, 0);
+
+    return Number(itemCost || 0) + Number(quote.marginCost || 0);
   }
 }

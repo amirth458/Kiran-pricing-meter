@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 
 import { MetadataService } from '../../../../service/metadata.service';
 import { PartQuoteCustomerView } from '../../../../model/connect.model';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-customer-part-quote',
@@ -20,7 +21,7 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
   quoteChange: EventEmitter<PartQuoteCustomerView> = new EventEmitter<PartQuoteCustomerView>();
 
   get totalCost(): number {
-    return this.quote ? Number(this.quote.totalCost || 0) + Number(this.quote.marginCost || 0) : 0;
+    return this.quote ? Util.calcPartQuoteCost(this.quote) : 0;
   }
 
   constructor(public metadataService: MetadataService) {}

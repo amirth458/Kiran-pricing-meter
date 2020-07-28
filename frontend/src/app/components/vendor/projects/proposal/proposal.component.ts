@@ -323,7 +323,7 @@ export class ProposalComponent implements OnInit {
             unitPrice: q.unitPrice
           };
         }),
-        totalCost: (customerQuote.totalCost || 0) + (customerQuote.marginCost || 0),
+        totalCost: Util.calcPartQuoteCost(customerQuote),
         adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };

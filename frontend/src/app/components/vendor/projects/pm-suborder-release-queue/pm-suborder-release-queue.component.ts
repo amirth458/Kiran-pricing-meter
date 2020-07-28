@@ -83,24 +83,17 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       rowBuffer: 0,
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
-      cacheOverflowSize: 0,
-      onRowClicked: event => {}
+      cacheOverflowSize: 0
     };
   }
 
   /*onClick row selection*/
   onRowSelect(selectedRow) {
-    const { customerOrderId, partIds } = selectedRow;
-    let selectedCustomers = { customerOrderId, partIds };
-
-    if (!this.selectedVendors.length) {
-      this.selectedVendors.push(selectedCustomers);
-      selectedRow.selected = true;
-      return;
-    }
-    const isExisit = this.selectedVendors.find(item => item.customerOrderId == selectedRow.customerOrderId);
-    if (isExisit) {
-      this.selectedVendors = this.selectedVendors.filter(item => item.customerOrderId !== selectedRow.customerOrderId);
+    const { id, customerOrderId, partIds } = selectedRow;
+    const selectedCustomers = { id, customerOrderId, partIds };
+    const idx = (this.selectedVendors || []).map(item => item.id).indexOf(id);
+    if (idx > -1) {
+      this.selectedVendors.splice(idx, 1);
       selectedRow.selected = false;
     } else {
       this.selectedVendors.push(selectedCustomers);
@@ -123,7 +116,7 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
   }
 
   getSorting() {
-    let defaultSorting = 'id,desc';
+    const defaultSorting = 'id,desc';
     return defaultSorting;
   }
 
@@ -132,7 +125,6 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
     if (!this.selectedVendors.length) {
       return;
     }
-
     this.spinner.show('loadingPanel');
     const bidPmProjectRequest = [];
     this.selectedVendors.map(item => {
@@ -140,7 +132,6 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
         bidPmProjectRequest.push({ customerOrderId: item.customerOrderId, partId });
       });
     });
-
     this.projectService.createBidItems({ bidPmProjectRequest }).subscribe(
       response => {
         this.spinner.hide('loadingPanel');
@@ -191,10 +182,14 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
             if (!data || !data.length) {
               return;
             }
-
             this.totalRows = data[0].totalRowCount || 0;
             const lastRow = this.totalRows <= params.endRow ? this.totalRows : -1;
             if (data && this.totalRows) {
+              data = (data || []).map((item: any, index: number) => {
+                item.id = params.startRow + (index + 1);
+                item.selected = false;
+                return item;
+              });
               params.successCallback(data || [], lastRow);
             }
           },
@@ -358,7 +353,7 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
       },
       {
         headerName: 'Action',
-        field: '',
+        field: 'selected',
         cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.selectButton
