@@ -44,14 +44,15 @@
   </div>
 </div>
 <!-- table row select button -->
-<ng-template #selectButton let-row>
-  <button
+<ng-template #selectButton let-row let-column="params">
+  <label
+    *ngIf="row && column?.colDef?.field"
     class="btn select-button"
     [ngClass]="row?.selected ? 'btn-white' : 'btn-secondary'"
-    (click)="onRowSelect(row)"
   >
+    <input class="d-none" type="checkbox" [(ngModel)]="row.selected" (ngModelChange)="onRowSelect(row)" />
     Select
-  </button>
+  </label>
 </ng-template>
 
 <!-- partDetails cell -->

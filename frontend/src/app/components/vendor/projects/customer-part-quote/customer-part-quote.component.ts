@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 
 import { MetadataService } from '../../../../service/metadata.service';
 import { PartQuoteCustomerView } from '../../../../model/connect.model';
+import { Util } from '../../../../util/Util';
 
 @Component({
   selector: 'app-customer-part-quote',
@@ -19,8 +20,8 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
   @Output()
   quoteChange: EventEmitter<PartQuoteCustomerView> = new EventEmitter<PartQuoteCustomerView>();
 
-  onRequote() {
-    this.requote.emit();
+  get totalCost(): number {
+    return this.quote ? Util.calcPartQuoteCost(this.quote) : 0;
   }
 
   constructor(public metadataService: MetadataService) {}
@@ -35,6 +36,10 @@ export class CustomerPartQuoteComponent implements OnInit, OnChanges {
     if (changes.quotes && changes.quotes.currentValue) {
       this.quote = changes.quotes.currentValue;
     }
+  }
+
+  onRequote() {
+    this.requote.emit();
   }
 
   onMarginCostChange() {

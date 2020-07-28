@@ -9,11 +9,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { BiddingService } from '../../../../service/bidding.service';
-import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
+import { FilterOption } from '../../../../model/vendor.model';
 import { MetadataService } from '../../../../service/metadata.service';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import {
   AdminProposalRequest,
+  PmProjectStatusType,
   ProposalPartDimension,
   ProposalPartQuote,
   ProposalTypeEnum,
@@ -21,11 +22,14 @@ import {
 } from '../../../../model/bidding.order';
 import { OrdersService } from '../../../../service/orders.service';
 import { ProposalService } from '../../../../service/proposal.service';
-import { Util } from '../../../../util/Util';
+import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
 import { PartQuoteCustomerView } from '../../../../model/connect.model';
 import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
 import { ChatTypeEnum } from '../../../../model/chat.model';
 import { UserService } from 'src/app/service/user.service';
+import { RfqPricingService } from '../../../../service/rfq-pricing.service';
+import { Util } from '../../../../util/Util';
+
 @Component({
   selector: 'app-proposal',
   templateUrl: './proposal.component.html',
@@ -40,14 +44,18 @@ export class ProposalComponent implements OnInit {
   quoteList: PartQuoteCustomerView[];
   partInfo: any;
   refMedia: any;
+  adminProposalInfo: Part[];
+  processProfiles: any[] = null;
+  pricingProfiles: any[] = null;
+  selectedTab: number = null;
+  pmProjectStatusType = PmProjectStatusType;
+  showPartDetails = false;
 
-  measurementUnits: any;
-  invoiceItems: any;
+  measurementUnits: any = [];
+  invoiceItems: any = [];
 
   public proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
-
-  adminProposalInfo: Part[];
 
   bidPmProjectProcessId: number;
   PMProjectBids: VendorConfirmationResponse[] = [];
@@ -80,7 +88,8 @@ export class ProposalComponent implements OnInit {
     public toasterService: ToastrService,
     public spinner: NgxSpinnerService,
     public modalService: NgbModal,
-    public userService: UserService
+    public userService: UserService,
+    protected pricingService: RfqPricingService
   ) {
     this.partInfo = {};
     this.refMedia = {};
@@ -89,14 +98,14 @@ export class ProposalComponent implements OnInit {
       const params: any = { ...v[0], ...v[1] };
       this.offerId = params.bidPmProjectId || null;
       this.vendorId = params.vendorId || null;
-      this.statusType = params.statusType || '';
+      this.statusType = (params.statusType || '').replace(/-/g, '_').toUpperCase();
       if (params.proposalPartIds) {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
     });
     this.getReleasedPmProjectBids();
     this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
-      this.measurementUnits = res;
+      this.measurementUnits = res || [];
     });
     this.metaDataService.getProcessMetaData('invoice_item').subscribe(v => (this.invoiceItems = v));
   }
@@ -114,6 +123,25 @@ export class ProposalComponent implements OnInit {
     return {
       'background-image': `url(${image || './assets/image/no-preview.jpg'})`
     };
+  }
+
+  isComplete() {
+    return (
+      this.statusType === PmProjectStatusType.COMPLETE && this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE
+    );
+  }
+
+  isQuoteEditable() {
+    return (
+      this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE && this.statusType !== PmProjectStatusType.COMPLETE
+    );
+  }
+
+  showProfilesTab() {
+    return (
+      this.statusType === PmProjectStatusType.CUSTOMER_ACCEPTED ||
+      this.proposalType === ProposalTypeEnum.ADMIN_PROPOSAL_TYPE
+    );
   }
 
   fetchPartsAndQuote() {
@@ -135,11 +163,15 @@ export class ProposalComponent implements OnInit {
         this.quoteList.push(p);
       });
       this.activePartId = this.quoteList[0].partId;
+      if (this.isComplete()) {
+        this.findAdminProposal((quotes || []).map(p => p.partId));
+      }
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
   }
 
   getProposalPartByIds(ids: Array<number>) {
+    this.spinner.show();
     this.proposalService.getProposalPartByIds(ids).subscribe(parts => {
       (parts || []).map(p => {
         this.partInfo[p.id] = p;
@@ -152,7 +184,35 @@ export class ProposalComponent implements OnInit {
       this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
 
       this.getCustomerDetails(order.customerId);
+      this.selectedTab = this.quoteList.length > 0 ? this.quoteList[0].partId : null;
+      this.fetchProfilesTabInfo();
+      this.spinner.hide();
     });
+  }
+
+  beforeChange($event: NgbTabChangeEvent) {
+    this.selectedTab = Number($event.nextId);
+    this.activePartId = $event.nextId;
+    this.isReleaseToSingleSupplier = null;
+
+    setTimeout(() => {
+      const quotePart = this.quoteList.filter(p => p.partId == this.activePartId);
+      const order = this.partInfo[quotePart[0].proposalPartId].order;
+
+      this.customerOrderId = order.id;
+      this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
+
+      this.getCustomerDetails(order.customerId);
+    }, 500);
+
+    if (this.showProfilesTab()) {
+      this.fetchProfilesTabInfo();
+    }
+  }
+
+  fetchProfilesTabInfo() {
+    this.getProcessProfile(false);
+    this.getPricingProfiles();
   }
 
   getDimension(rfqMedia: RfqMedia) {
@@ -175,7 +235,10 @@ export class ProposalComponent implements OnInit {
 
   findAdminProposal(ids: Array<number>) {
     this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
-      this.adminProposalInfo = v || [];
+      this.adminProposalInfo = (v || []).map(p => {
+        p.partId = p.id;
+        return p;
+      });
     });
   }
 
@@ -228,6 +291,14 @@ export class ProposalComponent implements OnInit {
     this.sendQuote(quote.vendorId, arr);
   }
 
+  hideDetailView(isCustomerAccepted: boolean = false) {
+    if (!isCustomerAccepted) {
+      this.route.navigate(['.'], { relativeTo: this.router.parent });
+    } else {
+      this.route.navigateByUrl('/prodex/projects/customer-accepted');
+    }
+  }
+
   updateAdminProposal() {
     this.spinner.show();
     combineLatest(this.buildAdminProposalData())
@@ -240,10 +311,8 @@ export class ProposalComponent implements OnInit {
       )
       .subscribe(v => {
         this.modalService.dismissAll();
-        const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
-        this.toasterService.success('Admin proposal have been updated!');
+        this.toasterService.success('Proposal saved successfully!');
         this.spinner.hide();
-        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
       });
   }
 
@@ -270,11 +339,11 @@ export class ProposalComponent implements OnInit {
         },
         volume: {
           unitId: partDimension ? partDimension.volume.unitId : null,
-          value: partDimension ? partDimension.volume.unitId : null
+          value: partDimension ? partDimension.volume.value : null
         },
         surfaceArea: {
           unitId: partDimension ? partDimension.surfaceArea.unitId : null,
-          value: partDimension ? partDimension.surfaceArea.unitId : null
+          value: partDimension ? partDimension.surfaceArea.value : null
         },
         thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
         thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
@@ -303,7 +372,7 @@ export class ProposalComponent implements OnInit {
             unitPrice: q.unitPrice
           };
         }),
-        totalCost: customerQuote.totalCost,
+        totalCost: Util.calcPartQuoteCost(customerQuote),
         adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };
@@ -371,9 +440,12 @@ export class ProposalComponent implements OnInit {
         const parentPartIds = (v || []).map((p: AdminProposalRequest) => p.part.parentPartId);
         this.toasterService.success('Admin proposal successfully added!');
         this.spinner.hide();
-        let url =
-          '/prodex/projects/pm-release-queue/' +
-          `${this.offerId}/${this.statusType}/admin-proposal/${parentPartIds.join(',')}`;
+        const statusName = (this.statusType || '').replace(/-/g, '_').toUpperCase();
+        let url = '/prodex/projects/pm-release-queue/';
+        if ((this.route.url || '').includes('/prodex/projects/proposal-issued/')) {
+          url = '/prodex/projects/proposal-issued/';
+        }
+        url += `${this.offerId}/${statusName}/admin-proposal/${parentPartIds.join(',')}`;
         this.route.navigateByUrl(url);
       });
   }
@@ -394,7 +466,7 @@ export class ProposalComponent implements OnInit {
       .subscribe(() => {
         this.spinner.hide();
         this.toasterService.success('proposals successfully deleted!');
-        this.route.navigateByUrl(`/prodex/projects/pm-release-queue`);
+        this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
   }
 
@@ -422,18 +494,77 @@ export class ProposalComponent implements OnInit {
     }
   }
 
-  beforeChange($event) {
-    this.activePartId = $event.nextId;
-    this.isReleaseToSingleSupplier = null;
+  getPartIdFromQuote(): number {
+    const quote = (this.quoteList || []).filter(f => f.partId === this.selectedTab);
+    return quote.length > 0 ? quote[0].proposalPartId : null;
+  }
 
-    setTimeout(() => {
-      const quotePart = this.quoteList.filter(p => p.partId == this.activePartId);
-      const order = this.partInfo[quotePart[0].proposalPartId].order;
+  async getProcessProfile(applyGlobalRule: boolean = false) {
+    const partId = this.getPartIdFromQuote();
+    const part: Part = this.partInfo[partId] as Part;
+    this.spinner.show();
+    const res = await this.orderService.getMatchingProcessProfiles([part.rfqMedia.id], applyGlobalRule).toPromise();
 
-      this.customerOrderId = order.id;
-      this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
+    this.processProfiles = [];
+    this.processProfiles = res.map(item => ({
+      id: item.processProfileId,
+      profileId: item.processProfileId,
+      vendorName: item.corporateName,
+      processProfileName: item.processProfileName,
+      facilityName: item.facilityName,
+      material: item.material,
+      equipment: item.equipment
+    }));
+    this.spinner.hide();
+  }
 
-      this.getCustomerDetails(order.customerId);
-    }, 500);
+  async getPricingProfiles() {
+    const partId = this.getPartIdFromQuote();
+    const part: Part = this.partInfo[partId] as Part;
+    this.spinner.show();
+    try {
+      const pageSize = 1000;
+      let data = [];
+      let page = 0;
+      let filter: FilterOption = { size: pageSize, sort: '', page, q: '' };
+
+      let currentData = await this.pricingService
+        .getScreenPricingProfileByPartId(
+          part.id,
+          this.processProfiles.map(profile => profile.profileId),
+          filter
+        )
+        .toPromise();
+      while (currentData.length) {
+        page = page + 1;
+        data = data.concat(currentData);
+        filter = { size: pageSize, sort: '', page, q: '' };
+        if (currentData.length == pageSize) {
+          currentData = await this.pricingService
+            .getScreenPricingProfileByPartId(
+              part.id,
+              this.processProfiles.map(profile => profile.profileId),
+              filter
+            )
+            .toPromise();
+        } else {
+          currentData = [];
+        }
+      }
+      this.pricingProfiles = data.map(item => ({
+        selected: false,
+        id: item.processPricingId,
+        vendorName: item.processVendorName,
+        pricingProfile: item.pricingProfileName,
+        material: item.material,
+        equipment: item.equipment,
+        processProfile: item.processProfileName,
+        totalCost: null
+      }));
+      this.spinner.hide();
+    } catch (e) {
+      this.spinner.hide();
+      this.pricingProfiles = [];
+    }
   }
 }
