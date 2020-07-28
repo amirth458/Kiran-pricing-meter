@@ -13,6 +13,7 @@ export interface Chat {
   vendorOrderId: number;
   partId: number;
   customerOrderId: number;
+  bidPmProjectProcessId: number;
   messageNotes: Array<MessageNote>;
   vendorId: number;
   users?: Array<UserSummary>;
@@ -46,7 +47,8 @@ export enum ChatTypeEnum {
   PART_NOTE = 1,
   BID_OFFER = 2,
   VENDOR_ORDER = 3,
-  CUSTOMER_ORDER = 4
+  CUSTOMER_ORDER = 4,
+  BID_PM_PROJECT_PROCESS = 5
 }
 
 export interface ChatAttachmentView {

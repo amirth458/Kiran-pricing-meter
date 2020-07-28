@@ -54,7 +54,21 @@
 
   <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2" *ngIf="!isComplete()">
     <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
-    <div class="ml-auto" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
+    <div class="ml-auto d-flex align-items-center" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
+      <div class="communication" *ngIf="isReleaseToSingleSupplier !== null && customer && activePartId">
+        <app-admin-communication
+          [allowScheduling]="true"
+          [zoomType]="isReleaseToSingleSupplier ? zoomTypeEnum?.CUSTOMER_ORDER : zoomTypeEnum?.PART"
+          [zoomAttachingUserId]="customer.userId"
+          [zoomAttachingId]="isReleaseToSingleSupplier ? customerOrderId : activePartId"
+          [chatAttachingId]="isReleaseToSingleSupplier ? customerOrderId : activePartId"
+          [zoomParticipant]="zoomParticipantEnum?.CUSTOMER"
+          [chatType]="isReleaseToSingleSupplier ? chatTypeEnum?.CUSTOMER_ORDER : chatTypeEnum?.PART_NOTE"
+          [allowNotes]="true"
+        >
+        </app-admin-communication>
+      </div>
+
       <button (click)="deleteAdminProposal()" class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
         Delete Proposal
       </button>
@@ -65,8 +79,23 @@
         Send All Quotes to Customer
       </button>
     </div>
-    <div class="ml-auto" *ngIf="proposalTypeEnum.VENDOR_PROPOSAL_TYPE === proposalType">
-      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2" (click)="createAdminProposal()">
+    <div class="ml-auto d-flex align-items-center" *ngIf="proposalTypeEnum.VENDOR_PROPOSAL_TYPE === proposalType">
+      <div class="communication">
+        <app-admin-communication
+          *ngIf="bidPmProjectProcessId"
+          [allowScheduling]="true"
+          [zoomType]="zoomTypeEnum?.BID_PM_PROJECT_PROCESS"
+          [zoomAttachingUserId]="vendorId"
+          [zoomAttachingId]="bidPmProjectProcessId"
+          [chatAttachingId]="bidPmProjectProcessId"
+          [zoomParticipant]="zoomParticipantEnum?.VENDOR"
+          [chatType]="chatTypeEnum?.BID_PM_PROJECT_PROCESS"
+          [allowNotes]="true"
+        >
+        </app-admin-communication>
+      </div>
+
+      <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2 h-25" (click)="createAdminProposal()">
         Copy Vendor Quote Details To Appropriate Customer PM RFQ
       </button>
     </div>

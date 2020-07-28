@@ -196,6 +196,28 @@ export class Util {
     return params;
   }
 
+  static compareDate(date1: Date, date2: Date): number {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    const same = d1.getTime() === d2.getTime();
+
+    // Check if the first is greater than second
+    if (same) {
+      return 0;
+    }
+
+    // Check if the first is greater than second
+    if (d1 > d2) {
+      return 1;
+    }
+
+    // Check if the first is less than second
+    if (d1 < d2) {
+      return -1;
+    }
+  }
+
   static calcPartQuoteCost(quote: PartQuoteCustomerView): number {
     const itemCost = (quote.partQuoteDetails || []).reduce((sum: number, item: PartQuote) => {
       sum += Number(item.unit) * Number(item.unitPrice || 0);

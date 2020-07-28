@@ -1,0 +1,57 @@
+/*  Communication */
+:host {
+  width: 100%;
+}
+.communication {
+}
+
+.communication .notes {
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.communication .zoom-controls {
+  padding: 3px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.communication .notes:hover,
+.communication .zoom-controls:hover {
+  border: 1px solid grey;
+}
+
+.communication .methods .icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.methods .zoom-details {
+  width: 160px;
+  border-radius: 6px;
+}
+
+.methods .zoom-details .time {
+  color: var(--theme-bold-blue);
+  cursor: pointer;
+}
+
+.methods .zoom-details p {
+  font-size: 12px;
+}
+
+input {
+  border: none;
+  color: transparent;
+  cursor: inherit;
+  background: transparent;
+  height: 0px;
+  padding: unset;
+  margin: unset;
+}
+
+.empty {
+  width: 30px;
+}
+/*  End of Communication */

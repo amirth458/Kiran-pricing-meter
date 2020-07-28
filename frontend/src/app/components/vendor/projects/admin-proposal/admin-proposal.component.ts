@@ -11,6 +11,7 @@ import { OrdersService } from '../../../../service/orders.service';
 import { ProposalTypeEnum } from '../../../../model/bidding.order';
 import { ProposalComponent } from '../proposal/proposal.component';
 import { ProposalService } from '../../../../service/proposal.service';
+import { UserService } from 'src/app/service/user.service';
 import { RfqPricingService } from '../../../../service/rfq-pricing.service';
 
 @Component({
@@ -31,6 +32,7 @@ export class AdminProposalComponent extends ProposalComponent implements OnInit 
     public toasterService: ToastrService,
     public spinner: NgxSpinnerService,
     public modalService: NgbModal,
+    public userService: UserService,
     protected pricingService: RfqPricingService
   ) {
     super(
@@ -43,6 +45,7 @@ export class AdminProposalComponent extends ProposalComponent implements OnInit 
       toasterService,
       spinner,
       modalService,
+      userService,
       pricingService
     );
   }

@@ -67,3 +67,80 @@
     </span>
   </div>
 </ng-template>
+
+<ng-template #communicationCell let-row>
+  <div class="d-flex flex-row justify-content-around align-items-center h-100 w-100">
+    <app-chat
+      [participants]="row.vendorUserId ? [row.vendorUserId] : []"
+      [id]="row.bidPmProjectProcessId"
+      [type]="chatTypeEnum.BID_PM_PROJECT_PROCESS"
+      [value]="chat"
+      (valueChange)="chat = $event"
+    >
+    </app-chat>
+
+    <!-- Zoom Communication -->
+    <ng-container>
+      <label class="text-theme-green  text-btn pt-2 picker-icon" (click)="openDateTimeSelector(row)">
+        <i class="far fa-calendar-alt"></i>
+        <input
+          *ngIf="meetingInfo[row.vendorUserId]"
+          class="dt-control m-0 p-0"
+          readonly
+          #dateTimeSelector2
+          [owlDateTime]="dt2"
+          [owlDateTimeTrigger]="dt2"
+          [(ngModel)]="meetingInfo[row.vendorUserId].startTime"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="onTimeChanged($event)"
+        />
+        <owl-date-time #dt2></owl-date-time>
+      </label>
+      <div
+        class="d-flex meeting-time position-relative text-center d-flex align-items-center"
+        (click)="openDateTimeSelector(row)"
+      >
+        <span class="d-flex flex-column justify-content-center align-items-center m-0">
+          <span class="m-0 text-center ">
+            Meeting Time
+          </span>
+          <span
+            class="font-weight-bold time text-center"
+            [ngClass]="{
+              'theme-grey': meetingInfo[row.vendorUserId]?.isExpired || !meetingInfo[row.vendorUserId]?.startTime
+            }"
+          >
+            <a
+              *ngIf="meetingInfo[row.vendorUserId]?.startTime"
+              [href]="
+                user?.id == meetingInfo[row.vendorUserId].hostUserId
+                  ? meetingInfo[row.vendorUserId]?.videoConferenceLinkForHost
+                  : meetingInfo[row.vendorUserId]?.videoConferenceLinkForParticipant
+              "
+              target="_blank"
+              class="underline"
+            >
+              {{ meetingInfo[row.vendorUserId]?.startTime | date: 'short' }}
+            </a>
+            <ng-container *ngIf="!meetingInfo[row.vendorUserId]?.startTime">
+              -
+            </ng-container>
+          </span>
+          <input
+            *ngIf="meetingInfo[row.vendorUserId]"
+            class="dt-control m-0 p-0"
+            readonly
+            #dateTimeSelector
+            [owlDateTime]="dt1"
+            [owlDateTimeTrigger]="dt1"
+            [(ngModel)]="meetingInfo[row.vendorUserId].startTime"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="onTimeChanged($event)"
+          />
+        </span>
+      </div>
+      <owl-date-time #dt1></owl-date-time>
+    </ng-container>
+    <!-- End of Zoom Communication -->
+  </div>
+</ng-template>
