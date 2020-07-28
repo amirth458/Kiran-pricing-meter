@@ -249,6 +249,10 @@ export class ProposalComponent implements OnInit {
     this.sendQuote(quote.vendorId, arr);
   }
 
+  hideDetailView() {
+    this.route.navigate(['.'], { relativeTo: this.router.parent });
+  }
+
   updateAdminProposal() {
     this.spinner.show();
     combineLatest(this.buildAdminProposalData())
@@ -261,9 +265,8 @@ export class ProposalComponent implements OnInit {
       )
       .subscribe(v => {
         this.modalService.dismissAll();
-        this.toasterService.success('Admin proposal have been updated!');
+        this.toasterService.success('Proposal saved successfully!');
         this.spinner.hide();
-        this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
   }
 
