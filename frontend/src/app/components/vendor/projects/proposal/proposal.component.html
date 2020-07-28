@@ -54,7 +54,22 @@
 
   <ng-container *ngIf="!isComplete()">
     <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2">
-      <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
+      <div class="d-flex flex-column">
+        <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
+        <div class="d-flex flex-row" *ngIf="releasedProposal && proposalType === proposalTypeEnum.ADMIN_PROPOSAL_TYPE">
+          <div>
+            <span class="text-light-blue text-underlined">
+              Assign Vendor:
+            </span>
+            <span class="text-theme">
+              {{ releasedProposal.vendorName }}
+            </span>
+          </div>
+          <a class="text-theme text-underlined pl-3" href="javascript:void(0)" (click)="viewVendorProposal()">
+            Vendor Proposal
+          </a>
+        </div>
+      </div>
       <div class="ml-auto d-flex align-items-center" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
         <div class="communication" *ngIf="isReleaseToSingleSupplier !== null && customer && activePartId">
           <app-admin-communication
@@ -99,24 +114,6 @@
         <button class="btn theme btn-primary pl-4 pr-4 w-auto ml-2 h-25" (click)="createAdminProposal()">
           Copy Vendor Quote Details To Appropriate Customer PM RFQ
         </button>
-      </div>
-    </div>
-    <div
-      *ngIf="releasedProposal && proposalType === proposalTypeEnum.ADMIN_PROPOSAL_TYPE"
-      class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2"
-    >
-      <div>
-        <span class="text-light-blue text-underlined">
-          Assign Vendor:
-        </span>
-        <span class="text-theme">
-          {{ releasedProposal.vendorName }}
-        </span>
-      </div>
-      <div class="pl-3 pr-3">
-        <a class="text-theme text-underlined" href="javascript:void(0)" (click)="viewVendorProposal()">
-          Vendor Proposal
-        </a>
       </div>
     </div>
   </ng-container>
