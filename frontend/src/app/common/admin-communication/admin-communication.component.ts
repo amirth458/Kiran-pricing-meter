@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Util } from 'src/app/util/util';
+import { Util } from 'src/app/util/Util';
 import { ZoomTypeEnum, ConferenceRequest, ZoomParticipantEnum, Conference } from 'src/app/model/conference.model';
 import { Chat, ChatTypeEnum } from 'src/app/model/chat.model';
 import { ZoomService } from 'src/app/service/zoom.service';

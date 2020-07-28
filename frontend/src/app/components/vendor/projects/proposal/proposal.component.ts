@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { BiddingService } from '../../../../service/bidding.service';
 import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
@@ -25,6 +25,7 @@ import { Util } from '../../../../util/Util';
 import { PartQuoteCustomerView } from '../../../../model/connect.model';
 import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
 import { ChatTypeEnum } from '../../../../model/chat.model';
+import { UserService } from 'src/app/service/user.service';
 @Component({
   selector: 'app-proposal',
   templateUrl: './proposal.component.html',
@@ -55,6 +56,11 @@ export class ProposalComponent implements OnInit {
   zoomTypeEnum = ZoomTypeEnum;
   chatTypeEnum = ChatTypeEnum;
 
+  isReleaseToSingleSupplier = null;
+  customerOrderId = null;
+  customer = null;
+  activePartId = null;
+
   get totalCost() {
     return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
@@ -73,7 +79,8 @@ export class ProposalComponent implements OnInit {
     public orderService: OrdersService,
     public toasterService: ToastrService,
     public spinner: NgxSpinnerService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public userService: UserService
   ) {
     this.partInfo = {};
     this.refMedia = {};
@@ -116,6 +123,7 @@ export class ProposalComponent implements OnInit {
           this.quoteList.push(p.partQuoteCustomerView);
         }
       });
+      this.activePartId = this.quoteList[0].partId;
       this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
@@ -126,6 +134,7 @@ export class ProposalComponent implements OnInit {
       (quotes || []).map(p => {
         this.quoteList.push(p);
       });
+      this.activePartId = this.quoteList[0].partId;
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
   }
@@ -136,6 +145,13 @@ export class ProposalComponent implements OnInit {
         this.partInfo[p.id] = p;
         this.getReferenceFiles(p.id);
       });
+
+      const order = this.partInfo[this.quoteList[0].proposalPartId].order;
+
+      this.customerOrderId = order.id;
+      this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
+
+      this.getCustomerDetails(order.customerId);
     });
   }
 
@@ -385,9 +401,39 @@ export class ProposalComponent implements OnInit {
   getReleasedPmProjectBids() {
     this.biddingService.getReleasedPmProjectBids(this.offerId).subscribe(v => {
       this.PMProjectBids = v || [];
-      this.bidPmProjectProcessId = this.PMProjectBids.filter(
-        bid => bid.vendorUserId == this.vendorId
-      )[0].bidPmProjectProcessId;
+      const result = this.PMProjectBids.filter(bid => bid.vendorUserId == this.vendorId);
+      this.bidPmProjectProcessId = result.length ? result[0].bidPmProjectProcessId : null;
     });
+  }
+
+  async getCustomerDetails(customerId) {
+    const body = {
+      q: '',
+      filterColumnsRequests: [
+        { id: 11, displayName: 'Customer ID', selectedOperator: '=', searchedValue: customerId.toString() }
+      ]
+    };
+    try {
+      const res = await this.userService.getAllCustomers(0, 10, body).toPromise();
+      this.customer = res.content[0];
+    } catch (error) {
+      console.log(error);
+      this.customer = null;
+    }
+  }
+
+  beforeChange($event) {
+    this.activePartId = $event.nextId;
+    this.isReleaseToSingleSupplier = null;
+
+    setTimeout(() => {
+      const quotePart = this.quoteList.filter(p => p.partId == this.activePartId);
+      const order = this.partInfo[quotePart[0].proposalPartId].order;
+
+      this.customerOrderId = order.id;
+      this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
+
+      this.getCustomerDetails(order.customerId);
+    }, 500);
   }
 }

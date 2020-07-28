@@ -1,7 +1,21 @@
 <div class="wrapper container-fluid p-4">
   <div class="d-flex flex-row justify-content-start align-items-center pt-2 pb-2">
     <h6 class="m-0 text-theme total-price">Total Price {{ totalCost || 0 | currency: 'USD':'symbol':'0.0-3' }}</h6>
-    <div class="ml-auto" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
+    <div class="ml-auto d-flex align-items-center" *ngIf="proposalTypeEnum.ADMIN_PROPOSAL_TYPE === proposalType">
+      <div class="communication" *ngIf="isReleaseToSingleSupplier !== null && customer && activePartId">
+        <app-admin-communication
+          [allowScheduling]="true"
+          [zoomType]="isReleaseToSingleSupplier ? zoomTypeEnum?.CUSTOMER_ORDER : zoomTypeEnum?.PART"
+          [zoomAttachingUserId]="customer.userId"
+          [zoomAttachingId]="isReleaseToSingleSupplier ? customerOrderId : activePartId"
+          [chatAttachingId]="isReleaseToSingleSupplier ? customerOrderId : activePartId"
+          [zoomParticipant]="zoomParticipantEnum?.CUSTOMER"
+          [chatType]="isReleaseToSingleSupplier ? chatTypeEnum?.CUSTOMER_ORDER : chatTypeEnum?.PART_NOTE"
+          [allowNotes]="true"
+        >
+        </app-admin-communication>
+      </div>
+
       <button (click)="deleteAdminProposal()" class="btn btn-white text-orange del-proposal pl-4 pr-4 w-auto ml-2">
         Delete Proposal
       </button>
@@ -34,7 +48,12 @@
     </div>
   </div>
   <div class="d-flex ">
-    <ngb-tabset [destroyOnHide]="true" [justify]="'start'" *ngIf="(quoteList?.length || 0) > 0">
+    <ngb-tabset
+      (tabChange)="beforeChange($event)"
+      [destroyOnHide]="true"
+      [justify]="'start'"
+      *ngIf="(quoteList?.length || 0) > 0"
+    >
       <ngb-tab *ngFor="let quote of quoteList" [id]="quote.partId.toString()">
         <ng-template ngbTabTitle> Part {{ quote?.partId }} </ng-template>
         <ng-template ngbTabContent>
