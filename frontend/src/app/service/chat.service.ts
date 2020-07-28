@@ -24,6 +24,7 @@ export class ChatService {
       partId: null,
       vendorId,
       vendorOrderId: null,
+      bidPmProjectProcessId: null,
       participants: null
     };
     switch (type) {
@@ -41,6 +42,10 @@ export class ChatService {
         break;
       case ChatTypeEnum.CUSTOMER_ORDER:
         params.customerOrderId = id;
+        params.participants = participants;
+        break;
+      case ChatTypeEnum.BID_PM_PROJECT_PROCESS:
+        params.bidPmProjectProcessId = id;
         params.participants = participants;
         break;
     }

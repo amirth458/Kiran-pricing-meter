@@ -17,12 +17,16 @@ import {
   PmProjectStatusType,
   ProposalPartDimension,
   ProposalPartQuote,
-  ProposalTypeEnum
+  ProposalTypeEnum,
+  VendorConfirmationResponse
 } from '../../../../model/bidding.order';
 import { OrdersService } from '../../../../service/orders.service';
 import { ProposalService } from '../../../../service/proposal.service';
 import { Part, PartDimension, RfqMedia } from '../../../../model/part.model';
 import { PartQuoteCustomerView } from '../../../../model/connect.model';
+import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
+import { ChatTypeEnum } from '../../../../model/chat.model';
+import { UserService } from 'src/app/service/user.service';
 import { RfqPricingService } from '../../../../service/rfq-pricing.service';
 import { Util } from '../../../../util/Util';
 
@@ -53,6 +57,18 @@ export class ProposalComponent implements OnInit {
   public proposalType = ProposalTypeEnum.VENDOR_PROPOSAL_TYPE;
   proposalTypeEnum = ProposalTypeEnum;
 
+  bidPmProjectProcessId: number;
+  PMProjectBids: VendorConfirmationResponse[] = [];
+
+  zoomParticipantEnum = ZoomParticipantEnum;
+  zoomTypeEnum = ZoomTypeEnum;
+  chatTypeEnum = ChatTypeEnum;
+
+  isReleaseToSingleSupplier = null;
+  customerOrderId = null;
+  customer = null;
+  activePartId = null;
+
   get totalCost() {
     return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
@@ -72,6 +88,7 @@ export class ProposalComponent implements OnInit {
     public toasterService: ToastrService,
     public spinner: NgxSpinnerService,
     public modalService: NgbModal,
+    public userService: UserService,
     protected pricingService: RfqPricingService
   ) {
     this.partInfo = {};
@@ -86,7 +103,8 @@ export class ProposalComponent implements OnInit {
         this.proposalPartIds = (params.proposalPartIds || '').split(',') as Array<number>;
       }
     });
-    this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe((res: any) => {
+    this.getReleasedPmProjectBids();
+    this.metaDataService.getAdminMetaData(MetadataConfig.MEASUREMENT_UNIT_TYPE).subscribe(res => {
       this.measurementUnits = res || [];
     });
     this.metaDataService.getProcessMetaData('invoice_item').subscribe(v => (this.invoiceItems = v));
@@ -133,6 +151,7 @@ export class ProposalComponent implements OnInit {
           this.quoteList.push(p.partQuoteCustomerView);
         }
       });
+      this.activePartId = this.quoteList[0].partId;
       this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
@@ -143,6 +162,7 @@ export class ProposalComponent implements OnInit {
       (quotes || []).map(p => {
         this.quoteList.push(p);
       });
+      this.activePartId = this.quoteList[0].partId;
       if (this.isComplete()) {
         this.findAdminProposal((quotes || []).map(p => p.partId));
       }
@@ -157,6 +177,13 @@ export class ProposalComponent implements OnInit {
         this.partInfo[p.id] = p;
         this.getReferenceFiles(p.id);
       });
+
+      const order = this.partInfo[this.quoteList[0].proposalPartId].order;
+
+      this.customerOrderId = order.id;
+      this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
+
+      this.getCustomerDetails(order.customerId);
       this.selectedTab = this.quoteList.length > 0 ? this.quoteList[0].partId : null;
       this.fetchProfilesTabInfo();
       this.spinner.hide();
@@ -165,6 +192,19 @@ export class ProposalComponent implements OnInit {
 
   beforeChange($event: NgbTabChangeEvent) {
     this.selectedTab = Number($event.nextId);
+    this.activePartId = $event.nextId;
+    this.isReleaseToSingleSupplier = null;
+
+    setTimeout(() => {
+      const quotePart = this.quoteList.filter(p => p.partId == this.activePartId);
+      const order = this.partInfo[quotePart[0].proposalPartId].order;
+
+      this.customerOrderId = order.id;
+      this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
+
+      this.getCustomerDetails(order.customerId);
+    }, 500);
+
     if (this.showProfilesTab()) {
       this.fetchProfilesTabInfo();
     }
@@ -428,6 +468,30 @@ export class ProposalComponent implements OnInit {
         this.toasterService.success('proposals successfully deleted!');
         this.route.navigate(['.'], { relativeTo: this.router.parent });
       });
+  }
+
+  getReleasedPmProjectBids() {
+    this.biddingService.getReleasedPmProjectBids(this.offerId).subscribe(v => {
+      this.PMProjectBids = v || [];
+      const result = this.PMProjectBids.filter(bid => bid.vendorUserId == this.vendorId);
+      this.bidPmProjectProcessId = result.length ? result[0].bidPmProjectProcessId : null;
+    });
+  }
+
+  async getCustomerDetails(customerId) {
+    const body = {
+      q: '',
+      filterColumnsRequests: [
+        { id: 11, displayName: 'Customer ID', selectedOperator: '=', searchedValue: customerId.toString() }
+      ]
+    };
+    try {
+      const res = await this.userService.getAllCustomers(0, 10, body).toPromise();
+      this.customer = res.content[0];
+    } catch (error) {
+      console.log(error);
+      this.customer = null;
+    }
   }
 
   getPartIdFromQuote(): number {
