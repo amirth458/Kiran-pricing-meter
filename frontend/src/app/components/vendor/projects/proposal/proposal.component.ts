@@ -14,6 +14,7 @@ import { MetadataService } from '../../../../service/metadata.service';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import {
   AdminProposalRequest,
+  PmProjectBidStatusType,
   PmProjectStatusType,
   ProposalPartDimension,
   ProposalPartQuote,
@@ -59,6 +60,7 @@ export class ProposalComponent implements OnInit {
 
   bidPmProjectProcessId: number;
   PMProjectBids: VendorConfirmationResponse[] = [];
+  releasedProposal: VendorConfirmationResponse = null;
 
   zoomParticipantEnum = ZoomParticipantEnum;
   zoomTypeEnum = ZoomTypeEnum;
@@ -470,10 +472,23 @@ export class ProposalComponent implements OnInit {
       });
   }
 
+  viewVendorProposal() {
+    const statusName = (this.releasedProposal.bidPmProjectProcessStatus || '').replace(/_/g, '-').toLowerCase();
+    const baseUrl =
+      `/prodex/projects/proposal-issued/100002/${statusName}/` + `vendor-proposal/${this.releasedProposal.vendorId}`;
+    this.route.navigateByUrl(baseUrl);
+  }
+
   getReleasedPmProjectBids() {
     this.biddingService.getReleasedPmProjectBids(this.offerId).subscribe(v => {
       this.PMProjectBids = v || [];
       const result = this.PMProjectBids.filter(bid => bid.vendorUserId == this.vendorId);
+      const releasedProposals = this.PMProjectBids.filter((bid: VendorConfirmationResponse) => {
+        return bid.bidPmProjectProcessStatus === PmProjectBidStatusType.RELEASED_TO_CUSTOMER;
+      });
+      if ((releasedProposals || []).length > 0) {
+        this.releasedProposal = releasedProposals[0];
+      }
       this.bidPmProjectProcessId = result.length ? result[0].bidPmProjectProcessId : null;
     });
   }
