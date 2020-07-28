@@ -181,6 +181,7 @@ import { ProposalComponent } from './vendor/projects/proposal/proposal.component
 import { CustomerPartQuoteComponent } from './vendor/projects/customer-part-quote/customer-part-quote.component';
 import { CustomerProposalDetailsComponent } from './vendor/projects/customer-proposal-details/customer-proposal-details.component';
 import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-proposal.component';
+import { AdminCommunicationComponent } from '../common/admin-communication/admin-communication.component';
 
 @NgModule({
   declarations: [
@@ -351,7 +352,8 @@ import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-p
     ProposalComponent,
     CustomerPartQuoteComponent,
     CustomerProposalDetailsComponent,
-    AdminProposalComponent
+    AdminProposalComponent,
+    AdminCommunicationComponent
   ],
   imports: [
     CommonModule,
