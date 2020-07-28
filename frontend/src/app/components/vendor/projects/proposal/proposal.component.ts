@@ -151,6 +151,7 @@ export class ProposalComponent implements OnInit {
   }
 
   getProposalPartByIds(ids: Array<number>) {
+    this.spinner.show();
     this.proposalService.getProposalPartByIds(ids).subscribe(parts => {
       (parts || []).map(p => {
         this.partInfo[p.id] = p;
@@ -158,6 +159,7 @@ export class ProposalComponent implements OnInit {
       });
       this.selectedTab = this.quoteList.length > 0 ? this.quoteList[0].partId : null;
       this.fetchProfilesTabInfo();
+      this.spinner.hide();
     });
   }
 
@@ -249,8 +251,12 @@ export class ProposalComponent implements OnInit {
     this.sendQuote(quote.vendorId, arr);
   }
 
-  hideDetailView() {
-    this.route.navigate(['.'], { relativeTo: this.router.parent });
+  hideDetailView(isCustomerAccepted: boolean = false) {
+    if (!isCustomerAccepted) {
+      this.route.navigate(['.'], { relativeTo: this.router.parent });
+    } else {
+      this.route.navigateByUrl('/prodex/projects/customer-accepted');
+    }
   }
 
   updateAdminProposal() {
