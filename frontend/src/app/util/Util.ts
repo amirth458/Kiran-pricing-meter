@@ -6,10 +6,12 @@ import {
   PartCustomParameter,
   Address,
   AddressDelimiter,
-  AppPartTypeEnum
+  AppPartTypeEnum,
+  PartDimensionMedia
 } from '../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
 import { PartQuote, PartQuoteCustomerView } from '../model/connect.model';
+import { AdminProposalRequest, ProposalPart, ProposalPartDimension, ProposalPartQuote } from '../model/bidding.order';
 
 declare var require: any;
 const dayjs = require('dayjs');
@@ -225,5 +227,118 @@ export class Util {
     }, 0);
 
     return Number(itemCost || 0) + Number(quote.marginCost || 0);
+  }
+
+  static buildAdminProposalData(
+    partInfo: any,
+    quoteList: PartQuoteCustomerView[],
+    refMedia: any
+  ): Array<AdminProposalRequest> {
+    const arr: Array<AdminProposalRequest> = Object.keys(partInfo || []).map(id => {
+      const proposal: Part = partInfo[id];
+      const media = proposal.rfqMedia.media;
+      const dimension: ProposalPartDimension = Util.buildProposalDimension(proposal);
+      const quote = (quoteList || []).filter(q => q.proposalPartId === proposal.id);
+      const customerQuote = quote.length > 0 ? quote[0] : null;
+      const partQuote: ProposalPartQuote = {
+        isAdminQuote: true,
+        expiredAt: Util.extendUtcDate(customerQuote.expiredAt),
+        isManualPricing: true,
+        isGlobalRule: false,
+        isAutoQuoteOverride: true,
+        globalRuleReason: {
+          id: 1
+        },
+        partQuoteDetailList: (customerQuote.partQuoteDetails || []).map(q => {
+          return {
+            extendedCost: 0,
+            invoiceCost: q.value,
+            invoiceItemId: q.invoiceItemId,
+            invoiceLineItemId: null,
+            partQuoteId: q.partQuoteId,
+            processPricingConditionTypeId: null,
+            unit: q.unit,
+            unitPrice: q.unitPrice
+          };
+        }),
+        totalCost: Util.calcPartQuoteCost(customerQuote),
+        adminMargin: customerQuote.marginCost || 0,
+        vendorId: customerQuote.vendorId
+      };
+      const mediaFiles = refMedia[proposal.partId] || [];
+      return {
+        part: Util.buildProposalPart(proposal, media, dimension),
+        partQuote,
+        partDimensionUpdated: false,
+        referenceMedias: (mediaFiles || []).map(file => {
+          return {
+            name: file.name,
+            uploadedAt: file.uploadedAt,
+            location: file.location
+          };
+        })
+      } as AdminProposalRequest;
+    });
+    return arr;
+  }
+
+  static buildProposalPart(proposal: Part, media: PartDimensionMedia, dimension: ProposalPartDimension): ProposalPart {
+    return {
+      materialPropertyType: proposal.materialPropertyType,
+      materialPropertyValues: proposal.materialPropertyValues,
+      equipmentPropertyType: proposal.equipmentPropertyType,
+      equipmentPropertyValues: proposal.equipmentPropertyValues,
+      cuttingBondingAllowed: false,
+      quantity: proposal.quantity,
+      targetDeliveryDate: Util.extendUtcDate(proposal.targetDeliveryDate),
+      manualPricingAllowed: false,
+      parentPartId: proposal.parentPartId,
+      comments: proposal.comments || null,
+      rfqMedia: {
+        media: {
+          connectorServiceId: media.connectorServiceId,
+          uploadedAt: Util.extendUtcDate(media.uploadedAt),
+          location: media.location,
+          name: media.name,
+          partDimension: dimension
+        }
+      },
+      postProcessTypeIds: proposal.postProcessTypeIds,
+      order: {
+        id: proposal.order.id
+      }
+    } as ProposalPart;
+  }
+
+  static buildProposalDimension(proposal: Part): ProposalPartDimension {
+    if (proposal.rfqMedia && proposal.rfqMedia.media && proposal.rfqMedia.media.partDimension) {
+      const partDimension: PartDimension = proposal.rfqMedia.media.partDimension;
+      return {
+        x: {
+          unitId: partDimension ? partDimension.x.unitId : null,
+          value: partDimension ? partDimension.x.value : null
+        },
+        y: {
+          unitId: partDimension ? partDimension.y.unitId : null,
+          value: partDimension ? partDimension.y.value : null
+        },
+        z: {
+          unitId: partDimension ? partDimension.z.unitId : null,
+          value: partDimension ? partDimension.z.value : null
+        },
+        volume: {
+          unitId: partDimension ? partDimension.volume.unitId : null,
+          value: partDimension ? partDimension.volume.value : null
+        },
+        surfaceArea: {
+          unitId: partDimension ? partDimension.surfaceArea.unitId : null,
+          value: partDimension ? partDimension.surfaceArea.value : null
+        },
+        thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
+        thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
+        thumbnail400Location: partDimension ? partDimension.thumbnail400Location : null
+      } as ProposalPartDimension;
+    }
+    return null;
   }
 }

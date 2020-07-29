@@ -6,20 +6,24 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, empty } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { BidPart, Part } from '../../../../model/part.model';
 import { BiddingService } from '../../../../service/bidding.service';
-import { DefaultEmails } from '../../../../../assets/constants';
-import { MinimumProposalInfo, VendorConfirmationResponse } from '../../../../model/bidding.order';
-import { ProposalService } from '../../../../service/proposal.service';
-import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
-import { Util } from '../../../../util/Util';
 import { Chat, ChatTypeEnum } from 'src/app/model/chat.model';
-import { ZoomService } from 'src/app/service/zoom.service';
-import { UserService } from 'src/app/service/user.service';
 import { ConferenceRequest, Conference } from 'src/app/model/conference.model';
+import { DefaultEmails } from '../../../../../assets/constants';
+import { AdminProposalRequest, MinimumProposalInfo, VendorConfirmationResponse } from '../../../../model/bidding.order';
+import { OrdersService } from '../../../../service/orders.service';
+import { PartQuoteCustomerView } from '../../../../model/connect.model';
+import { ProposalService } from '../../../../service/proposal.service';
 import { ToastrService } from 'ngx-toastr';
+import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
+import { UserService } from 'src/app/service/user.service';
+import { Util } from '../../../../util/Util';
+import { ZoomService } from 'src/app/service/zoom.service';
+
 @Component({
   selector: 'app-released-bid',
   templateUrl: './released-bid.component.html',
@@ -29,6 +33,7 @@ export class ReleasedBidComponent implements OnInit {
   @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
   @ViewChild('additionalColDefRef') additionalColDefRef: TemplateRef<any>;
   @ViewChild('communicationCell') communicationCell: TemplateRef<any>;
+  @ViewChild('overWriteModal') overWriteModal: TemplateRef<any>;
 
   bidProjectId: number;
   @Input()
@@ -65,6 +70,11 @@ export class ReleasedBidComponent implements OnInit {
   proposalInfo: any;
   adminProposalInfo: Part[];
 
+  offer: VendorConfirmationResponse;
+  quoteList: PartQuoteCustomerView[];
+  proposalPartInfo: any;
+  refMedia: any;
+
   chatTypeEnum = ChatTypeEnum;
   chat: Chat;
 
@@ -88,7 +98,8 @@ export class ReleasedBidComponent implements OnInit {
     public proposalService: ProposalService,
     public zoomService: ZoomService,
     public userService: UserService,
-    public toaster: ToastrService
+    public toaster: ToastrService,
+    public orderService: OrdersService
   ) {
     this.proposalInfo = {};
   }
@@ -230,6 +241,74 @@ export class ReleasedBidComponent implements OnInit {
     });
   }
 
+  openOverWriteModal(offer: VendorConfirmationResponse) {
+    if ((this.adminProposalInfo || []).length > 0) {
+      this.offer = offer;
+      const options: any = {
+        centered: true,
+        size: 'sm',
+        windowClass: 'over-write-modal',
+        backdrop: 'static'
+      };
+      this.modalService.open(this.overWriteModal, options).result.then(
+        result => {},
+        reason => {}
+      );
+    }
+  }
+
+  resetOverWriteDataMember() {
+    this.quoteList = [];
+    this.proposalPartInfo = {};
+    this.refMedia = {};
+  }
+
+  async overWriteProposal() {
+    this.resetOverWriteDataMember();
+    this.spinner.show();
+    const parts: any = await this.biddingService
+      .getDetailedPartInfo(this.bidProjectId, this.offer.vendorId)
+      .toPromise();
+    (parts || []).map(p => {
+      if (p.partQuoteCustomerView) {
+        this.quoteList.push(p.partQuoteCustomerView);
+      }
+    });
+    const proposalPartIds = (this.quoteList || []).map(quote => quote.proposalPartId);
+    const proposalParts = await this.proposalService.getProposalPartByIds(proposalPartIds).toPromise();
+    (proposalParts || []).map(p => (this.proposalPartInfo[p.id] = p));
+    for (const p of proposalParts || []) {
+      try {
+        this.refMedia[p.id] = await this.orderService.getReferenceFiles(p.id).toPromise();
+      } catch (error) {
+        this.refMedia[p.id] = [];
+      }
+    }
+    const arr = Util.buildAdminProposalData(this.proposalPartInfo, this.quoteList, this.refMedia);
+    const proposalsReq = [];
+    (arr || []).map(proposalReq => proposalsReq.push(this.proposalService.createAdminProposal(proposalReq)));
+    combineLatest(proposalsReq)
+      .pipe(
+        catchError(err => {
+          this.toaster.error('unable to update admin proposal');
+          this.modalService.dismissAll();
+          return empty();
+        })
+      )
+      .subscribe((proposals: AdminProposalRequest[]) => {
+        this.modalService.dismissAll();
+        this.spinner.hide();
+        if ((proposals || []).length > 0) {
+          const ids = (proposals || []).map(p => p.part.parentPartId);
+          this.resetOverWriteDataMember();
+          this.toaster.success('Proposal saved successfully!');
+          this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
+        } else {
+          this.toaster.error('unable to update admin proposal');
+        }
+      });
+  }
+
   getAdminProposal(ids: Array<number>) {
     this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
       this.adminProposalInfo = v || [];
@@ -272,6 +351,12 @@ export class ReleasedBidComponent implements OnInit {
   viewAdminProposal() {
     const ids = (this.adminProposalInfo || []).map(p => p.parentPartId);
     this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
+  }
+
+  closeOverWriteModal() {
+    this.offer = null;
+    this.resetOverWriteDataMember();
+    this.modalService.dismissAll();
   }
 
   sendMail(row: any = null) {
