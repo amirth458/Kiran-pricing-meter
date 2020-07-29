@@ -16,8 +16,6 @@ import {
   AdminProposalRequest,
   PmProjectBidStatusType,
   PmProjectStatusType,
-  ProposalPartDimension,
-  ProposalPartQuote,
   ProposalTypeEnum,
   VendorConfirmationResponse
 } from '../../../../model/bidding.order';
@@ -196,14 +194,11 @@ export class ProposalComponent implements OnInit {
     this.selectedTab = Number($event.nextId);
     this.activePartId = $event.nextId;
     this.isReleaseToSingleSupplier = null;
-
     setTimeout(() => {
       const quotePart = this.quoteList.filter(p => p.partId == this.activePartId);
       const order = this.partInfo[quotePart[0].proposalPartId].order;
-
       this.customerOrderId = order.id;
       this.isReleaseToSingleSupplier = order.isReleaseToSingleSupplier;
-
       this.getCustomerDetails(order.customerId);
     }, 500);
 
@@ -302,7 +297,10 @@ export class ProposalComponent implements OnInit {
 
   updateAdminProposal() {
     this.spinner.show();
-    combineLatest(this.buildAdminProposalData())
+    const arr = Util.buildAdminProposalData(this.partInfo, this.quoteList, this.refMedia);
+    const proposalsReq = [];
+    (arr || []).map(proposalReq => proposalsReq.push(this.proposalService.updateAdminProposal(proposalReq)));
+    combineLatest(proposalsReq)
       .pipe(
         catchError(err => {
           this.toasterService.error('unable to update admin proposal');
@@ -317,118 +315,12 @@ export class ProposalComponent implements OnInit {
       });
   }
 
-  buildAdminProposalData(isCreate: boolean = false): Array<AdminProposalRequest> {
-    const arr: Array<AdminProposalRequest> = Object.keys(this.partInfo || []).map(id => {
-      const proposal: Part = this.partInfo[id];
-      let partDimension: PartDimension = null;
-      const media = proposal.rfqMedia.media;
-      if (proposal.rfqMedia && proposal.rfqMedia.media && proposal.rfqMedia.media.partDimension) {
-        partDimension = proposal.rfqMedia.media.partDimension;
-      }
-      const dimension: ProposalPartDimension = {
-        x: {
-          unitId: partDimension ? partDimension.x.unitId : null,
-          value: partDimension ? partDimension.x.value : null
-        },
-        y: {
-          unitId: partDimension ? partDimension.y.unitId : null,
-          value: partDimension ? partDimension.y.value : null
-        },
-        z: {
-          unitId: partDimension ? partDimension.z.unitId : null,
-          value: partDimension ? partDimension.z.value : null
-        },
-        volume: {
-          unitId: partDimension ? partDimension.volume.unitId : null,
-          value: partDimension ? partDimension.volume.value : null
-        },
-        surfaceArea: {
-          unitId: partDimension ? partDimension.surfaceArea.unitId : null,
-          value: partDimension ? partDimension.surfaceArea.value : null
-        },
-        thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
-        thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
-        thumbnail400Location: partDimension ? partDimension.thumbnail400Location : null
-      };
-      const quote = (this.quoteList || []).filter(q => q.proposalPartId === proposal.id);
-      const customerQuote = quote.length > 0 ? quote[0] : null;
-      const partQuote: ProposalPartQuote = {
-        isAdminQuote: true,
-        expiredAt: Util.extendUtcDate(customerQuote.expiredAt),
-        isManualPricing: true,
-        isGlobalRule: false,
-        isAutoQuoteOverride: true,
-        globalRuleReason: {
-          id: 1
-        },
-        partQuoteDetailList: (customerQuote.partQuoteDetails || []).map(q => {
-          return {
-            extendedCost: 0,
-            invoiceCost: q.value,
-            invoiceItemId: q.invoiceItemId,
-            invoiceLineItemId: null,
-            partQuoteId: q.partQuoteId,
-            processPricingConditionTypeId: null,
-            unit: q.unit,
-            unitPrice: q.unitPrice
-          };
-        }),
-        totalCost: Util.calcPartQuoteCost(customerQuote),
-        adminMargin: customerQuote.marginCost || 0,
-        vendorId: customerQuote.vendorId
-      };
-      const mediaFiles = this.refMedia[proposal.partId] || [];
-      return {
-        part: {
-          materialPropertyType: proposal.materialPropertyType,
-          materialPropertyValues: proposal.materialPropertyValues,
-          equipmentPropertyType: proposal.equipmentPropertyType,
-          equipmentPropertyValues: proposal.equipmentPropertyValues,
-          cuttingBondingAllowed: false,
-          quantity: proposal.quantity,
-          targetDeliveryDate: Util.extendUtcDate(proposal.targetDeliveryDate),
-          manualPricingAllowed: false,
-          parentPartId: proposal.parentPartId,
-          comments: proposal.comments || null,
-          rfqMedia: {
-            media: {
-              connectorServiceId: media.connectorServiceId,
-              uploadedAt: null,
-              location: media.location,
-              name: media.name,
-              partDimension: dimension
-            }
-          },
-          postProcessTypeIds: proposal.postProcessTypeIds,
-          order: {
-            id: proposal.order.id
-          }
-        },
-        partQuote,
-        partDimensionUpdated: false,
-        referenceMedias: (mediaFiles || []).map(file => {
-          return {
-            name: file.name,
-            uploadedAt: file.uploadedAt,
-            location: file.location
-          };
-        })
-      } as AdminProposalRequest;
-    });
-    const proposalsReq = [];
-    (arr || []).map(proposalReq => {
-      proposalsReq.push(
-        isCreate
-          ? this.proposalService.createAdminProposal(proposalReq)
-          : this.proposalService.updateAdminProposal(proposalReq)
-      );
-    });
-    return proposalsReq;
-  }
-
   createProposal() {
     this.spinner.show();
-    combineLatest(this.buildAdminProposalData(true))
+    const arr = Util.buildAdminProposalData(this.partInfo, this.quoteList, this.refMedia);
+    const proposalsReq = [];
+    (arr || []).map(proposalReq => proposalsReq.push(this.proposalService.createAdminProposal(proposalReq)));
+    combineLatest(proposalsReq)
       .pipe(
         catchError(err => {
           this.toasterService.error('unable to create admin proposal');

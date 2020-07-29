@@ -62,7 +62,7 @@
     >
       View Proposal
     </a>
-    <span *ngIf="adminProposalInfo" class="delete ml-3 mr-3 over-write" (click)="createAdminProposal()">
+    <span *ngIf="adminProposalInfo" class="delete ml-3 mr-3 over-write" (click)="openOverWriteModal(row)">
       <i class="fas fa-copy"></i>
     </span>
   </div>
@@ -161,7 +161,7 @@
           <button type="button" class="btn theme btn-orange w-auto pl-5 pr-5" (click)="modal.dismiss()">
             Cancel
           </button>
-          <button type="button" class="btn theme green w-auto pl-5 pr-5 ml-3">
+          <button type="button" class="btn theme green w-auto pl-5 pr-5 ml-3" (click)="overWriteProposal()">
             Overwrite
           </button>
         </div>
