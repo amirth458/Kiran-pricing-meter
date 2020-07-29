@@ -300,6 +300,7 @@ export class ReleasedBidComponent implements OnInit {
         this.spinner.hide();
         if ((proposals || []).length > 0) {
           const ids = (proposals || []).map(p => p.part.parentPartId);
+          this.resetOverWriteDataMember();
           this.toaster.success('Proposal saved successfully!');
           this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
         } else {
@@ -350,6 +351,12 @@ export class ReleasedBidComponent implements OnInit {
   viewAdminProposal() {
     const ids = (this.adminProposalInfo || []).map(p => p.parentPartId);
     this.router.navigateByUrl(`${this.router.url}/admin-proposal/${ids.join(',')}`);
+  }
+
+  closeOverWriteModal() {
+    this.offer = null;
+    this.resetOverWriteDataMember();
+    this.modalService.dismissAll();
   }
 
   sendMail(row: any = null) {
