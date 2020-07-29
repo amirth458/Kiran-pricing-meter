@@ -222,12 +222,11 @@ export class ProposalComponent implements OnInit {
   }
 
   getVolume(partDimension: PartDimension) {
-    let unitId = partDimension.volume.unitId;
-    if (!unitId) {
-      unitId = partDimension.x.unitId;
+    if (!(partDimension && partDimension.volume && partDimension.volume.unitId)) {
+      const unit = this.measurementUnits.find(item => item.id === partDimension.volume.unitId);
+      return `${partDimension.volume.value} ${unit.symbol}`;
     }
-    const unit = this.measurementUnits.find(item => item.id === unitId);
-    return `${partDimension.volume.value} ${unit.symbol}`;
+    return '';
   }
 
   findUnitById(id: number) {
