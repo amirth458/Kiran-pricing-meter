@@ -267,6 +267,17 @@ export class OrdersService {
         }
       },
       {
+        headerName: 'Vendor Amount',
+        field: 'vendorCost',
+        tooltip: params => params.value,
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
+        }
+      },
+      {
         headerName: 'Quantity',
         field: 'quantity',
         tooltip: params => params.value,
@@ -326,6 +337,7 @@ export class OrdersService {
     ];
     if (view === 'order-confirmation-queue') {
       columns.splice(3, 1);
+      columns.splice(9, 1);
     }
     return columns;
   }
@@ -380,6 +392,15 @@ export class OrdersService {
       {
         name: 'Offer Price',
         field: 'offerPrice',
+        checked: false,
+        query: {
+          type: '',
+          filter: ''
+        }
+      },
+      released && {
+        name: 'Vendor Amount',
+        field: 'vendorCost',
         checked: false,
         query: {
           type: '',
@@ -473,6 +494,11 @@ export class OrdersService {
       {
         name: 'Offer Price',
         field: 'offerPrice',
+        checked: true
+      },
+      released && {
+        name: 'Vendor Amount',
+        field: 'vendorCost',
         checked: true
       },
       {
