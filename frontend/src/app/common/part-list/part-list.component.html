@@ -1,6 +1,11 @@
 <div class="w-100 row pl-2 d-flex flex-row summary text-theme">
   <div class="col-12 p-0 d-flex flex-wrap part-list">
-    <div *ngFor="let item of parts" class="part-item mt-2 ml-4">
+    <div
+      *ngFor="let item of partList"
+      class="part-item mt-2 ml-4"
+      [ngClass]="{ active: selectable && selected == item.partId }"
+      (click)="changeSelected(item)"
+    >
       <p class="part-name font-weight-bold mb-0">Part {{ item?.rfqMediaId }}.{{ item?.partId }}</p>
       <!-- Image -->
       <img
