@@ -896,8 +896,22 @@ button:focus {
   padding: 0;
 }
 
-.over-write-modal .modal-dialog {
+.add-suppliers-modal .modal-dialog {
   max-width: 600px;
+}
+
+.add-suppliers-modal .modal-content {
+  max-height: 600px;
+  height: 600px;
+}
+
+.add-suppliers-modal .modal-body {
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
+}
+
+.over-write-modal .modal-dialog {
+  max-width: 700px;
 }
 
 .over-write-modal .btn-orange {
