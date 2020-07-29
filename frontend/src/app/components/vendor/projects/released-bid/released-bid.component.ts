@@ -29,6 +29,7 @@ export class ReleasedBidComponent implements OnInit {
   @ViewChild('sendMailModal') sendMailModal: TemplateRef<any>;
   @ViewChild('additionalColDefRef') additionalColDefRef: TemplateRef<any>;
   @ViewChild('communicationCell') communicationCell: TemplateRef<any>;
+  @ViewChild('overWriteModal') overWriteModal: TemplateRef<any>;
 
   bidProjectId: number;
   @Input()
@@ -228,6 +229,27 @@ export class ReleasedBidComponent implements OnInit {
       }
       this.spinner.hide('releaseLoadingPanel');
     });
+  }
+
+  createAdminProposal() {
+    if ((this.adminProposalInfo || []).length > 0) {
+      const options: any = {
+        centered: true,
+        size: 'sm',
+        windowClass: 'over-write-modal',
+        backdrop: 'static'
+      };
+      this.modalService.open(this.overWriteModal, options).result.then(
+        result => {},
+        reason => {}
+      );
+    } else {
+      this.overWriteProposal();
+    }
+  }
+
+  overWriteProposal() {
+    this.toaster.warning('In progress!');
   }
 
   getAdminProposal(ids: Array<number>) {
