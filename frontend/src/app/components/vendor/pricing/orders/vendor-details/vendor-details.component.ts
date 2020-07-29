@@ -260,7 +260,7 @@ export class VendorDetailsComponent implements OnInit {
         minWidth: 200,
         maxWidth: 200,
         width: 200,
-        valueFormatter: dt => `$ ${dt.data.vendorCost || 0}`
+        valueFormatter: dt => this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3')
       },
       {
         headerName: 'Status',
