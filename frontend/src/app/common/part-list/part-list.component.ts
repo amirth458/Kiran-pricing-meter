@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -11,10 +11,25 @@ import { Part } from 'src/app/model/part.model';
   styleUrls: ['./part-list.component.css']
 })
 export class PartListComponent implements OnInit {
-  @Input() parts: Part[];
+  @Input()
+  set parts(parts: Part[]) {
+    this.partList = parts || [];
+    if (this.partList.length) {
+      this.changeSelected(this.partList[0]);
+    }
+  }
+  get parts() {
+    return this.partList;
+  }
   @Input() showRefFile = false;
+  @Input() selectable = false;
+
+  @Output() toggleSelection: EventEmitter<any> = new EventEmitter<any>();
 
   status = BidProcessStatusEnum;
+
+  partList: Part[] = [];
+  selected = null;
 
   constructor(public spinner: NgxSpinnerService, public modalService: NgbModal) {}
 
@@ -35,5 +50,10 @@ export class PartListComponent implements OnInit {
         result => {},
         reason => {}
       );
+  }
+
+  changeSelected(part) {
+    this.selected = part.partId;
+    this.toggleSelection.emit(part);
   }
 }

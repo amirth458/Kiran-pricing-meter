@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-import { Chat, ChatTypeEnum } from '../../../model/chat.model';
+import { Chat, ChatTypeEnum, ChatParticipantEnum } from '../../../model/chat.model';
 import { ChatService } from '../../../service/chat.service';
 import { UserService } from '../../../service/user.service';
 import { VendorService } from '../../../service/vendor.service';
@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit {
   @Input() type: ChatTypeEnum;
   @Input() value: Chat;
   @Input() vendorId: number;
+  @Input() chatParticipant = ChatParticipantEnum.ADMIN;
 
   @Output() valueChange: EventEmitter<Chat> = new EventEmitter<Chat>();
 

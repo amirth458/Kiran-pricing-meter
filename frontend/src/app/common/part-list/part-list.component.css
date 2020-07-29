@@ -31,6 +31,13 @@
   overflow-x: auto;
 }
 
+:host .part-item.active {
+  background: var(--theme-grey-bg);
+  border-top: 7px solid var(--theme-light-green);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
 :host .part-list.small {
   max-height: 300px;
 }

@@ -17,7 +17,7 @@
         [type]="chatType"
         [value]="chat"
         [participants]="zoomAttachingUserId ? [zoomAttachingUserId] : []"
-        [participants]="zoomParticipant"
+        [chatParticipant]="zoomParticipant"
         (valueChange)="chat = $event"
       >
       </app-chat>
