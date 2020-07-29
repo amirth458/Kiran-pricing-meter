@@ -13,20 +13,41 @@
     <div class="part-list">
       <div class="w-100 row">
         <header class="col-12 feature-header">
-          <h6 class="title pl-0 text-theme">
-            Project Details
-          </h6>
-          <span
-            *ngIf="parts"
-            class="ml-3 font-sm cursor-pointer font-weight-normal underline"
-            (click)="showPartDetails = !showPartDetails"
-          >
-            See <ng-container *ngIf="showPartDetails">less</ng-container>
-            <ng-container *ngIf="!showPartDetails">more</ng-container> details
-          </span>
+          <div class="col-9 d-flex align-items-center">
+            <h6 class="title pl-0 text-theme">
+              Project Details
+            </h6>
+            <span
+              *ngIf="parts"
+              class="ml-3 font-sm cursor-pointer font-weight-normal underline"
+              (click)="showPartDetails = !showPartDetails"
+            >
+              See <ng-container *ngIf="showPartDetails">less</ng-container>
+              <ng-container *ngIf="!showPartDetails">more</ng-container> details
+            </span>
+          </div>
+          <div class="col-3">
+            <app-admin-communication
+              *ngIf="activePartId"
+              [allowScheduling]="true"
+              [zoomType]="isReleaseToSingleSupplier ? zoomTypeEnum?.CUSTOMER_ORDER : zoomTypeEnum?.PART"
+              [zoomAttachingUserId]="customerUserId"
+              [zoomAttachingId]="isReleaseToSingleSupplier ? customerOrderId : activePartId"
+              [chatAttachingId]="isReleaseToSingleSupplier ? customerOrderId : activePartId"
+              [zoomParticipant]="zoomParticipantEnum?.CUSTOMER"
+              [chatType]="isReleaseToSingleSupplier ? chatTypeEnum?.CUSTOMER_ORDER : chatTypeEnum?.PART_NOTE"
+              [allowNotes]="true"
+            >
+            </app-admin-communication>
+          </div>
         </header>
         <ng-container *ngIf="!showPartDetails">
-          <app-part-list [showRefFile]="true" [parts]="parts"></app-part-list>
+          <app-part-list
+            [selectable]="true"
+            [showRefFile]="true"
+            [parts]="parts"
+            (toggleSelection)="setSelectedPart($event)"
+          ></app-part-list>
         </ng-container>
       </div>
     </div>
