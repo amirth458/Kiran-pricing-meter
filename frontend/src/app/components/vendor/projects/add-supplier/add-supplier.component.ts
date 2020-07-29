@@ -134,7 +134,8 @@ export class AddSupplierComponent implements OnInit {
       );
       this.modelService.open(this.templateRef, {
         centered: true,
-        size: 'lg'
+        size: 'lg',
+        windowClass: 'add-suppliers-modal'
       });
       this.spinner.hide();
     });
