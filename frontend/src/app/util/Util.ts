@@ -10,6 +10,7 @@ import {
 } from '../model/part.model';
 import { Part, PartDimension } from '../model/part.model';
 import { PartQuote, PartQuoteCustomerView } from '../model/connect.model';
+import { ProposalPartDimension } from '../model/bidding.order';
 
 declare var require: any;
 const dayjs = require('dayjs');
@@ -225,5 +226,37 @@ export class Util {
     }, 0);
 
     return Number(itemCost || 0) + Number(quote.marginCost || 0);
+  }
+
+  static buildProposalDimension(proposal: Part): ProposalPartDimension {
+    if (proposal.rfqMedia && proposal.rfqMedia.media && proposal.rfqMedia.media.partDimension) {
+      const partDimension: PartDimension = proposal.rfqMedia.media.partDimension;
+      return {
+        x: {
+          unitId: partDimension ? partDimension.x.unitId : null,
+          value: partDimension ? partDimension.x.value : null
+        },
+        y: {
+          unitId: partDimension ? partDimension.y.unitId : null,
+          value: partDimension ? partDimension.y.value : null
+        },
+        z: {
+          unitId: partDimension ? partDimension.z.unitId : null,
+          value: partDimension ? partDimension.z.value : null
+        },
+        volume: {
+          unitId: partDimension ? partDimension.volume.unitId : null,
+          value: partDimension ? partDimension.volume.value : null
+        },
+        surfaceArea: {
+          unitId: partDimension ? partDimension.surfaceArea.unitId : null,
+          value: partDimension ? partDimension.surfaceArea.value : null
+        },
+        thumbnail100Location: partDimension ? partDimension.thumbnail100Location : null,
+        thumbnail200Location: partDimension ? partDimension.thumbnail200Location : null,
+        thumbnail400Location: partDimension ? partDimension.thumbnail400Location : null
+      } as ProposalPartDimension;
+    }
+    return null;
   }
 }
