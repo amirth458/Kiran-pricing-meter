@@ -282,7 +282,7 @@ export class ProposalComponent implements OnInit {
       .subscribe(() => {
         this.toasterService.success('Admin proposal have been updated!');
         this.spinner.hide();
-        this.route.navigateByUrl('/prodex/projects/pm-release-queue');
+        this.route.navigateByUrl('/prodex/projects/proposal-issued');
       });
   }
 
