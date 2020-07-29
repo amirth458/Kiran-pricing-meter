@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Util } from 'src/app/util/Util';
-import { RfqData, PartCustomParameter, PartDimension, Part, PartQuote } from 'src/app/model/part.model';
+import { Part, PartCustomParameter, PartDimension, PartQuote, RfqData } from 'src/app/model/part.model';
 import { CustomerDetails } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { ForgeService } from 'src/app/service/forge.service';
+import { CommonService } from '../../service/common.service';
+import { IdCollection } from '../../model/id-collection.model';
 
 @Component({
   selector: 'app-part-information',
@@ -36,15 +37,42 @@ export class PartInformationComponent implements OnInit {
   @Input() operatorTypes = [];
   @Input() measurementUnits;
 
+  idCollection: IdCollection;
+
   constructor(
     public modalService: NgbModal,
     public metadataService: MetadataService,
     public spinner: NgxSpinnerService,
     public toastr: ToastrService,
-    public forgeService: ForgeService
+    public commonService: CommonService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    let inputId = null;
+    if (this.rfq && this.rfq.id) {
+      inputId = {
+        id: this.rfq.id,
+        idType: 'RFQ_ID'
+      };
+    } else if(this.part && this.part.id) {
+      inputId = {
+        id: this.part.id,
+        idType: 'PART_ID'
+      };
+    }
+    if (inputId) {
+      this.commonService.getVariousIdCollection(inputId).subscribe(
+        res => {
+          if (res && res.length > 0) {
+            this.idCollection = res[0];
+          }
+        },
+        err => {
+          this.toastr.error('Unable to perform action');
+        }
+      );
+    }
+  }
 
   isProposalPart(part: Part): boolean {
     return Util.isProposalPart(part);
