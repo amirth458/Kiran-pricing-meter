@@ -251,6 +251,18 @@ export class VendorDetailsComponent implements OnInit {
         valueFormatter: dt => `$ ${dt.data.bidOfferPrice || 0}`
       },
       {
+        headerName: 'Vendor Amount',
+        field: 'vendorCost',
+        tooltipField: 'vendorCost',
+        hide: false,
+        sortable: false,
+        filter: false,
+        minWidth: 200,
+        maxWidth: 200,
+        width: 200,
+        valueFormatter: dt => `$ ${dt.data.vendorCost || 0}`
+      },
+      {
         headerName: 'Status',
         field: 'bidProcessStatus.description',
         tooltipField: 'bidProcessStatus.description',
@@ -275,6 +287,9 @@ export class VendorDetailsComponent implements OnInit {
         }
       }
     ]);
+    if (this.type !== 'released') {
+      this.columnDefs[4].splice(3, 1);
+    }
     // View vendor profile matching
     this.columnDefs.push([
       {

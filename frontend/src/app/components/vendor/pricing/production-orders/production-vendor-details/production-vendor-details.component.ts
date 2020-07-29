@@ -281,6 +281,18 @@ export class ProductionVendorDetailsComponent implements OnInit {
           valueFormatter: dt => dt.value && this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3')
         },
         {
+          headerName: 'Vendor Amount',
+          field: 'vendorCost',
+          tooltipField: 'vendorCost',
+          hide: false,
+          sortable: false,
+          filter: false,
+          minWidth: 200,
+          maxWidth: 200,
+          width: 200,
+          valueFormatter: dt => dt.value && this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3')
+        },
+        {
           headerName: 'Status',
           field: 'vendorOrderStatus',
           tooltipField: 'vendorOrderStatus',
