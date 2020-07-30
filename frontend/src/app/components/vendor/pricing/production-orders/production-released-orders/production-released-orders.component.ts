@@ -145,6 +145,17 @@ export class ProductionReleasedOrdersComponent implements OnInit {
         }
       },
       {
+        headerName: 'Vendor Amount',
+        field: 'vendorCost',
+        tooltip: params => params.value,
+        hide: false,
+        sortable: true,
+        filter: false,
+        valueFormatter: dt => {
+          return this.currencyPipe.transform(dt.value || 0, 'USD', 'symbol', '0.0-3');
+        }
+      },
+      {
         headerName: 'Quantity',
         field: 'quantity',
         tooltip: params => params.value,

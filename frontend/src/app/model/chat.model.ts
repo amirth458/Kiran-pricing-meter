@@ -65,3 +65,9 @@ export interface ChatAttachment {
   lastModifiedDate: string;
   location: string;
 }
+
+export enum ChatParticipantEnum {
+  ADMIN = 'ADMIN',
+  VENDOR = 'VENDOR',
+  CUSTOMER = 'CUSTOMER'
+}

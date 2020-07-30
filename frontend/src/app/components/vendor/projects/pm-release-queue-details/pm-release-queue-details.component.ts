@@ -19,6 +19,8 @@ import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { Util } from 'src/app/util/Util';
 import { PmProjectBidStatusType } from '../../../../model/bidding.order';
+import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
+import { ChatTypeEnum } from '../../../../model/chat.model';
 
 @Component({
   selector: 'app-pm-release-queue-details',
@@ -72,6 +74,15 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   numberOfVendorsToReleaseToCustomer = 1;
   maxSelectableVendors = null;
   pmProjectBidStatusType = PmProjectBidStatusType;
+
+  zoomParticipantEnum = ZoomParticipantEnum;
+  zoomTypeEnum = ZoomTypeEnum;
+  chatTypeEnum = ChatTypeEnum;
+
+  isReleaseToSingleSupplier = null;
+  customerOrderId = null;
+  customerUserId = null;
+  activePartId = null;
 
   constructor(
     public route: ActivatedRoute,
@@ -639,5 +650,15 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
 
   get vendorProfiles() {
     return this.matchingProfiles.filter(item => item.vendorId === this.selectedVendor.vendorId);
+  }
+  setSelectedPart(part) {
+    this.customerOrderId = part.customerOrder;
+    this.customerUserId = part.userId;
+    this.isReleaseToSingleSupplier = part.isReleaseToSingleSupplier;
+
+    this.activePartId = null;
+    setTimeout(() => {
+      this.activePartId = part.partId;
+    }, 500);
   }
 }
