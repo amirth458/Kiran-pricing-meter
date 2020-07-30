@@ -131,6 +131,7 @@ export class PartQuoteCustomerView {
 
   // For UI purpose
   marginCost?: number;
+  adminMargin?: number;
 }
 
 export interface PartQuoteInvoiceLineItem {
