@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   menus: Array<{
@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   vendor: Observable<any>;
   sub: Subscription;
+
+  private sideBarOpened = true;
 
   constructor(private router: Router) {
     this.menus = environment.menus;
@@ -38,5 +40,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   toggleMenuStatus(value: boolean) {
     this.sideMenuOpen = value;
+  }
+
+  private toggleSidebar() {
+    this.sideBarOpened = !this.sideBarOpened;
   }
 }

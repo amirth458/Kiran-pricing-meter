@@ -182,6 +182,8 @@ import { CustomerPartQuoteComponent } from './vendor/projects/customer-part-quot
 import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-proposal.component';
 import { AdminCommunicationComponent } from '../common/admin-communication/admin-communication.component';
 import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplier.component';
+import { SidebarModule } from 'ng-sidebar';
+import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -196,6 +198,7 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     MultiSelectCellRendererComponent,
     LinkCellRendererComponent,
     SideMenuComponent,
+    RightSidebarComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
     ProgressBarComponent,
@@ -383,7 +386,8 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     ChatModule,
     UiSwitchModule,
     PerfectScrollbarModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    SidebarModule.forRoot()
   ],
   providers: [DatePipe, CurrencyPipe, TitleCasePipe],
   exports: [
@@ -399,6 +403,7 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     LinkCellRendererComponent,
     ProgressBarComponent,
     SideMenuComponent,
+    RightSidebarComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
     ImgPreloadDirective,

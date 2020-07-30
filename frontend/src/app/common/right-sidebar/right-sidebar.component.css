@@ -1,0 +1,20 @@
+.close-icon {
+  position: fixed;
+  right: 20px;
+  margin-top: 7px;
+  cursor: pointer;
+}
+
+.shadow-block {
+  margin: 18px;
+  border-radius: 5px;
+  box-shadow: 0 0 0.5em rgba(85, 85, 85, 0.5);
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.clickable {
+  cursor: pointer;
+}
