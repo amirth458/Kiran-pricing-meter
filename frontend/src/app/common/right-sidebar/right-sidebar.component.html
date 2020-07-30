@@ -11,7 +11,9 @@
       <div class="col-6 pt-1 text-theme">
         <h5>{{ userInfo.firstName }} {{ userInfo?.lastName }}</h5>
         <div class="pt-1">{{ userInfo.email }}</div>
-        <div class="pt-1"><button type="button" class="btn btn-link p-0" (click)="onLogout()">Logout</button></div>
+        <div class="pt-1">
+          <button type="button" class="btn btn-link p-0" (click)="onLogout()">Logout</button>
+        </div>
       </div>
     </div>
     <hr/>

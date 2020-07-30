@@ -25,7 +25,6 @@ export class RightSidebarComponent implements OnInit {
   customers: Observable<Customer[]>;
   selectedCustomer: Customer;
 
-
   userInfo = {
     firstName: '',
     img: 'assets/image/avatar3.png'
@@ -33,11 +32,13 @@ export class RightSidebarComponent implements OnInit {
   sub: Subscription;
   userObserver: Observable<any>;
 
-  constructor(public authService: AuthService,
-              public store: Store<any>,
-              public router: Router,
-              public userService: UserService,
-              public user: UserService) {
+  constructor(
+    public authService: AuthService,
+    public store: Store<any>,
+    public router: Router,
+    public userService: UserService,
+    public user: UserService
+  ) {
     this.userObserver = this.store.select(AppFields.App, AppFields.UserInfo);
   }
 
@@ -58,27 +59,32 @@ export class RightSidebarComponent implements OnInit {
   private loadPeople() {
     this.customers = concat(
       of([]), // default items
-      !this.searchInput ? [] : this.searchInput.pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-        tap(() => this.searchLoading = true),
-        switchMap(async term => {
-          const body = {
-            q: '',
-            filterColumnsRequests: [
-              { id: 10, displayName: 'Customer Name', selectedOperator: 'contains', searchedValue: term }
-            ]
-          };
-          const res = await this.userService.getAllCustomers(0, 10, body).pipe(
-            catchError(() => of([])), // empty list on error
-            tap(() => this.searchLoading = false)
-          ).toPromise();
-          if(res && res.content) {
-            return res.content;
-          }
-          return [];
-        })
-      )
+      !this.searchInput
+        ? []
+        : this.searchInput.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            tap(() => (this.searchLoading = true)),
+            switchMap(async term => {
+              const body = {
+                q: '',
+                filterColumnsRequests: [
+                  { id: 10, displayName: 'Customer Name', selectedOperator: 'contains', searchedValue: term }
+                ]
+              };
+              const res = await this.userService
+                .getAllCustomers(0, 10, body)
+                .pipe(
+                  catchError(() => of([])), // empty list on error
+                  tap(() => (this.searchLoading = false))
+                )
+                .toPromise();
+              if (res && res.content) {
+                return res.content;
+              }
+              return [];
+            })
+          )
     );
   }
 
