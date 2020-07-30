@@ -72,7 +72,7 @@ export class ProposalComponent implements OnInit {
   get totalCost() {
     return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
-        sum += quote.totalCost || 0;
+        sum += Util.calcPartQuoteCost(quote);
       }
       return sum;
     }, 0);
