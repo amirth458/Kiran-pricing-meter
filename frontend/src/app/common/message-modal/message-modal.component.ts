@@ -32,6 +32,7 @@ export class MessageModalComponent implements OnInit {
   ) {}
 
   mailForm: FormGroup = this.fb.group({
+    to: [null, [Validators.required, Validators.email]],
     subject: [null, Validators.required],
     message: [null, Validators.required]
   });
@@ -53,35 +54,51 @@ export class MessageModalComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-  sendTextMessage(phoneNo: any) {
+  sendTextMessage() {
+    this.messageForm.patchValue({ phone: this.userInfo.phoneNo });
     if (this.messageForm.valid) {
-      const { message } = this.messageForm.value;
-      this.messageService.sendTextMessage(phoneNo, message).subscribe(() => {
-        this.toastr.success('Text Message Sent');
-        this.onClose();
-      });
+      const { phone, message } = this.messageForm.value;
+      this.messageService.sendTextMessage(phone, message).subscribe(
+        () => {
+          this.toastr.success('Text Message Sent');
+          this.onClose();
+        },
+        error => {
+          this.toastr.error(error.error.message);
+        }
+      );
     }
   }
 
-  sendVoiceMessage(phoneNo: any) {
-    if (this.messageForm.valid && phoneNo) {
-      const { message } = this.messageForm.value;
-      const res = this.messageService.sendVoiceMessage(phoneNo, message).subscribe(() => {
-        this.toastr.success('Voice Message Sent');
-        this.onClose();
-      });
+  sendVoiceMessage() {
+    this.messageForm.patchValue({ phone: this.userInfo.phoneNo });
+    if (this.messageForm.valid) {
+      const { phone, message } = this.messageForm.value;
+      const res = this.messageService.sendVoiceMessage(phone, message).subscribe(
+        () => {
+          this.toastr.success('Voice Message Sent');
+          this.onClose();
+        },
+        error => {
+          this.toastr.error(error.error.message);
+        }
+      );
     }
   }
 
-  sendEmail(receiverEmail: string) {
-    if (this.mailForm.valid && receiverEmail) {
-      const { subject, message } = this.mailForm.value;
-      this.notificationService
-        .sendMessage('noreply@3diligent.com', receiverEmail, null, null, subject, message)
-        .subscribe(() => {
+  sendEmail() {
+    this.mailForm.patchValue({ to: this.userInfo.email });
+    if (this.mailForm.valid) {
+      const { to, subject, message } = this.mailForm.value;
+      this.notificationService.sendMessage('noreply@3diligent.com', to, null, null, subject, message).subscribe(
+        () => {
           this.toastr.success('Email Sent');
           this.onClose();
-        });
+        },
+        error => {
+          this.toastr.error(error.error.message);
+        }
+      );
     }
   }
 }

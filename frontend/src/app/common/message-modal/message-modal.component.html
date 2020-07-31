@@ -38,15 +38,15 @@
         <ng-container *ngIf="isEmailMessage">
           <div class="footer d-flex p-3 align-items-center justify-content-around">
             <button class="btn orange-btn" (click)="modal.dismiss()">Cancel</button>
-            <button class="btn green-btn" (click)="sendEmail(userInfo?.email)">
+            <button class="btn green-btn" (click)="sendEmail()">
               Send
             </button>
           </div>
         </ng-container>
         <ng-container *ngIf="!isEmailMessage">
           <div class="footer d-flex p-3 align-items-center justify-content-around">
-            <button class="btn green-btn" (click)="sendTextMessage(userInfo?.phoneNo)">Text</button>
-            <button class="btn green-btn" (click)="sendVoiceMessage(userInfo?.phoneNo)">Voice</button>
+            <button class="btn green-btn" (click)="sendTextMessage()">Text</button>
+            <button class="btn green-btn" (click)="sendVoiceMessage()">Voice</button>
           </div>
         </ng-container>
       </div>
