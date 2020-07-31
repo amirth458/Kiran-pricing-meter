@@ -148,7 +148,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
 
   onCustomerSelect() {
     this.selectedVendor = null;
-    this.loadVendors();
+    this.loadCustomers();
   }
 
   onVendorSelect() {
