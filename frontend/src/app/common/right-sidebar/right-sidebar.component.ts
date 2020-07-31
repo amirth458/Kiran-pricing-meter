@@ -145,4 +145,22 @@ export class RightSidebarComponent implements OnInit {
     this.selectedCustomer = null;
     this.loadVendors();
   }
+
+  openNote(){
+  }
+
+  openEmail(){
+  }
+
+  openChat(){
+  }
+
+  openScheduleMeet(){
+  }
+
+  openNextMeet(){
+  }
+
+  openText(){
+  }
 }

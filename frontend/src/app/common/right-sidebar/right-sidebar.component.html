@@ -23,11 +23,13 @@
       <h6 class="text-blue m-0">Search Customer or Vendor</h6>
       <div class="text-center w-100 pt-2">
         <label class="form-check-inline">
-          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="true" [(ngModel)]="isCustomer" (change)="onCustomerSelect()">
+          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="true" [(ngModel)]="isCustomer"
+                 (change)="onCustomerSelect()">
           Customer
         </label>
         <label class="form-check-inline">
-          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="false" [(ngModel)]="isCustomer" (change)="onVendorSelect()">
+          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="false" [(ngModel)]="isCustomer"
+                 (change)="onVendorSelect()">
           Vendor
         </label>
         <div class="pt-1">
@@ -60,23 +62,25 @@
       <h6 class="text-blue">Communication with {{ selectedCustomer?.customerName }} {{ selectedVendor?.name }}</h6>
       <div class="row clickable">
         <div class="col-5 pt-3 pb-2">
-          <i class="far fa-comment-alt pr-1"></i> Note Us
+          <span (click)="openNote()"><i class="far fa-comment-alt pr-1"></i> Note Us</span>
         </div>
         <div class="col-7 pt-3 pb-2">
-          <i class="far fa-envelope pr-1"></i> Mail US
+          <span (click)="openEmail()"><i class="far fa-envelope pr-1"></i> Mail US</span>
         </div>
         <div class="col-5 pt-3 pb-2">
-          <i class="far fa-comments pr-1"></i> Chat with US
+          <span (click)="openChat()"><i class="far fa-comments pr-1"></i> Chat with US</span>
         </div>
         <div class="col-7 pt-3 pb-2 pr-1">
-          <i class="far fa-calendar pr-1"></i> Schedule Meeting
+          <span (click)="openScheduleMeet()"><i class="far fa-calendar pr-1"></i> Schedule Meeting</span>
         </div>
         <div class="col-12 pt-3 pb-2">
-          <i class="fa fa-video pr-1"></i>
-          <span class="font-weight-normal pl-1">Next Meeting Time:</span> 03/12/2020 4:30pm
+          <span (click)="openNextMeet()">
+            <i class="fa fa-video pr-1"></i>
+            <span class="font-weight-normal pl-1">Next Meeting Time:</span> 03/12/2020 4:30pm
+          </span>
         </div>
         <div class="col-12 pt-3 pb-2">
-          <i class="fa fa-phone-alt pr-1"></i> Text/Voice Message
+          <span (click)="openText()"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
         </div>
       </div>
     </div>
