@@ -77,6 +77,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
     }
   }
 
+  // TODO refactor
   private loadCustomers() {
     this.customers = concat(
       of([]), // default items
