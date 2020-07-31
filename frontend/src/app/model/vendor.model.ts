@@ -1,3 +1,5 @@
+import { UserSummary } from './user.model';
+
 export interface VendorMetaData {
   id: number;
   name: string;
@@ -23,21 +25,7 @@ export interface Vendor {
   rfqExclusionCondition: string;
   vendorCertificates: Array<{ id: number; name: string }>;
   certificateURLs: Array<string>;
-  user: {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-    companyName: string;
-    department: string;
-    phoneNo: string;
-    vendor: string;
-    machines: string;
-    roles: Array<string>;
-    zoomUserEmail: string;
-    locked: boolean;
-    is_admin: boolean;
-  };
+  user: UserSummary;
 }
 
 export class FilterOption {
