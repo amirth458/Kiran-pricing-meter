@@ -1,6 +1,6 @@
 <ng-sidebar-container>
   <ng-sidebar [(opened)]="sideBarOpened" mode="over" position="right" [sidebarClass]="'right-sidebar'"
-              closeOnClickOutside="true" (onClosed)="onClosed()">
+              [closeOnClickOutside]="closeOnClickOutside" (onClosed)="onClosed()">
     <a closeSidebar class="close-icon"><i class="fa fa-times"></i></a>
 
     <!-- User Information Block -->
@@ -41,6 +41,8 @@
                      typeToSearchText="Please enter 2 or more characters"
                      [typeahead]="searchInput"
                      placeholder="Search Customer"
+                     (close)="closeOnClickOutside = true"
+                     (open)="closeOnClickOutside = false"
                      [(ngModel)]="selectedCustomer">
           </ng-select>
           <ng-select *ngIf="!isCustomer"
@@ -51,6 +53,8 @@
                      typeToSearchText="Please enter 2 or more characters"
                      [typeahead]="searchInput"
                      placeholder="Search Vendor"
+                     (close)="closeOnClickOutside = true"
+                     (open)="closeOnClickOutside = false"
                      [(ngModel)]="selectedVendor">
           </ng-select>
         </div>

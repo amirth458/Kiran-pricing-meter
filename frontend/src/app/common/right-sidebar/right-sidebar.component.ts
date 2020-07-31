@@ -22,6 +22,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
 
   @Output() public sidebarClosed: EventEmitter<boolean> = new EventEmitter();
 
+  closeOnClickOutside = true;
   isCustomer = true;
   searchLoading = false;
   searchInput = new Subject<string>();
