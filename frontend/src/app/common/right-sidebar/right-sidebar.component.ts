@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
 import { Store } from '@ngrx/store';
@@ -14,7 +23,8 @@ import { MessageModalComponent } from '../message-modal/message-modal.component'
 @Component({
   selector: 'app-right-sidebar',
   templateUrl: './right-sidebar.component.html',
-  styleUrls: ['./right-sidebar.component.css']
+  styleUrls: ['./right-sidebar.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RightSidebarComponent implements OnInit, OnDestroy {
   @Input() sideBarOpened: string;
@@ -180,6 +190,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
     const selectedUserId =
       this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
     if (selectedUserId) {
+      this.closeOnClickOutside = false;
       const modalRef = this.modalService.open(MessageModalComponent, {
         centered: false,
         windowClass: 'message-modal-position'
@@ -188,6 +199,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
       modalRef.result.then(
         (res: any) => {},
         reason => {
+          this.closeOnClickOutside = true;
           this.cdr.detectChanges();
         }
       );

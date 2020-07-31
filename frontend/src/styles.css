@@ -1282,3 +1282,10 @@ button:focus {
 .vendorSearchSidebar .ng-option {
   text-align: right;
 }
+
+.message-modal-position .modal-dialog {
+  position: fixed;
+  width: 500px;
+  right: 2px;
+  bottom: -25px;
+}

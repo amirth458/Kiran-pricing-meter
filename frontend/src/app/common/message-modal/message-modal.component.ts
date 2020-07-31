@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../service/user.service';
@@ -14,8 +14,6 @@ import { ToastrService } from 'ngx-toastr';
   encapsulation: ViewEncapsulation.None
 })
 export class MessageModalComponent implements OnInit {
-  @ViewChild('messageBoxPop') messageModalPop: TemplateRef<any>;
-
   @Input() modalInput: any;
 
   isEmailMessage: boolean;
@@ -46,7 +44,6 @@ export class MessageModalComponent implements OnInit {
     this.isEmailMessage = this.modalInput.isMessageEmail;
     this.userInfo = await this.userService.getUserDetails(this.modalInput.userId).toPromise();
     this.spinner.hide();
-    this.modalService.open(this.messageModalPop);
   }
 
   onClose() {

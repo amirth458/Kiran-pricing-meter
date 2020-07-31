@@ -1,55 +1,51 @@
-<ng-template #messageBoxPop let-modal class="message-modal-position">
-  <div class="wrapper shadow d-flex flex-column position-relative">
-    <div>
-      <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
-        <ng-container *ngIf="isEmailMessage"
-          >Write to {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
-        >
-        <ng-container *ngIf="!isEmailMessage"
-          >Message {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
-        >
-      </h5>
-    </div>
-    <div class="action-btn position-absolute" (click)="onClose()">
-      <i class="fa fa-times"></i>
-    </div>
-    <form [formGroup]="isEmailMessage ? mailForm : messageForm" class="message-form">
-      <div class="form-row">
-        <ng-container *ngIf="isEmailMessage">
-          <div class="form-group theme col-md-6">
-            <label>Subject</label>
-            <input required formControlName="subject" class="form-control subject" />
-          </div>
-        </ng-container>
-        <ng-container *ngIf="!isEmailMessage">
-          <div class="form-group theme col-md-6">
-            <label>Phone</label>
-            <input required readonly [value]="userInfo?.phoneNo" formControlName="phone" class="form-control subject" />
-          </div>
-        </ng-container>
+<div>
+  <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
+    <ng-container *ngIf="isEmailMessage"
+    >Write to {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
+    >
+    <ng-container *ngIf="!isEmailMessage"
+    >Message {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
+    >
+  </h5>
+</div>
+<div class="action-btn position-absolute" (click)="onClose()">
+  <i class="fa fa-times"></i>
+</div>
+<form [formGroup]="isEmailMessage ? mailForm : messageForm" class="message-form">
+  <div class="form-row">
+    <ng-container *ngIf="isEmailMessage">
+      <div class="form-group theme col-md-6">
+        <label>Subject</label>
+        <input required formControlName="subject" class="form-control subject"/>
       </div>
-      <div class="form-row">
-        <div class="form-group theme col-md-6">
-          <label>Message</label>
-          <input required formControlName="message" class="form-control description-box" placeholder="Message" />
-        </div>
+    </ng-container>
+    <ng-container *ngIf="!isEmailMessage">
+      <div class="form-group theme col-md-6">
+        <label>Phone</label>
+        <input required readonly [value]="userInfo?.phoneNo" formControlName="phone" class="form-control subject"/>
       </div>
-      <div class="form-row">
-        <ng-container *ngIf="isEmailMessage">
-          <div class="footer d-flex p-3 align-items-center justify-content-around">
-            <button class="btn orange-btn" (click)="modal.dismiss()">Cancel</button>
-            <button class="btn green-btn" (click)="sendEmail(userInfo?.email)">
-              Send
-            </button>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="!isEmailMessage">
-          <div class="footer d-flex p-3 align-items-center justify-content-around">
-            <button class="btn green-btn" (click)="sendTextMessage(userInfo?.phoneNo)">Text</button>
-            <button class="btn green-btn" (click)="sendVoiceMessage(userInfo?.phoneNo)">Voice</button>
-          </div>
-        </ng-container>
-      </div>
-    </form>
+    </ng-container>
   </div>
-</ng-template>
+  <div class="form-row">
+    <div class="form-group theme col-md-6">
+      <label>Message</label>
+      <input required formControlName="message" class="form-control description-box" placeholder="Message"/>
+    </div>
+  </div>
+  <div class="form-row">
+    <ng-container *ngIf="isEmailMessage">
+      <div class="footer d-flex p-3 align-items-center justify-content-around">
+        <button class="btn orange-btn" (click)="modal.dismiss()">Cancel</button>
+        <button class="btn green-btn" (click)="sendEmail(userInfo?.email)">
+          Send
+        </button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isEmailMessage">
+      <div class="footer d-flex p-3 align-items-center justify-content-around">
+        <button class="btn green-btn" (click)="sendTextMessage(userInfo?.phoneNo)">Text</button>
+        <button class="btn green-btn" (click)="sendVoiceMessage(userInfo?.phoneNo)">Voice</button>
+      </div>
+    </ng-container>
+  </div>
+</form>
