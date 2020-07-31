@@ -44,7 +44,9 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
 
   userInfo = {
     firstName: '',
-    img: 'assets/image/user-profile-icon.png'
+    img: 'assets/image/user-profile-icon.png',
+    lastName: '',
+    email: ''
   };
   sub: Subscription;
   userObserver: Observable<any>;

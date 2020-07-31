@@ -24,10 +24,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   sub: Subscription;
   sidebarObserver: Observable<any>;
 
-  private sideBarOpened = false;
-  private showSearchSidebar = false;
-  private selectedCustomer;
-  private selectedVendor;
+  sideBarOpened = false;
+  showSearchSidebar = false;
+  selectedCustomer;
+  selectedVendor;
 
   constructor(private router: Router, public store: Store<any>) {
     this.menus = environment.menus;
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (res.customer) {
           this.selectedCustomer = res.customer;
           this.selectedVendor = null;
-        } else if(res.vendor) {
+        } else if (res.vendor) {
           this.selectedVendor = res.vendor;
           this.selectedCustomer = null;
         } else {
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.sideMenuOpen = value;
   }
 
-  private toggleSidebar() {
+  toggleSidebar() {
     this.selectedCustomer = null;
     this.selectedVendor = null;
     this.showSearchSidebar = true;
