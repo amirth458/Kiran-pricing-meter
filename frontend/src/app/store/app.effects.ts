@@ -14,7 +14,8 @@ import {
   GetVendorInfo,
   GetUserInfo,
   GetRegisterStatus,
-  UpdateAuthInfo
+  UpdateAuthInfo,
+  UpdateSidebarInfo
 } from './app.models';
 import { VendorService } from '../service/vendor.service';
 import { AuthService } from '../service/auth.service';
@@ -107,6 +108,19 @@ export class AppEffects {
         type: AppTypes.UpdateState,
         payload: {
           [AppFields.AuthInfo]: res
+        }
+      };
+    })
+  );
+
+  @Effect() UpdateSidebarInfo: Observable<Action> = this.as.pipe(
+    ofType(AppTypes.UpdateSidebarInfo),
+    switchMap((a: UpdateSidebarInfo) => [a.payload]),
+    map((res: any) => {
+      return {
+        type: AppTypes.UpdateState,
+        payload: {
+          [AppFields.SidebarInfo]: res
         }
       };
     })

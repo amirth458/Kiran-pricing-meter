@@ -10,7 +10,8 @@ export enum AppFields {
   UserInfo = 'user-info',
   VendorInfo = 'vendor-info',
   RegisterStatus = 'register-status',
-  AuthInfo = 'auth-info'
+  AuthInfo = 'auth-info',
+  SidebarInfo = 'sidebar-info'
 }
 
 export interface AppState {
@@ -28,7 +29,8 @@ export enum AppTypes {
   UpdateVendorInfo = 'update-vendor-info',
   GetUserInfo = 'get-user-info',
   RegisterStatus = 'get-register-status',
-  UpdateAuthInfo = 'update-auth-info'
+  UpdateAuthInfo = 'update-auth-info',
+  UpdateSidebarInfo = 'update-sidebar-info'
 }
 
 export interface UpdateState {
@@ -55,6 +57,10 @@ export interface GetRegisterStatus {
 }
 export interface UpdateAuthInfo {
   type: AppTypes.UpdateAuthInfo;
+  payload: any;
+}
+export interface UpdateSidebarInfo {
+  type: AppTypes.UpdateSidebarInfo;
   payload: any;
 }
 

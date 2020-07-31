@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
 import { Store } from '@ngrx/store';
@@ -14,8 +14,11 @@ import { Vendor } from '../../model/vendor.model';
   templateUrl: './right-sidebar.component.html',
   styleUrls: ['./right-sidebar.component.css']
 })
-export class RightSidebarComponent implements OnInit {
-  @Input('sideBarOpened') sideBarOpened: string;
+export class RightSidebarComponent implements OnInit, OnDestroy {
+  @Input() sideBarOpened: string;
+  @Input() selectedCustomer: Customer;
+  @Input() selectedVendor: Vendor;
+  @Input() showSearch: boolean;
 
   @Output() public sidebarClosed: EventEmitter<boolean> = new EventEmitter();
 
@@ -25,8 +28,6 @@ export class RightSidebarComponent implements OnInit {
 
   customers: Observable<any[]>;
   vendors: Observable<Vendor[]>;
-  selectedCustomer: Customer;
-  selectedVendor: Vendor;
 
   userInfo = {
     firstName: '',
@@ -53,6 +54,12 @@ export class RightSidebarComponent implements OnInit {
       };
     });
     this.loadCustomers();
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   private loadCustomers() {

@@ -18,7 +18,12 @@
     type="cog"
   ></ngx-spinner>
 
-  <app-right-sidebar [sideBarOpened]="sideBarOpened" (sidebarClosed)="sideBarOpened = false"></app-right-sidebar>
+  <app-right-sidebar
+    [sideBarOpened]="sideBarOpened"
+    [showSearch]="showSearchSidebar"
+    [selectedCustomer]="selectedCustomer"
+    [selectedVendor]="selectedVendor"
+    (sidebarClosed)="sideBarOpened = false"></app-right-sidebar>
 </div>
 
 

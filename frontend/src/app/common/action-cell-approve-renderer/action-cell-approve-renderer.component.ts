@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { Store } from '@ngrx/store';
+import { AppTypes } from '../../store';
 
 @Component({
   selector: 'app-action-cell-approve-renderer',
@@ -9,7 +11,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 export class ActionCellApproveRendererComponent implements ICellRendererAngularComp {
   params;
 
-  constructor() {}
+  constructor(private store: Store<any>) {}
 
   agInit(params): void {
     this.params = params;
@@ -31,6 +33,13 @@ export class ActionCellApproveRendererComponent implements ICellRendererAngularC
 
   onView(): void {
     this.params.action.view(this.params);
+  }
+
+  onCommunicate(): void {
+    this.store.dispatch({
+      type: AppTypes.UpdateSidebarInfo,
+      payload: {vendor: this.params.data}
+    });
   }
 
   onEdit(): void {

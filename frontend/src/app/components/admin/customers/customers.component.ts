@@ -1,20 +1,21 @@
-import { Component, OnInit, ViewChild, HostListener, TemplateRef, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GridOptions, ColDef } from 'ag-grid-community';
+import { ColDef, GridOptions } from 'ag-grid-community';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { CustomerService } from 'src/app/service/customer.service';
 import { UserService } from 'src/app/service/user.service';
-import { FilterOption } from 'src/app/model/vendor.model';
 import { Customer } from 'src/app/model/customer.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { throwError, Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
 import { LinkVendorService } from 'src/app/service/link-vendor.service';
+import { AppTypes } from '../../../store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-customers',
@@ -75,6 +76,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   constructor(
     public route: Router,
+    private store: Store<any>,
     public customerService: CustomerService,
     public spineer: NgxSpinnerService,
     public toastr: ToastrService,
@@ -168,7 +170,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
           hide: false,
           sortable: false,
           filter: false,
-          width: 240
+          width: 350
         },
         {
           headerName: '',
@@ -242,6 +244,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
         }
       );
   }
+
   onDeactivate(customer: Customer) {
     this.customerService
       .deactivateCustomer(customer.customerId)
@@ -254,6 +257,13 @@ export class CustomersComponent implements OnInit, OnDestroy {
           this.toastr.error('Unable to perform action');
         }
       );
+  }
+
+  onCommunicate(customer: Customer): void {
+    this.store.dispatch({
+      type: AppTypes.UpdateSidebarInfo,
+      payload: {customer}
+    });
   }
 
   configureColumnDefs() {
