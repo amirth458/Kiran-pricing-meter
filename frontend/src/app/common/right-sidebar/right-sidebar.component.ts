@@ -23,7 +23,7 @@ export class RightSidebarComponent implements OnInit {
   searchLoading = false;
   searchInput = new Subject<string>();
 
-  customers: Observable<Customer[]>;
+  customers: Observable<any[]>;
   vendors: Observable<Vendor[]>;
   selectedCustomer: Customer;
   selectedVendor: Vendor;
@@ -55,10 +55,6 @@ export class RightSidebarComponent implements OnInit {
     this.loadCustomers();
   }
 
-  trackByFn(item) {
-    return item.customerId;
-  }
-
   private loadCustomers() {
     this.customers = concat(
       of([]), // default items
@@ -69,22 +65,26 @@ export class RightSidebarComponent implements OnInit {
             distinctUntilChanged(),
             tap(() => (this.searchLoading = true)),
             switchMap(async term => {
-              const body = {
-                q: '',
-                filterColumnsRequests: [
-                  { id: 10, displayName: 'Customer Name', selectedOperator: 'contains', searchedValue: term }
-                ]
-              };
-              const res = await this.userService
-                .getAllCustomers(0, 10, body)
-                .pipe(
-                  catchError(() => of([])), // empty list on error
-                  tap(() => (this.searchLoading = false))
-                )
-                .toPromise();
-              if (res && res.content) {
-                return res.content;
+              if (term && term.length > 2) {
+                const body = {
+                  q: '',
+                  filterColumnsRequests: [
+                    { id: 10, displayName: 'Customer Name', selectedOperator: 'contains', searchedValue: term }
+                  ]
+                };
+                const res = await this.userService
+                  .getAllCustomers(0, 10, body)
+                  .pipe(
+                    catchError(() => of([])), // empty list on error
+                    tap(() => (this.searchLoading = false))
+                  )
+                  .toPromise();
+                if (res && res.content) {
+                  res.content = res.content.map(cus => {cus.fullName = cus.customerName + ' (' + cus.userEmail + ')'; return cus;});
+                  return res.content;
+                }
               }
+              this.searchLoading = false;
               return [];
             })
           )
@@ -101,31 +101,30 @@ export class RightSidebarComponent implements OnInit {
         distinctUntilChanged(),
         tap(() => (this.searchLoading = true)),
         switchMap(async term => {
-          const body = {
-            q: '',
-            filterColumnsRequests: [
-              { id: 2, displayName: 'Vendor Name', selectedOperator: 'contains', searchedValue: term }
-            ]
-          };
-          const res = await this.userService
-            .getAllUsers(0, 10, body)
-            .pipe(
-              catchError(() => of([])), // empty list on error
-              tap(() => (this.searchLoading = false))
-            )
-            .toPromise();
-          if (res && res.content) {
-            return res.content;
+          if (term && term.length > 2) {
+            const body = {
+              q: '',
+              filterColumnsRequests: [
+                { id: 2, displayName: 'Vendor Name', selectedOperator: 'contains', searchedValue: term }
+              ]
+            };
+            const res = await this.userService
+              .getAllUsers(0, 10, body)
+              .pipe(
+                catchError(() => of([])), // empty list on error
+                tap(() => (this.searchLoading = false))
+              )
+              .toPromise();
+            if (res && res.content) {
+              res.content = res.content.map(vendor => {vendor.fullName = vendor.name + ' (' + vendor.email + ')'; return vendor;});
+              return res.content;
+            }
           }
+          this.searchLoading = false;
           return [];
         })
         )
     );
-  }
-
-  onSearchClose() {
-    this.searchInput = null;
-    // this.loadPeople();
   }
 
   onLogout() {
