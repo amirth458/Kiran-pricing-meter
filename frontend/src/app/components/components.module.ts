@@ -184,6 +184,7 @@ import { AdminCommunicationComponent } from '../common/admin-communication/admin
 import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplier.component';
 import { SidebarModule } from 'ng-sidebar';
 import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.component';
+import { MessageModalComponent } from '../common/message-modal/message-modal.component';
 
 @NgModule({
   declarations: [
@@ -356,7 +357,8 @@ import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.com
     CustomerPartQuoteComponent,
     AdminProposalComponent,
     AdminCommunicationComponent,
-    AddSupplierComponent
+    AddSupplierComponent,
+    MessageModalComponent
   ],
   imports: [
     CommonModule,
@@ -412,7 +414,9 @@ import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.com
 
     // pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
-  ]
+    SupplierPipe,
+    MessageModalComponent
+  ],
+  entryComponents: [MessageModalComponent]
 })
 export class ComponentsModule {}

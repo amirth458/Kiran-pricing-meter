@@ -1,12 +1,18 @@
 <ng-sidebar-container>
-  <ng-sidebar [(opened)]="sideBarOpened" mode="over" position="right" [sidebarClass]="'right-sidebar'"
-              [closeOnClickOutside]="closeOnClickOutside" (onClosed)="onClosed()">
+  <ng-sidebar
+    [(opened)]="sideBarOpened"
+    mode="over"
+    position="right"
+    [sidebarClass]="'right-sidebar'"
+    [closeOnClickOutside]="closeOnClickOutside"
+    (onClosed)="onClosed()"
+  >
     <a closeSidebar class="close-icon"><i class="fa fa-times"></i></a>
 
     <!-- User Information Block -->
     <div class="row pt-2">
       <div class="col-4 pl-5">
-        <img [src]="userInfo.img" class="rounded-circle" [alt]="userInfo.firstName" width="80" height="80">
+        <img [src]="userInfo.img" class="rounded-circle" [alt]="userInfo.firstName" width="80" height="80" />
       </div>
       <div class="col-6 pt-1 text-theme">
         <h5>{{ userInfo.firstName }} {{ userInfo?.lastName }}</h5>
@@ -16,46 +22,62 @@
         </div>
       </div>
     </div>
-    <hr/>
+    <hr />
 
     <!-- Search Customer or Vendor Block -->
     <div class="text-theme shadow-block p-2 pl-3" *ngIf="showSearch">
       <h6 class="text-blue m-0">Search Customer or Vendor</h6>
       <div class="text-center w-100 pt-2">
         <label class="form-check-inline">
-          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="true" [(ngModel)]="isCustomer"
-                 (change)="onCustomerSelect()">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="customerOrVendor"
+            [value]="true"
+            [(ngModel)]="isCustomer"
+            (change)="onCustomerSelect()"
+          />
           Customer
         </label>
         <label class="form-check-inline">
-          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="false" [(ngModel)]="isCustomer"
-                 (change)="onVendorSelect()">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="customerOrVendor"
+            [value]="false"
+            [(ngModel)]="isCustomer"
+            (change)="onVendorSelect()"
+          />
           Vendor
         </label>
         <div class="pt-1">
-          <ng-select *ngIf="isCustomer"
-                     class="customerSearchSidebar"
-                     [items]="customers | async"
-                     bindLabel="fullName"
-                     [loading]="searchLoading"
-                     typeToSearchText="Please enter 2 or more characters"
-                     [typeahead]="searchInput"
-                     placeholder="Search Customer"
-                     (close)="closeOnClickOutside = true"
-                     (open)="closeOnClickOutside = false"
-                     [(ngModel)]="selectedCustomer">
+          <ng-select
+            *ngIf="isCustomer"
+            class="customerSearchSidebar"
+            [items]="customers | async"
+            bindLabel="fullName"
+            [loading]="searchLoading"
+            typeToSearchText="Please enter 2 or more characters"
+            [typeahead]="searchInput"
+            placeholder="Search Customer"
+            (close)="closeOnClickOutside = true"
+            (open)="closeOnClickOutside = false"
+            [(ngModel)]="selectedCustomer"
+          >
           </ng-select>
-          <ng-select *ngIf="!isCustomer"
-                     class="vendorSearchSidebar"
-                     [items]="vendors | async"
-                     bindLabel="fullName"
-                     [loading]="searchLoading"
-                     typeToSearchText="Please enter 2 or more characters"
-                     [typeahead]="searchInput"
-                     placeholder="Search Vendor"
-                     (close)="closeOnClickOutside = true"
-                     (open)="closeOnClickOutside = false"
-                     [(ngModel)]="selectedVendor">
+          <ng-select
+            *ngIf="!isCustomer"
+            class="vendorSearchSidebar"
+            [items]="vendors | async"
+            bindLabel="fullName"
+            [loading]="searchLoading"
+            typeToSearchText="Please enter 2 or more characters"
+            [typeahead]="searchInput"
+            placeholder="Search Vendor"
+            (close)="closeOnClickOutside = true"
+            (open)="closeOnClickOutside = false"
+            [(ngModel)]="selectedVendor"
+          >
           </ng-select>
         </div>
       </div>
@@ -69,7 +91,8 @@
           <span (click)="openNote()"><i class="far fa-comment-alt pr-1"></i> Note Us</span>
         </div>
         <div class="col-7 pt-3 pb-2">
-          <span (click)="openEmail()"><i class="far fa-envelope pr-1"></i> Mail US</span>
+          <span (click)="openMessageModal(true)">
+            <i class="far fa-envelope pr-1"></i> Mail US</span>
         </div>
         <div class="col-5 pt-3 pb-2">
           <span (click)="openChat()"><i class="far fa-comments pr-1"></i> Chat with US</span>
@@ -87,13 +110,12 @@
           <span (click)="openText()"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
         </div>-->
         <div class="col-7 pt-3 pb-2">
-          <span (click)="openText()"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
+          <span (click)="openMessageModal(false)"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
         </div>
         <div class="col-5 pt-3 pb-2">
           <span (click)="openEmail()"><i class="far fa-envelope pr-1"></i> Mail US</span>
         </div>
       </div>
     </div>
-
   </ng-sidebar>
 </ng-sidebar-container>
