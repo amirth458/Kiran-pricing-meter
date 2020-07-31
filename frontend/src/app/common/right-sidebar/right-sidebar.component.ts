@@ -7,6 +7,7 @@ import { AppFields, switchMap } from '../../store';
 import { Router } from '@angular/router';
 import { Customer } from '../../model/customer.model';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Vendor } from '../../model/vendor.model';
 
 @Component({
   selector: 'app-right-sidebar',
@@ -23,7 +24,9 @@ export class RightSidebarComponent implements OnInit {
   searchInput = new Subject<string>();
 
   customers: Observable<Customer[]>;
+  vendors: Observable<Vendor[]>;
   selectedCustomer: Customer;
+  selectedVendor: Vendor;
 
   userInfo = {
     firstName: '',
@@ -49,14 +52,14 @@ export class RightSidebarComponent implements OnInit {
         ...res
       };
     });
-    this.loadPeople();
+    this.loadCustomers();
   }
 
-  trackByFn(item: Customer) {
+  trackByFn(item) {
     return item.customerId;
   }
 
-  private loadPeople() {
+  private loadCustomers() {
     this.customers = concat(
       of([]), // default items
       !this.searchInput
@@ -88,6 +91,38 @@ export class RightSidebarComponent implements OnInit {
     );
   }
 
+  private loadVendors() {
+    this.vendors = concat(
+      of([]), // default items
+      !this.searchInput
+        ? []
+        : this.searchInput.pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        tap(() => (this.searchLoading = true)),
+        switchMap(async term => {
+          const body = {
+            q: '',
+            filterColumnsRequests: [
+              { id: 2, displayName: 'Vendor Name', selectedOperator: 'contains', searchedValue: term }
+            ]
+          };
+          const res = await this.userService
+            .getAllUsers(0, 10, body)
+            .pipe(
+              catchError(() => of([])), // empty list on error
+              tap(() => (this.searchLoading = false))
+            )
+            .toPromise();
+          if (res && res.content) {
+            return res.content;
+          }
+          return [];
+        })
+        )
+    );
+  }
+
   onSearchClose() {
     this.searchInput = null;
     // this.loadPeople();
@@ -100,5 +135,15 @@ export class RightSidebarComponent implements OnInit {
 
   onClosed() {
     this.sidebarClosed.emit();
+  }
+
+  onCustomerSelect() {
+    this.selectedVendor = null;
+    this.loadVendors();
+  }
+
+  onVendorSelect() {
+    this.selectedCustomer = null;
+    this.loadVendors();
   }
 }

@@ -23,30 +23,43 @@
       <h6 class="text-purple m-0">Search Customer or Vendor</h6>
       <div class="text-center w-100 pt-2">
         <label class="form-check-inline">
-          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="true" [(ngModel)]="isCustomer">
+          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="true" [(ngModel)]="isCustomer" (change)="onCustomerSelect()">
           Customer
         </label>
         <label class="form-check-inline">
-          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="false" [(ngModel)]="isCustomer">
+          <input class="form-check-input" type="radio" name="customerOrVendor" [value]="false" [(ngModel)]="isCustomer" (change)="onVendorSelect()">
           Vendor
         </label>
         <div class="pt-1">
-          <ng-select [items]="customers | async"
+          <ng-select *ngIf="isCustomer"
+                     [items]="customers | async"
                      bindLabel="customerName"
                      [trackByFn]="trackByFn"
                      [loading]="searchLoading"
                      typeToSearchText="Please enter 2 or more characters"
                      [typeahead]="searchInput"
                      (close)="onSearchClose()"
+                     placeholder="Search Customer"
                      [(ngModel)]="selectedCustomer">
+          </ng-select>
+          <ng-select *ngIf="!isCustomer"
+                     [items]="vendors | async"
+                     bindLabel="name"
+                     [trackByFn]="trackByFn"
+                     [loading]="searchLoading"
+                     typeToSearchText="Please enter 2 or more characters"
+                     [typeahead]="searchInput"
+                     (close)="onSearchClose()"
+                     placeholder="Search Vendor"
+                     [(ngModel)]="selectedVendor">
           </ng-select>
         </div>
       </div>
     </div>
 
     <!-- Communication Block -->
-    <div class="text-theme shadow-block p-2 pl-3 font-weight-500" *ngIf="selectedCustomer">
-      <h6 class="text-purple">Communication with {{ selectedCustomer?.customerName }}</h6>
+    <div class="text-theme shadow-block p-2 pl-3 font-weight-500" *ngIf="selectedCustomer || selectedVendor">
+      <h6 class="text-purple">Communication with {{ selectedCustomer?.customerName }} {{ selectedVendor?.name }}</h6>
       <div class="row clickable">
         <div class="col-5 pt-2 pb-2">
           <i class="far fa-comment-alt"></i> Note Us
