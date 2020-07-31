@@ -65,7 +65,7 @@
     <div class="text-theme shadow-block p-2 pl-3 font-weight-500" *ngIf="selectedCustomer || selectedVendor">
       <h6 class="text-blue">Communication with {{ selectedCustomer?.customerName }} {{ selectedVendor?.name }}</h6>
       <div class="row clickable">
-        <div class="col-5 pt-3 pb-2">
+        <!--<div class="col-5 pt-3 pb-2">
           <span (click)="openNote()"><i class="far fa-comment-alt pr-1"></i> Note Us</span>
         </div>
         <div class="col-7 pt-3 pb-2">
@@ -85,6 +85,12 @@
         </div>
         <div class="col-12 pt-3 pb-2">
           <span (click)="openText()"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
+        </div>-->
+        <div class="col-7 pt-3 pb-2">
+          <span (click)="openText()"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
+        </div>
+        <div class="col-5 pt-3 pb-2">
+          <span (click)="openEmail()"><i class="far fa-envelope pr-1"></i> Mail US</span>
         </div>
       </div>
     </div>

@@ -141,6 +141,8 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   }
 
   onClosed() {
+    this.selectedVendor = null;
+    this.selectedCustomer = null;
     this.sidebarClosed.emit();
   }
 
