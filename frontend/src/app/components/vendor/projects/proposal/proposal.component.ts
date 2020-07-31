@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { combineLatest, empty } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -72,7 +72,7 @@ export class ProposalComponent implements OnInit {
   get totalCost() {
     return (this.quoteList || []).reduce((sum: number, quote: PartQuoteCustomerView) => {
       if (quote) {
-        sum += quote.totalCost || 0;
+        sum += Util.calcPartQuoteCost(quote);
       }
       return sum;
     }, 0);
@@ -282,9 +282,28 @@ export class ProposalComponent implements OnInit {
   }
 
   sendAllQuoteToCustomer() {
-    const arr = (this.quoteList || []).map(q => q.partId);
-    const quote = (this.quoteList || []).length ? (this.quoteList || [])[0] : null;
-    this.sendQuote(quote.vendorId, arr);
+    const arr = Util.buildAdminProposalData(this.partInfo, this.quoteList, this.refMedia);
+    const proposalsReq = [];
+    (arr || []).map(proposalReq => proposalsReq.push(this.proposalService.updateAdminProposal(proposalReq)));
+    this.spinner.show();
+    combineLatest(proposalsReq)
+      .pipe(
+        catchError(err => {
+          this.toasterService.error('unable to update admin proposal');
+          this.modalService.dismissAll();
+          return empty();
+        }),
+        switchMap(() => {
+          const partIds = (this.quoteList || []).map(q => q.partId);
+          const quote = (this.quoteList || []).length ? (this.quoteList || [])[0] : null;
+          return this.proposalService.sendQuoteToCustomer(quote.vendorId, partIds);
+        })
+      )
+      .subscribe(v => {
+        this.toasterService.success('Admin proposal have been updated!');
+        this.spinner.hide();
+        this.route.navigateByUrl('/prodex/projects/proposal-issued');
+      });
   }
 
   hideDetailView(isCustomerAccepted: boolean = false) {
