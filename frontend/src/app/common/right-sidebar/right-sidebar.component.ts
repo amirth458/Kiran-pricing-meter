@@ -44,7 +44,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
 
   userInfo = {
     firstName: '',
-    img: 'assets/image/avatar3.png'
+    img: 'assets/image/user-profile-icon.png'
   };
   sub: Subscription;
   userObserver: Observable<any>;
@@ -161,8 +161,6 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   }
 
   onClosed() {
-    this.selectedVendor = null;
-    this.selectedCustomer = null;
     this.sidebarClosed.emit();
   }
 

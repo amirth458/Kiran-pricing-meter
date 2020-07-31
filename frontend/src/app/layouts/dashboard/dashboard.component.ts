@@ -65,6 +65,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private toggleSidebar() {
+    this.selectedCustomer = null;
+    this.selectedVendor = null;
     this.showSearchSidebar = true;
     this.sideBarOpened = !this.sideBarOpened;
   }
