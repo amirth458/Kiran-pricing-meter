@@ -14,6 +14,7 @@ import { Payment, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.
 import { FilterOption } from 'src/app/model/vendor.model';
 import { ProjectType } from 'src/app/model/billing.model';
 import { MetadataService } from 'src/app/service/metadata.service';
+import { Chat, ChatTypeEnum, ChatParticipantEnum } from 'src/app/model/chat.model';
 
 @Component({
   selector: 'app-waiting-for-approval',
@@ -183,7 +184,9 @@ export class WaitingForApprovalComponent implements OnInit {
     comment: ['']
   });
   pageType: PaymentStatusTypes = PaymentStatusTypes.WAITING_FOR_APPROVAL;
-
+  chatTypeEnum = ChatTypeEnum;
+  chatParticipantEnum = ChatParticipantEnum;
+  chat: Chat;
   constructor(
     public route: Router,
     public spineer: NgxSpinnerService,

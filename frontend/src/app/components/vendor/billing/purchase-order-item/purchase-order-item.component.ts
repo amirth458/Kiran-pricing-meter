@@ -13,6 +13,7 @@ import { MetadataConfig } from '../../../../model/metadata.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { UserService } from 'src/app/service/user.service';
 import { Util } from '../../../../util/Util';
+import { Chat, ChatTypeEnum, ChatParticipantEnum } from 'src/app/model/chat.model';
 
 @Component({
   selector: 'app-purchase-order-item',
@@ -32,6 +33,10 @@ export class PurchaseOrderItemComponent implements OnInit {
   orderInfo: PaymentDetails;
   postProcessAction = [];
   measurementUnits = [];
+
+  chat: Chat;
+  chatTypeEnum = ChatTypeEnum;
+  chatParticipantEnum = ChatParticipantEnum;
   constructor(
     public toast: ToastrService,
     public location: Location,

@@ -82,6 +82,17 @@
   <div *ngIf="row.paymentType === paymentOrderType.PURCHASE_ORDER">
     <app-billing-chat [purchaseOrderId]="row.orderId"></app-billing-chat>
   </div>
+  <div *ngIf="row.paymentType === paymentOrderType.CREDIT_CARD">
+    <app-chat
+      [participants]="row?.customerUserId ? [row?.customerUserId] : []"
+      [id]="row?.customerOrderId"
+      [type]="chatTypeEnum.CUSTOMER_ORDER"
+      [chatParticipant]="chatParticipantEnum.CUSTOMER"
+      [value]="chat"
+      (valueChange)="chat = $event"
+    >
+    </app-chat>
+  </div>
 </ng-template>
 
 <ng-template #approveRejectAction let-row>
