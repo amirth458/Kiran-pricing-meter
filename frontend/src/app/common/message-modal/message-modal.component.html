@@ -20,9 +20,19 @@
       </div>
     </ng-container>
     <ng-container *ngIf="!isEmailMessage">
-      <div class="form-group theme col-md-6">
+      <div class="form-group theme col-md-6 phone">
         <label>Phone</label>
-        <input required readonly [value]="userInfo?.phoneNo" formControlName="phone" class="form-control subject" />
+        <international-phone-number
+          readonly
+          class="readonly"
+          formControlName="phone"
+          placeholder="Enter phone number"
+          [required]="true"
+        ></international-phone-number>
+        <span *ngIf="showRequired('phone', 2)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 2) && messageForm.controls.phone.status === 'INVALID'" class="footnote red"
+          >* Phone number is invalid.</span
+        >
       </div>
     </ng-container>
   </div>

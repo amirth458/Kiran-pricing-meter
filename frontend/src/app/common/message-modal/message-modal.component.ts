@@ -44,6 +44,11 @@ export class MessageModalComponent implements OnInit {
     this.spinner.show();
     this.isEmailMessage = this.modalInput.isMessageEmail;
     this.userInfo = await this.userService.getUserDetails(this.modalInput.userId).toPromise();
+    if (this.isEmailMessage) {
+      this.mailForm.patchValue({ to: this.userInfo.email });
+    } else {
+      this.messageForm.patchValue({ phone: this.userInfo.phoneNo });
+    }
     this.spinner.hide();
   }
 
@@ -52,7 +57,6 @@ export class MessageModalComponent implements OnInit {
   }
 
   sendTextMessage() {
-    this.messageForm.patchValue({ phone: this.userInfo.phoneNo });
     if (this.messageForm.valid) {
       const { phone, message } = this.messageForm.value;
       this.messageService.sendTextMessage(phone, message).subscribe(
@@ -68,7 +72,6 @@ export class MessageModalComponent implements OnInit {
   }
 
   sendVoiceMessage() {
-    this.messageForm.patchValue({ phone: this.userInfo.phoneNo });
     if (this.messageForm.valid) {
       const { phone, message } = this.messageForm.value;
       const res = this.messageService.sendVoiceMessage(phone, message).subscribe(
@@ -84,7 +87,6 @@ export class MessageModalComponent implements OnInit {
   }
 
   sendEmail() {
-    this.mailForm.patchValue({ to: this.userInfo.email });
     if (this.mailForm.valid) {
       const { to, subject, message } = this.mailForm.value;
       this.notificationService.sendMessage('noreply@3diligent.com', to, null, null, subject, message).subscribe(
@@ -95,6 +97,18 @@ export class MessageModalComponent implements OnInit {
         error => {
           this.toastr.error(error.error.message);
         }
+      );
+    }
+  }
+
+  showRequired(field: string, formType: number): boolean {
+    if (formType === 1) {
+      return this.mailForm.value[field] === '' || this.mailForm.value[field] === null;
+    } else if (formType === 2) {
+      return (
+        this.messageForm.value[field] === '' ||
+        this.messageForm.value[field] === null ||
+        Number(this.messageForm.value[field]) === 0
       );
     }
   }
