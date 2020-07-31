@@ -66,6 +66,7 @@
     <!-- <span class="text-theme-green" (click)="onView(row)">View</span> -->
     <span class="text-theme-green" *ngIf="row && !row.userActive" (click)="onActivate(row)">Activate</span>
     <span class="text-orange" *ngIf="row && row.userActive" (click)="onDeactivate(row)">Deactivate</span>
+    <span class="text-blue" (click)="onCommunicate(row)"><i class="far fa-comments"></i></span>
   </div>
 </ng-template>
 

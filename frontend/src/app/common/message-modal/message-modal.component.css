@@ -1,0 +1,30 @@
+.wrapper {
+  background-color: white;
+  border-radius: 5px;
+}
+
+.action-btn {
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.message-form {
+  padding: 30px 30px 10px 30px;
+}
+
+.subject {
+  width: 400px;
+  background-color: white;
+}
+
+.description-box {
+  width: 400px;
+  height: 100px;
+  background-color: white;
+}
+
+.footer {
+  width: 400px;
+  margin-top: 15px;
+}

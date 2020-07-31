@@ -40,19 +40,10 @@
                 class="nav-link dropdown-toggle"
                 id="navbarDropdown"
                 role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                ngbDropdownToggle
+                (click)="openSideBar()"
               >
                 <span class="name">{{ userInfo.firstName }}</span>
               </a>
-              <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a ngbDropdownItem class="dropdown-item" [routerLink]="" (click)="onLogout()">
-                  Logout
-                  <i class="fas fa-sign-out-alt menu-icon"></i>
-                </a>
-              </div>
             </div>
           </div>
         </li>

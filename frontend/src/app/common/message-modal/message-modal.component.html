@@ -1,0 +1,61 @@
+<div>
+  <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
+    <ng-container *ngIf="isEmailMessage"
+      >Write to {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
+    >
+    <ng-container *ngIf="!isEmailMessage"
+      >Message {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
+    >
+  </h5>
+</div>
+<div class="action-btn position-absolute" (click)="onClose()">
+  <i class="fa fa-times"></i>
+</div>
+<form [formGroup]="isEmailMessage ? mailForm : messageForm" class="message-form">
+  <div class="form-row">
+    <ng-container *ngIf="isEmailMessage">
+      <div class="form-group theme col-md-6">
+        <label>Subject</label>
+        <input required formControlName="subject" class="form-control subject" />
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isEmailMessage">
+      <div class="form-group theme col-md-6 phone">
+        <label>Phone</label>
+        <international-phone-number
+          readonly
+          class="readonly"
+          formControlName="phone"
+          placeholder="Enter phone number"
+          [required]="true"
+        ></international-phone-number>
+        <span *ngIf="showRequired('phone', 2)" class="footnote red">* Required</span>
+        <span *ngIf="!showRequired('phone', 2) && messageForm.controls.phone.status === 'INVALID'" class="footnote red"
+          >* Phone number is invalid.</span
+        >
+      </div>
+    </ng-container>
+  </div>
+  <div class="form-row">
+    <div class="form-group theme col-md-6">
+      <label>Message</label>
+      <input required formControlName="message" class="form-control description-box" placeholder="Message" />
+    </div>
+  </div>
+  <div class="form-row">
+    <ng-container *ngIf="isEmailMessage">
+      <div class="footer d-flex p-3 align-items-center justify-content-around">
+        <button class="btn orange-btn" (click)="onClose()">Cancel</button>
+        <button class="btn green-btn" (click)="sendEmail()">
+          Send
+        </button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isEmailMessage">
+      <div class="footer d-flex p-3 align-items-center justify-content-around">
+        <button class="btn green-btn" (click)="sendTextMessage()">Text</button>
+        <button class="btn green-btn" (click)="sendVoiceMessage()">Voice</button>
+      </div>
+    </ng-container>
+  </div>
+</form>

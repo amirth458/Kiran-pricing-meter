@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -18,6 +18,8 @@ export class TopMenuComponent implements OnInit, OnDestroy {
   };
   sub: Subscription;
   userObserver: Observable<any>;
+
+  @Output() public toggleSideMenu: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     public router: Router,
@@ -41,8 +43,7 @@ export class TopMenuComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  onLogout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  openSideBar() {
+    this.toggleSideMenu.emit(true);
   }
 }

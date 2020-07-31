@@ -182,6 +182,9 @@ import { CustomerPartQuoteComponent } from './vendor/projects/customer-part-quot
 import { AdminProposalComponent } from './vendor/projects/admin-proposal/admin-proposal.component';
 import { AdminCommunicationComponent } from '../common/admin-communication/admin-communication.component';
 import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplier.component';
+import { SidebarModule } from 'ng-sidebar';
+import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.component';
+import { MessageModalComponent } from '../common/message-modal/message-modal.component';
 
 @NgModule({
   declarations: [
@@ -196,6 +199,7 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     MultiSelectCellRendererComponent,
     LinkCellRendererComponent,
     SideMenuComponent,
+    RightSidebarComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
     ProgressBarComponent,
@@ -353,7 +357,8 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     CustomerPartQuoteComponent,
     AdminProposalComponent,
     AdminCommunicationComponent,
-    AddSupplierComponent
+    AddSupplierComponent,
+    MessageModalComponent
   ],
   imports: [
     CommonModule,
@@ -383,7 +388,8 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     ChatModule,
     UiSwitchModule,
     PerfectScrollbarModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    SidebarModule.forRoot()
   ],
   providers: [DatePipe, CurrencyPipe, TitleCasePipe],
   exports: [
@@ -399,6 +405,7 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
     LinkCellRendererComponent,
     ProgressBarComponent,
     SideMenuComponent,
+    RightSidebarComponent,
     SubSectionMenuComponent,
     TopMenuComponent,
     ImgPreloadDirective,
@@ -407,7 +414,9 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
 
     // pipes
     ConfirmOrderFilterPipe,
-    SupplierPipe
-  ]
+    SupplierPipe,
+    MessageModalComponent
+  ],
+  entryComponents: [MessageModalComponent]
 })
 export class ComponentsModule {}

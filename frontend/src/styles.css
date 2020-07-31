@@ -1265,3 +1265,27 @@ button:focus {
 .pm-release-queue-details .part-name {
   margin-bottom: 10px !important;
 }
+
+.right-sidebar {
+  background-color: #ffffff !important;
+  width: 400px !important;
+  top: 71px !important;
+  position: fixed !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  z-index: 999 !important;
+  box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
+  overflow-x: hidden !important;
+}
+
+.customerSearchSidebar .ng-option,
+.vendorSearchSidebar .ng-option {
+  text-align: right;
+}
+
+.message-modal-position .modal-dialog {
+  position: fixed;
+  width: 500px;
+  right: 2px;
+  bottom: -25px;
+}

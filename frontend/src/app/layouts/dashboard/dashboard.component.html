@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <app-top-menu></app-top-menu>
+  <app-top-menu (toggleSideMenu)="toggleSidebar()"></app-top-menu>
 
   <app-side-menu
     [menus]="menus"
@@ -17,4 +17,13 @@
     color="#8FBE4C"
     type="cog"
   ></ngx-spinner>
+
+  <app-right-sidebar
+    [sideBarOpened]="sideBarOpened"
+    [showSearch]="showSearchSidebar"
+    [selectedCustomer]="selectedCustomer"
+    [selectedVendor]="selectedVendor"
+    (sidebarClosed)="sideBarOpened = false"></app-right-sidebar>
 </div>
+
+
