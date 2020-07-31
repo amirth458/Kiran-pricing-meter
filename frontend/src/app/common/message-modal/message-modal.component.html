@@ -34,14 +34,6 @@
           <input required formControlName="message" class="form-control description-box" placeholder="Message" />
         </div>
       </div>
-      <ng-container *ngIf="isEmailMessage">
-        <div class="form-row">
-          <button class="attachment btn btn-white pl-3 pr-3 text-theme-green" (click)="fileInput.click()">
-            <i class="fa fa-paperclip" aria-hidden="true"></i>
-          </button>
-          <input type="file" hidden #fileInput />
-        </div>
-      </ng-container>
       <div class="form-row">
         <ng-container *ngIf="isEmailMessage">
           <div class="footer d-flex p-3 align-items-center justify-content-around">
