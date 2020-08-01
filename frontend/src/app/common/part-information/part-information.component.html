@@ -72,32 +72,37 @@
             <tr>
               <th scope="row">Vendor Id</th>
               <td>
-                <span *ngIf="idCollection.vendorIds[0]">
-                  {{idCollection.vendorNames[0]}} ({{ idCollection.vendorIds[0] }})
+                <span *ngIf="(idCollection?.vendorIds || []).length > 0">
+                  {{ idCollection.vendorNames[0] }} ({{ idCollection.vendorIds[0] }})
                 </span>
               </td>
             </tr>
             <tr>
               <th scope="row">Customer Order Id</th>
-              <td>{{ idCollection?.customerOrderIds[0] }}</td>
+              <td>{{ (idCollection?.customerOrderIds)[0] }}</td>
             </tr>
             <tr>
               <th scope="row">Bid Id</th>
               <td>
-                {{ idCollection?.bidOrderIds[0] }}
-                {{ idCollection?.bidOrderIds[0] && idCollection?.bidConnectIds[0] ? '/ ' : ''}}
-                {{ idCollection?.bidConnectIds[0] }}
-                {{ (idCollection?.bidOrderIds[0] || idCollection?.bidConnectIds[0]) && idCollection?.bidPmProjectIds[0] ? '/ ' : ''}}
-                {{ idCollection?.bidPmProjectIds[0] }}
+                {{ (idCollection?.bidOrderIds)[0] }}
+                {{ (idCollection?.bidOrderIds)[0] && (idCollection?.bidConnectIds)[0] ? '/ ' : '' }}
+                {{ (idCollection?.bidConnectIds)[0] }}
+                {{
+                  ((idCollection?.bidOrderIds)[0] || (idCollection?.bidConnectIds)[0]) &&
+                  (idCollection?.bidPmProjectIds)[0]
+                    ? '/ '
+                    : ''
+                }}
+                {{ (idCollection?.bidPmProjectIds)[0] }}
               </td>
             </tr>
             <tr>
               <th scope="row">Vendor Order Id</th>
-              <td>{{ idCollection?.vendorOrderIds[0] }}</td>
+              <td>{{ (idCollection?.vendorOrderIds)[0] }}</td>
             </tr>
             <tr>
               <th scope="row">Vendor SubOrder Id</th>
-              <td>{{ idCollection?.vendorSubOrderIds[0] }}</td>
+              <td>{{ (idCollection?.vendorSubOrderIds)[0] }}</td>
             </tr>
             <tr>
               <th scope="row">Customer</th>

@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="header mb-3">
     <h5 class="text-center">
-      Customer Order <span *ngIf="this.part">{{ this.part.id }}</span>
+      Customer Order <span>{{ part?.order?.id || '' }}</span>
     </h5>
   </div>
   <app-tab (valueChange)="selectedTabId$.next($event.value)">
@@ -26,6 +26,7 @@
             [part]="part"
             [rfq]="rfq"
             [customer]="customer"
+            [measurementUnits]="measurementUnits"
             [partDimension]="partDimension"
           ></app-part-information>
         </ng-container>

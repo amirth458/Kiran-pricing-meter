@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,6 +15,7 @@ import { CustomerService } from 'src/app/service/customer.service';
   styleUrls: ['./customer-order-details.component.css']
 })
 export class CustomerOrderDetailsComponent extends PriceDetailComponent implements OnInit {
+  measurementUnits: any = [];
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
@@ -25,6 +26,13 @@ export class CustomerOrderDetailsComponent extends PriceDetailComponent implemen
     protected ordersService: OrdersService
   ) {
     super(route, router, pricingService, userService, customerService, spinner, ordersService);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.ordersService.getAllMeasurementUnitType().subscribe((v: any) => {
+      this.measurementUnits = v.metadataList || [];
+    });
   }
 
   setTabInfo() {
