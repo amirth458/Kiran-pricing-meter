@@ -82,7 +82,9 @@
   <div *ngIf="row.paymentType === paymentOrderType.PURCHASE_ORDER">
     <app-billing-chat [purchaseOrderId]="row.orderId"></app-billing-chat>
   </div>
-  <div *ngIf="row.paymentType === paymentOrderType.CREDIT_CARD">
+  <div
+    *ngIf="row.paymentType === paymentOrderType.CREDIT_CARD || row.paymentType === paymentOrderType.ZERO_DOLLAR_ORDER"
+  >
     <app-chat
       [participants]="row?.customerUserId ? [row?.customerUserId] : []"
       [id]="row?.customerOrderId"
