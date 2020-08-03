@@ -63,7 +63,11 @@
       View Proposal
     </a>
     <span
-      *ngIf="(adminProposalInfo || []).length > 0"
+      *ngIf="
+        proposalInfo[row?.vendorId] &&
+        (proposalInfo[row?.vendorId]?.proposalPartIds || []).length > 0 &&
+        (adminProposalInfo || []).length > 0
+      "
       class="delete ml-3 mr-3 over-write"
       (click)="openOverWriteModal(row)"
     >
