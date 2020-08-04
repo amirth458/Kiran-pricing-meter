@@ -10,7 +10,7 @@ import { map, reduce } from 'rxjs/operators';
 
 import { BiddingOrder } from '../model/bidding.order';
 import { BiddingOrderDetail, GetAllCustomerPartView } from '../model/bidding.order.detail';
-import { BidVendorMatchingProfileDetails } from '../model/confirm.sub-order.release';
+import { BidVendorMatchingProfileDetails, ProcessProfileBidView } from '../model/confirm.sub-order.release';
 import { environment } from 'src/environments/environment';
 import { FilterOption } from '../model/vendor.model';
 import {
@@ -628,5 +628,10 @@ export class OrdersService {
     return this.http.get<PartStatusSequenced[]>(
       `${environment.procurementApiBaseUrl}/metadata/partstatus/${projectTypeId}`
     );
+  }
+
+  getProcessProfileDetails(processProfileIds: Array<number>) {
+    const url = `${environment.managementBaseUrl}/process-profile/bid-view`;
+    return this.http.post<Array<ProcessProfileBidView> | any>(url, processProfileIds);
   }
 }

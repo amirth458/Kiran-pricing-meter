@@ -232,6 +232,7 @@ export interface Part {
   proposalPart?: boolean;
   parentPartId?: number;
   createdDate: Date;
+  matchedProcessProfileIds?: number[];
 }
 
 export class BidPart {
