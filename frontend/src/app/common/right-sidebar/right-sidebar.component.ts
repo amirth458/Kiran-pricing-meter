@@ -204,11 +204,10 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   }
 
   openNote() {
-    const selectedUserId =
-      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
-    const selectedUserName = (this.isCustomer && this.selectedCustomer)
-      ? this.selectedCustomer.customerName : this.selectedVendor.name;
+    const selectedUserId = this.getSelectedUserId();
     if (selectedUserId) {
+      const selectedUserName = (this.isCustomer && this.selectedCustomer)
+        ? this.selectedCustomer.customerName : this.selectedVendor.name;
       this.onClosed();
       const modalRef = this.modalService.open(GlobalChatComponent, {
         centered: false,
@@ -229,8 +228,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   }
 
   openMessageModal(typeEmail: boolean) {
-    const selectedUserId =
-      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
+    const selectedUserId = this.getSelectedUserId();
     if (selectedUserId) {
       this.onClosed();
       const modalRef = this.modalService.open(MessageModalComponent, {
@@ -247,10 +245,15 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
     }
   }
 
+  getSelectedUserId() {
+    return this.isCustomer && this.selectedCustomer
+      ? this.selectedCustomer.userId
+      : (this.selectedVendor && this.selectedVendor.user ? this.selectedVendor.user.id : null);
+  }
+
   getGlobalConference() {
     this.conference = new Conference();
-    const selectedUserId =
-      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
+    const selectedUserId = this.getSelectedUserId();
     if (selectedUserId) {
       this.zoomService
         .getGlobalConference(selectedUserId, this.userService.getUserInfo().id)
@@ -280,8 +283,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   onTimeChanged(event) {
     this.spinner.show();
     this.closeOnClickOutside = true;
-    const selectedUserId =
-      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
+    const selectedUserId = this.getSelectedUserId();
     const meetingTime = new Date(event).toISOString();
     const conference: ConferenceRequest = {
       hostUserId: this.userService.getUserInfo().id,
