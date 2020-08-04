@@ -538,7 +538,7 @@
   </div>
 
   <div class="col-3" *ngIf="part && customer && customer?.user?.id">
-    <app-plain-chat [value]="chat" [participants]="[customer.user.id]" [type]="chatType.PART_NOTE" [id]="part.id">
+    <app-plain-chat [value]="chat" [participants]="[customer.user.id]" [type]="chatType.CUSTOMER_ORDER" [id]="part.id">
     </app-plain-chat>
   </div>
 </div>
