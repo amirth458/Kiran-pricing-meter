@@ -25,28 +25,27 @@ export class ChatService {
       vendorId,
       vendorOrderId: null,
       bidPmProjectProcessId: null,
-      participants: null
+      participants,
+      isGlobal: false
     };
     switch (type) {
       case ChatTypeEnum.VENDOR_ORDER:
         params.vendorOrderId = id;
-        params.participants = participants;
         break;
       case ChatTypeEnum.BID_OFFER:
         params.bidOrderId = id;
-        params.participants = participants;
         break;
       case ChatTypeEnum.PART_NOTE:
         params.partId = id;
-        params.participants = participants;
         break;
       case ChatTypeEnum.CUSTOMER_ORDER:
         params.customerOrderId = id;
-        params.participants = participants;
         break;
       case ChatTypeEnum.BID_PM_PROJECT_PROCESS:
         params.bidPmProjectProcessId = id;
-        params.participants = participants;
+        break;
+      case ChatTypeEnum.GLOBAL_CHAT:
+        params.isGlobal = true;
         break;
     }
     return params;

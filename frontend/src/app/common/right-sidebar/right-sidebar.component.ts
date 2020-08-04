@@ -6,7 +6,7 @@ import {
   Input,
   OnInit,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation, ViewChild, ElementRef
 } from '@angular/core';
 import { concat, Observable, of, Subject, Subscription } from 'rxjs';
 import { AuthService } from '../../service/auth.service';
@@ -19,6 +19,13 @@ import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operat
 import { Vendor } from '../../model/vendor.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageModalComponent } from '../message-modal/message-modal.component';
+import { Chat, ChatParticipantEnum, ChatTypeEnum } from '../../model/chat.model';
+import { GlobalChatComponent } from '../../components/chat/global-chat/global-chat.component';
+import { Conference, ConferenceRequest } from '../../model/conference.model';
+import { Util } from '../../util/Util';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { ZoomService } from '../../service/zoom.service';
 
 @Component({
   selector: 'app-right-sidebar',
@@ -33,6 +40,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   @Input() showSearch: boolean;
 
   @Output() public sidebarClosed: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild('dateTimeSelectorSideBar') 'dateTimeSelector': ElementRef;
 
   closeOnClickOutside = true;
   isCustomer = true;
@@ -51,6 +59,13 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
   sub: Subscription;
   userObserver: Observable<any>;
 
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
+  chatParticipantEnum = ChatParticipantEnum;
+
+  startTime;
+  conference: Conference = new Conference();
+
   constructor(
     public authService: AuthService,
     public store: Store<any>,
@@ -58,6 +73,9 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public user: UserService,
     public cdr: ChangeDetectorRef,
+    public spinner: NgxSpinnerService,
+    public toaster: ToastrService,
+    public zoomService: ZoomService,
     public modalService: NgbModal
   ) {
     this.userObserver = this.store.select(AppFields.App, AppFields.UserInfo);
@@ -71,6 +89,7 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
       };
     });
     this.loadCustomers();
+    this.getGlobalConference();
   }
 
   ngOnDestroy() {
@@ -169,29 +188,51 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
 
   onCustomerSelect() {
     this.selectedVendor = null;
+    this.conference = new Conference();
     this.loadCustomers();
   }
 
   onVendorSelect() {
     this.selectedCustomer = null;
+    this.conference = new Conference();
     this.loadVendors();
   }
 
-  openNote() {}
+  onTypeAheadClose() {
+    this.closeOnClickOutside = true
+    this.getGlobalConference();
+  }
 
-  openEmail() {}
-
-  openChat() {}
-
-  openScheduleMeet() {}
-
-  openNextMeet() {}
+  openNote() {
+    const selectedUserId =
+      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
+    const selectedUserName = (this.isCustomer && this.selectedCustomer)
+      ? this.selectedCustomer.customerName : this.selectedVendor.name;
+    if (selectedUserId) {
+      this.onClosed();
+      const modalRef = this.modalService.open(GlobalChatComponent, {
+        centered: false,
+        windowClass: 'global-chat-position'
+      });
+      modalRef.componentInstance.modalInput = {
+        userId: selectedUserId,
+        userName: selectedUserName,
+        isCustomer: this.isCustomer,
+      };
+      modalRef.result.then(
+        (res: any) => {},
+        reason => {
+          this.cdr.detectChanges();
+        }
+      );
+    }
+  }
 
   openMessageModal(typeEmail: boolean) {
     const selectedUserId =
       this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
     if (selectedUserId) {
-      this.closeOnClickOutside = false;
+      this.onClosed();
       const modalRef = this.modalService.open(MessageModalComponent, {
         centered: false,
         windowClass: 'message-modal-position'
@@ -200,10 +241,74 @@ export class RightSidebarComponent implements OnInit, OnDestroy {
       modalRef.result.then(
         (res: any) => {},
         reason => {
-          this.closeOnClickOutside = true;
           this.cdr.detectChanges();
         }
       );
     }
+  }
+
+  getGlobalConference() {
+    this.conference = new Conference();
+    const selectedUserId =
+      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
+    if (selectedUserId) {
+      this.zoomService
+        .getGlobalConference(selectedUserId, this.userService.getUserInfo().id)
+        .subscribe(
+          res => {
+            this.conference = res;
+            if (res) {
+              this.conference.isExpired =
+                this.conference.isExpired || Util.compareDate(new Date(), new Date(this.conference.startTime)) === 1;
+            }
+          },
+          err => {
+            console.log({ err });
+            this.toaster.error('Unable to fetch meeting info');
+          }
+        );
+    }
+  }
+
+  openScheduleMeet() {
+    this.closeOnClickOutside = false;
+    if (this.dateTimeSelector) {
+      this.dateTimeSelector.nativeElement.click();
+    }
+  }
+
+  onTimeChanged(event) {
+    this.spinner.show();
+    this.closeOnClickOutside = true;
+    const selectedUserId =
+      this.isCustomer && this.selectedCustomer ? this.selectedCustomer.userId : this.selectedVendor.user.id;
+    const meetingTime = new Date(event).toISOString();
+    const conference: ConferenceRequest = {
+      hostUserId: this.userService.getUserInfo().id,
+      participantUserId: selectedUserId,
+      conferenceTopic: 'Meeting with 3Digilent ' + selectedUserId,
+      conferencePassword: selectedUserId.toString(),
+      startTimeInUTC: meetingTime.substr(0, meetingTime.length - 5) + 'Z',
+      isGlobal: true,
+      duration: 1
+    };
+    this.zoomService.createConference(conference).subscribe(
+      (res: Conference) => {
+        if (res) {
+          this.conference = res;
+          this.conference.startTime = new Date(res.startTime).toISOString();
+          this.conference.isExpired =
+            this.conference.isExpired || Util.compareDate(new Date(), new Date(this.conference.startTime)) === 1;
+          this.startTime = new Date(res.startTime).toISOString();
+        }
+        this.spinner.hide();
+        this.toaster.success('Meeting time set.');
+      },
+      err => {
+        console.log({ err });
+        this.spinner.hide();
+        this.toaster.error('Error while scheduling meeting. Please Contact Admin.');
+      }
+    );
   }
 }

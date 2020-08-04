@@ -17,6 +17,7 @@ import { DndDirective } from './dragable/dnd.directive';
 import { ClosePopoverOnClickOutsideDirective } from './pop-over-close/close-popover-on-click-outside.directive';
 import { UnReadCountPipe } from '../../pipes/un-read-count.pipe';
 import { UserAttachmentsPipe } from '../../pipes/user-attachments.pipe';
+import { GlobalChatComponent } from './global-chat/global-chat.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -26,6 +27,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [
     AttachmentComponent,
     ChatComponent,
+    GlobalChatComponent,
     PlainChatComponent,
     MessageViewerComponent,
     DndDirective,
@@ -47,7 +49,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ChatComponent,
     PlainChatComponent,
     MessageViewerComponent,
-
+    GlobalChatComponent,
     DndDirective,
     ClosePopoverOnClickOutsideDirective,
     UnReadCountPipe,

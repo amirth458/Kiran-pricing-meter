@@ -1,12 +1,12 @@
 <div class="shadow text-theme border pl-3 pb-0 pr-3 pt-2 communication">
-  <ng-container *ngIf="!overridText">
+  <ng-container *ngIf="!overrideText">
     <h6 class="text-center mb-2" *ngIf="zoomParticipantEnum.CUSTOMER == zoomParticipant">Meeting with Customer</h6>
     <h6 class="text-center mb-2" *ngIf="zoomParticipantEnum.VENDOR == zoomParticipant">Meeting with Vendor</h6>
     <h6 class="text-center mb-2" *ngIf="zoomParticipantEnum.ADMIN == zoomParticipant">Meeting with 3Diligent</h6>
   </ng-container>
 
-  <ng-container *ngIf="overridText">
-    <h6 class="text-center mb-2">{{ overridText }}</h6>
+  <ng-container *ngIf="overrideText">
+    <h6 class="text-center mb-2">{{ overrideText }}</h6>
   </ng-container>
 
   <div class="methods d-flex justify-content-center align-items-center">

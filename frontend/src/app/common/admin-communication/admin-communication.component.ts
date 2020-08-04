@@ -24,7 +24,7 @@ export class AdminCommunicationComponent implements OnInit {
   @Input() allowScheduling = false;
   @Input() zoomType: ZoomTypeEnum;
   @Input() zoomParticipant = ZoomParticipantEnum.ADMIN;
-  @Input() overridText = '';
+  @Input() overrideText = '';
 
   zoomTypeEnum = ZoomTypeEnum;
   zoomParticipantEnum = ZoomParticipantEnum;

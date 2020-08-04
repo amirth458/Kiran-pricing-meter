@@ -1280,12 +1280,19 @@ button:focus {
 
 .customerSearchSidebar .ng-option,
 .vendorSearchSidebar .ng-option {
-  text-align: right;
+  text-align: left;
 }
 
 .message-modal-position .modal-dialog {
   position: fixed;
   width: 500px;
   right: 2px;
+  bottom: -25px;
+}
+
+.global-chat-position .modal-dialog {
+  position: fixed;
+  width: 350px;
+  right: 20px;
   bottom: -25px;
 }

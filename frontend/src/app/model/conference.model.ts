@@ -20,16 +20,17 @@ export class ConferenceRequest {
   hostUserId: number;
   participantUserId: number;
 
-  partId: number;
-  bidOrderId: number;
-  customerOrderId: number;
-  vendorOrderId: number;
+  partId?: number;
+  bidOrderId?: number;
+  customerOrderId?: number;
+  vendorOrderId?: number;
   bidPmProjectProcessId?: number;
 
   conferenceTopic: string;
   conferencePassword: string;
   startTimeInUTC: string;
   duration: number;
+  isGlobal?: boolean;
 }
 
 export enum ZoomTypeEnum {

@@ -5,6 +5,7 @@
     position="right"
     [sidebarClass]="'right-sidebar'"
     [closeOnClickOutside]="closeOnClickOutside"
+    (onOpenStart)="getGlobalConference()"
     (onClosed)="onClosed()"
   >
     <a closeSidebar class="close-icon"><i class="fa fa-times"></i></a>
@@ -12,7 +13,7 @@
     <!-- User Information Block -->
     <div class="row pt-2">
       <div class="col-4 pl-5">
-        <img [src]="userInfo.img" class="rounded-circle" [alt]="userInfo.firstName" width="80" height="80" />
+        <img [src]="userInfo.img" class="rounded-circle" [alt]="userInfo.firstName" width="80" height="80"/>
       </div>
       <div class="col-6 pt-1 text-theme">
         <h5>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</h5>
@@ -22,7 +23,7 @@
         </div>
       </div>
     </div>
-    <hr />
+    <hr/>
 
     <!-- Search Customer or Vendor Block -->
     <div class="text-theme shadow-block p-2 pl-3" *ngIf="showSearch">
@@ -60,7 +61,8 @@
             typeToSearchText="Please enter 2 or more characters"
             [typeahead]="searchInput"
             placeholder="Search Customer"
-            (close)="closeOnClickOutside = true"
+            (close)="onTypeAheadClose()"
+            (clear)="onTypeAheadClose()"
             (open)="closeOnClickOutside = false"
             [(ngModel)]="selectedCustomer"
           >
@@ -74,7 +76,8 @@
             typeToSearchText="Please enter 2 or more characters"
             [typeahead]="searchInput"
             placeholder="Search Vendor"
-            (close)="closeOnClickOutside = true"
+            (close)="onTypeAheadClose()"
+            (clear)="onTypeAheadClose()"
             (open)="closeOnClickOutside = false"
             [(ngModel)]="selectedVendor"
           >
@@ -87,35 +90,54 @@
     <div class="text-theme shadow-block p-2 pl-3 font-weight-500" *ngIf="selectedCustomer || selectedVendor">
       <h6 class="text-blue">Communication with {{ selectedCustomer?.customerName }} {{ selectedVendor?.name }}</h6>
       <div class="row clickable">
-        <!--<div class="col-5 pt-3 pb-2">
-          <span (click)="openNote()"><i class="far fa-comment-alt pr-1"></i> Note Us</span>
+        <div class="col-6 pt-3 pb-2">
+          <span (click)="openNote()"><i class="far fa-comment-alt pr-1"></i> Note</span>
         </div>
-        <div class="col-7 pt-3 pb-2">
+        <div class="col-6 pt-3 pb-2">
           <span (click)="openMessageModal(true)">
-            <i class="far fa-envelope pr-1"></i> Mail US</span>
+            <i class="far fa-envelope pr-1"></i> Mail</span>
         </div>
-        <div class="col-5 pt-3 pb-2">
-          <span (click)="openChat()"><i class="far fa-comments pr-1"></i> Chat with US</span>
-        </div>
-        <div class="col-7 pt-3 pb-2 pr-1">
-          <span (click)="openScheduleMeet()"><i class="far fa-calendar pr-1"></i> Schedule Meeting</span>
-        </div>
-        <div class="col-12 pt-3 pb-2">
-          <span (click)="openNextMeet()">
-            <i class="fa fa-video pr-1"></i>
-            <span class="font-weight-normal pl-1">Next Meeting Time:</span> 03/12/2020 4:30pm
-          </span>
-        </div>
-        <div class="col-12 pt-3 pb-2">
-          <span (click)="openText()"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
-        </div>-->
-        <div class="col-7 pt-3 pb-2">
+        <div class="col-6 pt-3 pb-2">
           <span (click)="openMessageModal(false)"><i class="fa fa-phone-alt pr-1"></i> Text/Voice Message</span>
         </div>
-        <div class="col-5 pt-3 pb-2">
-          <span (click)="openMessageModal(true)"><i class="far fa-envelope pr-1"></i> Mail</span>
+        <div class="col-6 pt-3 pb-2 pr-1">
+          <span (click)="openScheduleMeet()">
+            <i class="far fa-calendar pr-1"></i> Schedule Meeting
+          </span>
+        </div>
+        <div class="col-12 pt-3 pb-2 d-flex">
+            <i class="fa fa-video pr-1 mt-1"></i>
+            <span class="font-weight-normal pl-1">Next Meeting Time:</span>
+            <p
+              class="m-0 font-weight-bold text-theme time pl-1"
+              [ngClass]="{ 'theme-grey': conference?.isExpired, underline: conference?.startTime && !conference?.isExpired }">
+              <a *ngIf="conference?.startTime"
+                [href]="
+                  userInfo?.id == conference?.hostUserId
+                    ? conference?.videoConferenceLinkForHost
+                    : conference?.videoConferenceLinkForParticipant
+                "
+                target="_blank"
+              >
+                {{ conference?.startTime | date: 'short' }}
+              </a>
+              <span *ngIf="!conference?.startTime" class="grey">
+                -
+              </span>
+            </p>
         </div>
       </div>
     </div>
+    <input
+      readonly
+      #dateTimeSelectorSideBar
+      class="border-0 zero-size"
+      [owlDateTime]="dt1"
+      [owlDateTimeTrigger]="dt1"
+      [(ngModel)]="startTime"
+      [ngModelOptions]="{ standalone: true }"
+      (ngModelChange)="onTimeChanged($event)"
+    />
+    <owl-date-time #dt1> </owl-date-time>
   </ng-sidebar>
 </ng-sidebar-container>

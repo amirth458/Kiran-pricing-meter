@@ -19,3 +19,8 @@
 .clickable {
   cursor: pointer;
 }
+
+.zero-size {
+  width: 0px;
+  height: 0px;
+}
