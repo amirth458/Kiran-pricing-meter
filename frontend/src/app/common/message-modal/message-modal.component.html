@@ -1,11 +1,12 @@
 <div>
   <h5 class="text-theme-green align-top text-center m-0 pt-3 pb-3 shadow">
-    <ng-container *ngIf="isEmailMessage"
-      >Write to {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
-    >
-    <ng-container *ngIf="!isEmailMessage"
-      >Message {{ userInfo?.firstName + ' ' + userInfo?.lastName || 'User' }}</ng-container
-    >
+    <ng-container *ngIf="isEmailMessage">
+      Write to
+    </ng-container>
+    <ng-container *ngIf="!isEmailMessage">
+      Message
+    </ng-container>
+    {{ userInfo ? (userInfo?.firstName + ' ' + userInfo?.lastName) : 'User' }}
   </h5>
 </div>
 <div class="action-btn position-absolute" (click)="onClose()">
@@ -39,7 +40,9 @@
   <div class="form-row">
     <div class="form-group theme col-md-6">
       <label>Message</label>
-      <input required formControlName="message" class="form-control description-box" placeholder="Message" />
+      <textarea required formControlName="message" class="form-control description-box"
+                placeholder="Message" rows="4">
+      </textarea>
     </div>
   </div>
   <div class="form-row">
