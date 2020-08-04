@@ -99,6 +99,15 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'total_no_of_qty'
     },
     {
+      headerName: 'Customer Phone No',
+      field: 'customer_phone_no',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'customer_phone_no',
+      headerTooltip: 'customer_phone_no'
+    },
+    {
       headerName: 'Customer Email',
       field: 'customer_email',
       hide: false,
