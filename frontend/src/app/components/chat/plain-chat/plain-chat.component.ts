@@ -37,7 +37,7 @@ export class PlainChatComponent extends ChatComponent {
       this.id,
       this.type,
       this.type === ChatTypeEnum.VENDOR_ORDER && this.vendorId ? this.vendorId : null,
-      (this.user.is_admin || false) && this.type !== ChatTypeEnum.CUSTOMER_ORDER ? this.participants : []
+      this.participants
     );
   }
 
