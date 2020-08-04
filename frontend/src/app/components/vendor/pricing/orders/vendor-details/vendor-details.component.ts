@@ -1043,37 +1043,33 @@ export class VendorDetailsComponent implements OnInit {
 
   getScheduledMeetings(user) {
     if (this.type === 'released') {
-      this.zoomService
-        .getConferenceByVendorOrderId(user.vendorOrderId.toString(), this.userService.getUserInfo().id, user.userId)
-        .subscribe(
-          res => {
-            if (res) {
-              this.meetingInfo[(user.userId || '').toString()] = res;
-            } else {
-              this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
-            }
-          },
-          err => {
-            console.log('Error while fetching meeting information');
-            console.log({ err });
+      this.zoomService.getConferenceByVendorOrderId(user.vendorOrderId.toString(), user.userId).subscribe(
+        res => {
+          if (res) {
+            this.meetingInfo[(user.userId || '').toString()] = res;
+          } else {
+            this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
           }
-        );
+        },
+        err => {
+          console.log('Error while fetching meeting information');
+          console.log({ err });
+        }
+      );
     } else {
-      this.zoomService
-        .getConferenceByBidOrderId(this.bidOrderId.toString(), this.userService.getUserInfo().id, user.userId)
-        .subscribe(
-          res => {
-            if (res) {
-              this.meetingInfo[(user.userId || '').toString()] = res;
-            } else {
-              this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
-            }
-          },
-          err => {
-            console.log('Error while fetching meeting information');
-            console.log({ err });
+      this.zoomService.getConferenceByBidOrderId(this.bidOrderId.toString(), user.userId).subscribe(
+        res => {
+          if (res) {
+            this.meetingInfo[(user.userId || '').toString()] = res;
+          } else {
+            this.meetingInfo[(user.userId || '').toString()] = { startTime: '' };
           }
-        );
+        },
+        err => {
+          console.log('Error while fetching meeting information');
+          console.log({ err });
+        }
+      );
     }
   }
 
