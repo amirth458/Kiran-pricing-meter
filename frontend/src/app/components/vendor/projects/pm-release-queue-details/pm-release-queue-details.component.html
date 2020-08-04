@@ -28,7 +28,7 @@
           </div>
           <div class="col-3">
             <app-admin-communication
-              *ngIf="activePartId"
+              *ngIf="(!isReleaseToSingleSupplier && activePartId) || (isReleaseToSingleSupplier && customerOrderId)"
               [allowScheduling]="true"
               [zoomType]="isReleaseToSingleSupplier ? zoomTypeEnum?.CUSTOMER_ORDER : zoomTypeEnum?.PART"
               [zoomAttachingUserId]="customerUserId"
