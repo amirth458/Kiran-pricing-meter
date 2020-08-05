@@ -1,0 +1,62 @@
+<div>
+  <!-- Header -->
+  <div>
+    <h5 class="text-theme-green align-top text-center m-0 pt-4 pb-3 shadow">
+      Note to {{ modalInput?.userName }}
+    </h5>
+  </div>
+  <div class="action-btn position-absolute" (click)="onClose()">
+    <i class="fa fa-times"></i>
+  </div>
+
+  <!-- Body -->
+  <div class="col-12 border p-0 d-flex flex-column">
+    <ng-container *ngIf="value?.messageNotes?.length > 0">
+      <app-message-viewer [(value)]="value.messageNotes"> </app-message-viewer>
+    </ng-container>
+    <ng-container *ngIf="(value?.messageNotes?.length || 0) === 0">
+      <div class="empty-chat d-flex align-items-center justify-content-center">
+        <div class="participant-chat text-left">
+          <ng-container *ngIf="isInitialized">No chats found</ng-container>
+          <ng-container *ngIf="!isInitialized">Loading...</ng-container>
+        </div>
+      </div>
+    </ng-container>
+    <form class="pl-2 pr-2 pt-3 pb-3 w-100 align-bottom" [formGroup]="noteFormGroup">
+      <hr class="m-0" />
+      <div class="form-row">
+        <div class="form-group theme col-12 m-0">
+          <label class="w-100">
+            Note
+            <textarea
+              class="form-control note-input"
+              rows="2"
+              formControlName="note"
+              (keyup.enter)="sendNote($event)"
+            ></textarea>
+          </label>
+        </div>
+      </div>
+      <div class="form-row d-flex justify-content-between pl-2">
+          <div>
+            <app-attachment
+              *ngIf="value && value.id && (value.participants || []).indexOf(user.id) > -1"
+              [chatId]="value.id"
+              [openAttachment]="trigger$ | async"
+              class="d-block position-absolute attachment-btn">
+            </app-attachment>
+            <button
+              *ngIf="!(value && value.id && (value.participants || []).indexOf(user.id) > -1)"
+              class="attachment-btn btn btn-white pl-3 pr-3 text-theme-green"
+              (click)="addNote(true)">
+              <i class="fas fa-paperclip"></i>
+            </button>
+          </div>
+          <button class="btn btn-white pl-4 pr-4" [disabled]="!noteFormGroup.valid" (click)="addNote()">
+            {{ loading ? 'Submitting Note' : 'Add Note' }}
+          </button>
+          <span></span>
+      </div>
+    </form>
+  </div>
+</div>

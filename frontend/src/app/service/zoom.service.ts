@@ -79,4 +79,16 @@ export class ZoomService {
     }
     return this.http.get<Conference>(url);
   }
+
+  getGlobalConference(
+    participantUserId: number = null,
+    hostUserId: number = this.userId
+  ): Observable<Conference> {
+    let url =
+      environment.procurementApiBaseUrl + `/conference/is-global?hostUserId=${hostUserId}&isGlobal=true`;
+    if (participantUserId) {
+      url += `&participantUserId=${participantUserId}`;
+    }
+    return this.http.get<Conference>(url);
+  }
 }

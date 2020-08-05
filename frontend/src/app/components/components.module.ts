@@ -185,6 +185,7 @@ import { AddSupplierComponent } from './vendor/projects/add-supplier/add-supplie
 import { SidebarModule } from 'ng-sidebar';
 import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.component';
 import { MessageModalComponent } from '../common/message-modal/message-modal.component';
+import { GlobalChatComponent } from './chat/global-chat/global-chat.component';
 
 @NgModule({
   declarations: [
@@ -417,6 +418,6 @@ import { MessageModalComponent } from '../common/message-modal/message-modal.com
     SupplierPipe,
     MessageModalComponent
   ],
-  entryComponents: [MessageModalComponent]
+  entryComponents: [MessageModalComponent, GlobalChatComponent]
 })
 export class ComponentsModule {}
