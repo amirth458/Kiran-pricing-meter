@@ -117,16 +117,16 @@
               <td>{{ rfq?.projectProfile?.eligibleManufacturerTypes || '' }}</td>
             </tr>
             <tr>
-              <th scope="row">Part Certification</th>
-              <td>{{ rfq?.projectProfile?.partCerts || '' }}</td>
+              <th scope="row">Eligible Regions</th>
+              <td>{{ getPermittedCountries() }}</td>
             </tr>
             <tr>
-              <th scope="row">Facility Certification</th>
+              <th scope="row">Facility Quality Certification</th>
               <td>{{ rfq?.projectProfile?.facilityCerts || '' }}</td>
             </tr>
             <tr>
-              <th scope="row">Permitted Countries</th>
-              <td>{{ getPermittedCountries() }}</td>
+              <th scope="row">Part Certification</th>
+              <td>{{ rfq?.projectProfile?.partCerts || '' }}</td>
             </tr>
             <tr>
               <th scope="row">NDA</th>
