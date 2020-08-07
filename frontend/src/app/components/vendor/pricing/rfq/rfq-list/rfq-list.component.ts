@@ -129,11 +129,11 @@ export class RfqListComponent implements OnInit {
       },
       {
         headerName: 'Status',
-        field: 'rfqStatus',
+        field: 'rfqStatusDisplayName',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'rfqStatus',
+        tooltipField: 'rfqStatusDisplayName',
         valueFormatter: v => (v.value || '').replace(/_/g, ' ')
       },
       {
