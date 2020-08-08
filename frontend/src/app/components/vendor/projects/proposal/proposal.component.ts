@@ -379,7 +379,9 @@ export class ProposalComponent implements OnInit {
 
   viewVendorProposal() {
     const statusName = (this.releasedProposal.bidPmProjectProcessStatus || '').replace(/_/g, '-').toLowerCase();
-    const baseUrl = `/prodex/projects/proposal-issued/${this.offerId}/${statusName}/vendor-proposal/${this.releasedProposal.vendorId}`;
+    const baseUrl = this.route.url.startsWith('/prodex/projects/pm-release-queue')
+      ? `/prodex/projects/pm-release-queue/${this.offerId}/${statusName}/vendor-proposal/${this.releasedProposal.vendorId}`
+      : `/prodex/projects/proposal-issued/${this.offerId}/${statusName}/vendor-proposal/${this.releasedProposal.vendorId}`;
     this.route.navigateByUrl(baseUrl);
   }
 
