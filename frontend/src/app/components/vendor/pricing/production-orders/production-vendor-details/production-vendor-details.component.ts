@@ -412,11 +412,7 @@ export class ProductionVendorDetailsComponent implements OnInit {
 
   getScheduledMeetings(user) {
     this.zoomService
-      .getConferenceByVendorOrderId(
-        this.productionOrderInfo.vendorOrderId.toString(),
-        this.userService.getUserInfo().id,
-        user.userId
-      )
+      .getConferenceByVendorOrderId(this.productionOrderInfo.vendorOrderId.toString(), user.userId)
       .subscribe(
         res => {
           if (res) {

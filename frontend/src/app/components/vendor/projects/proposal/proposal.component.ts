@@ -110,13 +110,7 @@ export class ProposalComponent implements OnInit {
     this.metaDataService.getProcessMetaData('invoice_item').subscribe(v => (this.invoiceItems = v));
   }
 
-  ngOnInit() {
-    if (this.proposalType === this.proposalTypeEnum.VENDOR_PROPOSAL_TYPE) {
-      this.fetchPartsAndQuote();
-    } else {
-      this.getAdminPartQuote();
-    }
-  }
+  ngOnInit() {}
 
   getMediaBackgroundImage(rfqMedia: RfqMedia) {
     const image = rfqMedia.media && rfqMedia.media.partDimension && rfqMedia.media.partDimension.thumbnail400Location;
@@ -163,6 +157,7 @@ export class ProposalComponent implements OnInit {
         this.quoteList.push(p);
       });
       this.activePartId = this.quoteList[0].partId;
+      this.releasedProposal = this.PMProjectBids.filter(_ => _.vendorId === this.quoteList[0].vendorId)[0];
       if (this.isComplete()) {
         this.findAdminProposal((quotes || []).map(p => p.partId));
       }
@@ -384,8 +379,9 @@ export class ProposalComponent implements OnInit {
 
   viewVendorProposal() {
     const statusName = (this.releasedProposal.bidPmProjectProcessStatus || '').replace(/_/g, '-').toLowerCase();
-    const baseUrl =
-      `/prodex/projects/proposal-issued/100002/${statusName}/` + `vendor-proposal/${this.releasedProposal.vendorId}`;
+    const baseUrl = this.route.url.startsWith('/prodex/projects/pm-release-queue')
+      ? `/prodex/projects/pm-release-queue/${this.offerId}/${statusName}/vendor-proposal/${this.releasedProposal.vendorId}`
+      : `/prodex/projects/proposal-issued/${this.offerId}/${statusName}/vendor-proposal/${this.releasedProposal.vendorId}`;
     this.route.navigateByUrl(baseUrl);
   }
 
@@ -400,6 +396,12 @@ export class ProposalComponent implements OnInit {
         this.releasedProposal = releasedProposals[0];
       }
       this.bidPmProjectProcessId = result.length ? result[0].bidPmProjectProcessId : null;
+
+      if (this.proposalType === this.proposalTypeEnum.VENDOR_PROPOSAL_TYPE) {
+        this.fetchPartsAndQuote();
+      } else {
+        this.getAdminPartQuote();
+      }
     });
   }
 

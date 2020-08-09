@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 
-import { AppPartStatusId } from '../../../../model/part.model';
+import { AppPartStatusId, Part } from '../../../../model/part.model';
 import { BiddingStatusEnum } from '../../../../model/bidding.order';
 import { ConnectOrder } from 'src/app/model/connect.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
@@ -15,6 +15,10 @@ import { MetadataService } from 'src/app/service/metadata.service';
 import { ProjectService } from 'src/app/service/project.service';
 import { OrderStatusTypeId, ProjectSearchResult, ProjectTypeEnum, SearchOpt } from 'src/app/model/order.model';
 import { ProjectType } from '../../../../model/billing.model';
+import { PartService } from '../../../../service/part.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TemplateRendererComponent } from '../../../../common/template-renderer/template-renderer.component';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projects-list',
@@ -22,6 +26,10 @@ import { ProjectType } from '../../../../model/billing.model';
   styleUrls: ['./projects-list.component.css']
 })
 export class ProjectsListComponent implements OnInit {
+  @ViewChild('partIdCell') partIdCell: TemplateRef<any>;
+  @ViewChild('partsTemplate') partsTemplate: TemplateRef<any>;
+
+  parts: Array<Part>;
   autoQuotedIds = [];
   columnDefs: ColDef[] = [];
   connectColumnDefs: ColDef[] = [];
@@ -34,7 +42,8 @@ export class ProjectsListComponent implements OnInit {
   type = '';
 
   frameworkComponents = {
-    fileViewRenderer: FileViewRendererComponent
+    fileViewRenderer: FileViewRendererComponent,
+    templateRenderer: TemplateRendererComponent
   };
   requestBody = {
     projectTypeId: ProjectTypeEnum.CONNECT_PROJECT,
@@ -54,7 +63,9 @@ export class ProjectsListComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public router: Router,
     public metadataService: MetadataService,
-    public projectService: ProjectService
+    public projectService: ProjectService,
+    public partService: PartService,
+    public modalService: NgbModal
   ) {
     this.type = router.url.split('/')[3];
   }
@@ -319,7 +330,11 @@ export class ProjectsListComponent implements OnInit {
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'id'
+        tooltipField: 'id',
+        cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.partIdCell
+        }
       }
     ];
     if (this.type === 'release-queue') {
@@ -390,5 +405,29 @@ export class ProjectsListComponent implements OnInit {
   toggleTestAccount() {
     this.searchOpt.showTestAccount = !this.searchOpt.showTestAccount;
     this.setDataSource();
+  }
+
+  showPartDetails(row: any, $event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.spinner.show();
+
+    combineLatest((row.id.split(',') || []).map(id => this.partService.getPartByPartId(id)))
+      .pipe(catchError(err => of([])))
+      .subscribe((parts: any) => {
+        this.parts = parts;
+        const options = {
+          centered: true,
+          windowClass: 'rfq-status-modal',
+          scrollable: true
+        };
+        this.modalService.open(this.partsTemplate, options);
+        this.spinner.hide();
+      });
+  }
+
+  closeModalWindow() {
+    this.parts.length = 0;
+    this.modalService.dismissAll();
   }
 }

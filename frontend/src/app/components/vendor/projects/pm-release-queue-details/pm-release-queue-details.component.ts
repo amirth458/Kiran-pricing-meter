@@ -21,6 +21,7 @@ import { Util } from 'src/app/util/Util';
 import { PmProjectBidStatusType } from '../../../../model/bidding.order';
 import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
 import { ChatTypeEnum } from '../../../../model/chat.model';
+import { ProcessProfileBidView } from 'src/app/model/confirm.sub-order.release';
 
 @Component({
   selector: 'app-pm-release-queue-details',
@@ -59,7 +60,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   selectableCount;
   referenceFiles: ReferenceFile[];
   referenceFileCount = 0;
-  matchingProfiles: MatchedProcessProfile[] = [];
+  matchingProfiles: ProcessProfileBidView[] = [];
   shortListedSuppliers = [];
   removedSuppliers = [];
   selectedSuppliers = [];
@@ -295,7 +296,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
       v => {
         this.selectableCount = 3 - v.filter(item => item.bidProjectProcessStatusType.id !== 3 /* REJECTED */).length;
         this.selectedSuppliers = v.map(res => {
-          const group = this.matchingProfiles.filter(item => item.vendorId === res.vendorId);
+          const group = this.matchingProfiles.filter(item => item.vendorName === res.vendorName);
 
           return {
             id: res.id,
@@ -628,9 +629,19 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     // }
   }
 
-  showVendorProfiles(ev, data) {
+  async showVendorProfiles(ev, data) {
     ev.stopPropagation();
 
+    if (!this.matchingProfiles.length) {
+      try {
+        this.matchingProfiles = await this.orderService
+          .getProcessProfileDetails(this.parts[0].matchedProcessProfileIds)
+          .toPromise();
+      } catch (error) {
+        console.log(error);
+        this.matchingProfiles = [];
+      }
+    }
     this.selectedVendor = data;
     this.modal.open(this.vendorProfileModal, {
       centered: true,
@@ -649,7 +660,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
   }
 
   get vendorProfiles() {
-    return this.matchingProfiles.filter(item => item.vendorId === this.selectedVendor.vendorId);
+    return this.matchingProfiles.filter(item => item.vendorName === this.selectedVendor.vendorName);
   }
   setSelectedPart(part) {
     this.customerOrderId = part.customerOrder;

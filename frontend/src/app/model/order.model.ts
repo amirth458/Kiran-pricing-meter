@@ -331,7 +331,7 @@ export enum BidStatusEnum {
 
 export enum ProjectTypeEnum {
   CONNECT_PROJECT = 4,
-  DESIGN_PROJECT = 2,
+  DESIGN_REPORT = 2,
   PRODUCTION_PROJECT = 3,
   RFQ_PROJECT = 1
 }
