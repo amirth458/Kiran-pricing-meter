@@ -15,6 +15,7 @@
       <ng-container [ngSwitch]="selectedTabId$ | async">
         <ng-container *ngSwitchCase="0">
           <app-price-view
+            [allowOverride]="false"
             [part]="part"
             [customer]="customer"
             [partQuote]="partQuote"

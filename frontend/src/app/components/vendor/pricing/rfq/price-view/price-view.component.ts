@@ -44,6 +44,7 @@ export class PriceViewComponent implements OnInit, OnChanges {
   @Input() part: Part;
   @Input() customer: CustomerDetails;
   @Output() manualQuote: EventEmitter<any> = new EventEmitter();
+  @Input() allowOverride = true;
   @Input()
   set partQuote(value: PartQuote) {
     this.partQuoteValue = value || null;
