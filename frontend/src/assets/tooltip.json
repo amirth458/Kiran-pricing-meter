@@ -372,5 +372,24 @@
       "route": "released-orders",
       "actions": []
     }
+  ],
+  "designStudio": [
+    {
+      "name": "Settings",
+      "tooltipMessage": "Settings",
+      "route": "settings",
+      "actions": [
+        {
+          "name": "Save Settings",
+          "route": "save-report-setting"
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "tooltipMessage": "Reports",
+      "route": "#",
+      "actions": []
+    }
   ]
 }

@@ -73,6 +73,8 @@ export class ActionBarComponent implements OnInit, OnChanges {
       this.actionService.triggerSaveProductionSetting();
     } else if (route === 'save-connect-setting') {
       this.actionService.triggerSaveConnectSetting();
+    } else if (route === 'save-report-setting') {
+      this.actionService.triggerSaveReportSetting();
     } else {
       this.route.navigateByUrl(this.route.url + '/' + route);
     }

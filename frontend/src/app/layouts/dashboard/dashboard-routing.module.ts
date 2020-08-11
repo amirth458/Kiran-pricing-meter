@@ -98,6 +98,9 @@ import { IssuedProposalComponent } from '../../components/vendor/projects/issued
 import { CustomerAcceptedComponent } from '../../components/vendor/projects/customer-accepted/customer-accepted.component';
 import { ProposalComponent } from '../../components/vendor/projects/proposal/proposal.component';
 import { AdminProposalComponent } from '../../components/vendor/projects/admin-proposal/admin-proposal.component';
+import { DesignStudioContainerComponent } from 'src/app/components/design-studio/design-studio-container/design-studio-container.component';
+import { ReportsContainerComponent } from 'src/app/components/design-studio/design-studio-container/reports-container/reports-container.component';
+import { ReportSettingsComponent } from 'src/app/components/design-studio/design-studio-container/report-settings/report-settings.component';
 
 const routes: Routes = [
   {
@@ -112,6 +115,23 @@ const routes: Routes = [
           { path: 'referral/:id', component: ReferralDetailsComponent },
           { path: '', redirectTo: 'referral', pathMatch: 'full' },
           { path: '**', redirectTo: 'referral', pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'design-studio',
+        component: DesignStudioContainerComponent,
+        children: [
+          {
+            path: 'reports',
+            component: ReportsContainerComponent,
+            children: [
+              { path: 'settings', component: ReportSettingsComponent },
+              { path: '', redirectTo: 'settings', pathMatch: 'full' },
+              { path: '**', redirectTo: 'settings', pathMatch: 'full' }
+            ]
+          },
+          { path: '', redirectTo: 'reports', pathMatch: 'full' },
+          { path: '**', redirectTo: 'reports', pathMatch: 'full' }
         ]
       },
       {

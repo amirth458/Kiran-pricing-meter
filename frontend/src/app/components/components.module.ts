@@ -186,6 +186,9 @@ import { SidebarModule } from 'ng-sidebar';
 import { RightSidebarComponent } from '../common/right-sidebar/right-sidebar.component';
 import { MessageModalComponent } from '../common/message-modal/message-modal.component';
 import { GlobalChatComponent } from './chat/global-chat/global-chat.component';
+import { DesignStudioContainerComponent } from './design-studio/design-studio-container/design-studio-container.component';
+import { ReportsContainerComponent } from './design-studio/design-studio-container/reports-container/reports-container.component';
+import { ReportSettingsComponent } from './design-studio/design-studio-container/report-settings/report-settings.component';
 
 @NgModule({
   declarations: [
@@ -359,7 +362,10 @@ import { GlobalChatComponent } from './chat/global-chat/global-chat.component';
     AdminProposalComponent,
     AdminCommunicationComponent,
     AddSupplierComponent,
-    MessageModalComponent
+    MessageModalComponent,
+    DesignStudioContainerComponent,
+    ReportsContainerComponent,
+    ReportSettingsComponent
   ],
   imports: [
     CommonModule,
