@@ -36,6 +36,13 @@ export const environment = {
       active: true
     },
     {
+      name: 'Design Studio',
+      route: '/design',
+      icon: 'far fa-edit',
+      visible: false,
+      active: true
+    },
+    {
       name: 'Billing',
       route: '/billing',
       icon: 'fas fa-file-invoice-dollar',
