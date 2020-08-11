@@ -1,0 +1,65 @@
+<div class="wrapper">
+  <form class="table">
+    <table class="w-100">
+      <thead>
+        <tr class="header">
+          <th>Report</th>
+          <th>List Price</th>
+          <th>Current Price</th>
+        </tr>
+      </thead>
+      <tbody class="w-100">
+        <tr *ngFor="let setting of settings; let index = index">
+          <td>
+            <div class="setting-name p-2 ">
+              <input
+                required
+                type="text"
+                [(ngModel)]="setting.reportType"
+                [ngModelOptions]="{ standalone: true }"
+                class="setting-input"
+              />
+            </div>
+          </td>
+          <td>
+            <div class="setting-control text-theme p-2 w-100">
+              <input
+                min="0"
+                required
+                digitOnly
+                type="number"
+                [(ngModel)]="setting.listPrice"
+                [ngModelOptions]="{ standalone: true }"
+                class="setting-input"
+              />
+              $
+            </div>
+          </td>
+          <td>
+            <div class="setting-control text-theme p-2 w-100">
+              <input
+                min="0"
+                required
+                digitOnly
+                type="number"
+                [(ngModel)]="setting.currentPrice"
+                [ngModelOptions]="{ standalone: true }"
+                class="setting-input"
+                (click)="$event.stopPropagation()"
+              />
+              $
+            </div>
+          </td>
+          <span (click)="removeSetting(index)" class="footnote red minus-icon cursor-pointer">
+            <i class="fas fa-minus"></i>
+          </span>
+        </tr>
+        <div class="row m-3">
+          <button type="button" class="btn btn-theme btn-white" (click)="addSetting()">
+            Add More Report
+          </button>
+        </div>
+      </tbody>
+    </table>
+  </form>
+</div>
