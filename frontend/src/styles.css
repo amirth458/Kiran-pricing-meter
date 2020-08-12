@@ -888,6 +888,10 @@ button:focus {
   z-index: 1061;
 }
 
+.attachment-modal .empty {
+  height: 400px;
+}
+
 .ref-file-modal .file-items,
 .storage-file-modal .file-items,
 .attachment-modal .file-items {
