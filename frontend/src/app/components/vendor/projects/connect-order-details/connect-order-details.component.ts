@@ -21,6 +21,7 @@ import { PaymentDetails } from 'src/app/model/billing.model';
 import { Util } from '../../../../util/Util';
 import { BidConnectStatusEnum } from '../../../../model/bidding.order';
 import { empty, Subject } from 'rxjs';
+import { Chat, MessageNote } from '../../../../model/chat.model';
 @Component({
   selector: 'app-connect-order-details',
   templateUrl: './connect-order-details.component.html',
@@ -822,6 +823,16 @@ export class ConnectOrderDetailsComponent implements OnInit, OnDestroy {
         }
       ]
     ];
+  }
+
+  isChatExist(notes: Array<MessageNote>) {
+    const chat: Chat = (notes || []).length > 0 ? notes[0].chat : null;
+    return chat !== null;
+  }
+
+  getChatId(notes: Array<MessageNote>) {
+    const chat: Chat = (notes || []).length > 0 ? notes[0].chat : null;
+    return chat.id;
   }
 
   ngOnDestroy() {

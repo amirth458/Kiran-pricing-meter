@@ -325,23 +325,39 @@
         </h5>
 
         <div *ngIf="showNoteHistory" class="note-history p-2">
-          <div *ngFor="let item of progressInfo?.messages?.messageNotes" class="ml-2 font-sm row">
-            <span
-              class="font-italic"
-              *ngIf="item?.senderId === (projectDetails?.parts)[0]?.userId"
-              class="col-6 pl-0 text-left"
-              >Customer : {{ (projectDetails?.parts)[0]?.customerName }}
-            </span>
-            <span
-              class="font-italic"
-              *ngIf="item?.senderId !== (projectDetails?.parts)[0]?.userId"
-              class="col-6 pl-0 text-left"
-              >Vendor : {{ selectedVendor?.vendorName }}
-            </span>
-            <span class="pl-3">{{ item?.createdDate | date: util.dateFormatWithTime }}</span>
+          <div *ngFor="let item of progressInfo?.messages?.messageNotes" class="ml-2 font-sm">
+            <div class="d-flex flex-row">
+              <span
+                class="font-italic"
+                *ngIf="item?.senderId === (projectDetails?.parts)[0]?.userId"
+                class="col-6 pl-0 text-left"
+                >Customer : {{ (projectDetails?.parts)[0]?.customerName }}
+              </span>
+              <span
+                class="font-italic"
+                *ngIf="item?.senderId !== (projectDetails?.parts)[0]?.userId"
+                class="col-6 pl-0 text-left"
+                >Vendor : {{ selectedVendor?.vendorName }}
+              </span>
+              <span class="pl-3">{{ item?.createdDate | date: util.dateFormatWithTime }}</span>
+            </div>
+            <div class="d-flex flex-row text-theme pt-1 pb-1 font-italic font-weight-bold">
+              {{ item?.message || '' }}
+            </div>
           </div>
         </div>
-
+        <p class="mt-2 mb-2 item" *ngIf="(progressInfo?.messages?.messageNotes || []).length > 0">
+          <ng-container *ngIf="isChatExist(progressInfo.messages.messageNotes)">
+            Attachments:
+            <app-attachment
+              class="d-inline-block m-0 p-0"
+              [showAttachment]="false"
+              [chatId]="getChatId(progressInfo.messages.messageNotes)"
+            >
+              <span class="text-light-blue hover-bold cursor-pointer underline">See all Attachments</span>
+            </app-attachment>
+          </ng-container>
+        </p>
         <p class="mb-2 item">
           Number of customer and vendor message:
           <span class="value font-weight-bold">{{ progressInfo?.messages?.numberOfCustomerAndVendorMessages }}</span>
