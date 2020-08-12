@@ -44,6 +44,24 @@ export class InsightVendorOrderComponent implements OnInit {
       headerTooltip: 'vendor_id'
     },
     {
+      headerName: 'Vendor Email',
+      field: 'vendor_email',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_email',
+      headerTooltip: 'vendor_email'
+    },
+    {
+      headerName: 'Vendor Phone No',
+      field: 'vendor_phone_no',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'vendor_phone_no',
+      headerTooltip: 'vendor_phone_no'
+    },
+    {
       headerName: 'Vendor Order Status',
       field: 'vendor_order_status',
       hide: false,
