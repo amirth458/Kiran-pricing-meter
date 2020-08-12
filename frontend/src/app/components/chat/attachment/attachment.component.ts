@@ -38,6 +38,9 @@ export class AttachmentComponent implements OnInit {
     }
   }
 
+  @Input()
+  showAttachment = true;
+
   files: any[] = [];
   users: Array<UserSummary>;
   user: any;
@@ -80,6 +83,10 @@ export class AttachmentComponent implements OnInit {
 
   fileDropped($event) {
     this.prepareFilesList($event);
+  }
+
+  isAttachmentExists() {
+    return (this.attachments || []).length === 0;
   }
 
   fileChangeHandler($event) {

@@ -45,6 +45,13 @@
   font-size: 13px;
 }
 
+::ng-deep .check-progress-modal app-attachment .attachment {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 12px;
+}
+
 .release-notes {
   background-color: transparent !important;
   font-size: 12px;

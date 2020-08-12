@@ -1,6 +1,7 @@
 import { Part } from './part.model';
 import { BidOrderStatusType } from './confirm.sub-order.release';
 import { PaymentStatusType } from './billing.model';
+import { ChatAttachment, MessageNote } from './chat.model';
 import { Contract } from './subscription.model';
 import { Conference } from './conference.model';
 
@@ -92,17 +93,10 @@ export class ClientProgress {
   }[];
   messages: {
     numberOfCustomerAndVendorMessages: number;
-    lastCustomerAndVendorMessageTime: string;
-    messageNotes: {
-      id: number;
-      chat: string;
-      message: string;
-      senderId: number;
-      createdDate: string;
-      lastModifiedDate: string;
-      messageNoteHistory: any;
-    }[];
+    lastCustomerAndVendorMessageTime: Date;
+    messageNotes: Array<MessageNote>;
   };
+  chatAttachment: Array<ChatAttachment>;
 }
 
 export class PartQuote {

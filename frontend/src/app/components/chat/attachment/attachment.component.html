@@ -1,6 +1,6 @@
 <button
   #content
-  class="attachment btn btn-white pl-3 pr-3 text-theme-green"
+  class="btn btn-white pl-3 pr-3 text-theme-green attachment"
   [class.d-none]="(content?.children?.length || 0) === 0"
   (click)="getAllChatAttachments()"
 >
@@ -27,9 +27,14 @@
         </button>
       </div>
       <div class="modal-body container-fluid d-flex flex-column">
-        <div class="col-12 d-flex p-0" ngbAutofocus>
-          <ngb-tabset [destroyOnHide]="false" [justify]="'Fill'" class="w-100 d-block">
-            <ngb-tab title="File Manager">
+        <div class="col-12 d-flex p-0" [class.empty]="isAttachmentExists() && !showAttachment" ngbAutofocus>
+          <ngb-tabset
+            *ngIf="!(isAttachmentExists() && !showAttachment)"
+            [destroyOnHide]="false"
+            [justify]="'Fill'"
+            class="w-100 d-block"
+          >
+            <ngb-tab title="File Manager" *ngIf="showAttachment">
               <ng-template ngbTabContent>
                 <div
                   class="upload-container d-flex flex-column position-relative align-items-center {{
@@ -141,6 +146,11 @@
               </ng-template>
             </ngb-tab>
           </ngb-tabset>
+          <ng-container *ngIf="isAttachmentExists() && !showAttachment">
+            <div class="col-12 d-flex flex-column p-0 justify-content-center align-items-center text-theme">
+              No Attachments found
+            </div>
+          </ng-container>
         </div>
       </div>
     </ng-container>
