@@ -265,7 +265,7 @@ export class Util {
         adminMargin: customerQuote.marginCost || 0,
         vendorId: customerQuote.vendorId
       };
-      const mediaFiles = refMedia[proposal.partId] || [];
+      const mediaFiles = refMedia[proposal.id] || [];
       return {
         part: Util.buildProposalPart(proposal, media, dimension),
         partQuote,
