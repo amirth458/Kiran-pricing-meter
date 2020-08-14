@@ -101,6 +101,7 @@ import { AdminProposalComponent } from '../../components/vendor/projects/admin-p
 import { DesignStudioContainerComponent } from 'src/app/components/design-studio/design-studio-container/design-studio-container.component';
 import { ReportsContainerComponent } from 'src/app/components/design-studio/design-studio-container/reports-container/reports-container.component';
 import { ReportSettingsComponent } from 'src/app/components/design-studio/design-studio-container/report-settings/report-settings.component';
+import { ReportsComponent } from 'src/app/components/design-studio/design-studio-container/reports/reports.component';
 
 const routes: Routes = [
   {
@@ -126,6 +127,7 @@ const routes: Routes = [
             component: ReportsContainerComponent,
             children: [
               { path: 'settings', component: ReportSettingsComponent },
+              { path: 'list', component: ReportsComponent },
               { path: '', redirectTo: 'settings', pathMatch: 'full' },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]

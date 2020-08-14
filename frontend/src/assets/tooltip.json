@@ -388,7 +388,7 @@
     {
       "name": "Reports",
       "tooltipMessage": "Reports",
-      "route": "#",
+      "route": "list",
       "actions": []
     }
   ]
