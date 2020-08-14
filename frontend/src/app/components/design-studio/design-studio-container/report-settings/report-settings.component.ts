@@ -22,7 +22,8 @@ export class ReportSettingsComponent implements OnInit {
     private reportService: ReportService,
     private toastrService: ToastrService,
     private actionService: ActionService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private toaster: ToastrService
   ) {}
 
   ngOnInit() {
@@ -60,6 +61,13 @@ export class ReportSettingsComponent implements OnInit {
   }
 
   async save() {
+    const hasErrors = this.settings.some(row => !row.reportType || !row.currentPrice || !row.listPrice);
+
+    if (hasErrors) {
+      this.toaster.warning('Please Fill All Required Fields');
+      return;
+    }
+
     this.spinner.show();
     this.reportService
       .updateReportSettings(this.settings)

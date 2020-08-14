@@ -1,0 +1,39 @@
+<div class="wrapper">
+  <div class="d-flex flex-column w-100 table theme-table">
+    <div class="d-flex header justify-content-between align-items-center">
+      <app-rfq-filter [placeholder]="placeholderText" (formChange)="filter$.next($event)"></app-rfq-filter>
+    </div>
+    <div class="ag-theme-balham w-100 h-100 position-relative">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+      <ngx-spinner
+        [name]="'loadingPanel'"
+        bdColor="#ffffff70"
+        size="small"
+        color="#74bf09"
+        type="ball-clip-rotate"
+        [fullScreen]="false"
+      >
+        <p class="m-0">Loading...</p>
+      </ngx-spinner>
+    </div>
+  </div>
+</div>
+
+<ng-template #reportsActions let-row>
+  <div class="text-theme-green d-flex justify-content-between">
+    <button (click)="onDownload(row)" class="btn theme btn-select mr-2" type="button">
+      Download Files
+    </button>
+    <button (click)="onUpload(row)" class="btn theme btn-select orange-btn mr-2" type="button">
+      Upload Reports
+    </button>
+    <button (click)="onView(row)" class="btn theme blue btn-select" type="button">
+      View
+    </button>
+  </div>
+</ng-template>

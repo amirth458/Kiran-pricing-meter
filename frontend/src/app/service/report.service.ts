@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ReportSetting } from '../model/report.model';
 import { Observable } from 'rxjs';
+import { FilterOption } from '../model/vendor.model';
+import { Util } from '../util/Util';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +30,10 @@ export class ReportService {
   deleteReportSettingsById(settingId) {
     const url = `${environment.apiBaseUrl}/admin/design-reports?design-reports-settings-id=${settingId}`;
     return this.http.delete(url);
+  }
+
+  getReportList(req: FilterOption, filter): Observable<any> {
+    const url = `${environment.apiBaseUrl}/admin/pm-project/pm-rfq`;
+    return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
   }
 }

@@ -189,6 +189,7 @@ import { GlobalChatComponent } from './chat/global-chat/global-chat.component';
 import { DesignStudioContainerComponent } from './design-studio/design-studio-container/design-studio-container.component';
 import { ReportsContainerComponent } from './design-studio/design-studio-container/reports-container/reports-container.component';
 import { ReportSettingsComponent } from './design-studio/design-studio-container/report-settings/report-settings.component';
+import { ReportsComponent } from './design-studio/design-studio-container/reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -365,7 +366,8 @@ import { ReportSettingsComponent } from './design-studio/design-studio-container
     MessageModalComponent,
     DesignStudioContainerComponent,
     ReportsContainerComponent,
-    ReportSettingsComponent
+    ReportSettingsComponent,
+    ReportsComponent
   ],
   imports: [
     CommonModule,
