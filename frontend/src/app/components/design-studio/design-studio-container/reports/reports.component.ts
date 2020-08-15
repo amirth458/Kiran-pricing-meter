@@ -10,8 +10,11 @@ import { DatePipe } from '@angular/common';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { filter } from 'rxjs/operators';
 import { FilterOption } from 'src/app/model/vendor.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ReportService } from 'src/app/service/report.service';
+import { ProjectTypeEnum } from 'src/app/model/order.model';
+import { RowClickedEvent } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reports',
@@ -22,7 +25,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   @ViewChild('reportsActions') reportsActions: ElementRef;
 
   placeholderText = 'Customer, RFQ, Part, Order';
-  public sorting = 'rfq_id,desc';
+  public sorting = 'reportId,desc';
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
@@ -33,20 +36,38 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
     public partService: PartService,
     public modalService: NgbModal,
     public datePipe: DatePipe,
-    public reportService: ReportService
+    public reportService: ReportService,
+    public toaster: ToastrService
   ) {
     super(spinner, router, projectService, partService, modalService, datePipe);
   }
 
   ngOnInit() {
-    super.ngOnInit();
-    this.gridOptions.frameworkComponents = this.frameworkComponents;
-    this.gridOptions.onRowClicked = param => {};
+    this.initColumns();
+    this.gridOptions = {
+      frameworkComponents: this.frameworkComponents,
+      columnDefs: this.columnDefs,
+      paginationPageSize: this.pageSize,
+      maxConcurrentDatasourceRequests: 1,
+      rowModelType: 'infinite',
+      enableColResize: true,
+      rowHeight: 35,
+      headerHeight: 35,
+      rowBuffer: 0,
+      cacheBlockSize: this.pageSize,
+      infiniteInitialRowCount: 0,
+      cacheOverflowSize: 0,
+      onRowClicked: (row: RowClickedEvent): void => {}
+    };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
+        projectType: ProjectTypeEnum.DESIGN_REPORT,
+        // TODO:
+        // Change this with enum
+        rfqStatusIds: '7,8,9,10',
         searchQuery: form.query || '',
-        beginDate: form.dateRange[0],
-        endDate: form.dateRange[1]
+        createdDateFrom: form.dateRange[0],
+        createdDateTo: form.dateRange[1]
       });
     });
   }
@@ -55,20 +76,20 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Report ID',
-        field: 'rfqId',
+        field: 'reportId',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'rfqId',
+        tooltipField: 'reportId',
         width: 100
       },
       {
         headerName: 'Order ID',
-        field: 'rfqId',
+        field: 'orderId',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'rfqId',
+        tooltipField: 'orderId',
         width: 100
       },
       {
@@ -81,20 +102,20 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
       },
       {
         headerName: 'Reports Requested',
-        field: 'rfqId',
+        field: 'reportRequested',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'rfqId',
+        tooltipField: 'reportRequested',
         width: 100
       },
       {
         headerName: 'Report Status',
-        field: 'part_certificates',
+        field: 'status',
         hide: false,
         sortable: true,
         filter: false,
-        tooltipField: 'part_certificates'
+        tooltipField: 'status'
       },
       {
         headerName: '',
@@ -126,8 +147,11 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
           this.spinner.hide('loadingPanel');
           this.totalRows = data.totalElements || 0;
           const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-          if (data && data.totalElements) {
-            params.successCallback(data.content || [], lastRow);
+
+          if (data && data.length) {
+            // TODO:
+            // Fix this when API starts sending the appropriate pagination information
+            params.successCallback(data || [], data.length);
           }
         });
       }
@@ -143,11 +167,14 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
 
   onUpload(row) {
     console.log(row);
+    this.toaster.warning('Feature Under Construction');
   }
   onDownload(row) {
     console.log(row);
+    this.toaster.warning('Feature Under Construction');
   }
   onView(row) {
     console.log(row);
+    this.toaster.warning('Feature Under Construction');
   }
 }
