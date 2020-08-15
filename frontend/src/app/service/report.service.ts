@@ -5,6 +5,8 @@ import { ReportSetting } from '../model/report.model';
 import { Observable } from 'rxjs';
 import { FilterOption } from '../model/vendor.model';
 import { Util } from '../util/Util';
+import { Pageable } from '../model/order.model';
+import { Reports } from '../model/reports.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +34,8 @@ export class ReportService {
     return this.http.delete(url);
   }
 
-  getReportList(req: FilterOption, filter): Observable<any> {
-    const url = `${environment.apiBaseUrl}/admin/pm-project/pm-rfq`;
-    return this.http.post<any>(url, filter, { params: Util.buildParameters(req) });
+  getReportList(req: FilterOption, filter): Observable<Pageable<Reports>> {
+    const url = `${environment.apiBaseUrl}/part-reports/search-for-admin`;
+    return this.http.post<Pageable<Reports>>(url, filter, { params: Util.buildParameters(req) });
   }
 }
