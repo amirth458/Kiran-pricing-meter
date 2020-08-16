@@ -497,7 +497,7 @@
                   <td class="text-center">{{ part?.quantity }}</td>
                   <td [innerHTML]="getShippingAddress(part?.shippingAddress)"></td>
                   <td class="text-center">
-                    {{ part?.targetDeliveryDate | date }}
+                    {{ part?.targetDeliveryDate | date: 'MM/dd/yyyy':'UTC' }}
                   </td>
                 </tr>
               </tbody>
