@@ -44,6 +44,15 @@ export class InsightQuoteComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
+      headerName: 'RFQ Type',
+      field: 'project_type',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'project_type',
+      headerTooltip: 'project_type'
+    },
+    {
       headerName: 'Quoted Price',
       field: 'total_cost',
       hide: false,
