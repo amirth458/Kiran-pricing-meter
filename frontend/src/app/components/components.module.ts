@@ -190,6 +190,7 @@ import { DesignStudioContainerComponent } from './design-studio/design-studio-co
 import { ReportsContainerComponent } from './design-studio/design-studio-container/reports-container/reports-container.component';
 import { ReportSettingsComponent } from './design-studio/design-studio-container/report-settings/report-settings.component';
 import { ReportsComponent } from './design-studio/design-studio-container/reports/reports.component';
+import { ReportItemComponent } from './design-studio/design-studio-container/report-item/report-item.component';
 
 @NgModule({
   declarations: [
@@ -367,7 +368,8 @@ import { ReportsComponent } from './design-studio/design-studio-container/report
     DesignStudioContainerComponent,
     ReportsContainerComponent,
     ReportSettingsComponent,
-    ReportsComponent
+    ReportsComponent,
+    ReportItemComponent
   ],
   imports: [
     CommonModule,

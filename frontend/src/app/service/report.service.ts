@@ -38,4 +38,9 @@ export class ReportService {
     const url = `${environment.apiBaseUrl}/part-reports/search-for-admin`;
     return this.http.post<Pageable<Reports>>(url, filter, { params: Util.buildParameters(req) });
   }
+
+  getPartList(reportId: number): Observable<any> {
+    const url = `${environment.procurementApiBaseUrl}/part/rfq/${reportId}?generateSignedUrl=true`;
+    return this.http.get<any>(url);
+  }
 }

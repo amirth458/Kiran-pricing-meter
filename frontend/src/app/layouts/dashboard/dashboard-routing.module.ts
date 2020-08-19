@@ -102,6 +102,7 @@ import { DesignStudioContainerComponent } from 'src/app/components/design-studio
 import { ReportsContainerComponent } from 'src/app/components/design-studio/design-studio-container/reports-container/reports-container.component';
 import { ReportSettingsComponent } from 'src/app/components/design-studio/design-studio-container/report-settings/report-settings.component';
 import { ReportsComponent } from 'src/app/components/design-studio/design-studio-container/reports/reports.component';
+import { ReportItemComponent } from 'src/app/components/design-studio/design-studio-container/report-item/report-item.component';
 
 const routes: Routes = [
   {
@@ -128,6 +129,7 @@ const routes: Routes = [
             children: [
               { path: 'settings', component: ReportSettingsComponent },
               { path: 'list', component: ReportsComponent },
+              { path: ':id', component: ReportItemComponent },
               { path: '', redirectTo: 'settings', pathMatch: 'full' },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]
