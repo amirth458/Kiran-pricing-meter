@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ReportSetting } from '../model/report.model';
 import { Observable } from 'rxjs';
@@ -42,5 +42,13 @@ export class ReportService {
   getPartList(reportId: number): Observable<any> {
     const url = `${environment.procurementApiBaseUrl}/part/rfq/${reportId}?generateSignedUrl=true`;
     return this.http.get<any>(url);
+  }
+
+  downloadMediaFile(reportId: number) {
+    const url = `${environment.procurementApiBaseUrl}/part-reports/download-media-files?rfq-id=${reportId}`;
+    const options: any = {
+      responseType: 'arraybuffer'
+    };
+    return this.http.get<any>(url, options);
   }
 }
