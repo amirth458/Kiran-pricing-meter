@@ -410,6 +410,7 @@
             [id]="bidOrderId"
             [type]="chatTypeEnum.BID_OFFER"
             [value]="chat"
+            [chatParticipant]="chatParticipantEnum.VENDOR"
             (valueChange)="chat = $event"
           >
           </app-chat>
@@ -422,6 +423,7 @@
           [id]="row?.vendorOrderId"
           [vendorId]="row?.vendorId"
           [type]="chatTypeEnum.VENDOR_ORDER"
+          [chatParticipant]="chatParticipantEnum.VENDOR"
           [value]="chat"
           (valueChange)="chat = $event"
         >

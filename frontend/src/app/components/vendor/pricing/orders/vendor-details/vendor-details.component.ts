@@ -23,7 +23,7 @@ import { Util } from '../../../../../util/Util';
 
 import { DefaultEmails } from '../../../../../../assets/constants';
 import { ZoomService } from 'src/app/service/zoom.service';
-import { Chat, ChatTypeEnum } from '../../../../../model/chat.model';
+import { Chat, ChatParticipantEnum, ChatTypeEnum } from '../../../../../model/chat.model';
 import { MetaData } from '../../../../../model/metadata.model';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
 import { ProcessProfile } from 'src/app/model/part.model';
@@ -73,6 +73,7 @@ export class VendorDetailsComponent implements OnInit {
   selectedBidding: any;
   vendorOrderId: number;
   bidOrderStatus: MetaData;
+  chatParticipantEnum = ChatParticipantEnum;
 
   blockedSuppliers$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>(null);
   suppliers$: Observable<Array<number>>;
