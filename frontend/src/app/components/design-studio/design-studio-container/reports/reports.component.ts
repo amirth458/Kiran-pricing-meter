@@ -57,9 +57,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0,
-      onRowClicked: (row: RowClickedEvent): void => {
-        this.router.navigateByUrl('/design-studio/reports/' + row.data.reportId);
-      }
+      onRowClicked: (row: RowClickedEvent): void => {}
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
@@ -121,7 +119,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
       },
       {
         headerName: '',
-        field: '',
+        field: 'actions',
         hide: false,
         sortable: true,
         filter: false,
@@ -168,15 +166,25 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   }
 
   onUpload(row) {
-    console.log(row);
     this.toaster.warning('Feature Under Construction');
   }
-  onDownload(row) {
-    console.log(row);
-    this.toaster.warning('Feature Under Construction');
+  async onDownload(row) {
+    this.spinner.show();
+    this.reportService.downloadMediaFile(row.reportId).subscribe(
+      (download: any) => {
+        this.spinner.hide();
+        const blob = new Blob([download], {
+          type: 'application/zip'
+        });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      },
+      err => {
+        this.spinner.hide();
+      }
+    );
   }
   onView(row) {
-    console.log(row);
-    this.toaster.warning('Feature Under Construction');
+    this.router.navigateByUrl('/design-studio/reports/' + row.reportId);
   }
 }
