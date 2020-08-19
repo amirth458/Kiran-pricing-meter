@@ -1,0 +1,44 @@
+<div class="wrapper container-fluid text-theme">
+  <h6>Report Details</h6>
+  <div>
+    <div class="col-9 part-list row">
+      <div *ngFor="let part of parts" class="part my-3 px-4">
+        <div class="image text-theme-green">
+          <i class="fa fa-file-alt"></i>
+        </div>
+        <p class="filename">
+          <a
+            class="text-truncate underline text-theme-green"
+            [href]="part?.rfqMedia?.media?.location"
+            target="_blank"
+            [ngbTooltip]="part?.rfqMedia?.media?.name"
+          >
+            {{ part?.rfqMedia?.media?.name }}
+          </a>
+        </p>
+        <div>
+          <div class="processes d-flex flex-column font-weight-bold">
+            <span>Manufacturing Process:</span>
+            <span
+              *ngFor="let report of part?.partReportsList"
+              class="font-weight-normal text-theme-green d-flex justify-content-between"
+            >
+              <span>
+                {{ report?.reportTypeName }}
+              </span>
+              <a [href]="report?.reportUrl" *ngIf="report?.reportUrl">
+                <span class="text-theme-green cursor-pointer">
+                  <i class="fa fa-download"></i>
+                </span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col communications">
+      <!-- <button class="btn btn-white" type="button">Send All Reports to Customer</button> -->
+    </div>
+  </div>
+</div>

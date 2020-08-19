@@ -57,7 +57,9 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
       cacheBlockSize: this.pageSize,
       infiniteInitialRowCount: 0,
       cacheOverflowSize: 0,
-      onRowClicked: (row: RowClickedEvent): void => {}
+      onRowClicked: (row: RowClickedEvent): void => {
+        this.router.navigateByUrl('/design-studio/reports/' + row.data.reportId);
+      }
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
       this.apply({
