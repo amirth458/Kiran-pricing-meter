@@ -105,7 +105,7 @@ export class ChatService {
   }
 
   getAllChatAttachments(chatId: number): Observable<ChatAttachmentView> {
-    return this.http.get<ChatAttachmentView>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}`);
+    return this.http.get<ChatAttachmentView>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}?generateSignedUrl=true`);
   }
 
   deleteChatAttachment(chatId: number, attachmentId: number): Observable<any> {
