@@ -44,6 +44,15 @@ export class InsightVendorsComponent implements OnInit {
       headerTooltip: 'last_name'
     },
     {
+      headerName: 'NDA',
+      field: 'nda',
+      hide: false,
+      sortable: false,
+      filter: false,
+      tooltipField: 'nda',
+      headerTooltip: 'nda'
+    },
+    {
       headerName: 'Email',
       field: 'email',
       hide: false,
