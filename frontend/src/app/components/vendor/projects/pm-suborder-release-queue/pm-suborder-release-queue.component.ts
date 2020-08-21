@@ -1,24 +1,25 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
+
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { DatePipe } from '@angular/common';
-
-import { FilterOption } from 'src/app/model/vendor.model';
-import { ProjectService } from 'src/app/service/project.service';
-import { SearchOpt } from './pm-suborder-release-queue.model';
-import { ProjectTypeEnum } from 'src/app/model/order.model';
 import { AppPartStatusId, Part } from 'src/app/model/part.model';
-import { Util } from 'src/app/util/Util';
+import { FilterOption } from 'src/app/model/vendor.model';
 import { FileViewRendererComponent } from 'src/app/common/file-view-renderer/file-view-renderer.component';
-import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { MetadataService } from 'src/app/service/metadata.service';
-import { ToastrService } from 'ngx-toastr';
+import { ProjectService } from 'src/app/service/project.service';
+import { ProjectTypeEnum } from 'src/app/model/order.model';
 import { PartService } from 'src/app/service/part.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SearchOpt } from './pm-suborder-release-queue.model';
+import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
+import { Util } from 'src/app/util/Util';
 
 @Component({
   selector: 'app-pm-suborder-release-queue',
@@ -129,7 +130,9 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
     const bidPmProjectRequest = [];
     this.selectedVendors.map(item => {
       item.partIds.map(partId => {
-        bidPmProjectRequest.push({ customerOrderId: item.customerOrderId, partId });
+        if (!bidPmProjectRequest.some(i => i.customerOrderId === item.customerOrderId && i.partId === item.partId)) {
+          bidPmProjectRequest.push({ customerOrderId: item.customerOrderId, partId });
+        }
       });
     });
     this.projectService.createBidItems({ bidPmProjectRequest }).subscribe(
