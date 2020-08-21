@@ -38,7 +38,7 @@
   </div>
 </ng-template>
 
-<ng-template #uploadReports let-modal let-row>
+<ng-template #uploadReports let-row>
   <div class="upload-modal p-4">
     <ngb-tabset [destroyOnHide]="false">
       <ngb-tab *ngFor="let part of parts">
@@ -64,7 +64,7 @@
             </div>
 
             <div class="actions p-4 d-flex justify-content-center">
-              <button type="button" (click)="model.close()" class="btn theme white w-25 mr-1">
+              <button type="button" (click)="modal.dismissAll()" class="btn theme white w-25 mr-1">
                 Cancel
               </button>
 
