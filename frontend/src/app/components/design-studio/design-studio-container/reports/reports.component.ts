@@ -15,6 +15,7 @@ import { ReportService } from 'src/app/service/report.service';
 import { ProjectTypeEnum } from 'src/app/model/order.model';
 import { RowClickedEvent } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
+import { ReportStatus } from 'src/app/model/reports.model';
 
 @Component({
   selector: 'app-reports',
@@ -34,6 +35,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   parts = [];
   active = null;
   selectedFiles = {};
+  lastQuery = null;
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
@@ -66,6 +68,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
       onRowClicked: (row: RowClickedEvent): void => {}
     };
     this.filter$.pipe(filter(f => f !== null)).subscribe(form => {
+      this.lastQuery = form;
       this.apply({
         projectType: ProjectTypeEnum.DESIGN_REPORT,
         // TODO:
@@ -218,6 +221,9 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
         this.selectedFiles = {};
         this.modal.dismissAll();
         this.spinner.hide();
+        if (this.lastQuery) {
+          this.filter$.next(this.lastQuery);
+        }
       },
       error => {
         this.spinner.hide();
@@ -243,6 +249,29 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
       }
     );
   }
+
+  canSendToCustomer(row) {
+    return row.designReportsOrderQueueStatus === 'ANALYSIS_COMPLETE';
+  }
+
+  onSendToCustomer(row) {
+    this.spinner.show();
+    this.reportService.sendToCustomer(row.reportId).subscribe(
+      res => {
+        this.toaster.success('Report sent to customer');
+        this.spinner.hide();
+        if (this.lastQuery) {
+          this.filter$.next(this.lastQuery);
+        }
+      },
+      err => {
+        console.log(err);
+        this.spinner.hide();
+        this.toaster.error('Error while sending report to customer');
+      }
+    );
+  }
+
   onView(row) {
     this.router.navigateByUrl('/design-studio/reports/list/' + row.reportId);
   }

@@ -26,13 +26,23 @@
 
 <ng-template #reportsActions let-row>
   <div class="text-theme-green d-flex justify-content-between">
-    <button (click)="onDownload(row)" class="btn theme btn-select mr-2" type="button">
-      Download Files
+    <span title="Download Files" (click)="onDownload(row)" class="download-icon mr-3">
+      <i class="fa fa-download"></i>
+    </span>
+
+    <span title="Upload Reports" (click)="onUpload(row)" class="upload-icon text-orange mr-3">
+      <i class="fa fa-upload"></i>
+    </span>
+
+    <button
+      (click)="onSendToCustomer(row)"
+      [disabled]="!canSendToCustomer(row)"
+      class="btn theme send-to-customer btn-select mr-2"
+      type="button"
+    >
+      Send to customer
     </button>
-    <button (click)="onUpload(row)" class="btn theme btn-select orange-btn mr-2" type="button">
-      Upload Reports
-    </button>
-    <button (click)="onView(row)" class="btn theme blue btn-select" type="button">
+    <button (click)="onView(row)" class="btn view-btn theme blue btn-select" type="button">
       View
     </button>
   </div>
