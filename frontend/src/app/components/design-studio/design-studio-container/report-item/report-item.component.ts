@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { combineLatest } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ReportStatus } from 'src/app/model/reports.model';
+import { ZoomTypeEnum, ZoomParticipantEnum } from 'src/app/model/conference.model';
+import { ChatTypeEnum, ChatParticipantEnum, Chat } from 'src/app/model/chat.model';
 
 @Component({
   selector: 'app-report-item',
@@ -14,6 +16,11 @@ import { ReportStatus } from 'src/app/model/reports.model';
 export class ReportItemComponent implements OnInit {
   rfqId = null;
   parts = [];
+  zoomTypeEnum = ZoomTypeEnum;
+  zoomParticipantEnum = ZoomParticipantEnum;
+  chatParticipantEnum = ChatParticipantEnum;
+  chatTypeEnum = ChatTypeEnum;
+  chat: Chat;
   constructor(
     public router: ActivatedRoute,
     public reportService: ReportService,
