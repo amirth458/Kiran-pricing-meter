@@ -42,9 +42,11 @@
     >
       Send to customer
     </button>
-    <button (click)="onView(row)" class="btn view-btn theme blue btn-select" type="button">
-      View
-    </button>
+    <div>
+      <span (click)="onView(row)" class="view-btn hover-bold text-theme-green">
+        View
+      </span>
+    </div>
   </div>
 </ng-template>
 

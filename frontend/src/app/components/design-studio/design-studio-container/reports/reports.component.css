@@ -24,18 +24,19 @@
 }
 
 .upload-icon,
-.download-icon {
+.download-icon,
+.view-btn {
   cursor: pointer;
   font-size: 16px;
+}
+.view-btn {
+  font-size: 13px;
+  margin-top: -5px;
 }
 
 .upload-icon:hover,
 .download-icon:hover {
   font-size: 19px;
-}
-
-.view-btn {
-  width: 90px !important;
 }
 
 ::ng-deep .nav .nav-item .nav-link.active {
