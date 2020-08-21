@@ -28,4 +28,9 @@
 
 .filename {
   font-size: 12px;
+  width: 200px;
+}
+
+.report-name {
+  width: 200px;
 }

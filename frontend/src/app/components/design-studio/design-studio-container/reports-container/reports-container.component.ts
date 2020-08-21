@@ -22,17 +22,19 @@ export class ReportsContainerComponent implements OnInit {
   constructor(private route: Router) {}
 
   ngOnInit() {
-    const routeArr = this.route.url.slice(this.route.url.indexOf('pricing/rfq/') + 'pricing/rfq/'.length).split('/');
-    this.selectedTab = 'Settings';
+    const routeArr = this.route.url
+      .slice(this.route.url.indexOf('design-studio/reports/') + 'design-studio/reports/'.length)
+      .split('/');
     switch (routeArr[0]) {
       case 'settings':
         this.selectedTab = 'Settings';
         break;
-      case 'auto-prices':
+      case 'list':
         this.selectedTab = 'Reports';
         break;
       default:
         this.route.navigateByUrl(this.route.url + '/settings');
+        this.selectedTab = 'Settings';
         break;
     }
   }

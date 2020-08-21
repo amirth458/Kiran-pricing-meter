@@ -128,8 +128,8 @@ const routes: Routes = [
             component: ReportsContainerComponent,
             children: [
               { path: 'settings', component: ReportSettingsComponent },
+              { path: 'list/:id', component: ReportItemComponent },
               { path: 'list', component: ReportsComponent },
-              { path: ':id', component: ReportItemComponent },
               { path: '', redirectTo: 'settings', pathMatch: 'full' },
               { path: '**', redirectTo: 'settings', pathMatch: 'full' }
             ]

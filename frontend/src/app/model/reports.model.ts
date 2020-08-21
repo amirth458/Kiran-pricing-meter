@@ -6,3 +6,7 @@ export class Reports {
   customerName: string;
   reportRequested: number;
 }
+
+export enum ReportStatus {
+  ANALYSIS_COMPLETE = 3
+}

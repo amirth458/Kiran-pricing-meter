@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
 import { filter } from 'rxjs/operators';
 import { FilterOption } from 'src/app/model/vendor.model';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { ReportService } from 'src/app/service/report.service';
 import { ProjectTypeEnum } from 'src/app/model/order.model';
 import { RowClickedEvent } from 'ag-grid-community';
@@ -23,12 +23,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ReportsComponent extends RfqListComponent implements OnInit {
   @ViewChild('reportsActions') reportsActions: ElementRef;
+  @ViewChild('uploadReports') uploadReports: ElementRef;
 
   placeholderText = 'Customer, RFQ, Part, Order';
   public sorting = 'reportId,desc';
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
   };
+
+  parts = [];
+  active = null;
+  selectedFiles = {};
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
@@ -37,7 +42,8 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
     public modalService: NgbModal,
     public datePipe: DatePipe,
     public reportService: ReportService,
-    public toaster: ToastrService
+    public toaster: ToastrService,
+    public modal: NgbModal
   ) {
     super(spinner, router, projectService, partService, modalService, datePipe);
   }
@@ -165,9 +171,59 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
     return this.reportService.getReportList(req, form);
   }
 
-  onUpload(row) {
-    this.toaster.warning('Feature Under Construction');
+  async onUpload(row) {
+    this.spinner.show();
+
+    combineLatest(
+      this.reportService.getPartList(row.reportId),
+      this.reportService.getDesignReportOrderQueueReportsView(row.reportId)
+    ).subscribe(
+      ([parts, partDetails]) => {
+        this.parts = parts.map(part => {
+          const details = partDetails.filter(_ => _.partId == part.id);
+          return { ...part, details };
+        });
+
+        this.spinner.hide();
+
+        this.modal.open(this.uploadReports, {
+          centered: true,
+          size: 'lg',
+          windowClass: 'part-detail'
+        });
+      },
+      err => {
+        console.log(err);
+        this.toaster.error('Error while fetching part details');
+        this.spinner.show();
+      }
+    );
   }
+
+  getFullRFQData() {}
+  onFileSelected($event, orderId, partId, reportTypeId) {
+    const fileName = `${orderId}_${partId}_${reportTypeId}`;
+    this.selectedFiles[fileName] = $event.target.files[0];
+  }
+
+  canSubmitReport() {
+    return Object.keys(this.selectedFiles).length > 0;
+  }
+
+  submitReports() {
+    this.reportService.uploadReports(this.selectedFiles).subscribe(
+      res => {
+        this.toaster.success('Report Uploaded.');
+        this.selectedFiles = {};
+        this.modal.dismissAll();
+      },
+      error => {
+        console.log(error);
+        this.toaster.error('Error while uploading report.');
+      }
+    );
+  }
+
   async onDownload(row) {
     this.spinner.show();
     this.reportService.downloadMediaFile(row.reportId).subscribe(
@@ -185,6 +241,6 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
     );
   }
   onView(row) {
-    this.router.navigateByUrl('/design-studio/reports/' + row.reportId);
+    this.router.navigateByUrl('/design-studio/reports/list/' + row.reportId);
   }
 }
