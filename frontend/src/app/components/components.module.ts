@@ -81,6 +81,7 @@ import { ProdPartComponent } from '../common/prod-part/prod-part.component';
 // pipes
 import { ConfirmOrderFilterPipe } from '../pipes/confirm-order-filter.pipe';
 import { SupplierPipe } from '../pipes/supplier.pipe';
+import { SortPipe } from '../pipes/sort.pipe';
 import { HistoricalBidComponent } from './vendor/pricing/rfq/historical-bid/historical-bid.component';
 import { ProjectsContainerComponent } from './vendor/projects/projects-container/projects-container.component';
 import { OrderDetailComponent } from './vendor/projects/order-detail/order-detail.component';
@@ -291,6 +292,7 @@ import { ReportSettingsComponent } from './design-studio/design-studio-container
     // Pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
+    SortPipe,
     FeatureLockDirective,
     VisiblePipe,
 
@@ -398,7 +400,7 @@ import { ReportSettingsComponent } from './design-studio/design-studio-container
     InfiniteScrollModule,
     SidebarModule.forRoot()
   ],
-  providers: [DatePipe, CurrencyPipe, TitleCasePipe],
+  providers: [DatePipe, CurrencyPipe, TitleCasePipe, SortPipe],
   exports: [
     NgxSpinnerModule,
     InfiniteScrollModule,
@@ -422,6 +424,7 @@ import { ReportSettingsComponent } from './design-studio/design-studio-container
     // pipes
     ConfirmOrderFilterPipe,
     SupplierPipe,
+    SortPipe,
     MessageModalComponent
   ],
   entryComponents: [MessageModalComponent, GlobalChatComponent]
