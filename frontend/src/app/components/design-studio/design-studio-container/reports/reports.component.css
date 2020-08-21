@@ -19,6 +19,10 @@
   font-size: 12px;
 }
 
+::ng-deep .nav .nav-item .nav-link.active {
+  color: var(--theme-light-green);
+}
+
 @media (max-width: 768px) {
   .wrapper {
     padding: 40px 20px;
