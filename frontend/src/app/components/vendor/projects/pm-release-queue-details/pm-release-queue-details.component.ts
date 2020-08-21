@@ -13,7 +13,7 @@ import { ConnectProject } from 'src/app/model/connect.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { ReferenceFile, Part, MatchedProcessProfile } from 'src/app/model/part.model';
+import { ReferenceFile, Part } from 'src/app/model/part.model';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
