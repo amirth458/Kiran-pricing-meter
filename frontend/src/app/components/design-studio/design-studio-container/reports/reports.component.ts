@@ -211,13 +211,16 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   }
 
   submitReports() {
+    this.spinner.show();
     this.reportService.uploadReports(this.selectedFiles).subscribe(
       res => {
         this.toaster.success('Report Uploaded.');
         this.selectedFiles = {};
         this.modal.dismissAll();
+        this.spinner.hide();
       },
       error => {
+        this.spinner.hide();
         console.log(error);
         this.toaster.error('Error while uploading report.');
       }
