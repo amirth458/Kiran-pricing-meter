@@ -26,7 +26,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   @ViewChild('reportsActions') reportsActions: ElementRef;
   @ViewChild('uploadReports') uploadReports: ElementRef;
 
-  placeholderText = 'Customer, RFQ, Part, Order';
+  placeholderText = 'Customer Name, Report ID, Order ID';
   public sorting = 'reportId,desc';
   frameworkComponents = {
     templateRenderer: TemplateRendererComponent
