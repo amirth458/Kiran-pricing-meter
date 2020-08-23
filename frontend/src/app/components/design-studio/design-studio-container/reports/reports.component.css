@@ -15,6 +15,10 @@
   padding: 3px 7px !important;
 }
 
+.uploaded-file-name {
+  width: 200px;
+}
+
 .file-input {
   font-size: 12px;
 }
@@ -29,6 +33,7 @@
   cursor: pointer;
   font-size: 16px;
 }
+
 .view-btn {
   font-size: 13px;
   margin-top: -5px;
@@ -39,8 +44,13 @@
   font-size: 19px;
 }
 
+.file-image {
+  font-size: 70px;
+}
+
 ::ng-deep .nav .nav-item .nav-link.active {
   color: var(--theme-light-green);
+  border-top: 5px solid var(--theme-btn-primary);
 }
 
 @media (max-width: 768px) {

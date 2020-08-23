@@ -52,31 +52,74 @@
 
 <ng-template #uploadReports let-row>
   <div class="upload-modal p-4">
+    <div class="text-center my-2 row">
+      <div class="col-4"></div>
+      <span class="font-md text-theme-green col-4">Upload Reports</span>
+      <div class="col-4">
+        <span class="text-theme-green hover-bold" (click)="modal.dismissAll()">
+          <i class="fas fa-times"></i>
+        </span>
+      </div>
+    </div>
     <ngb-tabset [destroyOnHide]="false">
       <ngb-tab *ngFor="let part of parts">
         <ng-template ngbTabTitle>{{ part.id }}</ng-template>
         <ng-template ngbTabContent>
           <div class="reports px-4 py-2 text-theme">
-            <div *ngFor="let report of part.details" class="report my-2 d-flex justify-content-between">
-              <span class="text-theme-green font-md">
-                {{ report.name }}
-                <a class="ml-3" [href]="report?.reportUrl" target="_blank" *ngIf="report?.reportUrl">
-                  <span class="text-theme-green cursor-pointer">
-                    <i class="fa fa-download"></i>
+            <div class="body row">
+              <div class=" col-3 text-theme-green">
+                <span class="file-image d-block">
+                  <i class="far fa-file-alt"></i>
+                </span>
+                <a [href]="part?.rfqMedia?.media?.location" class="hover-underline font-sm text-theme">{{
+                  part?.rfqMedia?.media?.name
+                }}</a>
+              </div>
+
+              <div class="col-7">
+                <h6 class="mb-3">Manufacturing Process :</h6>
+                <div *ngFor="let report of part.details" class="d-flex justify-content-between">
+                  <span class="text-theme font-md">
+                    <span class="text-truncate" style="width: 100px">{{ report.name }}</span>
+                    <a class="ml-3" [href]="report?.reportUrl" target="_blank" *ngIf="report?.reportUrl">
+                      <span class="text-theme-green cursor-pointer">
+                        <i class="fa fa-download"></i>
+                      </span>
+                    </a>
                   </span>
-                </a>
-              </span>
-              <div class="upload-btn">
-                <input
-                  class="font-md file-input"
-                  type="file"
-                  (change)="onFileSelected($event, part.order.id, part.id, report.reportSettingId)"
-                />
+
+                  <div class="ml-4 d-flex justify-content-end">
+                    <label class="upload-icon text-orange mr-1">
+                      <i class="fa fa-upload"></i>
+                      <input
+                        #fileSelector
+                        class="font-md d-none file-input"
+                        type="file"
+                        value="value"
+                        (click)="onFileSelectorClicked()"
+                        (change)="onFileSelected($event, part.order.id, part.id, report.reportSettingId)"
+                      />
+                    </label>
+                    <span
+                      *ngIf="getFileName(part.order.id, part.id, report.reportSettingId)"
+                      class="font-sm ml-3 d-inline-block uploaded-file-name text-truncate"
+                    >
+                      {{ getFileName(part.order.id, part.id, report.reportSettingId) }}
+                      <span
+                        title="Delete File"
+                        (click)="onFileRemoved(part.order.id, part.id, report.reportSettingId)"
+                        class="cursor-pointer font-sm hover-bold"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div class="actions p-4 d-flex justify-content-center">
-              <button type="button" (click)="modal.dismissAll()" class="btn theme white w-25 mr-1">
+              <button type="button" (click)="modal.dismissAll()" class="btn theme orange-btn w-25 mr-1">
                 Cancel
               </button>
 
