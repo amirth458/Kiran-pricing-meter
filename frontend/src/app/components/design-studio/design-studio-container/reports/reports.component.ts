@@ -189,6 +189,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
 
         this.spinner.hide();
 
+        this.selectedFiles = {};
         this.modal.open(this.uploadReports, {
           centered: true,
           size: 'lg',
@@ -203,14 +204,23 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
     );
   }
 
-  getFullRFQData() {}
   onFileSelected($event, orderId, partId, reportTypeId) {
     const fileName = `${orderId}_${partId}_${reportTypeId}`;
     this.selectedFiles[fileName] = $event.target.files[0];
   }
 
+  onFileRemoved(orderId, partId, reportTypeId) {
+    const fileName = `${orderId}_${partId}_${reportTypeId}`;
+    this.selectedFiles[fileName] = null;
+  }
+
+  getFileName(orderId, partId, reportTypeId) {
+    const fileName = `${orderId}_${partId}_${reportTypeId}`;
+    return this.selectedFiles[fileName] && this.selectedFiles[fileName].name;
+  }
+
   canSubmitReport() {
-    return Object.keys(this.selectedFiles).length > 0;
+    return !Object.values(this.selectedFiles).every(_ => !_);
   }
 
   submitReports() {
