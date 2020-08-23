@@ -141,8 +141,16 @@
     >
       <app-chat
         [participants]="orderInfo?.customerOrder?.customerUserId ? [orderInfo?.customerOrder?.customerUserId] : []"
-        [id]="orderInfo?.customerOrder?.id"
-        [type]="chatTypeEnum.CUSTOMER_ORDER"
+        [id]="
+          orderInfo?.billingInfoView?.projectType == projectTypeEnum.DESIGN_REPORT
+            ? (orderInfo?.customerOrder?.partList)[0].rfqMedia?.projectRfqId
+            : orderInfo?.customerOrder?.id
+        "
+        [type]="
+          orderInfo?.billingInfoView?.projectType == projectTypeEnum.DESIGN_REPORT
+            ? chatTypeEnum.RFQ_CHAT
+            : chatTypeEnum.CUSTOMER_ORDER
+        "
         [chatParticipant]="chatParticipantEnum.CUSTOMER"
         [value]="chat"
         (valueChange)="chat = $event"

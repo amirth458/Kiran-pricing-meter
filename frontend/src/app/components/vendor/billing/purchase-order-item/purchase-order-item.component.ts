@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 import { BillingService } from 'src/app/service/billing.service';
 import { PaymentDetails, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
+import { ProjectType } from 'src/app/model/order.model';
 import { MetadataConfig } from '../../../../model/metadata.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { UserService } from 'src/app/service/user.service';
@@ -37,6 +38,7 @@ export class PurchaseOrderItemComponent implements OnInit {
   chat: Chat;
   chatTypeEnum = ChatTypeEnum;
   chatParticipantEnum = ChatParticipantEnum;
+  projectTypeEnum = ProjectType;
   constructor(
     public toast: ToastrService,
     public location: Location,
