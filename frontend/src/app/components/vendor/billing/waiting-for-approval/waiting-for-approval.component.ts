@@ -13,6 +13,7 @@ import { BillingService } from 'src/app/service/billing.service';
 import { Payment, PaymentStatusTypes, PaymentType } from 'src/app/model/billing.model';
 import { FilterOption } from 'src/app/model/vendor.model';
 import { ProjectType } from 'src/app/model/billing.model';
+import * as Order from 'src/app/model/order.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { Chat, ChatTypeEnum, ChatParticipantEnum } from 'src/app/model/chat.model';
 
@@ -184,6 +185,7 @@ export class WaitingForApprovalComponent implements OnInit {
     comment: ['']
   });
   pageType: PaymentStatusTypes = PaymentStatusTypes.WAITING_FOR_APPROVAL;
+  projectTypeEnum = Order.ProjectType;
   chatTypeEnum = ChatTypeEnum;
   chatParticipantEnum = ChatParticipantEnum;
   chat: Chat;
