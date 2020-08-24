@@ -13,6 +13,7 @@ export class Conference {
   customerOrderId: number;
   vendorOrderId: number;
   bidPmProjectProcessId?: number;
+  rfqId?: number;
   createdTime: string;
 }
 
@@ -25,6 +26,7 @@ export class ConferenceRequest {
   customerOrderId?: number;
   vendorOrderId?: number;
   bidPmProjectProcessId?: number;
+  rfqId?: number;
 
   conferenceTopic: string;
   conferencePassword: string;
@@ -38,7 +40,8 @@ export enum ZoomTypeEnum {
   BID_OFFER = 'BID_OFFER',
   VENDOR_ORDER = 'VENDOR_ORDER',
   CUSTOMER_ORDER = 'CUSTOMER_ORDER',
-  BID_PM_PROJECT_PROCESS = 'BID_PM_PROJECT_PROCESS'
+  BID_PM_PROJECT_PROCESS = 'BID_PM_PROJECT_PROCESS',
+  RFQ = 'RFQ'
 }
 
 export enum ZoomParticipantEnum {

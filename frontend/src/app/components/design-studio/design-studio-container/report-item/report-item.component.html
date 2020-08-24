@@ -38,19 +38,8 @@
     </div>
 
     <div class="col-3 communications d-flex flex-column align-items-end">
-      <app-chat
-        *ngIf="parts?.length"
-        [participants]="[parts[0].order?.customerUserId]"
-        [id]="rfqId"
-        [type]="chatTypeEnum.RFQ_CHAT"
-        [chatParticipant]="chatParticipantEnum.CUSTOMER"
-        [value]="chat"
-        (valueChange)="chat = $event"
-      >
-      </app-chat>
-
       <app-admin-communication
-        *ngIf="false && parts?.length"
+        *ngIf="parts?.length"
         [allowScheduling]="true"
         [zoomType]="zoomTypeEnum?.RFQ"
         [zoomAttachingUserId]="parts[0]?.order?.customerUserId"
@@ -62,7 +51,7 @@
       >
       </app-admin-communication>
 
-      <button *ngIf="canSendToCustomer()" (click)="sendToCustomer()" class="btn btn-white" type="button">
+      <button *ngIf="canSendToCustomer()" (click)="sendToCustomer()" class="btn mt-3 btn-white" type="button">
         Send All Reports to Customer
       </button>
     </div>
