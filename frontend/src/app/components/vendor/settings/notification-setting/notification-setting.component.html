@@ -2,37 +2,77 @@
   <h4>Notification</h4>
 
   <div class="controls">
-    <div class="d-flex align-items-center mb-4">
-      <ui-switch
-        (change)="checkAll($event)"
-        [checked]="isAllChecked"
-        size="medium"
-        [switchColor]="switchColor.switchColor"
-        [color]="switchColor.color"
-        [defaultBgColor]="switchColor.defaultBgColor"
-        [defaultBoColor]="switchColor.defaultBoColor"
-      ></ui-switch>
-      <span class="ml-3 font-weight-bold text-light-blue">Show All Notifications</span>
-    </div>
-
     <div class="options">
-      <div *ngFor="let type of messageTypeList" class="d-flex align-items-center option mb-2">
-        <ui-switch
-          [(ngModel)]="type.enableNotification"
-          size="small"
-          [switchColor]="switchColor.switchColor"
-          [color]="switchColor.color"
-          [defaultBgColor]="switchColor.defaultBgColor"
-          [defaultBoColor]="switchColor.defaultBoColor"
-        ></ui-switch>
-        <span class="ml-3">{{ type.name }}</span>
+      <div class="row option mb-4">
+        <span class="ml-3 text-light-blue font-weight-bolder col-3"></span>
+        <span class="font-weight-bold col-2">On-Screen</span>
+        <span class="font-weight-bold col-2">Email</span>
       </div>
-    </div>
 
-    <div class=" p-3 row justify-content-center">
-      <button (click)="save()" type="button" class="btn theme green save">
-        Save
-      </button>
+      <div *ngIf="allNotificationSettingIndex" class="row option mb-4">
+        <span class="ml-3 text-light-blue font-weight-bolder col-3">Show All Notification</span>
+
+        <div class="col-2">
+          <ui-switch
+            size="medium"
+            (change)="checkAllByType($event, 'onScreen')"
+            [(ngModel)]="messageTypeList.onScreen[allNotificationSettingIndex].enableNotification"
+            [switchColor]="switchColor.switchColor"
+            [color]="switchColor.color"
+            [defaultBgColor]="switchColor.defaultBgColor"
+            [defaultBoColor]="switchColor.defaultBoColor"
+          >
+          </ui-switch>
+        </div>
+        <div class="col-2">
+          <ui-switch
+            size="medium"
+            (change)="checkAllByType($event, 'email')"
+            [(ngModel)]="messageTypeList.email[allNotificationSettingIndex].enableNotification"
+            [switchColor]="switchColor.switchColor"
+            [color]="switchColor.color"
+            [defaultBgColor]="switchColor.defaultBgColor"
+            [defaultBoColor]="switchColor.defaultBoColor"
+          >
+          </ui-switch>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let type of messageTypeList.onScreen; let index = index">
+        <div *ngIf="type.messageTypeId != messageTypeEnum.NOTIFICATION_ALL" class="row option mb-2">
+          <span class="ml-3 col-3">{{ type.name }}</span>
+          <div class="col-2">
+            <ui-switch
+              [(ngModel)]="messageTypeList.onScreen[index].enableNotification"
+              (change)="checkOneByType($event, 'onScreen', index)"
+              size="small"
+              [switchColor]="switchColor.switchColor"
+              [color]="switchColor.color"
+              [defaultBgColor]="switchColor.defaultBgColor"
+              [defaultBoColor]="switchColor.defaultBoColor"
+            >
+            </ui-switch>
+          </div>
+          <div class="col-2">
+            <ui-switch
+              [(ngModel)]="messageTypeList.email[index].enableNotification"
+              size="small"
+              (change)="checkOneByType($event, 'email', index)"
+              [switchColor]="switchColor.switchColor"
+              [color]="switchColor.color"
+              [defaultBgColor]="switchColor.defaultBgColor"
+              [defaultBoColor]="switchColor.defaultBoColor"
+            >
+            </ui-switch>
+          </div>
+        </div>
+      </ng-container>
     </div>
+  </div>
+
+  <div class=" p-3 row justify-content-center">
+    <button (click)="save()" type="button" class="btn theme green save">
+      Save
+    </button>
   </div>
 </div>
