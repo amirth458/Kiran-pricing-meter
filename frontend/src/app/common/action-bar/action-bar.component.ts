@@ -90,7 +90,10 @@ export class ActionBarComponent implements OnInit, OnChanges {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}`);
     } else if (urlArray.length > 6) {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}/${urlArray[4]}`);
-    } else if (this.route.url.includes('billing/payment/details/')) {
+    } else if (
+      this.route.url.includes('billing/payment/details/') ||
+      this.route.url.includes('/design-studio/reports/list/')
+    ) {
       this.location.back();
     } else {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
