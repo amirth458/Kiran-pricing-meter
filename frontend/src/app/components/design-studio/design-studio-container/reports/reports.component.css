@@ -48,6 +48,11 @@
   font-size: 70px;
 }
 
+.filename {
+  font-size: 12px;
+  width: 200px;
+  display: inline-block;
+}
 ::ng-deep .nav .nav-item .nav-link.active {
   color: var(--theme-light-green);
   border-top: 5px solid var(--theme-btn-primary);

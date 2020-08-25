@@ -36,6 +36,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   active = null;
   selectedFiles = {};
   lastQuery = null;
+  totalRows = 0;
   constructor(
     public spinner: NgxSpinnerService,
     public router: Router,
@@ -110,6 +111,15 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
         tooltipField: 'customerName'
       },
       {
+        headerName: 'Total Files (Parts)',
+        field: 'totalFile',
+        hide: false,
+        sortable: true,
+        filter: false,
+        tooltipField: 'totalFile',
+        width: 100
+      },
+      {
         headerName: 'Reports Requested',
         field: 'reportRequested',
         hide: false,
@@ -154,13 +164,10 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
         this.spinner.show('loadingPanel');
         this.filterData(req, form).subscribe(data => {
           this.spinner.hide('loadingPanel');
-          this.totalRows = data.totalElements || 0;
-          const lastRow = data.totalElements <= params.endRow ? data.totalElements : -1;
-
-          if (data && data.length) {
-            // TODO:
-            // Fix this when API starts sending the appropriate pagination information
-            params.successCallback(data || [], data.length);
+          this.totalRows = data.length ? data[0].totalRowCount : this.totalRows;
+          const lastRow = this.totalRows <= params.endRow ? this.totalRows : -1;
+          if ((data || []).length) {
+            params.successCallback(data || [], lastRow);
           }
         });
       }
@@ -261,7 +268,7 @@ export class ReportsComponent extends RfqListComponent implements OnInit {
   }
 
   canSendToCustomer(row) {
-    return row.designReportsOrderQueueStatus === 'ANALYSIS_COMPLETE';
+    return row && row.designReportsOrderQueueStatus === 'ANALYSIS_COMPLETE';
   }
 
   onSendToCustomer(row) {
