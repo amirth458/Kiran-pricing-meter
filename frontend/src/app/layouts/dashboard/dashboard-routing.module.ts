@@ -330,6 +330,7 @@ const routes: Routes = [
               },
               { path: 'approved', component: WaitingForApprovalComponent },
               { path: 'rejected', component: WaitingForApprovalComponent },
+              { path: 'failed', component: WaitingForApprovalComponent },
               { path: 'details/:id', component: PurchaseOrderItemComponent },
               {
                 path: '',

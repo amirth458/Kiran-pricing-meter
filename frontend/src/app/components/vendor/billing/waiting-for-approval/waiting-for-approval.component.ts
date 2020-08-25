@@ -219,6 +219,9 @@ export class WaitingForApprovalComponent implements OnInit {
       case 'rejected':
         this.pageType = PaymentStatusTypes.REJECTED;
         break;
+      case 'failed':
+        this.pageType = PaymentStatusTypes.FAILED;
+        break;
       default:
         break;
     }

@@ -239,6 +239,12 @@
       "tooltipMessage": "Rejected",
       "route": "rejected",
       "actions": []
+    },
+    {
+      "name": "Failed",
+      "tooltipMessage": "Failed",
+      "route": "failed",
+      "actions": []
     }
   ],
   "projects": [
