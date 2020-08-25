@@ -29,6 +29,7 @@
 .filename {
   font-size: 12px;
   width: 200px;
+  display: inline-block;
 }
 
 .report-name {

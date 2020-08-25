@@ -8,7 +8,7 @@
         </div>
         <p class="filename mb-1">
           <a
-            class="text-truncate underline text-theme-green"
+            class="filename text-truncate underline text-theme-green"
             [href]="part?.rfqMedia?.media?.location"
             target="_blank"
             [ngbTooltip]="part?.rfqMedia?.media?.name"
@@ -23,7 +23,7 @@
               *ngFor="let report of part?.details"
               class="font-weight-normal mb-1 text-theme-green d-flex justify-content-between"
             >
-              <span class="font-sm text-truncate report-name" [ngbTooltip]="report?.name">
+              <span class="font-sm filename text-truncate report-name" [ngbTooltip]="report?.name">
                 {{ report?.name }}
               </span>
               <a [href]="report?.reportUrl" target="_blank" *ngIf="report?.reportUrl">

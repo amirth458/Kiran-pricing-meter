@@ -71,16 +71,19 @@
                 <span class="file-image d-block">
                   <i class="far fa-file-alt"></i>
                 </span>
-                <a [href]="part?.rfqMedia?.media?.location" class="hover-underline font-sm text-theme">{{
-                  part?.rfqMedia?.media?.name
-                }}</a>
+                <a
+                  [href]="part?.rfqMedia?.media?.location"
+                  class="hover-underline filename text-truncate font-sm text-theme"
+                  [ngbTooltip]="part?.rfqMedia?.media?.name"
+                  >{{ part?.rfqMedia?.media?.name }}</a
+                >
               </div>
 
               <div class="col-7">
                 <h6 class="mb-3">Manufacturing Process :</h6>
                 <div *ngFor="let report of part.details" class="d-flex justify-content-between">
                   <span class="text-theme font-md">
-                    <span class="text-truncate" style="width: 100px">{{ report.name }}</span>
+                    <span class="text-truncate filename" [ngbTooltip]="report?.name">{{ report.name }}</span>
                     <a class="ml-3" [href]="report?.reportUrl" target="_blank" *ngIf="report?.reportUrl">
                       <span class="text-theme-green cursor-pointer">
                         <i class="fa fa-download"></i>
