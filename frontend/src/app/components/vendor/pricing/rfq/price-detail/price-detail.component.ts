@@ -26,6 +26,7 @@ export class PriceDetailComponent implements OnInit {
   public partDimension: PartDimension;
   public customer: CustomerDetails;
   public tabs = [];
+  public measurementUnits: any;
   public selectedTabId$: BehaviorSubject<number> = new BehaviorSubject(0);
   public isShowingGlobalRuleProfile$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -164,7 +165,11 @@ export class PriceDetailComponent implements OnInit {
     this.getDetails(this.selectedId);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.ordersService.getAllMeasurementUnitType().subscribe(result => {
+      this.measurementUnits = result ? result.metadataList || [] : [];
+    });
+  }
 
   async getProcessProfile(applyGlobalRule = false) {
     this.spinner.show();
