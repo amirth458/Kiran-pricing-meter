@@ -39,7 +39,7 @@ export const environment = {
       name: 'Design Studio',
       route: '/design-studio',
       icon: 'far fa-edit',
-      visible: false,
+      visible: true,
       active: true
     },
     {
