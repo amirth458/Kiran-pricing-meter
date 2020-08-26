@@ -1,0 +1,144 @@
+<div class="wrapper">
+  <div class="d-flex flex-column w-100 table theme-table">
+    <div class="d-flex header justify-content-between align-items-center">
+      <app-rfq-filter [placeholder]="placeholderText" (formChange)="filter$.next($event)"></app-rfq-filter>
+    </div>
+    <div class="ag-theme-balham w-100 h-100 position-relative">
+      <ag-grid-angular
+        class="ag-theme-balham w-100 h-100"
+        [gridOptions]="gridOptions"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
+      <ngx-spinner
+        [name]="'loadingPanel'"
+        bdColor="#ffffff70"
+        size="small"
+        color="#74bf09"
+        type="ball-clip-rotate"
+        [fullScreen]="false"
+      >
+        <p class="m-0">Loading...</p>
+      </ngx-spinner>
+    </div>
+  </div>
+</div>
+
+<ng-template #reportsActions let-row>
+  <div class="text-theme-green d-flex justify-content-between">
+    <span title="Download Files" (click)="onDownload(row)" class="download-icon mr-3">
+      <i class="fa fa-download"></i>
+    </span>
+
+    <span title="Upload Reports" (click)="onUpload(row)" class="upload-icon text-orange mr-3">
+      <i class="fa fa-upload"></i>
+    </span>
+
+    <button
+      (click)="onSendToCustomer(row)"
+      [disabled]="!canSendToCustomer(row)"
+      class="btn theme send-to-customer btn-select mr-2"
+      type="button"
+    >
+      Send to customer
+    </button>
+    <div>
+      <span (click)="onView(row)" class="view-btn hover-bold text-theme-green">
+        View
+      </span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #uploadReports let-row>
+  <div class="upload-modal p-4">
+    <div class="text-center my-2 row">
+      <div class="col-4"></div>
+      <span class="font-md text-theme-green col-4">Upload Reports</span>
+      <div class="col-4">
+        <span class="text-theme-green hover-bold" (click)="modal.dismissAll()">
+          <i class="fas fa-times"></i>
+        </span>
+      </div>
+    </div>
+    <ngb-tabset [destroyOnHide]="false">
+      <ngb-tab *ngFor="let part of parts">
+        <ng-template ngbTabTitle>{{ part.id }}</ng-template>
+        <ng-template ngbTabContent>
+          <div class="reports px-4 py-2 text-theme">
+            <div class="body row">
+              <div class=" col-3 text-theme-green">
+                <span class="file-image d-block">
+                  <i class="far fa-file-alt"></i>
+                </span>
+                <a
+                  [href]="part?.rfqMedia?.media?.location"
+                  class="hover-underline filename text-truncate font-sm text-theme"
+                  [ngbTooltip]="part?.rfqMedia?.media?.name"
+                  >{{ part?.rfqMedia?.media?.name }}</a
+                >
+              </div>
+
+              <div class="col-7">
+                <h6 class="mb-3">Manufacturing Process :</h6>
+                <div *ngFor="let report of part.details" class="d-flex justify-content-between">
+                  <span class="text-theme font-md">
+                    <span class="text-truncate filename" [ngbTooltip]="report?.name">{{ report.name }}</span>
+                    <a class="ml-3" [href]="report?.reportUrl" target="_blank" *ngIf="report?.reportUrl">
+                      <span class="text-theme-green cursor-pointer">
+                        <i class="fa fa-download"></i>
+                      </span>
+                    </a>
+                  </span>
+
+                  <div class="ml-4 d-flex justify-content-end">
+                    <label class="upload-icon text-orange mr-1">
+                      <i class="fa fa-upload"></i>
+                      <input
+                        #fileSelector
+                        class="font-md d-none file-input"
+                        type="file"
+                        value="value"
+                        (click)="onFileSelectorClicked()"
+                        (change)="onFileSelected($event, part.order.id, part.id, report.reportSettingId)"
+                      />
+                    </label>
+                    <span
+                      *ngIf="getFileName(part.order.id, part.id, report.reportSettingId)"
+                      class="font-sm ml-3 d-inline-block uploaded-file-name text-truncate"
+                    >
+                      {{ getFileName(part.order.id, part.id, report.reportSettingId) }}
+                      <span
+                        title="Delete File"
+                        (click)="onFileRemoved(part.order.id, part.id, report.reportSettingId)"
+                        class="cursor-pointer font-sm hover-bold"
+                      >
+                        <i class="fa fa-trash"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <p *ngIf="part.details.length == 0" class="my-3 footnote red">No report selected by customer</p>
+              </div>
+            </div>
+
+            <div class="actions p-4 d-flex justify-content-center">
+              <button type="button" (click)="modal.dismissAll()" class="btn theme orange-btn w-25 mr-1">
+                Cancel
+              </button>
+
+              <button
+                [disabled]="!canSubmitReport()"
+                type="button"
+                (click)="submitReports()"
+                class="btn theme ml-1 w-25 "
+              >
+                Upload Reports
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</ng-template>

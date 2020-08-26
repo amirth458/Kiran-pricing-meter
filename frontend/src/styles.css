@@ -172,7 +172,8 @@ a.link {
   background-color: var(--theme-light-green) !important;
 }
 
-button.theme {
+button.theme,
+button.theme.blue {
   background: var(--theme-light-green);
   color: white;
   width: 100%;
@@ -181,7 +182,9 @@ button.theme {
   font-size: 0.9em;
   font-weight: 300;
 }
-
+button.theme.blue {
+  background-color: var(--theme-bright-blue);
+}
 button.theme.dim {
   background: var(--theme-secondary-blue);
 }

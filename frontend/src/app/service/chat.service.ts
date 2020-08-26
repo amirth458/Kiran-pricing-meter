@@ -26,7 +26,8 @@ export class ChatService {
       vendorOrderId: null,
       bidPmProjectProcessId: null,
       participants,
-      isGlobal: false
+      isGlobal: false,
+      rfqId: null
     };
     switch (type) {
       case ChatTypeEnum.VENDOR_ORDER:
@@ -46,6 +47,10 @@ export class ChatService {
         break;
       case ChatTypeEnum.GLOBAL_CHAT:
         params.isGlobal = true;
+        break;
+      case ChatTypeEnum.RFQ_CHAT:
+        params.rfqId = id;
+        params.participants = participants;
         break;
     }
     return params;
@@ -105,7 +110,7 @@ export class ChatService {
   }
 
   getAllChatAttachments(chatId: number): Observable<ChatAttachmentView> {
-    return this.http.get<ChatAttachmentView>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}`);
+    return this.http.get<ChatAttachmentView>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}?generateSignedUrl=true`);
   }
 
   deleteChatAttachment(chatId: number, attachmentId: number): Observable<any> {

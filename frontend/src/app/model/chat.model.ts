@@ -49,7 +49,8 @@ export enum ChatTypeEnum {
   VENDOR_ORDER = 3,
   CUSTOMER_ORDER = 4,
   BID_PM_PROJECT_PROCESS = 5,
-  GLOBAL_CHAT = 6
+  GLOBAL_CHAT = 6,
+  RFQ_CHAT = 7
 }
 
 export interface ChatAttachmentView {

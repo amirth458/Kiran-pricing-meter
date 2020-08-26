@@ -101,6 +101,8 @@ import { AdminProposalComponent } from '../../components/vendor/projects/admin-p
 import { DesignStudioContainerComponent } from 'src/app/components/design-studio/design-studio-container/design-studio-container.component';
 import { ReportsContainerComponent } from 'src/app/components/design-studio/design-studio-container/reports-container/reports-container.component';
 import { ReportSettingsComponent } from 'src/app/components/design-studio/design-studio-container/report-settings/report-settings.component';
+import { ReportsComponent } from 'src/app/components/design-studio/design-studio-container/reports/reports.component';
+import { ReportItemComponent } from 'src/app/components/design-studio/design-studio-container/report-item/report-item.component';
 
 const routes: Routes = [
   {
@@ -126,8 +128,10 @@ const routes: Routes = [
             component: ReportsContainerComponent,
             children: [
               { path: 'settings', component: ReportSettingsComponent },
-              { path: '', redirectTo: 'settings', pathMatch: 'full' },
-              { path: '**', redirectTo: 'settings', pathMatch: 'full' }
+              { path: 'list/:id', component: ReportItemComponent },
+              { path: 'list', component: ReportsComponent },
+              { path: '', redirectTo: 'list', pathMatch: 'full' },
+              { path: '**', redirectTo: 'list', pathMatch: 'full' }
             ]
           },
           { path: '', redirectTo: 'reports', pathMatch: 'full' },
@@ -326,6 +330,7 @@ const routes: Routes = [
               },
               { path: 'approved', component: WaitingForApprovalComponent },
               { path: 'rejected', component: WaitingForApprovalComponent },
+              { path: 'failed', component: WaitingForApprovalComponent },
               { path: 'details/:id', component: PurchaseOrderItemComponent },
               {
                 path: '',

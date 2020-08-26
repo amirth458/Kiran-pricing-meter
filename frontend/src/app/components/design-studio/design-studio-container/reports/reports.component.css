@@ -1,0 +1,65 @@
+.wrapper {
+  height: 100%;
+  min-height: 70vh;
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-select {
+  width: 100%;
+  height: 100%;
+  color: white;
+  padding: 3px 7px !important;
+}
+
+.uploaded-file-name {
+  width: 200px;
+}
+
+.file-input {
+  font-size: 12px;
+}
+
+.send-to-customer {
+  width: 115px;
+}
+
+.upload-icon,
+.download-icon,
+.view-btn {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.view-btn {
+  font-size: 13px;
+  margin-top: -5px;
+}
+
+.upload-icon:hover,
+.download-icon:hover {
+  font-size: 19px;
+}
+
+.file-image {
+  font-size: 70px;
+}
+
+.filename {
+  font-size: 12px;
+  width: 200px;
+  display: inline-block;
+}
+::ng-deep .nav .nav-item .nav-link.active {
+  color: var(--theme-light-green);
+  border-top: 5px solid var(--theme-btn-primary);
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 40px 20px;
+  }
+}

@@ -87,8 +87,8 @@
   >
     <app-chat
       [participants]="row?.customerUserId ? [row?.customerUserId] : []"
-      [id]="row?.customerOrderId"
-      [type]="chatTypeEnum.CUSTOMER_ORDER"
+      [id]="row.projectType === projectTypeEnum.DESIGN_REPORT ? row.projectRfqId : row?.customerOrderId"
+      [type]="row.projectType === projectTypeEnum.DESIGN_REPORT ? chatTypeEnum.RFQ_CHAT : chatTypeEnum.CUSTOMER_ORDER"
       [chatParticipant]="chatParticipantEnum.CUSTOMER"
       [value]="chat"
       (valueChange)="chat = $event"

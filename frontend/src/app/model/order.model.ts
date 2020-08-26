@@ -336,6 +336,13 @@ export enum ProjectTypeEnum {
   RFQ_PROJECT = 1
 }
 
+export enum ProjectType {
+  RFQ_PROJECT = 'RFQ_PROJECT',
+  PRODUCTION_PROJECT = 'PRODUCTION_PROJECT',
+  DESIGN_REPORT = 'DESIGN_REPORT',
+  CONNECT_PROJECT = 'CONNECT_PROJECT'
+}
+
 export enum VendorOrderTypeEnum {
   DILIGENT = 1,
   EXTERNAL = 2,

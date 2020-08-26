@@ -71,6 +71,10 @@ export class AdminCommunicationComponent implements OnInit {
         this.getByBidPMProjectProcess();
         break;
 
+      case this.zoomTypeEnum.RFQ:
+        this.getByRFQ();
+        break;
+
       default:
         this.toaster.warning('Invalid zoom type provided.');
         break;
@@ -98,6 +102,7 @@ export class AdminCommunicationComponent implements OnInit {
       customerOrderId: this.zoomType === this.zoomTypeEnum.CUSTOMER_ORDER ? this.zoomAttachingId : 0,
       vendorOrderId: this.zoomType === this.zoomTypeEnum.VENDOR_ORDER ? this.zoomAttachingId : 0,
       bidPmProjectProcessId: this.zoomType === this.zoomTypeEnum.BID_PM_PROJECT_PROCESS ? this.zoomAttachingId : 0,
+      rfqId: this.zoomType === this.zoomTypeEnum.RFQ ? this.zoomAttachingId : 0,
 
       conferenceTopic: 'Meeting for ' + this.zoomType + ' ' + this.zoomAttachingId,
       conferencePassword: this.zoomAttachingId.toString(),
@@ -204,5 +209,21 @@ export class AdminCommunicationComponent implements OnInit {
           this.toaster.error('Unable to fetch meeting info');
         }
       );
+  }
+
+  getByRFQ() {
+    this.zoomService.getConferenceByRFQ(this.zoomAttachingId.toString(), this.zoomAttachingUserId).subscribe(
+      res => {
+        this.conference = res;
+        if (res) {
+          this.conference.isExpired =
+            this.conference.isExpired || Util.compareDate(new Date(), new Date(this.conference.startTime)) === 1;
+        }
+      },
+      err => {
+        console.log({ err });
+        this.toaster.error('Unable to fetch meeting info');
+      }
+    );
   }
 }

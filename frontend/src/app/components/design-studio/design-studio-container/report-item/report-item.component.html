@@ -1,0 +1,59 @@
+<div class="wrapper container-fluid text-theme">
+  <h6>Report Details</h6>
+  <div class="row">
+    <div class="col-9 part-list row">
+      <div *ngFor="let part of parts" class="part my-3 px-4">
+        <div class="image text-theme-green">
+          <i class="fa fa-file-alt"></i>
+        </div>
+        <p class="filename mb-1">
+          <a
+            class="filename text-truncate underline text-theme-green"
+            [href]="part?.rfqMedia?.media?.location"
+            target="_blank"
+            [ngbTooltip]="part?.rfqMedia?.media?.name"
+          >
+            {{ part?.rfqMedia?.media?.name }}
+          </a>
+        </p>
+        <div>
+          <div class="processes d-flex flex-column font-weight-bold">
+            <span>Manufacturing Process:</span>
+            <span
+              *ngFor="let report of part?.details"
+              class="font-weight-normal mb-1 text-theme-green d-flex justify-content-between"
+            >
+              <span class="font-sm filename text-truncate report-name" [ngbTooltip]="report?.name">
+                {{ report?.name }}
+              </span>
+              <a [href]="report?.reportUrl" target="_blank" *ngIf="report?.reportUrl">
+                <span class="text-theme-green cursor-pointer">
+                  <i class="fa fa-download"></i>
+                </span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3 communications d-flex flex-column align-items-end">
+      <app-admin-communication
+        *ngIf="parts?.length"
+        [allowScheduling]="true"
+        [zoomType]="zoomTypeEnum?.RFQ"
+        [zoomAttachingUserId]="parts[0]?.order?.customerUserId"
+        [zoomAttachingId]="rfqId"
+        [chatAttachingId]="rfqId"
+        [zoomParticipant]="zoomParticipantEnum?.CUSTOMER"
+        [chatType]="chatTypeEnum?.RFQ_CHAT"
+        [allowNotes]="true"
+      >
+      </app-admin-communication>
+
+      <button *ngIf="canSendToCustomer()" (click)="sendToCustomer()" class="btn mt-3 btn-white" type="button">
+        Send All Reports to Customer
+      </button>
+    </div>
+  </div>
+</div>
