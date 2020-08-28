@@ -81,6 +81,12 @@
               {{ value?.comments || '-' }}
             </span>
           </p>
+          <p class="d-flex flex-row flex-wrap align-items-center mb-2">
+            Additional Guidance:
+            <span class="text-theme-green" placement="auto" [ngbTooltip]="value?.order?.notes">
+              {{ value?.order?.notes || '-' }}
+            </span>
+          </p>
         </div>
 
         <div class="col-4 border-left pt-3 pb-3">

@@ -335,14 +335,14 @@ export class PmSuborderReleaseQueueComponent implements OnInit {
           return arr.length !== 0 ? arr.join(', ') : '';
         }
       },
-      {
-        headerName: 'Aditional Assurances',
-        field: 'additionalGuidance',
-        hide: false,
-        sortable: true,
-        filter: false,
-        tooltipField: 'additionalGuidance'
-      },
+      // {
+      //   headerName: 'Aditional Assurances',
+      //   field: 'additionalGuidance',
+      //   hide: false,
+      //   sortable: true,
+      //   filter: false,
+      //   tooltipField: 'additionalGuidance'
+      // },
       {
         headerName: 'Same Vendor',
         field: 'isReleaseToSingleSupplier',
