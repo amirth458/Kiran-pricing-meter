@@ -139,6 +139,7 @@ export class ProposalComponent implements OnInit {
   }
 
   fetchPartsAndQuote() {
+    this.spinner.show();
     this.biddingService.getDetailedPartInfo(this.offerId, this.vendorId).subscribe(parts => {
       (parts || []).map(p => {
         if (p.partQuoteCustomerView) {
@@ -146,18 +147,21 @@ export class ProposalComponent implements OnInit {
         }
       });
       this.activePartId = this.quoteList[0].partId;
+      this.spinner.hide();
       this.findAdminProposal((parts || []).map(p => p.partId));
       this.getProposalPartByIds((this.quoteList || []).map(quote => quote.proposalPartId));
     });
   }
 
   getAdminPartQuote() {
+    this.spinner.show();
     this.proposalService.getAdminPartQuote(this.proposalPartIds).subscribe(quotes => {
       (quotes || []).map(p => {
         this.quoteList.push(p);
       });
       this.activePartId = this.quoteList[0].partId;
       this.releasedProposal = this.PMProjectBids.filter(_ => _.vendorId === this.quoteList[0].vendorId)[0];
+      this.spinner.hide();
       if (this.isComplete()) {
         this.findAdminProposal((quotes || []).map(p => p.partId));
       }
@@ -225,11 +229,13 @@ export class ProposalComponent implements OnInit {
   }
 
   findAdminProposal(ids: Array<number>) {
+    this.spinner.show();
     this.proposalService.getProposalPartByParentPartIds(ids).subscribe(v => {
       this.adminProposalInfo = (v || []).map(p => {
         p.partId = p.id;
         return p;
       });
+      this.spinner.hide();
     });
   }
 
@@ -386,6 +392,7 @@ export class ProposalComponent implements OnInit {
   }
 
   getReleasedPmProjectBids() {
+    this.spinner.show();
     this.biddingService.getReleasedPmProjectBids(this.offerId).subscribe(v => {
       this.PMProjectBids = v || [];
       const result = this.PMProjectBids.filter(bid => bid.vendorUserId == this.vendorId);
@@ -396,7 +403,7 @@ export class ProposalComponent implements OnInit {
         this.releasedProposal = releasedProposals[0];
       }
       this.bidPmProjectProcessId = result.length ? result[0].bidPmProjectProcessId : null;
-
+      this.spinner.hide();
       if (this.proposalType === this.proposalTypeEnum.VENDOR_PROPOSAL_TYPE) {
         this.fetchPartsAndQuote();
       } else {

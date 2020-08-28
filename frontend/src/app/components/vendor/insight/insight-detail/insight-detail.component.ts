@@ -23,7 +23,7 @@ export class InsightDetailComponent implements OnInit {
   totalCount = 0;
   pageSize = 50;
 
-  completedReports = ['customer', 'facility'];
+  completedReports = ['customer', 'order', 'facility'];
 
   sortQuery = '';
 

@@ -130,8 +130,8 @@ const routes: Routes = [
               { path: 'settings', component: ReportSettingsComponent },
               { path: 'list/:id', component: ReportItemComponent },
               { path: 'list', component: ReportsComponent },
-              { path: '', redirectTo: 'settings', pathMatch: 'full' },
-              { path: '**', redirectTo: 'settings', pathMatch: 'full' }
+              { path: '', redirectTo: 'list', pathMatch: 'full' },
+              { path: '**', redirectTo: 'list', pathMatch: 'full' }
             ]
           },
           { path: '', redirectTo: 'reports', pathMatch: 'full' },

@@ -13,7 +13,7 @@ import { ConnectProject } from 'src/app/model/connect.model';
 import { MetadataService } from 'src/app/service/metadata.service';
 import { MetadataConfig } from 'src/app/model/metadata.model';
 import { TemplateRendererComponent } from 'src/app/common/template-renderer/template-renderer.component';
-import { ReferenceFile, Part, MatchedProcessProfile } from 'src/app/model/part.model';
+import { ReferenceFile, Part } from 'src/app/model/part.model';
 import { SubscriptionTypeIdEnum } from 'src/app/model/subscription.model';
 import { OrdersService } from 'src/app/service/orders.service';
 import { RfqPricingService } from 'src/app/service/rfq-pricing.service';
@@ -22,6 +22,7 @@ import { PmProjectBidStatusType } from '../../../../model/bidding.order';
 import { ZoomTypeEnum, ZoomParticipantEnum } from '../../../../model/conference.model';
 import { ChatTypeEnum } from '../../../../model/chat.model';
 import { ProcessProfileBidView } from 'src/app/model/confirm.sub-order.release';
+import { SortPipe } from '../../../../pipes/sort.pipe';
 
 @Component({
   selector: 'app-pm-release-queue-details',
@@ -96,7 +97,8 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
     public orderService: OrdersService,
     public partService: PartService,
     public pricingService: RfqPricingService,
-    public biddingService: BiddingService
+    public biddingService: BiddingService,
+    public sortPipe: SortPipe
   ) {}
 
   ngOnInit() {
@@ -127,7 +129,7 @@ export class PmReleaseQueueDetailsComponent implements OnInit {
         if (!(parts || []).length) {
           return;
         }
-        this.parts = parts || [];
+        this.parts = this.sortPipe.transform(parts || [], 'partId');
         if (this.type === PmProjectBidStatusType.NOT_STARTED) {
           this.initSuppliersTable();
         } else {
