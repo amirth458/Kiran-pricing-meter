@@ -106,11 +106,16 @@ export class ChatService {
   uploadAttachment(chatId: number, file: File): Observable<ChatAttachment> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name.replace(/(?:\.(?![^.]+$)|[^\w.])+/g, '_'));
-    return this.http.post<ChatAttachment>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}`, formData);
+    return this.http.post<ChatAttachment>(
+      `${environment.procurementApiBaseUrl}/chat-attachments/${chatId}?generateSignedUrl=true`,
+      formData
+    );
   }
 
   getAllChatAttachments(chatId: number): Observable<ChatAttachmentView> {
-    return this.http.get<ChatAttachmentView>(`${environment.procurementApiBaseUrl}/chat-attachments/${chatId}`);
+    return this.http.get<ChatAttachmentView>(
+      `${environment.procurementApiBaseUrl}/chat-attachments/${chatId}?generateSignedUrl=true`
+    );
   }
 
   deleteChatAttachment(chatId: number, attachmentId: number): Observable<any> {
