@@ -86,7 +86,7 @@ export const environment = {
   CONNECTOR_HOST_URL: 'http://dev-manage.3diligent.com/api/v1',
   encryptionKey: '1Kf@%4%3ADfEafw',
   isTestDataEnabled: true,
-  reCaptureKey: '6LfzmdMUAAAAAFSn5lgv_t5GfIRKw56n2Ej9nse5',
+  reCaptureKey: '6Lc7odMUAAAAAPFvi0LXKWIbUzDXvnd9_7aSVJ2_',
 
   agreementUrl: 'https://3diligentdocs.s3-us-west-2.amazonaws.com/TermsAndAgreements/shopSightWebAgrmnt.pdf'
 };
