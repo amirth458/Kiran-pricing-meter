@@ -101,6 +101,10 @@ ul li .name:hover {
   font-size: 20px;
 }
 
+.action-bar-info {
+  font-size: 22px;
+}
+
 @media (max-width: 1200px) {
   ul li {
     font-size: 15px;

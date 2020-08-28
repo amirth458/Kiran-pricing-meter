@@ -1,6 +1,6 @@
 import { ActionService } from './../../service/action.service';
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { EventEmitterService } from 'src/app/components/event-emitter.service';
 import { Location } from '@angular/common';
 
@@ -25,6 +25,7 @@ export class ActionBarComponent implements OnInit, OnChanges {
 
   constructor(
     public route: Router,
+    public activatedRoute: ActivatedRoute,
     public eventEmitterService: EventEmitterService,
     public actionService: ActionService,
     public location: Location
@@ -49,6 +50,25 @@ export class ActionBarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {}
+
+  showBackBtn() {
+    return (
+      !this.route.url.includes('pricing-profile') &&
+      (this.route.url.includes('referral/') ||
+        this.route.url.includes('auto-prices/') ||
+        this.route.url.includes('manual-price/') ||
+        this.route.url.includes('billing/payment/details/') ||
+        this.route.url.includes('user-manage/customers/view') ||
+        this.route.url.startsWith('/projects/project-release-queue/') ||
+        this.route.url.startsWith('/projects/vendor-confirmation-queue/') ||
+        this.route.url.startsWith('/projects/released-projects/') ||
+        this.route.url.startsWith('/pricing/production-orders/released-orders/') ||
+        this.route.url.startsWith('/pricing/connect-orders/released-orders/') ||
+        this.route.url.startsWith('/prodex/connect/release-queue/') ||
+        this.route.url.startsWith('/prodex/connect/order-complete/') ||
+        this.route.url.startsWith('/design-studio/reports/list/'))
+    );
+  }
 
   selectTab(tab) {
     const prevURL = this.route.url;
@@ -99,6 +119,13 @@ export class ActionBarComponent implements OnInit, OnChanges {
       this.route.navigateByUrl(`/${urlArray[1]}/${urlArray[2]}/${urlArray[3]}`);
     }
   }
+
+  getInfo() {
+    if (this.route.url.startsWith('/design-studio/reports/list/')) {
+      return `Report ${this.route.url.substr('/design-studio/reports/list/'.length)}`;
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.selectedTab && changes.selectedTab.currentValue) {
       this.selectedTab = changes.selectedTab.currentValue;
