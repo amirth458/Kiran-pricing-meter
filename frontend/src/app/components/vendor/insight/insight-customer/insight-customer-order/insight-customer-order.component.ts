@@ -35,6 +35,15 @@ export class InsightCustomerOrderComponent implements OnInit {
       headerTooltip: 'rfq_id'
     },
     {
+      headerName: 'Order Type',
+      field: 'order_type',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'order_type',
+      headerTooltip: 'order_type'
+    },
+    {
       headerName: 'Order Status',
       field: 'order_status',
       hide: false,
@@ -70,6 +79,15 @@ export class InsightCustomerOrderComponent implements OnInit {
       tooltipField: 'part_ids',
       headerTooltip: 'part_ids',
       valueFormatter: v => v.value && v.value.join(', ')
+    },
+    {
+      headerName: 'Margin $',
+      field: 'margin',
+      hide: false,
+      sortable: true,
+      filter: false,
+      tooltipField: 'margin',
+      headerTooltip: 'margin'
     },
     {
       headerName: 'Margin %',
