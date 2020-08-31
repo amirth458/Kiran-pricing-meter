@@ -4,6 +4,23 @@
   font-size: 14px;
 }
 
-.edit-cell {
+:host .edit-cell,
+:host .approve,
+:host .decline,
+:host .view-cell {
   font-size: 14px !important;
+}
+
+:host .edit-cell {
+  width: 60px;
+}
+
+:host .approve,
+:host .decline {
+  width: 80px;
+}
+
+:host .view-cell,
+:host .copy-cell {
+  width: 60px;
 }

@@ -319,6 +319,10 @@ export class UserService {
     );
   }
 
+  cloneVendorInfo(vendorId: number): Observable<any> {
+    return this.http.post<any>(`${environment.apiBaseUrl}/admin/vendors/clone?vendor-id=${vendorId}`, null);
+  }
+
   getUserDetails(id) {
     const url = `${environment.managementBaseUrl}/users/${id}`;
     const data = JSON.parse(localStorage.getItem('admin-auth'));
