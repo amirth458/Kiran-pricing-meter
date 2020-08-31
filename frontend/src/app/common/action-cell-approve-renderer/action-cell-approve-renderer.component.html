@@ -1,7 +1,16 @@
 <div class="action-column col-12 p-0">
-  <span #approve class="approve col-3 p-0 m-0" (click)="onApprove()" *ngIf="params.action.canApprove(params)">Approve</span>
-  <span #decline class="decline col-3 p-0 m-0" (click)="onDecline()" *ngIf="params.action.canDecline(params)">Decline</span>
-  <span #view class="view-cell col-3" (click)="onCommunicate()"><i class="far fa-comments"></i></span>
-  <span #view class="view-cell col-3 p-0 m-0" (click)="onView()">View</span>
-  <span #edit class="edit-cell nav-link col-3" (click)="onEdit()">Edit</span>
+  <span #approve class="approve pl-2 pr-3 m-0" (click)="onApprove()" *ngIf="params.action.canApprove(params)"
+    >Approve</span
+  >
+  <span #decline class="decline pl-2 pr-3 m-0" (click)="onDecline()" *ngIf="params.action.canDecline(params)"
+    >Decline</span
+  >
+  <span #commentsCell class="view-cell pl-2 pr-3 m-0" (click)="onCommunicate()">
+    <i class="far fa-comments"></i>
+  </span>
+  <span #view class="view-cell pl-2 pr-3 m-0" (click)="onView()">View</span>
+  <span #edit class="edit-cell nav-link pl-2 pr-3" (click)="onEdit()">Edit</span>
+  <span #copyVendor class="nav-link pl-2 pr-3 m-0 copy-cell" (click)="onCopy()">
+    <i class="far fa-copy"></i>
+  </span>
 </div>

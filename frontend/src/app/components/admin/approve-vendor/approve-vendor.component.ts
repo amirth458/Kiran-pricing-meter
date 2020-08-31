@@ -6,7 +6,7 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { ActionCellApproveRendererComponent } from 'src/app/common/action-cell-approve-renderer/action-cell-approve-renderer.component';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, Subject, Subscription, throwError } from 'rxjs';
+import { empty, Observable, Subject, Subscription, throwError } from 'rxjs';
 import { Vendor } from 'src/app/model/vendor.model';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
@@ -184,7 +184,7 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
       this.columnDefs.push({
         headerName: 'Actions',
         filter: false,
-        width: 550,
+        minWidth: 330,
         cellRenderer: 'actionCellRenderer',
         cellRendererParams: {
           action: {
@@ -202,6 +202,11 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
               if (param.data && param.data.user && param.data.user.id) {
                 const userId = param.data.user.id;
                 this.route.navigateByUrl(`/user-manage/vendor-details/${userId}/user`);
+              }
+            },
+            copy: param => {
+              if (param.data) {
+                this.copyVendor(param.data.id);
               }
             },
             edit: param => {
@@ -346,6 +351,25 @@ export class ApproveVendorComponent implements OnInit, OnDestroy {
           this.toastr.error('Unable to perform action');
         }
       );
+  }
+
+  copyVendor(vendorId: number) {
+    this.spinner.show();
+    this.userService
+      .cloneVendorInfo(vendorId)
+      .pipe(
+        catchError(err => {
+          this.spinner.hide();
+          this.toastr.success(`Unable to clone vendor details`);
+          return empty();
+        })
+      )
+      .subscribe(v => {
+        this.spinner.hide();
+        this.toastr.success(`Successfully copied vendor details`);
+        this.onSearch();
+        this.modalService.dismissAll();
+      });
   }
 
   vendorStatusChanged(value) {

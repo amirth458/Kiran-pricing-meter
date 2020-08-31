@@ -23,6 +23,7 @@ export class ActionCellApproveRendererComponent implements ICellRendererAngularC
   refresh(): boolean {
     return false;
   }
+
   onApprove(): void {
     this.params.action.approve(this.params);
   }
@@ -38,8 +39,12 @@ export class ActionCellApproveRendererComponent implements ICellRendererAngularC
   onCommunicate(): void {
     this.store.dispatch({
       type: AppTypes.UpdateSidebarInfo,
-      payload: {vendor: this.params.data}
+      payload: { vendor: this.params.data }
     });
+  }
+
+  onCopy(): void {
+    this.params.action.copy(this.params);
   }
 
   onEdit(): void {
