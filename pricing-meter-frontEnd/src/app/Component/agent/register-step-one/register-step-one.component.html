@@ -1,1 +1,49 @@
-<p>register-step-one works!</p>
+<div class="app-agent-register">
+  <div class="left-sec">
+    <div class="logo-header">
+      <img src="assets/img/app-logo.svg" class="logo-img" />
+    </div>
+    <div class="form-content">
+      <h2 class="form-title">Registration</h2>
+      <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" required>
+          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+          <!--                        {{validateUserInput('username')}}-->
+          <!--                    </mat-error>-->
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" required>
+          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+          <!--                        {{validateUserInput('username')}}-->
+          <!--                    </mat-error>-->
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required>
+          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+          <!--                        {{validateUserInput('username')}}-->
+          <!--                    </mat-error>-->
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>password</mat-label>
+          <input matInput formControlName="password" required>
+          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+          <!--                        {{validateUserInput('username')}}-->
+          <!--                    </mat-error>-->
+        </mat-form-field>
+        <div class="form-footer">
+          <button class="submit-btn" (click)="navigateTo()">NEXT</button>
+          <div class="sub-wrap">Already have an account? <a href="" class="sign-lynk">Sign In</a></div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="right-sec">
+    <h2 class="right-header">Use Pricing Meter and NEVER lose a<br /> listing due to pricing.</h2>
+  </div>
+</div>
+
+

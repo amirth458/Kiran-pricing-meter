@@ -8,6 +8,9 @@ import { RegisterStepOneComponent } from './Component/agent/register-step-one/re
 import { RegisterStepTwoComponent } from './Component/agent/register-step-two/register-step-two.component';
 import { RegisterStepThreeComponent } from './Component/agent/register-step-three/register-step-three.component';
 import { RegisterStepFourComponent } from './Component/agent/register-step-four/register-step-four.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { RegisterStepFourComponent } from './Component/agent/register-step-four/
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

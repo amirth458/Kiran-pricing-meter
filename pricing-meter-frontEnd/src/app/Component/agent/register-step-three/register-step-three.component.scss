@@ -1,0 +1,128 @@
+.app-agent-register-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100vh;
+
+  .left-sec {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+
+    h3.up-title {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 45px;
+      letter-spacing: 0.05em;
+      color: #006AFF;
+      margin-bottom: 80px;
+      text-align: center;
+    }
+
+    .prfile-conatiner {
+      width: 450px;
+      margin: auto;
+    }
+
+    .profile-daggbox {
+      height: 180px;
+      border: 1px dashed #AAAAAB;
+      padding: 30px;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 80px;
+    }
+
+    label.upload-txt {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 24px;
+      /* identical to box height */
+      letter-spacing: 0.05em;
+      color: #FFA502;
+    }
+    .file-input{
+      opacity :0;
+      position: absolute;
+      z-index:2;
+      width:100%;
+      height:100%;
+      top :0;
+      left:0;
+    }
+
+    button.next-btn {
+      background: #006AFF;
+      border-radius: 3px;
+      height: 70px;
+      width: 100%;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 33px;
+      /* identical to box height */
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+      margin-bottom: 15px;
+      border: none;
+    }
+
+    span.skip-lbl {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 22px;
+      line-height: 33px;
+      /* identical to box height */
+      letter-spacing: 0.05em;
+      color: #006AFF;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+      /* text-align: center; */
+    }
+
+    .action-wrapper {
+      text-align: center;
+    }
+  }
+
+  .right-sec {
+    position: relative;
+    background-image: url('src/assets/img/agn-reg-3-right.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-color: rgba(0, 106, 255, 0.1);
+
+    .right-header {
+      position: absolute;
+      top: 91px;
+      left: 0;
+      right: 0;
+      line-height: 44px;
+      text-align: center;
+      letter-spacing: 0.05em;
+      color: #006AFF;
+      font-family: Dosis;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 35px;
+      word-break: break-word;
+      padding: 30px;
+    }
+  }
+}
+
+
+
+
+
+
+
+

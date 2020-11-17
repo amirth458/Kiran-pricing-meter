@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="323d5c01-bef2-4258-b8a0-04295bf24249" name="Default Changelist" comment="" />
+    <list default="true" id="323d5c01-bef2-4258-b8a0-04295bf24249" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-four/register-step-four.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-four/register-step-four.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-four/register-step-four.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-four/register-step-four.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-four/register-step-four.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-four/register-step-four.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-two/register-step-two.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-two/register-step-two.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-two/register-step-two.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-two/register-step-two.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-two/register-step-two.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-two/register-step-two.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/styles.scss" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +39,20 @@
     <property name="ts.external.directory.path" value="F:\Kiran new pricing-meter\pricing-meter-frontEnd\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\Kiran new pricing-meter\pricing-meter-frontEnd\src\app\Component\agent" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/pricing-meter-frontEnd/package.json" />
+      <command value="start" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -31,11 +61,21 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1605610956355</updated>
-      <workItem from="1605610957535" duration="382000" />
+      <workItem from="1605610957535" duration="1316000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605612299420">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605612299420" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1605611946556">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605611946556" />
   </component>
 </project>
