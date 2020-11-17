@@ -1,25 +1,25 @@
 <div class="app-agent-step-two">
   <div class="left-sec">
     <div class="logo-header">
-      <img src="assets/img/app-logo.svg" class="logo-img" />
+      <img src="assets/img/app-logo.svg" class="logo-img"/>
     </div>
     <div class="form-content">
       <div class="head-data">
         <h2 class="package-title">Our Packages</h2>
         <h3 class="package-subtitle">Are you an individual or a team of agents?</h3>
         <div class="package-tabheader">
-          <button [ngClass]= "getClass('indivual')" class="tab-btn" (click)="option = !option">Indivual</button>
+          <button [ngClass]="getClass('indivual')" class="tab-btn" (click)="option = !option">Indivual</button>
           <button [ngClass]="getClass('teams')" class="tab-btn" (click)="option = !option">Teams</button>
         </div>
       </div>
       <div class="package-container" *ngIf="option">
         <div class="package-box">
-          <h3 class="box-title"></h3>
+          <h3 class="box-title">BASIC</h3>
           <div class="package-icon">
-            <img src="assets/img/Group 631.svg" class="package-ic" />
+            <img src="assets/img/Group 631.svg" class="package-ic"/>
           </div>
           <div class="package-content">
-            <h3 class="package-price"><span class="price">19.95/</span>month</h3>
+            <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
             <ul class="package-list">
               <li>3 properties</li>
               <li>one user profile</li>
@@ -32,12 +32,12 @@
           </div>
         </div>
         <div class="package-box">
-          <h3 class="box-title"></h3>
+          <h3 class="box-title">ADVANCED</h3>
           <div class="package-icon">
-            <img src="assets/img/Group 631.svg" class="package-ic" />
+            <img src="assets/img/step-two-advance.svg" class="package-ic"/>
           </div>
           <div class="package-content">
-            <h3 class="package-price"><span class="price">19.95/</span>month</h3>
+            <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
             <ul class="package-list">
               <li>3 properties</li>
               <li>one user profile</li>
@@ -50,12 +50,13 @@
           </div>
         </div>
         <div class="package-box">
-          <h3 class="box-title"></h3>
+          <h3 class="box-title">UNLIMITED</h3>
+          <span class="mp-badge">MOST POPULAR</span>
           <div class="package-icon">
-            <img src="assets/img/Group 631.svg" class="package-ic" />
+            <img src="assets/img/step-2-unlimit.svg" class="package-ic"/>
           </div>
           <div class="package-content">
-            <h3 class="package-price"><span class="price">19.95/</span>month</h3>
+            <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
             <ul class="package-list">
               <li>3 properties</li>
               <li>one user profile</li>
@@ -68,102 +69,69 @@
           </div>
         </div>
       </div>
-      <div class="row" *ngIf="!option">
-        <div class="col-lg-4">
-          <div class="tab-one">
-            <div class="top-bold">
-              <h2>Teams</h2>
-            </div>
-            <img src="assets/img/step-2-team.svg">
-            <div class="month-price">
-              <h2><span class="price" (click)="navigateTo()">99.95/</span>month</h2>
-            </div>
-            <div class="list-data">
-              <ul>
-                <li>
-                  50 properties
-                </li>
-                <li>
-                  5 user profile
-                </li>
-                <li>
-                  unlimited Reports
-                </li>
-                <li>
-                  Customized Agent Page
-                </li>
-              </ul>
-            </div>
-            <div class="btn-fun">
-              <button class="btn-sty" (click)="navigateTo()">ACTIVATE</button>
+      <div class="package-container" *ngIf="!option">
+        <div class="package-box">
+          <h3 class="box-title">Teams</h3>
+          <div class="package-icon">
+            <img src="assets/img/step-2-team.svg" class="package-ic"/>
+          </div>
+          <div class="package-content">
+            <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
+            <ul class="package-list">
+              <li>3 properties</li>
+              <li>one user profile</li>
+              <li>unlimited Reports</li>
+              <li>Customized Agent Page</li>
+            </ul>
+            <div class="active-wrapper">
+              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="tab-one">
-            <div class="top-bold">
-              <h2>AGENCY</h2>
-            </div>
-            <img src="assets/img/step-2-agency.svg">
-            <div class="month-price">
-              <h2><span class="price" (click)="navigateTo()">19.95/</span>month</h2>
-            </div>
-            <div class="list-data">
-              <ul>
-                <li>
-                  100 properties
-                </li>
-                <li>
-                  10 user profile
-                </li>
-                <li>
-                  unlimited Reports
-                </li>
-                <li>
-                  Customized Agent Page
-                </li>
-              </ul>
-            </div>
-            <div class="btn-fun">
-              <button class="btn-sty" (click)="navigateTo()">ACTIVATE</button>
+        <div class="package-box">
+          <h3 class="box-title">AGENCY</h3>
+          <div class="package-icon">
+            <img src="assets/img/step-2-agency.svg" class="package-ic"/>
+          </div>
+          <div class="package-content">
+            <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
+            <ul class="package-list">
+              <li>3 properties</li>
+              <li>one user profile</li>
+              <li>unlimited Reports</li>
+              <li>Customized Agent Page</li>
+            </ul>
+            <div class="active-wrapper">
+              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="tab-one">
-            <div class="top-bold">
-              <h2>ENTERPRISE</h2>
-            </div>
-            <img src="assets/img/step-2-enterprice.svg">
-            <div class="month-price">
-              <h2><span class="price" (click)="navigateTo()">49.95/</span>month</h2>
-            </div>
-            <div class="list-data">
-              <ul>
-                <li>
-                  unlimited properties
-                </li>
-                <li>
-                  one user profile
-                </li>
-                <li>
-                  unlimited Reports
-                </li>
-                <li>
-                  Customized Agent Page
-                </li>
-              </ul>
-            </div>
-            <div class="btn-fun">
-              <button class="btn-sty" (click)="navigateTo()">ACTIVATE</button>
+        <div class="package-box">
+          <h3 class="box-title">ENTERPRISE</h3>
+          <span class="mp-badge">MOST POPULAR</span>
+          <div class="package-icon">
+            <img src="assets/img/step-2-enterprice.svg" class="package-ic"/>
+          </div>
+          <div class="package-content">
+            <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
+            <ul class="package-list">
+              <li>3 properties</li>
+              <li>one user profile</li>
+              <li>unlimited Reports</li>
+              <li>Customized Agent Page</li>
+            </ul>
+            <div class="active-wrapper">
+              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
             </div>
           </div>
         </div>
       </div>
+      <div class="skip-txt">Skip</div>
     </div>
   </div>
   <div class="right-sec">
-    <h2 class="right-header">Our "Overpricing Calculator"<br/> saves you and your clients from <br/> losing money on overpriced or <br/> underpriced properties..</h2>
+    <h2 class="right-header">Our "Overpricing Calculator"<br/> saves you and your clients from <br/> losing money on
+      overpriced or <br/> underpriced properties..</h2>
   </div>
 </div>
 

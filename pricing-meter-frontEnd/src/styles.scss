@@ -1,7 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
 @font-face {
   font-family: 'Poppins-Regular';
   font-style: normal;
@@ -143,4 +150,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-style: normal;
   font-weight: normal;
   src: local('Poppins-BlackItalic'), url('assets/fonts/Poppins/Poppins-BlackItalic.otf') format('otf');
+}
+
+button {
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
 }
