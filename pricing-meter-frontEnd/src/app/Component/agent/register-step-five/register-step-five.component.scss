@@ -1,0 +1,53 @@
+.app-agent-register-5 {
+  position: absolute;
+  background-image: url('src/assets/img/Step-5-Background.svg');
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  background-position: center;
+  .tic-container{
+    position: absolute;
+    left: 43.82%;
+    right: 43.97%;
+    top: 27.83%;
+    bottom: 54.99%;
+  }
+  .info-container {
+    position: absolute;
+    width: 100%;
+    height: 90px;
+    left: 595px;
+    top: 505px;
+    .info-txt {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 60px;
+      line-height: 90px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #FFFEFE;
+    }
+  }
+  .greeding-container{
+    position: absolute;
+    width: 710px;
+    height: 94px;
+    left: 650px;
+    top: 633px;
+    background: #FFFFFF;
+    border-radius: 100px;
+    .greeding-txt{
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 37px;
+      letter-spacing: 0.05em;
+      color: #006AFF;
+      text-align: center;
+      margin-top: 28px;
+    }
+  }
+}

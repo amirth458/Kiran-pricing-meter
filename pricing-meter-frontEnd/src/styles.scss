@@ -144,3 +144,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-weight: normal;
   src: local('Poppins-BlackItalic'), url('assets/fonts/Poppins/Poppins-BlackItalic.otf') format('otf');
 }
+button {
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}

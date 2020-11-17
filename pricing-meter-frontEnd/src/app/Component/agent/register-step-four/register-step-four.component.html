@@ -1,47 +1,56 @@
-<div class="app-agent-register">
+<div class="app-agent-register-4">
   <div class="left-sec">
     <div class="logo-header">
       <img src="assets/img/app-logo.svg" class="logo-img" />
     </div>
     <div class="form-content">
-      <h2 class="form-title">Registration</h2>
+      <h2 class="form-title">Payment Method</h2>
       <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>First Name</mat-label>
-          <input matInput formControlName="firstName" required>
+          <mat-label>Name of the Card</mat-label>
+          <input matInput formControlName="nameOfTheCard" required>
+          <span>
+            <img src="assets/img/step-4-user.svg"  class="user" alt="user">
+          </span>
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Last Name</mat-label>
-          <input matInput formControlName="lastName" required>
+          <mat-label>Card Number</mat-label>
+          <input matInput formControlName="cardNumber" required>
+          <span>
+            <img src="assets/img/step-4-credit-card.svg"  class="user" alt="card">
+          </span>
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" required>
+          <mat-label>Expiry Date of Card</mat-label>
+          <input matInput formControlName="expiryDateofCard" required>
+          <img src="assets/img/step-4-calendar.svg"  class="user" alt="calender">
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>password</mat-label>
-          <input matInput formControlName="password" required>
+          <mat-label>CVV</mat-label>
+          <input matInput formControlName="cvv" required>
+          <img src="assets/img/step-4-cvv.svg"  class="user" alt="cvv">
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <div class="form-footer">
-          <button class="submit-btn" (click)="navigateTo()">NEXT</button>
-          <div class="sub-wrap">Already have an account? <a href="" class="sign-lynk">Sign In</a></div>
+          <button class="submit-btn" (click)="navigateTo()">Finish</button>
+          <span class="skip-lbl" (click)="navigateTo()">Skip</span>
         </div>
       </form>
     </div>
   </div>
   <div class="right-sec">
-    <h2 class="right-header">Use Pricing Meter and NEVER lose a<br /> listing due to pricing.</h2>
+    <h2 class="right-header">Join the All-in-one Agent Platform:<br/> Start hosting your properties and update <br/> your clients on price developments..</h2>
+    <img src="assets/img/step-4-right.svg" class="right-object">
   </div>
 </div>

@@ -1,4 +1,4 @@
-.app-agent-register {
+.app-agent-register-4 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 100%;
@@ -21,6 +21,7 @@
         letter-spacing: 0.05em;
         color: #407BFF;
         text-align: center;
+        margin-bottom: 58px;
       }
 
       form.register-form {
@@ -36,6 +37,13 @@
             .mat-form-field-invalid .mat-form-field-label {
               color: #f44336 !important;
             }
+          }
+          .user{
+            position: absolute;
+            width: 28px;
+            height: 35px;
+            left: 481px;
+            top: 1px;
           }
         }
 
@@ -55,26 +63,19 @@
           color: #FFFFFF;
         }
 
-        .sub-wrap {
-          padding: 10px;
-          text-align: center;
+        span.skip-lbl {
           font-family: Poppins;
           font-style: normal;
           font-weight: normal;
-          font-size: 15px;
-          line-height: 22px;
+          font-size: 22px;
+          line-height: 33px;
+          /* identical to box height */
           letter-spacing: 0.05em;
-          color: #6D6D6D;
+          color: #006AFF;
+          text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-          a.sign-lynk {
-            font-family: Poppins;
-            font-style: normal;
-            font-weight: normal;
-            font-size: 15px;
-            line-height: 22px;
-            letter-spacing: 0.05em;
-            color: #006AFF;
-          }
+          //text-align: center;
+          margin-left: 236px;
         }
       }
     }
@@ -82,9 +83,9 @@
 
   .right-sec {
     position: relative;
-    background-image: url('src/assets/img/regester-bg.svg');
+    background-image: url('src/assets/img/step-4-right-BACKGROUND.svg');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
     background-size: auto;
     background-color: rgba(0, 106, 255, 0.1);
 
@@ -103,6 +104,13 @@
       font-size: 35px;
       word-break: break-word;
       padding: 30px;
+    }
+    img.right-object{
+      position: absolute;
+      /* left: 57.81%; */
+      right: 27.86%;
+      top: 56.65%;
+      bottom: 17.08%;
     }
   }
 }
