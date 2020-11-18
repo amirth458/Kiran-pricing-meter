@@ -13,7 +13,7 @@
       margin: auto 0;
 
       .form-title {
-        font-family: Poppins;
+        font-family: Poppins-Regular;
         font-style: normal;
         font-weight: 500;
         font-size: 35px;
@@ -28,7 +28,7 @@
         width: 530px;display: flex;flex-flow: column;margin: 0 auto;
 
         .form-field {
-          font-family: Poppins;
+          font-family: Poppins-Regular;
 
           ::ng-deep {
             .mat-form-field-infix .mat-form-field-label {
@@ -55,7 +55,7 @@
           border: none;
           height: 68px;
           width: 100%;
-          font-family: Poppins;
+          font-family: Poppins-Regular;
           font-style: normal;
           font-size: 25px;
           line-height: 37px;
@@ -64,7 +64,7 @@
         }
 
         span.skip-lbl {
-          font-family: Poppins;
+          font-family: Poppins-Regular;
           font-style: normal;
           font-weight: normal;
           font-size: 22px;

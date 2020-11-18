@@ -8,28 +8,28 @@
       <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>First Name</mat-label>
-          <input matInput formControlName="firstName" required>
+          <input matInput formControlName="firstName" >
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Last Name</mat-label>
-          <input matInput formControlName="lastName" required>
+          <input matInput formControlName="lastName" >
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" required>
+          <mat-label>Your Email</mat-label>
+          <input matInput formControlName="email" >
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>password</mat-label>
-          <input matInput formControlName="password" required>
+          <mat-label>Your Password</mat-label>
+          <input matInput formControlName="password">
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
           <!--                    </mat-error>-->
@@ -43,6 +43,9 @@
   </div>
   <div class="right-sec">
     <h2 class="right-header">Use Pricing Meter and NEVER lose a<br /> listing due to pricing.</h2>
+    <div class="right-bg-wrapper">
+      <img src="assets/img/reg-pricing-bg.svg" class="pricing-bg" />
+    </div>
   </div>
 </div>
 

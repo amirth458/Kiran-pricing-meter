@@ -5,9 +5,19 @@ import {RegisterStepTwoComponent} from "./Component/agent/register-step-two/regi
 import {RegisterStepThreeComponent} from "./Component/agent/register-step-three/register-step-three.component";
 import {RegisterStepFourComponent} from "./Component/agent/register-step-four/register-step-four.component";
 import {RegisterStepFiveComponent} from "./Component/agent/register-step-five/register-step-five.component";
+import {LoginComponent} from "./Component/agent/login/login.component";
 
 
 const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login'
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   {
     path: 'agent',
     // canActivate: [AuthGaurd],
