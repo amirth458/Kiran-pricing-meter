@@ -13,33 +13,50 @@
       margin: auto 0;
 
       .form-title {
-        font-family: Poppins;
+        font-family: 'Poppins-Medium';
         font-style: normal;
         font-weight: 500;
-        font-size: 35px;
+        font-size: 28px;
         line-height: 52px;
         letter-spacing: 0.05em;
         color: #407BFF;
         text-align: center;
+        margin-bottom: 35px;
       }
 
       form.register-form {
         width: 530px;display: flex;flex-flow: column;margin: 0 auto;
 
         .form-field {
-          font-family: Poppins;
+          font-family: Poppins-Regular;
+          font-size: 16px;
+          font-weight: 300;
 
           ::ng-deep {
+            .mat-form-field-outline {
+              color: #ccc;
+            }
+            .mat-form-field-outline-start {
+              border-radius: 2px 0 0 2px;
+            }
             .mat-form-field-infix .mat-form-field-label {
               color: #AAAAAB;
             }
             .mat-form-field-invalid .mat-form-field-label {
               color: #f44336 !important;
             }
+            .mat-form-field-infix {
+              padding: 18px 0 18px 0;
+            }
+            .mat-form-field-label {
+              margin-top: -2px;
+            }
           }
         }
 
-
+        .form-footer {
+          margin-top: 20px;
+        }
 
         button.submit-btn {
           background: #407BFF;
@@ -47,7 +64,7 @@
           border: none;
           height: 68px;
           width: 100%;
-          font-family: Poppins;
+          font-family: Poppins-Regular;
           font-style: normal;
           font-size: 25px;
           line-height: 37px;
@@ -58,7 +75,7 @@
         .sub-wrap {
           padding: 10px;
           text-align: center;
-          font-family: Poppins;
+          font-family: Poppins-Regular;
           font-style: normal;
           font-weight: normal;
           font-size: 15px;
@@ -67,13 +84,14 @@
           color: #6D6D6D;
 
           a.sign-lynk {
-            font-family: Poppins;
+            font-family: Poppins-Regular;
             font-style: normal;
             font-weight: normal;
             font-size: 15px;
             line-height: 22px;
             letter-spacing: 0.05em;
             color: #006AFF;
+            text-decoration: none;
           }
         }
       }
@@ -82,35 +100,32 @@
 
   .right-sec {
     position: relative;
-    background-image: url('src/assets/img/regester-bg.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: auto;
+    //background-image: url('src/assets/img/regester-bg.svg');
+    //background-repeat: no-repeat;
+    //background-position: center;
+    //background-size: auto;
     background-color: rgba(0, 106, 255, 0.1);
 
     .right-header {
-      position: absolute;
-      top: 91px;
-      left: 0;
-      right: 0;
+      position: relative;
+      top: 30px;
       line-height: 44px;
       text-align: center;
       letter-spacing: 0.05em;
       color: #006AFF;
-      font-family: Dosis;
+      font-family: 'Dosis';
       font-style: normal;
       font-weight: bold;
-      font-size: 35px;
+      font-size: 30px;
       word-break: break-word;
       padding: 30px;
     }
+
+    img.pricing-bg {
+      width: 100%;
+      height: calc(100vh - 250px);
+    }
   }
 }
-
-
-
-
-
-
 
 

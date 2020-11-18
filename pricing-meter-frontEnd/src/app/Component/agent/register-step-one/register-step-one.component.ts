@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {AppComponentBase} from "../../../Shared/AppBaseComponent";
 
 @Component({
   selector: 'app-register-step-one',
   templateUrl: './register-step-one.component.html',
   styleUrls: ['./register-step-one.component.scss']
 })
-export class RegisterStepOneComponent implements OnInit {
+export class RegisterStepOneComponent extends AppComponentBase implements OnInit {
 
   public loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, injector: Injector) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.initForm();

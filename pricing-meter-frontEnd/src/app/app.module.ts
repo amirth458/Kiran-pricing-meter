@@ -11,6 +11,8 @@ import { RegisterStepFourComponent } from './Component/agent/register-step-four/
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
+import { RegisterStepFiveComponent } from './Component/agent/register-step-five/register-step-five.component';
+import { LoginComponent } from './Component/agent/login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import {ReactiveFormsModule} from "@angular/forms";
     RegisterStepOneComponent,
     RegisterStepTwoComponent,
     RegisterStepThreeComponent,
-    RegisterStepFourComponent
+    RegisterStepFourComponent,
+    RegisterStepFiveComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
