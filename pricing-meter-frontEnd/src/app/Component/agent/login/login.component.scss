@@ -187,6 +187,40 @@
         }
       }
 
+      .frame-footer {
+        display: grid;
+        grid-template-columns: 20% 20% 45%;
+        .red-frame{
+          background: #FF4757;
+          border-radius: 100px;
+          margin-left: 9%;
+          .txt-red-frame{
+            font-family: 'Poppins-Regular';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 13px;
+            line-height: 19px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            text-align: center;
+            padding-top: 7%;
+          }
+        }
+        .learn-label {
+          font-family: 'Poppins-Regular';
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 19px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          color: #006AFF;
+          margin-top: 6%;
+          margin-left: 16%;
+        }
+      }
+
     }
     .right-footer{
     }
