@@ -1,0 +1,21 @@
+<div *ngIf="data.action==='login'">
+  <h2 mat-dialog-title class="login-title"> Welcome to Pricing Meter</h2>
+  <div mat-dialog-content class="form-content">
+    <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Your Email</mat-label>
+        <input matInput formControlName="firstName">
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Your Password</mat-label>
+        <input matInput formControlName="lastName">
+      </mat-form-field>
+      <div class="form-footer">
+        <button class="submit-btn" (click)="navigateTo()">Login</button>
+        <div class="sub-wrap">Forgot your password?</div>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="">
+  </div>
+</div>
