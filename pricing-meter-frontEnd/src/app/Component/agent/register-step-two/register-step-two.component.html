@@ -183,7 +183,9 @@
       </div>
       <div class="package-container" *ngIf="option">
         <div class="package-box">
-          <h3 class="box-title">BASIC</h3>
+          <div class="package-header">
+            <h3 class="box-title">BASIC</h3>
+          </div>
           <div class="package-icon">
             <img src="assets/img/Basic.svg" class="package-ic"/>
           </div>
@@ -196,12 +198,14 @@
               <li>Customized Agent Page</li>
             </ul>
             <div class="active-wrapper">
-              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
+              <button class="active-btn" (click)="navigateTo()">ACTIVATE</button>
             </div>
           </div>
         </div>
         <div class="package-box">
-          <h3 class="box-title">ADVANCED</h3>
+          <div class="package-header">
+            <h3 class="box-title">ADVANCED</h3>
+          </div>
           <div class="package-icon">
             <img src="assets/img/step-two-advance.svg" class="package-ic"/>
           </div>
@@ -214,13 +218,15 @@
               <li>Customized Agent Page</li>
             </ul>
             <div class="active-wrapper">
-              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
+              <button class="active-btn" (click)="navigateTo()">ACTIVATE</button>
             </div>
           </div>
         </div>
         <div class="package-box">
-          <h3 class="box-title">UNLIMITED</h3>
-          <span class="mp-badge">MOST POPULAR</span>
+          <div class="package-header">
+            <h3 class="box-title">UNLIMITED</h3>
+            <span class="mp-badge">MOST POPULAR</span>
+          </div>
           <div class="package-icon">
             <img src="assets/img/step-2-unlimit.svg" class="package-ic"/>
           </div>
@@ -233,14 +239,16 @@
               <li>Customized Agent Page</li>
             </ul>
             <div class="active-wrapper">
-              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
+              <button class="active-btn" (click)="navigateTo()">ACTIVATE</button>
             </div>
           </div>
         </div>
       </div>
       <div class="package-container" *ngIf="!option">
         <div class="package-box">
-          <h3 class="box-title">TEAMS</h3>
+          <div class="package-header">
+            <h3 class="box-title">TEAMS</h3>
+          </div>
           <div class="package-icon">
             <img src="assets/img/Teams.svg" class="package-ic"/>
           </div>
@@ -253,12 +261,14 @@
               <li>Customized Agent Page</li>
             </ul>
             <div class="active-wrapper">
-              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
+              <button class="active-btn" (click)="navigateTo()">ACTIVATE</button>
             </div>
           </div>
         </div>
         <div class="package-box">
-          <h3 class="box-title">AGENCY</h3>
+          <div class="package-header">
+            <h3 class="box-title">AGENCY</h3>
+          </div>
           <div class="package-icon">
             <img src="assets/img/Agency.svg" class="package-ic"/>
           </div>
@@ -271,13 +281,15 @@
               <li>Customized Agent Page</li>
             </ul>
             <div class="active-wrapper">
-              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
+              <button class="active-btn" (click)="navigateTo()">ACTIVATE</button>
             </div>
           </div>
         </div>
         <div class="package-box">
-          <h3 class="box-title">ENTERPRISE</h3>
-          <span class="mp-badge">MOST POPULAR</span>
+          <div class="package-header">
+            <h3 class="box-title">ENTERPRISE</h3>
+            <span class="mp-badge">MOST POPULAR</span>
+          </div>
           <div class="package-icon">
             <img src="assets/img/Enterprice.svg" class="package-ic"/>
           </div>
@@ -290,7 +302,7 @@
               <li>Customized Agent Page</li>
             </ul>
             <div class="active-wrapper">
-              <button class="active-btn" (click)="navigateTo()">ACTIVE</button>
+              <button class="active-btn" (click)="navigateTo()">ACTIVATE</button>
             </div>
           </div>
         </div>
@@ -303,12 +315,14 @@
   <div class="right-sec">
     <h2 class="right-header">Our "Overpricing Calculator"<br/> saves you and your clients from <br/> losing money on
       overpriced or <br/> underpriced properties..</h2>
+    <div class="right-bg-wrapper">
+      <img src="assets/img/step2-right-image.svg" class="pricing-bg" />
+    </div>
+    <div class="bottom-control">
+      <span class="dot-nav"></span>
+      <span class="dot-nav dot-active"></span>
+      <span class="dot-nav"></span>
+      <span class="dot-nav"></span>
+    </div>
   </div>
 </div>
-
-
-
-
-
-
-

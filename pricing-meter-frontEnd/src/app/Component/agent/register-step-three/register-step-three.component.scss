@@ -98,15 +98,16 @@
 
   .right-sec {
     position: relative;
-    background-image: url('src/assets/img/agn-reg-3-right.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: auto;
+    //background-image: url('src/assets/img/agn-reg-3-right.svg');
+    //background-repeat: no-repeat;
+    //background-position: center;
+    //background-size: auto;
     background-color: rgba(0, 106, 255, 0.1);
+    padding: 20px;
 
     .right-header {
-      position: absolute;
-      top: 91px;
+      position: relative;
+      top: 20px;
       left: 0;
       right: 0;
       line-height: 44px;
@@ -118,8 +119,40 @@
       font-weight: bold;
       font-size: 35px;
       word-break: break-word;
-      padding: 30px;
     }
+
+    img.pricing-bg {
+      width: 100%;
+      height: calc(100vh - 290px);
+    }
+
+    .bottom-control {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 30px;
+
+      .dot-nav {
+        display: inline-block;
+        width: 20px;
+        height: 2px;
+        background: #E0E0E0;
+        margin-right: 5px;
+
+        &.dot-active {
+          background: #006AFF;
+        }
+      }
+    }
+  }
+}
+
+
+@media (max-width: 1330px) {
+  .app-agent-register-3 .right-sec .right-header br {
+    display: none;
   }
 }
 
@@ -127,6 +160,69 @@
 
 
 
+@media (max-width: 991px) and (min-width: 700px) {
+  .app-agent-register-3 .right-sec .right-header {
+    line-height: 37px;
+    font-size: 27px;
+  }
+  .app-agent-register-3 .left-sec .prfile-conatiner {
+    width: 100%;
+  }
+  .app-agent-register-3 .left-sec button.next-btn {
+    height: 55px;
+    font-size: 18px;
+    line-height: normal;
+  }
+  .app-agent-register-3 .left-sec h3.up-title {
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+  .app-agent-register-3 .left-sec .profile-daggbox {
+    padding: 0px;
+    margin-bottom: 50px;
+  }
 
+  .app-agent-register-3 .left-sec .profile-daggbox img.upload-img {
+    height: 70px;
+  }
+}
+@media (max-width: 699px) {
+  .app-agent-register-3 .right-sec .right-header {
+    padding: 0;
+    top: 0;
+    font-size: 28px;
+    line-height: 38px
+  }
+  .app-agent-register-3 {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: auto;
+    height: auto;
+  }
 
+  .app-agent-register-3 .right-sec {
+    height: 90vh;
+    padding: 20px;
+  }
+  .app-agent-register-3 .left-sec {
+    padding: 20px;
+    height: auto;
+    overflow: initial;
+  }
+  .app-agent-register-3 .left-sec .logo-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+  .app-agent-register-3 .left-sec h3.up-title {
+       margin-bottom: 40px;
+  }
+  .app-agent-register-3 .left-sec .profile-daggbox {
+    padding: 0px;
+    margin-bottom: 40px;
+  }
 
+  .app-agent-register-3 .left-sec .prfile-conatiner {
+    width: 100%;
+  }
+}
