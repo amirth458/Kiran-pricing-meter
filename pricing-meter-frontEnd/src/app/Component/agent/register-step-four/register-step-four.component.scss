@@ -76,6 +76,11 @@
 
           //text-align: center;
           margin-left: 236px;
+          cursor: pointer;
+
+          &:focus {
+            outline: none;
+          }
         }
       }
     }

@@ -13,6 +13,13 @@ import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import { RegisterStepFiveComponent } from './Component/agent/register-step-five/register-step-five.component';
 import { LoginComponent } from './Component/agent/login/login.component';
+import { LoginDialogComponent } from './Component/agent/login-dialog/login-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatToolbarModule} from "@angular/material/toolbar";
+// import { MatToolbarModule } from '@angular/material/toolbar';
+
+
 
 @NgModule({
   declarations: [
@@ -22,7 +29,8 @@ import { LoginComponent } from './Component/agent/login/login.component';
     RegisterStepThreeComponent,
     RegisterStepFourComponent,
     RegisterStepFiveComponent,
-    LoginComponent
+    LoginComponent,
+    LoginDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,8 +38,13 @@ import { LoginComponent } from './Component/agent/login/login.component';
     BrowserAnimationsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule
-  ],
+    MatInputModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatSidenavModule,
+    MatToolbarModule,
+
+],
   providers: [],
   bootstrap: [AppComponent]
 })
