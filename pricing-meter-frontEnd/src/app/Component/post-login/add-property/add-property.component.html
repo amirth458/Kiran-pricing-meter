@@ -1,0 +1,38 @@
+<div class="add-property-container">
+  <div class="row">
+    <div class="col-sm-6">
+      <a class="btn header-component">PROPERTY DETAILS</a>
+      <div class="image-wrapper">
+        <img src="assets/img/add-property-image.svg">
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div>
+        <a class="btn detail-btn float-right">PROPERTY DETAILS</a>
+      </div>
+      <div  class="form-content-fluid">
+        <form class="register-form" [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Property Owner Name</mat-label>
+            <input matInput formControlName="ownerName">
+          </mat-form-field>
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Property Owner Email</mat-label>
+            <input matInput formControlName="email">
+          </mat-form-field>
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Street Address</mat-label>
+            <input matInput formControlName="address">
+          </mat-form-field>
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Zipcode</mat-label>
+            <input matInput formControlName="zipcode">
+          </mat-form-field>
+          <div class="form-footer text-center">
+            <button class="submit-btn">NEXT</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

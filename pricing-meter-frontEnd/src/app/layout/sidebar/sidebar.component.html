@@ -1,0 +1,26 @@
+<aside
+  id="leftsidebar"
+  class="app-sidebar sidebar">
+  <div class="app-header">
+    <div class="app-logo">
+      <img class="logo-img"  (click)="navigatePath('dashboard')" src="assets/img/side-bar-logo.svg"
+           title="Logo"/>
+    </div>
+  </div>
+  <div class="">
+    <ul class="list">
+      <li *ngFor="let sidebarItem of sidebarItems">
+        <div class="header text-right" style="">
+          <span class=""><img [src]="sidebarItem.active" [alt]="sidebarItem.path"></span>
+          {{ sidebarItem.title }}
+        </div>
+        <a
+          [routerLink]="sidebarItem.path"
+          *ngIf="!sidebarItem.groupTitle"
+          (click)="callMenuToggle($event, sidebarItem.path)">
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- #Menu -->
+</aside>

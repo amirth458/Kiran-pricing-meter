@@ -1,0 +1,108 @@
+.add-property-container{
+  margin: 5px;
+  padding: 0 40px;
+
+  .form-content-fluid {
+    margin: 116px 0;
+
+    form.register-form {
+      width: 500px;display: flex;flex-flow: column;margin: 0 auto;
+
+      .form-field {
+        font-family: 'Poppins-Regular';
+        font-size: 16px;
+        font-weight: 300;
+
+        ::ng-deep {
+          .mat-form-field-outline {
+            color: #ccc;
+          }
+          .mat-form-field-outline-start {
+            border-radius: 2px 0 0 2px;
+          }
+          .mat-form-field-infix .mat-form-field-label {
+            color: #595858;
+          }
+          .mat-form-field-invalid .mat-form-field-label {
+            color: #f44336 !important;
+          }
+          .mat-form-field-infix {
+            padding: 18px 0 18px 0;
+          }
+          .mat-form-field-label {
+            margin-top: -2px;
+          }
+          .mat-form-field-wrapper {
+            margin: 0.55em 0;
+          }
+        }
+      }
+
+      .form-footer {
+        margin-top: 20px;
+      }
+
+      .forget-password {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 22px;
+        letter-spacing: 0.05em;
+        text-align: center;
+        color: #006AFF;
+      }
+
+
+
+      button.submit-btn {
+        background: #407BFF;
+        border-radius: 3px;
+        border: none;
+        height: 68px;
+        width: 100%;
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-size: 25px;
+        line-height: 37px;
+        letter-spacing: 0.05em;
+        color: #FFFFFF;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+.header-component{
+  font-family: Poppins-Regular;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 37px;
+  /* identical to box height */
+
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  color: #555555;
+}
+.image-wrapper{
+  margin-top: 10%;
+}
+.detail-btn{
+  background: #27BA9C;
+  font-family: Poppins-Regular;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  color: #FFFFFF;
+}
+.btn {
+  cursor: pointer;
+  &:focus {
+    outline: none !important;
+  }
+}

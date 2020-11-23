@@ -18,6 +18,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
+import { LayoutComponent } from './layout/layout/layout.component';
+import {NgxUiLoaderModule} from "ngx-ui-loader";
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { HeaderComponent } from './layout/header/header.component';
+import {PostLoginModule} from "./Component/post-login/post-login.module";
 // import { MatToolbarModule } from '@angular/material/toolbar';
 
 
@@ -32,21 +37,26 @@ import {MatIconModule} from "@angular/material/icon";
     RegisterStepFiveComponent,
     LoginComponent,
     LoginDialogComponent,
+    LayoutComponent,
+    SidebarComponent,
+    HeaderComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatDialogModule,
-        MatSidenavModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatIconModule,
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    NgxUiLoaderModule,
+    PostLoginModule
 
-    ],
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

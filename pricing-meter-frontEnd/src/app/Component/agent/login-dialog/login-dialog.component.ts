@@ -36,10 +36,13 @@ export class LoginDialogComponent extends AppComponentBase implements OnInit {
   }
 
   onSubmit(): void {
+    this.loginService.isUserLoggedIn.next(true);
+    localStorage.setItem('login', 'true');
     this.navigateTo();
   }
   navigateTo(): void {
-    this.router.navigate(['agent/register-step-one']);
+    this.dialogRef.close();
+    this.router.navigate(['pricing-meter/add-property']);
   }
 
   closeGallery(): void{

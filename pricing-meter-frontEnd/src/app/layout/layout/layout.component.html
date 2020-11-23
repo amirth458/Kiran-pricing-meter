@@ -1,0 +1,14 @@
+<div [ngClass]="{'main-wrapper': isAuthenticated}">
+  <div class="sidbar-layout">
+    <app-sidebar *ngIf="isAuthenticated"></app-sidebar>
+  </div>
+  <div class="main-layout">
+    <div class="header-layout">
+      <app-header *ngIf="isAuthenticated"></app-header>
+    </div>
+    <div class="router-Layout">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <ngx-ui-loader></ngx-ui-loader>
+</div>
