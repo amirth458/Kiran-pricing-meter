@@ -7,11 +7,59 @@
   letter-spacing: 0.05em;
   color: #000000;
 }
+.option {
+  font-family: Poppins-Regular;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.05em;
+  color: #6D6D6D;
+}
+
+.margin-opt {
+  width: 400px;
+  display: flex;
+  flex-flow: column;
+  margin:  20px auto;
+}
+
+.opt-btn {
+  background: #000;
+  border-radius: 3px;
+  height: 35px;
+  width: 100%;
+  font-family: Poppins-Regular;
+  color: #FFFFFF;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.fb-color-patch {
+  background: #007CF4;
+}
+.goo-color-patch {
+  background: #ffffff;
+  color: #000000;
+}
+.btn {
+  cursor: pointer;
+  &:focus {
+    outline: none !important;
+  }
+}
+
+
+.div-line {
+  margin-top: 40px;
+}
 .form-content {
   margin: auto 0;
   margin-top: 16%;
-
-
   form.register-form {
     width: 400px;display: flex;flex-flow: column;margin: 0 auto;
 
@@ -46,6 +94,19 @@
       margin-top: 20px;
     }
 
+      .forget-password {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 22px;
+        letter-spacing: 0.05em;
+        text-align: center;
+        color: #006AFF;
+      }
+
+
+
     button.submit-btn {
       background: #407BFF;
       border-radius: 3px;
@@ -58,29 +119,7 @@
       line-height: 37px;
       letter-spacing: 0.05em;
       color: #FFFFFF;
-    }
-
-    .sub-wrap {
-      padding: 10px;
-      text-align: center;
-      font-family: Poppins-Regular;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 15px;
-      line-height: 22px;
-      letter-spacing: 0.05em;
-      color: #6D6D6D;
-
-      a.sign-lynk {
-        font-family: Poppins-Regular;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 15px;
-        line-height: 22px;
-        letter-spacing: 0.05em;
-        color: #006AFF;
-        text-decoration: none;
-      }
+      margin-bottom: 20px;
     }
   }
 }

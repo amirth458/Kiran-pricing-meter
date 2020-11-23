@@ -1,7 +1,7 @@
-<div *ngIf="data.action==='login'">
-  <h2 mat-dialog-title class="login-title"> Welcome to Pricing Meter</h2>
-  <div mat-dialog-content class="form-content">
-    <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<mat-icon class="float-right btn" (click)="closeGallery()">clear</mat-icon>
+<h2 mat-dialog-title class="login-title text-center"> Welcome to Pricing Meter</h2>
+<div mat-dialog-content class="form-content">
+   <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Your Email</mat-label>
         <input matInput formControlName="firstName">
@@ -10,12 +10,29 @@
         <mat-label>Your Password</mat-label>
         <input matInput formControlName="lastName">
       </mat-form-field>
-      <div class="form-footer">
+      <div class="form-footer text-center">
         <button class="submit-btn" (click)="navigateTo()">Login</button>
-        <div class="sub-wrap">Forgot your password?</div>
+        <a class="btn forget-password">Forgot your password?</a>
       </div>
-    </form>
-  </div>
-  <div mat-dialog-actions class="">
-  </div>
+   </form>
+</div>
+<div class="div-line"></div>
+
+ <div class="text-center">
+    <a class="option">Or connect with:</a>
+ </div>
+<div  class="margin-opt">
+  <a class="btn opt-btn">
+    <span class="float-left">
+      <img src="assets/img/Apple-logo.svg" alt="apple">
+    </span> Continue with Apple
+  </a>
+  <a class="btn opt-btn fb-color-patch"><span class="float-left">
+<!--      <img src="assets/img/FB-logo.svg" alt="apple">-->
+    </span>Continue with Facebook
+  </a>
+  <a class="btn opt-btn goo-color-patch"><span class="float-left">
+      <img src="assets/img/Google-logo.svg" alt="google">
+    </span>Continue with Google
+  </a>
 </div>

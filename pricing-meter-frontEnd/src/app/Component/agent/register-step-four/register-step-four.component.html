@@ -8,7 +8,7 @@
       <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Name of the Card</mat-label>
-          <input matInput formControlName="nameOfTheCard" required>
+          <input matInput formControlName="nameOfTheCard" >
           <span>
             <img src="assets/img/step-4-user.svg"  class="user" alt="user">
           </span>
@@ -18,7 +18,7 @@
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Card Number</mat-label>
-          <input matInput formControlName="cardNumber" required>
+          <input matInput formControlName="cardNumber" >
           <span>
             <img src="assets/img/step-4-credit-card.svg"  class="user" alt="card">
           </span>
@@ -28,7 +28,7 @@
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Expiry Date of Card</mat-label>
-          <input matInput formControlName="expiryDateofCard" required>
+          <input matInput formControlName="expiryDateofCard" >
           <img src="assets/img/step-4-calendar.svg"  class="user" alt="calender">
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->
@@ -36,7 +36,7 @@
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>CVV</mat-label>
-          <input matInput formControlName="cvv" required>
+          <input matInput formControlName="cvv" >
           <img src="assets/img/step-4-cvv.svg"  class="user" alt="cvv">
           <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
           <!--                        {{validateUserInput('username')}}-->

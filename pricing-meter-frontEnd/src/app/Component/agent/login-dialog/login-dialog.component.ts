@@ -42,4 +42,8 @@ export class LoginDialogComponent extends AppComponentBase implements OnInit {
     this.router.navigate(['agent/register-step-one']);
   }
 
+  closeGallery(): void{
+    this.dialogRef.close();
+  }
+
 }
