@@ -10,8 +10,10 @@
   <div class="">
     <ul class="list">
       <li *ngFor="let sidebarItem of sidebarItems">
-        <div class="header text-right" style="">
-          <span class=""><img [src]="sidebarItem.active" [alt]="sidebarItem.path"></span>
+        <div class="header text-right" [ngClass]="sidebarItem.url ? 'active': '' ">
+          <span style="padding-right: 9px;"><img *ngIf="sidebarItem.url" [src]="sidebarItem.url? sidebarItem.active: sidebarItem.nonActive" alt="name">
+            <i *ngIf="!sidebarItem.url" class="material-icons" style="color:white">groups</i>
+          </span>
           {{ sidebarItem.title }}
         </div>
         <a

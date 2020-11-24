@@ -30,4 +30,8 @@ export class RegisterStepTwoComponent extends AppComponentBase implements OnInit
   navigateTo(): void{
     this.router.navigate(['agent/register-step-three']);
   }
+
+  homePage(): void{
+    this.router.navigate(['login']);
+  }
 }

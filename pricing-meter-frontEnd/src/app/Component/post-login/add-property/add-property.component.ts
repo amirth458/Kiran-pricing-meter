@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class AddPropertyComponent extends AppComponentBase implements OnInit {
   public propertyForm: FormGroup;
+  public cities = ['Chennai', 'Bangalore'];
   constructor(private inject: Injector, private formBuilder: FormBuilder,) {
     super(inject);
   }
@@ -30,7 +31,13 @@ export class AddPropertyComponent extends AppComponentBase implements OnInit {
       email: ['', []],
       address: ['', []],
       zipcode: ['', []],
+      state: ['', []],
+      city: ['',[]]
     });
+  }
+
+  navigateToCSV(): void {
+    this.router.navigate(['pricing-meter/add-property/csv'])
   }
 
 

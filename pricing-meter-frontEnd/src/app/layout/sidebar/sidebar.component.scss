@@ -6,13 +6,19 @@
   height: 100vh;
   z-index: 1;
   margin-left: 2px;
+  color: #ffffff;
 }
 .header{
-  background: #FFFFFF;
   border-radius: 27.5px;
   display: flex;
   padding: 11px;
   margin-bottom: 9px;
+}
+
+.active{
+  background: #FFFFFF;
+  color: #006AFF;
+
 }
 
 .sidebar .menu .list li.active a {

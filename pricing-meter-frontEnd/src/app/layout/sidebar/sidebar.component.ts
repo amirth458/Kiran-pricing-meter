@@ -25,7 +25,8 @@ export class SidebarComponent extends AppComponentBase implements OnInit {
       active: 'assets/img/add-property-active.svg',
       nonActive: 'assets/img/add-property-nonactive.svg',
       class: '',
-      groupTitle: false
+      groupTitle: false,
+      url: true,
     },
     {
         path: '/pricing-meter/property-list',
@@ -33,7 +34,8 @@ export class SidebarComponent extends AppComponentBase implements OnInit {
         active: 'assets/img/active-property-list.svg',
         nonActive: 'assets/img/non-active-property-list.svg',
         class: '',
-        groupTitle: false
+        groupTitle: false,
+        url: false
     }
     ];
   }

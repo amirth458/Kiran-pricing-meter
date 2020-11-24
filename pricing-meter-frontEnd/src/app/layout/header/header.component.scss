@@ -1,9 +1,13 @@
 .header-wrapper {
-  background-color: #fff;
+  background-color: #FAFCFF;;
   height: 70px;
   padding: 0 40px;
   //position: fixed;
   position: sticky;
+  .material-icons{
+    padding-right: 27px;
+    padding-top: 2px;
+  }
 }
 .right-sec {
   display: inline-flex;
@@ -21,7 +25,7 @@
   letter-spacing: 0.05em;
   text-transform: capitalize;
   color: #555555;
-  padding-right: 100px;
+  padding-right: 27px;
 }
 
 .profile-img{

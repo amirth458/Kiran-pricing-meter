@@ -11,6 +11,8 @@ export class LoginComponent extends AppComponentBase implements OnInit {
 
   constructor(inject: Injector) {
     super(inject);
+    localStorage.clear();
+    this.loginService.isUserLoggedIn.next(true);
   }
 
   ngOnInit(): void {

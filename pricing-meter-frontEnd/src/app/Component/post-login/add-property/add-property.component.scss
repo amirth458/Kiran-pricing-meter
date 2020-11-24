@@ -1,9 +1,11 @@
 .add-property-container{
   margin: 5px;
   padding: 0 40px;
+  .review-section{
+    margin-bottom: 120px;
+  }
 
   .form-content-fluid {
-    margin: 116px 0;
 
     form.register-form {
       width: 500px;display: flex;flex-flow: column;margin: 0 auto;

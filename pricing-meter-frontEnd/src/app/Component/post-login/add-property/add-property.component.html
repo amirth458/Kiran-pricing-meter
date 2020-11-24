@@ -7,8 +7,12 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <div>
-        <a class="btn detail-btn float-right">PROPERTY DETAILS</a>
+      <div class="row review-section">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-4">
+          <a class="btn detail-btn" (click)="navigateToCSV()">Upload CSV</a>
+        </div>
       </div>
       <div  class="form-content-fluid">
         <form class="register-form" [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
@@ -20,6 +24,28 @@
             <mat-label>Property Owner Email</mat-label>
             <input matInput formControlName="email">
           </mat-form-field>
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field class="form-field" appearance="outline">
+                <mat-label>City</mat-label>
+                <mat-select formControlName="city">
+                  <mat-option *ngFor="let city of cities" [value]="city">
+                    {{city}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field class="form-field" appearance="outline">
+                <mat-label>State</mat-label>
+                <mat-select formControlName="state">
+                  <mat-option *ngFor="let city of cities" [value]="city">
+                    {{city}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
           <mat-form-field class="form-field" appearance="outline">
             <mat-label>Street Address</mat-label>
             <input matInput formControlName="address">

@@ -1,0 +1,75 @@
+.uploade-csv{
+  padding: 3%;
+  height: 100%;
+  .header {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 37px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #555555;
+  }
+  .drop-box{
+    background: rgba(0, 106, 255, 0.02);
+    border: 1px dashed #006AFF;
+    box-sizing: border-box;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    .file-input {
+      opacity: 0;
+      position: absolute;
+      z-index: 2;
+      width: 50%;
+      height: 50%;
+    }
+    .add-manually {
+      font-family: Poppins-Regular;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 45px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #FAFCFF;
+      background: rgba(88, 88, 191, 0.9);
+      border-radius: 3px;
+      max-width: 31%;
+      margin-left: 34%;
+      border-color: #fff;
+      margin-top: 4%;
+      margin-bottom: 2%;
+    }
+  }
+  .download-btn {
+    background: #FF4757;
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border-radius: 2px;
+    width: 211px;
+    Height: 49px;
+  }
+
+  .footer-csv {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 45px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #006AFF;
+    //margin-left: 34%;
+  }
+}
+
+

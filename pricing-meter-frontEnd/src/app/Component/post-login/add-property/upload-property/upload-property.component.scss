@@ -9,8 +9,8 @@
     line-height: 37px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-
     color: #555555;
+
   }
   .sub-heading{
     margin-left: 13%;
@@ -21,13 +21,15 @@
     line-height: 15px;
     text-align: justify;
     letter-spacing: 0.05em;
-
+    background-color:  #F3F3F3;
+    max-width: 50%;
     color: #777777;
+    border-radius: 3px;
   }
   .image-wrapper{
     margin-top: 10%;
   }
-  .detail-btn{
+  .csv-btn{
     background: #27BA9C;
     font-family: Poppins-Regular;
     font-style: normal;
@@ -40,6 +42,47 @@
     color: #FFFFFF;
   }
   .btn {
+    cursor: pointer;
+    &:focus {
+      outline: none !important;
+    }
+  }
+  .review-section {
+    margin-bottom: 120px;
+  }
+  .page-link{
+    color: #909090;
+  }
+  .review-title{
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: 0.05em;
+
+    color: #006AFF;
+  }
+  .page-item{
+    margin-right: 20px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+  }
+  .submit-btn {
+    background: #407BFF;
+    border-radius: 3px;
+    border: none;
+    height: 68px;
+    width: 87%;
+
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-size: 25px;
+    line-height: 37px;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    margin-left: 32px;
     cursor: pointer;
     &:focus {
       outline: none !important;

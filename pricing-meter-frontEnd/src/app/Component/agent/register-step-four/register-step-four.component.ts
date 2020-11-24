@@ -34,4 +34,8 @@ export class RegisterStepFourComponent implements OnInit {
   navigateTo(): void {
     this.router.navigate(['agent/register-step-five']);
   }
+
+  homePage(): void{
+    this.router.navigate(['login']);
+  }
 }

@@ -19,4 +19,7 @@ export class RegisterStepThreeComponent extends AppComponentBase implements OnIn
   nextPage(): void{
     this.router.navigate(['agent/register-step-four']);
   }
+  homePage(): void{
+    this.router.navigate(['login']);
+  }
 }

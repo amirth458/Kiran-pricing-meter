@@ -4,6 +4,7 @@ import {AuthGuardGuard} from "../../auth-guard.guard";
 import {AddPropertyComponent} from "./add-property/add-property.component";
 import {PropertyListComponent} from "./property-list/property-list.component";
 import {UploadPropertyComponent} from "./add-property/upload-property/upload-property.component";
+import {UploadCsvComponent} from "./add-property/upload-csv/upload-csv.component";
 
 
 const routes: Routes = [
@@ -22,7 +23,12 @@ const routes: Routes = [
       {
         path: 'add-property/review',
         component: UploadPropertyComponent
+      },
+      {
+        path: 'add-property/csv',
+        component: UploadCsvComponent
       }
+
       ]
   }
 ];
