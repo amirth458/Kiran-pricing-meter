@@ -21,32 +21,52 @@
         letter-spacing: 0.05em;
         color: #407BFF;
         text-align: center;
-        margin-bottom: 58px;
+        margin-bottom: 50px;
       }
 
       form.register-form {
-        width: 530px;display: flex;flex-flow: column;margin: 0 auto;
+        width: 530px;
+        display: flex;
+        flex-flow: column;
+        margin: 0 auto;
 
         .form-field {
           font-family: Poppins-Regular;
 
           ::ng-deep {
+            .mat-form-field-outline {
+              color: #ccc;
+            }
+
+            .mat-form-field-outline-start {
+              border-radius: 2px 0 0 2px;
+            }
+
             .mat-form-field-infix .mat-form-field-label {
               color: #AAAAAB;
             }
+
             .mat-form-field-invalid .mat-form-field-label {
               color: #f44336 !important;
             }
+
+            .mat-form-field-infix {
+              padding: 18px 0 18px 0;
+            }
+
+            .mat-form-field-label {
+              margin-top: -2px;
+            }
           }
-          .user{
+
+          .user {
             position: absolute;
             width: 28px;
             height: 35px;
-            left: 481px;
+            right: 0px;
             top: 1px;
           }
         }
-
 
 
         button.submit-btn {
@@ -61,6 +81,7 @@
           line-height: 37px;
           letter-spacing: 0.05em;
           color: #FFFFFF;
+          margin-bottom: 15px;
         }
 
         span.skip-lbl {
@@ -88,15 +109,15 @@
 
   .right-sec {
     position: relative;
-    background-image: url('src/assets/img/step-4-right-BACKGROUND.svg');
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: auto;
+    //background-image: url('src/assets/img/step-4-right-BACKGROUND.svg');
+    //background-repeat: no-repeat;
+    //background-position: bottom;
+    //background-size: auto;
     background-color: rgba(0, 106, 255, 0.1);
 
     .right-header {
-      position: absolute;
-      top: 91px;
+      position: relative;
+      top: 15px;
       left: 0;
       right: 0;
       line-height: 44px;
@@ -110,18 +131,51 @@
       word-break: break-word;
       padding: 30px;
     }
-    img.right-object{
+
+    img.pricing-bg {
+      width: 100%;
+      height: calc(100vh - 320px);
+    }
+
+    .bottom-control {
+      display: flex;
+      justify-content: center;
       position: absolute;
-      /* left: 57.81%; */
-      right: 27.86%;
-      top: 56.65%;
-      bottom: 17.08%;
+      left: 0;
+      right: 0;
+      bottom: 30px;
+
+      .dot-nav {
+        display: inline-block;
+        width: 20px;
+        height: 2px;
+        background: #E0E0E0;
+        margin-right: 5px;
+
+        &.dot-active {
+          background: #006AFF;
+        }
+      }
     }
   }
 }
 
 
+@media (max-width: 1330px) {
+  .app-agent-register-4 .right-sec .right-header br {
+    display: none;
+  }
+}
 
+@media (max-width: 1200px) {
+  .app-agent-register-4 .left-sec .form-content .form-title {
+    font-size: 30px;
+    margin-bottom: 40px;
+  }
+  .app-agent-register-4 .left-sec .form-content form.register-form {
+    width: 100%;
+  }
+}
 
 
 
