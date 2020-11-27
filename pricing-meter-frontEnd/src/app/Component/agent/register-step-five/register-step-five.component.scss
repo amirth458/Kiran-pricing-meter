@@ -38,6 +38,13 @@
     top: 633px;
     background: #FFFFFF;
     border-radius: 100px;
+    a {
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+      }
+    }
     .greeding-txt{
       font-family: Poppins-Regular;
       font-style: normal;
