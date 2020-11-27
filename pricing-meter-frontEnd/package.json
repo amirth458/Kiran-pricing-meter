@@ -24,6 +24,7 @@
     "bootstrap": "^4.5.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
+    "ngx-csv": "^0.3.2",
     "ngx-ui-loader": "^10.0.0",
     "popper": "^1.0.1",
     "rxjs": "^6.5.5",

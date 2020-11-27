@@ -1,0 +1,70 @@
+.profile-img {
+  width: 50px;
+  border-radius: 20px;
+  border: 2px solid  #ffffff;
+}
+
+.table-header{
+  font-family: Poppins-Regular;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1F1F1F;
+}
+.table-body{
+  font-family: Poppins-Regular;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6D6D6D;
+}
+.address-width{
+  max-width: 250px;
+}
+.mat-table {
+  font-family: Poppins-Regular;
+  border: 0 solid #ffffff ;
+}
+
+.ppt-list-tbl {
+  th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    border-bottom-width: 0;
+    text-align: center;
+  }
+}
+
+.property-header{
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 37px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #555555;
+  padding-left: 58px;
+}
+.property-container{
+  padding: 20px;
+
+  .page-link {
+    color: #666;
+    border: none;
+    border-radius: 100px;
+  }
+
+  .page-item.active .page-link {
+    border-radius: 100px;
+    color: white;
+  }
+
+  .page-item:first-child .page-link {
+    border-radius: 100px;
+  }
+}

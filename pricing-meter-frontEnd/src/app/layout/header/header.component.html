@@ -1,7 +1,32 @@
 <div class="header-wrapper">
   <div class="float-right set-margin ">
     <a class="property-font">My Properties</a>
-    <i class="material-icons">notifications_none</i>
+<!--    <i class="material-icons">notifications_none</i>-->
+    <i class="material-icons"  [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+      notifications_none
+    </i>
     <img  src="assets/img/noimage.jpg" alt="Image" class="profile-img">
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <button mat-menu-item>
+        <span><img src="assets/img/settings.svg"></span>
+        <span class="txt-dropdown">settings</span>
+      </button>
+      <button mat-menu-item>
+        <span><img src="assets/img/add-team-members.svg"></span>
+        <span class="txt-dropdown">Add team members</span>
+      </button>
+      <button mat-menu-item>
+        <span><img src="assets/img/price.svg"></span>
+        <span class="txt-dropdown">Edit Subscription</span>
+      </button>
+      <button mat-menu-item>
+        <span><img src="assets/img/information.svg"></span>
+        <span class="txt-dropdown">help</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <span><img src="assets/img/logout.svg"></span>
+        <span class="txt-dropdown">Logout</span>
+      </button>
+    </mat-menu>
   </div>
 </div>

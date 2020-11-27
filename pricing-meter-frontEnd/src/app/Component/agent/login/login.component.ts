@@ -34,5 +34,11 @@ export class LoginComponent extends AppComponentBase implements OnInit {
     });
   }
 
+  navigateToAddProperty(): void {
+    localStorage.setItem('login', JSON.stringify(true));
+    this.loginService.isUserLoggedIn.next(true);
+    this.router.navigate(['pricing-meter/add-property']);
+  }
+
 
 }

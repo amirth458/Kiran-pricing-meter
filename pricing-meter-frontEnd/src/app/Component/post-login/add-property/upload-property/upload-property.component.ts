@@ -62,6 +62,10 @@ export class UploadPropertyComponent extends AppComponentBase implements OnInit 
     ]
   }
   navigateToCSV(): void {
-    this.router.navigate(['pricing-meter/add-property/csv'])
+    this.router.navigate(['pricing-meter/add-property/csv']);
+  }
+
+  navigateToPropertyList(): void {
+    this.router.navigate(['pricing-meter/property-list'])
   }
 }

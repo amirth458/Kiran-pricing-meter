@@ -40,5 +40,9 @@ export class AddPropertyComponent extends AppComponentBase implements OnInit {
     this.router.navigate(['pricing-meter/add-property/csv'])
   }
 
+  homePage(): void{
+    this.router.navigate(['login']);
+  }
+
 
 }

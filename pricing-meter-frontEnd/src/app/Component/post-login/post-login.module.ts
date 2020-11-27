@@ -11,7 +11,10 @@ import { UploadPropertyComponent } from './add-property/upload-property/upload-p
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from '@angular/material/select';
 import { UploadCsvComponent } from './add-property/upload-csv/upload-csv.component';
-
+import {MatIconModule} from "@angular/material/icon";
+import {MatTableModule} from '@angular/material/table';
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [AddPropertyComponent, PropertyListComponent, UploadPropertyComponent, UploadCsvComponent],
   imports: [
@@ -21,7 +24,13 @@ import { UploadCsvComponent } from './add-property/upload-csv/upload-csv.compone
     MatInputModule,
     ReactiveFormsModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule,
+    MatTableModule,
+    MatTooltipModule,
+  ],
+  exports: [
+    MatMenuModule
   ]
 })
 export class PostLoginModule { }

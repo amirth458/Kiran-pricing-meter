@@ -1,7 +1,10 @@
 <div class="upload-property-container">
   <div class="row">
     <div class="col-sm-6">
-      <a class="btn header-component">Agent Input</a>
+      <a class="btn header-component">
+        Agent Input
+        <mat-icon>?</mat-icon>
+      </a>
       <p class="sub-heading">By answering these final four questions, the Pricing Meter <br/>
         applies data-driven decisions to estimate the property value. </p>
       <div class="image-wrapper">
@@ -40,7 +43,7 @@
             <a class="page-link"  [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
           </li>
         </ul>
-          <button class="submit-btn">FINISH</button>
+          <button class="submit-btn" (click)="navigateToPropertyList()">FINISH</button>
     </div>
   </div>
 </div>
