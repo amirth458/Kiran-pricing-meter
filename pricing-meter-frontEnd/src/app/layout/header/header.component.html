@@ -7,11 +7,11 @@
     </i>
     <img  src="assets/img/noimage.jpg" alt="Image" class="profile-img">
     <mat-menu #menu="matMenu" [overlapTrigger]="false">
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="'pricing-meter/settings'">
         <span><img src="assets/img/settings.svg"></span>
         <span class="txt-dropdown">settings</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="'pricing-meter/team-member'">
         <span><img src="assets/img/add-team-members.svg"></span>
         <span class="txt-dropdown">Add team members</span>
       </button>

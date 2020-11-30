@@ -15,8 +15,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatMenuModule} from '@angular/material/menu';
+import { AccountSettingComponent } from './account-setting/account-setting.component';
+import { AddTeamMembersComponent } from './add-team-members/add-team-members.component';
 @NgModule({
-  declarations: [AddPropertyComponent, PropertyListComponent, UploadPropertyComponent, UploadCsvComponent],
+  declarations: [AddPropertyComponent, PropertyListComponent, UploadPropertyComponent, UploadCsvComponent, AccountSettingComponent, AddTeamMembersComponent],
   imports: [
     CommonModule,
     PostLoginRoutingModule,

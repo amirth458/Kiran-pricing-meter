@@ -13,12 +13,19 @@
   display: flex;
   padding: 11px;
   margin-bottom: 9px;
+  color: #ffffff;
+  a:hover {
+    text-decoration: none;
+  }
+}
+.nonactive{
+  background: #006AFF;
+  color: #ffffff;
 }
 
-.active{
+.active {
   background: #FFFFFF;
   color: #006AFF;
-
 }
 
 .sidebar .menu .list li.active a {
@@ -35,7 +42,7 @@
 }
 
 
-.app-logo{
+.app-logo {
   padding: 22px 0;
 }
 

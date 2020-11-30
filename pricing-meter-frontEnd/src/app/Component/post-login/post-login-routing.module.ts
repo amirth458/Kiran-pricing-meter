@@ -5,6 +5,8 @@ import {AddPropertyComponent} from "./add-property/add-property.component";
 import {PropertyListComponent} from "./property-list/property-list.component";
 import {UploadPropertyComponent} from "./add-property/upload-property/upload-property.component";
 import {UploadCsvComponent} from "./add-property/upload-csv/upload-csv.component";
+import {AccountSettingComponent} from "./account-setting/account-setting.component";
+import {AddTeamMembersComponent} from "./add-team-members/add-team-members.component";
 
 
 const routes: Routes = [
@@ -27,8 +29,15 @@ const routes: Routes = [
       {
         path: 'add-property/csv',
         component: UploadCsvComponent
+      },
+      {
+        path: 'settings',
+        component:  AccountSettingComponent
+      },
+      {
+        path: 'team-member',
+        component: AddTeamMembersComponent
       }
-
       ]
   }
 ];

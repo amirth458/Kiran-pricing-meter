@@ -7,7 +7,6 @@ import {AppComponentBase} from "../../Shared/AppBaseComponent";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent extends AppComponentBase implements OnInit {
-
   constructor(inject: Injector) {
     super(inject);
   }
@@ -19,5 +18,7 @@ export class HeaderComponent extends AppComponentBase implements OnInit {
     localStorage.clear();
     this.router.navigate(['login']);
   }
-
+  navigateTo(path): void {
+    this.router.navigate(['pricing-meter/' + path]);
+  }
 }

@@ -1,0 +1,121 @@
+.add-team-container {
+    height: 100%;
+    background: linear-gradient(90deg, #FFFFFF 50%, #006BFF 50%);
+    padding: 38px;
+
+  .wapper-add {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: white;
+    height: 100%;
+    .left-section {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      column-gap: 10px;
+      .form-title {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 21px;
+        letter-spacing: 0.05em;
+      }
+      .form-field {
+        font-family: Poppins-Regular;
+        ::ng-deep {
+          .mat-form-field-outline {
+            color: #ccc;
+          }
+
+          .mat-form-field-outline-start {
+            border-radius: 2px 0 0 2px;
+          }
+
+          .mat-form-field-infix .mat-form-field-label {
+            color: #AAAAAB;
+          }
+
+          .mat-form-field-invalid .mat-form-field-label {
+            color: #f44336 !important;
+          }
+
+          .mat-form-field-infix {
+            padding: 18px 0 18px 0;
+          }
+
+          .mat-form-field-label {
+            margin-top: -2px;
+          }
+        }
+      }
+      .title-txt {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 36px;
+        letter-spacing: 0.05em;
+        text-transform: capitalize;
+        color: #000000;
+        margin-bottom: 100px;
+      }
+      .add-team-btn {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 27px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #FFFFFF;
+        background: #006AFF;
+        width: 160px;
+        height: 50px;
+        border-color: white;
+        align-self: flex-end;
+      }
+      .active-team {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 21px;
+        letter-spacing: 0.05em;
+      }
+      .team-list {
+        background: #FFFFFF;
+        box-shadow: 0 4px 20px rgba(223, 222, 222, 0.25);
+        max-height: 205px;
+        overflow: scroll;
+        .profile-pic {
+          border-radius: 100px;
+          width: 53px;
+          height: 53px;
+        }
+        .team-profile {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          justify-content: flex-end;
+          align-items: center;
+          .team-member {
+            font-family: Poppins-Regular;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 27px;
+            letter-spacing: 0.05em;
+            text-transform: capitalize;
+            color: #000000;
+            column-gap: 10px;
+          }
+        }
+      }
+    }
+    .right-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

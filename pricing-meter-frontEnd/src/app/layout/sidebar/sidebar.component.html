@@ -10,17 +10,16 @@
   <div class="">
     <ul class="list">
       <li *ngFor="let sidebarItem of sidebarItems">
-        <div class="header text-right" [ngClass]="sidebarItem.url ? 'active': '' ">
-          <span style="padding-right: 9px;"><img *ngIf="sidebarItem.url" [src]="sidebarItem.url? sidebarItem.active: sidebarItem.nonActive" alt="name">
-            <i *ngIf="!sidebarItem.url" class="material-icons" style="color:white">groups</i>
+        <div class="header text-right"
+             [ngClass]="activePath(sidebarItem.path) ? 'active': '' ">
+          <a
+            [routerLink]="sidebarItem.path" class="nonactive" [ngClass]="activePath(sidebarItem.path) ? 'active': '' ">
+          <span style="padding-right: 9px;">
+            <img [src]="activePath(sidebarItem.path)? sidebarItem.active: sidebarItem.nonActive" alt="name">
           </span>
           {{ sidebarItem.title }}
+          </a>
         </div>
-        <a
-          [routerLink]="sidebarItem.path"
-          *ngIf="!sidebarItem.groupTitle"
-          (click)="callMenuToggle($event, sidebarItem.path)">
-        </a>
       </li>
     </ul>
   </div>
