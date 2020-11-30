@@ -1,56 +1,54 @@
 <div class="setting-container">
-  <div class="left-container">
-    <div class="account-info-left">
-      <h3 class="title-txt">Logo</h3>
-      <div class="profile-wrap">
-        <img src="assets/img/noimage.jpg" alt="img" class="image-set" style="">
-        <button class="upload-btn">Upload</button>
-        <button class="upload-btn remove-btn">Remove</button>
+  <div class="wapper-add">
+      <div class="account-info-left">
+        <h3 class="title-txt">Logo</h3>
+        <div class="profile-wrap">
+          <img src="assets/img/noimage.jpg" alt="img" class="image-set" style="">
+          <button class="upload-btn">Upload</button>
+          <button class="upload-btn remove-btn">Remove</button>
+        </div>
+        <h3 class="form-header">Personal Info</h3>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input matInput >
+          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+          <!--                        {{validateUserInput('username')}}-->
+          <!--                    </mat-error>-->
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Email address</mat-label>
+          <input matInput >
+          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+          <!--                        {{validateUserInput('username')}}-->
+          <!--                    </mat-error>-->
+        </mat-form-field>
+        <h3 class="title-txt">Payment methods</h3>
+        <div>
+          <label class="card-label" for="card">Card</label>
+          <h3 class="float-right exp-txt">Expires on 25/12/2025</h3>
+          <input class="card-input"  id="card" placeholder="0000-0000-0000">
+          <a class="float-right remove-txt">Edit / Remove Card</a>
+        </div>
       </div>
-      <h3 class="form-header">Personal Info</h3>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>First Name</mat-label>
-        <input matInput >
-        <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-        <!--                        {{validateUserInput('username')}}-->
-        <!--                    </mat-error>-->
-      </mat-form-field>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Email address</mat-label>
-        <input matInput >
-        <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-        <!--                        {{validateUserInput('username')}}-->
-        <!--                    </mat-error>-->
-      </mat-form-field>
-      <h3 class="title-txt">Payment methods</h3>
-      <div>
-        <label class="card-label" for="card">Card</label>
-        <h3 class="float-right exp-txt">Expires on 25/12/2025</h3>
-        <input class="card-input"  id="card" placeholder="0000-0000-0000">
-        <a class="float-right remove-txt">Edit / Remove Card</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="right-container">
-    <div class="account-info-right">
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input matInput >
-        <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-        <!--                        {{validateUserInput('username')}}-->
-        <!--                    </mat-error>-->
-      </mat-form-field>
-      <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Phone</mat-label>
-        <input matInput >
-        <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-        <!--                        {{validateUserInput('username')}}-->
-        <!--                    </mat-error>-->
-      </mat-form-field>
-    </div>
-<!--    <div class="save-wapper">-->
-<!--      <button class="save-button">save</button>-->
-<!--    </div>-->
+       <div class="account-info-right">
+             <mat-form-field class="form-field" appearance="outline">
+               <mat-label>Last Name</mat-label>
+               <input matInput >
+               <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+               <!--                        {{validateUserInput('username')}}-->
+               <!--                    </mat-error>-->
+             </mat-form-field>
+             <mat-form-field class="form-field" appearance="outline">
+               <mat-label>Phone</mat-label>
+               <input matInput >
+               <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
+               <!--                        {{validateUserInput('username')}}-->
+               <!--                    </mat-error>-->
+             </mat-form-field>
+               <button class="save-button">save</button>
+       </div>
   </div>
 </div>
+
+
+
