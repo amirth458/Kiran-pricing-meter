@@ -74,6 +74,7 @@
         height: 50px;
         border-color: white;
         align-self: flex-end;
+        margin-top: 60px;
       }
       .active-team {
         font-family: Poppins-Regular;
@@ -87,7 +88,10 @@
         background: #FFFFFF;
         box-shadow: 0 4px 20px rgba(223, 222, 222, 0.25);
         max-height: 205px;
-        overflow: scroll;
+        overflow-x: auto;
+        ::-webkit-scrollbar {
+          width: 10px;
+        }
         .profile-pic {
           border-radius: 100px;
           width: 53px;

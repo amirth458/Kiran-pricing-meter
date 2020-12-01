@@ -1,0 +1,46 @@
+.dialog-container {
+  display: grid;
+  grid-template-rows: auto auto;
+  .title-dialog{
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: 0.05em;
+  }
+  .action-btn {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 10px;
+    margin: 19px 19px 0 0;
+}
+.submit-dialog {
+font-family: Poppins-Regular;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 27px;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+  width: 160px;
+  height: 50px;
+  border-color: white;
+background: #006AFF;
+color: white;
+}
+.cancel-dialog {
+font-family: Poppins-Regular;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 27px;
+  width: 160px;
+  height: 50px;
+  border-color: white;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+color: #6D6D6D;
+}
+
+}

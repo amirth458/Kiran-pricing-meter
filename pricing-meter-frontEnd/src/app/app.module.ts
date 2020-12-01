@@ -23,6 +23,8 @@ import {NgxUiLoaderModule} from "ngx-ui-loader";
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import {PostLoginModule} from "./Component/post-login/post-login.module";
+import { CommonDialogBoxComponent } from './Shared/common-dialog-box/common-dialog-box.component';
+import {MatButtonModule} from "@angular/material/button";
 // import { MatToolbarModule } from '@angular/material/toolbar';
 
 
@@ -40,23 +42,25 @@ import {PostLoginModule} from "./Component/post-login/post-login.module";
     LayoutComponent,
     SidebarComponent,
     HeaderComponent,
+    CommonDialogBoxComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    NgxUiLoaderModule,
-    PostLoginModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSidenavModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatIconModule,
+        NgxUiLoaderModule,
+        PostLoginModule,
+        MatButtonModule
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

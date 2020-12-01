@@ -7,6 +7,7 @@ import {UploadPropertyComponent} from "./add-property/upload-property/upload-pro
 import {UploadCsvComponent} from "./add-property/upload-csv/upload-csv.component";
 import {AccountSettingComponent} from "./account-setting/account-setting.component";
 import {AddTeamMembersComponent} from "./add-team-members/add-team-members.component";
+import {EditSubscriptionComponent} from "./edit-subscription/edit-subscription.component";
 
 
 const routes: Routes = [
@@ -37,6 +38,10 @@ const routes: Routes = [
       {
         path: 'team-member',
         component: AddTeamMembersComponent
+      },
+      {
+        path: 'subscription',
+        component: EditSubscriptionComponent
       }
       ]
   }

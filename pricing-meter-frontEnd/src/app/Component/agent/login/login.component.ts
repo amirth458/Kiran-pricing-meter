@@ -8,30 +8,39 @@ import {LoginDialogComponent} from "../login-dialog/login-dialog.component";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends AppComponentBase implements OnInit {
-
+    public isLogined: string;
   constructor(inject: Injector) {
     super(inject);
-    localStorage.clear();
+    localStorage.setItem('login', '');
     this.loginService.isUserLoggedIn.next(true);
   }
 
   ngOnInit(): void {
+    this.isLogined = localStorage.getItem('logined');
   }
 
   navigateTo(): void {
     this.router.navigate(['agent/register-step-one']);
   }
-
+  onLogoClick(): void {
+    this.isLogined ? this.navigateToAddProperty() : this.loginPopUp();
+  }
   loginPopUp(): void {
-    const dialogRef = this.dialog.open(LoginDialogComponent, {
-      data: {action: 'login'},
-      width: '550px',
-      height: '753px'
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-      }
-    });
+    if(this.isLogined) {
+      this.navigateToAddProperty();
+      return;
+    }
+    else {
+      const dialogRef = this.dialog.open(LoginDialogComponent, {
+        data: {action: 'login'},
+        width: '550px',
+        height: '753px'
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+        }
+      });
+    }
   }
 
   navigateToAddProperty(): void {

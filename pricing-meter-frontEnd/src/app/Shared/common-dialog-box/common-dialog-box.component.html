@@ -1,0 +1,9 @@
+<div *ngIf="data.action==='activate'" class="dialog-container">
+  <h2 class="title-dialog">Are you sure you would like to switch your subscription?</h2>
+  <div  class="action-btn">
+    <button (click)="submitButton()" class="submit-dialog" id="submit">
+      Active
+    </button>
+    <button (click)="cancelButton()" class="cancel-dialog" >cancel</button>
+  </div>
+</div>

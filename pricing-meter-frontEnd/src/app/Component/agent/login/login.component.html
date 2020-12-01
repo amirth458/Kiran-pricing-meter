@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-6">
-       <img src="assets/img/home-page-logo.svg" class="logo-img" />
+       <img src="assets/img/home-page-logo.svg" class="logo-img"  (click)="this.isLogined ? this.navigateToAddProperty() : this.loginPopUp();"/>
     </div>
     <div class="col-sm-1">
     </div>
@@ -9,9 +9,9 @@
       <a class="txt-right">Pricing </a>
       <a class="txt-right">Features </a>
       <a class="txt-right set-margin">About </a>
-      <button class="tab-btn" (click)="navigateToAddProperty()" style="width: 133px;">Add Property</button>
-      <button class="tab-btn" (click)="loginPopUp()" >Login</button>
-      <button class="tab-btn btn-active" (click)="navigateTo()">Sign up</button>
+      <button class="tab-btn" (click)="navigateToAddProperty()" *ngIf="isLogined" style="width: 133px;">Pricing Meter</button>
+      <button class="tab-btn" (click)="loginPopUp()" *ngIf="!isLogined">Login</button>
+      <button class="tab-btn btn-active" (click)="navigateTo()" *ngIf="!isLogined">Sign up</button>
     </div>
   </div>
   <div class="row jumbotron">

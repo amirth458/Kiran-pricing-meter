@@ -37,6 +37,7 @@ export class LoginDialogComponent extends AppComponentBase implements OnInit {
 
   onSubmit(): void {
     localStorage.setItem('login', 'true');
+    localStorage.setItem('logined', 'user');
     this.loginService.isUserLoggedIn.next(true);
     this.navigateTo();
   }
