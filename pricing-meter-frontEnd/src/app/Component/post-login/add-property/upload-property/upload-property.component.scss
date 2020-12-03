@@ -1,6 +1,11 @@
 .upload-property-container{
   margin: 5px;
   padding: 0 40px;
+  display: grid;
+  grid-template: 1fr/ 0.8fr 1fr ;
+  .right-section {
+    padding-left: 131px;
+  }
   .header-component{
     font-family: Poppins-Regular;
     font-style: normal;
@@ -28,6 +33,11 @@
   }
   .image-wrapper{
     margin-top: 10%;
+    margin-left: 62px;
+    .img-fit {
+      object-fit: cover;
+      width: 96%;
+    }
   }
   .csv-btn{
     background: #27BA9C;
@@ -74,7 +84,7 @@
     border-radius: 3px;
     border: none;
     height: 68px;
-    width: 87%;
+    width: 638px;
 
     font-family: Poppins-Regular;
     font-style: normal;
@@ -90,5 +100,12 @@
   }
 }
 
-
+@media (max-width: 1660px) {
+.upload-property-container{
+  grid-template: 1fr 1fr / 1fr;
+  }
+ .right-section {
+   padding-left: 257px;
+ }
+}
 

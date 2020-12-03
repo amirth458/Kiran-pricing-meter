@@ -18,8 +18,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import { AccountSettingComponent } from './account-setting/account-setting.component';
 import { AddTeamMembersComponent } from './add-team-members/add-team-members.component';
 import { EditSubscriptionComponent } from './edit-subscription/edit-subscription.component';
+import { HelpComponent } from './help/help.component';
 @NgModule({
-  declarations: [AddPropertyComponent, PropertyListComponent, UploadPropertyComponent, UploadCsvComponent, AccountSettingComponent, AddTeamMembersComponent, EditSubscriptionComponent],
+  declarations: [AddPropertyComponent, PropertyListComponent, UploadPropertyComponent, UploadCsvComponent, AccountSettingComponent, AddTeamMembersComponent, EditSubscriptionComponent, HelpComponent],
   imports: [
     CommonModule,
     PostLoginRoutingModule,

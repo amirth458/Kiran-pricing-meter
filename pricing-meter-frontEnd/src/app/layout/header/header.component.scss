@@ -4,10 +4,16 @@
   padding: 0 40px;
   //position: fixed;
   position: sticky;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 20px;
   .material-icons{
-    padding-right: 27px;
-    padding-top: 2px;
+    //padding-right: 27px;
+    //padding-top: 2px;
   }
+
+
 }
 .right-sec {
   display: inline-flex;
@@ -25,7 +31,6 @@
   letter-spacing: 0.05em;
   text-transform: capitalize;
   color: #555555;
-  padding-right: 27px;
 }
 
 .profile-img {
@@ -45,4 +50,8 @@
   text-transform: capitalize;
   color: #989797;
   margin: 0 7%;
+}
+
+::ng-deep.mat-menu-panel {
+  width: 230px !important;
 }

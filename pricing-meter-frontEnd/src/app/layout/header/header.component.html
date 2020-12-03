@@ -1,25 +1,23 @@
 <div class="header-wrapper">
-  <div class="float-right set-margin ">
     <a class="property-font">My Properties</a>
-<!--    <i class="material-icons">notifications_none</i>-->
-    <i class="material-icons"  [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+    <i class="material-icons" style="color:#555555" >
       notifications_none
     </i>
-    <img  src="assets/img/noimage.jpg" alt="Image" class="profile-img">
-    <mat-menu #menu="matMenu" [overlapTrigger]="false">
-      <button mat-menu-item [routerLink]="'pricing-meter/settings'">
+    <img  src="assets/img/noimage.jpg" alt="Image" class="profile-img" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+    <mat-menu #menu="matMenu" [overlapTrigger]="false" >
+      <button mat-menu-item routerLink="pricing-meter/settings">
         <span><img src="assets/img/settings.svg"></span>
         <span class="txt-dropdown">settings</span>
       </button>
-      <button mat-menu-item [routerLink]="'pricing-meter/team-member'">
+      <button mat-menu-item routerLink="pricing-meter/team-member">
         <span><img src="assets/img/add-team-members.svg"></span>
         <span class="txt-dropdown">Add team members</span>
       </button>
-      <button mat-menu-item [routerLink]="'pricing-meter/subscription'">
+      <button mat-menu-item routerLink="pricing-meter/subscription">
         <span><img src="assets/img/price.svg"></span>
         <span class="txt-dropdown">Edit Subscription</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item routerLink="pricing-meter/help">
         <span><img src="assets/img/information.svg"></span>
         <span class="txt-dropdown">help</span>
       </button>
@@ -28,5 +26,4 @@
         <span class="txt-dropdown">Logout</span>
       </button>
     </mat-menu>
-  </div>
 </div>

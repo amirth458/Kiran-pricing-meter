@@ -34,15 +34,17 @@
 }
 
 .list{
-  margin-left: -20px;
+  margin-left: -36px;
   margin-right: 20px;
   li {
     list-style-type: none;
   }
 }
-
+list.ul {
+  margin-block-start: 0;
+}
 
 .app-logo {
-  padding: 22px 0;
+  padding: 22px 10px;
 }
 

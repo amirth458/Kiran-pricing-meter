@@ -1,0 +1,96 @@
+.help-container {
+  height: 100%;
+  background: linear-gradient(90deg, #FFFFFF 50%, #006BFF 50%);
+  padding: 38px;
+  .card {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-color: white;
+  }
+  .help-left-section {
+    .help-title {
+      font-family: Poppins-Regular;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 36px;
+      letter-spacing: 0.05em;
+      text-transform: capitalize;
+      color: #000000;
+      margin-bottom: 60px
+    }
+  }
+  .help-right-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .img-fit {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  form.help-form {
+    width: 800px;
+    display: flex;
+    flex-flow: column;
+    margin: 74px auto 0 auto;
+    row-gap: 30px;
+    .form-field {
+      font-family: Poppins-Regular;
+
+      ::ng-deep {
+        .mat-form-field-outline {
+          color: #ccc;
+        }
+
+        .mat-form-field-outline-start {
+          border-radius: 2px 0 0 2px;
+        }
+
+        .mat-form-field-infix .mat-form-field-label {
+          color: #AAAAAB;
+        }
+
+        .mat-form-field-invalid .mat-form-field-label {
+          color: #f44336 !important;
+        }
+
+        .mat-form-field-infix {
+          padding: 18px 0 18px 0;
+        }
+
+        .mat-form-field-label {
+          margin-top: -2px;
+        }
+        textarea.mat-input-element {
+          padding: 50px 0;
+          margin: -2px 0;
+        }
+      }
+
+    }
+    .submit-btn-wapper {
+      display: flex;
+      height: 100%;
+      align-items: flex-end;
+      justify-content: flex-end;
+      button.submit-btn {
+        background: #407BFF;
+        border-radius: 3px;
+        border: none;
+        height: 50px;
+        width: 160px;
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-size: 25px;
+        line-height: 37px;
+        letter-spacing: 0.05em;
+        color: #FFFFFF;
+        margin: 0 17px 0 0 ;
+
+      }
+    }
+  }
+}

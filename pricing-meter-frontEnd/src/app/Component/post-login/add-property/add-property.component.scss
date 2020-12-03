@@ -8,7 +8,7 @@
   .form-content-fluid {
 
     form.register-form {
-      width: 500px;display: flex;flex-flow: column;margin: 0 auto;
+      display: flex;flex-flow: column;margin: 0 auto;
 
       .form-field {
         font-family: 'Poppins-Regular';
@@ -89,6 +89,10 @@
 }
 .image-wrapper{
   margin-top: 10%;
+  .image-fit {
+    object-fit: cover;
+    width: 96%
+  }
 }
 .detail-btn{
   background: #27BA9C;
@@ -106,5 +110,13 @@
   cursor: pointer;
   &:focus {
     outline: none !important;
+  }
+}
+.add-property-container {
+  @media (max-width: 1669px) {
+    .col-sm-6 {
+      flex: 100%;
+      max-width: 100%;
+    }
   }
 }
