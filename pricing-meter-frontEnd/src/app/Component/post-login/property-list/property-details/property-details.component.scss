@@ -1,0 +1,223 @@
+.property-detail-container {
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+   .share-btn {
+     font-family: Poppins-Regular;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 14px;
+     line-height: 21px;
+     text-align: center;
+     letter-spacing: 0.05em;
+     text-transform: uppercase;
+     color: #006AFF;
+     border: 1.5px solid #006AFF;
+     box-sizing: border-box;
+     border-radius: 100px;
+     width: 275px;
+     height: 60px;
+     background-color: white;
+   }
+  .pricing-analog {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    background: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(220, 220, 220, 0.25);
+    border-radius: 5px;
+  }
+  .pricing-value {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    margin: 15px 0;
+    .card{
+      border-color: white;
+      background: #FFFFFF;
+      box-shadow: 0px 4px 20px rgba(220, 220, 220, 0.25);
+    }
+    .txt-field {
+      font-family: Poppins-Regular;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #1F8CF5;
+    }
+    .price-field {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 35px;
+      line-height: 41px;
+
+      color: #007CF4;
+    }
+  }
+  .engagement-container {
+    display: grid;
+    grid-template-columns: 1.0fr 0.6fr;
+    background: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(185, 183, 183, 0.25);
+    border-radius: 5px;
+    margin: 13px;
+    .engagement-image {
+      object-fit: cover;
+      width: 100%;
+      height: min-content;
+    }
+    .engagement-text {
+      background: #FFFFFF;
+      box-shadow: 0px 4px 20px rgba(220, 220, 220, 0.25);
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-left: 15px;
+
+    }
+    //.text-head {
+    //  font-family: Poppins-Regular;
+    //  font-style: normal;
+    //  font-weight: 500;
+    //  font-size: 24px;
+    //  line-height: 36px;
+    //  letter-spacing: 0.05em;
+    //  color: #006AFF;
+    //}
+
+  }
+  .text-head {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: 0.05em;
+    color: #006AFF;
+  }
+  .text-tail {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 33px;
+    letter-spacing: 0.05em;
+    color: #919191;
+
+  }
+
+  .page-item{
+    margin-right: 20px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+  }
+  .page-link{
+    color: #006AFF;
+    border-color:  #006AFF;
+  ;
+  }
+  .rating-list {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(185, 183, 183, 0.25);
+    border-radius: 5px;
+  }
+  .rate-btn {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    text-transform: capitalize;
+    color: #FFFFFF;
+    width: 100px;
+    height: 40px;
+    background-color: #006AFF;
+    border-color: white;
+    margin-top: 5px;
+
+  }
+  .similar-card {
+    display: flex;
+    flex-direction: column;
+    .property-cards {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 30px;
+    }
+    .property-card {
+      background: #407BFF;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 240px;
+      height: 300px;
+      row-gap: 10px
+    }
+    .pro-img {
+      width: 50px;
+      border-radius: 27px;
+
+    }
+    .content {
+      font-family: Poppins-Regular;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 21px;
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+    }
+    .active-content {
+      font-family: Poppins-Regular;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 8px;
+      line-height: 12px;
+      letter-spacing: 0.05em;
+      color: #407BFF;
+    }
+    .card-btn {
+      background: #FFFFFF;
+      border-radius: 10px;
+      width: 90px;
+      height: 31px;
+      border-color: white;
+    }
+  }
+  .info-footer{
+    font-family: 'Poppins-Regular';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    text-transform: capitalize;
+    color: #000000;
+    text-align: center;
+  }
+  .share-icon {
+    background-color: #006AFF;
+    border-radius: 100px;
+    height: 45px;
+    width: 45px;
+    margin-left: 12px;
+  }
+}

@@ -19,22 +19,46 @@ import { AccountSettingComponent } from './account-setting/account-setting.compo
 import { AddTeamMembersComponent } from './add-team-members/add-team-members.component';
 import { EditSubscriptionComponent } from './edit-subscription/edit-subscription.component';
 import { HelpComponent } from './help/help.component';
+import {GaugesModule} from '@biacsics/ng-canvas-gauges';
+import { PropertyDetailsComponent } from './property-list/property-details/property-details.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {MatButtonModule} from "@angular/material/button";
+import { PricingMeterDemoComponent } from './property-list/pricing-meter-demo/pricing-meter-demo.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { NgSelectModule } from '@ng-select/ng-select'
+
 @NgModule({
-  declarations: [AddPropertyComponent, PropertyListComponent, UploadPropertyComponent, UploadCsvComponent, AccountSettingComponent, AddTeamMembersComponent, EditSubscriptionComponent, HelpComponent],
-  imports: [
-    CommonModule,
-    PostLoginRoutingModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatIconModule,
-    MatTableModule,
-    MatTooltipModule,
+  declarations: [
+    AddPropertyComponent,
+    PropertyListComponent,
+    UploadPropertyComponent,
+    UploadCsvComponent,
+    AccountSettingComponent,
+    AddTeamMembersComponent,
+    EditSubscriptionComponent,
+    HelpComponent,
+    PropertyDetailsComponent,
+    PricingMeterDemoComponent
   ],
+    imports: [
+        CommonModule,
+        PostLoginRoutingModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatIconModule,
+        MatTableModule,
+        MatTooltipModule,
+        BrowserModule,
+        GaugesModule,
+        MatButtonModule,
+        NgSelectModule
+    ],
   exports: [
-    MatMenuModule
+    MatMenuModule,
+    MatAutocompleteModule
   ]
 })
 export class PostLoginModule { }

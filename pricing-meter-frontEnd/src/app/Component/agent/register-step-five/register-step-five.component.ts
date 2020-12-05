@@ -14,7 +14,16 @@ export class RegisterStepFiveComponent extends AppComponentBase implements OnIni
 
   ngOnInit(): void {
   }
+  // homePage(): void {
+  //   this.router.navigate(['login']);
+  // }
   homePage(): void {
-    this.router.navigate(['login']);
+    localStorage.setItem('login', 'true');
+    localStorage.setItem('logined', 'user');
+    this.loginService.isUserLoggedIn.next(true);
+    this.navigateTo();
+  }
+  navigateTo(): void {
+    this.router.navigate(['pricing-meter/add-property']);
   }
 }

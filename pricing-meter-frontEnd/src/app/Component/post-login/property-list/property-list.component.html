@@ -38,7 +38,9 @@
           <img src="assets/img/loading.svg" alt="loading">
         </span>
         <span class="" *ngIf="element.status === 'active'">
+          <a [routerLink]="element.id">
           <img src="assets/img/link.svg" alt="link" class="padding-adjust">
+          </a>
           <mat-icon style="color:#2ED573;">offline_pin</mat-icon>
           <mat-icon style="color:#C4C4C4;">edit</mat-icon>
         </span>

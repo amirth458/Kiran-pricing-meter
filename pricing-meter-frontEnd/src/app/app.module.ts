@@ -58,8 +58,7 @@ import {MatButtonModule} from "@angular/material/button";
         MatIconModule,
         NgxUiLoaderModule,
         PostLoginModule,
-        MatButtonModule
-
+        MatButtonModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

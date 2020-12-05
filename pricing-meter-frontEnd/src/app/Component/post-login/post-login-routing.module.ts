@@ -9,6 +9,8 @@ import {AccountSettingComponent} from "./account-setting/account-setting.compone
 import {AddTeamMembersComponent} from "./add-team-members/add-team-members.component";
 import {EditSubscriptionComponent} from "./edit-subscription/edit-subscription.component";
 import {HelpComponent} from "./help/help.component";
+import {PropertyDetailsComponent} from "./property-list/property-details/property-details.component";
+import {PricingMeterDemoComponent} from "./property-list/pricing-meter-demo/pricing-meter-demo.component";
 
 
 const routes: Routes = [
@@ -47,6 +49,15 @@ const routes: Routes = [
       {
         path: 'help',
         component: HelpComponent
+      },
+      {
+        path: 'property-list/:id',
+        // component: PropertyDetailsComponent
+        component: PricingMeterDemoComponent
+      },
+      {
+        path: 'property-lists',
+        component: PropertyDetailsComponent
       }
       ]
   }
