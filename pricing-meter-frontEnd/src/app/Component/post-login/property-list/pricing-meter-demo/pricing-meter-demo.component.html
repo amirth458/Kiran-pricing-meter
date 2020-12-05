@@ -1,8 +1,100 @@
-<div class="progress">
-  <div class="precent">200 km/h</div>
-  <div class="circle"></div>
-  <div class="range">
-    <input type="range" min="0" max="100" [value]="47" id="range">
-    <div class="filled"></div>
+<div class="progress_meter">
+  <div class="main_progress_meter">
+    <div class="meter_bg">
+      <svg version="1.1" id="Layer_1" x="0px" y="0px" viewBox="-33 239 347 343">
+        <style type="text/css">
+          .final_bg{fill:url(#back_linear_gradient);}
+          .main_bg{fill:url(#main_radial_gradient);fill-opacity:0.2;}
+          .second_bg{fill:url(#front_linear_gradient);}
+          .semi_circle{fill:#03C4A1;}
+          .grey_bg{fill:#555555;}
+          .open_font{font-family:'open-sans'; font-weight: 600;}
+          .font_10{font-size:10px;}
+          .fixed_pointer{fill:url(#fixed_gradient);}
+        </style>
+        <linearGradient id="back_linear_gradient" gradientUnits="userSpaceOnUse" x1="140.5" y1="237.4" x2="140.5" y2="579.6" gradientTransform="matrix(1 0 0 1 0 2)">
+          <stop offset="0" style="stop-color:#FFFFFF"/>
+          <stop offset="0.4731" style="stop-color:#03C4A1"/>
+          <stop offset="0.7527" style="stop-color:#03C4A1"/>
+          <stop offset="1" style="stop-color:#03C4A1"/>
+        </linearGradient>
+        <path class="final_bg" d="M140.5,581.6c-95.2,0-172.6-76.7-172.6-171.1c0-94.3,77.4-171.1,172.6-171.1s172.6,76.7,172.6,171.1
+          S235.7,581.6,140.5,581.6z M140.5,250c-89.4,0-162.1,72.1-162.1,160.7s72.7,160.7,162.1,160.7s162.1-72.1,162.1-160.7
+          S229.9,250,140.5,250z"/>
+        <radialGradient id="main_radial_gradient" cx="-131.601" cy="0.9657" r="1" gradientTransform="matrix(248.155 0 0 245.939 32802.7148 134.1629)" gradientUnits="userSpaceOnUse">
+          <stop offset="0" style="stop-color:#FFFFFF"/>
+          <stop offset="1" style="stop-color:#2ED573"/>
+        </radialGradient>
+        <path class="main_bg" d="M141.7,578c89.9,0,162.7-72.2,162.7-161.3s-72.9-161.3-162.7-161.3C51.9,255.4-21,327.6-21,416.7
+          S51.9,578,141.7,578z"/>
+        <linearGradient id="front_linear_gradient" gradientUnits="userSpaceOnUse" x1="140.5" y1="242" x2="140.5" y2="575" gradientTransform="matrix(1 0 0 1 0 2)">
+          <stop offset="0" style="stop-color:#00DF1F"/>
+          <stop offset="0.2473" style="stop-color:#4CCCB5"/>
+          <stop offset="0.5269" style="stop-color:#00C09D"/>
+          <stop offset="1" style="stop-color:#FFFFFF"/>
+        </linearGradient>
+        <path class="second_bg" d="M140.5,577c-92.6,0-168-74.7-168-166.5S47.9,244,140.5,244s168,74.7,168,166.5S233.1,577,140.5,577z
+          M140.5,254.6c-86.8,0-157.4,70-157.4,156s70.6,156,157.4,156s157.4-70,157.4-156S227.4,254.6,140.5,254.6z"/>
+        <path class="semi_circle" d="M221.7,457.4l-3-1.8c8-13.6,12.3-29.3,12.3-45.1c0-49.4-40.6-89.6-90.4-89.6s-90.3,40.2-90.3,89.6
+          c0,15.5,4.1,30.9,11.8,44.3l-3.1,1.8c-8-13.9-12.3-29.8-12.3-46c0-51.3,42.1-93,93.9-93s93.9,41.7,93.9,93
+          C234.4,427.1,230,443.3,221.7,457.4z"/>
+        <path class="semi_circle" d="M201.9,446l-3-1.8c6-10.2,9.2-21.9,9.2-33.7c0-36.9-30.3-67-67.6-67s-67.6,30-67.6,67c0,11.6,3.1,23.1,8.8,33.1
+          l-3.1,1.8c-6.1-10.5-9.3-22.6-9.3-34.9c0-38.8,31.9-70.4,71-70.4c39.2,0,71,31.6,71,70.4C211.6,423.1,208.2,435.3,201.9,446z"/>
+        <path class="grey_bg" d="M73.3,290.4l-8.5-14.5l-4.1,2.3l8.5,14.5L73.3,290.4z"/>
+        <path class="grey_bg" d="M21.6,339.8L7,331.5l-2.4,4l14.6,8.4L21.6,339.8z"/>
+        <path class="grey_bg" d="M276.4,485.6l-14.6-8.4l-2.4,4l14.6,8.4L276.4,485.6z"/>
+        <path class="grey_bg" d="M1.9,408.3H-15v4.7H1.9V408.3z"/>
+        <path class="grey_bg" d="M296.1,408.3h-16.9v4.7h16.9V408.3z"/>
+        <path class="grey_bg" d="M21.7,481.3l-2.4-4l-14.6,8.4l2.4,4L21.7,481.3z"/>
+        <path class="grey_bg" d="M276.4,335.5l-2.4-4l-14.6,8.4l2.4,4L276.4,335.5z"/>
+        <path class="grey_bg" d="M220.4,278.2l-4.1-2.3l-8.5,14.5l4.1,2.3L220.4,278.2z"/>
+        <path class="grey_bg" d="M122.9,265l-1-7.4l-3.5,0.5l1,7.4L122.9,265z"/>
+        <path class="grey_bg" d="M103.9,268.4l-2-7.2l-3.4,0.9l2,7.2L103.9,268.4z"/>
+        <path class="grey_bg" d="M85.5,274.4l-2.9-6.9l-3.3,1.3l2.9,6.9L85.5,274.4z"/>
+        <path class="grey_bg" d="M51.8,293.2l-4.6-5.9l-2.8,2.1l4.6,5.9L51.8,293.2z"/>
+        <path class="grey_bg" d="M37.2,305.6l-5.3-5.3l-2.5,2.5l5.3,5.3L37.2,305.6z"/>
+        <path class="grey_bg" d="M24.2,320l-6-4.6l-2.2,2.8l6,4.6L24.2,320z"/>
+        <path class="grey_bg" d="M4.5,352.8l-7-2.9l-1.4,3.2l7,2.9L4.5,352.8z"/>
+        <path class="grey_bg" d="M284.9,467.9l-7-2.9l-1.4,3.2l7,2.9L284.9,467.9z"/>
+        <path class="grey_bg" d="M-1.9,370.9l-7.3-1.9l-0.9,3.4l7.3,1.9L-1.9,370.9z"/>
+        <path class="grey_bg" d="M291.2,448.8l-7.3-1.9l-0.9,3.4l7.3,1.9L291.2,448.8z"/>
+        <path class="grey_bg" d="M-5.9,389.7l-7.5-1l-0.5,3.5l7.5,1L-5.9,389.7z"/>
+        <path class="grey_bg" d="M294.9,429l-7.5-1l-0.5,3.5l7.5,1L294.9,429z"/>
+        <path class="grey_bg" d="M-6,431.5l-0.5-3.5l-7.5,1l0.5,3.5L-6,431.5z"/>
+        <path class="grey_bg" d="M294.9,392.2l-0.5-3.5l-7.5,1l0.5,3.5L294.9,392.2z"/>
+        <path class="grey_bg" d="M-1.9,450.2l-0.9-3.4l-7.3,1.9l0.9,3.4L-1.9,450.2z"/>
+        <path class="grey_bg" d="M291.2,372.4l-0.9-3.4l-7.3,1.9l0.9,3.4L291.2,372.4z"/>
+        <path class="grey_bg" d="M4.5,468.3l-1.4-3.2l-7,2.9l1.4,3.2L4.5,468.3z"/>
+        <path class="grey_bg" d="M284.9,353.2l-1.4-3.2l-7,2.9l1.4,3.2L284.9,353.2z"/>
+        <path class="grey_bg" d="M265,318.2l-2.2-2.8l-6,4.6l2.2,2.8L265,318.2z"/>
+        <path class="grey_bg" d="M251.8,302.9l-2.5-2.5l-5.3,5.3l2.5,2.5L251.8,302.9z"/>
+        <path class="grey_bg" d="M236.7,289.4l-2.8-2.1l-4.6,5.9l2.8,2.1L236.7,289.4z"/>
+        <path class="grey_bg" d="M201.6,268.8l-3.3-1.3l-2.9,6.9l3.3,1.3L201.6,268.8z"/>
+        <path class="grey_bg" d="M182.5,262.1l-3.4-0.9l-2,7.2l3.4,0.9L182.5,262.1z"/>
+        <path class="grey_bg" d="M162.5,258l-3.5-0.5l-1,7.4l3.5,0.5L162.5,258z"/>
+        <path class="grey_bg" d="M142.9,256.5h-4.7v16.7h4.7V256.5z"/>
+        <text transform="matrix(1 0 0 1 24.6279 480.3025)" class="grey_bg open_font font_10">$400K</text>
+        <text transform="matrix(1 0 0 1 5.8959 414.4755)" class="grey_bg open_font font_10">$500K</text>
+        <text transform="matrix(1 0 0 1 24.1528 348.0802)" class="grey_bg open_font font_10">$600K</text>
+        <text transform="matrix(1 0 0 1 65.3103 303.3669)" class="grey_bg open_font font_10">$700K</text>
+        <text transform="matrix(1 0 0 1 125.9482 285.179)" class="grey_bg open_font font_10">$800K</text>
+        <text transform="matrix(1 0 0 1 184.2722 303.3669)" class="grey_bg open_font font_10">$900K</text>
+        <text transform="matrix(1 0 0 1 235.0722 348.0802)" class="grey_bg open_font font_10">$1M</text>
+        <text transform="matrix(1 0 0 1 245.5753 414.4757)" class="grey_bg open_font font_10">$1.1M</text>
+        <text transform="matrix(1 0 0 1 226.7054 480.3029)" class="grey_bg open_font font_10">$1.2M</text>
+        <polygon [style.transform]="'rotateZ(-20deg)'" class="pointer semi_circle" points="140.5,298 145.7,348.4 150.9,398.8 140.3,410.7 130.1,398.8 135.3,348.4 "/>
+        <linearGradient id="fixed_gradient" gradientUnits="userSpaceOnUse" x1="157.5728" y1="444.6966" x2="117.532" y2="366.8408" gradientTransform="matrix(1 0 0 -1 0 822)">
+          <stop  offset="0" style="stop-color:#545456"/>
+          <stop  offset="1" style="stop-color:#000000"/>
+        </linearGradient>
+        <path class="fixed_pointer" d="M140.5,428.7c10.1,0,18.4-8.1,18.4-18.2c0-10-8.2-18.2-18.4-18.2c-10.1,0-18.4,8.1-18.4,18.2
+          C122.1,420.5,130.4,428.7,140.5,428.7z"/>
+      </svg>
+      <ul class="pagination pagination-sm">
+        <li class="page-item" *ngFor="let review of price">
+          <a class="page-link">{{review}}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
