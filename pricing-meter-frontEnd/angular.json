@@ -137,5 +137,8 @@
       }
     }
   },
-  "defaultProject": "pricing-meter-frontEnd"
+  "defaultProject": "pricing-meter-frontEnd",
+  "cli": {
+    "analytics": "a5dc71ed-acc8-404f-a750-2c0b0fd73c4a"
+  }
 }
