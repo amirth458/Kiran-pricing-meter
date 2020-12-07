@@ -1,16 +1,18 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import * as CanvasGauges from 'canvas-gauges';
 import {interval, Observable} from "rxjs";
 import {RadialGauge} from "@biacsics/ng-canvas-gauges";
 import {map, tap} from "rxjs/operators";
+import {LoginDialogComponent} from "../../../agent/login-dialog/login-dialog.component";
+import {AppComponentBase} from "../../../../Shared/AppBaseComponent";
+import {FeedBackComponent} from "../feed-back/feed-back.component";
 
 @Component({
   selector: 'app-property-details',
   templateUrl: './property-details.component.html',
   styleUrls: ['./property-details.component.scss']
 })
-export class PropertyDetailsComponent implements OnInit, AfterViewInit {
-
+export class PropertyDetailsComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
   public left_price: any[];
   public main_price: any[];
@@ -32,13 +34,15 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   public myValueProperty = 10;
   options: CanvasGauges.GenericOptions
-  constructor() { }
+  constructor(inject: Injector) {
+    super(inject);
+  }
 
   ngOnInit(): void {
     // const results = Splitting({ by: 'chars', whitespace: true })
-    this.right_angle += (67 * 0.34);
-    this.main_angle += ((830 - 440 )* 0.34) ;
-    this.left_angle += ((950 - 440 )* 0.34);
+    this.right_angle += (67 * 0.35);
+    this.main_angle += ((830 - 440 )* 0.35) ;
+    this.left_angle += ((950 - 440 )* 0.35);
     this.main_price = [ '$', 8 , 3 , 0 , 'k'];
     this.left_price = [ '$', 9 , 5 , 0 , 'k'];
     this.right_price = [ '$', 0 , 6 , 7 , 'k'];
@@ -86,6 +90,15 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
       'color' : '#FFFFFF',
       'background': '#407BFF'
     }: {};
+  }
+
+  shareFeedback(): void {
+
+      const dialogRef = this.dialog.open(FeedBackComponent, {
+        data: {action: 'feedBack'},
+        width: '550px',
+        height: 'auto'
+      });
   }
 
 }

@@ -25,7 +25,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {MatButtonModule} from "@angular/material/button";
 import { PricingMeterDemoComponent } from './property-list/pricing-meter-demo/pricing-meter-demo.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { NgSelectModule } from '@ng-select/ng-select'
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FeedBackComponent } from './property-list/feed-back/feed-back.component'
+import {FooterComponent} from "../../layout/footer/footer.component";
 
 @NgModule({
   declarations: [
@@ -38,24 +40,26 @@ import { NgSelectModule } from '@ng-select/ng-select'
     EditSubscriptionComponent,
     HelpComponent,
     PropertyDetailsComponent,
-    PricingMeterDemoComponent
+    PricingMeterDemoComponent,
+    FeedBackComponent,
+
   ],
-    imports: [
-        CommonModule,
-        PostLoginRoutingModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatIconModule,
-        MatTableModule,
-        MatTooltipModule,
-        BrowserModule,
-        GaugesModule,
-        MatButtonModule,
-        NgSelectModule
-    ],
+  imports: [
+    CommonModule,
+    PostLoginRoutingModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatIconModule,
+    MatTableModule,
+    MatTooltipModule,
+    BrowserModule,
+    GaugesModule,
+    MatButtonModule,
+    NgSelectModule,
+  ],
   exports: [
     MatMenuModule,
     MatAutocompleteModule
