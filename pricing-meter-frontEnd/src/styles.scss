@@ -173,6 +173,12 @@ button {
   url('assets/fonts/dosis-v18-latin/dosis-v18-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
   url('assets/fonts/dosis-v18-latin/dosis-v18-latin-regular.svg#Dosis') format('svg'); /* Legacy iOS */
 }
+@font-face {
+  font-family: 'open-sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('open-sans'), url('assets/fonts/OpenSans/open-sans-v18-latin-regular.woff') format('woff');
+}
 
 button {
   cursor: pointer;

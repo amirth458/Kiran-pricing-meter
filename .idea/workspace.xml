@@ -6,16 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="323d5c01-bef2-4258-b8a0-04295bf24249" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-five/register-step-five.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-five/register-step-five.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/add-property/add-property.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/add-property/add-property.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/add-property/upload-csv/upload-csv.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/add-property/upload-csv/upload-csv.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/post-login-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/post-login-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/post-login.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/post-login.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-list.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/pricing-meter-demo/pricing-meter-demo.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/pricing-meter-demo/pricing-meter-demo.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/pricing-meter-demo/pricing-meter-demo.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/pricing-meter-demo/pricing-meter-demo.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/pricing-meter-demo/pricing-meter-demo.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/pricing-meter-demo/pricing-meter-demo.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-details/property-details.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-details/property-details.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-details/property-details.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-details/property-details.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-details/property-details.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/post-login/property-list/property-details/property-details.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/styles.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,48 +111,18 @@
       <workItem from="1607101296636" duration="1769000" />
       <workItem from="1607103108007" duration="1589000" />
       <workItem from="1607104928495" duration="1004000" />
+      <workItem from="1607146935385" duration="1226000" />
+      <workItem from="1607148771326" duration="610000" />
+      <workItem from="1607150589487" duration="590000" />
+      <workItem from="1607152574049" duration="3661000" />
+      <workItem from="1607157478184" duration="799000" />
+      <workItem from="1607159310005" duration="1716000" />
+      <workItem from="1607161120157" duration="108000" />
+      <workItem from="1607163169565" duration="18866000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605612299420">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="414" y="174" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605612299420" />
-    <state x="765" y="235" key="#com.intellij.ide.util.MemberChooser" timestamp="1606996526769">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="765" y="235" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1606996526769" />
-    <state width="1899" height="439" key="GridCell.Tab.0.bottom" timestamp="1607103681317">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="439" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1607103681317" />
-    <state width="1899" height="439" key="GridCell.Tab.0.center" timestamp="1607103681317">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="439" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1607103681317" />
-    <state width="1899" height="439" key="GridCell.Tab.0.left" timestamp="1607103681317">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="439" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1607103681317" />
-    <state width="1899" height="439" key="GridCell.Tab.0.right" timestamp="1607103681317">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1899" height="439" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1607103681317" />
-    <state x="666" y="253" width="720" height="534" key="find.popup" timestamp="1607103078510">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="666" y="253" width="720" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1607103078510" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1605805950269">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605805950269" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1607102934040">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1607102934039" />
   </component>
 </project>

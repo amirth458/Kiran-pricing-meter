@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // body {
 //   background: #232323;
 //   font-family: Roboto;
@@ -416,6 +417,37 @@ polygon.pointer {
   transform-origin: bottom;
   transform-box: fill-box;
   transition-timing-function: cubic-bezier(0.39, -0.01, 0, 1.04);
+=======
+.progress_meter {
+  display: flex;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.main_progress_meter {
+  width: 400px;
+  height: 400px;
+}
+
+polygon.pointer {
+  animation: pointer 1.5s 1;
+  transform: rotateZ(-120deg);
+  transition-delay: 0.5s;
+  transform-origin: bottom;
+  transform-box: fill-box;
+  transition-timing-function: cubic-bezier(0.39, -0.01, 0, 1.04);
+}
+
+@keyframes pointer {
+  from {
+    transform: rotateZ(-120deg);
+  }
+  to {
+    transform: rotateZ(120deg);
+  }
+>>>>>>> c095a429b98e3a941f17793a5988eea5954d4184
 }
 
 @keyframes pointer {

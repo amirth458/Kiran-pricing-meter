@@ -1,0 +1,55 @@
+.feeback-container {
+  padding: 10px;
+  .feedback-header {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: 0.05em;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .share-btn {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: #006AFF;
+    border-radius: 3px;
+    width: 450px;
+    height: 60px;
+    color: white;
+    border-color: white;
+    margin: 0 auto;
+  }
+  .inp-box {
+    width: 450px;
+    height: 250px;
+    border: 1px solid #AAAAAB;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    padding: 10px;
+    &:focus {
+      outline: none;
+    }
+  }
+  .flex-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .btn {
+    cursor: pointer;
+    &:focus {
+      outline: none !important;
+    }
+  }
+}
+

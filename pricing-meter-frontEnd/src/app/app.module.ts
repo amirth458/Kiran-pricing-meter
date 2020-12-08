@@ -25,25 +25,27 @@ import { HeaderComponent } from './layout/header/header.component';
 import {PostLoginModule} from "./Component/post-login/post-login.module";
 import { CommonDialogBoxComponent } from './Shared/common-dialog-box/common-dialog-box.component';
 import {MatButtonModule} from "@angular/material/button";
+import { FooterComponent } from './layout/footer/footer.component';
 // import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterStepOneComponent,
-    RegisterStepTwoComponent,
-    RegisterStepThreeComponent,
-    RegisterStepFourComponent,
-    RegisterStepFiveComponent,
-    LoginComponent,
-    LoginDialogComponent,
-    LayoutComponent,
-    SidebarComponent,
-    HeaderComponent,
-    CommonDialogBoxComponent,
-  ],
+    declarations: [
+        AppComponent,
+        RegisterStepOneComponent,
+        RegisterStepTwoComponent,
+        RegisterStepThreeComponent,
+        RegisterStepFourComponent,
+        RegisterStepFiveComponent,
+        LoginComponent,
+        LoginDialogComponent,
+        LayoutComponent,
+        SidebarComponent,
+        HeaderComponent,
+        CommonDialogBoxComponent,
+        FooterComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -60,7 +62,10 @@ import {MatButtonModule} from "@angular/material/button";
         PostLoginModule,
         MatButtonModule,
     ],
-  providers: [],
-  bootstrap: [AppComponent]
+    providers: [],
+    exports: [
+        FooterComponent
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

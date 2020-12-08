@@ -1,15 +1,26 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild} from '@angular/core';
 import * as CanvasGauges from 'canvas-gauges';
 import {interval, Observable} from "rxjs";
 import {RadialGauge} from "@biacsics/ng-canvas-gauges";
 import {map, tap} from "rxjs/operators";
+import {LoginDialogComponent} from "../../../agent/login-dialog/login-dialog.component";
+import {AppComponentBase} from "../../../../Shared/AppBaseComponent";
+import {FeedBackComponent} from "../feed-back/feed-back.component";
 
 @Component({
   selector: 'app-property-details',
   templateUrl: './property-details.component.html',
   styleUrls: ['./property-details.component.scss']
 })
-export class PropertyDetailsComponent implements OnInit, AfterViewInit {
+export class PropertyDetailsComponent extends AppComponentBase implements OnInit, AfterViewInit {
+
+  public left_price: any[];
+  public main_price: any[];
+  public right_price: any[];
+  public left_angle = -122;
+  public right_angle= -122;
+  public main_angle= -122;
+
   public propertyReview: any[];
   public neighborhoodReview: any[];
   public thirdReview: any[];
@@ -19,16 +30,26 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild('progress_gauge')
   private radialGauge: RadialGauge;
   public active = true;
+  public mainMeter = -120;
 
   public myValueProperty = 10;
   options: CanvasGauges.GenericOptions
-  constructor() { }
+  constructor(inject: Injector) {
+    super(inject);
+  }
 
   ngOnInit(): void {
+    // const results = Splitting({ by: 'chars', whitespace: true })
+    this.right_angle += (67 * 0.35);
+    this.main_angle += ((830 - 440 )* 0.35) ;
+    this.left_angle += ((950 - 440 )* 0.35);
+    this.main_price = [ '$', 8 , 3 , 0 , 'k'];
+    this.left_price = [ '$', 9 , 5 , 0 , 'k'];
+    this.right_price = [ '$', 0 , 6 , 7 , 'k'];
     this.propertyReview = [
       {value: 1 },
       {value: 2} ,
-      {value: 3,},
+      {value: 3},
       {value: 4},
       {value: 5},
       {value: 6},
@@ -58,17 +79,26 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
       {value: 8},
       {value: 9},
     ]
+    this.mainMeter +=(830 - 440 / 0.36)
   }
 
   ngAfterViewInit() {
+  }
 
-    this.radialGauge.update({ colorBarProgress: 'rgba(0,200,200,.75)' });
+  getActiveButton(): any {
+    return this.active ? {
+      'color' : '#FFFFFF',
+      'background': '#407BFF'
+    }: {};
+  }
 
-    // update both the gauge value and valueText every 200 ms.
-    // this.value$ = interval(200).pipe(
-    //   map(i => i % 100),
-    //   tap(i => this.radialGauge.update( {valueText: i } ))
-    // );
+  shareFeedback(): void {
+
+      const dialogRef = this.dialog.open(FeedBackComponent, {
+        data: {action: 'feedBack'},
+        width: '550px',
+        height: 'auto'
+      });
   }
 
 }

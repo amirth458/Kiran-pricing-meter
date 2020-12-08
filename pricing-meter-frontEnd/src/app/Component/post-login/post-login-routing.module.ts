@@ -52,12 +52,11 @@ const routes: Routes = [
       },
       {
         path: 'property-list/:id',
-        // component: PropertyDetailsComponent
-        component: PricingMeterDemoComponent
+        component: PropertyDetailsComponent
       },
       {
         path: 'property-lists',
-        component: PropertyDetailsComponent
+        component: PricingMeterDemoComponent
       }
       ]
   }

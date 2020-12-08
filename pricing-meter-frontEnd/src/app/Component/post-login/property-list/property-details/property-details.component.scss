@@ -113,12 +113,6 @@
     color: #919191;
 
   }
-
-  .page-item{
-    margin-right: 20px;
-    margin-top: 35px;
-    margin-bottom: 20px;
-  }
   .page-link{
     color: #006AFF;
     border-color:  #006AFF;
@@ -220,4 +214,107 @@
     width: 45px;
     margin-left: 12px;
   }
+
+  .progress_meter {
+    display: flex;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+  .main_progress_meter {
+    width: 400px;
+    height: 400px;
+    position: relative;
+  }
+
+  polygon.pointer {
+    animation: pointer 1.5s 1;
+    transform: rotateZ(-120deg);
+    transition-delay: 0.5s;
+    transform-origin: bottom;
+    transform-box: fill-box;
+    transition-timing-function: cubic-bezier(0.39, -0.01, 0, 1.04);
+  }
+
+  @keyframes pointer {
+    from {
+      transform: rotateZ(-120deg);
+    }
+    to {
+      transform: rotateZ(120deg);
+    }
+  }
+
+  .left-progress-meter {
+    width: 189.26px;
+    height: 187.57px;
+    position: relative;
+  }
+  .right-progress-meter {
+    width: 189.26px;
+    height: 187.57px;
+    position: relative;
+  }
+  .pricing-meter-txt {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    text-align: center;
+    color: #6D6D6D;
+  }
+
+  .money_counter {
+    position: absolute;
+    margin-bottom: 0;
+    bottom: 15%;
+    justify-content: center;
+    width: 100%;
+  }
+  .money_counter li.page-item a.page-link {
+    color: #231F20;
+    font-weight: 600;
+    border-color: #555555;
+  }
+  .money_counter_left li.page-item a.page-link {
+    background-image: linear-gradient(to bottom, #FEF7B3, #FFFFFF, #FFFEFB, #FFFEF1, #FCFFDF, #FEFCC5, #FCFEA7);
+    font-family: open-sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    color: #231F20;
+    font-weight: 600;
+    border-color: #696A6D;
+    padding: 0.20rem;
+  }
+  .money_counter_center li.page-item a.page-link {
+    background-image: linear-gradient(to bottom, #B3FEBF, #FFFFFF, #FBFFFC, #F1FFF1, #E3FFDF, #C5FECE, #A7FEBF);
+    font-family: open-sans;
+    font-style: normal;
+    font-weight: 600;
+    color: #231F20;
+    border-color: #696A6D;
+    padding: 0.35rem;
+    font-size: 20px;
+    line-height: 27px;
+
+  }
+  .money_counter_right li.page-item a.page-link {
+    background-image: linear-gradient(to bottom, #FEB3B3, #FFFFFF, #FFFBFB, #FFF1F1, #FFDFDF, #FEC5C5, #FEA7A7);
+    font-family: open-sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    color: #231F20;
+    font-weight: 600;
+    border-color: #696A6D;
+    padding: 0.20rem;
+  }
+
 }
