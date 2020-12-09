@@ -40,9 +40,9 @@ export class PropertyDetailsComponent extends AppComponentBase implements OnInit
 
   ngOnInit(): void {
     // const results = Splitting({ by: 'chars', whitespace: true })
-    this.right_angle += (67 * 0.35);
-    this.main_angle += ((830 - 440 )* 0.35) ;
-    this.left_angle += ((950 - 440 )* 0.35);
+    this.right_angle += (67 * 0.33);
+    this.main_angle += ((830 - 440 )* 0.34) ;
+    this.left_angle += ((950 - 440 )* 0.33);
     this.main_price = [ '$', 8 , 3 , 0 , 'k'];
     this.left_price = [ '$', 9 , 5 , 0 , 'k'];
     this.right_price = [ '$', 0 , 6 , 7 , 'k'];

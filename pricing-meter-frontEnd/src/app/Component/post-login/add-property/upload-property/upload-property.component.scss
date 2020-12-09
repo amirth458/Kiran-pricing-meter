@@ -1,10 +1,10 @@
 .upload-property-container{
-  margin: 5px;
-  padding: 0 40px;
-  display: grid;
-  grid-template: 1fr/ 0.8fr 1fr ;
-  .right-section {
-    padding-left: 131px;
+  padding: 0 30px;
+  .header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px 0;
   }
   .header-component{
     font-family: Poppins-Regular;
@@ -18,26 +18,35 @@
 
   }
   .sub-heading {
-    margin-left: 16%;
+    //font-family: Poppins-Regular;
+    //font-style: normal;
+    //font-weight: normal;
+    //font-size: 10px;
+    //line-height: 15px;
+    //text-align: justify;
+    //letter-spacing: 0.05em;
+    //background-color:  #F3F3F3;
+    //max-width: 50%;
+    //color: #777777;
+    //border-radius: 3px;
+    margin: 8px 0 0 150px;
     font-family: Poppins-Regular;
     font-style: normal;
     font-weight: normal;
-    font-size: 10px;
-    line-height: 15px;
-    text-align: justify;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 5px 10px;
     letter-spacing: 0.05em;
-    background-color:  #F3F3F3;
-    max-width: 50%;
+    background-color: #F3F3F3;
+    width: 46%;
     color: #777777;
     border-radius: 3px;
   }
-  .image-wrapper{
-    margin-top: 10%;
-    margin-left: 62px;
-    .img-fit {
-      object-fit: cover;
-      width: 96%;
-    }
+  .main-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow-x: auto;
   }
   .csv-btn{
     background: #27BA9C;
@@ -56,9 +65,6 @@
     &:focus {
       outline: none !important;
     }
-  }
-  .review-section {
-    margin-bottom: 120px;
   }
   .page-link{
     color: #909090;
@@ -84,7 +90,7 @@
     border-radius: 3px;
     border: none;
     height: 68px;
-    width: 638px;
+    width: 80%;
 
     font-family: Poppins-Regular;
     font-style: normal;
@@ -98,14 +104,17 @@
       outline: none !important;
     }
   }
+  .image-wrapper {
+    margin-right: 30px;
+  }
 }
 
-@media (max-width: 1660px) {
-.upload-property-container{
-  grid-template: 1fr 1fr / 1fr;
-  }
- .right-section {
-   padding-left: 257px;
- }
-}
+//@media (max-width: 1660px) {
+//.upload-property-container{
+//  grid-template: 1fr 1fr / 1fr;
+//  }
+// .right-section {
+//   padding-left: 257px;
+// }
+//}
 

@@ -53,6 +53,22 @@
   }
 
   .video-player{
-
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .txt-foot {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 29px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    color: #000000;
+    margin: 10px 0;
   }
 }

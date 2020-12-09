@@ -1,47 +1,47 @@
 <div class="upload-property-container">
+  <div class="header-bar">
     <div>
       <a class="btn header-component">
         Agent Input
         <mat-icon>?</mat-icon>
       </a>
-      <p class="sub-heading">By answering these final four questions, the Pricing Meter <br/>
+      <p class="sub-heading">By answering these final four questions, the Pricing Meter
         applies data-driven decisions to estimate the property value. </p>
-      <div class="image-wrapper">
-        <img src="assets/img/add-property-image.svg" class="img-fit">
-      </div>
     </div>
-    <div class="right-section" >
-      <div class="row review-section">
-        <div class="col-sm-8">
-        </div>
-        <div class="col-sm-4" style="padding-top: 2rem">
-        <a class="btn csv-btn" (click)="navigateToCSV()">Upload CSV</a>
-        </div>
-      </div>
-        <a class="review-title">Rate the view from the property</a>
-          <ul class="pagination pagination-lg">
-              <li class="page-item" *ngFor="let review of propertyReview" [ngClass]="review.key ? 'active': ''">
-                <a class="page-link"  [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
-              </li>
-          </ul>
-        <a class="review-title">Rate the neighborhood</a>
-        <ul class="pagination pagination-lg">
-          <li class="page-item" *ngFor="let review of neighborhoodReview" [ngClass]="review.key ? 'active': ''">
-            <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
-          </li>
-        </ul>
-        <a class="review-title">What is third question?</a>
-        <ul class="pagination pagination-lg">
-          <li class="page-item" *ngFor="let review of thirdReview" [ngClass]="review.key ? 'active': ''">
-            <a class="page-link"  [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
-          </li>
-        </ul>
-        <a class="review-title">What is fourth question?</a>
-        <ul class="pagination pagination-lg">
-          <li class="page-item" *ngFor="let review of fourthReview" [ngClass]="review.key ? 'active': ''">
-            <a class="page-link"  [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
-          </li>
-        </ul>
-          <button class="submit-btn" (click)="navigateToPropertyList()">FINISH</button>
+    <a class="btn csv-btn" (click)="navigateToCSV()">Upload CSV</a>
+  </div>
+  <div class="main-content">
+    <div class="image-wrapper">
+      <img src="assets/img/add-property-image.svg" >
     </div>
+    <div class="right-section">
+      <a class="review-title">Rate the view from the property</a>
+      <ul class="pagination pagination-lg">
+        <li class="page-item" *ngFor="let review of propertyReview" [ngClass]="review.key ? 'active': ''">
+          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+        </li>
+      </ul>
+      <a class="review-title">Rate the neighborhood</a>
+      <ul class="pagination pagination-lg">
+        <li class="page-item" *ngFor="let review of neighborhoodReview" [ngClass]="review.key ? 'active': ''">
+          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+        </li>
+      </ul>
+      <a class="review-title">What is third question?</a>
+      <ul class="pagination pagination-lg">
+        <li class="page-item" *ngFor="let review of thirdReview" [ngClass]="review.key ? 'active': ''">
+          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+        </li>
+      </ul>
+      <a class="review-title">What is fourth question?</a>
+      <ul class="pagination pagination-lg">
+        <li class="page-item" *ngFor="let review of fourthReview" [ngClass]="review.key ? 'active': ''">
+          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+        </li>
+      </ul>
+      <button class="submit-btn" (click)="navigateToPropertyList()">FINISH</button>
+    </div>
+  </div>
+  <div>
+  </div>
 </div>
