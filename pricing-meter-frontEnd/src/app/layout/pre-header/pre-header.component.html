@@ -1,0 +1,17 @@
+<div class="pre-header">
+  <div class="row">
+    <div class="col-sm-6">
+      <img src="assets/img/home-page-logo.svg" class="logo-img"  (click)="this.isLogined ? this.navigateToAddProperty() : this.loginPopUp();"/>
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-5 float-right">
+      <a class="txt-right" [ngClass]="getActiveRoutes('pricing') ? 'active': '' " routerLink="/pricing">Pricing </a>
+      <a class="txt-right" [ngClass]="getActiveRoutes('features') ? 'active': '' " routerLink="/features">Features </a>
+      <a class="txt-right set-margin" [ngClass]="getActiveRoutes('about') ? 'active': '' " routerLink="/about">About </a>
+      <button class="tab-btn" (click)="navigateToAddProperty()" *ngIf="isLogined" style="width: 133px;">Pricing Meter</button>
+      <button class="tab-btn" (click)="loginPopUp()" *ngIf="!isLogined">Login</button>
+      <button class="tab-btn btn-active" (click)="navigateTo()" *ngIf="!isLogined">Sign up</button>
+    </div>
+  </div>
+</div>

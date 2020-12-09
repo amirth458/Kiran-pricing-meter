@@ -28,9 +28,13 @@
     .router-Layout {
       width: 100%;
       // height: calc(100vh - 70px);
-      height: 100%;
+      height: 86%;
       overflow-y: auto;
       overflow-x: hidden;
+    }
+    .footer-Layout {
+      width: 100%;
+      height: 10%;
     }
   }
 }

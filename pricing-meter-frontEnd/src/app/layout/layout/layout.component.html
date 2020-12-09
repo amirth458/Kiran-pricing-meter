@@ -1,6 +1,7 @@
 <div [ngClass]="{'main-wrapper': isAuthenticated}">
   <div class="sidbar-layout">
     <app-sidebar *ngIf="isAuthenticated"></app-sidebar>
+    <app-pre-header *ngIf="!isAuthenticated"></app-pre-header>
   </div>
   <div class="main-layout">
     <div class="header-layout">
@@ -8,6 +9,9 @@
     </div>
     <div class="router-Layout">
       <router-outlet></router-outlet>
+    </div>
+    <div class="footer-Layout">
+      <app-footer></app-footer>
     </div>
   </div>
   <ngx-ui-loader></ngx-ui-loader>

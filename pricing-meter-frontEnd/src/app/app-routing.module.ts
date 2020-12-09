@@ -6,6 +6,9 @@ import {RegisterStepThreeComponent} from "./Component/agent/register-step-three/
 import {RegisterStepFourComponent} from "./Component/agent/register-step-four/register-step-four.component";
 import {RegisterStepFiveComponent} from "./Component/agent/register-step-five/register-step-five.component";
 import {LoginComponent} from "./Component/agent/login/login.component";
+import {PricingComponent} from "./Component/agent/pricing/pricing.component";
+import {AboutComponent} from "./Component/agent/about/about.component";
+import {FeaturesComponent} from "./Component/agent/features/features.component";
 
 
 const routes: Routes = [
@@ -17,6 +20,18 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'pricing',
+    component: PricingComponent
+  },
+  {
+    path: 'about',
+    component: AboutComponent
+  },
+  {
+    path: 'features',
+    component: FeaturesComponent
   },
   {
     path: 'agent',
@@ -41,7 +56,7 @@ const routes: Routes = [
       {
         path: 'register-step-five',
         component: RegisterStepFiveComponent
-      }
+      },
     ]
   }]
 

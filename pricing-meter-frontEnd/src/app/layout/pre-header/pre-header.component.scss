@@ -1,0 +1,64 @@
+.pre-header {
+  background-color: #FAFCFF;;
+  height: 70px;
+  padding: 15px 40px;
+  position: sticky;
+  .txt-right {
+    font-family: 'Poppins-Regular';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    text-transform: capitalize;
+      color: #000000;
+    margin-left: 3%;
+  }
+  .active {
+    color:  #006AFF;
+  ;
+  }
+
+  .tab-btn {
+    font-family: 'Poppins-Regular';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 35px;
+    border-radius: 3px;
+    border: 1px solid #006AFF;
+    background: white;
+    font-style: normal;
+    font-weight: 500;
+    //&:last-child {
+    //  margin-left: 10px;
+    //}
+    font-size: 14px;
+    line-height: 21px;
+    margin-right: 4%;
+    /* identical to box height */
+    letter-spacing: 0.1em;
+    text-transform: capitalize;
+    float: right;
+    color: #407BFF;
+
+  }
+  .mp-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-family: 'Poppins-Regular';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+    background-color: #2ED573;
+    padding: 0 10px;
+    height: 20px;
+    border-radius: 100px;
+  }
+}

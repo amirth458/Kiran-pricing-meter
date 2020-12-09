@@ -26,6 +26,10 @@ import {PostLoginModule} from "./Component/post-login/post-login.module";
 import { CommonDialogBoxComponent } from './Shared/common-dialog-box/common-dialog-box.component';
 import {MatButtonModule} from "@angular/material/button";
 import { FooterComponent } from './layout/footer/footer.component';
+import { PricingComponent } from './Component/agent/pricing/pricing.component';
+import { PreHeaderComponent } from './layout/pre-header/pre-header.component';
+import { FeaturesComponent } from './Component/agent/features/features.component';
+import { AboutComponent } from './Component/agent/about/about.component';
 // import { MatToolbarModule } from '@angular/material/toolbar';
 
 
@@ -45,6 +49,10 @@ import { FooterComponent } from './layout/footer/footer.component';
         HeaderComponent,
         CommonDialogBoxComponent,
         FooterComponent,
+        PricingComponent,
+        PreHeaderComponent,
+        FeaturesComponent,
+        AboutComponent,
     ],
     imports: [
         BrowserModule,
