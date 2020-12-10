@@ -3,40 +3,35 @@
   background: linear-gradient(90deg, #FFFFFF 50%, #006BFF 50%);
   padding: 38px;
   .card {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-color: white;
-  }
-  .help-left-section {
-    .help-title {
-      font-family: Poppins-Regular;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 24px;
-      line-height: 36px;
-      letter-spacing: 0.05em;
-      text-transform: capitalize;
-      color: #000000;
-      margin-bottom: 60px
-    }
-  }
-  .help-right-section {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    .img-fit {
-      width: 100%;
-      height: auto;
-    }
+    flex-direction: column;
+    border-color: white;
+    margin: 20px;
+  }
+  .help-title {
+    font-family: Poppins-Regular;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    letter-spacing: 0.05em;
+    text-transform: capitalize;
+    color: #000000;
+    margin-bottom: 60px
+  }
+  .main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow-x: auto;
   }
 
+
   form.help-form {
-    width: 800px;
     display: flex;
     flex-flow: column;
-    margin: 74px auto 0 auto;
-    row-gap: 30px;
+    margin: 0 auto 0 auto;
+    min-width: 500px;
     .form-field {
       font-family: Poppins-Regular;
 
@@ -89,7 +84,6 @@
         letter-spacing: 0.05em;
         color: #FFFFFF;
         margin: 0 17px 0 0 ;
-
       }
     }
   }

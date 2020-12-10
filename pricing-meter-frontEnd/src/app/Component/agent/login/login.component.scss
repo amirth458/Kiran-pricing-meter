@@ -13,13 +13,12 @@
 
       h3 {
         font-size: 2rem;
-        font-weight: 600;
-        color: #444444;
-        letter-spacing: 0.05rem;
-        text-transform: uppercase;
       }
 
       p {
+        font-family: Poppins-Regular;
+        font-style: normal;
+        font-weight: 500;
         font-size: 18px;
         color: #909090;
         margin-bottom: 2.5rem;
@@ -46,7 +45,6 @@
       }
     }
   }
-
   .video_section {
     text-align: center;
     padding-top: 1rem;
@@ -119,8 +117,6 @@
         }
 
         .footer_btns {
-          font-size: 13px;
-          letter-spacing: 0.05em;
 
           a {
             padding: 0.5rem 1rem;
@@ -139,10 +135,10 @@
       }
     }
   }
+}
 
-  @media (min-width: 1200px) {
-    .footer_contact {
-      width: 1160px;
-    }
+@media (min-width: 1200px) {
+  .footer_contact {
+    width: 1160px;
   }
 }

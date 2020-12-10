@@ -22,9 +22,6 @@ export class PreHeaderComponent extends AppComponentBase implements OnInit {
   navigateTo(): void {
     this.router.navigate(['agent/register-step-one']);
   }
-  onLogoClick(): void {
-    this.isLogined ? this.navigateToAddProperty() : this.loginPopUp();
-  }
   loginPopUp(): void {
     if(this.isLogined) {
       this.navigateToAddProperty();
