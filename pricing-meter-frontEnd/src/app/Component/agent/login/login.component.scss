@@ -13,10 +13,14 @@
 
       h3 {
         font-size: 2rem;
+        font-weight: 600;
+        color: #444444;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
       }
 
       p {
-        font-family: Poppins-Regular;
+        font-family: 'Poppins';
         font-style: normal;
         font-weight: 500;
         font-size: 18px;
@@ -121,6 +125,8 @@
           a {
             padding: 0.5rem 1rem;
             border-radius: 5rem;
+            display: inline-block;
+            margin-top: 1rem;
           
             &.start_btn {
               color: #FFFFFF;

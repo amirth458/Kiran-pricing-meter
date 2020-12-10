@@ -1,35 +1,51 @@
 .pricing-container {
-  font-family: Poppins-Regular;
+  font-family: 'Poppins';
   font-style: normal;
-  .sub-title {
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 25px;
+  padding: 0 30px;
+  position: relative;
+
+  .static_circle {
+    position: absolute;
+    content: '';
+    width: 650px;
+    height: 650px;
+    z-index: -1;
+    top: 30px;
+    left: -250px;
+    border-radius: 50%;
+    background-color: #F2F7FF;
+  }
+
+  .banner_cont {
     text-align: center;
-    letter-spacing: 0.05em;
+    padding: 50px 0 30px;
+
+    h3 {
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 45px;
+      letter-spacing: 0.05em;
+      color: #555555;
+    }
+    p {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #919191;
+    }
   }
-  .title-pricing {
-    font-family: Poppins-Regular;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 45px;
-    letter-spacing: 0.05em;
-    color: #555555;
-  }
-  .content-pricing {
-    margin: 20px;
-  }
+
   .package-container {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
-    grid-gap: 15px;
-    width: 930px;
+    grid-gap: 20px;
+    width: 100%;
     margin: 0 auto;
-    margin-top: 15px;
 
     .package-box {
-      padding: 10px;
+      padding-right: 50px;
+      border-radius: 10px;
+      overflow: hidden;
       height: 300px;
       background: #FFFFFF;
       box-shadow: 0px 4px 30px rgba(224, 215, 215, 0.25);
@@ -37,7 +53,8 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      column-gap: 20px;
+      justify-content: space-between;
+
       .package-header {
         height: 70px;
 
@@ -53,21 +70,38 @@
           margin-top: 35px;
           margin-bottom: 10px;
         }
-
       }
-
 
       .package-icon {
         text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 20px;
 
         img.package-ic {
           height: 100px;
+          bottom: 75px;
+          position: absolute;
+        }
+        img.common_img {
+          position: relative;
+          bottom: -80px;
+        }
+        h4 {
+          font-family: 'Poppins';
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.5;
+          color: #5E5E5E;
+          margin: 0px;
+          text-transform: uppercase;
         }
       }
 
       .package-content {
         padding: 30px;
-
 
         ul.package-list {
           margin-bottom: 50px;
@@ -137,25 +171,32 @@
           color: #263238;
         }
       }
-
     }
   }
+
   .mp-badge {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
+    width: 120px;
     margin: 0 auto;
-    font-family: 'Poppins-Regular';
+    margin-top: 10px;
+    font-family: "Poppins-Regular";
     font-style: normal;
     font-weight: 300;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 18px;
-    letter-spacing: 0.05em;
     color: #FFFFFF;
     background-color: #2ED573;
     padding: 0 10px;
-    height: 20px;
+    height: 18px;
     border-radius: 100px;
   }
 
+}
+
+@media (min-width: 1200px) {
+  .pricing-container .package-container {
+    width: 1200px;
+  }
 }
