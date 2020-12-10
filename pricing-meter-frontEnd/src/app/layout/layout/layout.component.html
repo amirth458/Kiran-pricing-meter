@@ -1,7 +1,6 @@
 <div [ngClass]="{'main-wrapper': isAuthenticated}">
   <div class="sidbar-layout">
     <app-sidebar *ngIf="isAuthenticated"></app-sidebar>
-    <app-pre-header *ngIf="!isAuthenticated"></app-pre-header>
   </div>
   <div class="main-layout">
     <div class="header-layout">
