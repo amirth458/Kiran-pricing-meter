@@ -10,6 +10,7 @@
       <router-outlet></router-outlet>
     </div>
     <div class="footer-Layout">
+      <app-footer *ngIf="isAuthenticated"></app-footer>
     </div>
   </div>
   <ngx-ui-loader></ngx-ui-loader>
