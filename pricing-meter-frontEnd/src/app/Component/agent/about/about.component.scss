@@ -1,8 +1,28 @@
-  .feature-img {
-    object-fit: cover;
-  }
+.banner {
+  width: 100%;
+  height: 366px;
+  position: relative;
+  background-position: bottom;
+  background-image: url("src/assets/img/about-header.svg");
+}
 
-  .feedback-header {
+.banner::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: 'About Us';
+  font-family: 'Poppins';
+  font-size: 45px;
+  line-height: 1.5;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #407cffe6;
+}
+.feedback-header {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
