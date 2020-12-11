@@ -1,3 +1,13 @@
+.banner {
+  width: 100%;
+  height: 366px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: url("src/assets/img/features-add.svg");
+}
+
 .features-container {
   .feature-img {
     object-fit: cover;
