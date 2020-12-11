@@ -15,7 +15,12 @@ body {
   font-weight: normal;
   src: local('Poppins-Regular'), url('assets/fonts/Poppins/Poppins-Regular.woff') format('woff');
 }
-
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Poppins-Regular'), url('assets/fonts/Poppins/Poppins-Regular.woff') format('woff');
+}
 
 @font-face {
   font-family: 'Poppins-Italic';
