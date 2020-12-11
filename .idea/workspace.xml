@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="323d5c01-bef2-4258-b8a0-04295bf24249" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login/login.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/pricing/pricing.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/pricing/pricing.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-one/register-step-one.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/layout/layout/layout.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/layout/layout/layout.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
