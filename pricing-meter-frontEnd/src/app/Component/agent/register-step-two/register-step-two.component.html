@@ -1,8 +1,6 @@
 <div class="app-agent-step-two">
   <div class="left-sec">
-    <a class="logo-header" >
-      <img src="assets/img/app-logo.svg" class="logo-img" (click)="homePage()" />
-    </a>
+    <a href="#" class="logo_img"><img src="assets/img/app-logo.svg" class="img-fluid" (click)="homePage()"/></a>
     <div class="form-content">
       <div class="head-data">
         <h2 class="package-title">Our Packages</h2>
@@ -18,7 +16,7 @@
             <h3 class="box-title">BASIC</h3>
           </div>
           <div class="package-icon">
-            <img src="assets/img/Basic.svg" class="package-ic"/>
+            <img src="assets/img/basic_plan.svg"/>
           </div>
           <div class="package-content">
             <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
@@ -38,7 +36,7 @@
             <h3 class="box-title">ADVANCED</h3>
           </div>
           <div class="package-icon">
-            <img src="assets/img/step-two-advance.svg" class="package-ic"/>
+            <img src="assets/img/advanced_plan.svg"/>
           </div>
           <div class="package-content">
             <h3 class="package-price"><span class="price-txt">&#36;19.95/</span>month</h3>
@@ -59,7 +57,7 @@
             <span class="mp-badge">MOST POPULAR</span>
           </div>
           <div class="package-icon">
-            <img src="assets/img/step-2-unlimit.svg" class="package-ic"/>
+            <img src="assets/img/unlimited_plan.svg"/>
           </div>
           <div class="package-content">
             <h3 class="package-price"><span class="price-txt">&#36;49.95/</span>month</h3>
@@ -81,7 +79,7 @@
             <h3 class="box-title">TEAMS</h3>
           </div>
           <div class="package-icon">
-            <img src="assets/img/Teams.svg" class="package-ic"/>
+            <img src="assets/img/teams_plan.svg"/>
           </div>
           <div class="package-content">
             <h3 class="package-price"><span class="price-txt">&#36;99.95/</span>month</h3>
@@ -101,7 +99,7 @@
             <h3 class="box-title">AGENCY</h3>
           </div>
           <div class="package-icon">
-            <img src="assets/img/Agency.svg" class="package-ic"/>
+            <img src="assets/img/agency_plan.svg"/>
           </div>
           <div class="package-content">
             <h3 class="package-price"><span class="price-txt">&#36;149.95/</span>month</h3>
@@ -122,7 +120,7 @@
             <span class="mp-badge">MOST POPULAR</span>
           </div>
           <div class="package-icon">
-            <img src="assets/img/Enterprice.svg" class="package-ic"/>
+            <img src="assets/img/enterprise_plan.svg"/>
           </div>
           <div class="package-content">
             <h3 class="package-price"><span class="price-txt">&#36;199.95/</span>month</h3>
@@ -144,16 +142,28 @@
     </div>
   </div>
   <div class="right-sec">
-    <h2 class="right-header">Our "Overpricing Calculator"<br/> saves you and your clients from <br/> losing money on
-      overpriced or <br/> underpriced properties..</h2>
-    <div class="right-bg-wrapper">
-      <img src="assets/img/step2-right-image.svg" class="pricing-bg" />
-    </div>
-    <div class="bottom-control">
-      <span class="dot-nav"></span>
-      <span class="dot-nav dot-active"></span>
-      <span class="dot-nav"></span>
-      <span class="dot-nav"></span>
+    <h2 class="right-header">Our "Overpricing Calculator"<br/> saves you and your clients from <br/> losing money on overpriced or <br/> underpriced properties..</h2>
+    <div id="mycarousel" class="carousel slide" data-ride="carousel" data-interval="500000">
+      <ol class="carousel-indicators">
+        <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#mycarousel" data-slide-to="1"></li>
+        <li data-target="#mycarousel" data-slide-to="2"></li>
+        <li data-target="#mycarousel" data-slide-to="3"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="assets/img/registration_third_1.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_third_2.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_third_1.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_third_2.svg" class="d-block" alt="carousel_img">
+        </div>
+      </div>
     </div>
   </div>
 </div>

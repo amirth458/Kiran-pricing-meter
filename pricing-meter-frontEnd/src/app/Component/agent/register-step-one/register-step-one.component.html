@@ -1,36 +1,24 @@
 <div class="app-agent-register">
   <div class="left-sec">
-    <img src="assets/img/app-logo.svg" class="logo_img" (click)="homePage()" />
+    <a href="#" class="logo_img"><img src="assets/img/app-logo.svg" class="img-fluid" (click)="homePage()"/></a>
     <div class="form-content">
       <h2 class="form-title">Registration</h2>
       <form class="register-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>First Name</mat-label>
           <input matInput formControlName="firstName" >
-          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-          <!--                        {{validateUserInput('username')}}-->
-          <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Last Name</mat-label>
           <input matInput formControlName="lastName" >
-          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-          <!--                        {{validateUserInput('username')}}-->
-          <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Your Email</mat-label>
           <input matInput formControlName="email" >
-          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-          <!--                        {{validateUserInput('username')}}-->
-          <!--                    </mat-error>-->
         </mat-form-field>
         <mat-form-field class="form-field" appearance="outline">
           <mat-label>Your Password</mat-label>
           <input matInput formControlName="password">
-          <!--                    <mat-error *ngIf="loginForm.controls['name'].invalid">-->
-          <!--                        {{validateUserInput('username')}}-->
-          <!--                    </mat-error>-->
         </mat-form-field>
         <div class="form-footer">
           <button class="submit-btn" (click)="navigateTo()">NEXT</button>
@@ -40,15 +28,28 @@
     </div>
   </div>
   <div class="right-sec">
-    <h2 class="right-header">Use Pricing Meter and NEVER lose a<br /> listing due to pricing.</h2>
-    <div class="right-bg-wrapper">
-      <img src="assets/img/reg-pricing-bg.svg" class="pricing-bg" />
-    </div>
-    <div class="bottom-control">
-      <span class="dot-nav dot-active"></span>
-      <span class="dot-nav"></span>
-      <span class="dot-nav"></span>
-      <span class="dot-nav"></span>
+    <h2 class="right-header">Use Pricing Meter and NEVER lose a <br/>listing due to pricing.</h2>
+    <div id="mycarousel" class="carousel slide" data-ride="carousel" data-interval="500000">
+      <ol class="carousel-indicators">
+        <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#mycarousel" data-slide-to="1"></li>
+        <li data-target="#mycarousel" data-slide-to="2"></li>
+        <li data-target="#mycarousel" data-slide-to="3"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="assets/img/registration_half_1.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_half_2.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_half_3.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_half_1.svg" class="d-block" alt="carousel_img">
+        </div>
+      </div>
     </div>
   </div>
 </div>

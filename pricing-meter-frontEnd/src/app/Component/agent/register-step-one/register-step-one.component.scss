@@ -7,6 +7,9 @@
 
   .left-sec {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .logo_img {
       position: absolute;
@@ -24,7 +27,7 @@
         letter-spacing: 0.05em;
         color: #407BFF;
         text-align: center;
-        margin: 35px 0;
+        margin: 50px 0 30px;
       }
 
       form.register-form {
@@ -102,49 +105,53 @@
   }
 
   .right-sec {
-    position: relative;
     flex: 1;
-    //background-image: url('src/assets/img/regester-bg.svg');
-    //background-repeat: no-repeat;
-    //background-position: center;
-    //background-size: auto;
-    background-color: rgba(0, 106, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #e5f0ff;
 
-    .right-header {
-      position: relative;
-      top: 30px;
-      line-height: 44px;
-      text-align: center;
-      letter-spacing: 0.05em;
-      color: #006AFF;
-      font-family: 'Dosis';
-      font-style: normal;
-      font-weight: bold;
-      font-size: 30px;
-      word-break: break-word;
-      padding: 30px;
-    }
-
-    img.pricing-bg {
-      width: 100%;
-      height: calc(100vh - 250px);
-    }
-    .bottom-control {
-      display: flex;
-      justify-content: center;
+    h2 {
       position: absolute;
+      top: 30px;
       left: 0;
       right: 0;
-      bottom: 30px;
-      .dot-nav {
-        display: inline-block;
-        width: 20px;
-        height: 2px;
-        background: #E0E0E0;
-        margin-right: 5px;
-        &.dot-active {
-          background: #006AFF;
+      margin: 0 auto;
+      color: #006AFF;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.25;
+      text-align: center;
+      font-family: "Dosis";
+      letter-spacing: 0.05em;
+    }
+
+    #mycarousel {
+
+      .carousel-indicators {
+        margin: 0;
+        bottom: -50px;
+
+        li {
+          height: 4px;
+          border: 0;
+          opacity: 1;
+          border-radius: 5rem;
+          margin-right: 5px;
+          margin-left: 5px;
+          background-color: #E0E0E0;
+          transition: all 0.6s ease-in-out;
+    
+          &.active {
+            background-color: #006AFF;
+          }
         }
+      }
+
+      .carousel-item img {
+        width: 450px;
+        height: 450px;
       }
     }
   }
@@ -153,62 +160,6 @@
 
 @media (max-width:1200px) {
   .app-agent-register .left-sec .form-content form.register-form{
-    width: auto;
-  }
-  .app-agent-register .right-sec .right-header {
-    top: auto;
-  }
-}
-
-@media (max-width:1030px) {
-  .app-agent-register .right-sec .right-header {
-    br {
-      display:none;
-    }
-  }
-}
-
-@media (max-width:980px) and (min-width: 768px) {
-  .app-agent-register .left-sec {
-    padding: 20px;
-  }
-
-  .app-agent-register .right-sec .right-header {
-    padding: 20px;
-  }
-}
-
-@media (max-width:767px) {
-  .app-agent-register .right-sec .right-header {
-    padding: 20px;
-  }
-  .app-agent-register {
-    display: flex;
-    flex-direction: column-reverse;
-    overflow: auto;
-  }
-
-  .app-agent-register .right-sec {
-    height: 90vh;
-  }
-
-  .app-agent-register .left-sec .logo-header {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-  }
-
-  .app-agent-register .left-sec .form-content .form-title {
-    margin-bottom: 15px;
-    font-size: 25px;
-  }
-}
-
-@media (max-width:480px) {
-  .app-agent-register .right-sec .right-header {
-    padding: 20px;
-    margin-bottom: 0;
-    font-size: 27px;
-    line-height: 36px;
+    width: 400px;
   }
 }

@@ -1,54 +1,50 @@
 .app-agent-step-two {
-  display: grid;
-  grid-template-columns: 65% 35%;
+  display: flex;
+  align-items: stretch;
   width: 100%;
   height: 100vh;
-  overflow-y: hidden;
-  /*  background: #f3f3f3;*/
+  position: relative;
 
   .left-sec {
-    padding: 30px;
+    flex: 2;
     display: flex;
+    padding: 30px;
     flex-direction: column;
     height: 100vh;
     overflow-y: auto;
 
     .head-data {
-      display: block;
-      padding-top: 20px;
-      padding-bottom: 15px;
+      padding: 50px 0;
 
       .package-title {
+        font-family: 'Poppins';
         color: #006AFF;
         text-align: center;
         font-size: 30px;
-        line-height: 45px;
+        line-height: 1.5;
+        margin-bottom: 0;
         letter-spacing: 0.05em;
         font-weight: 500;
       }
 
       .package-subtitle {
         font-size: 15px;
-        line-height: 22px;
+        line-height: 1.5;
+        margin-bottom: 0;
         letter-spacing: 0.05em;
         color: #555555;
-        font-weight: 500;
         text-align: center;
-        font-family: 'Poppins-Regular';
+        font-family: 'Poppins';
       }
 
       .package-tabheader {
         display: flex;
         justify-content: center;
-        font-size: 20px;
         margin-top: 25px;
       }
 
       .tab-btn {
-        font-family: "Poppins-Light";
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        font-family: "Poppins";
         width: 200px;
         height: 50px;
         border-radius: 3px;
@@ -59,10 +55,10 @@
         font-style: normal;
         font-weight: 500;
         font-size: 18px;
-        line-height: 30px;
+        line-height: 50px;
         letter-spacing: 0.05em;
 
-        &:last-child {
+        &:first-child {
           margin-left: 10px;
         }
       }
@@ -74,46 +70,45 @@
     }
 
     .package-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      display: flex;
       grid-gap: 15px;
-      width: 930px;
       margin: 0 auto;
-      margin-top: 15px;
+      overflow: auto;
 
       .package-box {
+        border-radius: 5px;
+        padding: 2rem 0.5rem;
         height: auto;
         background: #FFFFFF;
         box-shadow: 0px 4px 30px rgba(224, 215, 215, 0.25);
         text-align: center;
 
         .package-header {
-          height: 70px;
+          position: relative;
 
           .box-title {
-            font-family: 'Poppins-Regular';
-            font-style: normal;
+            font-family: 'Poppins';
             font-weight: 500;
             font-size: 20px;
-            line-height: 30px;
+            line-height: 1.5;
             letter-spacing: 0.05em;
             color: #5E5E5E;
             text-align: center;
-            margin-top: 35px;
-            margin-bottom: 10px;
+            margin: 0;
+            padding-bottom: 2rem;
           }
 
           .mp-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 125px;
+            bottom: 0.75rem;
             margin: 0 auto;
-            font-family: 'Poppins-Regular';
-            font-style: normal;
+            font-family: "Poppins";
             font-weight: 300;
             font-size: 12px;
-            line-height: 18px;
-            letter-spacing: 0.05em;
+            line-height: 20px;
             color: #FFFFFF;
             background-color: #2ED573;
             padding: 0 10px;
@@ -122,17 +117,15 @@
           }
         }
 
-
         .package-icon {
-          text-align: center;
 
-          img.package-ic {
-            height: 100px;
+          img {
+            height: 160px;
           }
         }
 
         .package-content {
-          padding: 30px;
+          padding: 30px 15px 0;
 
           .package-price {
             font-family: 'Poppins-Regular';
@@ -142,8 +135,7 @@
             line-height: 22px;
             letter-spacing: 0.05em;
             color: #919191;
-            padding-left: 10px;
-            text-align: left;
+            text-align: center;
 
             .price-txt {
               font-family: 'Poppins-Regular';
@@ -158,21 +150,18 @@
 
           ul.package-list {
             margin-bottom: 50px;
+            padding: 0;
             list-style-type: none;
-            text-align: left;
-            padding-left: 10px;
 
             li {
-              font-family: "Poppins-Light";
-              font-style: normal;
-              font-weight: 100;
+              font-family: "Poppins";
+              text-align: left;
+              font-weight: 300;
               font-size: 16px;
-              line-height: 24px;
+              line-height: 1.5;
               letter-spacing: 0.05em;
               color: #A3A1A1;
-              margin-bottom: 15px;
-              display: flex;
-              align-items: center;
+              margin-bottom: 10px;
 
               &::before {
                 content: "";
@@ -193,12 +182,12 @@
 
           .active-btn {
             background: #006AFF;
-            border-radius: 3px;
-            height: 53px;
+            border-radius: 5px;
+            height: 50px;
             border: none;
             color: #fff;
-            width: 216px;
-            font-size: 20px;
+            width: 100%;
+            font-size: 18px;
             letter-spacing: 0.05em;
           }
         }
@@ -224,189 +213,64 @@
   }
 
   .right-sec {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    //background-image: url("src/assets/img/step2-right-image.svg");
-    //background-repeat: no-repeat;
-    //background-position: center;
-    //background-size: auto;
-    background-color: rgba(0, 106, 255, 0.1);
-    padding: 30px;
+    background-color: #e5f0ff;
 
-    .right-header {
-      position: relative;
-      top: 40px;
-      left: 0;
-      right: 0;
-      line-height: 44px;
-      text-align: center;
-      letter-spacing: 0.05em;
-      color: #006AFF;
-      font-family: Dosis;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 35px;
-      word-break: break-word;
-      padding: 0px;
-    }
-
-    img.pricing-bg {
-      width: 100%;
-      height: calc(100vh - 290px);
-    }
-
-    .bottom-control {
-      display: flex;
-      justify-content: center;
+    h2 {
       position: absolute;
+      top: 30px;
       left: 0;
       right: 0;
-      bottom: 30px;
+      margin: 0 auto;
+      color: #006AFF;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.25;
+      text-align: center;
+      font-family: "Dosis";
+      letter-spacing: 0.05em;
+    }
 
-      .dot-nav {
-        display: inline-block;
-        width: 20px;
-        height: 2px;
-        background: #E0E0E0;
-        margin-right: 5px;
+    #mycarousel {
 
-        &.dot-active {
-          background: #006AFF;
+      .carousel-indicators {
+        margin: 0;
+        bottom: -50px;
+
+        li {
+          height: 4px;
+          border: 0;
+          opacity: 1;
+          border-radius: 5rem;
+          margin-right: 5px;
+          margin-left: 5px;
+          background-color: #E0E0E0;
+          transition: all 0.6s ease-in-out;
+    
+          &.active {
+            background-color: #006AFF;
+          }
         }
+      }
+
+      .carousel-item img {
+        width: 450px;
+        height: 450px;
       }
     }
   }
 }
 
-@media (max-width: 1600px) {
+@media (min-width: 1200px) {
   .app-agent-step-two .left-sec .package-container {
-    width: 100%;
-  }
-  .app-agent-step-two .right-sec .right-header br {
-    display: none;
-  }
-}
-
-@media (max-width: 1400px) and (min-width: 1081px) {
-  .app-agent-step-two .right-sec .right-header {
-    line-height: 38px;
-    font-size: 25px;
-  }
-
-  .app-agent-step-two .right-sec {
-    padding: 20px;
-  }
-
-  .app-agent-step-two .left-sec {
-    padding: 20px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-header .box-title {
-    font-size: 18px;
-    line-height: 20px;
-    margin-top: 25px;
-  }
-  .app-agent-step-two .left-sec .package-container .package-box .package-icon img.package-ic {
-    height: 80px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-content .package-price {
-    font-size: 12px;
-    margin-bottom: 10px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-content .package-price .price-txt {
-    font-size: 18px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-content {
-    padding: 20px 10px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-content ul.package-list {
-    margin-bottom: 30px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-content ul.package-list li {
-    font-size: 13px;
-    margin-bottom: 15px;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .active-wrapper .active-btn {
-    height: 50px;
-    width: 100%;
-    font-size: 16px;
-  }
-
-  .app-agent-step-two .left-sec .head-data .tab-btn {
-    width: 180px;
-    font-size: 17px;
-  }
-
-  .app-agent-step-two .left-sec .head-data .package-title {
-
-    font-size: 27px;
-    line-height: 35px;
-  }
-  .app-agent-step-two .left-sec .skip-txt {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 1080px) {
-  .app-agent-step-two .right-sec .right-header {
-    padding: 20px;
-  }
-  .app-agent-step-two {
-    display: flex;
-    flex-direction: column-reverse;
-    overflow: auto;
-  }
-
-  .app-agent-step-two .right-sec {
-    height: 90vh;
-    padding: 20px;
-  }
-
-  .app-agent-step-two .left-sec .logo-header {
-    display: flex;
     justify-content: center;
-    margin-bottom: 5px;
-  }
-  .app-agent-step-two .right-sec .right-header {
-    padding: 0px;
-    top: 0;
-    font-size: 30px;
-    margin-bottom: 0;
-    line-height: 40px;
   }
 
-  .app-agent-step-two .left-sec {
-    padding: 20px;
-    height: auto;
-    overflow-y: unset;
-  }
-}
-
-@media (max-width: 900px) {
-  .app-agent-step-two .left-sec .package-container {
-    grid-template-columns: 100%;
-  }
-
-  .app-agent-step-two .left-sec .package-container .package-box .package-content {
-    padding: 20px;
-  }
-  .app-agent-step-two .left-sec .package-container .package-box .package-content .package-price {
-    text-align: center;
-  }
-  .app-agent-step-two .left-sec .package-container .package-box .package-content ul.package-list {
-    width: 240px;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .app-agent-step-two .right-sec .right-header {
-    font-size: 25px;
-    line-height: 30px;
+  .right-sec #mycarousel {
+    padding-top: 120px;
   }
 }

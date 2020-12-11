@@ -1,8 +1,6 @@
 <div class="app-agent-register-3">
   <div class="left-sec">
-    <div class="logo-header">
-      <img src="assets/img/app-logo.svg" class="logo-img"  (click)="homePage()"/>
-    </div>
+    <a href="#" class="logo_img"><img src="assets/img/app-logo.svg" class="img-fluid" (click)="homePage()"/></a>
     <div class="prfile-conatiner">
       <h3 class="up-title">Update Profile</h3>
         <div class="profile-daggbox">
@@ -17,20 +15,28 @@
     </div>
   </div>
   <div class="right-sec">
-    <h2 class="right-header">
-      Use Pricing Meter to show the True <br/>
-      Market Value of your client's property.<br/>
-      Backed by a collected dataset -<br/>
-      presented in your Agency's design.
-    </h2>
-    <div class="right-bg-wrapper">
-      <img src="assets/img/agn-reg-3-right.svg" class="pricing-bg" />
-    </div>
-    <div class="bottom-control">
-      <span class="dot-nav"></span>
-      <span class="dot-nav "></span>
-      <span class="dot-nav dot-active"></span>
-      <span class="dot-nav"></span>
+    <h2 class="right-header">Use Pricing Meter to show the True <br/>Market Value of your client's property.<br/> Backed by a collected dataset -<br/>presented in your Agency's design.</h2>
+    <div id="mycarousel" class="carousel slide" data-ride="carousel" data-interval="500000">
+      <ol class="carousel-indicators">
+        <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#mycarousel" data-slide-to="1"></li>
+        <li data-target="#mycarousel" data-slide-to="2"></li>
+        <li data-target="#mycarousel" data-slide-to="3"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="assets/img/registration_half_1.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_half_2.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_half_3.svg" class="d-block" alt="carousel_img">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/img/registration_half_1.svg" class="d-block" alt="carousel_img">
+        </div>
+      </div>
     </div>
   </div>
 </div>
