@@ -3,87 +3,106 @@
   background: linear-gradient(90deg, #FFFFFF 50%, #006BFF 50%);
   padding: 38px;
   .card {
+    padding: 50px;
+    position: relative;
     display: flex;
     flex-direction: column;
     border-color: white;
-    margin: 20px;
-  }
-  .help-title {
-    font-family: Poppins-Regular;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 36px;
-    letter-spacing: 0.05em;
-    text-transform: capitalize;
-    color: #000000;
-    margin-bottom: 60px
-  }
-  .main-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    overflow-x: auto;
-  }
+    border-radius: 5px;
+    box-shadow: 0px 4px 20px rgb(0 0 0 / 10%);
 
+    .help-title {
+      font-family: 'Poppins';
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 36px;
+      letter-spacing: 0.05em;
+      text-transform: capitalize;
+      color: #000000;
+      margin-bottom: 50px
+    }
 
-  form.help-form {
-    display: flex;
-    flex-flow: column;
-    margin: 0 auto 0 auto;
-    min-width: 500px;
-    .form-field {
-      font-family: Poppins-Regular;
-
-      ::ng-deep {
-        .mat-form-field-outline {
-          color: #ccc;
+    form.help-form {
+      display: flex;
+      flex-flow: column;
+      width: 350px;
+      z-index: 2;
+      .form-field {
+        font-family: 'Poppins';
+  
+        ::ng-deep {
+          .mat-form-field-outline {
+            color: #ccc;
+          }
+  
+          .mat-form-field-outline-start {
+            border-radius: 2px 0 0 2px;
+          }
+  
+          .mat-form-field-infix .mat-form-field-label {
+            color: #AAAAAB;
+          }
+  
+          .mat-form-field-invalid .mat-form-field-label {
+            color: #f44336 !important;
+          }
+  
+          .mat-form-field-infix {
+            padding: 18px 0 18px 0;
+          }
+  
+          .mat-form-field-label {
+            margin-top: -2px;
+          }
+          textarea.mat-input-element {
+            padding: 50px 0;
+            margin: -2px 0;
+          }
         }
+  
+      }
+      .submit-btn-wapper {
+        display: flex;
+        height: 100%;
+        align-items: flex-end;
+        justify-content: flex-end;
 
-        .mat-form-field-outline-start {
-          border-radius: 2px 0 0 2px;
-        }
-
-        .mat-form-field-infix .mat-form-field-label {
-          color: #AAAAAB;
-        }
-
-        .mat-form-field-invalid .mat-form-field-label {
-          color: #f44336 !important;
-        }
-
-        .mat-form-field-infix {
-          padding: 18px 0 18px 0;
-        }
-
-        .mat-form-field-label {
-          margin-top: -2px;
-        }
-        textarea.mat-input-element {
-          padding: 50px 0;
-          margin: -2px 0;
+        button.submit-btn {
+          background: #006aff;
+          border-radius: 3px;
+          border: none;
+          height: 50px;
+          width: 160px;
+          font-family: 'Poppins';
+          font-size: 18px;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          color: #FFFFFF;
+          text-transform: uppercase;
         }
       }
-
     }
-    .submit-btn-wapper {
-      display: flex;
-      height: 100%;
-      align-items: flex-end;
-      justify-content: flex-end;
-      button.submit-btn {
-        background: #407BFF;
-        border-radius: 3px;
-        border: none;
-        height: 50px;
-        width: 160px;
-        font-family: Poppins-Regular;
-        font-style: normal;
-        font-size: 25px;
-        line-height: 37px;
-        letter-spacing: 0.05em;
-        color: #FFFFFF;
-        margin: 0 17px 0 0 ;
+
+    .img-fit {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      z-index: 1;
+      width: 300px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .help-container {
+    .card {
+      form.help-form {
+        width: 550px;
+      }
+      .img-fit {
+        width: auto;
       }
     }
   }

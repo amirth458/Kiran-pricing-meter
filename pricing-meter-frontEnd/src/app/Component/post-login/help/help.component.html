@@ -1,28 +1,24 @@
 <div class="help-container">
   <div class="card">
     <h3 class="help-title">help</h3>
-    <div class="main-content">
-    <div>
-      <form class="help-form" [formGroup]="helpForm">
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Your name</mat-label>
-          <input matInput >
-        </mat-form-field>
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Email address</mat-label>
-          <input matInput >
-        </mat-form-field>
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Message</mat-label>
-          <textarea matInput></textarea>
-        </mat-form-field>
-        <div class="submit-btn-wapper">
+    <form class="help-form" [formGroup]="helpForm">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Your name</mat-label>
+        <input matInput >
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Email address</mat-label>
+        <input matInput >
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Message</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+      <div class="submit-btn-wapper">
         <button class="submit-btn">Send</button>
-        </div>
-      </form>
-    </div>
-      <img src="assets/img/help.svg" alt="logo" class="img-fit">
-    </div>
+      </div>
+    </form>
+    <img src="assets/img/help.svg" alt="logo" class="img-fit">
   </div>
 </div>
 

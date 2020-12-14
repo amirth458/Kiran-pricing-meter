@@ -1,87 +1,102 @@
 .property-detail-container {
-  padding: 56px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
-   .share-btn {
-     font-family: Poppins-Regular;
-     font-style: normal;
-     font-weight: 500;
-     font-size: 14px;
-     line-height: 21px;
-     text-align: center;
-     letter-spacing: 0.05em;
-     text-transform: uppercase;
-     color: #006AFF;
-     border: 1.5px solid #006AFF;
-     box-sizing: border-box;
-     border-radius: 100px;
-     width: 275px;
-     height: 60px;
-     background-color: white;
-   }
+
+  .share-btn {
+    font-family: "Poppins";
+    padding-left: 1rem;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: #006AFF;
+    border: 1.5px solid #006AFF;
+    border-radius: 100px;
+    width: 275px;
+    height: 60px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+
+    .share-icon {
+      background-color: #006AFF;
+      border-radius: 100px;
+      height: 45px;
+      width: 45px;
+    }
+  }
   .pricing-analog {
+    padding: 10px;
     display: grid;
+    border-radius: 5px;
+    background: #FFFFFF;
     justify-content: space-evenly;
     grid-template-columns: 1fr 1fr 1fr;
-    text-align: center;
-    background: #FFFFFF;
     box-shadow: 0 4px 20px rgba(220, 220, 220, 0.25);
-    border-radius: 5px;
   }
   .pricing-value {
     display: grid;
     justify-content: space-evenly;
+    grid-gap: 15px;
     grid-template-columns: 1fr 1fr 1fr;
     text-align: center;
     margin: 15px 0;
+
     .card{
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       border-color: white;
       background: #FFFFFF;
       box-shadow: 0px 4px 20px rgba(220, 220, 220, 0.25);
     }
     .txt-field {
-      font-family: Poppins-Regular;
-      font-style: normal;
+      font-family: 'Poppins';
       font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
-      text-align: center;
-      letter-spacing: 0.05em;
+      margin-bottom: 0;
       text-transform: uppercase;
       color: #1F8CF5;
     }
     .price-field {
-      font-family: Roboto;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 35px;
-      line-height: 41px;
-
+      font-family: "Roboto";
+      font-weight: 600;
+      font-size: 27px;
+      line-height: 1.5;
+      letter-spacing: 0.05em;
       color: #007CF4;
+    }
+    .txt-warning {
+      font-family: 'Poppins';
+      font-size: 12px;
+      font-weight: 500;
+      color: #9E9E9E;
+      text-transform: uppercase;
     }
   }
   .engagement-container {
     display: grid;
     grid-template-columns: 1.0fr 0.6fr;
-    background: #FFFFFF;
-    box-shadow: 0 4px 20px rgba(185, 183, 183, 0.25);
     border-radius: 5px;
-    margin: 13px;
+    margin: 15px 0;
     .engagement-image {
       object-fit: cover;
       width: 100%;
+      border-radius: 5px;
       height: min-content;
     }
     .engagement-text {
+      display: flex;
+      padding: 40px;
+      margin-left: 15px;
+      border-radius: 3px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
       background: #FFFFFF;
       box-shadow: 0px 4px 20px rgba(220, 220, 220, 0.25);
-      border-radius: 3px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      margin-left: 15px;
-
     }
     //.text-head {
     //  font-family: Poppins-Regular;
@@ -95,22 +110,25 @@
 
   }
   .text-head {
-    font-family: Poppins-Regular;
-    font-style: normal;
-    font-weight: 500;
+    font-family: 'Poppins';
+    font-weight: 600;
     font-size: 24px;
     line-height: 36px;
     letter-spacing: 0.05em;
     color: #006AFF;
+    margin-bottom: 0;
   }
   .text-tail {
-    font-family: Poppins-Regular;
-    font-style: normal;
+    font-family: 'Poppins';
     font-weight: 500;
-    font-size: 22px;
-    line-height: 33px;
+    font-size: 21px;
     letter-spacing: 0.05em;
     color: #919191;
+
+    span {
+      color: #006AFF;
+      font-weight: 600;
+    }
 
   }
   .page-link{
@@ -127,7 +145,7 @@
     border-radius: 5px;
   }
   .rate-btn {
-    font-family: Poppins-Regular;
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -171,7 +189,7 @@
 
     }
     .content {
-      font-family: Poppins-Regular;
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
@@ -180,7 +198,7 @@
       color: #FFFFFF;
     }
     .active-content {
-      font-family: Poppins-Regular;
+      font-family: 'Poppins';
       font-style: normal;
       font-weight: 500;
       font-size: 8px;
@@ -197,7 +215,7 @@
     }
   }
   .info-footer{
-    font-family: 'Poppins-Regular';
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -207,19 +225,9 @@
     color: #000000;
     text-align: center;
   }
-  .share-icon {
-    background-color: #006AFF;
-    border-radius: 100px;
-    height: 45px;
-    width: 45px;
-    margin-left: 12px;
-  }
 
   .progress_meter {
     display: flex;
-    margin: auto;
-    width: 100%;
-    height: 100%;
     align-items: center;
     justify-content: flex-end;
     flex-direction: column;
@@ -259,12 +267,10 @@
     position: relative;
   }
   .pricing-meter-txt {
-    font-family: Poppins-Regular;
-    font-style: normal;
-    font-weight: 600;
+    font-family: 'Poppins';
     font-size: 18px;
-    line-height: 27px;
-    text-align: center;
+    font-weight: 600;
+    margin-bottom: 0;
     color: #6D6D6D;
   }
 
