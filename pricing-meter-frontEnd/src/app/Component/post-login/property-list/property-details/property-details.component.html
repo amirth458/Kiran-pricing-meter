@@ -347,13 +347,13 @@
         </div>
       </div>
   </div>
-  <div style="background: #FFFFFF; box-shadow: 0px 4px 20px rgba(220, 220, 220, 0.25);">
+  <div class="rank-part">
     <div class="flex-column justify-content-between">
-      <h3 class="text-head" style="margin-top: 10px;">Final Questions for the True Market Value</h3>
+      <h3 class="text-head">Final Questions for the True Market Value</h3>
       <div class="rating-list">
         <h3 class="text-tail">Rank the Location</h3>
         <ul class="pagination pagination-lg">
-          <li class="page-item" style="margin: 35px 20px 20px 0 " *ngFor="let review of propertyReview" [ngClass]="review.key ? 'active': ''">
+          <li class="page-item" *ngFor="let review of propertyReview" [ngClass]="review.key ? 'active': ''">
             <a class="page-link"  [style.color]="review.key?'white': '#006AFF'">{{review.value}}</a>
           </li>
         </ul>
@@ -361,7 +361,7 @@
       <div class="rating-list">
         <h3 class="text-tail">Rank the Condition</h3>
         <ul class="pagination pagination-lg">
-          <li class="page-item" style="margin: 35px 20px 20px 0 " *ngFor="let review of thirdReview" [ngClass]="review.key ? 'active': ''">
+          <li class="page-item" *ngFor="let review of thirdReview" [ngClass]="review.key ? 'active': ''">
             <a class="page-link"  [style.color]="review.key?'white': '#006AFF'">{{review.value}}</a>
           </li>
         </ul>
@@ -369,7 +369,7 @@
       <div class="rating-list">
         <h3 class="text-tail">Rank the View</h3>
         <ul class="pagination pagination-lg">
-          <li class="page-item" style="margin: 35px 20px 20px 0 " *ngFor="let review of neighborhoodReview" [ngClass]="review.key ? 'active': ''">
+          <li class="page-item" *ngFor="let review of neighborhoodReview" [ngClass]="review.key ? 'active': ''">
             <a class="page-link"  [style.color]="review.key?'white': '#006AFF'">{{review.value}}</a>
           </li>
         </ul>
@@ -377,7 +377,7 @@
       <button class="rate-btn">Edit</button>
     </div>
   </div>
-  <div class="similar-card" style="margin: 10px">
+  <div class="similar-card">
     <h3 class="text-head">Similar Properties</h3>
     <h3 class="text-tail">Please click and select the similar properties which you would like to share with your client.</h3>
     <div class="property-cards">
@@ -423,14 +423,4 @@
       </div>
     </div>
   </div>
-  <div class="d-flex justify-content-center">
-    <h2 class="info-footer">
-      Copyright
-      <img src="assets/img/copy-right.svg" alt="copy-right">
-      All rights reserved
-    </h2>
-  </div>
 </div>
-
-<!--        min-value="400K"-->
-<!--        max-value="1.2M"-->
