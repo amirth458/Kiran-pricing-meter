@@ -3,9 +3,9 @@
     <div>
       <a class="btn header-component">
         Agent Input
-        <mat-icon>?</mat-icon>
+        <mat-icon (click)="open= !open">?</mat-icon>
       </a>
-      <p class="sub-heading">By answering these final four questions, the Pricing Meter
+      <p class="sub-heading" *ngIf="open">By answering these final four questions, the Pricing Meter
         applies data-driven decisions to estimate the property value. </p>
     </div>
     <a class="btn csv-btn" (click)="navigateToCSV()">Upload CSV</a>

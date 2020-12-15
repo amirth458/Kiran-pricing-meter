@@ -11,6 +11,7 @@ export class UploadPropertyComponent extends AppComponentBase implements OnInit 
   public neighborhoodReview: any[];
   public thirdReview: any[];
   public fourthReview: any[];
+  public open: boolean;
   constructor(inject: Injector) {
     super(inject);
   }
