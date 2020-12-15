@@ -15,29 +15,41 @@
       <img src="assets/img/add-property-image.svg" >
     </div>
     <div class="right-section">
-      <a class="review-title">Rate the view from the property</a>
+      <a class="review-title">Rate the location</a>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of propertyReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
       </ul>
-      <a class="review-title">Rate the neighborhood</a>
+      <a class="review-title">Rate the view</a>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of neighborhoodReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
       </ul>
-      <a class="review-title">What is third question?</a>
+      <a class="review-title">Rate the condition and layout</a>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of thirdReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
       </ul>
-      <a class="review-title">What is fourth question?</a>
+      <a class="review-title">What type of market is this property located in?</a>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of fourthReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+            <p class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</p>
         </li>
+
+
       </ul>
       <button class="submit-btn" (click)="navigateToPropertyList()">FINISH</button>
     </div>

@@ -69,7 +69,7 @@
   .page-link{
     color: #909090;
   }
-  .review-title{
+  .review-title{  
     font-family: Poppins-Regular;
     font-style: normal;
     font-weight: 500;
@@ -84,6 +84,9 @@
     margin-right: 20px;
     margin-top: 35px;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 40.33px;
   }
   .submit-btn {
     background: #407BFF;
@@ -118,3 +121,29 @@
 // }
 //}
 
+//.page-quality {
+//  text-align: center;
+//
+//
+//}
+//
+//div.page-quality.hover {
+//  color: #006AFF;
+//  text-decoration: underline;
+//}
+.page-quality-wapper {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.page-quality {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 15px;
+  /* identical to box height */
+
+  letter-spacing: 0.05em;
+
+}
