@@ -10,8 +10,8 @@ import {CommonDialogBoxComponent} from "../../../Shared/common-dialog-box/common
 })
 export class EditSubscriptionComponent extends AppComponentBase implements OnInit {
 
-  public option = false;
-  public active = 'teams';
+  public option = true;
+  public active = 'advanced';
   public packageList = {
     basic: ['3 properties', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],
     advanced: ['10 properties', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],

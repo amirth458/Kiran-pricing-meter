@@ -9,6 +9,8 @@ import {AppComponentBase} from "../../../Shared/AppBaseComponent";
 })
 export class RegisterStepThreeComponent extends AppComponentBase implements OnInit {
 
+  public fileUploader = 0;
+
   constructor(injector: Injector) {
     super(injector);
   }
@@ -16,8 +18,11 @@ export class RegisterStepThreeComponent extends AppComponentBase implements OnIn
   ngOnInit(): void {
   }
 
-  nextPage(): void{
-    this.router.navigate(['agent/register-step-four']);
+  nextPage(): void {
+    this.fileUploader++;
+    if(this.fileUploader > 1) {
+      this.router.navigate(['agent/register-step-four']);
+    }
   }
   homePage(): void{
     this.router.navigate(['login']);

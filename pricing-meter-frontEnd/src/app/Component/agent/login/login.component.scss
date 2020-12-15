@@ -9,7 +9,7 @@
     .banner_cont {
       line-height: 1.5;
       padding-left: 5rem;
-      font-family: 'Poppins';
+      font-family: 'Poppins-Regular';
 
       h3 {
         font-size: 2rem;
@@ -20,7 +20,7 @@
       }
 
       p {
-        font-family: 'Poppins';
+        font-family: 'Poppins-Regular';
         font-style: normal;
         font-weight: 500;
         font-size: 18px;
@@ -28,7 +28,7 @@
         margin-bottom: 2.5rem;
         text-transform: capitalize;
       }
-    
+
       a {
         display: inline-block;
         font-size: 14px;
@@ -107,7 +107,7 @@
           letter-spacing: 0.05em;
           margin-bottom: 0.5rem;
           text-transform: uppercase;
-  
+
           &::before {
             content: "";
             width: 6px;
@@ -127,7 +127,7 @@
             border-radius: 5rem;
             display: inline-block;
             margin-top: 1rem;
-          
+
             &.start_btn {
               color: #FFFFFF;
               background-color: #FF4757;

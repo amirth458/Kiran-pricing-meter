@@ -2,7 +2,8 @@
   <div class="left-sec">
     <a href="#" class="logo_img"><img src="assets/img/app-logo.svg" class="img-fluid" (click)="homePage()"/></a>
     <div class="prfile-conatiner">
-      <h3 class="up-title">Update Profile</h3>
+      <h3 class="up-title" *ngIf="!fileUploader">Update Profile</h3>
+      <h3 class="up-title" *ngIf="fileUploader">Update Profile - Part 2</h3>
         <div class="profile-daggbox">
         <img src="assets/img/agn-reg-3-upload.svg" alt="upload image" class="upload-img" />
         <label class="upload-txt">Upload your company logo</label>
