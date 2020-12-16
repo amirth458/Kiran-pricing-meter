@@ -27,9 +27,9 @@ export class UploadPropertyComponent extends AppComponentBase implements OnInit 
     this.neighborhoodReview = [
       {value: 1 , name: 'No View'},
       {value: 2 , name: 'Peekaboo'} ,
-      {value: 3, name: 'Good'},
-      {value: 4,  name: 'Great',  key: 'active'},
-      {value: 5, name: 'Stunning'},
+      {value: 3, name: 'Not Bad'},
+      {value: 4,  name: 'That’s Nice',  key: 'active'},
+      {value: 5, name: '360° & Stunning'},
     ];
     this.thirdReview = [
       {value: 1, name: 'Tear Down' },

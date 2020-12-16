@@ -139,31 +139,10 @@
       letter-spacing: 0.05em;
     }
 
-    #mycarousel {
-
-      .carousel-indicators {
-        margin: 0;
-        bottom: -50px;
-
-        li {
-          height: 4px;
-          border: 0;
-          opacity: 1;
-          border-radius: 5rem;
-          margin-right: 5px;
-          margin-left: 5px;
-          background-color: #E0E0E0;
-          transition: all 0.6s ease-in-out;
-    
-          &.active {
-            background-color: #006AFF;
-          }
-        }
-      }
-
-      .carousel-item img {
+    .right_illustration {
+      img {
         width: 450px;
-        height: 450px;
+        margin-top: 5rem;
       }
     }
   }

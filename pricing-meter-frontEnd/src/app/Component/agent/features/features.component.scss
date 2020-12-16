@@ -2,7 +2,30 @@
   width: 100%;
   height: 366px;
   position: relative;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-transform: capitalize;
   background-image: url("src/assets/img/features-add.svg");
+
+  .banner_head {
+    font-family: 'Poppins';
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-size: 36px;
+    font-weight: 600;
+    z-index: 2;
+    margin-bottom: 0;
+  }
+  .banner_subhead {
+    font-family: 'Poppins';
+    line-height: 1.5;
+    z-index: 2;
+    font-size: 21px;
+    margin-bottom: 0;
+  }
 }
 
 .banner::before {
@@ -11,14 +34,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  content: 'Features';
-  font-family: 'Poppins';
-  font-size: 45px;
-  line-height: 1.5;
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  content: '';
+  z-index: 1;
   background-color: #407cffe6;
 }
 
