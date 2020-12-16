@@ -1,5 +1,5 @@
 import {Component, Injector, OnInit} from '@angular/core';
-import {AppComponentBase} from "../../../../Shared/AppBaseComponent";
+import {AppComponentBase} from '../../../../Shared/AppBaseComponent';
 
 @Component({
   selector: 'app-upload-property',
@@ -18,55 +18,40 @@ export class UploadPropertyComponent extends AppComponentBase implements OnInit 
 
   ngOnInit(): void {
     this.propertyReview = [
-      {value: 1 },
-      {value: 2} ,
-      {value: 3,},
-      {value: 4},
-      {value: 5},
-      {value: 6},
-      {value: 7 },
-      {value: 8,  key: 'active'},
-      {value: 9},
-    ]
+      {value: 1 , name: 'Poor' },
+      {value: 2 , name: 'Not Good'} ,
+      {value: 3 , name: 'Average'},
+      {value: 4,  name: 'Good', key: 'active'},
+      {value: 5 , name: 'Excellent'},
+    ];
     this.neighborhoodReview = [
-      {value: 1 },
-      {value: 2} ,
-      {value: 3},
-      {value: 4,  key: 'active'},
-      {value: 5},
-      {value: 6},
-      {value: 7},
-      {value: 8},
-      {value: 9}
-    ]
+      {value: 1 , name: 'No View'},
+      {value: 2 , name: 'Peekaboo'} ,
+      {value: 3, name: 'Good'},
+      {value: 4,  name: 'Great',  key: 'active'},
+      {value: 5, name: 'Stunning'},
+    ];
     this.thirdReview = [
-      {value: 1 },
-      {value: 2} ,
-      {value: 3},
-      {value: 4},
-      {value: 5},
-      {value: 6},
-      {value: 7,  key: 'active' },
-      {value: 8},
-      {value: 9},
-    ]
+      {value: 1, name: 'Tear Down' },
+      {value: 2, name: 'Fixer'},
+      {value: 3, name: 'Turn Key'} ,
+      {value: 4, name: 'Updated'},
+      {value: 5,  name: 'Done to the 9\'s',  key: 'active'},
+
+    ];
     this.fourthReview = [
-      {value: 1 },
-      {value: 2} ,
-      {value: 3},
-      {value: 4},
-      {value: 5},
-      {value: 6},
-      {value: 7, key: 'active' },
-      {value: 8},
-      {value: 9},
-    ]
+      {value: 1 , name: 'Strong Buyer\'s Market '},
+      {value: 2, name: 'Buyer\'s Market'} ,
+      {value: 3, name: 'Neutral Market'},
+      {value: 4,  name: 'Seller\'s Market', key: 'active'},
+      {value: 5, name: 'Strong Seller\'s market'},
+    ];
   }
   navigateToCSV(): void {
     this.router.navigate(['pricing-meter/add-property/csv']);
   }
 
   navigateToPropertyList(): void {
-    this.router.navigate(['pricing-meter/property-list'])
+    this.router.navigate(['pricing-meter/property-list']);
   }
 }

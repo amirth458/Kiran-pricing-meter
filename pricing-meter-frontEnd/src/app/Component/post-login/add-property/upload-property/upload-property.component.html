@@ -1,10 +1,12 @@
 <div class="upload-property-container">
   <div class="header-bar">
     <div>
-      <a class="btn header-component">
+      <p class="btn header-component">
         Agent Input
-        <mat-icon (click)="open= !open">?</mat-icon>
-      </a>
+        <span class="info-cir">
+        <a (click)="open= !open">?</a>
+          </span>
+      </p>
       <p class="sub-heading" *ngIf="open">By answering these final four questions, the Pricing Meter
         applies data-driven decisions to estimate the property value. </p>
     </div>
@@ -15,29 +17,51 @@
       <img src="assets/img/add-property-image.svg" >
     </div>
     <div class="right-section">
-      <a class="review-title">Rate the view from the property</a>
+      <div class="header-section">
+        <a class="review-title">Rate the location</a>
+      </div>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of propertyReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
       </ul>
-      <a class="review-title">Rate the neighborhood</a>
+      <div class="header-section">
+        <a class="review-title">Rate the view</a>
+      </div>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of neighborhoodReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
       </ul>
-      <a class="review-title">What is third question?</a>
+      <div class="header-section">
+        <a class="review-title">Rate the condition and layout</a>
+      </div>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of thirdReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
       </ul>
-      <a class="review-title">What is fourth question?</a>
+      <div class="header-section">
+        <a class="review-title">What type of market is this property located in?</a>
+      </div>
       <ul class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of fourthReview" [ngClass]="review.key ? 'active': ''">
-          <a class="page-link" [style.color]="review.key?'white': '#909090'">{{review.value}}</a>
+          <a class="page-link" [style.color]="review.key?'white': '#868484'">{{review.value}}</a>
+          <div class="page-quality-wapper">
+            <a class="page-quality"  [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
+          </div>
         </li>
+
+
       </ul>
       <button class="submit-btn" (click)="navigateToPropertyList()">FINISH</button>
     </div>

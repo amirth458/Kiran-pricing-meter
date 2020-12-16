@@ -29,7 +29,8 @@
     //max-width: 50%;
     //color: #777777;
     //border-radius: 3px;
-    margin: 8px 0 0 150px;
+    margin-left: 150px;
+    margin-bottom: 0;
     font-family: Poppins-Regular;
     font-style: normal;
     font-weight: normal;
@@ -38,9 +39,10 @@
     padding: 5px 10px;
     letter-spacing: 0.05em;
     background-color: #F3F3F3;
-    width: 46%;
+    width: 27%;
     color: #777777;
     border-radius: 3px;
+    position: absolute;
   }
   .main-content {
     display: flex;
@@ -62,6 +64,9 @@
   }
   .btn {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+
     &:focus {
       outline: none !important;
     }
@@ -77,29 +82,30 @@
     line-height: 24px;
     text-align: center;
     letter-spacing: 0.05em;
+    display: inline-block;
 
     color: #006AFF;
   }
   .page-item{
-    margin-right: 20px;
-    margin-top: 35px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .submit-btn {
     background: #407BFF;
     border-radius: 3px;
     border: none;
     height: 68px;
-    width: 80%;
-
+    width: 75%;
     font-family: Poppins-Regular;
     font-style: normal;
     font-size: 25px;
     line-height: 37px;
     letter-spacing: 0.05em;
     color: #FFFFFF;
-    margin-left: 32px;
     cursor: pointer;
+    margin-left: 78px;
     &:focus {
       outline: none !important;
     }
@@ -118,3 +124,81 @@
 // }
 //}
 
+//.page-quality {
+//  text-align: center;
+//
+//
+//}
+//
+//div.page-quality.hover {
+//  color: #006AFF;
+//  text-decoration: underline;
+//}
+.page-quality-wapper {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.page-quality {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 15px;
+  /* identical to box height */
+
+  letter-spacing: 0.05em;
+
+}
+.pagination-lg .page-link {
+  border-radius: 5px;
+  width: 40.33px;
+  height: 39.36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 5px;
+}
+
+.header-section{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 0 60px;
+  list-style: none;
+  border-radius: 0.25rem;
+  margin-bottom: 30px;
+}
+
+.info-cir {
+  border: 1px solid #ddd;
+  border-radius: 100px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+
+  mat-icon {
+    font-size: 14px;
+    width: auto;
+    height: auto;
+  }
+}
+.upload-property-container .sub-heading::before {
+  position: absolute;
+  content: '';
+  border-bottom: 16px solid #f3f3f3;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  top: -16px;
+  left: 40px;
+}
