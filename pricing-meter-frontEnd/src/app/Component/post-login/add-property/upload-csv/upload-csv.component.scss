@@ -29,63 +29,57 @@
 //
 //}
 .uploade-csv-container {
-  display: grid;
-  height: 100%;
-  grid-template-rows: auto 1fr;
-  padding: 0  10px;
-  .header {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    padding: 2rem;
-    .left-txt {
-      font-family: Poppins-Regular;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 25px;
-      line-height: 37px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #555555;
-      grid-column: 1 / 6;
-    }
+  padding: 0 30px;
 
+  .title_btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px 0;
+
+    .header-component{
+      font-family: 'Poppins';
+      font-size: 25px;
+      padding: 0;    
+      color: #555555;
+      border: 0;
+    }
     .download-btn {
       background: #FF4757;
-      font-family: Poppins-Regular;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
+      font-family: 'Poppins';
       letter-spacing: 0.05em;
-      text-transform: uppercase;
       color: #FFFFFF;
-      border-radius: 2px;
-      width: 211px;
-      height: 49px;
-      grid-column: 12/12;
-      text-align: center;
-      padding-top: 13px;
+    }
+    .btn {
+
+      &:focus {
+        outline: none !important;
+      }
     }
   }
+
   .drop-box {
-    margin: 10px 40px 40px 40px;
+    position: relative;
+    margin: 40px 0 50px;
+    padding: 60px;
     background: rgba(0, 106, 255, 0.02);
     border: 1px dashed #006AFF;
     box-sizing: border-box;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     flex-flow: column;
     justify-content: center;
+    align-items: center;
+
     .file-input {
       opacity: 0;
       position: absolute;
       z-index: 2;
-      width: 70%;
-      height: 40%;
+      width: 100%;
+      height: 100%;
     }
     .add-manually {
-      font-family: Poppins-Regular;
-      font-style: normal;
+      font-family: "Poppins";
       font-weight: 500;
       font-size: 30px;
       line-height: 45px;
@@ -93,16 +87,14 @@
       text-transform: uppercase;
       color: #FAFCFF;
       background: rgba(88, 88, 191, 0.9);
-      border-radius: 3px;
-      max-width: 31%;
-      margin-left: 34%;
-      border-color: #fff;
-      margin-top: 4%;
-      margin-bottom: 2%;
+      border: 0;
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+      width: 445px;
+      height: 60px;
     }
     .footer-csv {
-      font-family: Poppins;
-      font-style: normal;
+      font-family: 'Poppins';
       font-weight: 500;
       font-size: 30px;
       line-height: 45px;
