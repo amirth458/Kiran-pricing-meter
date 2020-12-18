@@ -17,8 +17,8 @@ export class EditSubscriptionComponent extends AppComponentBase implements OnIni
     advanced: ['10 properties', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],
     unlimited: ['3 properties', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],
     team: ['50 properties', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],
-    agency: ['100 properties', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],
-    enterprise: ['Unlimited', 'One User Profile', 'Unlimited Reports', 'Customized Agent Page'],
+    agency: ['100 properties', '5 User Profile', 'Unlimited Reports', 'Customized Agent Page'],
+    enterprise: ['Unlimited', '50 User Profile', 'Unlimited Reports', 'Customized Agent Page'],
 
   };
 
