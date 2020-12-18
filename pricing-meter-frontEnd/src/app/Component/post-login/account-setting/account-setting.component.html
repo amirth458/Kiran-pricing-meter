@@ -4,17 +4,20 @@
       <div class="comp_logo">
         <h3 class="title-txt">Company Logo</h3>
         <div class="profile-wrap">
-          <img src="assets/img/noimage.jpg" alt="img" class="image-set">
-          <button class="upload-btn">Upload</button>
-          <button class="upload-btn remove-btn">Remove</button>
+
+          <img [src]="companyLogo" alt="img" class="image-set">
+          <input type='file' id="getFile" style="display:none" (change)="onSelectCompanyLogo($event)">
+          <button class="upload-btn" onclick="document.getElementById('getFile').click()">Upload</button>
+          <button class="upload-btn remove-btn" (click)="removeCompanyLogo()">Remove</button>
         </div>
       </div>
       <div class="brok_logo">
         <h3 class="title-txt">Brokerage Logo</h3>
-        <div class="profile-wrap">
-          <img src="assets/img/noimage.jpg" alt="img" class="image-set">
-          <button class="upload-btn">Upload</button>
-          <button class="upload-btn remove-btn">Remove</button>
+        <div class="profile-wrap">+
+          <img [src]="brokerageLogo" alt="img" class="image-set">
+          <input type='file' id="getImage" style="display:none" (change)="onSelectBrokerageLogo($event)">
+          <button class="upload-btn" onclick="document.getElementById('getImage').click()">Upload</button>
+          <button class="upload-btn remove-btn" (click)="removeBrokerLogo()">Remove</button>
         </div>
       </div>
     </div>
