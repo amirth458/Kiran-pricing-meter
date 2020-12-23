@@ -3,20 +3,60 @@
     <a href="#" class="logo_img"><img src="assets/img/app-logo.svg" class="img-fluid" (click)="homePage()"/></a>
     <div class="prfile-conatiner">
       <h3 class="up-title" *ngIf="!fileUploader">Update Profile</h3>
-      <h3 class="up-title" *ngIf="fileUploader">Update Profile - Part 2</h3>
-        <div class="profile-daggbox">
-        <img src="assets/img/agn-reg-3-upload.svg" alt="upload image" class="upload-img" />
+      <h3 class="up-title" *ngIf="fileUploader">Update Profile</h3>
+      <div class="profile-daggbox" *ngIf="!fileUploader">
+        <img src="assets/img/agn-reg-3-upload.svg" alt="upload image" class="upload-img"/>
         <label class="upload-txt">Upload Your Brokerage Logo</label>
-        <input type="file" class="file-input" />
+        <input type="file" class="file-input"/>
+      </div>
+      <div class="profile-logo-list" *ngIf="fileUploader">
+        <div class="profile-list-item">
+          <div class="logo-icon team">
+            <img src="assets/img/team-user.svg" class="logo-ic"/>
+          </div>
+          <div class="item-content">
+            <div class="item-lbl">Team Logo</div>
+            <div class="update-ic">
+              <img src="assets/img/upload-sm-ic.svg"/>
+            </div>
+          </div>
+          <input type="file" class="file-input"/>
+        </div>
+        <div class="profile-list-item">
+          <div class="logo-icon brokerage">
+            <img src="assets/img/brokerage-logo.svg" class="logo-ic"/>
+          </div>
+          <div class="item-content">
+            <div class="item-lbl">Brokerage Logo</div>
+            <div class="update-ic">
+              <img src="assets/img/upload-sm-ic.svg"/>
+            </div>
+          </div>
+          <input type="file" class="file-input"/>
+        </div>
+        <div class="profile-list-item">
+          <div class="logo-icon user">
+            <img src="assets/img/user.svg" class="logo-ic"/>
+          </div>
+          <div class="item-content">
+            <div class="item-lbl">Profile Picture<span class="opt-txt">(Optional)</span></div>
+            <div class="update-ic">
+              <img src="assets/img/upload-sm-ic.svg"/>
+            </div>
+          </div>
+          <input type="file" class="file-input"/>
+        </div>
       </div>
       <div class="action-wrapper">
-        <button class="next-btn" (click)="nextPage()">NEXT</button>
-<!--        <span class="skip-lbl" (click)="nextPage()">Skip</span>-->
+        <button class="next-btn" (click)="nextPage()" *ngIf="!fileUploader">NEXT</button>
+        <!--        <span class="skip-lbl" (click)="nextPage()">Skip</span>-->
+        <button class="next-btn" (click)="nextPage()" *ngIf="fileUploader">NEXT</button>
       </div>
     </div>
   </div>
   <div class="right-sec">
-    <h2 class="right-header">Use Pricing Meter to show the True <br/>Market Value of your client's property.<br/> Backed by a collected dataset -<br/>presented in your Agency's design.</h2>
+    <h2 class="right-header">Use Pricing Meter to show the True <br/>Market Value of your client's property.<br/> Backed
+      by a collected dataset -<br/>presented in your Agency's design.</h2>
     <div class="right_illustration">
       <img src="assets/img/Registration_step3.svg" class="img-fluid" alt="Registration_Step_3">
     </div>
