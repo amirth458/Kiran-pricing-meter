@@ -31,7 +31,7 @@ export class PreHeaderComponent extends AppComponentBase implements OnInit {
       const dialogRef = this.dialog.open(LoginDialogComponent, {
         data: {action: 'login'},
         width: '550px',
-        height: '753px'
+        height: '510px'
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
