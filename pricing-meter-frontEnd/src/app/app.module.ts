@@ -30,6 +30,7 @@ import { PricingComponent } from './Component/agent/pricing/pricing.component';
 import { PreHeaderComponent } from './layout/pre-header/pre-header.component';
 import { FeaturesComponent } from './Component/agent/features/features.component';
 import { AboutComponent } from './Component/agent/about/about.component';
+import { ForgetPasswordComponent } from './Component/agent/forget-password/forget-password.component';
 
 
 
@@ -52,6 +53,7 @@ import { AboutComponent } from './Component/agent/about/about.component';
         PreHeaderComponent,
         FeaturesComponent,
         AboutComponent,
+        ForgetPasswordComponent,
     ],
     imports: [
         BrowserModule,

@@ -9,6 +9,7 @@ import {LoginComponent} from "./Component/agent/login/login.component";
 import {PricingComponent} from "./Component/agent/pricing/pricing.component";
 import {AboutComponent} from "./Component/agent/about/about.component";
 import {FeaturesComponent} from "./Component/agent/features/features.component";
+import {ForgetPasswordComponent} from "./Component/agent/forget-password/forget-password.component"
 
 
 const routes: Routes = [
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'features',
     component: FeaturesComponent
+  },
+  {
+    path: 'forget-password',
+    component: ForgetPasswordComponent
   },
   {
     path: 'agent',
