@@ -49,5 +49,8 @@ export class LoginDialogComponent extends AppComponentBase implements OnInit {
   closeGallery(): void{
     this.dialogRef.close();
   }
-
+  forgetPassword(): void {
+    this.dialogRef.close();
+    this.router.navigate(['forget-password']);
+  }
 }

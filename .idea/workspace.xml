@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="323d5c01-bef2-4258-b8a0-04295bf24249" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/features/features.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/features/features.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/features/features.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/features/features.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/register-step-three/register-step-three.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login-dialog/login-dialog.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login-dialog/login-dialog.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login-dialog/login-dialog.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login-dialog/login-dialog.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login-dialog/login-dialog.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pricing-meter-frontEnd/src/app/Component/agent/login-dialog/login-dialog.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,6 +120,7 @@
       <workItem from="1608231623758" duration="323000" />
       <workItem from="1608545125431" duration="1238000" />
       <workItem from="1608717566457" duration="1202000" />
+      <workItem from="1609342392644" duration="224000" />
     </task>
     <servers />
   </component>
