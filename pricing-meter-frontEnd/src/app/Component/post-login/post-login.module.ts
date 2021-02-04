@@ -27,7 +27,7 @@ import { PricingMeterDemoComponent } from './property-list/pricing-meter-demo/pr
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FeedBackComponent } from './property-list/feed-back/feed-back.component'
-import {FooterComponent} from "../../layout/footer/footer.component";
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -59,6 +59,7 @@ import {FooterComponent} from "../../layout/footer/footer.component";
     GaugesModule,
     MatButtonModule,
     NgSelectModule,
+    MatRadioModule,
   ],
   exports: [
     MatMenuModule,

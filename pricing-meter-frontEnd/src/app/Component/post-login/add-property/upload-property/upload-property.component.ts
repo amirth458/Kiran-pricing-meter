@@ -54,4 +54,16 @@ export class UploadPropertyComponent extends AppComponentBase implements OnInit 
   navigateToPropertyList(): void {
     this.router.navigate(['pricing-meter/property-list']);
   }
+  changeStyle(value , object){
+    console.log("object",object);
+    for(let i=0;i<=object.length;i++)
+    {
+      if(i == value -1)
+      {
+        object[i].key = 'active'
+      }else{
+        object[i].key = ''
+      }
+    }
+  }
 }
