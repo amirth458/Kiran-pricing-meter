@@ -10,7 +10,9 @@
       <p class="sub-heading" *ngIf="open">By answering these final four questions, the Pricing Meter
         applies data-driven decisions to estimate the property value. </p>
     </div>
-    <a class="btn csv-btn" (click)="navigateToCSV()">Upload CSV</a>
+    <div>
+      <a class="btn csv-btn" (click)="navigateToCSV()">Upload CSV</a>
+    </div>
   </div>
   <div class="main-content">
     <div class="image-wrapper">
@@ -23,7 +25,7 @@
       </div>
       <mat-radio-group class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of propertyReview" >
-          <a class="page-link" (click)="changeStyle(review.value , propertyReview)" [style.color]="review.key? 'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'">{{review.value}}</a>
+          <a class="page-link" (click)="changeStyle(review.value , propertyReview, 'rateTheLocation')" [style.color]="review.key? 'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'">{{review.value}}</a>
           <div class="page-quality-wapper">
             <a class="page-quality" [style.color]="review.key?'#006AFF': '#868484'" >{{review.name}}</a>
           </div>
@@ -35,7 +37,7 @@
       </div>
       <mat-radio-group class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of neighborhoodReview" >
-          <a class="page-link" (click)="changeStyle(review.value , neighborhoodReview)" [style.color]="review.key?'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'">{{review.value}}</a>
+          <a class="page-link" (click)="changeStyle(review.value , neighborhoodReview, 'rateTheView')" [style.color]="review.key?'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'">{{review.value}}</a>
           <div class="page-quality-wapper">
             <a class="page-quality" [style.color]="review.key? '#006AFF': '#868484'" >{{review.name}}</a>
           </div>
@@ -47,7 +49,7 @@
       </div>
       <mat-radio-group class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of thirdReview " >
-          <a class="page-link" (click)="changeStyle(review.value , thirdReview )" [style.color]="review.key? 'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'">{{review.value}}</a>
+          <a class="page-link" (click)="changeStyle(review.value , thirdReview, 'rateTheCondition' )" [style.color]="review.key? 'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'">{{review.value}}</a>
           <div class="page-quality-wapper">
             <a class="page-quality" [style.color]="review.key? '#006AFF': '#868484'" >{{review.name}}</a>
           </div>
@@ -59,7 +61,7 @@
       </div>
       <mat-radio-group class="pagination pagination-lg">
         <li class="page-item" *ngFor="let review of fourthReview" >
-          <a class="page-link" (click)="changeStyle(review.value , fourthReview)" [style.color]="review.key? 'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'" >{{review.value}}</a>
+          <a class="page-link" (click)="changeStyle(review.value , fourthReview, 'propertyLocated')" [style.color]="review.key? 'white': '#868484'" [style.background-color]="review.key? '#407BFF': 'white'" >{{review.value}}</a>
           <div class="page-quality-wapper">
             <a class="page-quality" [style.color]="review.key? '#006AFF': '#868484'" >{{review.name}}</a>
           </div>
@@ -67,6 +69,7 @@
       </mat-radio-group>
 
       <button class="submit-btn" (click)="navigateToPropertyList()">FINISH</button>
+      <button class="submit-btn mt-1" (click)="showSelected()">Show Selected Value</button>
     </div>
   </div>
   <div>
